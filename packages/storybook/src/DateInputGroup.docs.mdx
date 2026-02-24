@@ -17,6 +17,13 @@ export const [intro, rest] = docs.split('<!-- VOORBEELD -->');
 
 <CodeTabs
   of={DateInputGroupStories.Default}
+  react={`const [value, setValue] = useState<DateInputGroupValue>({
+  day: '',
+  month: '',
+  year: '',
+});
+
+<DateInputGroup id="datum" value={value} onChange={setValue} />`}
   html={`<div class="dsn-date-input-group">
   <div class="dsn-date-input-group__field">
     <label class="dsn-date-input-group__label" for="geboortedatum-dag">Dag</label>

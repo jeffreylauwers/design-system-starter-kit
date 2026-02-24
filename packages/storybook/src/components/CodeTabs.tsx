@@ -13,8 +13,11 @@ interface CodeTabsProps {
    */
   of: unknown;
   /**
-   * @deprecated — kept for backward compatibility with existing .docs.mdx files.
-   * No longer used. The React tab reads live code from the story referenced by `of`.
+   * Static React/TSX code shown in the React tab instead of the auto-generated story code.
+   * Use this for wrapper components (e.g. DateInputGroup) where Storybook cannot reliably
+   * generate the correct code due to `useState` in external helper components.
+   *
+   * When omitted, the React tab shows live auto-generated code via `Source of={story}`.
    */
   react?: string;
   /**
@@ -36,7 +39,7 @@ type Tab = 'react' | 'html';
  * Syntax highlighting via Storybook's built-in Source block from @storybook/blocks.
  * The tab bar uses design token CSS variables so it responds to dark mode.
  */
-export function CodeTabs({ of: storyRef, html }: CodeTabsProps) {
+export function CodeTabs({ of: storyRef, react, html }: CodeTabsProps) {
   const [activeTab, setActiveTab] = useState<Tab>('react');
 
   const tabBarStyle: React.CSSProperties = {
@@ -93,10 +96,15 @@ export function CodeTabs({ of: storyRef, html }: CodeTabsProps) {
       </div>
       <div style={codeWrapperStyle}>
         {activeTab === 'react' ? (
-          // Source with explicit `of` subscribes to STORY_ARGS_UPDATED and
-          // updates the displayed code when the user changes Controls.
-          // eslint-disable-next-line @typescript-eslint/no-explicit-any
-          <Source of={storyRef as any} dark />
+          // When a static `react` prop is provided (e.g. for wrapper components with useState),
+          // show it as static code. Otherwise, subscribe to STORY_ARGS_UPDATED via `of` so
+          // the displayed code updates automatically when the user changes Controls.
+          react ? (
+            <Source code={react} language="tsx" dark />
+          ) : (
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any
+            <Source of={storyRef as any} dark />
+          )
         ) : (
           // HTML tab: uses `of` for live subscription to STORY_ARGS_UPDATED,
           // and `transform` to generate HTML from story args via the
