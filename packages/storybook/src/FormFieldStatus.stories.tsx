@@ -17,6 +17,29 @@ const meta: Meta<typeof FormFieldStatus> = {
     docs: {
       page: DocsPage,
     },
+    dsn: {
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      htmlTemplate: (args: any) => {
+        const variant = args.variant ?? 'default';
+        const cls = [
+          'dsn-form-field-status',
+          variant !== 'default' && `dsn-form-field-status--${variant}`,
+        ]
+          .filter(Boolean)
+          .join(' ');
+        const showIcon = args.showIcon !== false && variant !== 'default';
+        const iconName =
+          variant === 'positive'
+            ? 'check'
+            : variant === 'warning'
+              ? 'alert-triangle'
+              : null;
+        const idAttr = args.id ? ` id="${args.id}"` : '';
+        const icon =
+          showIcon && iconName ? `<!-- ${iconName} icon -->\n  ` : '';
+        return `<p class="${cls}"${idAttr}>\n  ${icon}${args.children ?? 'Tekst'}\n</p>`;
+      },
+    },
   },
   argTypes: {
     variant: {

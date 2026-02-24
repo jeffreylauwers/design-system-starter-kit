@@ -10,6 +10,28 @@ const meta: Meta<typeof PasswordInput> = {
     docs: {
       page: DocsPage,
     },
+    dsn: {
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      htmlTemplate: (args: any) => {
+        const cls = [
+          'dsn-text-input',
+          args.width && `dsn-text-input--width-${args.width}`,
+        ]
+          .filter(Boolean)
+          .join(' ');
+        const autocomplete = args.passwordAutocomplete ?? 'current-password';
+        const attrs = [
+          args.disabled && 'disabled',
+          args.readOnly && 'readonly',
+          args.required && 'required',
+          args.invalid && 'aria-invalid="true"',
+          args.placeholder && `placeholder="${args.placeholder}"`,
+        ]
+          .filter(Boolean)
+          .join(' ');
+        return `<input type="password" class="${cls}" autocomplete="${autocomplete}"${attrs ? ' ' + attrs : ''} />`;
+      },
+    },
   },
   argTypes: {
     placeholder: { control: 'text' },

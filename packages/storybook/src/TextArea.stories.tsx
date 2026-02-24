@@ -17,6 +17,29 @@ const meta: Meta<typeof TextArea> = {
     docs: {
       page: DocsPage,
     },
+    dsn: {
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      htmlTemplate: (args: any) => {
+        const cls = [
+          'dsn-text-area',
+          args.width && `dsn-text-area--width-${args.width}`,
+        ]
+          .filter(Boolean)
+          .join(' ');
+        const rows = args.rows ?? 4;
+        const attrs = [
+          `rows="${rows}"`,
+          args.disabled && 'disabled',
+          args.readOnly && 'readonly',
+          args.required && 'required',
+          args.invalid && 'aria-invalid="true"',
+          args.placeholder && `placeholder="${args.placeholder}"`,
+        ]
+          .filter(Boolean)
+          .join(' ');
+        return `<textarea class="${cls}" ${attrs}></textarea>`;
+      },
+    },
   },
   argTypes: {
     width: {

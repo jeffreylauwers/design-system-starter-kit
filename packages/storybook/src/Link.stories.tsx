@@ -67,6 +67,26 @@ const meta: Meta<typeof Link> = {
     docs: {
       page: DocsPage,
     },
+    dsn: {
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      htmlTemplate: (args: any) => {
+        const cls = [
+          'dsn-link',
+          args.size && args.size !== 'default' && `dsn-link--size-${args.size}`,
+        ]
+          .filter(Boolean)
+          .join(' ');
+        const attrParts: string[] = [`class="${cls}"`];
+        if (!args.disabled) attrParts.push(`href="${args.href ?? '#'}"`);
+        if (args.external)
+          attrParts.push('target="_blank"', 'rel="noopener noreferrer"');
+        if (args.disabled)
+          attrParts.push('aria-disabled="true"', 'tabindex="-1"');
+        if (args.current) attrParts.push('aria-current="page"');
+        const text = `${args.children ?? 'Linktekst'}${args.external ? ' (opens in new tab)' : ''}`;
+        return `<a ${attrParts.join(' ')}>${text}</a>`;
+      },
+    },
   },
   argTypes: {
     size: {

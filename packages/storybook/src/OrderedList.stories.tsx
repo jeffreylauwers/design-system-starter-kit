@@ -17,6 +17,18 @@ const meta: Meta<typeof OrderedList> = {
     docs: {
       page: DocsPage,
     },
+    dsn: {
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      htmlTemplate: (args: any) => {
+        const attrs = [
+          args.start && `start="${args.start}"`,
+          args.reversed && 'reversed',
+        ]
+          .filter(Boolean)
+          .join(' ');
+        return `<ol class="dsn-ordered-list"${attrs ? ' ' + attrs : ''}>\n  <li>Item één</li>\n  <li>Item twee</li>\n  <li>Item drie</li>\n</ol>`;
+      },
+    },
   },
   argTypes: {
     start: { control: 'number' },

@@ -17,6 +17,16 @@ const meta: Meta<typeof FormFieldLabel> = {
     docs: {
       page: DocsPage,
     },
+    dsn: {
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      htmlTemplate: (args: any) => {
+        const forAttr = args.htmlFor ? ` for="${args.htmlFor}"` : '';
+        const suffix = args.suffix
+          ? `<span class="dsn-form-field-label-suffix">${args.suffix}</span>`
+          : '';
+        return `<label class="dsn-form-field-label"${forAttr}>${args.children ?? 'Label'}${suffix}</label>`;
+      },
+    },
   },
   argTypes: {
     suffix: { control: 'text' },

@@ -17,6 +17,27 @@ const meta: Meta<typeof SearchInput> = {
     docs: {
       page: DocsPage,
     },
+    dsn: {
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      htmlTemplate: (args: any) => {
+        const wrapperCls = [
+          'dsn-search-input-wrapper',
+          args.width && `dsn-search-input-wrapper--width-${args.width}`,
+        ]
+          .filter(Boolean)
+          .join(' ');
+        const attrs = [
+          args.disabled && 'disabled',
+          args.readOnly && 'readonly',
+          args.required && 'required',
+          args.invalid && 'aria-invalid="true"',
+          args.placeholder && `placeholder="${args.placeholder}"`,
+        ]
+          .filter(Boolean)
+          .join(' ');
+        return `<div class="${wrapperCls}">\n  <!-- search icon (decoratief) -->\n  <input type="search" class="dsn-text-input dsn-search-input"${attrs ? ' ' + attrs : ''} />\n</div>`;
+      },
+    },
   },
   argTypes: {
     placeholder: { control: 'text' },

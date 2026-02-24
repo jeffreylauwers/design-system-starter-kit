@@ -62,6 +62,25 @@ const iconOptions: (IconName | undefined)[] = [
 const meta: Meta<typeof Button> = {
   title: 'Components/Button',
   component: Button,
+  parameters: {
+    dsn: {
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      htmlTemplate: (args: any) => {
+        const cls = [
+          'dsn-button',
+          `dsn-button--${args.variant ?? 'strong'}`,
+          `dsn-button--size-${args.size ?? 'default'}`,
+          args.loading && 'dsn-button--loading',
+          args.fullWidth && 'dsn-button--full-width',
+          args.iconOnly && 'dsn-button--icon-only',
+        ]
+          .filter(Boolean)
+          .join(' ');
+        const disabled = args.disabled || args.loading ? ' disabled' : '';
+        return `<button type="button" class="${cls}"${disabled}>${args.children ?? 'Tekst'}</button>`;
+      },
+    },
+  },
   argTypes: {
     variant: {
       control: 'select',

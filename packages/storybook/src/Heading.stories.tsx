@@ -17,6 +17,14 @@ const meta: Meta<typeof Heading> = {
     docs: {
       page: DocsPage,
     },
+    dsn: {
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      htmlTemplate: (args: any) => {
+        const level = args.level ?? 2;
+        const appearance = args.appearance ?? `heading-${level}`;
+        return `<h${level} class="dsn-heading dsn-heading--${appearance}">${args.children ?? 'Tekst'}</h${level}>`;
+      },
+    },
   },
   argTypes: {
     level: {

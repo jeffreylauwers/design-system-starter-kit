@@ -17,6 +17,13 @@ const meta: Meta<typeof Paragraph> = {
     docs: {
       page: DocsPage,
     },
+    dsn: {
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      htmlTemplate: (args: any) => {
+        const variant = args.variant ?? 'default';
+        return `<p class="dsn-paragraph dsn-paragraph--${variant}">${args.children ?? 'Tekst'}</p>`;
+      },
+    },
   },
   argTypes: {
     variant: {

@@ -22,6 +22,33 @@ const meta: Meta<typeof FormFieldset> = {
     docs: {
       page: DocsPage,
     },
+    dsn: {
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      htmlTemplate: (args: any) => {
+        const cls = ['dsn-form-field', args.error && 'dsn-form-field--invalid']
+          .filter(Boolean)
+          .join(' ');
+        const suffix = args.legendSuffix
+          ? `<span class="dsn-form-field-label-suffix">${args.legendSuffix}</span>`
+          : '';
+        let html = `<fieldset class="${cls}">\n`;
+        html += `  <legend class="dsn-form-field-label">${args.legend ?? 'Legenda'}${suffix}</legend>\n`;
+        if (args.description)
+          html += `  <p class="dsn-form-field-description">${args.description}</p>\n`;
+        if (args.error)
+          html += `  <p class="dsn-form-field-error-message"><!-- exclamation-circle icon -->${args.error}</p>\n`;
+        html += `  <div class="dsn-checkbox-group">\n    <!-- CheckboxOption / RadioOption componenten -->\n  </div>\n`;
+        if (args.status) {
+          const variantCls =
+            args.statusVariant && args.statusVariant !== 'default'
+              ? ` dsn-form-field-status--${args.statusVariant}`
+              : '';
+          html += `  <p class="dsn-form-field-status${variantCls}">${args.status}</p>\n`;
+        }
+        html += `</fieldset>`;
+        return html;
+      },
+    },
   },
   argTypes: {
     legend: { control: 'text' },

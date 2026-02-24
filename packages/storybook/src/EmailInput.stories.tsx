@@ -16,6 +16,27 @@ const meta: Meta<typeof EmailInput> = {
     docs: {
       page: DocsPage,
     },
+    dsn: {
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      htmlTemplate: (args: any) => {
+        const cls = [
+          'dsn-text-input',
+          args.width && `dsn-text-input--width-${args.width}`,
+        ]
+          .filter(Boolean)
+          .join(' ');
+        const attrs = [
+          args.disabled && 'disabled',
+          args.readOnly && 'readonly',
+          args.required && 'required',
+          args.invalid && 'aria-invalid="true"',
+          args.placeholder && `placeholder="${args.placeholder}"`,
+        ]
+          .filter(Boolean)
+          .join(' ');
+        return `<input type="email" inputmode="email" class="${cls}" autocomplete="email"${attrs ? ' ' + attrs : ''} />`;
+      },
+    },
   },
   argTypes: {
     placeholder: { control: 'text' },

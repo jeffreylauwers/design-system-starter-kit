@@ -10,6 +10,19 @@ const meta: Meta<typeof Icon> = {
     docs: {
       page: DocsPage,
     },
+    dsn: {
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      htmlTemplate: (args: any) => {
+        const size = args.size ?? 'md';
+        const cls = ['dsn-icon', size !== 'md' && `dsn-icon--${size}`]
+          .filter(Boolean)
+          .join(' ');
+        const ariaAttrs = args['aria-label']
+          ? `aria-label="${args['aria-label']}" role="img"`
+          : 'aria-hidden="true"';
+        return `<svg class="${cls}" ${ariaAttrs}>\n  <!-- ${args.name ?? 'check'} icon via Tabler Icons -->\n</svg>`;
+      },
+    },
   },
   argTypes: {
     name: {

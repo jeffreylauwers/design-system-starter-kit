@@ -10,6 +10,29 @@ const meta: Meta<typeof NumberInput> = {
     docs: {
       page: DocsPage,
     },
+    dsn: {
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      htmlTemplate: (args: any) => {
+        const cls = [
+          'dsn-text-input',
+          args.width && `dsn-text-input--width-${args.width}`,
+        ]
+          .filter(Boolean)
+          .join(' ');
+        const inputMode = args.allowDecimals ? 'decimal' : 'numeric';
+        const pattern = args.allowDecimals ? '' : ' pattern="[0-9]*"';
+        const attrs = [
+          args.disabled && 'disabled',
+          args.readOnly && 'readonly',
+          args.required && 'required',
+          args.invalid && 'aria-invalid="true"',
+          args.placeholder && `placeholder="${args.placeholder}"`,
+        ]
+          .filter(Boolean)
+          .join(' ');
+        return `<input type="text" inputmode="${inputMode}"${pattern} class="${cls}" autocomplete="off"${attrs ? ' ' + attrs : ''} />`;
+      },
+    },
   },
   argTypes: {
     placeholder: { control: 'text' },

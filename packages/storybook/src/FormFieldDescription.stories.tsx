@@ -17,6 +17,13 @@ const meta: Meta<typeof FormFieldDescription> = {
     docs: {
       page: DocsPage,
     },
+    dsn: {
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      htmlTemplate: (args: any) => {
+        const idAttr = args.id ? ` id="${args.id}"` : '';
+        return `<p class="dsn-form-field-description"${idAttr}>${args.children ?? 'Tekst'}</p>`;
+      },
+    },
   },
   argTypes: {
     id: { control: 'text' },

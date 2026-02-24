@@ -32,6 +32,28 @@ const meta: Meta<typeof Select> = {
     docs: {
       page: DocsPage,
     },
+    dsn: {
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      htmlTemplate: (args: any) => {
+        const wrapperCls = [
+          'dsn-select-wrapper',
+          args.width && `dsn-select-wrapper--width-${args.width}`,
+        ]
+          .filter(Boolean)
+          .join(' ');
+        const inputAttrs = [
+          args.disabled && 'disabled',
+          args.required && 'required',
+          args.invalid && 'aria-invalid="true"',
+        ]
+          .filter(Boolean)
+          .join(' ');
+        const icon = !args.disabled
+          ? '\n  <!-- chevron-down icon (decoratief) -->'
+          : '';
+        return `<div class="${wrapperCls}">\n  <select class="dsn-text-input dsn-select"${inputAttrs ? ' ' + inputAttrs : ''}>\n    <option value="">Kies een optie</option>\n    <option value="1">Optie 1</option>\n    <option value="2">Optie 2</option>\n  </select>${icon}\n</div>`;
+      },
+    },
   },
   argTypes: {
     disabled: { control: 'boolean' },

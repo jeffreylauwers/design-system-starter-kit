@@ -22,6 +22,34 @@ const meta: Meta<typeof FormField> = {
     docs: {
       page: DocsPage,
     },
+    dsn: {
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      htmlTemplate: (args: any) => {
+        const cls = ['dsn-form-field', args.error && 'dsn-form-field--invalid']
+          .filter(Boolean)
+          .join(' ');
+        const forAttr = args.htmlFor ? ` for="${args.htmlFor}"` : '';
+        const suffix = args.labelSuffix
+          ? `<span class="dsn-form-field-label-suffix">${args.labelSuffix}</span>`
+          : '';
+        let html = `<div class="${cls}">\n`;
+        html += `  <label class="dsn-form-field-label"${forAttr}>${args.label ?? 'Label'}${suffix}</label>\n`;
+        if (args.description)
+          html += `  <p class="dsn-form-field-description">${args.description}</p>\n`;
+        if (args.error)
+          html += `  <p class="dsn-form-field-error-message"><!-- exclamation-circle icon -->${args.error}</p>\n`;
+        html += `  <input type="text" class="dsn-text-input"${args.htmlFor ? ` id="${args.htmlFor}"` : ''} />\n`;
+        if (args.status) {
+          const variantCls =
+            args.statusVariant && args.statusVariant !== 'default'
+              ? ` dsn-form-field-status--${args.statusVariant}`
+              : '';
+          html += `  <p class="dsn-form-field-status${variantCls}">${args.status}</p>\n`;
+        }
+        html += `</div>`;
+        return html;
+      },
+    },
   },
   argTypes: {
     label: { control: 'text' },

@@ -17,6 +17,33 @@ const meta: Meta<typeof RadioOption> = {
     docs: {
       page: DocsPage,
     },
+    dsn: {
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      htmlTemplate: (args: any) => {
+        const inputCls = [
+          'dsn-radio__input',
+          args.invalid && 'dsn-radio__input--invalid',
+        ]
+          .filter(Boolean)
+          .join(' ');
+        const nameAttr = args.name ? ` name="${args.name}"` : '';
+        const inputAttrs = [
+          args.checked && 'checked',
+          args.disabled && 'disabled',
+          args.required && 'required',
+          args.invalid && 'aria-invalid="true"',
+        ]
+          .filter(Boolean)
+          .join(' ');
+        const labelCls = [
+          'dsn-option-label',
+          args.disabled && 'dsn-option-label--disabled',
+        ]
+          .filter(Boolean)
+          .join(' ');
+        return `<label class="dsn-radio-option">\n  <div class="dsn-radio">\n    <input type="radio" class="${inputCls}"${nameAttr}${inputAttrs ? ' ' + inputAttrs : ''} />\n    <span class="dsn-radio__control" aria-hidden="true">\n      <span class="dsn-radio__inner-circle"></span>\n    </span>\n  </div>\n  <span class="${labelCls}">${args.label ?? 'Tekst'}</span>\n</label>`;
+      },
+    },
   },
   argTypes: {
     checked: { control: 'boolean' },

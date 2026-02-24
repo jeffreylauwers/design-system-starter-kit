@@ -17,6 +17,35 @@ const meta: Meta<typeof CheckboxOption> = {
     docs: {
       page: DocsPage,
     },
+    dsn: {
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      htmlTemplate: (args: any) => {
+        const inputCls = [
+          'dsn-checkbox__input',
+          args.invalid && 'dsn-checkbox__input--invalid',
+        ]
+          .filter(Boolean)
+          .join(' ');
+        const inputAttrs = [
+          args.checked && 'checked',
+          args.disabled && 'disabled',
+          args.required && 'required',
+          args.invalid && 'aria-invalid="true"',
+        ]
+          .filter(Boolean)
+          .join(' ');
+        const labelCls = [
+          'dsn-option-label',
+          args.disabled && 'dsn-option-label--disabled',
+        ]
+          .filter(Boolean)
+          .join(' ');
+        const iconComment = args.indeterminate
+          ? '<!-- minus icon -->'
+          : '<!-- check icon -->';
+        return `<label class="dsn-checkbox-option">\n  <div class="dsn-checkbox">\n    <input type="checkbox" class="${inputCls}"${inputAttrs ? ' ' + inputAttrs : ''} />\n    <span class="dsn-checkbox__control" aria-hidden="true">\n      ${iconComment}\n    </span>\n  </div>\n  <span class="${labelCls}">${args.label ?? 'Tekst'}</span>\n</label>`;
+      },
+    },
   },
   argTypes: {
     checked: { control: 'boolean' },

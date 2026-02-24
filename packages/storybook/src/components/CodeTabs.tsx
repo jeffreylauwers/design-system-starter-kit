@@ -17,7 +17,11 @@ interface CodeTabsProps {
    * No longer used. The React tab reads live code from the story referenced by `of`.
    */
   react?: string;
-  /** HTML/CSS markup snippet for the HTML/CSS tab */
+  /**
+   * Fallback HTML/CSS markup shown in the HTML/CSS tab when the story does not define
+   * `parameters.dsn.htmlTemplate`. When a template is defined, the tab renders
+   * dynamic HTML derived from the current story args (updates with Controls).
+   */
   html: string;
 }
 
@@ -26,7 +30,8 @@ type Tab = 'react' | 'html';
 /**
  * CodeTabs — two-tab code viewer shown below PreviewFrame on every doc page.
  * - React tab (default): shows live story code via `Source of={story}`, updates with Controls
- * - HTML/CSS tab: shows the equivalent vanilla HTML markup (static)
+ * - HTML/CSS tab: shows dynamic HTML via `transform` using `parameters.dsn.htmlTemplate`,
+ *   falls back to the static `html` prop when no htmlTemplate is defined on the story
  *
  * Syntax highlighting via Storybook's built-in Source block from @storybook/blocks.
  * The tab bar uses design token CSS variables so it responds to dark mode.
@@ -93,7 +98,21 @@ export function CodeTabs({ of: storyRef, html }: CodeTabsProps) {
           // eslint-disable-next-line @typescript-eslint/no-explicit-any
           <Source of={storyRef as any} dark />
         ) : (
-          <Source code={html} language="html" dark />
+          // HTML tab: uses `of` for live subscription to STORY_ARGS_UPDATED,
+          // and `transform` to generate HTML from story args via the
+          // `parameters.dsn.htmlTemplate` function defined in each story file.
+          // Falls back to the static `html` prop when no template is defined.
+          <Source
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any
+            of={storyRef as any}
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any
+            transform={(_: string, ctx: any) => {
+              const template = ctx?.parameters?.dsn?.htmlTemplate;
+              return typeof template === 'function' ? template(ctx.args) : html;
+            }}
+            language="html"
+            dark
+          />
         )}
       </div>
     </div>
