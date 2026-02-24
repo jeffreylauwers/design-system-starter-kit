@@ -21,8 +21,10 @@
 
 /* Document defaults */
 html {
-  /* Prevent font size inflation on iOS */
-  -webkit-text-size-adjust: 100%;
+  /* Prevent font size inflation on mobile browsers */
+  -webkit-text-size-adjust: none;
+  -moz-text-size-adjust: none;
+  text-size-adjust: none;
   /* Smooth scrolling */
   scroll-behavior: smooth;
 }
@@ -96,10 +98,19 @@ h6 {
   overflow-wrap: break-word;
 }
 
-/* List styles */
-ul,
-ol {
-  list-style: none;
+/* Prevent orphaned words on the last line of headings */
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  text-wrap: balance;
+}
+
+/* Scroll margin for anchor links — prevents heading from touching the top edge */
+:target {
+  scroll-margin-block: 5ex;
 }
 
 /* Link styles */
