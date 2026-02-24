@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Source, SourceType } from '@storybook/blocks';
+import { Source } from '@storybook/blocks';
 import './CodeTabs.css';
 
 interface CodeTabsProps {
@@ -20,8 +20,8 @@ type Tab = 'react' | 'html';
  * - HTML/CSS tab: shows the equivalent vanilla HTML markup
  *
  * Syntax highlighting via Storybook's built-in Source block from @storybook/blocks.
- * The React tab uses SourceType.DYNAMIC so it automatically shows the current story's
- * rendered code and updates live when Controls change.
+ * The React tab uses Source without explicit type (defaults to AUTO, which resolves to
+ * DYNAMIC for stories with args). This shows live story code and updates with Controls.
  * The tab bar uses design token CSS variables so it responds to dark mode.
  */
 export function CodeTabs({ html }: CodeTabsProps) {
@@ -81,7 +81,7 @@ export function CodeTabs({ html }: CodeTabsProps) {
       </div>
       <div style={codeWrapperStyle}>
         {activeTab === 'react' ? (
-          <Source type={SourceType.DYNAMIC} dark />
+          <Source dark />
         ) : (
           <Source code={html} language="html" dark />
         )}
