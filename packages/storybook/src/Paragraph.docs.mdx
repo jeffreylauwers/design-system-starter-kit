@@ -1,6 +1,7 @@
 import { Meta, Story, Controls, Markdown } from '@storybook/blocks';
 import * as ParagraphStories from './Paragraph.stories';
 import docs from './Paragraph.docs.md?raw';
+import { PreviewFrame, CodeTabs } from './components';
 
 export const [intro, rest] = docs.split('<!-- VOORBEELD -->');
 
@@ -10,7 +11,14 @@ export const [intro, rest] = docs.split('<!-- VOORBEELD -->');
 
 ## Voorbeeld
 
-<Story of={ParagraphStories.Default} />
+<PreviewFrame>
+  <Story of={ParagraphStories.Default} />
+</PreviewFrame>
+
+<CodeTabs
+  react={`<Paragraph>Dit is een alinea tekst.</Paragraph>`}
+  html={`<p class="dsn-paragraph dsn-paragraph--default">Dit is een alinea tekst.</p>`}
+/>
 
 <Controls of={ParagraphStories.Default} />
 

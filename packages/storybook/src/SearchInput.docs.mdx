@@ -1,6 +1,7 @@
 import { Meta, Story, Controls, Markdown } from '@storybook/blocks';
 import * as SearchInputStories from './SearchInput.stories';
 import docs from './SearchInput.docs.md?raw';
+import { PreviewFrame, CodeTabs } from './components';
 
 export const [intro, rest] = docs.split('<!-- VOORBEELD -->');
 
@@ -10,7 +11,17 @@ export const [intro, rest] = docs.split('<!-- VOORBEELD -->');
 
 ## Voorbeeld
 
-<Story of={SearchInputStories.Default} />
+<PreviewFrame>
+  <Story of={SearchInputStories.Default} />
+</PreviewFrame>
+
+<CodeTabs
+  react={`<SearchInput placeholder="Zoeken..." />`}
+  html={`<div class="dsn-search-input-wrapper">
+  <!-- search icon (decoratief, niet-interactief) -->
+  <input type="search" class="dsn-text-input dsn-search-input" placeholder="Zoeken..." />
+</div>`}
+/>
 
 <Controls of={SearchInputStories.Default} />
 

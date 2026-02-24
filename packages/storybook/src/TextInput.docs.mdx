@@ -1,6 +1,7 @@
 import { Meta, Story, Controls, Markdown } from '@storybook/blocks';
 import * as TextInputStories from './TextInput.stories';
 import docs from './TextInput.docs.md?raw';
+import { PreviewFrame, CodeTabs } from './components';
 
 export const [intro, rest] = docs.split('<!-- VOORBEELD -->');
 
@@ -10,7 +11,14 @@ export const [intro, rest] = docs.split('<!-- VOORBEELD -->');
 
 ## Voorbeeld
 
-<Story of={TextInputStories.Default} />
+<PreviewFrame>
+  <Story of={TextInputStories.Default} />
+</PreviewFrame>
+
+<CodeTabs
+  react={`<TextInput placeholder="Voer tekst in" />`}
+  html={`<input type="text" class="dsn-text-input" placeholder="Voer tekst in" />`}
+/>
 
 <Controls of={TextInputStories.Default} />
 

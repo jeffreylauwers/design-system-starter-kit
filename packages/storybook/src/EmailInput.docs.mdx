@@ -1,6 +1,7 @@
 import { Meta, Story, Controls, Markdown } from '@storybook/blocks';
 import * as EmailInputStories from './EmailInput.stories';
 import docs from './EmailInput.docs.md?raw';
+import { PreviewFrame, CodeTabs } from './components';
 
 export const [intro, rest] = docs.split('<!-- VOORBEELD -->');
 
@@ -10,7 +11,14 @@ export const [intro, rest] = docs.split('<!-- VOORBEELD -->');
 
 ## Voorbeeld
 
-<Story of={EmailInputStories.Default} />
+<PreviewFrame>
+  <Story of={EmailInputStories.Default} />
+</PreviewFrame>
+
+<CodeTabs
+  react={`<EmailInput placeholder="naam@voorbeeld.nl" />`}
+  html={`<input type="email" inputmode="email" class="dsn-text-input" autocomplete="email" placeholder="naam@voorbeeld.nl" />`}
+/>
 
 <Controls of={EmailInputStories.Default} />
 

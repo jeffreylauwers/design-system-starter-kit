@@ -1,6 +1,7 @@
 import { Meta, Story, Controls, Markdown } from '@storybook/blocks';
 import * as FormFieldStories from './FormField.stories';
 import docs from './FormField.docs.md?raw';
+import { PreviewFrame, CodeTabs } from './components';
 
 export const [intro, rest] = docs.split('<!-- VOORBEELD -->');
 
@@ -10,7 +11,19 @@ export const [intro, rest] = docs.split('<!-- VOORBEELD -->');
 
 ## Voorbeeld
 
-<Story of={FormFieldStories.Default} />
+<PreviewFrame>
+  <Story of={FormFieldStories.Default} />
+</PreviewFrame>
+
+<CodeTabs
+  react={`<FormField label="E-mailadres" htmlFor="email">
+  <EmailInput id="email" placeholder="naam@voorbeeld.nl" />
+</FormField>`}
+  html={`<div class="dsn-form-field">
+  <label class="dsn-form-field-label" for="email">E-mailadres</label>
+  <input type="email" class="dsn-text-input" id="email" placeholder="naam@voorbeeld.nl" />
+</div>`}
+/>
 
 <Controls of={FormFieldStories.Default} />
 

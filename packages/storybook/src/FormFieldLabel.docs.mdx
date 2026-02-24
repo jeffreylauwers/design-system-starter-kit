@@ -1,6 +1,7 @@
 import { Meta, Story, Controls, Markdown } from '@storybook/blocks';
 import * as FormFieldLabelStories from './FormFieldLabel.stories';
 import docs from './FormFieldLabel.docs.md?raw';
+import { PreviewFrame, CodeTabs } from './components';
 
 export const [intro, rest] = docs.split('<!-- VOORBEELD -->');
 
@@ -10,7 +11,14 @@ export const [intro, rest] = docs.split('<!-- VOORBEELD -->');
 
 ## Voorbeeld
 
-<Story of={FormFieldLabelStories.Default} />
+<PreviewFrame>
+  <Story of={FormFieldLabelStories.Default} />
+</PreviewFrame>
+
+<CodeTabs
+  react={`<FormFieldLabel htmlFor="input-1">Label</FormFieldLabel>`}
+  html={`<label class="dsn-form-field-label" for="input-1">Label</label>`}
+/>
 
 <Controls of={FormFieldLabelStories.Default} />
 

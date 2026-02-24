@@ -1,6 +1,7 @@
 import { Meta, Story, Controls, Markdown } from '@storybook/blocks';
 import * as TextAreaStories from './TextArea.stories';
 import docs from './TextArea.docs.md?raw';
+import { PreviewFrame, CodeTabs } from './components';
 
 export const [intro, rest] = docs.split('<!-- VOORBEELD -->');
 
@@ -10,7 +11,14 @@ export const [intro, rest] = docs.split('<!-- VOORBEELD -->');
 
 ## Voorbeeld
 
-<Story of={TextAreaStories.Default} />
+<PreviewFrame>
+  <Story of={TextAreaStories.Default} />
+</PreviewFrame>
+
+<CodeTabs
+  react={`<TextArea placeholder="Voer uw bericht in" rows={4} />`}
+  html={`<textarea class="dsn-text-area" rows="4" placeholder="Voer uw bericht in"></textarea>`}
+/>
 
 <Controls of={TextAreaStories.Default} />
 

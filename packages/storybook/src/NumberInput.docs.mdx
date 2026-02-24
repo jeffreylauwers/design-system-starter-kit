@@ -1,6 +1,7 @@
 import { Meta, Story, Controls, Markdown } from '@storybook/blocks';
 import * as NumberInputStories from './NumberInput.stories';
 import docs from './NumberInput.docs.md?raw';
+import { PreviewFrame, CodeTabs } from './components';
 
 export const [intro, rest] = docs.split('<!-- VOORBEELD -->');
 
@@ -10,7 +11,14 @@ export const [intro, rest] = docs.split('<!-- VOORBEELD -->');
 
 ## Voorbeeld
 
-<Story of={NumberInputStories.Default} />
+<PreviewFrame>
+  <Story of={NumberInputStories.Default} />
+</PreviewFrame>
+
+<CodeTabs
+  react={`<NumberInput placeholder="0" />`}
+  html={`<input type="text" inputmode="numeric" pattern="[0-9]*" class="dsn-text-input" autocomplete="off" placeholder="0" />`}
+/>
 
 <Controls of={NumberInputStories.Default} />
 

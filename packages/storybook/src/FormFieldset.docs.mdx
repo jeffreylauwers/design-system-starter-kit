@@ -1,6 +1,7 @@
 import { Meta, Story, Controls, Markdown } from '@storybook/blocks';
 import * as FormFieldsetStories from './FormFieldset.stories';
 import docs from './FormFieldset.docs.md?raw';
+import { PreviewFrame, CodeTabs } from './components';
 
 export const [intro, rest] = docs.split('<!-- VOORBEELD -->');
 
@@ -10,7 +11,38 @@ export const [intro, rest] = docs.split('<!-- VOORBEELD -->');
 
 ## Voorbeeld
 
-<Story of={FormFieldsetStories.Default} />
+<PreviewFrame>
+  <Story of={FormFieldsetStories.Default} />
+</PreviewFrame>
+
+<CodeTabs
+  react={`<FormFieldset legend="Interesses">
+  <CheckboxGroup>
+    <CheckboxOption label="Sport" />
+    <CheckboxOption label="Muziek" />
+    <CheckboxOption label="Reizen" />
+  </CheckboxGroup>
+</FormFieldset>`}
+  html={`<fieldset class="dsn-form-field">
+  <legend class="dsn-form-field-label">Interesses</legend>
+  <div class="dsn-checkbox-group">
+    <label class="dsn-checkbox-option">
+      <div class="dsn-checkbox">
+        <input type="checkbox" class="dsn-checkbox__input" />
+        <span class="dsn-checkbox__control" aria-hidden="true"></span>
+      </div>
+      <span class="dsn-option-label">Sport</span>
+    </label>
+    <label class="dsn-checkbox-option">
+      <div class="dsn-checkbox">
+        <input type="checkbox" class="dsn-checkbox__input" />
+        <span class="dsn-checkbox__control" aria-hidden="true"></span>
+      </div>
+      <span class="dsn-option-label">Muziek</span>
+    </label>
+  </div>
+</fieldset>`}
+/>
 
 <Controls of={FormFieldsetStories.Default} />
 

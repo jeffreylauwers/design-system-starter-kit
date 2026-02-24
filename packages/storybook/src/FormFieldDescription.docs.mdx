@@ -1,6 +1,7 @@
 import { Meta, Story, Controls, Markdown } from '@storybook/blocks';
 import * as FormFieldDescriptionStories from './FormFieldDescription.stories';
 import docs from './FormFieldDescription.docs.md?raw';
+import { PreviewFrame, CodeTabs } from './components';
 
 export const [intro, rest] = docs.split('<!-- VOORBEELD -->');
 
@@ -10,7 +11,14 @@ export const [intro, rest] = docs.split('<!-- VOORBEELD -->');
 
 ## Voorbeeld
 
-<Story of={FormFieldDescriptionStories.Default} />
+<PreviewFrame>
+  <Story of={FormFieldDescriptionStories.Default} />
+</PreviewFrame>
+
+<CodeTabs
+  react={`<FormFieldDescription>Beschrijving tekst.</FormFieldDescription>`}
+  html={`<p class="dsn-form-field-description">Beschrijving tekst.</p>`}
+/>
 
 <Controls of={FormFieldDescriptionStories.Default} />
 

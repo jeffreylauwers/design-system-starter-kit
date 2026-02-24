@@ -1,6 +1,7 @@
 import { Meta, Story, Controls, Markdown } from '@storybook/blocks';
 import * as OrderedListStories from './OrderedList.stories';
 import docs from './OrderedList.docs.md?raw';
+import { PreviewFrame, CodeTabs } from './components';
 
 export const [intro, rest] = docs.split('<!-- VOORBEELD -->');
 
@@ -10,7 +11,22 @@ export const [intro, rest] = docs.split('<!-- VOORBEELD -->');
 
 ## Voorbeeld
 
-<Story of={OrderedListStories.Default} />
+<PreviewFrame>
+  <Story of={OrderedListStories.Default} />
+</PreviewFrame>
+
+<CodeTabs
+  react={`<OrderedList>
+  <li>Stap één</li>
+  <li>Stap twee</li>
+  <li>Stap drie</li>
+</OrderedList>`}
+  html={`<ol class="dsn-ordered-list">
+  <li>Stap één</li>
+  <li>Stap twee</li>
+  <li>Stap drie</li>
+</ol>`}
+/>
 
 <Controls of={OrderedListStories.Default} />
 

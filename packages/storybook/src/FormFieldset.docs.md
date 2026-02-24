@@ -6,6 +6,8 @@ Container component voor groep controls die fieldset/legend gebruikt voor semant
 
 De FormFieldset component is de fieldset/legend variant van FormField. Het combineert FormFieldLegend, FormFieldDescription, FormFieldErrorMessage, groep controls (CheckboxGroup, RadioGroup, DateInputGroup), en FormFieldStatus. Gebruikt `<fieldset>` en `<legend>` elementen voor correcte semantiek bij groep controls. De legend hergebruikt FormFieldLabel CSS classes voor consistente styling. Net als FormField krijgt het een dikke rode linker border bij invalid state. FormFieldset is specifiek voor groepen - gebruik FormField voor individuele controls.
 
+> **Codevoorbeeld met context**: De HTML/CSS tab toont een `CheckboxGroup` met `CheckboxOption` componenten als representatieve children. `FormFieldset` is een wrapper voor groep controls — de children vormen de daadwerkelijke invoergroep.
+
 <!-- VOORBEELD -->
 
 ## Use when

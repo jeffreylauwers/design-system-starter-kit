@@ -1,6 +1,7 @@
-import { Meta, Story, Controls, Markdown } from '@storybook/blocks';
+import { Meta, Story, Markdown } from '@storybook/blocks';
 import * as RadioGroupStories from './RadioGroup.stories';
 import docs from './RadioGroup.docs.md?raw';
+import { PreviewFrame, CodeTabs } from './components';
 
 export const [intro, rest] = docs.split('<!-- VOORBEELD -->');
 
@@ -10,6 +11,45 @@ export const [intro, rest] = docs.split('<!-- VOORBEELD -->');
 
 ## Voorbeeld
 
-<Story of={RadioGroupStories.Default} />
+<PreviewFrame>
+  <Story of={RadioGroupStories.Default} />
+</PreviewFrame>
+
+<CodeTabs
+  react={`<RadioGroup>
+  <RadioOption name="groep" label="Optie één" />
+  <RadioOption name="groep" label="Optie twee" />
+  <RadioOption name="groep" label="Optie drie" />
+</RadioGroup>`}
+  html={`<div class="dsn-radio-group">
+  <label class="dsn-radio-option">
+    <div class="dsn-radio">
+      <input type="radio" class="dsn-radio__input" name="groep" />
+      <span class="dsn-radio__control" aria-hidden="true">
+        <span class="dsn-radio__inner-circle"></span>
+      </span>
+    </div>
+    <span class="dsn-option-label">Optie één</span>
+  </label>
+  <label class="dsn-radio-option">
+    <div class="dsn-radio">
+      <input type="radio" class="dsn-radio__input" name="groep" />
+      <span class="dsn-radio__control" aria-hidden="true">
+        <span class="dsn-radio__inner-circle"></span>
+      </span>
+    </div>
+    <span class="dsn-option-label">Optie twee</span>
+  </label>
+  <label class="dsn-radio-option">
+    <div class="dsn-radio">
+      <input type="radio" class="dsn-radio__input" name="groep" />
+      <span class="dsn-radio__control" aria-hidden="true">
+        <span class="dsn-radio__inner-circle"></span>
+      </span>
+    </div>
+    <span class="dsn-option-label">Optie drie</span>
+  </label>
+</div>`}
+/>
 
 <Markdown>{rest}</Markdown>

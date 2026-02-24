@@ -1,6 +1,7 @@
 import { Meta, Story, Controls, Markdown } from '@storybook/blocks';
 import * as LinkStories from './Link.stories';
 import docs from './Link.docs.md?raw';
+import { PreviewFrame, CodeTabs } from './components';
 
 export const [intro, rest] = docs.split('<!-- VOORBEELD -->');
 
@@ -10,7 +11,14 @@ export const [intro, rest] = docs.split('<!-- VOORBEELD -->');
 
 ## Voorbeeld
 
-<Story of={LinkStories.Default} />
+<PreviewFrame>
+  <Story of={LinkStories.Default} />
+</PreviewFrame>
+
+<CodeTabs
+  react={`<Link href="#">Linktekst</Link>`}
+  html={`<a href="#" class="dsn-link">Linktekst</a>`}
+/>
 
 <Controls of={LinkStories.Default} />
 

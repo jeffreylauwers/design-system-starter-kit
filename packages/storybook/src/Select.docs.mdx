@@ -1,6 +1,7 @@
 import { Meta, Story, Controls, Markdown } from '@storybook/blocks';
 import * as SelectStories from './Select.stories';
 import docs from './Select.docs.md?raw';
+import { PreviewFrame, CodeTabs } from './components';
 
 export const [intro, rest] = docs.split('<!-- VOORBEELD -->');
 
@@ -10,7 +11,25 @@ export const [intro, rest] = docs.split('<!-- VOORBEELD -->');
 
 ## Voorbeeld
 
-<Story of={SelectStories.Default} />
+<PreviewFrame>
+  <Story of={SelectStories.Default} />
+</PreviewFrame>
+
+<CodeTabs
+  react={`<Select>
+  <option value="">Kies een optie</option>
+  <option value="1">Optie 1</option>
+  <option value="2">Optie 2</option>
+</Select>`}
+  html={`<div class="dsn-select-wrapper">
+  <select class="dsn-text-input dsn-select">
+    <option value="">Kies een optie</option>
+    <option value="1">Optie 1</option>
+    <option value="2">Optie 2</option>
+  </select>
+  <!-- chevron-down icon (decoratief, niet-interactief) -->
+</div>`}
+/>
 
 <Controls of={SelectStories.Default} />
 

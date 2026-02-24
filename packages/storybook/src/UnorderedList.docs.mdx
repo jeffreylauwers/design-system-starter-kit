@@ -1,6 +1,7 @@
 import { Meta, Story, Controls, Markdown } from '@storybook/blocks';
 import * as UnorderedListStories from './UnorderedList.stories';
 import docs from './UnorderedList.docs.md?raw';
+import { PreviewFrame, CodeTabs } from './components';
 
 export const [intro, rest] = docs.split('<!-- VOORBEELD -->');
 
@@ -10,7 +11,22 @@ export const [intro, rest] = docs.split('<!-- VOORBEELD -->');
 
 ## Voorbeeld
 
-<Story of={UnorderedListStories.Default} />
+<PreviewFrame>
+  <Story of={UnorderedListStories.Default} />
+</PreviewFrame>
+
+<CodeTabs
+  react={`<UnorderedList>
+  <li>Item één</li>
+  <li>Item twee</li>
+  <li>Item drie</li>
+</UnorderedList>`}
+  html={`<ul class="dsn-unordered-list">
+  <li>Item één</li>
+  <li>Item twee</li>
+  <li>Item drie</li>
+</ul>`}
+/>
 
 <Controls of={UnorderedListStories.Default} />
 

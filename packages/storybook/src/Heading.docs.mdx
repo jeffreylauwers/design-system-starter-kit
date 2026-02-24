@@ -1,6 +1,7 @@
 import { Meta, Story, Controls, Markdown } from '@storybook/blocks';
 import * as HeadingStories from './Heading.stories';
 import docs from './Heading.docs.md?raw';
+import { PreviewFrame, CodeTabs } from './components';
 
 export const [intro, rest] = docs.split('<!-- VOORBEELD -->');
 
@@ -10,7 +11,14 @@ export const [intro, rest] = docs.split('<!-- VOORBEELD -->');
 
 ## Voorbeeld
 
-<Story of={HeadingStories.Default} />
+<PreviewFrame>
+  <Story of={HeadingStories.Default} />
+</PreviewFrame>
+
+<CodeTabs
+  react={`<Heading level={2}>Koptekst</Heading>`}
+  html={`<h2 class="dsn-heading dsn-heading--heading-2">Koptekst</h2>`}
+/>
 
 <Controls of={HeadingStories.Default} />
 

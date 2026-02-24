@@ -1,6 +1,7 @@
 import { Meta, Story, Controls, Markdown } from '@storybook/blocks';
 import * as RadioOptionStories from './RadioOption.stories';
 import docs from './RadioOption.docs.md?raw';
+import { PreviewFrame, CodeTabs } from './components';
 
 export const [intro, rest] = docs.split('<!-- VOORBEELD -->');
 
@@ -10,7 +11,22 @@ export const [intro, rest] = docs.split('<!-- VOORBEELD -->');
 
 ## Voorbeeld
 
-<Story of={RadioOptionStories.Default} />
+<PreviewFrame>
+  <Story of={RadioOptionStories.Default} />
+</PreviewFrame>
+
+<CodeTabs
+  react={`<RadioOption name="radio-groep" label="Optie label" />`}
+  html={`<label class="dsn-radio-option">
+  <div class="dsn-radio">
+    <input type="radio" class="dsn-radio__input" name="radio-groep" />
+    <span class="dsn-radio__control" aria-hidden="true">
+      <span class="dsn-radio__inner-circle"></span>
+    </span>
+  </div>
+  <span class="dsn-option-label">Optie label</span>
+</label>`}
+/>
 
 <Controls of={RadioOptionStories.Default} />
 

@@ -8,6 +8,8 @@ DateInputGroup biedt een toegankelijke, consistente manier om een datum in te vo
 
 Gebruik `FormFieldset` als wrapper voor een volledig formulierveld met legend, beschrijving en foutmelding.
 
+> **Codevoorbeeld met context**: De HTML/CSS tab toont de volledige drie-velden structuur (dag, maand, jaar). `DateInputGroup` rendert altijd alle drie de velden samen.
+
 <!-- VOORBEELD -->
 
 ## Use when

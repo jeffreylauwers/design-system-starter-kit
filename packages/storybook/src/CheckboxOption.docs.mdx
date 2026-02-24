@@ -1,6 +1,7 @@
 import { Meta, Story, Controls, Markdown } from '@storybook/blocks';
 import * as CheckboxOptionStories from './CheckboxOption.stories';
 import docs from './CheckboxOption.docs.md?raw';
+import { PreviewFrame, CodeTabs } from './components';
 
 export const [intro, rest] = docs.split('<!-- VOORBEELD -->');
 
@@ -10,7 +11,22 @@ export const [intro, rest] = docs.split('<!-- VOORBEELD -->');
 
 ## Voorbeeld
 
-<Story of={CheckboxOptionStories.Default} />
+<PreviewFrame>
+  <Story of={CheckboxOptionStories.Default} />
+</PreviewFrame>
+
+<CodeTabs
+  react={`<CheckboxOption label="Optie label" />`}
+  html={`<label class="dsn-checkbox-option">
+  <div class="dsn-checkbox">
+    <input type="checkbox" class="dsn-checkbox__input" />
+    <span class="dsn-checkbox__control" aria-hidden="true">
+      <!-- check icon -->
+    </span>
+  </div>
+  <span class="dsn-option-label">Optie label</span>
+</label>`}
+/>
 
 <Controls of={CheckboxOptionStories.Default} />
 

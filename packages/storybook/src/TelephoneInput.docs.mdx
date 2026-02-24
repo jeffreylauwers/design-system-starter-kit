@@ -1,6 +1,7 @@
 import { Meta, Story, Controls, Markdown } from '@storybook/blocks';
 import * as TelephoneInputStories from './TelephoneInput.stories';
 import docs from './TelephoneInput.docs.md?raw';
+import { PreviewFrame, CodeTabs } from './components';
 
 export const [intro, rest] = docs.split('<!-- VOORBEELD -->');
 
@@ -10,7 +11,14 @@ export const [intro, rest] = docs.split('<!-- VOORBEELD -->');
 
 ## Voorbeeld
 
-<Story of={TelephoneInputStories.Default} />
+<PreviewFrame>
+  <Story of={TelephoneInputStories.Default} />
+</PreviewFrame>
+
+<CodeTabs
+  react={`<TelephoneInput placeholder="06 12345678" />`}
+  html={`<input type="tel" inputmode="tel" class="dsn-text-input" autocomplete="tel" placeholder="06 12345678" />`}
+/>
 
 <Controls of={TelephoneInputStories.Default} />
 

@@ -6,6 +6,8 @@ Container component dat label, description, error message, form control en statu
 
 De FormField component is een complete form field container die alle onderdelen samenbrengt: FormFieldLabel (met optionele suffix), FormFieldDescription, FormFieldErrorMessage, de form control zelf, en FormFieldStatus. Het zorgt voor correcte volgorde, spacing en koppeling via aria-attributen. De component gebruikt een `<div>` wrapper met `<label>` element. Voor groep controls (CheckboxGroup, RadioGroup) gebruik je later de FormFieldset component die `<fieldset>` en `<legend>` gebruikt. FormField handelt automatisch ID's af voor aria-describedby koppelingen.
 
+> **Codevoorbeeld met context**: De HTML/CSS tab toont een `EmailInput` als representatief child. `FormField` is een wrapper — het form control dat je als child meegeeft bepaalt de daadwerkelijke invoer.
+
 <!-- VOORBEELD -->
 
 ## Use when

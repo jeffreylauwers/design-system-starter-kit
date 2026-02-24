@@ -1,6 +1,7 @@
 import { Meta, Story, Controls, Markdown } from '@storybook/blocks';
 import * as DateInputStories from './DateInput.stories';
 import docs from './DateInput.docs.md?raw';
+import { PreviewFrame, CodeTabs } from './components';
 
 export const [intro, rest] = docs.split('<!-- VOORBEELD -->');
 
@@ -10,7 +11,17 @@ export const [intro, rest] = docs.split('<!-- VOORBEELD -->');
 
 ## Voorbeeld
 
-<Story of={DateInputStories.Default} />
+<PreviewFrame>
+  <Story of={DateInputStories.Default} />
+</PreviewFrame>
+
+<CodeTabs
+  react={`<DateInput />`}
+  html={`<div class="dsn-date-input-wrapper">
+  <input type="date" class="dsn-text-input dsn-date-input" />
+  <!-- calendar button (niet-focusbaar, voor muisgebruikers) -->
+</div>`}
+/>
 
 <Controls of={DateInputStories.Default} />
 

@@ -1,6 +1,7 @@
 import { Meta, Story, Controls, Markdown } from '@storybook/blocks';
 import * as FormFieldStatusStories from './FormFieldStatus.stories';
 import docs from './FormFieldStatus.docs.md?raw';
+import { PreviewFrame, CodeTabs } from './components';
 
 export const [intro, rest] = docs.split('<!-- VOORBEELD -->');
 
@@ -10,7 +11,14 @@ export const [intro, rest] = docs.split('<!-- VOORBEELD -->');
 
 ## Voorbeeld
 
-<Story of={FormFieldStatusStories.Default} />
+<PreviewFrame>
+  <Story of={FormFieldStatusStories.Default} />
+</PreviewFrame>
+
+<CodeTabs
+  react={`<FormFieldStatus>45 van 100 karakters</FormFieldStatus>`}
+  html={`<p class="dsn-form-field-status">45 van 100 karakters</p>`}
+/>
 
 <Controls of={FormFieldStatusStories.Default} />
 

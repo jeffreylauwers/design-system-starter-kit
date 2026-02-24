@@ -1,6 +1,7 @@
 import { Meta, Story, Controls, Markdown } from '@storybook/blocks';
 import * as IconStories from './Icon.stories';
 import docs from './Icon.docs.md?raw';
+import { PreviewFrame, CodeTabs } from './components';
 
 export const [intro, rest] = docs.split('<!-- VOORBEELD -->');
 
@@ -10,7 +11,16 @@ export const [intro, rest] = docs.split('<!-- VOORBEELD -->');
 
 ## Voorbeeld
 
-<Story of={IconStories.Default} />
+<PreviewFrame>
+  <Story of={IconStories.Default} />
+</PreviewFrame>
+
+<CodeTabs
+  react={`<Icon name="star" />`}
+  html={`<svg class="dsn-icon" aria-hidden="true">
+  <!-- SVG pad via Tabler Icons — ingeladen via iconMap -->
+</svg>`}
+/>
 
 <Controls of={IconStories.Default} />
 

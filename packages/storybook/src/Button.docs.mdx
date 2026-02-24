@@ -1,6 +1,7 @@
 import { Meta, Story, Controls, Markdown } from '@storybook/blocks';
 import * as ButtonStories from './Button.stories';
 import docs from './Button.docs.md?raw';
+import { PreviewFrame, CodeTabs } from './components';
 
 export const [intro, rest] = docs.split('<!-- VOORBEELD -->');
 
@@ -10,7 +11,14 @@ export const [intro, rest] = docs.split('<!-- VOORBEELD -->');
 
 ## Voorbeeld
 
-<Story of={ButtonStories.Default} />
+<PreviewFrame>
+  <Story of={ButtonStories.Default} />
+</PreviewFrame>
+
+<CodeTabs
+  react={`<Button variant="strong">Tekst</Button>`}
+  html={`<button type="button" class="dsn-button dsn-button--strong dsn-button--size-default">Tekst</button>`}
+/>
 
 <Controls of={ButtonStories.Default} />
 

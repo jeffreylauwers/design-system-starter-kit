@@ -1,6 +1,7 @@
 import { Meta, Story, Controls, Markdown } from '@storybook/blocks';
 import * as FormFieldErrorMessageStories from './FormFieldErrorMessage.stories';
 import docs from './FormFieldErrorMessage.docs.md?raw';
+import { PreviewFrame, CodeTabs } from './components';
 
 export const [intro, rest] = docs.split('<!-- VOORBEELD -->');
 
@@ -10,7 +11,17 @@ export const [intro, rest] = docs.split('<!-- VOORBEELD -->');
 
 ## Voorbeeld
 
-<Story of={FormFieldErrorMessageStories.Default} />
+<PreviewFrame>
+  <Story of={FormFieldErrorMessageStories.Default} />
+</PreviewFrame>
+
+<CodeTabs
+  react={`<FormFieldErrorMessage>Dit veld is verplicht.</FormFieldErrorMessage>`}
+  html={`<p class="dsn-form-field-error-message">
+  <!-- exclamation-circle icon -->
+  Dit veld is verplicht.
+</p>`}
+/>
 
 <Controls of={FormFieldErrorMessageStories.Default} />
 
