@@ -6,6 +6,66 @@ All notable changes to this project are documented in this file.
 
 ---
 
+## Version 4.5.0 (February 24, 2026)
+
+### Storybook: Dynamic Code Tabs & PreviewFrame
+
+**PreviewFrame component**
+
+- **PreviewFrame UI component** — Visueel kader rondom story previews op docs pagina's
+- Token-based achtergrond via `--dsn-color-neutral-bg-document` (reageert op dark mode en themaswitch)
+- Subtiele border (`--dsn-color-neutral-border-subtle`), border-radius bovenaan, geen onderkant border (verbindt met CodeTabs)
+- Locatie: `packages/storybook/src/components/PreviewFrame.tsx`
+
+**CodeTabs component**
+
+- **CodeTabs UI component** — Twee tabs (React en HTML/CSS) met syntax highlighting onder elke story preview
+- Beide tabs zijn volledig **dynamisch** — code werkt bij als de gebruiker props aanpast via het Controls panel
+- **React tab** — `Source of={story}` subscribet op `STORY_ARGS_UPDATED` en toont live de gegenereerde React code
+- **HTML/CSS tab** — `Source of={story} transform={...}` leest `parameters.dsn.htmlTemplate` en genereert HTML op basis van live args; valt terug op statische `html` prop als er geen template is
+- Active tab styling via `--dsn-link-color`; tab bar verbindt visueel met PreviewFrame erboven
+- Locatie: `packages/storybook/src/components/CodeTabs.tsx`
+- Barrel export via `packages/storybook/src/components/index.ts`
+
+**`htmlTemplate` patroon in story files**
+
+- **27 story files** bijgewerkt met `parameters.dsn.htmlTemplate` — functie `(args: any) => string` die HTML genereert op basis van de huidige story args
+- Wrapper componenten zonder `htmlTemplate` (CheckboxGroup, RadioGroup, DateInputGroup) gebruiken de statische `html` prop uit `.docs.mdx`
+- Pattern:
+
+```tsx
+parameters: {
+  docs: { page: DocsPage },
+  dsn: {
+    htmlTemplate: (args: any) => {
+      const cls = ['dsn-button', `dsn-button--${args.variant ?? 'strong'}`].join(' ');
+      return `<button class="${cls}">${args.children}</button>`;
+    },
+  },
+},
+```
+
+**MDX structuur bijgewerkt (alle 32 component docs)**
+
+```mdx
+import { PreviewFrame, CodeTabs } from './components';
+
+<PreviewFrame>
+  <Story of={ComponentStories.Default} />
+</PreviewFrame>
+
+<CodeTabs
+  of={ComponentStories.Default}
+  html={`<div class="dsn-component">...</div>`}
+/>
+```
+
+**Bekende beperking (issue #28)**
+
+- DateInputGroup HTML/CSS tab toont momenteel dezelfde code als de React tab — regressie van de `parameters.docs.source.code` workaround. Fix: `react` prop toevoegen aan CodeTabs (zie issue #28).
+
+---
+
 ## Version 4.4.0 (February 19, 2025)
 
 ### New Components: Select, DateInput, DateInputGroup + FormFieldset fix

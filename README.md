@@ -17,7 +17,7 @@ This monorepo contains the following packages:
 
 ### Prerequisites
 
-- Node.js 18+ (LTS recommended)
+- Node.js 20+ (LTS recommended)
 - PNPM 8+
 
 Install PNPM if you haven't already:

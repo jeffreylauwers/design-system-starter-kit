@@ -1,8 +1,8 @@
 # Storybook Configuration
 
-**Last Updated:** February 14, 2026
+**Last Updated:** February 24, 2026
 
-Documentation for the Storybook setup, runtime theme switching, and documentation structure.
+Documentation for the Storybook setup, runtime theme switching, UI components, and documentation structure.
 
 ---
 
@@ -11,8 +11,9 @@ Documentation for the Storybook setup, runtime theme switching, and documentatio
 1. [Architecture Overview](#architecture-overview)
 2. [Configuration Files](#configuration-files)
 3. [Runtime Theme Switching](#runtime-theme-switching)
-4. [TokenTable Component](#tokentable-component)
+4. [UI Components](#ui-components)
 5. [Documentation Structure](#documentation-structure)
+6. [Development Workflow](#development-workflow)
 
 ---
 
@@ -28,13 +29,23 @@ packages/storybook/.storybook/
 └── preview-body.css     # Preview iframe styles
 ```
 
-**Documentation structure per component:**
+**Documentation structure per component (three files):**
 
 ```
 packages/storybook/src/
-├── Button.stories.tsx    # Stories (variants, sizes, states)
-├── Button.docs.mdx       # MDX wrapper (Meta, Story, Controls, Markdown)
+├── Button.stories.tsx    # Stories + argTypes + DocsPage import + htmlTemplate
+├── Button.docs.mdx       # MDX wrapper (Meta, PreviewFrame, CodeTabs, Controls, Markdown)
 └── Button.docs.md        # Dutch documentation content
+```
+
+**UI components:**
+
+```
+packages/storybook/src/components/
+├── PreviewFrame.tsx      # Visueel kader rondom story previews
+├── CodeTabs.tsx          # React / HTML/CSS tabs met syntax highlighting
+├── TokenControls.tsx     # Live token configuratie op de Design Tokens pagina
+└── index.ts              # Barrel export
 ```
 
 ---
@@ -263,9 +274,109 @@ body {
 
 ---
 
-## TokenTable Component
+## UI Components
 
-**Location:** `packages/storybook/src/helpers/TokenTable.tsx`
+Custom React components voor Storybook documentation, gelocaliseerd in `packages/storybook/src/components/`.
+
+### PreviewFrame
+
+**Location:** `packages/storybook/src/components/PreviewFrame.tsx`
+
+**Purpose:** Visueel kader rondom story previews op docs pagina's. Verbindt visueel met CodeTabs eronder.
+
+**Features:**
+
+- Token-based achtergrond (`--dsn-color-neutral-bg-document`) — reageert op dark mode en themaswitch
+- Subtiele border (`--dsn-color-neutral-border-subtle`) en border-radius bovenaan
+- Geen onderkant border — verbindt visueel met de CodeTabs eronder als één geheel
+
+**Usage in docs.mdx:**
+
+```mdx
+import { PreviewFrame, CodeTabs } from './components';
+
+<PreviewFrame>
+  <Story of={ButtonStories.Default} />
+</PreviewFrame>
+```
+
+### CodeTabs
+
+**Location:** `packages/storybook/src/components/CodeTabs.tsx`
+
+**Purpose:** Twee tabs (React en HTML/CSS) met syntax highlighting, direct onder de PreviewFrame. Beide tabs updaten live als de gebruiker props aanpast via het Controls panel.
+
+**Props:**
+
+| Prop   | Type     | Verplicht | Beschrijving                                                    |
+| ------ | -------- | --------- | --------------------------------------------------------------- |
+| `of`   | `Story`  | Ja        | Verwijzing naar de Storybook story (voor live updates)          |
+| `html` | `string` | Nee       | Statische HTML/CSS code als fallback (voor wrapper componenten) |
+
+**Hoe de tabs werken:**
+
+- **React tab** — `Source of={story}` subscribet automatisch op `STORY_ARGS_UPDATED`. Storybook genereert de React code live op basis van de huidige args.
+- **HTML/CSS tab** — `Source of={story} transform={...}` intercepteert de code-output. Als `parameters.dsn.htmlTemplate` aanwezig is in de story, roept de transform die functie aan met de live args. Anders valt het terug op de statische `html` prop.
+
+**Usage in docs.mdx:**
+
+```mdx
+<CodeTabs
+  of={ButtonStories.Default}
+  html={`<button class="dsn-button dsn-button--strong">Tekst</button>`}
+/>
+```
+
+**Visuele samenhang:**
+
+- Geen top border — sluit naadloos aan op de PreviewFrame erboven
+- Border-radius alleen onderaan
+- Tab bar met token-based achtergrond en active tab kleur via `--dsn-link-color`
+
+### `htmlTemplate` patroon
+
+Elke story file (behalve wrapper componenten) definieert een `htmlTemplate` functie in `parameters.dsn`. Deze functie genereert de HTML string op basis van de huidige args en wordt door de CodeTabs HTML tab aangeroepen via `transform`.
+
+**Pattern:**
+
+```tsx
+const meta: Meta<typeof Button> = {
+  title: 'Components/Button',
+  component: Button,
+  parameters: {
+    docs: { page: DocsPage },
+    dsn: {
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      htmlTemplate: (args: any) => {
+        const cls = [
+          'dsn-button',
+          `dsn-button--${args.variant ?? 'strong'}`,
+          `dsn-button--size-${args.size ?? 'default'}`,
+          args.loading && 'dsn-button--loading',
+          args.disabled && 'dsn-button--disabled',
+        ]
+          .filter(Boolean)
+          .join(' ');
+        const disabled = args.disabled || args.loading ? ' disabled' : '';
+        return `<button type="button" class="${cls}"${disabled}>${args.children ?? 'Tekst'}</button>`;
+      },
+    },
+  },
+};
+```
+
+**Uitzonderingen — geen `htmlTemplate`:**
+
+| Component      | Reden                                                             |
+| -------------- | ----------------------------------------------------------------- |
+| CheckboxGroup  | Wrapper component met custom render — toont statische `html` prop |
+| RadioGroup     | Wrapper component met custom render — toont statische `html` prop |
+| DateInputGroup | Wrapper component met custom render — toont statische `html` prop |
+| UnorderedList  | Geen zinvolle Controls beschikbaar om HTML dynamisch te genereren |
+
+### TokenControls
+
+**Location:** `packages/storybook/src/components/TokenControls.tsx`
 
 **Purpose:** Display live CSS variable values in documentation
 
@@ -276,51 +387,10 @@ body {
 - Uses MutationObserver to detect style changes
 - Listens for `storybook-globals-updated` event
 
-### Implementation
+**Usage in Documentation:**
 
 ```tsx
-function useComputedCssValue(cssVar: string): string {
-  const [value, setValue] = useState('');
-
-  useEffect(() => {
-    const updateValue = () => {
-      const computed = getComputedStyle(
-        document.documentElement
-      ).getPropertyValue(cssVar);
-      setValue(computed.trim());
-    };
-
-    // Initial value
-    updateValue();
-
-    // Watch for style changes
-    const observer = new MutationObserver(() => {
-      updateValue();
-    });
-
-    observer.observe(document.head, { childList: true, subtree: true });
-
-    // Listen for Storybook global changes
-    const handleGlobalsUpdate = () => updateValue();
-    window.addEventListener('storybook-globals-updated', handleGlobalsUpdate);
-
-    return () => {
-      observer.disconnect();
-      window.removeEventListener(
-        'storybook-globals-updated',
-        handleGlobalsUpdate
-      );
-    };
-  }, [cssVar]);
-
-  return value;
-}
-```
-
-### Usage in Documentation
-
-```tsx
-<TokenTable
+<TokenControls
   tokens={[
     { name: 'Background', cssVar: '--dsn-button-strong-background-color' },
     { name: 'Text Color', cssVar: '--dsn-button-strong-color' },
@@ -334,97 +404,167 @@ function useComputedCssValue(cssVar: string): string {
 
 ### Component Documentation Files
 
-Each component has three files:
+Each component has **three files**:
 
-1. **Stories file** (`.stories.tsx`) - Interactive examples
-2. **MDX file** (`.docs.mdx`) - Documentation wrapper
-3. **Markdown file** (`.docs.md`) - Dutch content
+1. **Stories file** (`.stories.tsx`) — Interactive examples + argTypes + DocsPage import + `htmlTemplate`
+2. **MDX file** (`.docs.mdx`) — Documentation wrapper met PreviewFrame, CodeTabs, Controls
+3. **Markdown file** (`.docs.md`) — Dutch content (Doel, Use when, Best practices, etc.)
 
-### Stories File Example
+### Stories File Pattern
 
 ```tsx
 // Button.stories.tsx
 import type { Meta, StoryObj } from '@storybook/react';
 import { Button } from '@dsn/components-react';
+import DocsPage from './Button.docs.mdx';
+import { TEKST, rtlDecorator } from './story-helpers';
 
 const meta: Meta<typeof Button> = {
   title: 'Components/Button',
   component: Button,
-  tags: ['autodocs'],
+  parameters: {
+    docs: { page: DocsPage },
+    dsn: {
+      htmlTemplate: (args: any) => {
+        const cls = ['dsn-button', `dsn-button--${args.variant ?? 'strong'}`]
+          .filter(Boolean)
+          .join(' ');
+        return `<button type="button" class="${cls}">${args.children ?? 'Tekst'}</button>`;
+      },
+    },
+  },
+  argTypes: {
+    variant: {
+      control: 'select',
+      options: ['strong', 'default', 'subtle', 'link'],
+    },
+  },
+  args: { children: TEKST },
 };
 
 export default meta;
 type Story = StoryObj<typeof Button>;
 
-export const Default: Story = {
-  args: {
-    children: 'Button',
-  },
-};
+export const Default: Story = {};
 
-export const Strong: Story = {
-  args: {
-    variant: 'strong',
-    children: 'Strong Button',
-  },
+export const Disabled: Story = {
+  args: { disabled: true },
 };
 ```
 
-### MDX File Example
+**Opmerking:** `Button.stories.tsx` importeert **geen** DocsPage en heeft **geen** `parameters.docs.page` — `Button.docs.mdx` importeert `ButtonStories` terug, wat een circulaire import geeft die Storybook laat crashen.
+
+**Story volgorde (standaard):**
+
+1. `Default`
+2. Individuele state stories (`Disabled`, `Invalid`, `ReadOnly`, etc.)
+3. `AllStates` overzichtsstory
+4. `ShortText` / `LongText` (indien van toepassing)
+5. `RTL` / `RTLLongText` (bij componenten met zichtbare tekst)
+
+**Niet toevoegen:**
+
+- ❌ `HighContrast` stories — CSS-simulatie geeft onrealistisch beeld
+- ❌ `LargeText` stories — form inputs gebruiken `clamp()` met rem-waarden; een wrapper div heeft geen effect
+
+### MDX File Pattern
 
 ```mdx
 {/* Button.docs.mdx */}
-import { Meta, Story, Controls } from '@storybook/blocks';
+import { Meta, Story, Controls, Markdown } from '@storybook/blocks';
 import \* as ButtonStories from './Button.stories';
-import buttonDocs from './Button.docs.md?raw';
+import docs from './Button.docs.md?raw';
+import { PreviewFrame, CodeTabs } from './components';
+
+export const [intro, rest] = docs.split('<!-- VOORBEELD -->');
 
 <Meta of={ButtonStories} />
 
-{/* Split markdown on marker */}
-{buttonDocs.split('<!-- VOORBEELD -->')[0]}
+<Markdown>{intro}</Markdown>
 
-{/* Live example */}
+## Voorbeeld
 
-<Story of={ButtonStories.Default} />
+<PreviewFrame>
+  <Story of={ButtonStories.Default} />
+</PreviewFrame>
+
+<CodeTabs
+  of={ButtonStories.Default}
+  html={`<button class="dsn-button dsn-button--strong">Tekst</button>`}
+/>
+
 <Controls of={ButtonStories.Default} />
 
-{/* Rest of documentation */}
-{buttonDocs.split('<!-- VOORBEELD -->')[1]}
+<Markdown>{rest}</Markdown>
 ```
 
-### Markdown File Example
+### Markdown File Sections
 
 ```markdown
 <!-- Button.docs.md -->
 
 # Button
 
+Korte beschrijving van het component.
+
 ## Doel
 
-De Button component wordt gebruikt voor acties die direct effect hebben.
+Uitleg wat het component doet.
 
 <!-- VOORBEELD -->
 
 ## Use when
 
 - De gebruiker moet een actie uitvoeren
-- Je een primaire of secundaire call-to-action nodig hebt
+- Je een primaire call-to-action nodig hebt
 
 ## Don't use when
 
 - Je naar een andere pagina wilt navigeren (gebruik Link)
-- De actie destructief is zonder bevestiging
 
 ## Best practices
 
 - Gebruik duidelijke, actie-gerichte tekst
-- Plaats primaire acties rechts, secundaire links
-- Beperk het aantal buttons per scherm
+
+## Accessibility
+
+- ...
+
+## States
+
+- ...
 
 ## Design tokens
 
-[TokenTable showing button tokens]
+[TokenTable showing component tokens]
 ```
+
+### story-helpers.tsx
+
+**Location:** `packages/storybook/src/story-helpers.tsx`
+
+Canonical text constants and decorators for consistent story content:
+
+```tsx
+import {
+  rtlDecorator,
+  TEKST,
+  WEINIG_TEKST,
+  VEEL_TEKST,
+  TEKST_AR,
+  VEEL_TEKST_AR,
+} from './story-helpers';
+```
+
+| Export            | Type        | Gebruik                                    |
+| ----------------- | ----------- | ------------------------------------------ |
+| `TEKST`           | `string`    | Default tekst voor de meeste stories       |
+| `WEINIG_TEKST`    | `string`    | Korte tekst voor ShortText stories         |
+| `VEEL_TEKST`      | `string`    | Lange tekst voor LongText stories          |
+| `TEKST_AR`        | `string`    | Arabische tekst voor RTL stories           |
+| `WEINIG_TEKST_AR` | `string`    | Korte Arabische tekst                      |
+| `VEEL_TEKST_AR`   | `string`    | Lange Arabische tekst                      |
+| `rtlDecorator`    | `Decorator` | Voegt RTL richting toe aan de story iframe |
 
 ### Docs-First Ordering
 
@@ -453,33 +593,6 @@ Components
 
 ---
 
-## Storybook Features
-
-### Toolbar Controls
-
-- **Theme** - Switch between themes (start, wireframe)
-- **Mode** - Switch between light/dark modes
-- **Density** - Switch between fluid/fixed typography
-
-### Addons
-
-- `@storybook/addon-links` - Navigation between stories
-- `@storybook/addon-essentials` - Core Storybook features
-- `@storybook/addon-interactions` - Testing interactions
-- `@storybook/addon-a11y` - Accessibility testing
-- `storybook-multilevel-sort` - Sidebar ordering
-
-### Accessibility Testing
-
-Every story automatically includes accessibility checks via `@storybook/addon-a11y`:
-
-- WCAG 2.1 Level AA violations
-- Color contrast issues
-- Missing ARIA attributes
-- Keyboard navigation problems
-
----
-
 ## Development Workflow
 
 ### Running Storybook
@@ -494,30 +607,53 @@ pnpm --filter @dsn/storybook build
 
 ### Adding Documentation for a New Component
 
-1. **Create stories file** - `ComponentName.stories.tsx`
-2. **Create MDX file** - `ComponentName.docs.mdx`
-3. **Create markdown file** - `ComponentName.docs.md`
-4. **Follow existing pattern** - Use Button as template
-5. **Test theme switching** - Verify all themes/modes work
+1. **Create stories file** — `ComponentName.stories.tsx`
+   - Import `DocsPage` from `.docs.mdx`
+   - Add `parameters.docs.page: DocsPage`
+   - Add `parameters.dsn.htmlTemplate` met een functie die HTML genereert
+   - Import text constants from `story-helpers.tsx`
+2. **Create MDX file** — `ComponentName.docs.mdx`
+   - Wrap story in `<PreviewFrame>`
+   - Add `<CodeTabs of={} html="..." />`
+3. **Create markdown file** — `ComponentName.docs.md`
+   - Follow the standard section structure
+4. **Test theme switching** — Verify all themes/modes work
+5. **Verify both tabs** — Check that React and HTML/CSS tabs show correct, dynamic code
 
-### Writing Good Stories
+### TypeScript Import Check
 
-```tsx
-// ✅ Good - clear names, realistic content
-export const DefaultState: Story = {
-  args: {
-    children: 'Save changes',
-    variant: 'strong',
-  },
-};
+Na het toevoegen of wijzigen van imports altijd controleren op ontbrekende of ongebruikte imports:
 
-// ❌ Bad - generic names, unclear purpose
-export const Story1: Story = {
-  args: {
-    children: 'Button',
-  },
-};
+```bash
+pnpm --filter storybook exec tsc --noEmit 2>&1 | grep "TS2304\|TS6133"
 ```
+
+---
+
+## Storybook Features
+
+### Toolbar Controls
+
+- **Theme** — Switch between themes (start, wireframe)
+- **Mode** — Switch between light/dark modes
+- **Density** — Switch between fluid/fixed typography
+
+### Addons
+
+- `@storybook/addon-links` — Navigation between stories
+- `@storybook/addon-essentials` — Core Storybook features
+- `@storybook/addon-interactions` — Testing interactions
+- `@storybook/addon-a11y` — Accessibility testing
+- `storybook-multilevel-sort` — Sidebar ordering
+
+### Accessibility Testing
+
+Every story automatically includes accessibility checks via `@storybook/addon-a11y`:
+
+- WCAG 2.1 Level AA violations
+- Color contrast issues
+- Missing ARIA attributes
+- Keyboard navigation problems
 
 ---
 

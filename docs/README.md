@@ -1,7 +1,7 @@
 # Design System Documentation
 
-**Version:** 4.0.0
-**Last Updated:** February 14, 2026
+**Version:** 4.5.0
+**Last Updated:** February 24, 2026
 
 Complete documentation voor het Design System Starter Kit.
 
@@ -83,9 +83,9 @@ Complete documentation voor het Design System Starter Kit.
 
 - **Tokens per configuration:** ~1050 (400 semantic + 650 component)
 - **Configurations:** 8 (2 themes × 2 modes × 2 project types)
-- **Components:** 26 implemented (HTML/CSS, React, Web Components)
-- **Tests:** 396 across 24 test suites
-- **Storybook stories:** 50+
+- **Components:** 32 implemented (7 content + 25 form; HTML/CSS + React)
+- **Tests:** 733 across 38 test suites
+- **Storybook stories:** 100+
 
 ---
 
