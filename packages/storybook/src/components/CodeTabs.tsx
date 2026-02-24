@@ -4,8 +4,17 @@ import './CodeTabs.css';
 
 interface CodeTabsProps {
   /**
-   * @deprecated — React tab now uses SourceType.DYNAMIC to show live story code
-   * that updates with Controls. This prop is kept for backward compatibility but ignored.
+   * Story export to show in the React tab. Required for live code that updates with Controls.
+   * Pass the Default story export from the component's stories file:
+   * `of={ButtonStories.Default}`
+   *
+   * The Source block subscribes to STORY_ARGS_UPDATED so the code updates automatically
+   * when the user changes props via the Controls panel.
+   */
+  of: unknown;
+  /**
+   * @deprecated — kept for backward compatibility with existing .docs.mdx files.
+   * No longer used. The React tab reads live code from the story referenced by `of`.
    */
   react?: string;
   /** HTML/CSS markup snippet for the HTML/CSS tab */
@@ -16,15 +25,13 @@ type Tab = 'react' | 'html';
 
 /**
  * CodeTabs — two-tab code viewer shown below PreviewFrame on every doc page.
- * - React tab (default): shows the JSX/TSX snippet
- * - HTML/CSS tab: shows the equivalent vanilla HTML markup
+ * - React tab (default): shows live story code via `Source of={story}`, updates with Controls
+ * - HTML/CSS tab: shows the equivalent vanilla HTML markup (static)
  *
  * Syntax highlighting via Storybook's built-in Source block from @storybook/blocks.
- * The React tab uses Source without explicit type (defaults to AUTO, which resolves to
- * DYNAMIC for stories with args). This shows live story code and updates with Controls.
  * The tab bar uses design token CSS variables so it responds to dark mode.
  */
-export function CodeTabs({ html }: CodeTabsProps) {
+export function CodeTabs({ of: storyRef, html }: CodeTabsProps) {
   const [activeTab, setActiveTab] = useState<Tab>('react');
 
   const tabBarStyle: React.CSSProperties = {
@@ -81,7 +88,10 @@ export function CodeTabs({ html }: CodeTabsProps) {
       </div>
       <div style={codeWrapperStyle}>
         {activeTab === 'react' ? (
-          <Source dark />
+          // Source with explicit `of` subscribes to STORY_ARGS_UPDATED and
+          // updates the displayed code when the user changes Controls.
+          // eslint-disable-next-line @typescript-eslint/no-explicit-any
+          <Source of={storyRef as any} dark />
         ) : (
           <Source code={html} language="html" dark />
         )}
