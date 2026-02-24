@@ -96,19 +96,6 @@ function InvalidStory(args: React.ComponentProps<typeof DateInputGroup>) {
 // =============================================================================
 
 export const Default: Story = {
-  parameters: {
-    docs: {
-      source: {
-        code: `const [value, setValue] = useState<DateInputGroupValue>({
-  day: '',
-  month: '',
-  year: '',
-});
-
-<DateInputGroup id="datum" value={value} onChange={setValue} />`,
-      },
-    },
-  },
   render: (args) => <DefaultStory {...args} />,
 };
 
