@@ -27,8 +27,7 @@ De TimeInput component is een gespecialiseerd invoerveld voor het invoeren van e
 
 ## Accessibility
 
-- De klokknop heeft `aria-hidden="true"` en `tabIndex={-1}` — hij is niet bereikbaar via toetsenbord. Toetsenbordgebruikers kunnen de tijdkiezer openen via de input zelf (spatiebalk of Enter in sommige browsers).
-- De knop bevat een visueel verborgen tekst "Tijdkiezer openen" voor het geval de `aria-hidden` in de toekomst wordt aangepast.
+- De klokknop is volledig toetsenbord- en schermlezertoegankelijk. De tekst "Tijdkiezer openen" is visueel verborgen via het `dsn-button__label` patroon, maar leesbaar voor screenreaders.
 - De extra `padding-inline-end` zorgt ervoor dat ingevoerde tekst nooit over de knop heen loopt.
 - In `disabled` en `read-only` staat wordt de klokknop niet getoond.
 

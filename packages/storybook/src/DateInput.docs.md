@@ -28,8 +28,7 @@ De DateInput component is een gespecialiseerd invoerveld voor het invoeren van e
 
 ## Accessibility
 
-- De kalenderknop heeft `aria-hidden="true"` en `tabIndex={-1}` — hij is niet bereikbaar via toetsenbord. Toetsenbordgebruikers kunnen de datumkiezer openen via de input zelf (spatiebalk of Enter in sommige browsers).
-- De knop bevat een visueel verborgen tekst "Datumkiezer openen" voor het geval de `aria-hidden` in de toekomst wordt aangepast.
+- De kalenderknop is volledig toetsenbord- en schermlezertoegankelijk. De tekst "Datumkiezer openen" is visueel verborgen via het `dsn-button__label` patroon, maar leesbaar voor screenreaders.
 - De extra `padding-inline-end` zorgt ervoor dat ingevoerde tekst nooit over de knop heen loopt.
 - In `disabled` en `read-only` staat wordt de kalenderknop niet getoond.
 
