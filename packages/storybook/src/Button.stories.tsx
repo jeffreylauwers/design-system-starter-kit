@@ -77,7 +77,22 @@ const meta: Meta<typeof Button> = {
           .filter(Boolean)
           .join(' ');
         const disabled = args.disabled || args.loading ? ' disabled' : '';
-        return `<button type="button" class="${cls}"${disabled}>${args.children ?? 'Tekst'}</button>`;
+        const iconStart =
+          args.iconStart && !args.loading
+            ? `\n  <svg class="dsn-icon" aria-hidden="true"><!-- icon --></svg>`
+            : '';
+        const loader = args.loading
+          ? `\n  <svg class="dsn-icon dsn-button__loader" aria-hidden="true"><!-- loader --></svg>`
+          : '';
+        const iconEnd = args.iconEnd
+          ? `\n  <svg class="dsn-icon" aria-hidden="true"><!-- icon --></svg>`
+          : '';
+        const label =
+          args.children !== undefined && args.children !== null
+            ? `\n  <span class="dsn-button__label">${args.children}</span>`
+            : '';
+        const inner = `${loader || iconStart}${label}${iconEnd}`;
+        return `<button type="button" class="${cls}"${disabled}>${inner}\n</button>`;
       },
     },
   },
@@ -337,17 +352,33 @@ export const IconOnly: Story = {
   name: 'Icon only',
   render: () => (
     <div style={{ display: 'flex', gap: '0.5rem', alignItems: 'center' }}>
-      <Button variant="strong" iconOnly aria-label="Toevoegen">
-        <Icon name="plus" />
+      <Button
+        variant="strong"
+        iconOnly
+        iconStart={<Icon name="plus" aria-hidden />}
+      >
+        Toevoegen
       </Button>
-      <Button variant="default" iconOnly aria-label="Instellingen">
-        <Icon name="settings" />
+      <Button
+        variant="default"
+        iconOnly
+        iconStart={<Icon name="settings" aria-hidden />}
+      >
+        Instellingen
       </Button>
-      <Button variant="subtle" iconOnly aria-label="Sluiten">
-        <Icon name="x" />
+      <Button
+        variant="subtle"
+        iconOnly
+        iconStart={<Icon name="x" aria-hidden />}
+      >
+        Sluiten
       </Button>
-      <Button variant="strong-negative" iconOnly aria-label="Verwijderen">
-        <Icon name="trash" />
+      <Button
+        variant="strong-negative"
+        iconOnly
+        iconStart={<Icon name="trash" aria-hidden />}
+      >
+        Verwijderen
       </Button>
     </div>
   ),
