@@ -23,7 +23,7 @@ const meta: Meta<typeof TimeInput> = {
           .join(' ');
         const button =
           !args.disabled && !args.readOnly
-            ? '\n  <!-- clock button (niet-focusbaar, voor muisgebruikers) -->'
+            ? '\n  <button type="button" class="dsn-button dsn-button--subtle dsn-button--size-small dsn-button--icon-only dsn-time-input__button">\n    <svg class="dsn-icon" aria-hidden="true"><!-- icon --></svg>\n    <span class="dsn-button__label">Tijdkiezer openen</span>\n  </button>'
             : '';
         return `<div class="dsn-time-input-wrapper">\n  <input type="time" class="dsn-text-input dsn-time-input"${attrs ? ' ' + attrs : ''} />${button}\n</div>`;
       },

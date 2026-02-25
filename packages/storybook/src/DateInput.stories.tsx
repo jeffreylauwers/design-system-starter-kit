@@ -23,7 +23,7 @@ const meta: Meta<typeof DateInput> = {
           .join(' ');
         const button =
           !args.disabled && !args.readOnly
-            ? '\n  <!-- calendar button (niet-focusbaar, voor muisgebruikers) -->'
+            ? '\n  <button type="button" class="dsn-button dsn-button--subtle dsn-button--size-small dsn-button--icon-only dsn-date-input__button">\n    <svg class="dsn-icon" aria-hidden="true"><!-- icon --></svg>\n    <span class="dsn-button__label">Datumkiezer openen</span>\n  </button>'
             : '';
         return `<div class="dsn-date-input-wrapper">\n  <input type="date" class="dsn-text-input dsn-date-input"${attrs ? ' ' + attrs : ''} />${button}\n</div>`;
       },

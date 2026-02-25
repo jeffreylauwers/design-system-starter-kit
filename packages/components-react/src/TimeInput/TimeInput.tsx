@@ -92,8 +92,6 @@ export const TimeInput = React.forwardRef<HTMLInputElement, TimeInputProps>(
             iconStart={<Icon name="clock" aria-hidden />}
             className="dsn-time-input__button"
             onClick={handleButtonClick}
-            tabIndex={-1}
-            aria-hidden="true"
           >
             Tijdkiezer openen
           </Button>

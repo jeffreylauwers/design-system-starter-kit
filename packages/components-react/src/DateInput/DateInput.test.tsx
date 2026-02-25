@@ -96,29 +96,24 @@ describe('DateInput', () => {
       expect(button).toHaveClass('dsn-button--icon-only');
     });
 
-    it('calendar button has tabIndex -1', () => {
-      const { container } = render(<DateInput />);
-      const button = container.querySelector('.dsn-date-input__button');
-      expect(button).toHaveAttribute('tabindex', '-1');
-    });
-
     it('calendar button has type button', () => {
       const { container } = render(<DateInput />);
       const button = container.querySelector('.dsn-date-input__button');
       expect(button).toHaveAttribute('type', 'button');
     });
 
-    it('calendar button has aria-hidden', () => {
+    it('calendar button is keyboard accessible (no tabIndex, no aria-hidden)', () => {
       const { container } = render(<DateInput />);
       const button = container.querySelector('.dsn-date-input__button');
-      expect(button).toHaveAttribute('aria-hidden', 'true');
+      expect(button).not.toHaveAttribute('tabindex');
+      expect(button).not.toHaveAttribute('aria-hidden');
     });
 
-    it('calendar button has visually hidden label text', () => {
+    it('calendar button has accessible label via dsn-button__label', () => {
       const { container } = render(<DateInput />);
-      const hiddenLabel = container.querySelector('.dsn-button__label');
-      expect(hiddenLabel).toBeInTheDocument();
-      expect(hiddenLabel).toHaveTextContent('Datumkiezer openen');
+      const label = container.querySelector('.dsn-button__label');
+      expect(label).toBeInTheDocument();
+      expect(label).toHaveTextContent('Datumkiezer openen');
     });
 
     it('does not render calendar button when disabled', () => {

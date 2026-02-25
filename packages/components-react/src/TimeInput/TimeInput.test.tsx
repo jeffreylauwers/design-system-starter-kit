@@ -95,29 +95,24 @@ describe('TimeInput', () => {
       expect(button).toHaveClass('dsn-button--icon-only');
     });
 
-    it('clock button has tabIndex -1', () => {
-      const { container } = render(<TimeInput />);
-      const button = container.querySelector('.dsn-time-input__button');
-      expect(button).toHaveAttribute('tabindex', '-1');
-    });
-
     it('clock button has type button', () => {
       const { container } = render(<TimeInput />);
       const button = container.querySelector('.dsn-time-input__button');
       expect(button).toHaveAttribute('type', 'button');
     });
 
-    it('clock button has aria-hidden', () => {
+    it('clock button is keyboard accessible (no tabIndex, no aria-hidden)', () => {
       const { container } = render(<TimeInput />);
       const button = container.querySelector('.dsn-time-input__button');
-      expect(button).toHaveAttribute('aria-hidden', 'true');
+      expect(button).not.toHaveAttribute('tabindex');
+      expect(button).not.toHaveAttribute('aria-hidden');
     });
 
-    it('clock button has visually hidden label text', () => {
+    it('clock button has accessible label via dsn-button__label', () => {
       const { container } = render(<TimeInput />);
-      const hiddenLabel = container.querySelector('.dsn-button__label');
-      expect(hiddenLabel).toBeInTheDocument();
-      expect(hiddenLabel).toHaveTextContent('Tijdkiezer openen');
+      const label = container.querySelector('.dsn-button__label');
+      expect(label).toBeInTheDocument();
+      expect(label).toHaveTextContent('Tijdkiezer openen');
     });
 
     it('does not render clock button when disabled', () => {
