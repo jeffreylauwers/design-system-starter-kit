@@ -83,7 +83,7 @@ const meta: Meta<typeof Link> = {
         if (args.disabled)
           attrParts.push('aria-disabled="true"', 'tabindex="-1"');
         if (args.current) attrParts.push('aria-current="page"');
-        const text = `${args.children ?? 'Linktekst'}${args.external ? ' (opens in new tab)' : ''}`;
+        const text = `${args.children ?? 'Linktekst'}${args.external ? ' (opent nieuw tabblad)' : ''}`;
         return `<a ${attrParts.join(' ')}>${text}</a>`;
       },
     },
