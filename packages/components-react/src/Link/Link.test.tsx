@@ -287,21 +287,21 @@ describe('Link', () => {
       );
     });
 
-    it('adds visible "(opens in new tab)" hint when external', () => {
+    it('adds visible "(opent nieuw tabblad)" hint when external', () => {
       render(
         <Link href="https://example.com" external>
           External
         </Link>
       );
       const link = screen.getByRole('link');
-      expect(link).toHaveTextContent('External (opens in new tab)');
+      expect(link).toHaveTextContent('External (opent nieuw tabblad)');
     });
 
     it('does not add hint text when not external', () => {
       render(<Link href="/about">About</Link>);
       const link = screen.getByRole('link');
       expect(link).toHaveTextContent('About');
-      expect(link.textContent).not.toContain('opens in new tab');
+      expect(link.textContent).not.toContain('opent nieuw tabblad');
     });
 
     it('allows overriding target when external', () => {
@@ -336,7 +336,7 @@ describe('Link', () => {
       expect(
         link.querySelector('[data-testid="custom-icon"]')
       ).toBeInTheDocument();
-      expect(link).toHaveTextContent('External (opens in new tab)');
+      expect(link).toHaveTextContent('External (opent nieuw tabblad)');
     });
   });
 });

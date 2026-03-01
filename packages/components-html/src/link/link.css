@@ -97,6 +97,7 @@
 /* Disabled */
 .dsn-link[aria-disabled='true'] {
   color: var(--dsn-link-disabled-color);
+  text-decoration-line: none;
   cursor: not-allowed;
   pointer-events: none;
 }

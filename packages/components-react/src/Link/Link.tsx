@@ -36,7 +36,7 @@ export interface LinkProps extends React.AnchorHTMLAttributes<HTMLAnchorElement>
   /**
    * Whether the link opens in a new tab.
    * Automatically adds target="_blank", rel="noopener noreferrer",
-   * and an inline "(opens in new tab)" hint.
+   * and an inline "(opent nieuw tabblad)" hint.
    * @default false
    */
   external?: boolean;
@@ -143,7 +143,7 @@ export const Link = React.forwardRef<HTMLAnchorElement, LinkProps>(
       >
         {iconStart}
         {children}
-        {external && ' (opens in new tab)'}
+        {external && ' (opent nieuw tabblad)'}
         {iconEnd}
       </a>
     );
