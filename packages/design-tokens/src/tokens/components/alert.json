@@ -1,0 +1,36 @@
+{
+  "dsn": {
+    "alert": {
+      "border-radius": {
+        "value": "0px",
+        "type": "dimension",
+        "comment": "Alert border radius (0px by default; themes can override to add rounded corners)"
+      },
+      "border-width": {
+        "value": "{dsn.border.width.medium}",
+        "type": "dimension",
+        "comment": "Alert border width (left border only)"
+      },
+      "column-gap": {
+        "value": "{dsn.space.inline.md}",
+        "type": "dimension",
+        "comment": "Gap between icon and content"
+      },
+      "row-gap": {
+        "value": "{dsn.space.row.xs}",
+        "type": "dimension",
+        "comment": "Gap between heading and body"
+      },
+      "padding-block": {
+        "value": "{dsn.space.block.lg}",
+        "type": "dimension",
+        "comment": "Vertical padding"
+      },
+      "padding-inline": {
+        "value": "{dsn.space.inline.xl}",
+        "type": "dimension",
+        "comment": "Horizontal padding"
+      }
+    }
+  }
+}
