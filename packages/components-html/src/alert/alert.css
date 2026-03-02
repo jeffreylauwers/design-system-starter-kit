@@ -1,0 +1,138 @@
+/**
+ * Alert Component
+ * Important message that informs the user about the current activity or state.
+ *
+ * Usage:
+ * <!-- Info variant (default), with icon -->
+ * <div class="dsn-alert" role="alert">
+ *   <svg class="dsn-icon dsn-alert__icon" aria-hidden="true"><!-- info-circle --></svg>
+ *   <strong class="dsn-alert__heading">Heading</strong>
+ *   <div class="dsn-alert__content">
+ *     <p>Body text or any content.</p>
+ *   </div>
+ * </div>
+ *
+ * <!-- Positive variant -->
+ * <div class="dsn-alert dsn-alert--positive" role="alert">
+ *   <svg class="dsn-icon dsn-alert__icon" aria-hidden="true"><!-- circle-check --></svg>
+ *   <strong class="dsn-alert__heading">Gelukt</strong>
+ *   <div class="dsn-alert__content">
+ *     <p>Uw aanvraag is succesvol ingediend.</p>
+ *   </div>
+ * </div>
+ *
+ * <!-- Negative variant -->
+ * <div class="dsn-alert dsn-alert--negative" role="alert">
+ *   <svg class="dsn-icon dsn-alert__icon" aria-hidden="true"><!-- exclamation-circle --></svg>
+ *   <strong class="dsn-alert__heading">Er is een fout opgetreden</strong>
+ *   <div class="dsn-alert__content">
+ *     <p>Controleer uw gegevens en probeer het opnieuw.</p>
+ *   </div>
+ * </div>
+ *
+ * <!-- Warning variant -->
+ * <div class="dsn-alert dsn-alert--warning" role="alert">
+ *   <svg class="dsn-icon dsn-alert__icon" aria-hidden="true"><!-- alert-triangle --></svg>
+ *   <strong class="dsn-alert__heading">Let op</strong>
+ *   <div class="dsn-alert__content">
+ *     <p>Uw sessie verloopt binnenkort.</p>
+ *   </div>
+ * </div>
+ *
+ * <!-- Without icon -->
+ * <div class="dsn-alert dsn-alert--no-icon" role="alert">
+ *   <strong class="dsn-alert__heading">Heading</strong>
+ *   <div class="dsn-alert__content">
+ *     <p>Body text without an icon.</p>
+ *   </div>
+ * </div>
+ */
+
+/* ===========================
+   Local color tokens (info = default)
+   =========================== */
+.dsn-alert {
+  --dsn-alert-icon-color: var(--dsn-color-info-color-default);
+  --dsn-alert-color: var(--dsn-color-info-color-document);
+  --dsn-alert-background-color: var(--dsn-color-info-bg-default);
+  --dsn-alert-border-color: var(--dsn-color-info-border-default);
+}
+
+.dsn-alert--positive {
+  --dsn-alert-icon-color: var(--dsn-color-positive-color-default);
+  --dsn-alert-color: var(--dsn-color-positive-color-document);
+  --dsn-alert-background-color: var(--dsn-color-positive-bg-default);
+  --dsn-alert-border-color: var(--dsn-color-positive-border-default);
+}
+
+.dsn-alert--negative {
+  --dsn-alert-icon-color: var(--dsn-color-negative-color-default);
+  --dsn-alert-color: var(--dsn-color-negative-color-document);
+  --dsn-alert-background-color: var(--dsn-color-negative-bg-default);
+  --dsn-alert-border-color: var(--dsn-color-negative-border-default);
+}
+
+.dsn-alert--warning {
+  --dsn-alert-icon-color: var(--dsn-color-warning-color-default);
+  --dsn-alert-color: var(--dsn-color-warning-color-document);
+  --dsn-alert-background-color: var(--dsn-color-warning-bg-default);
+  --dsn-alert-border-color: var(--dsn-color-warning-border-default);
+}
+
+/* ===========================
+   Base layout
+   =========================== */
+.dsn-alert {
+  display: grid;
+  grid-template-columns: var(--dsn-icon-size-xl) 1fr;
+  column-gap: var(--dsn-alert-column-gap);
+  row-gap: var(--dsn-alert-row-gap);
+  padding-block: var(--dsn-alert-padding-block);
+  padding-inline: var(--dsn-alert-padding-inline);
+  border-radius: var(--dsn-alert-border-radius);
+  border: var(--dsn-alert-border-width) solid var(--dsn-alert-border-color);
+  background-color: var(--dsn-alert-background-color);
+  color: var(--dsn-alert-color);
+}
+
+/* ===========================
+   Icon
+   =========================== */
+.dsn-alert__icon {
+  grid-column: 1;
+  grid-row: 1;
+  align-self: center;
+  flex-shrink: 0;
+  width: var(--dsn-icon-size-xl);
+  height: var(--dsn-icon-size-xl);
+  color: var(--dsn-alert-icon-color);
+}
+
+/* ===========================
+   Heading
+   =========================== */
+.dsn-alert__heading {
+  grid-column: 2;
+  grid-row: 1;
+  align-self: center;
+}
+
+/* ===========================
+   Content
+   =========================== */
+.dsn-alert__content {
+  grid-column: 2;
+  grid-row: 2;
+}
+
+/* ===========================
+   No-icon modifier
+   =========================== */
+.dsn-alert--no-icon {
+  grid-template-columns: 1fr;
+}
+
+.dsn-alert--no-icon .dsn-alert__heading,
+.dsn-alert--no-icon .dsn-alert__content {
+  grid-column: 1;
+}

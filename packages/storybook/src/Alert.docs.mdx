@@ -1,0 +1,33 @@
+import { Meta, Story, Controls, Markdown } from '@storybook/blocks';
+import * as AlertStories from './Alert.stories';
+import docs from './Alert.docs.md?raw';
+import { PreviewFrame, CodeTabs } from './components';
+
+export const [intro, rest] = docs.split('<!-- VOORBEELD -->');
+
+<Meta of={AlertStories} />
+
+<Markdown>{intro}</Markdown>
+
+## Voorbeeld
+
+<PreviewFrame>
+  <Story of={AlertStories.Default} />
+</PreviewFrame>
+
+<CodeTabs
+  of={AlertStories.Default}
+  html={`<div class="dsn-alert" role="alert">
+  <span class="dsn-alert__icon" aria-hidden="true">
+    <svg class="dsn-icon" aria-hidden="true"><!-- info-circle --></svg>
+  </span>
+  <strong class="dsn-alert__heading dsn-heading dsn-heading--3">Heading</strong>
+  <div class="dsn-alert__content">
+    <p>Tekst</p>
+  </div>
+</div>`}
+/>
+
+<Controls of={AlertStories.Default} />
+
+<Markdown>{rest}</Markdown>

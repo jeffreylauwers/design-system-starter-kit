@@ -1,0 +1,6 @@
+/**
+ * Alert Component Styles for React
+ * Re-exports the base Alert styles from components-html
+ */
+
+@import '../../../components-html/src/alert/alert.css';
