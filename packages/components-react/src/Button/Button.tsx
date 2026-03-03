@@ -12,8 +12,7 @@ export type ButtonVariant =
   | 'default-positive'
   | 'subtle'
   | 'subtle-negative'
-  | 'subtle-positive'
-  | 'link';
+  | 'subtle-positive';
 export type ButtonSize = 'small' | 'default' | 'large';
 
 export interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {

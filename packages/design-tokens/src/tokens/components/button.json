@@ -154,57 +154,6 @@
           }
         }
       },
-      "link": {
-        "background-color": {
-          "value": "{dsn.color.transparent}",
-          "type": "color",
-          "comment": "Link button background"
-        },
-        "color": {
-          "value": "{dsn.color.action-2.color-default}",
-          "type": "color",
-          "comment": "Link button text/icon color"
-        },
-        "border-color": {
-          "value": "{dsn.color.transparent}",
-          "type": "color",
-          "comment": "Link button border"
-        },
-        "hover": {
-          "background-color": {
-            "value": "{dsn.color.transparent}",
-            "type": "color",
-            "comment": "Link button hover background"
-          },
-          "border-color": {
-            "value": "{dsn.color.transparent}",
-            "type": "color",
-            "comment": "Link button hover border"
-          },
-          "color": {
-            "value": "{dsn.color.action-2.color-hover}",
-            "type": "color",
-            "comment": "Link button hover text/icon color"
-          }
-        },
-        "active": {
-          "background-color": {
-            "value": "{dsn.color.transparent}",
-            "type": "color",
-            "comment": "Link button active background"
-          },
-          "border-color": {
-            "value": "{dsn.color.transparent}",
-            "type": "color",
-            "comment": "Link button active border"
-          },
-          "color": {
-            "value": "{dsn.color.action-2.color-active}",
-            "type": "color",
-            "comment": "Link button active text/icon color"
-          }
-        }
-      },
       "strong-negative": {
         "background-color": {
           "value": "{dsn.color.negative-inverse.bg-default}",

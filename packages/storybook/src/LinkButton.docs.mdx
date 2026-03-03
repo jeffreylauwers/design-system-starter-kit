@@ -1,0 +1,25 @@
+import { Meta, Story, Controls, Markdown } from '@storybook/blocks';
+import * as LinkButtonStories from './LinkButton.stories';
+import docs from './LinkButton.docs.md?raw';
+import { PreviewFrame, CodeTabs } from './components';
+
+export const [intro, rest] = docs.split('<!-- VOORBEELD -->');
+
+<Meta of={LinkButtonStories} />
+
+<Markdown>{intro}</Markdown>
+
+## Voorbeeld
+
+<PreviewFrame>
+  <Story of={LinkButtonStories.Default} />
+</PreviewFrame>
+
+<CodeTabs
+  of={LinkButtonStories.Default}
+  html={`<button type="button" class="dsn-link dsn-link-button">Linktekst</button>`}
+/>
+
+<Controls of={LinkButtonStories.Default} />
+
+<Markdown>{rest}</Markdown>

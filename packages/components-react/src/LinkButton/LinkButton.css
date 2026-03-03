@@ -1,0 +1,6 @@
+/**
+ * LinkButton Component Styles for React
+ * Re-exports the base LinkButton styles from components-html
+ */
+
+@import '../../../components-html/src/link-button/link-button.css';

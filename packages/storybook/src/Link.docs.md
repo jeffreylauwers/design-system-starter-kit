@@ -17,8 +17,7 @@ De Link component biedt een consistente, toegankelijke manier om hyperlinks weer
 
 ## Don't use when
 
-- De actie een bijeffect heeft (opslaan, verwijderen, formulier versturen) — gebruik dan de [Button](/docs/components-button--docs) component.
-- Je een op zichzelf staande call-to-action wilt met visueel gewicht — gebruik dan een Button met `variant="link"` voor link-styling met button semantiek, of een echte Button voor meer prominentie.
+- De actie een bijeffect heeft (opslaan, verwijderen, formulier versturen) zonder dat er genavigeerd wordt — gebruik dan de [LinkButton](/docs/components-linkbutton--docs) component (link-styling met button semantiek) of de [Button](/docs/components-button--docs) component voor meer prominentie.
 - De link een complexe interactie triggert — overweeg dan een button of custom element.
 
 ## Best practices

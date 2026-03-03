@@ -14,6 +14,7 @@ export * from './OrderedList';
 
 // Buttons & Icons
 export * from './Button';
+export * from './LinkButton';
 export * from './Icon';
 
 // Form Inputs

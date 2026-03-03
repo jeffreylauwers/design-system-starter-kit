@@ -101,10 +101,10 @@
 }
 
 /* =============================================================================
-   Focus State (shared across all non-link variants)
+   Focus State
    ============================================================================= */
 
-.dsn-button:focus-visible:not(.dsn-button--link) {
+.dsn-button:focus-visible {
   background-color: var(--dsn-focus-background-color);
   color: var(--dsn-focus-color);
   border-color: var(--dsn-focus-background-color);
@@ -175,41 +175,6 @@
   background-color: var(--dsn-button-subtle-active-background-color);
   color: var(--dsn-button-subtle-active-color);
   border-color: var(--dsn-button-subtle-active-border-color);
-}
-
-/* Variant: Link */
-.dsn-button--link {
-  background-color: var(--dsn-button-link-background-color);
-  color: var(--dsn-button-link-color);
-  border-color: var(--dsn-button-link-border-color);
-  text-decoration: underline;
-  padding-inline: 0;
-  min-inline-size: auto;
-}
-
-.dsn-button--link:hover:not(:disabled) {
-  background-color: var(--dsn-button-link-hover-background-color);
-  color: var(--dsn-button-link-hover-color);
-  border-color: var(--dsn-button-link-hover-border-color);
-}
-
-.dsn-button--link:active:not(:disabled) {
-  background-color: var(--dsn-button-link-active-background-color);
-  color: var(--dsn-button-link-active-color);
-  border-color: var(--dsn-button-link-active-border-color);
-}
-
-.dsn-button--link:focus-visible {
-  background-color: var(--dsn-focus-background-color);
-  color: var(--dsn-focus-color);
-  border-color: var(--dsn-color-transparent);
-  text-decoration: none;
-  outline: var(--dsn-focus-outline-width) var(--dsn-focus-outline-style)
-    var(--dsn-focus-outline-color);
-  outline-offset: var(--dsn-focus-outline-offset);
-  box-shadow: 0 0 0
-    calc(var(--dsn-focus-outline-offset) + var(--dsn-focus-outline-width))
-    var(--dsn-focus-inverse-outline-color);
 }
 
 /* =============================================================================

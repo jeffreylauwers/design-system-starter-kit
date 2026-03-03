@@ -103,7 +103,6 @@ const meta: Meta<typeof Button> = {
         'strong',
         'default',
         'subtle',
-        'link',
         'strong-negative',
         'default-negative',
         'subtle-negative',
@@ -174,10 +173,6 @@ export const DefaultVariant: Story = {
 
 export const Subtle: Story = {
   args: { variant: 'subtle', children: TEKST },
-};
-
-export const Link: Story = {
-  args: { variant: 'link', children: TEKST },
 };
 
 export const Small: Story = {
@@ -403,7 +398,6 @@ export const AllVariants: Story = {
         <Button variant="strong">{TEKST}</Button>
         <Button variant="default">{TEKST}</Button>
         <Button variant="subtle">{TEKST}</Button>
-        <Button variant="link">{TEKST}</Button>
       </div>
       <div
         style={{
