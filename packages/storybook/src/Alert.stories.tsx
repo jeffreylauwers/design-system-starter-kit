@@ -95,14 +95,16 @@ const meta: Meta<typeof Alert> = {
           ? `\n  <span class="dsn-alert__icon" aria-hidden="true">\n    <svg class="dsn-icon" aria-hidden="true"><!-- ${iconName} --></svg>\n  </span>`
           : '';
 
-        const heading = args.heading ?? 'Heading';
+        const headingLevel = args.headingLevel ?? 2;
+        const headingTag = `h${headingLevel}`;
+        const headingText = args.heading ?? 'Heading';
         const childrenText =
           typeof args.children === 'string' ? args.children : TEKST;
         const children = args.children
           ? `\n  <div class="dsn-alert__content">\n    <p class="dsn-paragraph">${childrenText}</p>\n  </div>`
           : '';
 
-        return `<div class="${cls}" role="alert">${icon}\n  <strong class="dsn-alert__heading dsn-heading dsn-heading--3">${heading}</strong>${children}\n</div>`;
+        return `<div class="${cls}" role="alert">${icon}\n  <${headingTag} class="dsn-alert__heading dsn-heading dsn-heading--3">${headingText}</${headingTag}>${children}\n</div>`;
       },
     },
   },

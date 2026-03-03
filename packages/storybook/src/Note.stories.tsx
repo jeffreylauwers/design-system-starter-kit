@@ -103,8 +103,10 @@ const meta: Meta<typeof Note> = {
           ? `\n  <span class="dsn-note__icon" aria-hidden="true">\n    <svg class="dsn-icon" aria-hidden="true"><!-- ${iconName} --></svg>\n  </span>`
           : '';
 
+        const headingLevel = args.headingLevel ?? 3;
+        const headingTag = `h${headingLevel}`;
         const heading = args.heading
-          ? `\n  <strong class="dsn-heading dsn-heading--3 dsn-note__heading">${args.heading}</strong>`
+          ? `\n  <${headingTag} class="dsn-heading dsn-heading--3 dsn-note__heading">${args.heading}</${headingTag}>`
           : '';
         const childrenText =
           typeof args.children === 'string' ? args.children : TEKST;
