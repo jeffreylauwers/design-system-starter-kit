@@ -1,15 +1,10 @@
 {
   "dsn": {
-    "alert": {
-      "border-radius": {
-        "value": "0px",
-        "type": "dimension",
-        "comment": "Alert border radius (0px by default; themes can override to add rounded corners)"
-      },
-      "border-width": {
+    "note": {
+      "border-inline-start-width": {
         "value": "{dsn.border.width.medium}",
         "type": "dimension",
-        "comment": "Alert border width (left border only)"
+        "comment": "Note left border width"
       },
       "column-gap": {
         "value": "{dsn.space.inline.md}",
@@ -26,10 +21,15 @@
         "type": "dimension",
         "comment": "Vertical padding"
       },
-      "padding-inline": {
+      "padding-inline-start": {
         "value": "{dsn.space.inline.xl}",
         "type": "dimension",
-        "comment": "Horizontal padding"
+        "comment": "Horizontal padding inline-start (after the border)"
+      },
+      "padding-inline-end": {
+        "value": "{dsn.space.inline.xl}",
+        "type": "dimension",
+        "comment": "Horizontal padding inline-end"
       }
     }
   }

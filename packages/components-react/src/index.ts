@@ -41,6 +41,7 @@ export * from './OptionLabel';
 // Display & Feedback Components
 export * from './StatusBadge';
 export * from './Alert';
+export * from './Note';
 
 // Form Field Components
 export * from './FormField';

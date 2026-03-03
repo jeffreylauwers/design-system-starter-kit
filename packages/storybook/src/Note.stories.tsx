@@ -1,7 +1,13 @@
 import type { Meta, StoryObj } from '@storybook/react';
-import { Icon, Alert, Paragraph, UnorderedList } from '@dsn/components-react';
+import {
+  Icon,
+  Note,
+  Paragraph,
+  Link,
+  UnorderedList,
+} from '@dsn/components-react';
 import type { IconName } from '@dsn/components-react/icon-registry.generated';
-import DocsPage from './Alert.docs.mdx';
+import DocsPage from './Note.docs.mdx';
 import {
   TEKST,
   VEEL_TEKST,
@@ -59,24 +65,26 @@ const iconOptions: (IconName | undefined)[] = [
   'x',
 ];
 
-const meta: Meta<typeof Alert> = {
-  title: 'Components/Alert',
-  component: Alert,
+const meta: Meta<typeof Note> = {
+  title: 'Components/Note',
+  component: Note,
   parameters: {
     docs: { page: DocsPage },
     dsn: {
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
       htmlTemplate: (args: any) => {
-        const variant = args.variant ?? 'info';
+        const variant = args.variant ?? 'neutral';
+        const noHeading = !args.heading;
         const cls = [
-          'dsn-alert',
-          variant !== 'info' && `dsn-alert--${variant}`,
-          args.iconStart === 'null' && 'dsn-alert--no-icon',
+          'dsn-note',
+          variant !== 'neutral' && `dsn-note--${variant}`,
+          noHeading && 'dsn-note--no-heading',
         ]
           .filter(Boolean)
           .join(' ');
 
         const preferredIcons: Record<string, string> = {
+          neutral: 'info-circle',
           info: 'info-circle',
           positive: 'circle-check',
           negative: 'exclamation-circle',
@@ -92,24 +100,31 @@ const meta: Meta<typeof Alert> = {
               : preferredIcons[variant];
 
         const icon = iconName
-          ? `\n  <span class="dsn-alert__icon" aria-hidden="true">\n    <svg class="dsn-icon" aria-hidden="true"><!-- ${iconName} --></svg>\n  </span>`
+          ? `\n  <span class="dsn-note__icon" aria-hidden="true">\n    <svg class="dsn-icon" aria-hidden="true"><!-- ${iconName} --></svg>\n  </span>`
           : '';
 
-        const heading = args.heading ?? 'Heading';
+        const heading = args.heading
+          ? `\n  <strong class="dsn-heading dsn-heading--3 dsn-note__heading">${args.heading}</strong>`
+          : '';
         const childrenText =
           typeof args.children === 'string' ? args.children : TEKST;
         const children = args.children
-          ? `\n  <div class="dsn-alert__content">\n    <p class="dsn-paragraph">${childrenText}</p>\n  </div>`
+          ? `\n  <div class="dsn-note__content">\n    <p class="dsn-paragraph">${childrenText}</p>\n  </div>`
           : '';
 
-        return `<div class="${cls}" role="alert">${icon}\n  <strong class="dsn-alert__heading dsn-heading dsn-heading--3">${heading}</strong>${children}\n</div>`;
+        const as = args.as ?? 'div';
+        return `<${as} class="${cls}">${icon}${heading}${children}\n</${as}>`;
       },
     },
   },
   argTypes: {
+    as: {
+      control: 'select',
+      options: ['div', 'aside', 'nav', 'section'],
+    },
     variant: {
       control: 'select',
-      options: ['info', 'positive', 'negative', 'warning'],
+      options: ['neutral', 'info', 'positive', 'negative', 'warning'],
     },
     heading: { control: 'text' },
     headingLevel: {
@@ -137,20 +152,28 @@ const meta: Meta<typeof Alert> = {
   },
   args: {
     heading: 'Heading',
-    variant: 'info',
+    variant: 'neutral',
     children: <Paragraph>{TEKST}</Paragraph>,
   },
 };
 
 export default meta;
-type Story = StoryObj<typeof Alert>;
+type Story = StoryObj<typeof Note>;
 
 export const Default: Story = {};
+
+export const Info: Story = {
+  args: {
+    variant: 'info',
+    heading: 'Informatie',
+    iconStart: 'info-circle',
+  },
+};
 
 export const Positive: Story = {
   args: {
     variant: 'positive',
-    heading: 'Gelukt',
+    heading: 'Tip',
     iconStart: 'circle-check',
   },
 };
@@ -158,7 +181,7 @@ export const Positive: Story = {
 export const Negative: Story = {
   args: {
     variant: 'negative',
-    heading: 'Er is een fout opgetreden',
+    heading: 'Let op',
     iconStart: 'exclamation-circle',
   },
 };
@@ -166,7 +189,7 @@ export const Negative: Story = {
 export const Warning: Story = {
   args: {
     variant: 'warning',
-    heading: 'Let op',
+    heading: 'Waarschuwing',
     iconStart: 'alert-triangle',
   },
 };
@@ -175,51 +198,70 @@ export const AllStates: Story = {
   name: 'All states',
   render: () => (
     <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
-      <Alert variant="info" heading="Informatief bericht">
+      <Note variant="neutral" heading="Neutral">
         <Paragraph>{TEKST}</Paragraph>
-      </Alert>
-      <Alert variant="positive" heading="Gelukt">
+      </Note>
+      <Note variant="info" heading="Info">
         <Paragraph>{TEKST}</Paragraph>
-      </Alert>
-      <Alert variant="negative" heading="Er is een fout opgetreden">
+      </Note>
+      <Note variant="positive" heading="Positive">
         <Paragraph>{TEKST}</Paragraph>
-      </Alert>
-      <Alert variant="warning" heading="Let op">
+      </Note>
+      <Note variant="negative" heading="Negative">
         <Paragraph>{TEKST}</Paragraph>
-      </Alert>
+      </Note>
+      <Note variant="warning" heading="Warning">
+        <Paragraph>{TEKST}</Paragraph>
+      </Note>
     </div>
   ),
 };
 
+export const WithoutHeading: Story = {
+  name: 'Without heading',
+  args: {
+    heading: undefined,
+  },
+};
+
 export const WithList: Story = {
-  name: 'With list (validation)',
+  name: 'With list',
   render: () => (
-    <Alert
-      variant="negative"
-      heading="Er zijn fouten opgetreden. Controleer de volgende velden:"
-    >
+    <Note variant="negative" heading="Er zijn fouten opgetreden">
       <UnorderedList>
         <li>Voornaam is verplicht</li>
         <li>E-mailadres is ongeldig</li>
         <li>Telefoonnummer ontbreekt</li>
       </UnorderedList>
-    </Alert>
+    </Note>
   ),
 };
 
-export const NoIcon: Story = {
-  name: 'No icon',
-  args: {
-    iconStart: null,
-  },
+export const AsNav: Story = {
+  name: 'As nav (inhoudsopgave)',
+  render: () => (
+    <Note as="nav" variant="neutral" heading="Op deze pagina" headingLevel={2}>
+      <UnorderedList>
+        <li>
+          <Link href="#sectie-1">Sectie 1: Inleiding</Link>
+        </li>
+        <li>
+          <Link href="#sectie-2">Sectie 2: Aanvraag</Link>
+        </li>
+        <li>
+          <Link href="#sectie-3">Sectie 3: Documenten</Link>
+        </li>
+      </UnorderedList>
+    </Note>
+  ),
 };
 
 export const LongText: Story = {
   name: 'Long text',
   render: () => (
-    <Alert heading="Heading bij lange inhoud">
+    <Note heading="Heading bij lange inhoud">
       <Paragraph>{VEEL_TEKST}</Paragraph>
-    </Alert>
+    </Note>
   ),
 };
 
@@ -228,9 +270,9 @@ export const RTL: Story = {
   decorators: [rtlDecorator],
   render: () => (
     <div dir="rtl" lang="ar">
-      <Alert variant="info" heading={TEKST_AR}>
+      <Note variant="info" heading={TEKST_AR}>
         <Paragraph>{TEKST_AR}</Paragraph>
-      </Alert>
+      </Note>
     </div>
   ),
 };
@@ -240,9 +282,9 @@ export const RTLLongText: Story = {
   decorators: [rtlDecorator],
   render: () => (
     <div dir="rtl" lang="ar">
-      <Alert variant="info" heading={TEKST_AR}>
+      <Note variant="info" heading={TEKST_AR}>
         <Paragraph>{VEEL_TEKST_AR}</Paragraph>
-      </Alert>
+      </Note>
     </div>
   ),
 };

@@ -1,33 +1,33 @@
 import { Meta, Story, Controls, Markdown } from '@storybook/blocks';
-import * as AlertStories from './Alert.stories';
-import docs from './Alert.docs.md?raw';
+import * as NoteStories from './Note.stories';
+import docs from './Note.docs.md?raw';
 import { PreviewFrame, CodeTabs } from './components';
 
 export const [intro, rest] = docs.split('<!-- VOORBEELD -->');
 
-<Meta of={AlertStories} />
+<Meta of={NoteStories} />
 
 <Markdown>{intro}</Markdown>
 
 ## Voorbeeld
 
 <PreviewFrame>
-  <Story of={AlertStories.Default} />
+  <Story of={NoteStories.Default} />
 </PreviewFrame>
 
 <CodeTabs
-  of={AlertStories.Default}
-  html={`<div class="dsn-alert" role="alert">
-  <span class="dsn-alert__icon" aria-hidden="true">
+  of={NoteStories.Default}
+  html={`<div class="dsn-note">
+  <span class="dsn-note__icon" aria-hidden="true">
     <svg class="dsn-icon" aria-hidden="true"><!-- info-circle --></svg>
   </span>
-  <strong class="dsn-alert__heading dsn-heading dsn-heading--3">Heading</strong>
-  <div class="dsn-alert__content">
+  <strong class="dsn-heading dsn-heading--3 dsn-note__heading">Heading</strong>
+  <div class="dsn-note__content">
     <p class="dsn-paragraph">Tekst</p>
   </div>
 </div>`}
 />
 
-<Controls of={AlertStories.Default} />
+<Controls of={NoteStories.Default} />
 
 <Markdown>{rest}</Markdown>

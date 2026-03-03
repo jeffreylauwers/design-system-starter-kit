@@ -21,7 +21,11 @@ const meta: Meta<typeof Paragraph> = {
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
       htmlTemplate: (args: any) => {
         const variant = args.variant ?? 'default';
-        return `<p class="dsn-paragraph dsn-paragraph--${variant}">${args.children ?? 'Tekst'}</p>`;
+        const cls =
+          variant === 'default'
+            ? 'dsn-paragraph'
+            : `dsn-paragraph dsn-paragraph--${variant}`;
+        return `<p class="${cls}">${args.children ?? 'Tekst'}</p>`;
       },
     },
   },

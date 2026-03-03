@@ -1,0 +1,6 @@
+/**
+ * Note component styles for React
+ * Re-exports the base Note styles from components-html
+ */
+
+@import '../../../components-html/src/note/note.css';

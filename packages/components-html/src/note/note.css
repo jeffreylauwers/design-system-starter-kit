@@ -1,0 +1,157 @@
+/**
+ * Note Component
+ * Visually highlighted message for supplementary or important information.
+ * Passive counterpart to Alert — no live region, read on navigation only.
+ *
+ * Usage:
+ * <!-- Neutral (default), with icon and heading -->
+ * <div class="dsn-note">
+ *   <span class="dsn-note__icon" aria-hidden="true">
+ *     <svg class="dsn-icon" aria-hidden="true"><!-- info-circle --></svg>
+ *   </span>
+ *   <strong class="dsn-heading dsn-heading--3 dsn-note__heading">Let op</strong>
+ *   <div class="dsn-note__content">
+ *     <p>Aanvullende informatie over dit onderwerp.</p>
+ *   </div>
+ * </div>
+ *
+ * <!-- Info variant -->
+ * <div class="dsn-note dsn-note--info">
+ *   <span class="dsn-note__icon" aria-hidden="true">
+ *     <svg class="dsn-icon" aria-hidden="true"><!-- info-circle --></svg>
+ *   </span>
+ *   <strong class="dsn-heading dsn-heading--3 dsn-note__heading">Informatie</strong>
+ *   <div class="dsn-note__content">
+ *     <p>Body content.</p>
+ *   </div>
+ * </div>
+ *
+ * <!-- Without heading — icon spans both rows -->
+ * <div class="dsn-note dsn-note--no-heading">
+ *   <span class="dsn-note__icon" aria-hidden="true">
+ *     <svg class="dsn-icon" aria-hidden="true"><!-- info-circle --></svg>
+ *   </span>
+ *   <div class="dsn-note__content">
+ *     <p>Aanvullende informatie.</p>
+ *   </div>
+ * </div>
+ *
+ * <!-- as="aside" — supplementary content -->
+ * <aside class="dsn-note dsn-note--info">
+ *   ...
+ * </aside>
+ *
+ * <!-- as="nav" — table of contents -->
+ * <nav class="dsn-note" aria-labelledby="note-heading-id">
+ *   <span class="dsn-note__icon" aria-hidden="true">
+ *     <svg class="dsn-icon" aria-hidden="true"><!-- info-circle --></svg>
+ *   </span>
+ *   <strong class="dsn-heading dsn-heading--3 dsn-note__heading" id="note-heading-id">Op deze pagina</strong>
+ *   <nav class="dsn-note__content">
+ *     <ul>...</ul>
+ *   </nav>
+ * </nav>
+ */
+
+/* ===========================
+   Local color tokens (neutral = default)
+   =========================== */
+.dsn-note {
+  --dsn-note-icon-color: var(--dsn-color-neutral-color-default);
+  --dsn-note-color: var(--dsn-color-neutral-color-document);
+  --dsn-note-background-color: var(--dsn-color-neutral-bg-default);
+  --dsn-note-border-inline-start-color: var(--dsn-color-neutral-border-default);
+}
+
+.dsn-note--info {
+  --dsn-note-icon-color: var(--dsn-color-info-color-default);
+  --dsn-note-color: var(--dsn-color-info-color-document);
+  --dsn-note-background-color: var(--dsn-color-info-bg-default);
+  --dsn-note-border-inline-start-color: var(--dsn-color-info-border-default);
+}
+
+.dsn-note--positive {
+  --dsn-note-icon-color: var(--dsn-color-positive-color-default);
+  --dsn-note-color: var(--dsn-color-positive-color-document);
+  --dsn-note-background-color: var(--dsn-color-positive-bg-default);
+  --dsn-note-border-inline-start-color: var(
+    --dsn-color-positive-border-default
+  );
+}
+
+.dsn-note--negative {
+  --dsn-note-icon-color: var(--dsn-color-negative-color-default);
+  --dsn-note-color: var(--dsn-color-negative-color-document);
+  --dsn-note-background-color: var(--dsn-color-negative-bg-default);
+  --dsn-note-border-inline-start-color: var(
+    --dsn-color-negative-border-default
+  );
+}
+
+.dsn-note--warning {
+  --dsn-note-icon-color: var(--dsn-color-warning-color-default);
+  --dsn-note-color: var(--dsn-color-warning-color-document);
+  --dsn-note-background-color: var(--dsn-color-warning-bg-default);
+  --dsn-note-border-inline-start-color: var(--dsn-color-warning-border-default);
+}
+
+/* ===========================
+   Base layout
+   =========================== */
+.dsn-note {
+  display: grid;
+  grid-template-columns: var(--dsn-icon-size-xl) 1fr;
+  column-gap: var(--dsn-note-column-gap);
+  row-gap: var(--dsn-note-row-gap);
+  padding-block: var(--dsn-note-padding-block);
+  padding-inline-start: var(--dsn-note-padding-inline-start);
+  padding-inline-end: var(--dsn-note-padding-inline-end);
+  border-inline-start: var(--dsn-note-border-inline-start-width) solid
+    var(--dsn-note-border-inline-start-color);
+  background-color: var(--dsn-note-background-color);
+  color: var(--dsn-note-color);
+}
+
+/* ===========================
+   Icon
+   =========================== */
+.dsn-note__icon {
+  grid-column: 1;
+  grid-row: 1;
+  align-self: center;
+  flex-shrink: 0;
+  width: var(--dsn-icon-size-xl);
+  height: var(--dsn-icon-size-xl);
+  color: var(--dsn-note-icon-color);
+}
+
+/* ===========================
+   Heading
+   =========================== */
+.dsn-note__heading {
+  grid-column: 2;
+  grid-row: 1;
+  align-self: center;
+  margin-block-end: 0;
+}
+
+/* ===========================
+   Content
+   =========================== */
+.dsn-note__content {
+  grid-column: 2;
+  grid-row: 2;
+}
+
+/* ===========================
+   No-heading modifier — icon spans both rows, content moves to row 1
+   =========================== */
+.dsn-note--no-heading .dsn-note__icon {
+  grid-row: 1 / span 2;
+  align-self: start;
+  margin-block-start: 0.125em;
+}
+
+.dsn-note--no-heading .dsn-note__content {
+  grid-row: 1;
+}

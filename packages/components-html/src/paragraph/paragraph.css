@@ -2,8 +2,8 @@
  * Paragraph Component
  * Uses component tokens for consistent styling
  *
- * Base class sets shared properties (font-family, font-weight, color, max-inline-size).
- * Variant modifiers only set what differs (font-size, line-height, margin).
+ * Base class includes the default variant styles — class="dsn-paragraph" is sufficient
+ * for the most common case. Variant modifiers (lead, small-print) override what differs.
  */
 
 .dsn-paragraph {
@@ -12,10 +12,6 @@
   color: var(--dsn-paragraph-color);
   max-inline-size: var(--dsn-paragraph-max-inline-size);
   margin-block-start: 0;
-}
-
-/* Default Variant */
-.dsn-paragraph--default {
   font-size: var(--dsn-paragraph-default-font-size);
   line-height: var(--dsn-paragraph-default-line-height);
   margin-block-end: var(--dsn-paragraph-default-margin-block-end);

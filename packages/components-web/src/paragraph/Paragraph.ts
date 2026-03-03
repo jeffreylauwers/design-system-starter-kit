@@ -51,7 +51,10 @@ export class DsnParagraph extends HTMLElement {
   private _updateClasses(): void {
     const variant = this.variant;
 
-    const classes = ['dsn-paragraph', `dsn-paragraph--${variant}`];
+    const classes = [
+      'dsn-paragraph',
+      variant !== 'default' && `dsn-paragraph--${variant}`,
+    ].filter(Boolean) as string[];
 
     this._paragraph.className = classes.join(' ');
   }
