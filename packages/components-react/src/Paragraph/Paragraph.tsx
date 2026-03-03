@@ -41,7 +41,7 @@ export const Paragraph = React.forwardRef<HTMLParagraphElement, ParagraphProps>(
   ({ variant = 'default', className, children, ...props }, ref) => {
     const classes = classNames(
       'dsn-paragraph',
-      `dsn-paragraph--${variant}`,
+      variant !== 'default' && `dsn-paragraph--${variant}`,
       className
     );
 

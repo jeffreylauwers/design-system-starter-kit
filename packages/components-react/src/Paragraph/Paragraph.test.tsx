@@ -13,9 +13,11 @@ describe('Paragraph', () => {
     expect(screen.getByText('Text').tagName).toBe('P');
   });
 
-  it('defaults to default variant', () => {
+  it('defaults to default variant — no modifier class added', () => {
     render(<Paragraph>Default</Paragraph>);
-    expect(screen.getByText('Default')).toHaveClass('dsn-paragraph--default');
+    const el = screen.getByText('Default');
+    expect(el).toHaveClass('dsn-paragraph');
+    expect(el).not.toHaveClass('dsn-paragraph--default');
   });
 
   it('applies lead variant class', () => {

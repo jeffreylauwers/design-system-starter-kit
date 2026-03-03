@@ -51,10 +51,11 @@ describe('DsnParagraph', () => {
   });
 
   describe('variant attribute', () => {
-    it('defaults to "default" variant', () => {
+    it('defaults to "default" variant — no modifier class added', () => {
       const el = createElement();
       const p = getInternalParagraph(el);
-      expect(p.className).toContain('dsn-paragraph--default');
+      expect(p.className).toContain('dsn-paragraph');
+      expect(p.className).not.toContain('dsn-paragraph--default');
     });
 
     it('applies "lead" variant', () => {
@@ -72,7 +73,7 @@ describe('DsnParagraph', () => {
     it('updates classes when variant changes', () => {
       const el = createElement({ variant: 'default' });
       const p = getInternalParagraph(el);
-      expect(p.className).toContain('dsn-paragraph--default');
+      expect(p.className).not.toContain('dsn-paragraph--default');
 
       el.setAttribute('variant', 'lead');
       expect(p.className).toContain('dsn-paragraph--lead');

@@ -17,10 +17,6 @@
   margin-block-end: var(--dsn-paragraph-default-margin-block-end);
 }
 
-/* Default Variant — alias, no extra styles needed */
-.dsn-paragraph--default {
-}
-
 /* Lead Variant */
 .dsn-paragraph--lead {
   font-size: var(--dsn-paragraph-lead-font-size);
