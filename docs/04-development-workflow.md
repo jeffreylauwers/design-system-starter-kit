@@ -108,6 +108,82 @@ pnpm -r build
 
 ## Token Updates
 
+### Token JSON Conventions
+
+All token JSON files follow a consistent structure. These rules apply to primitive, semantic, and component-level tokens alike.
+
+#### Key ordering (in order of priority)
+
+1. **Nesting depth first** — shallower tokens come before deeper ones
+2. **At the same level: states first, then variants, then sub-components**
+   - States appear in this fixed order:
+     1. `active`
+     2. `checked`
+     3. `disabled`
+     4. `hover`
+     5. `focus`
+     6. `focus-visible`
+     7. `visited`
+   - Then: variants (e.g. `primary`, `secondary`, `subtle`)
+   - Then: sub-components (e.g. `icon`, `heading`, `panel`)
+3. **Alphabetically within each group**
+
+#### Naming convention
+
+Always use **kebab-case** — never camelCase:
+
+```
+✅ border-color, padding-inline-start, background-color
+❌ borderColor, paddingInlineStart, backgroundColor
+```
+
+#### Example — Button component tokens
+
+```json
+{
+  "dsn": {
+    "button": {
+      "background-color": "#fff",
+      "border-color": "#000",
+      "border-width": "1px",
+      "color": "#000",
+      "padding-inline-start": "16px",
+      "active": {
+        "background-color": "#eee"
+      },
+      "hover": {
+        "background-color": "#f5f5f5"
+      },
+      "focus-visible": {
+        "outline-color": "#0000ff"
+      },
+      "primary": {
+        "background-color": "#5115EF",
+        "color": "#fff"
+      },
+      "secondary": {
+        "background-color": "#006FB3",
+        "color": "#fff"
+      },
+      "icon": {
+        "size": "24px"
+      }
+    }
+  }
+}
+```
+
+**Why this order?**
+
+- Base properties describe the default state — they come first
+- States are variations on the base — they come right after
+- Variants are alternative versions (e.g. primary vs secondary) — after states
+- Sub-components are internal parts (e.g. icon inside a button) — last
+
+This makes each token file readable top-to-bottom: first what a thing looks like normally, then how it changes, then which variants exist.
+
+---
+
 ### Adding New Semantic Tokens
 
 1. **Update appropriate JSON file** in `tokens/themes/{theme}/`
