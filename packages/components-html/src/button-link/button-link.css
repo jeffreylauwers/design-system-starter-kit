@@ -1,0 +1,21 @@
+/**
+ * ButtonLink Component
+ * Resets <a> styles so the element uses dsn-button appearance.
+ * Always combine with dsn-button, dsn-button--{variant}, and dsn-button--size-{size}:
+ *   <a class="dsn-button dsn-button--strong dsn-button--size-default dsn-button-link" href="/">Label</a>
+ */
+
+.dsn-button-link {
+  /* Anchor reset — dsn-button handles most resets already */
+  text-decoration: none; /* Safety net: mocht dsn-button dit ooit weglaten */
+}
+
+/* Disabled staat via aria-disabled — <a> heeft geen native :disabled.
+   dsn-button:disabled matcht niet op <a>, dus we repliceren de stijlen handmatig.
+   pointer-events: none blokkeert ook hover/active (Button's :not(:disabled) matcht
+   altijd op <a>, dus we kunnen niet op die guards vertrouwen). */
+.dsn-button-link[aria-disabled='true'] {
+  opacity: 0.5;
+  cursor: not-allowed;
+  pointer-events: none;
+}

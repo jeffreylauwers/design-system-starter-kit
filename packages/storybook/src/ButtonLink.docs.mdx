@@ -1,0 +1,25 @@
+import { Meta, Story, Controls, Markdown } from '@storybook/blocks';
+import * as ButtonLinkStories from './ButtonLink.stories';
+import docs from './ButtonLink.docs.md?raw';
+import { PreviewFrame, CodeTabs } from './components';
+
+export const [intro, rest] = docs.split('<!-- VOORBEELD -->');
+
+<Meta of={ButtonLinkStories} />
+
+<Markdown>{intro}</Markdown>
+
+## Voorbeeld
+
+<PreviewFrame>
+  <Story of={ButtonLinkStories.Default} />
+</PreviewFrame>
+
+<CodeTabs
+  of={ButtonLinkStories.Default}
+  html={`<a class="dsn-button dsn-button--strong dsn-button--size-default dsn-button-link" href="/">\n  <span class="dsn-button__label">Knoptekst</span>\n</a>`}
+/>
+
+<Controls of={ButtonLinkStories.Default} />
+
+<Markdown>{rest}</Markdown>
