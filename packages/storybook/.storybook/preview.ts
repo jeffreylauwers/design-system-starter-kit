@@ -77,8 +77,13 @@ const preview: Preview = {
     },
     options: {
       // @ts-expect-error storySort is serialized to manager, avoid TS annotations
-      storySort: (story1, story2) =>
-        globalThis['storybook-multilevel-sort:storySort'](story1, story2),
+      storySort: (story1, story2) => {
+        // @ts-expect-error: storybook-multilevel-sort registreert zichzelf op globalThis, buiten TS-controle
+        return globalThis['storybook-multilevel-sort:storySort'](
+          story1,
+          story2
+        );
+      },
     },
   },
   globalTypes: {
