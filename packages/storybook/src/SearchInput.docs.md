@@ -55,8 +55,8 @@ Een SearchInput bestaat uit:
 
 | Token                                               | Beschrijving                                                           |
 | --------------------------------------------------- | ---------------------------------------------------------------------- |
-| `--dsn-search-input-icon-size`                      | Grootte van het zoekicoon                                              |
 | `--dsn-search-input-icon-gap`                       | Ruimte tussen icoon en tekst                                           |
+| `--dsn-search-input-icon-size`                      | Grootte van het zoekicoon                                              |
 | `--dsn-search-input-padding-inline-start-with-icon` | Berekende padding links: `icon-size + icon-gap + padding-inline-start` |
 
 SearchInput erft verder alle tokens van [TextInput](/docs/components-textinput--docs):

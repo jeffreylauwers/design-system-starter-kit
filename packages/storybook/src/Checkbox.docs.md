@@ -34,36 +34,36 @@ De Checkbox component is een standalone checkbox zonder label - alleen het vierk
 
 | Token                                      | Beschrijving                                             |
 | ------------------------------------------ | -------------------------------------------------------- |
-| `--dsn-checkbox-size`                      | Grootte van de checkbox (fluid, gekoppeld aan text size) |
-| `--dsn-checkbox-icon-size`                 | Grootte van het check icoon (67% van checkbox size)      |
+| `--dsn-checkbox-background-color`          | Achtergrondkleur default state                           |
+| `--dsn-checkbox-border-color`              | Border kleur default state                               |
 | `--dsn-checkbox-border-radius`             | Hoekafronding (0px - vierkant)                           |
 | `--dsn-checkbox-border-width`              | Border dikte default state                               |
-| `--dsn-checkbox-border-color`              | Border kleur default state                               |
-| `--dsn-checkbox-background-color`          | Achtergrondkleur default state                           |
-| `--dsn-checkbox-hover-border-width`        | Border dikte hover state                                 |
-| `--dsn-checkbox-hover-border-color`        | Border kleur hover state                                 |
-| `--dsn-checkbox-hover-background-color`    | Achtergrondkleur hover state                             |
-| `--dsn-checkbox-focus-border-width`        | Border dikte focus state                                 |
-| `--dsn-checkbox-focus-border-color`        | Border kleur focus state                                 |
-| `--dsn-checkbox-focus-background-color`    | Achtergrondkleur focus state                             |
-| `--dsn-checkbox-active-border-width`       | Border dikte active state                                |
-| `--dsn-checkbox-active-border-color`       | Border kleur active state                                |
+| `--dsn-checkbox-size`                      | Grootte van de checkbox (fluid, gekoppeld aan text size) |
 | `--dsn-checkbox-active-background-color`   | Achtergrondkleur active state                            |
-| `--dsn-checkbox-checked-border-width`      | Border dikte checked state                               |
-| `--dsn-checkbox-checked-border-color`      | Border kleur checked state (transparent)                 |
+| `--dsn-checkbox-active-border-color`       | Border kleur active state                                |
+| `--dsn-checkbox-active-border-width`       | Border dikte active state                                |
 | `--dsn-checkbox-checked-background-color`  | Achtergrondkleur checked state (accent)                  |
+| `--dsn-checkbox-checked-border-color`      | Border kleur checked state (transparent)                 |
+| `--dsn-checkbox-checked-border-width`      | Border dikte checked state                               |
 | `--dsn-checkbox-checked-color`             | Icoon kleur checked state (wit)                          |
-| `--dsn-checkbox-checked-hover-*`           | Checked + hover combinatie                               |
-| `--dsn-checkbox-checked-active-*`          | Checked + active combinatie                              |
-| `--dsn-checkbox-checked-focus-*`           | Checked + focus combinatie                               |
-| `--dsn-checkbox-indeterminate-*`           | Indeterminate state (alle combinaties)                   |
-| `--dsn-checkbox-disabled-border-color`     | Border kleur disabled state                              |
 | `--dsn-checkbox-disabled-background-color` | Achtergrondkleur disabled state                          |
-| `--dsn-checkbox-checked-disabled-*`        | Checked + disabled combinatie                            |
-| `--dsn-checkbox-indeterminate-disabled-*`  | Indeterminate + disabled combinatie                      |
-| `--dsn-checkbox-invalid-border-width`      | Border dikte invalid state                               |
-| `--dsn-checkbox-invalid-border-color`      | Border kleur invalid state                               |
+| `--dsn-checkbox-disabled-border-color`     | Border kleur disabled state                              |
+| `--dsn-checkbox-focus-background-color`    | Achtergrondkleur focus state                             |
+| `--dsn-checkbox-focus-border-color`        | Border kleur focus state                                 |
+| `--dsn-checkbox-focus-border-width`        | Border dikte focus state                                 |
+| `--dsn-checkbox-hover-background-color`    | Achtergrondkleur hover state                             |
+| `--dsn-checkbox-hover-border-color`        | Border kleur hover state                                 |
+| `--dsn-checkbox-hover-border-width`        | Border dikte hover state                                 |
 | `--dsn-checkbox-invalid-background-color`  | Achtergrondkleur invalid state                           |
+| `--dsn-checkbox-invalid-border-color`      | Border kleur invalid state                               |
+| `--dsn-checkbox-invalid-border-width`      | Border dikte invalid state                               |
+| `--dsn-checkbox-checked-active-*`          | Checked + active combinatie                              |
+| `--dsn-checkbox-checked-disabled-*`        | Checked + disabled combinatie                            |
+| `--dsn-checkbox-checked-focus-*`           | Checked + focus combinatie                               |
+| `--dsn-checkbox-checked-hover-*`           | Checked + hover combinatie                               |
+| `--dsn-checkbox-indeterminate-*`           | Indeterminate state (alle combinaties)                   |
+| `--dsn-checkbox-indeterminate-disabled-*`  | Indeterminate + disabled combinatie                      |
+| `--dsn-checkbox-icon-size`                 | Grootte van het check icoon (67% van checkbox size)      |
 
 ## Accessibility
 

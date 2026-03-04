@@ -58,35 +58,35 @@ De TextArea component is een gestandaardiseerd invoerveld voor multi-line tekst.
 
 | Token                                        | Beschrijving                                       |
 | -------------------------------------------- | -------------------------------------------------- |
+| `--dsn-text-area-background-color`           | Background color                                   |
+| `--dsn-text-area-border-color`               | Border color                                       |
+| `--dsn-text-area-border-radius`              | Border radius                                      |
+| `--dsn-text-area-border-width`               | Border width                                       |
+| `--dsn-text-area-color`                      | Text color                                         |
 | `--dsn-text-area-font-family`                | Font family                                        |
 | `--dsn-text-area-font-size`                  | Font size                                          |
 | `--dsn-text-area-font-weight`                | Font weight                                        |
 | `--dsn-text-area-line-height`                | Line height                                        |
-| `--dsn-text-area-color`                      | Text color                                         |
-| `--dsn-text-area-background-color`           | Background color                                   |
-| `--dsn-text-area-border-color`               | Border color                                       |
-| `--dsn-text-area-border-width`               | Border width                                       |
-| `--dsn-text-area-border-radius`              | Border radius                                      |
-| `--dsn-text-area-placeholder-color`          | Placeholder text color                             |
-| `--dsn-text-area-padding-block-start`        | Top padding                                        |
-| `--dsn-text-area-padding-block-end`          | Bottom padding                                     |
-| `--dsn-text-area-padding-inline-start`       | Left padding                                       |
-| `--dsn-text-area-padding-inline-end`         | Right padding                                      |
 | `--dsn-text-area-min-block-size`             | Minimum height (WCAG 24px touch target)            |
 | `--dsn-text-area-min-inline-size`            | Minimum width (WCAG 24px touch target)             |
+| `--dsn-text-area-padding-block-end`          | Bottom padding                                     |
+| `--dsn-text-area-padding-block-start`        | Top padding                                        |
+| `--dsn-text-area-padding-inline-end`         | Right padding                                      |
+| `--dsn-text-area-padding-inline-start`       | Left padding                                       |
 | `--dsn-text-area-resize`                     | Resize behavior (vertical, horizontal, both, none) |
-| `--dsn-text-area-focus-color`                | Focus text color                                   |
-| `--dsn-text-area-focus-background-color`     | Focus background color                             |
-| `--dsn-text-area-focus-border-color`         | Focus border color                                 |
-| `--dsn-text-area-disabled-color`             | Disabled text color                                |
 | `--dsn-text-area-disabled-background-color`  | Disabled background color                          |
 | `--dsn-text-area-disabled-border-color`      | Disabled border color                              |
-| `--dsn-text-area-read-only-color`            | Read-only text color                               |
-| `--dsn-text-area-read-only-background-color` | Read-only background color                         |
-| `--dsn-text-area-read-only-border-color`     | Read-only border color                             |
-| `--dsn-text-area-invalid-color`              | Invalid text color                                 |
+| `--dsn-text-area-disabled-color`             | Disabled text color                                |
+| `--dsn-text-area-focus-background-color`     | Focus background color                             |
+| `--dsn-text-area-focus-border-color`         | Focus border color                                 |
+| `--dsn-text-area-focus-color`                | Focus text color                                   |
 | `--dsn-text-area-invalid-background-color`   | Invalid background color                           |
 | `--dsn-text-area-invalid-border-color`       | Invalid border color                               |
+| `--dsn-text-area-invalid-color`              | Invalid text color                                 |
+| `--dsn-text-area-placeholder-color`          | Placeholder text color                             |
+| `--dsn-text-area-read-only-background-color` | Read-only background color                         |
+| `--dsn-text-area-read-only-border-color`     | Read-only border color                             |
+| `--dsn-text-area-read-only-color`            | Read-only text color                               |
 | `--dsn-form-control-width-xs`                | Extra small width (8ch)                            |
 | `--dsn-form-control-width-sm`                | Small width (16ch)                                 |
 | `--dsn-form-control-width-md`                | Medium width (32ch)                                |

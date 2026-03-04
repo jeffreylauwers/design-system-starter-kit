@@ -35,34 +35,34 @@ De Radio component is een standalone radio button zonder label - alleen het rond
 
 | Token                                   | Beschrijving                                                 |
 | --------------------------------------- | ------------------------------------------------------------ |
-| `--dsn-radio-size`                      | Grootte van de radio button (fluid, gekoppeld aan text size) |
-| `--dsn-radio-icon-size`                 | Grootte van de inner circle (33% van radio size)             |
-| `--dsn-radio-border-width`              | Border dikte default state                                   |
-| `--dsn-radio-border-color`              | Border kleur default state                                   |
 | `--dsn-radio-background-color`          | Achtergrondkleur default state                               |
+| `--dsn-radio-border-color`              | Border kleur default state                                   |
+| `--dsn-radio-border-width`              | Border dikte default state                                   |
 | `--dsn-radio-color`                     | Inner circle kleur default state                             |
-| `--dsn-radio-hover-border-width`        | Border dikte hover state                                     |
-| `--dsn-radio-hover-border-color`        | Border kleur hover state                                     |
-| `--dsn-radio-hover-background-color`    | Achtergrondkleur hover state                                 |
-| `--dsn-radio-focus-border-width`        | Border dikte focus state                                     |
-| `--dsn-radio-focus-border-color`        | Border kleur focus state                                     |
-| `--dsn-radio-focus-background-color`    | Achtergrondkleur focus state                                 |
-| `--dsn-radio-active-border-width`       | Border dikte active state                                    |
-| `--dsn-radio-active-border-color`       | Border kleur active state                                    |
+| `--dsn-radio-size`                      | Grootte van de radio button (fluid, gekoppeld aan text size) |
 | `--dsn-radio-active-background-color`   | Achtergrondkleur active state                                |
-| `--dsn-radio-checked-border-width`      | Border dikte checked state                                   |
-| `--dsn-radio-checked-border-color`      | Border kleur checked state (transparent)                     |
+| `--dsn-radio-active-border-color`       | Border kleur active state                                    |
+| `--dsn-radio-active-border-width`       | Border dikte active state                                    |
 | `--dsn-radio-checked-background-color`  | Achtergrondkleur checked state (accent)                      |
+| `--dsn-radio-checked-border-color`      | Border kleur checked state (transparent)                     |
+| `--dsn-radio-checked-border-width`      | Border dikte checked state                                   |
 | `--dsn-radio-checked-color`             | Inner circle kleur checked state (wit)                       |
-| `--dsn-radio-checked-hover-*`           | Checked + hover combinatie                                   |
-| `--dsn-radio-checked-active-*`          | Checked + active combinatie                                  |
-| `--dsn-radio-checked-focus-*`           | Checked + focus combinatie                                   |
-| `--dsn-radio-disabled-border-color`     | Border kleur disabled state                                  |
 | `--dsn-radio-disabled-background-color` | Achtergrondkleur disabled state                              |
-| `--dsn-radio-checked-disabled-*`        | Checked + disabled combinatie                                |
-| `--dsn-radio-invalid-border-width`      | Border dikte invalid state                                   |
-| `--dsn-radio-invalid-border-color`      | Border kleur invalid state                                   |
+| `--dsn-radio-disabled-border-color`     | Border kleur disabled state                                  |
+| `--dsn-radio-focus-background-color`    | Achtergrondkleur focus state                                 |
+| `--dsn-radio-focus-border-color`        | Border kleur focus state                                     |
+| `--dsn-radio-focus-border-width`        | Border dikte focus state                                     |
+| `--dsn-radio-hover-background-color`    | Achtergrondkleur hover state                                 |
+| `--dsn-radio-hover-border-color`        | Border kleur hover state                                     |
+| `--dsn-radio-hover-border-width`        | Border dikte hover state                                     |
 | `--dsn-radio-invalid-background-color`  | Achtergrondkleur invalid state                               |
+| `--dsn-radio-invalid-border-color`      | Border kleur invalid state                                   |
+| `--dsn-radio-invalid-border-width`      | Border dikte invalid state                                   |
+| `--dsn-radio-checked-active-*`          | Checked + active combinatie                                  |
+| `--dsn-radio-checked-disabled-*`        | Checked + disabled combinatie                                |
+| `--dsn-radio-checked-focus-*`           | Checked + focus combinatie                                   |
+| `--dsn-radio-checked-hover-*`           | Checked + hover combinatie                                   |
+| `--dsn-radio-icon-size`                 | Grootte van de inner circle (33% van radio size)             |
 
 ## Accessibility
 

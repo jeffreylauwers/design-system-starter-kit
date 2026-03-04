@@ -69,11 +69,11 @@ De FormFieldStatus component toont status informatie onder een form control. Het
 
 | Token                                        | Beschrijving                            |
 | -------------------------------------------- | --------------------------------------- |
+| `--dsn-form-field-status-color`              | Text color default variant (subtle)     |
 | `--dsn-form-field-status-font-family`        | Font family                             |
 | `--dsn-form-field-status-font-size`          | Font size (medium)                      |
 | `--dsn-form-field-status-font-weight`        | Font weight (normal)                    |
 | `--dsn-form-field-status-line-height`        | Line height (medium)                    |
-| `--dsn-form-field-status-color`              | Text color default variant (subtle)     |
 | `--dsn-form-field-status-margin-block-start` | Margin above status (medium spacing)    |
 | `--dsn-color-positive-color-default`         | Text color positive variant (green)     |
 | `--dsn-color-warning-color-default`          | Text color warning variant (orange)     |

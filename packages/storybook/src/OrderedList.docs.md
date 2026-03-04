@@ -33,15 +33,15 @@ De OrderedList component biedt een consistente, toegankelijke manier om lijsten 
 
 | Token                                     | Beschrijving                     |
 | ----------------------------------------- | -------------------------------- |
-| `--dsn-ordered-list-font-family`          | Lettertypefamilie                |
-| `--dsn-ordered-list-font-weight`          | Font weight                      |
 | `--dsn-ordered-list-color`                | Tekstkleur                       |
+| `--dsn-ordered-list-font-family`          | Lettertypefamilie                |
 | `--dsn-ordered-list-font-size`            | Font size (md)                   |
-| `--dsn-ordered-list-line-height`          | Line height                      |
-| `--dsn-ordered-list-padding-inline-start` | Linker inspringing voor de lijst |
-| `--dsn-ordered-list-margin-block-end`     | Bottom margin van de lijst       |
+| `--dsn-ordered-list-font-weight`          | Font weight                      |
 | `--dsn-ordered-list-gap`                  | Ruimte tussen list items         |
+| `--dsn-ordered-list-line-height`          | Line height                      |
+| `--dsn-ordered-list-margin-block-end`     | Bottom margin van de lijst       |
 | `--dsn-ordered-list-marker-color`         | Kleur van de nummers             |
+| `--dsn-ordered-list-padding-inline-start` | Linker inspringing voor de lijst |
 
 ## Accessibility
 

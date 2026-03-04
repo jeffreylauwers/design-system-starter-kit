@@ -45,8 +45,8 @@ Select is een formuliercomponent op basis van het native `<select>` element. Het
 
 | Token                                       | Beschrijving                                     |
 | ------------------------------------------- | ------------------------------------------------ |
-| `--dsn-select-icon-size`                    | Grootte van het chevron-icoon                    |
+| `--dsn-select-icon-color`                   | Kleur van het chevron-icoon                      |
 | `--dsn-select-icon-gap`                     | Ruimte tussen icoon en tekst                     |
 | `--dsn-select-icon-inset-inline-end`        | Afstand van icoon tot de rechterrand             |
-| `--dsn-select-icon-color`                   | Kleur van het chevron-icoon                      |
+| `--dsn-select-icon-size`                    | Grootte van het chevron-icoon                    |
 | `--dsn-select-padding-inline-end-with-icon` | Padding rechts van de select (ruimte voor icoon) |

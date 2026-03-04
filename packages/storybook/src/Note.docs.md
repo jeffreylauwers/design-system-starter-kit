@@ -66,10 +66,10 @@ Bij `as="nav"`, `as="aside"` of `as="section"` + een `heading` prop: de Note kop
 | -------------------------------------- | ----------------------------- |
 | `--dsn-note-border-inline-start-width` | Breedte van de linkerborder   |
 | `--dsn-note-column-gap`                | Ruimte tussen icoon en tekst  |
-| `--dsn-note-row-gap`                   | Ruimte tussen heading en body |
 | `--dsn-note-padding-block`             | Verticale padding             |
-| `--dsn-note-padding-inline-start`      | Horizontale padding links     |
 | `--dsn-note-padding-inline-end`        | Horizontale padding rechts    |
+| `--dsn-note-padding-inline-start`      | Horizontale padding links     |
+| `--dsn-note-row-gap`                   | Ruimte tussen heading en body |
 
 De kleur-tokens zijn lokale CSS custom properties per variant:
 

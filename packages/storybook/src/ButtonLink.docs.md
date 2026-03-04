@@ -43,13 +43,13 @@ Een link die semantisch een `<a>` is, maar visueel het uiterlijk van een [Button
 
 | Token                                   | Beschrijving                        |
 | --------------------------------------- | ----------------------------------- |
-| `--dsn-button-strong-background-color`  | Achtergrondkleur strong variant     |
-| `--dsn-button-strong-color`             | Tekstkleur strong variant           |
-| `--dsn-button-strong-border-color`      | Randkleur strong variant            |
 | `--dsn-button-default-background-color` | Achtergrondkleur default variant    |
 | `--dsn-button-default-color`            | Tekstkleur default variant          |
+| `--dsn-button-strong-background-color`  | Achtergrondkleur strong variant     |
+| `--dsn-button-strong-border-color`      | Randkleur strong variant            |
+| `--dsn-button-strong-color`             | Tekstkleur strong variant           |
 | `--dsn-button-subtle-background-color`  | Achtergrondkleur subtle variant     |
 | `--dsn-button-subtle-color`             | Tekstkleur subtle variant           |
-| `--dsn-button-size-small-*`             | Grootte-tokens voor small variant   |
 | `--dsn-button-size-default-*`           | Grootte-tokens voor default variant |
 | `--dsn-button-size-large-*`             | Grootte-tokens voor large variant   |
+| `--dsn-button-size-small-*`             | Grootte-tokens voor small variant   |

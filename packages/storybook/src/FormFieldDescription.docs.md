@@ -35,11 +35,11 @@ De FormFieldDescription component toont aanvullende informatie of instructies vo
 
 | Token                                           | Beschrijving                              |
 | ----------------------------------------------- | ----------------------------------------- |
+| `--dsn-form-field-description-color`            | Text color (subtle)                       |
 | `--dsn-form-field-description-font-family`      | Font family                               |
 | `--dsn-form-field-description-font-size`        | Font size (medium)                        |
 | `--dsn-form-field-description-font-weight`      | Font weight (normal)                      |
 | `--dsn-form-field-description-line-height`      | Line height (medium)                      |
-| `--dsn-form-field-description-color`            | Text color (subtle)                       |
 | `--dsn-form-field-description-margin-block-end` | Margin below description (medium spacing) |
 
 ## Accessibility

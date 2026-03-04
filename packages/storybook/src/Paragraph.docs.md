@@ -34,9 +34,9 @@ De Paragraph component biedt een consistente, toegankelijke manier om tekstblokk
 
 | Token                                          | Beschrijving                      |
 | ---------------------------------------------- | --------------------------------- |
+| `--dsn-paragraph-color`                        | Tekstkleur                        |
 | `--dsn-paragraph-font-family`                  | Lettertypefamilie (standaard)     |
 | `--dsn-paragraph-font-weight`                  | Font weight (standaard)           |
-| `--dsn-paragraph-color`                        | Tekstkleur                        |
 | `--dsn-paragraph-max-inline-size`              | Maximale regelbreedte (65ch)      |
 | `--dsn-paragraph-default-font-size`            | Font size default variant         |
 | `--dsn-paragraph-default-line-height`          | Line height default variant       |

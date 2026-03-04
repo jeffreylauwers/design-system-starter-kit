@@ -34,9 +34,9 @@ De Heading component biedt een consistente, toegankelijke manier om koppen weer 
 
 | Token                                    | Beschrijving                                         |
 | ---------------------------------------- | ---------------------------------------------------- |
+| `--dsn-heading-color`                    | Tekstkleur voor alle headings                        |
 | `--dsn-heading-font-family`              | Lettertypefamilie voor alle headings (IBM Plex Sans) |
 | `--dsn-heading-font-weight`              | Font weight voor alle headings (700 - bold)          |
-| `--dsn-heading-color`                    | Tekstkleur voor alle headings                        |
 | `--dsn-heading-level-1-font-size`        | Font size heading 1 (3xl - 40px-53px fluid)          |
 | `--dsn-heading-level-1-line-height`      | Line height heading 1                                |
 | `--dsn-heading-level-1-margin-block-end` | Bottom margin heading 1                              |

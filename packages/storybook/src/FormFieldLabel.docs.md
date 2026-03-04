@@ -51,18 +51,18 @@ De FormFieldLabel component is een gestandaardiseerd label element voor form con
 
 | Token                                                      | Beschrijving                                                |
 | ---------------------------------------------------------- | ----------------------------------------------------------- |
+| `--dsn-form-field-label-color`                             | Text color                                                  |
 | `--dsn-form-field-label-font-family`                       | Font family                                                 |
 | `--dsn-form-field-label-font-size`                         | Font size (medium)                                          |
 | `--dsn-form-field-label-font-weight`                       | Font weight (bold)                                          |
 | `--dsn-form-field-label-line-height`                       | Line height (medium)                                        |
-| `--dsn-form-field-label-color`                             | Text color                                                  |
 | `--dsn-form-field-label-margin-block-end`                  | Margin below label (medium spacing)                         |
 | `--dsn-form-field-label-margin-block-end-with-description` | Margin below label when description follows (small spacing) |
+| `--dsn-form-field-label-suffix-color`                      | Suffix text color                                           |
 | `--dsn-form-field-label-suffix-font-family`                | Suffix font family                                          |
 | `--dsn-form-field-label-suffix-font-size`                  | Suffix font size (same as label)                            |
 | `--dsn-form-field-label-suffix-font-weight`                | Suffix font weight (normal, not bold)                       |
 | `--dsn-form-field-label-suffix-line-height`                | Suffix line height                                          |
-| `--dsn-form-field-label-suffix-color`                      | Suffix text color                                           |
 | `--dsn-form-field-label-suffix-margin-inline-start`        | Space between label and suffix (small)                      |
 
 ## Accessibility

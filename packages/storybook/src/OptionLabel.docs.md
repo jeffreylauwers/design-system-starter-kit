@@ -31,11 +31,11 @@ De OptionLabel component is een gespecialiseerd label element voor gebruik met c
 
 | Token                               | Beschrijving                             |
 | ----------------------------------- | ---------------------------------------- |
+| `--dsn-option-label-color`          | Tekstkleur default state                 |
 | `--dsn-option-label-font-family`    | Font family voor option labels           |
 | `--dsn-option-label-font-size`      | Font size voor option labels (medium)    |
 | `--dsn-option-label-font-weight`    | Font weight voor option labels (default) |
 | `--dsn-option-label-line-height`    | Line height voor option labels (medium)  |
-| `--dsn-option-label-color`          | Tekstkleur default state                 |
 | `--dsn-option-label-disabled-color` | Tekstkleur disabled state                |
 
 ## Accessibility

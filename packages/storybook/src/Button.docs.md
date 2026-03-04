@@ -43,114 +43,114 @@ De Button component biedt een consistente, toegankelijke manier om acties te tri
 | `--dsn-border-radius-md`                                | Hoekafronding (8px)                             |
 | `--dsn-pointer-target-min-block-size`                   | Minimale hoogte voor touch target (48px)        |
 | `--dsn-pointer-target-min-inline-size`                  | Minimale breedte voor touch target              |
-| `--dsn-button-strong-background-color`                  | Achtergrondkleur strong variant                 |
-| `--dsn-button-strong-color`                             | Tekstkleur strong variant                       |
-| `--dsn-button-strong-border-color`                      | Borderkleur strong variant                      |
-| `--dsn-button-strong-hover-background-color`            | Achtergrondkleur strong hover                   |
-| `--dsn-button-strong-hover-color`                       | Tekstkleur strong hover                         |
-| `--dsn-button-strong-hover-border-color`                | Borderkleur strong hover                        |
-| `--dsn-button-strong-active-background-color`           | Achtergrondkleur strong active                  |
-| `--dsn-button-strong-active-color`                      | Tekstkleur strong active                        |
-| `--dsn-button-strong-active-border-color`               | Borderkleur strong active                       |
 | `--dsn-button-default-background-color`                 | Achtergrondkleur default variant                |
-| `--dsn-button-default-color`                            | Tekstkleur default variant                      |
 | `--dsn-button-default-border-color`                     | Borderkleur default variant                     |
-| `--dsn-button-default-hover-background-color`           | Achtergrondkleur default hover                  |
-| `--dsn-button-default-hover-color`                      | Tekstkleur default hover                        |
-| `--dsn-button-default-hover-border-color`               | Borderkleur default hover                       |
+| `--dsn-button-default-color`                            | Tekstkleur default variant                      |
 | `--dsn-button-default-active-background-color`          | Achtergrondkleur default active                 |
-| `--dsn-button-default-active-color`                     | Tekstkleur default active                       |
 | `--dsn-button-default-active-border-color`              | Borderkleur default active                      |
-| `--dsn-button-subtle-background-color`                  | Achtergrondkleur subtle variant                 |
-| `--dsn-button-subtle-color`                             | Tekstkleur subtle variant                       |
-| `--dsn-button-subtle-border-color`                      | Borderkleur subtle variant                      |
-| `--dsn-button-subtle-hover-background-color`            | Achtergrondkleur subtle hover                   |
-| `--dsn-button-subtle-hover-color`                       | Tekstkleur subtle hover                         |
-| `--dsn-button-subtle-hover-border-color`                | Borderkleur subtle hover                        |
-| `--dsn-button-subtle-active-background-color`           | Achtergrondkleur subtle active                  |
-| `--dsn-button-subtle-active-color`                      | Tekstkleur subtle active                        |
-| `--dsn-button-subtle-active-border-color`               | Borderkleur subtle active                       |
-| `--dsn-button-link-background-color`                    | Achtergrondkleur link variant                   |
-| `--dsn-button-link-color`                               | Tekstkleur link variant                         |
-| `--dsn-button-link-border-color`                        | Borderkleur link variant                        |
-| `--dsn-button-link-hover-background-color`              | Achtergrondkleur link hover                     |
-| `--dsn-button-link-hover-color`                         | Tekstkleur link hover                           |
-| `--dsn-button-link-hover-border-color`                  | Borderkleur link hover                          |
-| `--dsn-button-link-active-background-color`             | Achtergrondkleur link active                    |
-| `--dsn-button-link-active-color`                        | Tekstkleur link active                          |
-| `--dsn-button-link-active-border-color`                 | Borderkleur link active                         |
-| `--dsn-button-strong-negative-background-color`         | Achtergrondkleur strong-negative variant        |
-| `--dsn-button-strong-negative-color`                    | Tekstkleur strong-negative variant              |
-| `--dsn-button-strong-negative-border-color`             | Borderkleur strong-negative variant             |
-| `--dsn-button-strong-negative-hover-background-color`   | Achtergrondkleur strong-negative hover          |
-| `--dsn-button-strong-negative-hover-color`              | Tekstkleur strong-negative hover                |
-| `--dsn-button-strong-negative-hover-border-color`       | Borderkleur strong-negative hover               |
-| `--dsn-button-strong-negative-active-background-color`  | Achtergrondkleur strong-negative active         |
-| `--dsn-button-strong-negative-active-color`             | Tekstkleur strong-negative active               |
-| `--dsn-button-strong-negative-active-border-color`      | Borderkleur strong-negative active              |
+| `--dsn-button-default-active-color`                     | Tekstkleur default active                       |
+| `--dsn-button-default-hover-background-color`           | Achtergrondkleur default hover                  |
+| `--dsn-button-default-hover-border-color`               | Borderkleur default hover                       |
+| `--dsn-button-default-hover-color`                      | Tekstkleur default hover                        |
 | `--dsn-button-default-negative-background-color`        | Achtergrondkleur default-negative variant       |
-| `--dsn-button-default-negative-color`                   | Tekstkleur default-negative variant             |
 | `--dsn-button-default-negative-border-color`            | Borderkleur default-negative variant            |
-| `--dsn-button-default-negative-hover-background-color`  | Achtergrondkleur default-negative hover         |
-| `--dsn-button-default-negative-hover-color`             | Tekstkleur default-negative hover               |
-| `--dsn-button-default-negative-hover-border-color`      | Borderkleur default-negative hover              |
+| `--dsn-button-default-negative-color`                   | Tekstkleur default-negative variant             |
 | `--dsn-button-default-negative-active-background-color` | Achtergrondkleur default-negative active        |
-| `--dsn-button-default-negative-active-color`            | Tekstkleur default-negative active              |
 | `--dsn-button-default-negative-active-border-color`     | Borderkleur default-negative active             |
-| `--dsn-button-subtle-negative-background-color`         | Achtergrondkleur subtle-negative variant        |
-| `--dsn-button-subtle-negative-color`                    | Tekstkleur subtle-negative variant              |
-| `--dsn-button-subtle-negative-border-color`             | Borderkleur subtle-negative variant             |
-| `--dsn-button-subtle-negative-hover-background-color`   | Achtergrondkleur subtle-negative hover          |
-| `--dsn-button-subtle-negative-hover-color`              | Tekstkleur subtle-negative hover                |
-| `--dsn-button-subtle-negative-hover-border-color`       | Borderkleur subtle-negative hover               |
-| `--dsn-button-subtle-negative-active-background-color`  | Achtergrondkleur subtle-negative active         |
-| `--dsn-button-subtle-negative-active-color`             | Tekstkleur subtle-negative active               |
-| `--dsn-button-subtle-negative-active-border-color`      | Borderkleur subtle-negative active              |
-| `--dsn-button-strong-positive-background-color`         | Achtergrondkleur strong-positive variant        |
-| `--dsn-button-strong-positive-color`                    | Tekstkleur strong-positive variant              |
-| `--dsn-button-strong-positive-border-color`             | Borderkleur strong-positive variant             |
-| `--dsn-button-strong-positive-hover-background-color`   | Achtergrondkleur strong-positive hover          |
-| `--dsn-button-strong-positive-hover-color`              | Tekstkleur strong-positive hover                |
-| `--dsn-button-strong-positive-hover-border-color`       | Borderkleur strong-positive hover               |
-| `--dsn-button-strong-positive-active-background-color`  | Achtergrondkleur strong-positive active         |
-| `--dsn-button-strong-positive-active-color`             | Tekstkleur strong-positive active               |
-| `--dsn-button-strong-positive-active-border-color`      | Borderkleur strong-positive active              |
+| `--dsn-button-default-negative-active-color`            | Tekstkleur default-negative active              |
+| `--dsn-button-default-negative-hover-background-color`  | Achtergrondkleur default-negative hover         |
+| `--dsn-button-default-negative-hover-border-color`      | Borderkleur default-negative hover              |
+| `--dsn-button-default-negative-hover-color`             | Tekstkleur default-negative hover               |
 | `--dsn-button-default-positive-background-color`        | Achtergrondkleur default-positive variant       |
-| `--dsn-button-default-positive-color`                   | Tekstkleur default-positive variant             |
 | `--dsn-button-default-positive-border-color`            | Borderkleur default-positive variant            |
-| `--dsn-button-default-positive-hover-background-color`  | Achtergrondkleur default-positive hover         |
-| `--dsn-button-default-positive-hover-color`             | Tekstkleur default-positive hover               |
-| `--dsn-button-default-positive-hover-border-color`      | Borderkleur default-positive hover              |
+| `--dsn-button-default-positive-color`                   | Tekstkleur default-positive variant             |
 | `--dsn-button-default-positive-active-background-color` | Achtergrondkleur default-positive active        |
-| `--dsn-button-default-positive-active-color`            | Tekstkleur default-positive active              |
 | `--dsn-button-default-positive-active-border-color`     | Borderkleur default-positive active             |
+| `--dsn-button-default-positive-active-color`            | Tekstkleur default-positive active              |
+| `--dsn-button-default-positive-hover-background-color`  | Achtergrondkleur default-positive hover         |
+| `--dsn-button-default-positive-hover-border-color`      | Borderkleur default-positive hover              |
+| `--dsn-button-default-positive-hover-color`             | Tekstkleur default-positive hover               |
+| `--dsn-button-link-background-color`                    | Achtergrondkleur link variant                   |
+| `--dsn-button-link-border-color`                        | Borderkleur link variant                        |
+| `--dsn-button-link-color`                               | Tekstkleur link variant                         |
+| `--dsn-button-link-active-background-color`             | Achtergrondkleur link active                    |
+| `--dsn-button-link-active-border-color`                 | Borderkleur link active                         |
+| `--dsn-button-link-active-color`                        | Tekstkleur link active                          |
+| `--dsn-button-link-hover-background-color`              | Achtergrondkleur link hover                     |
+| `--dsn-button-link-hover-border-color`                  | Borderkleur link hover                          |
+| `--dsn-button-link-hover-color`                         | Tekstkleur link hover                           |
+| `--dsn-button-strong-background-color`                  | Achtergrondkleur strong variant                 |
+| `--dsn-button-strong-border-color`                      | Borderkleur strong variant                      |
+| `--dsn-button-strong-color`                             | Tekstkleur strong variant                       |
+| `--dsn-button-strong-active-background-color`           | Achtergrondkleur strong active                  |
+| `--dsn-button-strong-active-border-color`               | Borderkleur strong active                       |
+| `--dsn-button-strong-active-color`                      | Tekstkleur strong active                        |
+| `--dsn-button-strong-hover-background-color`            | Achtergrondkleur strong hover                   |
+| `--dsn-button-strong-hover-border-color`                | Borderkleur strong hover                        |
+| `--dsn-button-strong-hover-color`                       | Tekstkleur strong hover                         |
+| `--dsn-button-strong-negative-background-color`         | Achtergrondkleur strong-negative variant        |
+| `--dsn-button-strong-negative-border-color`             | Borderkleur strong-negative variant             |
+| `--dsn-button-strong-negative-color`                    | Tekstkleur strong-negative variant              |
+| `--dsn-button-strong-negative-active-background-color`  | Achtergrondkleur strong-negative active         |
+| `--dsn-button-strong-negative-active-border-color`      | Borderkleur strong-negative active              |
+| `--dsn-button-strong-negative-active-color`             | Tekstkleur strong-negative active               |
+| `--dsn-button-strong-negative-hover-background-color`   | Achtergrondkleur strong-negative hover          |
+| `--dsn-button-strong-negative-hover-border-color`       | Borderkleur strong-negative hover               |
+| `--dsn-button-strong-negative-hover-color`              | Tekstkleur strong-negative hover                |
+| `--dsn-button-strong-positive-background-color`         | Achtergrondkleur strong-positive variant        |
+| `--dsn-button-strong-positive-border-color`             | Borderkleur strong-positive variant             |
+| `--dsn-button-strong-positive-color`                    | Tekstkleur strong-positive variant              |
+| `--dsn-button-strong-positive-active-background-color`  | Achtergrondkleur strong-positive active         |
+| `--dsn-button-strong-positive-active-border-color`      | Borderkleur strong-positive active              |
+| `--dsn-button-strong-positive-active-color`             | Tekstkleur strong-positive active               |
+| `--dsn-button-strong-positive-hover-background-color`   | Achtergrondkleur strong-positive hover          |
+| `--dsn-button-strong-positive-hover-border-color`       | Borderkleur strong-positive hover               |
+| `--dsn-button-strong-positive-hover-color`              | Tekstkleur strong-positive hover                |
+| `--dsn-button-subtle-background-color`                  | Achtergrondkleur subtle variant                 |
+| `--dsn-button-subtle-border-color`                      | Borderkleur subtle variant                      |
+| `--dsn-button-subtle-color`                             | Tekstkleur subtle variant                       |
+| `--dsn-button-subtle-active-background-color`           | Achtergrondkleur subtle active                  |
+| `--dsn-button-subtle-active-border-color`               | Borderkleur subtle active                       |
+| `--dsn-button-subtle-active-color`                      | Tekstkleur subtle active                        |
+| `--dsn-button-subtle-hover-background-color`            | Achtergrondkleur subtle hover                   |
+| `--dsn-button-subtle-hover-border-color`                | Borderkleur subtle hover                        |
+| `--dsn-button-subtle-hover-color`                       | Tekstkleur subtle hover                         |
+| `--dsn-button-subtle-negative-background-color`         | Achtergrondkleur subtle-negative variant        |
+| `--dsn-button-subtle-negative-border-color`             | Borderkleur subtle-negative variant             |
+| `--dsn-button-subtle-negative-color`                    | Tekstkleur subtle-negative variant              |
+| `--dsn-button-subtle-negative-active-background-color`  | Achtergrondkleur subtle-negative active         |
+| `--dsn-button-subtle-negative-active-border-color`      | Borderkleur subtle-negative active              |
+| `--dsn-button-subtle-negative-active-color`             | Tekstkleur subtle-negative active               |
+| `--dsn-button-subtle-negative-hover-background-color`   | Achtergrondkleur subtle-negative hover          |
+| `--dsn-button-subtle-negative-hover-border-color`       | Borderkleur subtle-negative hover               |
+| `--dsn-button-subtle-negative-hover-color`              | Tekstkleur subtle-negative hover                |
 | `--dsn-button-subtle-positive-background-color`         | Achtergrondkleur subtle-positive variant        |
-| `--dsn-button-subtle-positive-color`                    | Tekstkleur subtle-positive variant              |
 | `--dsn-button-subtle-positive-border-color`             | Borderkleur subtle-positive variant             |
-| `--dsn-button-subtle-positive-hover-background-color`   | Achtergrondkleur subtle-positive hover          |
-| `--dsn-button-subtle-positive-hover-color`              | Tekstkleur subtle-positive hover                |
-| `--dsn-button-subtle-positive-hover-border-color`       | Borderkleur subtle-positive hover               |
+| `--dsn-button-subtle-positive-color`                    | Tekstkleur subtle-positive variant              |
 | `--dsn-button-subtle-positive-active-background-color`  | Achtergrondkleur subtle-positive active         |
-| `--dsn-button-subtle-positive-active-color`             | Tekstkleur subtle-positive active               |
 | `--dsn-button-subtle-positive-active-border-color`      | Borderkleur subtle-positive active              |
-| `--dsn-button-size-small-font-size`                     | Font size small variant                         |
-| `--dsn-button-size-small-padding-block`                 | Verticale padding small variant                 |
-| `--dsn-button-size-small-padding-inline`                | Horizontale padding small variant               |
-| `--dsn-button-size-small-gap`                           | Ruimte tussen icoon en tekst small variant      |
-| `--dsn-button-size-small-icon-size`                     | Icoonformaat small variant                      |
-| `--dsn-button-size-small-icon-only-padding`             | Padding voor icon-only small variant            |
+| `--dsn-button-subtle-positive-active-color`             | Tekstkleur subtle-positive active               |
+| `--dsn-button-subtle-positive-hover-background-color`   | Achtergrondkleur subtle-positive hover          |
+| `--dsn-button-subtle-positive-hover-border-color`       | Borderkleur subtle-positive hover               |
+| `--dsn-button-subtle-positive-hover-color`              | Tekstkleur subtle-positive hover                |
 | `--dsn-button-size-default-font-size`                   | Font size default variant                       |
+| `--dsn-button-size-default-gap`                         | Ruimte tussen icoon en tekst default variant    |
+| `--dsn-button-size-default-icon-only-padding`           | Padding voor icon-only default variant          |
+| `--dsn-button-size-default-icon-size`                   | Icoonformaat default variant                    |
 | `--dsn-button-size-default-padding-block`               | Verticale padding default variant               |
 | `--dsn-button-size-default-padding-inline`              | Horizontale padding default variant             |
-| `--dsn-button-size-default-gap`                         | Ruimte tussen icoon en tekst default variant    |
-| `--dsn-button-size-default-icon-size`                   | Icoonformaat default variant                    |
-| `--dsn-button-size-default-icon-only-padding`           | Padding voor icon-only default variant          |
 | `--dsn-button-size-large-font-size`                     | Font size large variant                         |
+| `--dsn-button-size-large-gap`                           | Ruimte tussen icoon en tekst large variant      |
+| `--dsn-button-size-large-icon-only-padding`             | Padding voor icon-only large variant            |
+| `--dsn-button-size-large-icon-size`                     | Icoonformaat large variant                      |
 | `--dsn-button-size-large-padding-block`                 | Verticale padding large variant                 |
 | `--dsn-button-size-large-padding-inline`                | Horizontale padding large variant               |
-| `--dsn-button-size-large-gap`                           | Ruimte tussen icoon en tekst large variant      |
-| `--dsn-button-size-large-icon-size`                     | Icoonformaat large variant                      |
-| `--dsn-button-size-large-icon-only-padding`             | Padding voor icon-only large variant            |
+| `--dsn-button-size-small-font-size`                     | Font size small variant                         |
+| `--dsn-button-size-small-gap`                           | Ruimte tussen icoon en tekst small variant      |
+| `--dsn-button-size-small-icon-only-padding`             | Padding voor icon-only small variant            |
+| `--dsn-button-size-small-icon-size`                     | Icoonformaat small variant                      |
+| `--dsn-button-size-small-padding-block`                 | Verticale padding small variant                 |
+| `--dsn-button-size-small-padding-inline`                | Horizontale padding small variant               |
 | `--dsn-focus-background-color`                          | Achtergrondkleur bij focus                      |
 | `--dsn-focus-color`                                     | Tekstkleur bij focus                            |
 | `--dsn-focus-outline-width`                             | Dikte van de focus outline                      |
