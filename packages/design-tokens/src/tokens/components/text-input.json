@@ -86,13 +86,6 @@
         "type": "dimension",
         "comment": "Text input left padding"
       },
-      "placeholder": {
-        "color": {
-          "value": "{dsn.form-control.placeholder.color}",
-          "type": "color",
-          "comment": "Text input placeholder color"
-        }
-      },
       "disabled": {
         "background-color": {
           "value": "{dsn.form-control.disabled.background-color}",
@@ -177,6 +170,13 @@
           "value": "{dsn.text-input.border-color}",
           "type": "color",
           "comment": "Text input hover box shadow color"
+        }
+      },
+      "placeholder": {
+        "color": {
+          "value": "{dsn.form-control.placeholder.color}",
+          "type": "color",
+          "comment": "Text input placeholder color"
         }
       },
       "invalid": {

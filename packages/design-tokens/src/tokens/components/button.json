@@ -1,89 +1,21 @@
 {
   "dsn": {
     "button": {
-      "strong": {
-        "background-color": {
-          "value": "{dsn.color.action-1-inverse.bg-default}",
-          "type": "color",
-          "comment": "Strong button background"
-        },
-        "color": {
-          "value": "{dsn.color.action-1-inverse.color-default}",
-          "type": "color",
-          "comment": "Strong button text/icon color"
-        },
-        "border-color": {
-          "value": "{dsn.color.transparent}",
-          "type": "color",
-          "comment": "Strong button border"
-        },
-        "hover": {
-          "background-color": {
-            "value": "{dsn.color.action-1-inverse.bg-hover}",
-            "type": "color",
-            "comment": "Strong button hover background"
-          },
-          "border-color": {
-            "value": "{dsn.color.transparent}",
-            "type": "color",
-            "comment": "Strong button hover border"
-          },
-          "color": {
-            "value": "{dsn.color.action-1-inverse.color-hover}",
-            "type": "color",
-            "comment": "Strong button hover text/icon color"
-          }
-        },
-        "active": {
-          "background-color": {
-            "value": "{dsn.color.action-1-inverse.bg-active}",
-            "type": "color",
-            "comment": "Strong button active background"
-          },
-          "border-color": {
-            "value": "{dsn.color.transparent}",
-            "type": "color",
-            "comment": "Strong button active border"
-          },
-          "color": {
-            "value": "{dsn.color.action-1-inverse.color-active}",
-            "type": "color",
-            "comment": "Strong button active text/icon color"
-          }
-        }
-      },
       "default": {
         "background-color": {
           "value": "{dsn.color.transparent}",
           "type": "color",
           "comment": "Default button background"
         },
-        "color": {
-          "value": "{dsn.color.action-1.color-default}",
-          "type": "color",
-          "comment": "Default button text/icon color"
-        },
         "border-color": {
           "value": "{dsn.color.action-1.border-default}",
           "type": "color",
           "comment": "Default button border"
         },
-        "hover": {
-          "background-color": {
-            "value": "{dsn.color.action-1.bg-hover}",
-            "type": "color",
-            "comment": "Default button hover background"
-          },
-          "border-color": {
-            "value": "{dsn.color.action-1.border-hover}",
-            "type": "color",
-            "comment": "Default button hover border"
-          },
-          "color": {
-            "value": "{dsn.color.action-1.color-hover}",
-            "type": "color",
-            "comment": "Default button hover text/icon color"
-          }
+        "color": {
+          "value": "{dsn.color.action-1.color-default}",
+          "type": "color",
+          "comment": "Default button text/icon color"
         },
         "active": {
           "background-color": {
@@ -101,107 +33,22 @@
             "type": "color",
             "comment": "Default button active text/icon color"
           }
-        }
-      },
-      "subtle": {
-        "background-color": {
-          "value": "{dsn.color.transparent}",
-          "type": "color",
-          "comment": "Subtle button background"
-        },
-        "color": {
-          "value": "{dsn.color.action-1.color-default}",
-          "type": "color",
-          "comment": "Subtle button text/icon color"
-        },
-        "border-color": {
-          "value": "{dsn.color.transparent}",
-          "type": "color",
-          "comment": "Subtle button border"
         },
         "hover": {
           "background-color": {
             "value": "{dsn.color.action-1.bg-hover}",
             "type": "color",
-            "comment": "Subtle button hover background"
+            "comment": "Default button hover background"
           },
           "border-color": {
-            "value": "{dsn.color.transparent}",
+            "value": "{dsn.color.action-1.border-hover}",
             "type": "color",
-            "comment": "Subtle button hover border"
+            "comment": "Default button hover border"
           },
           "color": {
             "value": "{dsn.color.action-1.color-hover}",
             "type": "color",
-            "comment": "Subtle button hover text/icon color"
-          }
-        },
-        "active": {
-          "background-color": {
-            "value": "{dsn.color.action-1.bg-active}",
-            "type": "color",
-            "comment": "Subtle button active background"
-          },
-          "border-color": {
-            "value": "{dsn.color.transparent}",
-            "type": "color",
-            "comment": "Subtle button active border"
-          },
-          "color": {
-            "value": "{dsn.color.action-1.color-active}",
-            "type": "color",
-            "comment": "Subtle button active text/icon color"
-          }
-        }
-      },
-      "strong-negative": {
-        "background-color": {
-          "value": "{dsn.color.negative-inverse.bg-default}",
-          "type": "color",
-          "comment": "Strong negative button background"
-        },
-        "color": {
-          "value": "{dsn.color.negative-inverse.color-default}",
-          "type": "color",
-          "comment": "Strong negative button text/icon color"
-        },
-        "border-color": {
-          "value": "{dsn.color.transparent}",
-          "type": "color",
-          "comment": "Strong negative button border"
-        },
-        "hover": {
-          "background-color": {
-            "value": "{dsn.color.negative-inverse.bg-hover}",
-            "type": "color",
-            "comment": "Strong negative button hover background"
-          },
-          "border-color": {
-            "value": "{dsn.color.transparent}",
-            "type": "color",
-            "comment": "Strong negative button hover border"
-          },
-          "color": {
-            "value": "{dsn.color.negative-inverse.color-hover}",
-            "type": "color",
-            "comment": "Strong negative button hover text/icon color"
-          }
-        },
-        "active": {
-          "background-color": {
-            "value": "{dsn.color.negative-inverse.bg-active}",
-            "type": "color",
-            "comment": "Strong negative button active background"
-          },
-          "border-color": {
-            "value": "{dsn.color.transparent}",
-            "type": "color",
-            "comment": "Strong negative button active border"
-          },
-          "color": {
-            "value": "{dsn.color.negative-inverse.color-active}",
-            "type": "color",
-            "comment": "Strong negative button active text/icon color"
+            "comment": "Default button hover text/icon color"
           }
         }
       },
@@ -211,32 +58,15 @@
           "type": "color",
           "comment": "Default negative button background"
         },
-        "color": {
-          "value": "{dsn.color.negative.color-default}",
-          "type": "color",
-          "comment": "Default negative button text/icon color"
-        },
         "border-color": {
           "value": "{dsn.color.negative.border-default}",
           "type": "color",
           "comment": "Default negative button border"
         },
-        "hover": {
-          "background-color": {
-            "value": "{dsn.color.negative.bg-hover}",
-            "type": "color",
-            "comment": "Default negative button hover background"
-          },
-          "border-color": {
-            "value": "{dsn.color.negative.border-hover}",
-            "type": "color",
-            "comment": "Default negative button hover border"
-          },
-          "color": {
-            "value": "{dsn.color.negative.color-hover}",
-            "type": "color",
-            "comment": "Default negative button hover text/icon color"
-          }
+        "color": {
+          "value": "{dsn.color.negative.color-default}",
+          "type": "color",
+          "comment": "Default negative button text/icon color"
         },
         "active": {
           "background-color": {
@@ -254,107 +84,22 @@
             "type": "color",
             "comment": "Default negative button active text/icon color"
           }
-        }
-      },
-      "subtle-negative": {
-        "background-color": {
-          "value": "{dsn.color.transparent}",
-          "type": "color",
-          "comment": "Subtle negative button background"
-        },
-        "color": {
-          "value": "{dsn.color.negative.color-default}",
-          "type": "color",
-          "comment": "Subtle negative button text/icon color"
-        },
-        "border-color": {
-          "value": "{dsn.color.transparent}",
-          "type": "color",
-          "comment": "Subtle negative button border"
         },
         "hover": {
           "background-color": {
             "value": "{dsn.color.negative.bg-hover}",
             "type": "color",
-            "comment": "Subtle negative button hover background"
+            "comment": "Default negative button hover background"
           },
           "border-color": {
-            "value": "{dsn.color.transparent}",
+            "value": "{dsn.color.negative.border-hover}",
             "type": "color",
-            "comment": "Subtle negative button hover border"
+            "comment": "Default negative button hover border"
           },
           "color": {
             "value": "{dsn.color.negative.color-hover}",
             "type": "color",
-            "comment": "Subtle negative button hover text/icon color"
-          }
-        },
-        "active": {
-          "background-color": {
-            "value": "{dsn.color.negative.bg-active}",
-            "type": "color",
-            "comment": "Subtle negative button active background"
-          },
-          "border-color": {
-            "value": "{dsn.color.transparent}",
-            "type": "color",
-            "comment": "Subtle negative button active border"
-          },
-          "color": {
-            "value": "{dsn.color.negative.color-active}",
-            "type": "color",
-            "comment": "Subtle negative button active text/icon color"
-          }
-        }
-      },
-      "strong-positive": {
-        "background-color": {
-          "value": "{dsn.color.positive-inverse.bg-default}",
-          "type": "color",
-          "comment": "Strong positive button background"
-        },
-        "color": {
-          "value": "{dsn.color.positive-inverse.color-default}",
-          "type": "color",
-          "comment": "Strong positive button text/icon color"
-        },
-        "border-color": {
-          "value": "{dsn.color.transparent}",
-          "type": "color",
-          "comment": "Strong positive button border"
-        },
-        "hover": {
-          "background-color": {
-            "value": "{dsn.color.positive-inverse.bg-hover}",
-            "type": "color",
-            "comment": "Strong positive button hover background"
-          },
-          "border-color": {
-            "value": "{dsn.color.transparent}",
-            "type": "color",
-            "comment": "Strong positive button hover border"
-          },
-          "color": {
-            "value": "{dsn.color.positive-inverse.color-hover}",
-            "type": "color",
-            "comment": "Strong positive button hover text/icon color"
-          }
-        },
-        "active": {
-          "background-color": {
-            "value": "{dsn.color.positive-inverse.bg-active}",
-            "type": "color",
-            "comment": "Strong positive button active background"
-          },
-          "border-color": {
-            "value": "{dsn.color.transparent}",
-            "type": "color",
-            "comment": "Strong positive button active border"
-          },
-          "color": {
-            "value": "{dsn.color.positive-inverse.color-active}",
-            "type": "color",
-            "comment": "Strong positive button active text/icon color"
+            "comment": "Default negative button hover text/icon color"
           }
         }
       },
@@ -364,32 +109,15 @@
           "type": "color",
           "comment": "Default positive button background"
         },
-        "color": {
-          "value": "{dsn.color.positive.color-default}",
-          "type": "color",
-          "comment": "Default positive button text/icon color"
-        },
         "border-color": {
           "value": "{dsn.color.positive.border-default}",
           "type": "color",
           "comment": "Default positive button border"
         },
-        "hover": {
-          "background-color": {
-            "value": "{dsn.color.positive.bg-hover}",
-            "type": "color",
-            "comment": "Default positive button hover background"
-          },
-          "border-color": {
-            "value": "{dsn.color.positive.border-hover}",
-            "type": "color",
-            "comment": "Default positive button hover border"
-          },
-          "color": {
-            "value": "{dsn.color.positive.color-hover}",
-            "type": "color",
-            "comment": "Default positive button hover text/icon color"
-          }
+        "color": {
+          "value": "{dsn.color.positive.color-default}",
+          "type": "color",
+          "comment": "Default positive button text/icon color"
         },
         "active": {
           "background-color": {
@@ -407,6 +135,278 @@
             "type": "color",
             "comment": "Default positive button active text/icon color"
           }
+        },
+        "hover": {
+          "background-color": {
+            "value": "{dsn.color.positive.bg-hover}",
+            "type": "color",
+            "comment": "Default positive button hover background"
+          },
+          "border-color": {
+            "value": "{dsn.color.positive.border-hover}",
+            "type": "color",
+            "comment": "Default positive button hover border"
+          },
+          "color": {
+            "value": "{dsn.color.positive.color-hover}",
+            "type": "color",
+            "comment": "Default positive button hover text/icon color"
+          }
+        }
+      },
+      "strong": {
+        "background-color": {
+          "value": "{dsn.color.action-1-inverse.bg-default}",
+          "type": "color",
+          "comment": "Strong button background"
+        },
+        "border-color": {
+          "value": "{dsn.color.transparent}",
+          "type": "color",
+          "comment": "Strong button border"
+        },
+        "color": {
+          "value": "{dsn.color.action-1-inverse.color-default}",
+          "type": "color",
+          "comment": "Strong button text/icon color"
+        },
+        "active": {
+          "background-color": {
+            "value": "{dsn.color.action-1-inverse.bg-active}",
+            "type": "color",
+            "comment": "Strong button active background"
+          },
+          "border-color": {
+            "value": "{dsn.color.transparent}",
+            "type": "color",
+            "comment": "Strong button active border"
+          },
+          "color": {
+            "value": "{dsn.color.action-1-inverse.color-active}",
+            "type": "color",
+            "comment": "Strong button active text/icon color"
+          }
+        },
+        "hover": {
+          "background-color": {
+            "value": "{dsn.color.action-1-inverse.bg-hover}",
+            "type": "color",
+            "comment": "Strong button hover background"
+          },
+          "border-color": {
+            "value": "{dsn.color.transparent}",
+            "type": "color",
+            "comment": "Strong button hover border"
+          },
+          "color": {
+            "value": "{dsn.color.action-1-inverse.color-hover}",
+            "type": "color",
+            "comment": "Strong button hover text/icon color"
+          }
+        }
+      },
+      "strong-negative": {
+        "background-color": {
+          "value": "{dsn.color.negative-inverse.bg-default}",
+          "type": "color",
+          "comment": "Strong negative button background"
+        },
+        "border-color": {
+          "value": "{dsn.color.transparent}",
+          "type": "color",
+          "comment": "Strong negative button border"
+        },
+        "color": {
+          "value": "{dsn.color.negative-inverse.color-default}",
+          "type": "color",
+          "comment": "Strong negative button text/icon color"
+        },
+        "active": {
+          "background-color": {
+            "value": "{dsn.color.negative-inverse.bg-active}",
+            "type": "color",
+            "comment": "Strong negative button active background"
+          },
+          "border-color": {
+            "value": "{dsn.color.transparent}",
+            "type": "color",
+            "comment": "Strong negative button active border"
+          },
+          "color": {
+            "value": "{dsn.color.negative-inverse.color-active}",
+            "type": "color",
+            "comment": "Strong negative button active text/icon color"
+          }
+        },
+        "hover": {
+          "background-color": {
+            "value": "{dsn.color.negative-inverse.bg-hover}",
+            "type": "color",
+            "comment": "Strong negative button hover background"
+          },
+          "border-color": {
+            "value": "{dsn.color.transparent}",
+            "type": "color",
+            "comment": "Strong negative button hover border"
+          },
+          "color": {
+            "value": "{dsn.color.negative-inverse.color-hover}",
+            "type": "color",
+            "comment": "Strong negative button hover text/icon color"
+          }
+        }
+      },
+      "strong-positive": {
+        "background-color": {
+          "value": "{dsn.color.positive-inverse.bg-default}",
+          "type": "color",
+          "comment": "Strong positive button background"
+        },
+        "border-color": {
+          "value": "{dsn.color.transparent}",
+          "type": "color",
+          "comment": "Strong positive button border"
+        },
+        "color": {
+          "value": "{dsn.color.positive-inverse.color-default}",
+          "type": "color",
+          "comment": "Strong positive button text/icon color"
+        },
+        "active": {
+          "background-color": {
+            "value": "{dsn.color.positive-inverse.bg-active}",
+            "type": "color",
+            "comment": "Strong positive button active background"
+          },
+          "border-color": {
+            "value": "{dsn.color.transparent}",
+            "type": "color",
+            "comment": "Strong positive button active border"
+          },
+          "color": {
+            "value": "{dsn.color.positive-inverse.color-active}",
+            "type": "color",
+            "comment": "Strong positive button active text/icon color"
+          }
+        },
+        "hover": {
+          "background-color": {
+            "value": "{dsn.color.positive-inverse.bg-hover}",
+            "type": "color",
+            "comment": "Strong positive button hover background"
+          },
+          "border-color": {
+            "value": "{dsn.color.transparent}",
+            "type": "color",
+            "comment": "Strong positive button hover border"
+          },
+          "color": {
+            "value": "{dsn.color.positive-inverse.color-hover}",
+            "type": "color",
+            "comment": "Strong positive button hover text/icon color"
+          }
+        }
+      },
+      "subtle": {
+        "background-color": {
+          "value": "{dsn.color.transparent}",
+          "type": "color",
+          "comment": "Subtle button background"
+        },
+        "border-color": {
+          "value": "{dsn.color.transparent}",
+          "type": "color",
+          "comment": "Subtle button border"
+        },
+        "color": {
+          "value": "{dsn.color.action-1.color-default}",
+          "type": "color",
+          "comment": "Subtle button text/icon color"
+        },
+        "active": {
+          "background-color": {
+            "value": "{dsn.color.action-1.bg-active}",
+            "type": "color",
+            "comment": "Subtle button active background"
+          },
+          "border-color": {
+            "value": "{dsn.color.transparent}",
+            "type": "color",
+            "comment": "Subtle button active border"
+          },
+          "color": {
+            "value": "{dsn.color.action-1.color-active}",
+            "type": "color",
+            "comment": "Subtle button active text/icon color"
+          }
+        },
+        "hover": {
+          "background-color": {
+            "value": "{dsn.color.action-1.bg-hover}",
+            "type": "color",
+            "comment": "Subtle button hover background"
+          },
+          "border-color": {
+            "value": "{dsn.color.transparent}",
+            "type": "color",
+            "comment": "Subtle button hover border"
+          },
+          "color": {
+            "value": "{dsn.color.action-1.color-hover}",
+            "type": "color",
+            "comment": "Subtle button hover text/icon color"
+          }
+        }
+      },
+      "subtle-negative": {
+        "background-color": {
+          "value": "{dsn.color.transparent}",
+          "type": "color",
+          "comment": "Subtle negative button background"
+        },
+        "border-color": {
+          "value": "{dsn.color.transparent}",
+          "type": "color",
+          "comment": "Subtle negative button border"
+        },
+        "color": {
+          "value": "{dsn.color.negative.color-default}",
+          "type": "color",
+          "comment": "Subtle negative button text/icon color"
+        },
+        "active": {
+          "background-color": {
+            "value": "{dsn.color.negative.bg-active}",
+            "type": "color",
+            "comment": "Subtle negative button active background"
+          },
+          "border-color": {
+            "value": "{dsn.color.transparent}",
+            "type": "color",
+            "comment": "Subtle negative button active border"
+          },
+          "color": {
+            "value": "{dsn.color.negative.color-active}",
+            "type": "color",
+            "comment": "Subtle negative button active text/icon color"
+          }
+        },
+        "hover": {
+          "background-color": {
+            "value": "{dsn.color.negative.bg-hover}",
+            "type": "color",
+            "comment": "Subtle negative button hover background"
+          },
+          "border-color": {
+            "value": "{dsn.color.transparent}",
+            "type": "color",
+            "comment": "Subtle negative button hover border"
+          },
+          "color": {
+            "value": "{dsn.color.negative.color-hover}",
+            "type": "color",
+            "comment": "Subtle negative button hover text/icon color"
+          }
         }
       },
       "subtle-positive": {
@@ -415,32 +415,15 @@
           "type": "color",
           "comment": "Subtle positive button background"
         },
-        "color": {
-          "value": "{dsn.color.positive.color-default}",
-          "type": "color",
-          "comment": "Subtle positive button text/icon color"
-        },
         "border-color": {
           "value": "{dsn.color.transparent}",
           "type": "color",
           "comment": "Subtle positive button border"
         },
-        "hover": {
-          "background-color": {
-            "value": "{dsn.color.positive.bg-hover}",
-            "type": "color",
-            "comment": "Subtle positive button hover background"
-          },
-          "border-color": {
-            "value": "{dsn.color.transparent}",
-            "type": "color",
-            "comment": "Subtle positive button hover border"
-          },
-          "color": {
-            "value": "{dsn.color.positive.color-hover}",
-            "type": "color",
-            "comment": "Subtle positive button hover text/icon color"
-          }
+        "color": {
+          "value": "{dsn.color.positive.color-default}",
+          "type": "color",
+          "comment": "Subtle positive button text/icon color"
         },
         "active": {
           "background-color": {
@@ -458,46 +441,46 @@
             "type": "color",
             "comment": "Subtle positive button active text/icon color"
           }
+        },
+        "hover": {
+          "background-color": {
+            "value": "{dsn.color.positive.bg-hover}",
+            "type": "color",
+            "comment": "Subtle positive button hover background"
+          },
+          "border-color": {
+            "value": "{dsn.color.transparent}",
+            "type": "color",
+            "comment": "Subtle positive button hover border"
+          },
+          "color": {
+            "value": "{dsn.color.positive.color-hover}",
+            "type": "color",
+            "comment": "Subtle positive button hover text/icon color"
+          }
         }
       },
       "size": {
-        "small": {
-          "font-size": {
-            "value": "{dsn.text.font-size.sm}",
-            "type": "dimension",
-            "comment": "Small button font size"
-          },
-          "padding-block": {
-            "value": "{dsn.space.block.sm}",
-            "type": "dimension",
-            "comment": "Small button vertical padding"
-          },
-          "padding-inline": {
-            "value": "{dsn.space.inline.lg}",
-            "type": "dimension",
-            "comment": "Small button horizontal padding"
-          },
-          "gap": {
-            "value": "{dsn.space.text.sm}",
-            "type": "dimension",
-            "comment": "Small button gap between icon and text"
-          },
-          "icon-size": {
-            "value": "{dsn.icon.size.sm}",
-            "type": "dimension",
-            "comment": "Small button icon size"
-          },
-          "icon-only-padding": {
-            "value": "{dsn.space.block.sm}",
-            "type": "dimension",
-            "comment": "Small button icon-only padding"
-          }
-        },
         "default": {
           "font-size": {
             "value": "{dsn.text.font-size.md}",
             "type": "dimension",
             "comment": "Default button font size"
+          },
+          "gap": {
+            "value": "{dsn.space.text.sm}",
+            "type": "dimension",
+            "comment": "Default button gap between icon and text"
+          },
+          "icon-only-padding": {
+            "value": "{dsn.space.block.md}",
+            "type": "dimension",
+            "comment": "Default button icon-only padding"
+          },
+          "icon-size": {
+            "value": "{dsn.icon.size.md}",
+            "type": "dimension",
+            "comment": "Default button icon size"
           },
           "padding-block": {
             "value": "{dsn.space.block.md}",
@@ -508,21 +491,6 @@
             "value": "{dsn.space.inline.xl}",
             "type": "dimension",
             "comment": "Default button horizontal padding"
-          },
-          "gap": {
-            "value": "{dsn.space.text.sm}",
-            "type": "dimension",
-            "comment": "Default button gap between icon and text"
-          },
-          "icon-size": {
-            "value": "{dsn.icon.size.md}",
-            "type": "dimension",
-            "comment": "Default button icon size"
-          },
-          "icon-only-padding": {
-            "value": "{dsn.space.block.md}",
-            "type": "dimension",
-            "comment": "Default button icon-only padding"
           }
         },
         "large": {
@@ -530,6 +498,21 @@
             "value": "{dsn.text.font-size.lg}",
             "type": "dimension",
             "comment": "Large button font size"
+          },
+          "gap": {
+            "value": "{dsn.space.text.md}",
+            "type": "dimension",
+            "comment": "Large button gap between icon and text"
+          },
+          "icon-only-padding": {
+            "value": "{dsn.space.block.lg}",
+            "type": "dimension",
+            "comment": "Large button icon-only padding"
+          },
+          "icon-size": {
+            "value": "{dsn.icon.size.lg}",
+            "type": "dimension",
+            "comment": "Large button icon size"
           },
           "padding-block": {
             "value": "{dsn.space.block.lg}",
@@ -540,21 +523,38 @@
             "value": "{dsn.space.inline.2xl}",
             "type": "dimension",
             "comment": "Large button horizontal padding"
+          }
+        },
+        "small": {
+          "font-size": {
+            "value": "{dsn.text.font-size.sm}",
+            "type": "dimension",
+            "comment": "Small button font size"
           },
           "gap": {
-            "value": "{dsn.space.text.md}",
+            "value": "{dsn.space.text.sm}",
             "type": "dimension",
-            "comment": "Large button gap between icon and text"
-          },
-          "icon-size": {
-            "value": "{dsn.icon.size.lg}",
-            "type": "dimension",
-            "comment": "Large button icon size"
+            "comment": "Small button gap between icon and text"
           },
           "icon-only-padding": {
-            "value": "{dsn.space.block.lg}",
+            "value": "{dsn.space.block.sm}",
             "type": "dimension",
-            "comment": "Large button icon-only padding"
+            "comment": "Small button icon-only padding"
+          },
+          "icon-size": {
+            "value": "{dsn.icon.size.sm}",
+            "type": "dimension",
+            "comment": "Small button icon size"
+          },
+          "padding-block": {
+            "value": "{dsn.space.block.sm}",
+            "type": "dimension",
+            "comment": "Small button vertical padding"
+          },
+          "padding-inline": {
+            "value": "{dsn.space.inline.lg}",
+            "type": "dimension",
+            "comment": "Small button horizontal padding"
           }
         }
       }

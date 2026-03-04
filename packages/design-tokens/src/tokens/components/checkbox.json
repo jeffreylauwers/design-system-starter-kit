@@ -1,20 +1,6 @@
 {
   "dsn": {
     "checkbox": {
-      "size": {
-        "value": "calc(var(--dsn-text-font-size-md) * var(--dsn-text-line-height-md))",
-        "type": "dimension",
-        "comment": "Size of the checkbox - fluid based on text size and line-height"
-      },
-      "border-width": {
-        "value": "{dsn.border.width.thin}",
-        "type": "dimension"
-      },
-      "border-radius": {
-        "value": "0px",
-        "type": "dimension",
-        "comment": "Square corners for checkbox"
-      },
       "background-color": {
         "value": "{dsn.form-control.background-color}",
         "type": "color"
@@ -23,40 +9,19 @@
         "value": "{dsn.form-control.border-color}",
         "type": "color"
       },
-      "icon": {
-        "size": {
-          "value": "calc(var(--dsn-checkbox-size) * 0.67)",
-          "type": "dimension",
-          "comment": "Check icon size - 67% of checkbox size for proper visual balance"
-        }
+      "border-radius": {
+        "value": "0px",
+        "type": "dimension",
+        "comment": "Square corners for checkbox"
       },
-      "hover": {
-        "background-color": {
-          "value": "{dsn.form-control.hover.background-color}",
-          "type": "color"
-        },
-        "border-color": {
-          "value": "{dsn.form-control.hover.border-color}",
-          "type": "color"
-        },
-        "border-width": {
-          "value": "{dsn.border.width.medium}",
-          "type": "dimension"
-        }
+      "border-width": {
+        "value": "{dsn.border.width.thin}",
+        "type": "dimension"
       },
-      "focus": {
-        "background-color": {
-          "value": "{dsn.form-control.focus.background-color}",
-          "type": "color"
-        },
-        "border-color": {
-          "value": "{dsn.form-control.focus.border-color}",
-          "type": "color"
-        },
-        "border-width": {
-          "value": "{dsn.border.width.medium}",
-          "type": "dimension"
-        }
+      "size": {
+        "value": "calc(var(--dsn-text-font-size-md) * var(--dsn-text-line-height-md))",
+        "type": "dimension",
+        "comment": "Size of the checkbox - fluid based on text size and line-height"
       },
       "active": {
         "background-color": {
@@ -65,30 +30,6 @@
         },
         "border-color": {
           "value": "{dsn.form-control.active.border-color}",
-          "type": "color"
-        },
-        "border-width": {
-          "value": "{dsn.border.width.medium}",
-          "type": "dimension"
-        }
-      },
-      "disabled": {
-        "background-color": {
-          "value": "{dsn.form-control.disabled.background-color}",
-          "type": "color"
-        },
-        "border-color": {
-          "value": "{dsn.form-control.disabled.border-color}",
-          "type": "color"
-        }
-      },
-      "invalid": {
-        "background-color": {
-          "value": "{dsn.form-control.invalid.background-color}",
-          "type": "color"
-        },
-        "border-color": {
-          "value": "{dsn.form-control.invalid.border-color}",
           "type": "color"
         },
         "border-width": {
@@ -115,25 +56,17 @@
           "comment": "Check icon color"
         }
       },
-      "checked-hover": {
+      "disabled": {
         "background-color": {
-          "value": "{dsn.form-control.hover.accent-color}",
+          "value": "{dsn.form-control.disabled.background-color}",
           "type": "color"
         },
         "border-color": {
-          "value": "transparent",
-          "type": "color"
-        },
-        "border-width": {
-          "value": "{dsn.border.width.medium}",
-          "type": "dimension"
-        },
-        "color": {
-          "value": "{dsn.color.neutral-inverse.color-default}",
+          "value": "{dsn.form-control.disabled.border-color}",
           "type": "color"
         }
       },
-      "checked-focus": {
+      "focus": {
         "background-color": {
           "value": "{dsn.form-control.focus.background-color}",
           "type": "color"
@@ -145,10 +78,34 @@
         "border-width": {
           "value": "{dsn.border.width.medium}",
           "type": "dimension"
-        },
-        "color": {
-          "value": "{dsn.form-control.focus.color}",
+        }
+      },
+      "hover": {
+        "background-color": {
+          "value": "{dsn.form-control.hover.background-color}",
           "type": "color"
+        },
+        "border-color": {
+          "value": "{dsn.form-control.hover.border-color}",
+          "type": "color"
+        },
+        "border-width": {
+          "value": "{dsn.border.width.medium}",
+          "type": "dimension"
+        }
+      },
+      "invalid": {
+        "background-color": {
+          "value": "{dsn.form-control.invalid.background-color}",
+          "type": "color"
+        },
+        "border-color": {
+          "value": "{dsn.form-control.invalid.border-color}",
+          "type": "color"
+        },
+        "border-width": {
+          "value": "{dsn.border.width.medium}",
+          "type": "dimension"
         }
       },
       "checked-active": {
@@ -183,26 +140,25 @@
           "type": "color"
         }
       },
-      "indeterminate": {
+      "checked-focus": {
         "background-color": {
-          "value": "{dsn.form-control.accent-color}",
+          "value": "{dsn.form-control.focus.background-color}",
           "type": "color"
         },
         "border-color": {
-          "value": "transparent",
+          "value": "{dsn.form-control.focus.border-color}",
           "type": "color"
         },
         "border-width": {
-          "value": "{dsn.border.width.thin}",
+          "value": "{dsn.border.width.medium}",
           "type": "dimension"
         },
         "color": {
-          "value": "{dsn.color.neutral-inverse.color-default}",
-          "type": "color",
-          "comment": "Indeterminate icon (minus) color"
+          "value": "{dsn.form-control.focus.color}",
+          "type": "color"
         }
       },
-      "indeterminate-hover": {
+      "checked-hover": {
         "background-color": {
           "value": "{dsn.form-control.hover.accent-color}",
           "type": "color"
@@ -220,22 +176,23 @@
           "type": "color"
         }
       },
-      "indeterminate-focus": {
+      "indeterminate": {
         "background-color": {
-          "value": "{dsn.form-control.focus.background-color}",
+          "value": "{dsn.form-control.accent-color}",
           "type": "color"
         },
         "border-color": {
-          "value": "{dsn.form-control.focus.border-color}",
+          "value": "transparent",
           "type": "color"
         },
         "border-width": {
-          "value": "{dsn.border.width.medium}",
+          "value": "{dsn.border.width.thin}",
           "type": "dimension"
         },
         "color": {
-          "value": "{dsn.form-control.focus.color}",
-          "type": "color"
+          "value": "{dsn.color.neutral-inverse.color-default}",
+          "type": "color",
+          "comment": "Indeterminate icon (minus) color"
         }
       },
       "indeterminate-active": {
@@ -268,6 +225,49 @@
         "color": {
           "value": "{dsn.form-control.disabled.color}",
           "type": "color"
+        }
+      },
+      "indeterminate-focus": {
+        "background-color": {
+          "value": "{dsn.form-control.focus.background-color}",
+          "type": "color"
+        },
+        "border-color": {
+          "value": "{dsn.form-control.focus.border-color}",
+          "type": "color"
+        },
+        "border-width": {
+          "value": "{dsn.border.width.medium}",
+          "type": "dimension"
+        },
+        "color": {
+          "value": "{dsn.form-control.focus.color}",
+          "type": "color"
+        }
+      },
+      "indeterminate-hover": {
+        "background-color": {
+          "value": "{dsn.form-control.hover.accent-color}",
+          "type": "color"
+        },
+        "border-color": {
+          "value": "transparent",
+          "type": "color"
+        },
+        "border-width": {
+          "value": "{dsn.border.width.medium}",
+          "type": "dimension"
+        },
+        "color": {
+          "value": "{dsn.color.neutral-inverse.color-default}",
+          "type": "color"
+        }
+      },
+      "icon": {
+        "size": {
+          "value": "calc(var(--dsn-checkbox-size) * 0.67)",
+          "type": "dimension",
+          "comment": "Check icon size - 67% of checkbox size for proper visual balance"
         }
       }
     }

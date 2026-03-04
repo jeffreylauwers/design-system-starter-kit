@@ -1,6 +1,11 @@
 {
   "dsn": {
     "paragraph": {
+      "color": {
+        "value": "{dsn.color.neutral.color-document}",
+        "type": "color",
+        "comment": "Paragraph text color"
+      },
       "font-family": {
         "value": "{dsn.text.font-family.default}",
         "type": "fontFamily",
@@ -10,11 +15,6 @@
         "value": "{dsn.text.font-weight.default}",
         "type": "fontWeight",
         "comment": "Paragraph font weight"
-      },
-      "color": {
-        "value": "{dsn.color.neutral.color-document}",
-        "type": "color",
-        "comment": "Paragraph text color"
       },
       "max-inline-size": {
         "value": "65ch",

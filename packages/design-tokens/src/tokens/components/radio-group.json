@@ -6,22 +6,27 @@
         "type": "dimension",
         "comment": "No border by default for fieldset"
       },
-      "padding": {
-        "value": "0px",
+      "gap": {
+        "value": "{dsn.space.block.sm}",
         "type": "dimension",
-        "comment": "No padding by default for fieldset"
+        "comment": "Space between radio options in the group"
       },
       "margin": {
         "value": "0px",
         "type": "dimension",
         "comment": "No margin by default for fieldset"
       },
-      "gap": {
-        "value": "{dsn.space.block.sm}",
+      "padding": {
+        "value": "0px",
         "type": "dimension",
-        "comment": "Space between radio options in the group"
+        "comment": "No padding by default for fieldset"
       },
       "legend": {
+        "color": {
+          "value": "{dsn.form-field-label.color}",
+          "type": "color",
+          "comment": "Text color for the legend (reuses form field label)"
+        },
         "font-family": {
           "value": "{dsn.form-field-label.font-family}",
           "type": "fontFamily",
@@ -41,11 +46,6 @@
           "value": "{dsn.form-field-label.line-height}",
           "type": "lineHeight",
           "comment": "Line height for the legend (reuses form field label)"
-        },
-        "color": {
-          "value": "{dsn.form-field-label.color}",
-          "type": "color",
-          "comment": "Text color for the legend (reuses form field label)"
         },
         "margin-block-end": {
           "value": "{dsn.form-field-label.margin-block-end-with-description}",

@@ -1,15 +1,6 @@
 {
   "dsn": {
     "radio": {
-      "size": {
-        "value": "calc(var(--dsn-text-font-size-md) * var(--dsn-text-line-height-md))",
-        "type": "dimension",
-        "comment": "Size of the radio button - fluid based on text size and line-height"
-      },
-      "border-width": {
-        "value": "{dsn.border.width.thin}",
-        "type": "dimension"
-      },
       "background-color": {
         "value": "{dsn.form-control.background-color}",
         "type": "color"
@@ -18,53 +9,19 @@
         "value": "{dsn.form-control.border-color}",
         "type": "color"
       },
+      "border-width": {
+        "value": "{dsn.border.width.thin}",
+        "type": "dimension"
+      },
       "color": {
         "value": "{dsn.form-control.border-color}",
         "type": "color",
         "comment": "Inner circle color in default state"
       },
-      "icon": {
-        "size": {
-          "value": "calc(var(--dsn-radio-size) * 0.33)",
-          "type": "dimension",
-          "comment": "Inner circle size when checked - 33% of radio size"
-        }
-      },
-      "hover": {
-        "background-color": {
-          "value": "{dsn.form-control.hover.background-color}",
-          "type": "color"
-        },
-        "border-color": {
-          "value": "{dsn.form-control.hover.border-color}",
-          "type": "color"
-        },
-        "border-width": {
-          "value": "{dsn.border.width.medium}",
-          "type": "dimension"
-        },
-        "color": {
-          "value": "{dsn.form-control.hover.border-color}",
-          "type": "color"
-        }
-      },
-      "focus": {
-        "background-color": {
-          "value": "{dsn.form-control.focus.background-color}",
-          "type": "color"
-        },
-        "border-color": {
-          "value": "{dsn.form-control.focus.border-color}",
-          "type": "color"
-        },
-        "border-width": {
-          "value": "{dsn.border.width.medium}",
-          "type": "dimension"
-        },
-        "color": {
-          "value": "{dsn.form-control.focus.border-color}",
-          "type": "color"
-        }
+      "size": {
+        "value": "calc(var(--dsn-text-font-size-md) * var(--dsn-text-line-height-md))",
+        "type": "dimension",
+        "comment": "Size of the radio button - fluid based on text size and line-height"
       },
       "active": {
         "background-color": {
@@ -81,38 +38,6 @@
         },
         "color": {
           "value": "{dsn.form-control.active.border-color}",
-          "type": "color"
-        }
-      },
-      "disabled": {
-        "background-color": {
-          "value": "{dsn.form-control.disabled.background-color}",
-          "type": "color"
-        },
-        "border-color": {
-          "value": "{dsn.form-control.disabled.border-color}",
-          "type": "color"
-        },
-        "color": {
-          "value": "{dsn.form-control.disabled.border-color}",
-          "type": "color"
-        }
-      },
-      "invalid": {
-        "background-color": {
-          "value": "{dsn.form-control.invalid.background-color}",
-          "type": "color"
-        },
-        "border-color": {
-          "value": "{dsn.form-control.invalid.border-color}",
-          "type": "color"
-        },
-        "border-width": {
-          "value": "{dsn.border.width.medium}",
-          "type": "dimension"
-        },
-        "color": {
-          "value": "{dsn.form-control.invalid.border-color}",
           "type": "color"
         }
       },
@@ -135,25 +60,21 @@
           "comment": "Inner circle color when checked"
         }
       },
-      "checked-hover": {
+      "disabled": {
         "background-color": {
-          "value": "{dsn.form-control.hover.accent-color}",
+          "value": "{dsn.form-control.disabled.background-color}",
           "type": "color"
         },
         "border-color": {
-          "value": "transparent",
+          "value": "{dsn.form-control.disabled.border-color}",
           "type": "color"
         },
-        "border-width": {
-          "value": "{dsn.border.width.medium}",
-          "type": "dimension"
-        },
         "color": {
-          "value": "{dsn.color.neutral-inverse.color-default}",
+          "value": "{dsn.form-control.disabled.border-color}",
           "type": "color"
         }
       },
-      "checked-focus": {
+      "focus": {
         "background-color": {
           "value": "{dsn.form-control.focus.background-color}",
           "type": "color"
@@ -167,7 +88,43 @@
           "type": "dimension"
         },
         "color": {
-          "value": "{dsn.form-control.focus.color}",
+          "value": "{dsn.form-control.focus.border-color}",
+          "type": "color"
+        }
+      },
+      "hover": {
+        "background-color": {
+          "value": "{dsn.form-control.hover.background-color}",
+          "type": "color"
+        },
+        "border-color": {
+          "value": "{dsn.form-control.hover.border-color}",
+          "type": "color"
+        },
+        "border-width": {
+          "value": "{dsn.border.width.medium}",
+          "type": "dimension"
+        },
+        "color": {
+          "value": "{dsn.form-control.hover.border-color}",
+          "type": "color"
+        }
+      },
+      "invalid": {
+        "background-color": {
+          "value": "{dsn.form-control.invalid.background-color}",
+          "type": "color"
+        },
+        "border-color": {
+          "value": "{dsn.form-control.invalid.border-color}",
+          "type": "color"
+        },
+        "border-width": {
+          "value": "{dsn.border.width.medium}",
+          "type": "dimension"
+        },
+        "color": {
+          "value": "{dsn.form-control.invalid.border-color}",
           "type": "color"
         }
       },
@@ -202,6 +159,49 @@
           "value": "{dsn.form-control.disabled.color}",
           "type": "color",
           "comment": "Inner circle color - dark text color for contrast against disabled accent background"
+        }
+      },
+      "checked-focus": {
+        "background-color": {
+          "value": "{dsn.form-control.focus.background-color}",
+          "type": "color"
+        },
+        "border-color": {
+          "value": "{dsn.form-control.focus.border-color}",
+          "type": "color"
+        },
+        "border-width": {
+          "value": "{dsn.border.width.medium}",
+          "type": "dimension"
+        },
+        "color": {
+          "value": "{dsn.form-control.focus.color}",
+          "type": "color"
+        }
+      },
+      "checked-hover": {
+        "background-color": {
+          "value": "{dsn.form-control.hover.accent-color}",
+          "type": "color"
+        },
+        "border-color": {
+          "value": "transparent",
+          "type": "color"
+        },
+        "border-width": {
+          "value": "{dsn.border.width.medium}",
+          "type": "dimension"
+        },
+        "color": {
+          "value": "{dsn.color.neutral-inverse.color-default}",
+          "type": "color"
+        }
+      },
+      "icon": {
+        "size": {
+          "value": "calc(var(--dsn-radio-size) * 0.33)",
+          "type": "dimension",
+          "comment": "Inner circle size when checked - 33% of radio size"
         }
       }
     }

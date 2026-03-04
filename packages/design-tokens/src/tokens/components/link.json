@@ -6,6 +6,16 @@
         "type": "color",
         "comment": "Link text color"
       },
+      "gap": {
+        "value": "{dsn.space.text.sm}",
+        "type": "dimension",
+        "comment": "Link gap between icon and text"
+      },
+      "icon-size": {
+        "value": "{dsn.icon.size.md}",
+        "type": "dimension",
+        "comment": "Link icon size"
+      },
       "text-decoration-color": {
         "value": "{dsn.color.action-2.color-default}",
         "type": "color",
@@ -26,28 +36,6 @@
         "type": "string",
         "comment": "Link underline offset"
       },
-      "gap": {
-        "value": "{dsn.space.text.sm}",
-        "type": "dimension",
-        "comment": "Link gap between icon and text"
-      },
-      "icon-size": {
-        "value": "{dsn.icon.size.md}",
-        "type": "dimension",
-        "comment": "Link icon size"
-      },
-      "hover": {
-        "color": {
-          "value": "{dsn.color.action-2.color-hover}",
-          "type": "color",
-          "comment": "Link hover text color"
-        },
-        "text-decoration-line": {
-          "value": "none",
-          "type": "string",
-          "comment": "Link hover text decoration"
-        }
-      },
       "active": {
         "color": {
           "value": "{dsn.color.action-2.color-active}",
@@ -62,24 +50,19 @@
           "comment": "Link disabled text color"
         }
       },
-      "size": {
-        "small": {
-          "font-size": {
-            "value": "{dsn.text.font-size.sm}",
-            "type": "dimension",
-            "comment": "Small link font size"
-          },
-          "gap": {
-            "value": "{dsn.space.text.sm}",
-            "type": "dimension",
-            "comment": "Small link gap between icon and text"
-          },
-          "icon-size": {
-            "value": "{dsn.icon.size.sm}",
-            "type": "dimension",
-            "comment": "Small link icon size"
-          }
+      "hover": {
+        "color": {
+          "value": "{dsn.color.action-2.color-hover}",
+          "type": "color",
+          "comment": "Link hover text color"
         },
+        "text-decoration-line": {
+          "value": "none",
+          "type": "string",
+          "comment": "Link hover text decoration"
+        }
+      },
+      "size": {
         "default": {
           "font-size": {
             "value": "{dsn.text.font-size.md}",
@@ -112,6 +95,23 @@
             "value": "{dsn.icon.size.lg}",
             "type": "dimension",
             "comment": "Large link icon size"
+          }
+        },
+        "small": {
+          "font-size": {
+            "value": "{dsn.text.font-size.sm}",
+            "type": "dimension",
+            "comment": "Small link font size"
+          },
+          "gap": {
+            "value": "{dsn.space.text.sm}",
+            "type": "dimension",
+            "comment": "Small link gap between icon and text"
+          },
+          "icon-size": {
+            "value": "{dsn.icon.size.sm}",
+            "type": "dimension",
+            "comment": "Small link icon size"
           }
         }
       }

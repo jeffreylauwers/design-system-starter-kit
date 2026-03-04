@@ -1,10 +1,10 @@
 {
   "dsn": {
     "select": {
-      "icon-size": {
-        "value": "{dsn.icon.size.md}",
-        "type": "dimension",
-        "comment": "Chevron-down icon size — matches the medium icon size"
+      "icon-color": {
+        "value": "{dsn.color.action-1.color-default}",
+        "type": "color",
+        "comment": "Chevron icon color — same as subtle button icon color"
       },
       "icon-gap": {
         "value": "{dsn.space.text.md}",
@@ -16,10 +16,10 @@
         "type": "dimension",
         "comment": "Distance from the inline-end border to the chevron icon (8px)"
       },
-      "icon-color": {
-        "value": "{dsn.color.action-1.color-default}",
-        "type": "color",
-        "comment": "Chevron icon color — same as subtle button icon color"
+      "icon-size": {
+        "value": "{dsn.icon.size.md}",
+        "type": "dimension",
+        "comment": "Chevron-down icon size — matches the medium icon size"
       },
       "padding-inline-end-with-icon": {
         "value": "calc({dsn.select.icon-size} + {dsn.select.icon-gap} + {dsn.select.icon-inset-inline-end})",
