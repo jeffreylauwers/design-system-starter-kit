@@ -2,25 +2,25 @@
   "dsn": {
     "heading": {
       "level-1": {
-        "font-family": {
-          "value": "{dsn.heading.font-family}",
-          "type": "fontFamily",
-          "comment": "Heading 1 font family"
-        },
-        "font-weight": {
-          "value": "{dsn.heading.font-weight}",
-          "type": "fontWeight",
-          "comment": "Heading 1 font weight"
-        },
         "color": {
           "value": "{dsn.heading.color}",
           "type": "color",
           "comment": "Heading 1 text color"
         },
+        "font-family": {
+          "value": "{dsn.heading.font-family}",
+          "type": "fontFamily",
+          "comment": "Heading 1 font family"
+        },
         "font-size": {
           "value": "{dsn.text.font-size.3xl}",
           "type": "fontSize",
           "comment": "Heading 1 font size"
+        },
+        "font-weight": {
+          "value": "{dsn.heading.font-weight}",
+          "type": "fontWeight",
+          "comment": "Heading 1 font weight"
         },
         "line-height": {
           "value": "{dsn.text.line-height.3xl}",
@@ -34,25 +34,25 @@
         }
       },
       "level-2": {
-        "font-family": {
-          "value": "{dsn.heading.font-family}",
-          "type": "fontFamily",
-          "comment": "Heading 2 font family"
-        },
-        "font-weight": {
-          "value": "{dsn.heading.font-weight}",
-          "type": "fontWeight",
-          "comment": "Heading 2 font weight"
-        },
         "color": {
           "value": "{dsn.heading.color}",
           "type": "color",
           "comment": "Heading 2 text color"
         },
+        "font-family": {
+          "value": "{dsn.heading.font-family}",
+          "type": "fontFamily",
+          "comment": "Heading 2 font family"
+        },
         "font-size": {
           "value": "{dsn.text.font-size.2xl}",
           "type": "fontSize",
           "comment": "Heading 2 font size"
+        },
+        "font-weight": {
+          "value": "{dsn.heading.font-weight}",
+          "type": "fontWeight",
+          "comment": "Heading 2 font weight"
         },
         "line-height": {
           "value": "{dsn.text.line-height.2xl}",
@@ -66,25 +66,25 @@
         }
       },
       "level-3": {
-        "font-family": {
-          "value": "{dsn.heading.font-family}",
-          "type": "fontFamily",
-          "comment": "Heading 3 font family"
-        },
-        "font-weight": {
-          "value": "{dsn.heading.font-weight}",
-          "type": "fontWeight",
-          "comment": "Heading 3 font weight"
-        },
         "color": {
           "value": "{dsn.heading.color}",
           "type": "color",
           "comment": "Heading 3 text color"
         },
+        "font-family": {
+          "value": "{dsn.heading.font-family}",
+          "type": "fontFamily",
+          "comment": "Heading 3 font family"
+        },
         "font-size": {
           "value": "{dsn.text.font-size.xl}",
           "type": "fontSize",
           "comment": "Heading 3 font size"
+        },
+        "font-weight": {
+          "value": "{dsn.heading.font-weight}",
+          "type": "fontWeight",
+          "comment": "Heading 3 font weight"
         },
         "line-height": {
           "value": "{dsn.text.line-height.xl}",
@@ -98,25 +98,25 @@
         }
       },
       "level-4": {
-        "font-family": {
-          "value": "{dsn.heading.font-family}",
-          "type": "fontFamily",
-          "comment": "Heading 4 font family"
-        },
-        "font-weight": {
-          "value": "{dsn.heading.font-weight}",
-          "type": "fontWeight",
-          "comment": "Heading 4 font weight"
-        },
         "color": {
           "value": "{dsn.heading.color}",
           "type": "color",
           "comment": "Heading 4 text color"
         },
+        "font-family": {
+          "value": "{dsn.heading.font-family}",
+          "type": "fontFamily",
+          "comment": "Heading 4 font family"
+        },
         "font-size": {
           "value": "{dsn.text.font-size.lg}",
           "type": "fontSize",
           "comment": "Heading 4 font size"
+        },
+        "font-weight": {
+          "value": "{dsn.heading.font-weight}",
+          "type": "fontWeight",
+          "comment": "Heading 4 font weight"
         },
         "line-height": {
           "value": "{dsn.text.line-height.lg}",
@@ -130,25 +130,25 @@
         }
       },
       "level-5": {
-        "font-family": {
-          "value": "{dsn.heading.font-family}",
-          "type": "fontFamily",
-          "comment": "Heading 5 font family"
-        },
-        "font-weight": {
-          "value": "{dsn.heading.font-weight}",
-          "type": "fontWeight",
-          "comment": "Heading 5 font weight"
-        },
         "color": {
           "value": "{dsn.heading.color}",
           "type": "color",
           "comment": "Heading 5 text color"
         },
+        "font-family": {
+          "value": "{dsn.heading.font-family}",
+          "type": "fontFamily",
+          "comment": "Heading 5 font family"
+        },
         "font-size": {
           "value": "{dsn.text.font-size.md}",
           "type": "fontSize",
           "comment": "Heading 5 font size"
+        },
+        "font-weight": {
+          "value": "{dsn.heading.font-weight}",
+          "type": "fontWeight",
+          "comment": "Heading 5 font weight"
         },
         "line-height": {
           "value": "{dsn.text.line-height.md}",
@@ -162,25 +162,25 @@
         }
       },
       "level-6": {
-        "font-family": {
-          "value": "{dsn.heading.font-family}",
-          "type": "fontFamily",
-          "comment": "Heading 6 font family"
-        },
-        "font-weight": {
-          "value": "{dsn.heading.font-weight}",
-          "type": "fontWeight",
-          "comment": "Heading 6 font weight"
-        },
         "color": {
           "value": "{dsn.heading.color}",
           "type": "color",
           "comment": "Heading 6 text color"
         },
+        "font-family": {
+          "value": "{dsn.heading.font-family}",
+          "type": "fontFamily",
+          "comment": "Heading 6 font family"
+        },
         "font-size": {
           "value": "{dsn.text.font-size.sm}",
           "type": "fontSize",
           "comment": "Heading 6 font size"
+        },
+        "font-weight": {
+          "value": "{dsn.heading.font-weight}",
+          "type": "fontWeight",
+          "comment": "Heading 6 font weight"
         },
         "line-height": {
           "value": "{dsn.text.line-height.sm}",

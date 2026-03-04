@@ -86,13 +86,6 @@
         "type": "other",
         "comment": "Text area resize behavior (vertical, horizontal, both, none)"
       },
-      "placeholder": {
-        "color": {
-          "value": "{dsn.form-control.placeholder.color}",
-          "type": "color",
-          "comment": "Text area placeholder color"
-        }
-      },
       "disabled": {
         "background-color": {
           "value": "{dsn.form-control.disabled.background-color}",
@@ -177,6 +170,13 @@
           "value": "{dsn.text-area.border-color}",
           "type": "color",
           "comment": "Text area hover box shadow color"
+        }
+      },
+      "placeholder": {
+        "color": {
+          "value": "{dsn.form-control.placeholder.color}",
+          "type": "color",
+          "comment": "Text area placeholder color"
         }
       },
       "invalid": {

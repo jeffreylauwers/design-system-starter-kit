@@ -1,6 +1,11 @@
 {
   "dsn": {
     "form-field-error-message": {
+      "color": {
+        "value": "{dsn.color.negative.color-default}",
+        "type": "color",
+        "comment": "Form field error message text color (negative sentiment)"
+      },
       "font-family": {
         "value": "{dsn.text.font-family.default}",
         "type": "fontFamily",
@@ -16,21 +21,6 @@
         "type": "fontWeight",
         "comment": "Form field error message font weight"
       },
-      "line-height": {
-        "value": "{dsn.text.line-height.md}",
-        "type": "lineHeight",
-        "comment": "Form field error message line height"
-      },
-      "color": {
-        "value": "{dsn.color.negative.color-default}",
-        "type": "color",
-        "comment": "Form field error message text color (negative sentiment)"
-      },
-      "margin-block-end": {
-        "value": "{dsn.space.block.md}",
-        "type": "dimension",
-        "comment": "Space below error message before form control"
-      },
       "gap": {
         "value": "{dsn.space.text.sm}",
         "type": "dimension",
@@ -40,6 +30,16 @@
         "value": "{dsn.icon.size.md}",
         "type": "dimension",
         "comment": "Error message icon size"
+      },
+      "line-height": {
+        "value": "{dsn.text.line-height.md}",
+        "type": "lineHeight",
+        "comment": "Form field error message line height"
+      },
+      "margin-block-end": {
+        "value": "{dsn.space.block.md}",
+        "type": "dimension",
+        "comment": "Space below error message before form control"
       }
     }
   }

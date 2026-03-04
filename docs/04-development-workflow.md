@@ -120,10 +120,13 @@ All token JSON files follow a consistent structure. These rules apply to primiti
      1. `active`
      2. `checked`
      3. `disabled`
-     4. `hover`
-     5. `focus`
-     6. `focus-visible`
-     7. `visited`
+     4. `focus`
+     5. `focus-visible`
+     6. `hover`
+     7. `invalid`
+     8. `placeholder`
+     9. `read-only`
+     10. `visited`
    - Then: variants (e.g. `primary`, `secondary`, `subtle`)
    - Then: sub-components (e.g. `icon`, `heading`, `panel`)
 3. **Alphabetically within each group**

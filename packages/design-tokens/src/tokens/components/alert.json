@@ -16,11 +16,6 @@
         "type": "dimension",
         "comment": "Gap between icon and content"
       },
-      "row-gap": {
-        "value": "{dsn.space.row.md}",
-        "type": "dimension",
-        "comment": "Gap between heading and body"
-      },
       "padding-block": {
         "value": "{dsn.space.block.xl}",
         "type": "dimension",
@@ -30,6 +25,11 @@
         "value": "{dsn.space.inline.xl}",
         "type": "dimension",
         "comment": "Horizontal padding"
+      },
+      "row-gap": {
+        "value": "{dsn.space.row.md}",
+        "type": "dimension",
+        "comment": "Gap between heading and body"
       }
     }
   }

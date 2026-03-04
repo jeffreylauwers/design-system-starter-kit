@@ -1,35 +1,35 @@
 {
   "dsn": {
     "time-input": {
-      "icon-size": {
-        "value": "{dsn.button.size.small.icon-size}",
-        "type": "dimension",
-        "comment": "Clock icon size — matches the small button icon size"
-      },
-      "icon-gap": {
-        "value": "{dsn.space.text.md}",
-        "type": "dimension",
-        "comment": "Gap between clock button and input text"
-      },
       "button-inset-inline-end": {
         "value": "{dsn.space.inline.md}",
         "type": "dimension",
         "comment": "Distance from the inline-end border to the clock button (8px)"
-      },
-      "padding-inline-end-with-icon": {
-        "value": "calc(({dsn.button.size.small.icon-only-padding} * 2) + {dsn.time-input.icon-size} + {dsn.time-input.button-inset-inline-end} + {dsn.time-input.icon-gap})",
-        "type": "dimension",
-        "comment": "Right padding when icon is present: (button-padding × 2) + icon-size + button-inset + gap"
       },
       "icon-color": {
         "value": "{dsn.color.action-2.color-default}",
         "type": "color",
         "comment": "Clock icon color (interactive, action color)"
       },
+      "icon-gap": {
+        "value": "{dsn.space.text.md}",
+        "type": "dimension",
+        "comment": "Gap between clock button and input text"
+      },
       "icon-hover-color": {
         "value": "{dsn.color.action-2.color-hover}",
         "type": "color",
         "comment": "Clock icon hover color"
+      },
+      "icon-size": {
+        "value": "{dsn.button.size.small.icon-size}",
+        "type": "dimension",
+        "comment": "Clock icon size — matches the small button icon size"
+      },
+      "padding-inline-end-with-icon": {
+        "value": "calc(({dsn.button.size.small.icon-only-padding} * 2) + {dsn.time-input.icon-size} + {dsn.time-input.button-inset-inline-end} + {dsn.time-input.icon-gap})",
+        "type": "dimension",
+        "comment": "Right padding when icon is present: (button-padding × 2) + icon-size + button-inset + gap"
       }
     }
   }

@@ -1,6 +1,11 @@
 {
   "dsn": {
     "form-field-status": {
+      "color": {
+        "value": "{dsn.color.neutral.color-subtle}",
+        "type": "color",
+        "comment": "Form field status text color (subtle for non-critical info)"
+      },
       "font-family": {
         "value": "{dsn.text.font-family.default}",
         "type": "fontFamily",
@@ -20,11 +25,6 @@
         "value": "{dsn.text.line-height.md}",
         "type": "lineHeight",
         "comment": "Form field status line height"
-      },
-      "color": {
-        "value": "{dsn.color.neutral.color-subtle}",
-        "type": "color",
-        "comment": "Form field status text color (subtle for non-critical info)"
       },
       "margin-block-start": {
         "value": "{dsn.space.block.md}",
