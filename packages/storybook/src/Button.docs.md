@@ -71,15 +71,6 @@ De Button component biedt een consistente, toegankelijke manier om acties te tri
 | `--dsn-button-default-positive-hover-background-color`  | Achtergrondkleur default-positive hover         |
 | `--dsn-button-default-positive-hover-border-color`      | Borderkleur default-positive hover              |
 | `--dsn-button-default-positive-hover-color`             | Tekstkleur default-positive hover               |
-| `--dsn-button-link-background-color`                    | Achtergrondkleur link variant                   |
-| `--dsn-button-link-border-color`                        | Borderkleur link variant                        |
-| `--dsn-button-link-color`                               | Tekstkleur link variant                         |
-| `--dsn-button-link-active-background-color`             | Achtergrondkleur link active                    |
-| `--dsn-button-link-active-border-color`                 | Borderkleur link active                         |
-| `--dsn-button-link-active-color`                        | Tekstkleur link active                          |
-| `--dsn-button-link-hover-background-color`              | Achtergrondkleur link hover                     |
-| `--dsn-button-link-hover-border-color`                  | Borderkleur link hover                          |
-| `--dsn-button-link-hover-color`                         | Tekstkleur link hover                           |
 | `--dsn-button-strong-background-color`                  | Achtergrondkleur strong variant                 |
 | `--dsn-button-strong-border-color`                      | Borderkleur strong variant                      |
 | `--dsn-button-strong-color`                             | Tekstkleur strong variant                       |
