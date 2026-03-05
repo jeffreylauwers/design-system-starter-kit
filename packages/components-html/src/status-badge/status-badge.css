@@ -75,7 +75,7 @@
 /* Icon sizing — inherits text color via color: inherit */
 .dsn-status-badge > .dsn-icon {
   flex-shrink: 0;
-  width: var(--dsn-icon-size-sm);
-  height: var(--dsn-icon-size-sm);
+  width: var(--dsn-status-badge-icon-size);
+  height: var(--dsn-status-badge-icon-size);
   color: inherit;
 }

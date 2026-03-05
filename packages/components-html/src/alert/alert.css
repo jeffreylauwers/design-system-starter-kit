@@ -84,7 +84,7 @@
    =========================== */
 .dsn-alert {
   display: grid;
-  grid-template-columns: var(--dsn-icon-size-xl) 1fr;
+  grid-template-columns: var(--dsn-alert-icon-size) 1fr;
   column-gap: var(--dsn-alert-column-gap);
   row-gap: var(--dsn-alert-row-gap);
   padding-block: var(--dsn-alert-padding-block);
@@ -103,8 +103,8 @@
   grid-row: 1;
   align-self: center;
   flex-shrink: 0;
-  width: var(--dsn-icon-size-xl);
-  height: var(--dsn-icon-size-xl);
+  width: var(--dsn-alert-icon-size);
+  height: var(--dsn-alert-icon-size);
   color: var(--dsn-alert-icon-color);
 }
 

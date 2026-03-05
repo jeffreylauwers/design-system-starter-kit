@@ -36,13 +36,14 @@ De Button component biedt een consistente, toegankelijke manier om acties te tri
 
 | Token                                                   | Beschrijving                                    |
 | ------------------------------------------------------- | ----------------------------------------------- |
-| `--dsn-text-font-family-default`                        | Lettertypefamilie                               |
-| `--dsn-text-font-weight-bold`                           | Font weight                                     |
-| `--dsn-text-line-height-md`                             | Regelhoogte                                     |
-| `--dsn-border-width-thin`                               | Dikte van de border (1px)                       |
-| `--dsn-border-radius-md`                                | Hoekafronding (8px)                             |
-| `--dsn-pointer-target-min-block-size`                   | Minimale hoogte voor touch target (48px)        |
-| `--dsn-pointer-target-min-inline-size`                  | Minimale breedte voor touch target              |
+| `--dsn-button-border-radius`                            | Hoekafronding (8px)                             |
+| `--dsn-button-border-width`                             | Dikte van de border (1px)                       |
+| `--dsn-button-font-family`                              | Lettertypefamilie                               |
+| `--dsn-button-font-weight`                              | Font weight (bold)                              |
+| `--dsn-button-line-height`                              | Regelhoogte                                     |
+| `--dsn-button-min-block-size`                           | Minimale hoogte voor touch target (48px)        |
+| `--dsn-button-min-inline-size`                          | Minimale breedte voor touch target (48px)       |
+| `--dsn-button-size-small-min-block-size`                | Minimale hoogte small button (40px)             |
 | `--dsn-button-default-background-color`                 | Achtergrondkleur default variant                |
 | `--dsn-button-default-border-color`                     | Borderkleur default variant                     |
 | `--dsn-button-default-color`                            | Tekstkleur default variant                      |

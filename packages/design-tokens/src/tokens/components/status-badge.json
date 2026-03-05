@@ -26,6 +26,11 @@
         "type": "dimension",
         "comment": "Gap between icon and label"
       },
+      "icon-size": {
+        "value": "{dsn.icon.size.sm}",
+        "type": "dimension",
+        "comment": "Status badge icon size"
+      },
       "line-height": {
         "value": "{dsn.text.line-height.sm}",
         "type": "lineHeight",

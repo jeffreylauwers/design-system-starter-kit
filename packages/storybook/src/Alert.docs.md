@@ -64,8 +64,9 @@ De Alert component toont een prominent bericht op de pagina — bij een succesvo
 | Token                        | Beschrijving                                          |
 | ---------------------------- | ----------------------------------------------------- |
 | `--dsn-alert-border-radius`  | Border radius (0px by default; thema-overschrijfbaar) |
-| `--dsn-alert-border-width`   | Breedte van de linkerborder                           |
+| `--dsn-alert-border-width`   | Breedte van de border                                 |
 | `--dsn-alert-column-gap`     | Ruimte tussen icoon en tekst                          |
+| `--dsn-alert-icon-size`      | Icoongrootte (ook breedte eerste grid-kolom)          |
 | `--dsn-alert-padding-block`  | Verticale padding                                     |
 | `--dsn-alert-padding-inline` | Horizontale padding                                   |
 | `--dsn-alert-row-gap`        | Ruimte tussen heading en body content                 |
