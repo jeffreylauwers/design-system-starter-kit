@@ -6,6 +6,36 @@ All notable changes to this project are documented in this file.
 
 ---
 
+## Version 5.1.0 (March 5, 2026)
+
+### Grid en GridItem layout componenten met 12 kolommen (PR #71, issue #21)
+
+- **Grid component** (`dsn-grid`) — 12-koloms CSS Grid container met `padding-inline` voor outer margin en `column-gap` voor gutter
+- **GridItem component** — directe child met `colSpan` (1–12), responsive `colSpanSm/Md/Lg` props en `fullBleed` prop
+- `dsn-col-{1-12}` CSS utility klassen met `grid-column: span N`
+- Responsive varianten: `dsn-col-sm/md/lg-{n}` met respectievelijk 36em/44em/64em breakpoints
+- `dsn-full-bleed` CSS klasse: breekt visueel uit tot container-rand via `margin-inline: calc(-1 * var(--dsn-grid-margin))`
+- `:where(.dsn-grid) > *` default rule (zero specificity) zodat items standaard volle breedte beslaan
+- **Nieuwe design tokens**: `--dsn-grid-gutter` (16px default; 8px in information-dense), `--dsn-grid-margin` (24px), `--dsn-grid-max-width` (74rem)
+- **Breakpoint-referentietokens**: `--dsn-breakpoint-sm/md/lg/xl` — beschikbaar als CSS custom property voor JS/tooling; niet te gebruiken in CSS `@media` regels
+- `config.js`: source volgorde aangepast (components vóór project-types) zodat project-type overrides altijd winnen
+- 66 nieuwe tests — totaal 962 tests
+
+---
+
+## Version 5.0.0 (March 5, 2026)
+
+### Stack layout component met space-row varianten (PR #70, issue #17)
+
+- **Stack component** (`dsn-stack`) — verticale stapeling met consistente ruimte via `flexbox + gap`
+- 9 space-varianten: `sm` (4px), `md` (8px), `lg` (12px), `xl` (16px), `2xl` (20px), `3xl` (24px), `4xl` (32px), `5xl` (64px), `6xl` (160px)
+- Intern `--dsn-stack-space` CSS custom property met fallback naar `--dsn-space-row-md`
+- Default `md` voegt geen modifier-klasse toe aan de DOM (consistent met andere componenten)
+- Nieuwe Storybook-categorie **Layout Components** toegevoegd — staat tussen Foundations en Components in sidebar
+- `storyOrder` key: `'layout components'` (met spatie, lowercase) — spaties worden niet vervangen door koppeltekens door `storybook-multilevel-sort`
+
+---
+
 ## Version 4.9.0 (March 5, 2026)
 
 ### Component-level tokens: kleur-tokens Alert en Note gepubliceerd (PR #68, issue #67)

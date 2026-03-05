@@ -9,10 +9,11 @@ Complete component specifications and guidelines for the Design System Starter K
 ## Table of Contents
 
 1. [Component Guidelines](#component-guidelines)
-2. [Content Components](#content-components)
-3. [Display & Feedback Components](#display--feedback-components)
-4. [Form Components](#form-components)
-5. [Web Components Registration](#web-components-registration)
+2. [Layout Components](#layout-components)
+3. [Content Components](#content-components)
+4. [Display & Feedback Components](#display--feedback-components)
+5. [Form Components](#form-components)
+6. [Web Components Registration](#web-components-registration)
 
 ---
 
@@ -149,6 +150,113 @@ Components are designed to compose together:
   />
 </FormFieldset>
 ```
+
+---
+
+## Layout Components
+
+Layout components bieden structuur voor paginalayouts zonder eigen visuele stijl. Ze zijn pure CSS-utilities.
+
+### Grid
+
+12-koloms CSS Grid layout systeem met gutter, outer margin en optionele max-width.
+
+**HTML/CSS:**
+
+```html
+<!-- Standaard grid -->
+<div class="dsn-grid">
+  <div class="dsn-col-8">Hoofdinhoud</div>
+  <div class="dsn-col-4">Sidebar</div>
+</div>
+
+<!-- Contained grid met max-width -->
+<div class="dsn-grid dsn-grid--contained">
+  <div class="dsn-col-12">Full-width sectie</div>
+</div>
+
+<!-- Responsive kolommen -->
+<div class="dsn-grid dsn-grid--contained">
+  <div class="dsn-col-12 dsn-col-md-6 dsn-col-lg-4">Item A</div>
+  <div class="dsn-col-12 dsn-col-md-6 dsn-col-lg-4">Item B</div>
+  <div class="dsn-col-12 dsn-col-md-12 dsn-col-lg-4">Item C</div>
+</div>
+
+<!-- Full-bleed: breekt uit tot container-randen -->
+<div class="dsn-grid dsn-grid--contained">
+  <div class="dsn-col-8">Normale content</div>
+  <div class="dsn-full-bleed">
+    <div style="background: var(--dsn-color-neutral-bg-subtle);">
+      Edge-to-edge
+    </div>
+  </div>
+</div>
+```
+
+**React:**
+
+```tsx
+<Grid contained>
+  <GridItem colSpan={8}>Hoofdinhoud</GridItem>
+  <GridItem colSpan={4}>Sidebar</GridItem>
+</Grid>
+
+// Responsive
+<Grid contained>
+  <GridItem colSpan={12} colSpanMd={6} colSpanLg={4}>Item A</GridItem>
+  <GridItem colSpan={12} colSpanMd={6} colSpanLg={4}>Item B</GridItem>
+  <GridItem colSpan={12} colSpanMd={12} colSpanLg={4}>Item C</GridItem>
+</Grid>
+
+// Full-bleed
+<Grid contained>
+  <GridItem colSpan={8}>Normale content</GridItem>
+  <GridItem fullBleed>
+    <div style={{ background: 'var(--dsn-color-neutral-bg-subtle)' }}>Edge-to-edge</div>
+  </GridItem>
+</Grid>
+```
+
+**Props `Grid`:** `contained` (boolean) — voegt max-width toe en centreert horizontaal.
+
+**Props `GridItem`:** `colSpan` (1–12), `colSpanSm`, `colSpanMd`, `colSpanLg` (responsieve varianten), `fullBleed` (breekt uit tot container-rand).
+
+**Breakpoints:** sm (36em), md (44em), lg (64em), xl (74em — grens `contained` max-width).
+
+**Design tokens:** `--dsn-grid-gutter` (16px; 8px in information-dense), `--dsn-grid-margin` (24px), `--dsn-grid-max-width` (74rem).
+
+---
+
+### Stack
+
+Brengt consistente verticale ruimte aan tussen directe child-elementen via `flexbox + gap`.
+
+**HTML/CSS:**
+
+```html
+<!-- Default (md = 8px) -->
+<div class="dsn-stack">
+  <div>Item 1</div>
+  <div>Item 2</div>
+</div>
+
+<!-- Grote ruimte -->
+<div class="dsn-stack dsn-stack--space-3xl">
+  <section>...</section>
+  <section>...</section>
+</div>
+```
+
+**React:**
+
+```tsx
+<Stack space="3xl">
+  <section>...</section>
+  <section>...</section>
+</Stack>
+```
+
+**Props:** `space` (`sm` | `md` | `lg` | `xl` | `2xl` | `3xl` | `4xl` | `5xl` | `6xl`, default `md`).
 
 ---
 
@@ -842,15 +950,15 @@ defineButton('my-custom-button');
 
 ## Component Statistics
 
-**Total Components:** 37
+**Total Components:** 40
 
 **Implementations:**
 
-- **HTML/CSS:** 37 components
-- **React:** 37 components (880 tests total)
+- **HTML/CSS:** 40 components
+- **React:** 40 components (962 tests total)
 - **Web Component:** 7 components (Button, Heading, Icon, Link, OrderedList, Paragraph, UnorderedList)
 
-**Test Coverage:** 880 tests across 43 test suites
+**Test Coverage:** 962 tests across 46 test suites
 
 ---
 
