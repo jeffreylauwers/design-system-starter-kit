@@ -1,0 +1,11 @@
+{
+  "dsn": {
+    "grid": {
+      "gutter": {
+        "value": "calc(0.5rem * 1)",
+        "type": "dimension",
+        "comment": "Compactere kolomafstand voor information-dense project types (8px = space.column.md)"
+      }
+    }
+  }
+}

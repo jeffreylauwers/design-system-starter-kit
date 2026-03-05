@@ -1,0 +1,20 @@
+{
+  "dsn": {
+    "grid": {
+      "gutter": {
+        "value": "{dsn.space.column.xl}",
+        "type": "dimension",
+        "comment": "Horizontal gap between grid columns (overridden to column.md in information-dense)"
+      },
+      "margin": {
+        "value": "{dsn.space.column.3xl}",
+        "type": "dimension",
+        "comment": "Outer padding on both sides of the grid container"
+      },
+      "max-width": {
+        "value": "74rem",
+        "comment": "Maximum width of a contained grid (--dsn-breakpoint-xl ~1184px)"
+      }
+    }
+  }
+}

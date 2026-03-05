@@ -498,6 +498,24 @@
           "comment": "Form control invalid border width"
         }
       }
+    },
+    "breakpoint": {
+      "sm": {
+        "value": "36em",
+        "comment": "Small breakpoint - ~576px. Reference only; use hardcoded values in CSS @media rules."
+      },
+      "md": {
+        "value": "44em",
+        "comment": "Medium breakpoint - ~704px. Reference only; use hardcoded values in CSS @media rules."
+      },
+      "lg": {
+        "value": "64em",
+        "comment": "Large breakpoint - ~1024px. Reference only; use hardcoded values in CSS @media rules."
+      },
+      "xl": {
+        "value": "74em",
+        "comment": "Extra large breakpoint - ~1184px. Reference only; use hardcoded values in CSS @media rules."
+      }
     }
   }
 }

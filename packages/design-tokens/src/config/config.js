@@ -83,10 +83,11 @@ function createFullConfig(theme, mode, projectType) {
       `src/tokens/themes/${theme}/base.json`,
       // Theme color tokens for this mode
       `src/tokens/themes/${theme}/colors-${mode}.json`,
-      // Project type typography (font-sizes)
-      `src/tokens/project-types/${projectType}/typography.json`,
       // Component tokens (reference core tokens)
       'src/tokens/components/*.json',
+      // Project type overrides (typography font-sizes + component overrides, e.g. grid gutter)
+      // Must come AFTER components so project-type values win over component defaults
+      `src/tokens/project-types/${projectType}/*.json`,
     ],
     platforms: {
       css: {
@@ -181,7 +182,7 @@ function createProjectTypeScopedConfig(projectType) {
   const selector = projectType === 'default' ? ':root' : '.dsn-density-dense';
 
   return {
-    source: [`src/tokens/project-types/${projectType}/typography.json`],
+    source: [`src/tokens/project-types/${projectType}/*.json`],
     platforms: {
       css: {
         transformGroup: 'css',
