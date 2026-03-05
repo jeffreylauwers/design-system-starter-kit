@@ -1,0 +1,6 @@
+/**
+ * Stack Component Styles for React
+ * Re-exports the base Stack styles from components-html
+ */
+
+@import '../../../components-html/src/stack/stack.css';

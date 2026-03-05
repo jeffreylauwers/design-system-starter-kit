@@ -5,6 +5,9 @@
  * Import components like: import { Button, TextInput } from '@dsn/components-react'
  */
 
+// Layout Components
+export * from './Stack';
+
 // Layout & Typography
 export * from './Heading';
 export * from './Paragraph';

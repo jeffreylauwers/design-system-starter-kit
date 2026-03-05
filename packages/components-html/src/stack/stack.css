@@ -1,0 +1,52 @@
+/**
+ * Stack Layout Component
+ * Applies consistent vertical spacing between direct child elements using flexbox + gap.
+ *
+ * Usage:
+ * <!-- Default (md = 8px) -->
+ * <div class="dsn-stack">
+ *   <div>...</div>
+ *   <div>...</div>
+ * </div>
+ *
+ * <!-- Explicit space variant -->
+ * <div class="dsn-stack dsn-stack--space-lg">
+ *   <div>...</div>
+ *   <div>...</div>
+ * </div>
+ */
+
+.dsn-stack {
+  display: flex;
+  flex-direction: column;
+  gap: var(--dsn-stack-space, var(--dsn-space-row-md));
+}
+
+/* Space variant modifiers */
+.dsn-stack--space-sm {
+  --dsn-stack-space: var(--dsn-space-row-sm);
+}
+.dsn-stack--space-md {
+  --dsn-stack-space: var(--dsn-space-row-md);
+}
+.dsn-stack--space-lg {
+  --dsn-stack-space: var(--dsn-space-row-lg);
+}
+.dsn-stack--space-xl {
+  --dsn-stack-space: var(--dsn-space-row-xl);
+}
+.dsn-stack--space-2xl {
+  --dsn-stack-space: var(--dsn-space-row-2xl);
+}
+.dsn-stack--space-3xl {
+  --dsn-stack-space: var(--dsn-space-row-3xl);
+}
+.dsn-stack--space-4xl {
+  --dsn-stack-space: var(--dsn-space-row-4xl);
+}
+.dsn-stack--space-5xl {
+  --dsn-stack-space: var(--dsn-space-row-5xl);
+}
+.dsn-stack--space-6xl {
+  --dsn-stack-space: var(--dsn-space-row-6xl);
+}

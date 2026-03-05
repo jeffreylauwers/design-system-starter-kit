@@ -8,6 +8,9 @@ configureSort({
   storyOrder: {
     introduction: null,
     foundations: null,
+    'layout-components': {
+      '*': { docs: null },
+    },
     components: {
       '*': { docs: null },
     },

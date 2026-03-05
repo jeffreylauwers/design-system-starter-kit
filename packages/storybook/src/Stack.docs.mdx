@@ -1,0 +1,29 @@
+import { Meta, Story, Controls, Markdown } from '@storybook/blocks';
+import * as StackStories from './Stack.stories';
+import docs from './Stack.docs.md?raw';
+import { PreviewFrame, CodeTabs } from './components';
+
+export const [intro, rest] = docs.split('<!-- VOORBEELD -->');
+
+<Meta of={StackStories} />
+
+<Markdown>{intro}</Markdown>
+
+## Voorbeeld
+
+<PreviewFrame>
+  <Story of={StackStories.Default} />
+</PreviewFrame>
+
+<CodeTabs
+  of={StackStories.Default}
+  html={`<div class="dsn-stack">
+  <div>...</div>
+  <div>...</div>
+  <div>...</div>
+</div>`}
+/>
+
+<Controls of={StackStories.Default} />
+
+<Markdown>{rest}</Markdown>
