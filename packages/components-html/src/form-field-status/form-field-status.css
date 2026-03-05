@@ -37,24 +37,24 @@
 .dsn-form-field-status--warning {
   display: flex;
   align-items: flex-start;
-  gap: var(--dsn-space-text-sm);
+  gap: var(--dsn-form-field-status-gap);
 }
 
 /* Positive variant - success feedback */
 .dsn-form-field-status--positive {
-  color: var(--dsn-color-positive-color-default);
+  color: var(--dsn-form-field-status-positive-color);
 }
 
 /* Warning variant - caution feedback */
 .dsn-form-field-status--warning {
-  color: var(--dsn-color-warning-color-default);
+  color: var(--dsn-form-field-status-warning-color);
 }
 
 /* Icon sizing within status message (positive and warning only) */
 .dsn-form-field-status--positive > .dsn-icon,
 .dsn-form-field-status--warning > .dsn-icon {
   flex-shrink: 0;
-  width: var(--dsn-icon-size-md);
-  height: var(--dsn-icon-size-md);
+  width: var(--dsn-form-field-status-icon-size);
+  height: var(--dsn-form-field-status-icon-size);
   color: inherit;
 }

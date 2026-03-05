@@ -54,6 +54,7 @@ De StatusBadge component toont een statusaanduiding naast tabelrijen, koppen of 
 | `--dsn-status-badge-border-width`              | Border width (thin — 1px)                                    |
 | `--dsn-status-badge-font-size`                 | Font size (sm)                                               |
 | `--dsn-status-badge-gap`                       | Ruimte tussen icoon en tekst                                 |
+| `--dsn-status-badge-icon-size`                 | Icoongrootte (sm)                                            |
 | `--dsn-status-badge-line-height`               | Line height (sm)                                             |
 | `--dsn-status-badge-padding-block`             | Verticale padding                                            |
 | `--dsn-status-badge-padding-inline`            | Horizontale padding                                          |

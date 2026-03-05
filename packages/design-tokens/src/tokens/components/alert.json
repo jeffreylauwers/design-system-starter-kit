@@ -16,6 +16,11 @@
         "type": "dimension",
         "comment": "Gap between icon and content"
       },
+      "icon-size": {
+        "value": "{dsn.icon.size.xl}",
+        "type": "dimension",
+        "comment": "Alert icon size (also used as grid column width)"
+      },
       "padding-block": {
         "value": "{dsn.space.block.xl}",
         "type": "dimension",

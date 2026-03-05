@@ -36,13 +36,14 @@ De Button component biedt een consistente, toegankelijke manier om acties te tri
 
 | Token                                                   | Beschrijving                                    |
 | ------------------------------------------------------- | ----------------------------------------------- |
-| `--dsn-text-font-family-default`                        | Lettertypefamilie                               |
-| `--dsn-text-font-weight-bold`                           | Font weight                                     |
-| `--dsn-text-line-height-md`                             | Regelhoogte                                     |
-| `--dsn-border-width-thin`                               | Dikte van de border (1px)                       |
-| `--dsn-border-radius-md`                                | Hoekafronding (8px)                             |
-| `--dsn-pointer-target-min-block-size`                   | Minimale hoogte voor touch target (48px)        |
-| `--dsn-pointer-target-min-inline-size`                  | Minimale breedte voor touch target              |
+| `--dsn-button-border-radius`                            | Hoekafronding (8px)                             |
+| `--dsn-button-border-width`                             | Dikte van de border (1px)                       |
+| `--dsn-button-font-family`                              | Lettertypefamilie                               |
+| `--dsn-button-font-weight`                              | Font weight (bold)                              |
+| `--dsn-button-line-height`                              | Regelhoogte                                     |
+| `--dsn-button-min-block-size`                           | Minimale hoogte voor touch target (48px)        |
+| `--dsn-button-min-inline-size`                          | Minimale breedte voor touch target (48px)       |
+| `--dsn-button-size-small-min-block-size`                | Minimale hoogte small button (40px)             |
 | `--dsn-button-default-background-color`                 | Achtergrondkleur default variant                |
 | `--dsn-button-default-border-color`                     | Borderkleur default variant                     |
 | `--dsn-button-default-color`                            | Tekstkleur default variant                      |
@@ -70,15 +71,6 @@ De Button component biedt een consistente, toegankelijke manier om acties te tri
 | `--dsn-button-default-positive-hover-background-color`  | Achtergrondkleur default-positive hover         |
 | `--dsn-button-default-positive-hover-border-color`      | Borderkleur default-positive hover              |
 | `--dsn-button-default-positive-hover-color`             | Tekstkleur default-positive hover               |
-| `--dsn-button-link-background-color`                    | Achtergrondkleur link variant                   |
-| `--dsn-button-link-border-color`                        | Borderkleur link variant                        |
-| `--dsn-button-link-color`                               | Tekstkleur link variant                         |
-| `--dsn-button-link-active-background-color`             | Achtergrondkleur link active                    |
-| `--dsn-button-link-active-border-color`                 | Borderkleur link active                         |
-| `--dsn-button-link-active-color`                        | Tekstkleur link active                          |
-| `--dsn-button-link-hover-background-color`              | Achtergrondkleur link hover                     |
-| `--dsn-button-link-hover-border-color`                  | Borderkleur link hover                          |
-| `--dsn-button-link-hover-color`                         | Tekstkleur link hover                           |
 | `--dsn-button-strong-background-color`                  | Achtergrondkleur strong variant                 |
 | `--dsn-button-strong-border-color`                      | Borderkleur strong variant                      |
 | `--dsn-button-strong-color`                             | Tekstkleur strong variant                       |

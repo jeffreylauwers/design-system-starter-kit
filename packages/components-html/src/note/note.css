@@ -100,7 +100,7 @@
    =========================== */
 .dsn-note {
   display: grid;
-  grid-template-columns: var(--dsn-icon-size-xl) 1fr;
+  grid-template-columns: var(--dsn-note-icon-size) 1fr;
   column-gap: var(--dsn-note-column-gap);
   row-gap: var(--dsn-note-row-gap);
   padding-block: var(--dsn-note-padding-block);
@@ -120,8 +120,8 @@
   grid-row: 1;
   align-self: center;
   flex-shrink: 0;
-  width: var(--dsn-icon-size-xl);
-  height: var(--dsn-icon-size-xl);
+  width: var(--dsn-note-icon-size);
+  height: var(--dsn-note-icon-size);
   color: var(--dsn-note-icon-color);
 }
 

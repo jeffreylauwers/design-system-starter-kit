@@ -21,6 +21,16 @@
         "type": "fontWeight",
         "comment": "Form field status font weight"
       },
+      "gap": {
+        "value": "{dsn.space.text.sm}",
+        "type": "dimension",
+        "comment": "Gap between icon and text (positive and warning variants)"
+      },
+      "icon-size": {
+        "value": "{dsn.icon.size.md}",
+        "type": "dimension",
+        "comment": "Icon size for positive and warning variants"
+      },
       "line-height": {
         "value": "{dsn.text.line-height.md}",
         "type": "lineHeight",
@@ -30,6 +40,16 @@
         "value": "{dsn.space.block.md}",
         "type": "dimension",
         "comment": "Space above status message after form control"
+      },
+      "positive-color": {
+        "value": "{dsn.color.positive.color-default}",
+        "type": "color",
+        "comment": "Text color for positive variant"
+      },
+      "warning-color": {
+        "value": "{dsn.color.warning.color-default}",
+        "type": "color",
+        "comment": "Text color for warning variant"
       }
     }
   }

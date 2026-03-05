@@ -1,6 +1,41 @@
 {
   "dsn": {
     "button": {
+      "border-radius": {
+        "value": "{dsn.border.radius.md}",
+        "type": "dimension",
+        "comment": "Button border radius"
+      },
+      "border-width": {
+        "value": "{dsn.border.width.thin}",
+        "type": "dimension",
+        "comment": "Button border width"
+      },
+      "font-family": {
+        "value": "{dsn.text.font-family.default}",
+        "type": "fontFamily",
+        "comment": "Button font family"
+      },
+      "font-weight": {
+        "value": "{dsn.text.font-weight.bold}",
+        "type": "fontWeight",
+        "comment": "Button font weight"
+      },
+      "line-height": {
+        "value": "{dsn.text.line-height.md}",
+        "type": "lineHeight",
+        "comment": "Button line height"
+      },
+      "min-block-size": {
+        "value": "{dsn.pointer-target.min-block-size}",
+        "type": "dimension",
+        "comment": "Button minimum block size (WCAG 2.5.5 touch target)"
+      },
+      "min-inline-size": {
+        "value": "{dsn.pointer-target.min-inline-size}",
+        "type": "dimension",
+        "comment": "Button minimum inline size (WCAG 2.5.5 touch target)"
+      },
       "default": {
         "background-color": {
           "value": "{dsn.color.transparent}",
@@ -545,6 +580,11 @@
             "value": "{dsn.icon.size.sm}",
             "type": "dimension",
             "comment": "Small button icon size"
+          },
+          "min-block-size": {
+            "value": "2.5rem",
+            "type": "dimension",
+            "comment": "Small button minimum block size (reduced touch target — 40px)"
           },
           "padding-block": {
             "value": "{dsn.space.block.sm}",
