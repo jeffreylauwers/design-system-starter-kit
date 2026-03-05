@@ -62,24 +62,35 @@ Bij `as="nav"`, `as="aside"` of `as="section"` + een `heading` prop: de Note kop
 
 ## Design tokens
 
-| Token                                  | Beschrijving                                 |
-| -------------------------------------- | -------------------------------------------- |
-| `--dsn-note-border-inline-start-width` | Breedte van de linkerborder                  |
-| `--dsn-note-column-gap`                | Ruimte tussen icoon en tekst                 |
-| `--dsn-note-icon-size`                 | Icoongrootte (ook breedte eerste grid-kolom) |
-| `--dsn-note-padding-block`             | Verticale padding                            |
-| `--dsn-note-padding-inline-end`        | Horizontale padding rechts                   |
-| `--dsn-note-padding-inline-start`      | Horizontale padding links                    |
-| `--dsn-note-row-gap`                   | Ruimte tussen heading en body                |
-
-De kleur-tokens zijn lokale CSS custom properties per variant:
-
-| Lokale property                        | Beschrijving                       |
-| -------------------------------------- | ---------------------------------- |
-| `--dsn-note-icon-color`                | Kleur van het icoon (signaalkleur) |
-| `--dsn-note-color`                     | Tekstkleur                         |
-| `--dsn-note-background-color`          | Achtergrondkleur                   |
-| `--dsn-note-border-inline-start-color` | Kleur van de linkerborder          |
+| Token                                           | Beschrijving                                 |
+| ----------------------------------------------- | -------------------------------------------- |
+| `--dsn-note-border-inline-start-width`          | Breedte van de linkerborder                  |
+| `--dsn-note-column-gap`                         | Ruimte tussen icoon en tekst                 |
+| `--dsn-note-icon-size`                          | Icoongrootte (ook breedte eerste grid-kolom) |
+| `--dsn-note-padding-block`                      | Verticale padding                            |
+| `--dsn-note-padding-inline-end`                 | Horizontale padding rechts                   |
+| `--dsn-note-padding-inline-start`               | Horizontale padding links                    |
+| `--dsn-note-row-gap`                            | Ruimte tussen heading en body                |
+| `--dsn-note-info-background-color`              | Achtergrond info variant                     |
+| `--dsn-note-info-border-inline-start-color`     | Linkerborderkleur info variant               |
+| `--dsn-note-info-color`                         | Tekstkleur info variant                      |
+| `--dsn-note-info-icon-color`                    | Icoonkleur info variant                      |
+| `--dsn-note-negative-background-color`          | Achtergrond negative variant                 |
+| `--dsn-note-negative-border-inline-start-color` | Linkerborderkleur negative variant           |
+| `--dsn-note-negative-color`                     | Tekstkleur negative variant                  |
+| `--dsn-note-negative-icon-color`                | Icoonkleur negative variant                  |
+| `--dsn-note-neutral-background-color`           | Achtergrond neutral variant                  |
+| `--dsn-note-neutral-border-inline-start-color`  | Linkerborderkleur neutral variant            |
+| `--dsn-note-neutral-color`                      | Tekstkleur neutral variant                   |
+| `--dsn-note-neutral-icon-color`                 | Icoonkleur neutral variant                   |
+| `--dsn-note-positive-background-color`          | Achtergrond positive variant                 |
+| `--dsn-note-positive-border-inline-start-color` | Linkerborderkleur positive variant           |
+| `--dsn-note-positive-color`                     | Tekstkleur positive variant                  |
+| `--dsn-note-positive-icon-color`                | Icoonkleur positive variant                  |
+| `--dsn-note-warning-background-color`           | Achtergrond warning variant                  |
+| `--dsn-note-warning-border-inline-start-color`  | Linkerborderkleur warning variant            |
+| `--dsn-note-warning-color`                      | Tekstkleur warning variant                   |
+| `--dsn-note-warning-icon-color`                 | Icoonkleur warning variant                   |
 
 ## Accessibility
 

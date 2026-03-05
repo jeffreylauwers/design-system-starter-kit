@@ -57,42 +57,48 @@
    Local color tokens (neutral = default)
    =========================== */
 .dsn-note {
-  --dsn-note-icon-color: var(--dsn-color-neutral-color-default);
-  --dsn-note-color: var(--dsn-color-neutral-color-document);
-  --dsn-note-background-color: var(--dsn-color-neutral-bg-default);
-  --dsn-note-border-inline-start-color: var(--dsn-color-neutral-border-default);
+  --dsn-note-icon-color: var(--dsn-note-neutral-icon-color);
+  --dsn-note-color: var(--dsn-note-neutral-color);
+  --dsn-note-background-color: var(--dsn-note-neutral-background-color);
+  --dsn-note-border-inline-start-color: var(
+    --dsn-note-neutral-border-inline-start-color
+  );
 }
 
 .dsn-note--info {
-  --dsn-note-icon-color: var(--dsn-color-info-color-default);
-  --dsn-note-color: var(--dsn-color-info-color-document);
-  --dsn-note-background-color: var(--dsn-color-info-bg-default);
-  --dsn-note-border-inline-start-color: var(--dsn-color-info-border-default);
+  --dsn-note-icon-color: var(--dsn-note-info-icon-color);
+  --dsn-note-color: var(--dsn-note-info-color);
+  --dsn-note-background-color: var(--dsn-note-info-background-color);
+  --dsn-note-border-inline-start-color: var(
+    --dsn-note-info-border-inline-start-color
+  );
 }
 
 .dsn-note--positive {
-  --dsn-note-icon-color: var(--dsn-color-positive-color-default);
-  --dsn-note-color: var(--dsn-color-positive-color-document);
-  --dsn-note-background-color: var(--dsn-color-positive-bg-default);
+  --dsn-note-icon-color: var(--dsn-note-positive-icon-color);
+  --dsn-note-color: var(--dsn-note-positive-color);
+  --dsn-note-background-color: var(--dsn-note-positive-background-color);
   --dsn-note-border-inline-start-color: var(
-    --dsn-color-positive-border-default
+    --dsn-note-positive-border-inline-start-color
   );
 }
 
 .dsn-note--negative {
-  --dsn-note-icon-color: var(--dsn-color-negative-color-default);
-  --dsn-note-color: var(--dsn-color-negative-color-document);
-  --dsn-note-background-color: var(--dsn-color-negative-bg-default);
+  --dsn-note-icon-color: var(--dsn-note-negative-icon-color);
+  --dsn-note-color: var(--dsn-note-negative-color);
+  --dsn-note-background-color: var(--dsn-note-negative-background-color);
   --dsn-note-border-inline-start-color: var(
-    --dsn-color-negative-border-default
+    --dsn-note-negative-border-inline-start-color
   );
 }
 
 .dsn-note--warning {
-  --dsn-note-icon-color: var(--dsn-color-warning-color-default);
-  --dsn-note-color: var(--dsn-color-warning-color-document);
-  --dsn-note-background-color: var(--dsn-color-warning-bg-default);
-  --dsn-note-border-inline-start-color: var(--dsn-color-warning-border-default);
+  --dsn-note-icon-color: var(--dsn-note-warning-icon-color);
+  --dsn-note-color: var(--dsn-note-warning-color);
+  --dsn-note-background-color: var(--dsn-note-warning-background-color);
+  --dsn-note-border-inline-start-color: var(
+    --dsn-note-warning-border-inline-start-color
+  );
 }
 
 /* ===========================

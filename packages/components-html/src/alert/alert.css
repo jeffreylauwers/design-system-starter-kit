@@ -52,31 +52,31 @@
    Local color tokens (info = default)
    =========================== */
 .dsn-alert {
-  --dsn-alert-icon-color: var(--dsn-color-info-color-default);
-  --dsn-alert-color: var(--dsn-color-info-color-document);
-  --dsn-alert-background-color: var(--dsn-color-info-bg-default);
-  --dsn-alert-border-color: var(--dsn-color-info-border-default);
+  --dsn-alert-icon-color: var(--dsn-alert-info-icon-color);
+  --dsn-alert-color: var(--dsn-alert-info-color);
+  --dsn-alert-background-color: var(--dsn-alert-info-background-color);
+  --dsn-alert-border-color: var(--dsn-alert-info-border-color);
 }
 
 .dsn-alert--positive {
-  --dsn-alert-icon-color: var(--dsn-color-positive-color-default);
-  --dsn-alert-color: var(--dsn-color-positive-color-document);
-  --dsn-alert-background-color: var(--dsn-color-positive-bg-default);
-  --dsn-alert-border-color: var(--dsn-color-positive-border-default);
+  --dsn-alert-icon-color: var(--dsn-alert-positive-icon-color);
+  --dsn-alert-color: var(--dsn-alert-positive-color);
+  --dsn-alert-background-color: var(--dsn-alert-positive-background-color);
+  --dsn-alert-border-color: var(--dsn-alert-positive-border-color);
 }
 
 .dsn-alert--negative {
-  --dsn-alert-icon-color: var(--dsn-color-negative-color-default);
-  --dsn-alert-color: var(--dsn-color-negative-color-document);
-  --dsn-alert-background-color: var(--dsn-color-negative-bg-default);
-  --dsn-alert-border-color: var(--dsn-color-negative-border-default);
+  --dsn-alert-icon-color: var(--dsn-alert-negative-icon-color);
+  --dsn-alert-color: var(--dsn-alert-negative-color);
+  --dsn-alert-background-color: var(--dsn-alert-negative-background-color);
+  --dsn-alert-border-color: var(--dsn-alert-negative-border-color);
 }
 
 .dsn-alert--warning {
-  --dsn-alert-icon-color: var(--dsn-color-warning-color-default);
-  --dsn-alert-color: var(--dsn-color-warning-color-document);
-  --dsn-alert-background-color: var(--dsn-color-warning-bg-default);
-  --dsn-alert-border-color: var(--dsn-color-warning-border-default);
+  --dsn-alert-icon-color: var(--dsn-alert-warning-icon-color);
+  --dsn-alert-color: var(--dsn-alert-warning-color);
+  --dsn-alert-background-color: var(--dsn-alert-warning-background-color);
+  --dsn-alert-border-color: var(--dsn-alert-warning-border-color);
 }
 
 /* ===========================

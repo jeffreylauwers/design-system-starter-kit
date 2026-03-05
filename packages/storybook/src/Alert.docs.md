@@ -61,24 +61,31 @@ De Alert component toont een prominent bericht op de pagina — bij een succesvo
 
 ## Design tokens
 
-| Token                        | Beschrijving                                          |
-| ---------------------------- | ----------------------------------------------------- |
-| `--dsn-alert-border-radius`  | Border radius (0px by default; thema-overschrijfbaar) |
-| `--dsn-alert-border-width`   | Breedte van de border                                 |
-| `--dsn-alert-column-gap`     | Ruimte tussen icoon en tekst                          |
-| `--dsn-alert-icon-size`      | Icoongrootte (ook breedte eerste grid-kolom)          |
-| `--dsn-alert-padding-block`  | Verticale padding                                     |
-| `--dsn-alert-padding-inline` | Horizontale padding                                   |
-| `--dsn-alert-row-gap`        | Ruimte tussen heading en body content                 |
-
-De kleur-tokens zijn lokale CSS custom properties en worden niet als globale tokens gepubliceerd:
-
-| Lokale property                | Beschrijving                          |
-| ------------------------------ | ------------------------------------- |
-| `--dsn-alert-icon-color`       | Kleur van het icoon (signaalkleur)    |
-| `--dsn-alert-color`            | Tekstkleur (leesbaar, iets donkerder) |
-| `--dsn-alert-background-color` | Achtergrondkleur                      |
-| `--dsn-alert-border-color`     | Kleur van de linkerborder             |
+| Token                                   | Beschrijving                                          |
+| --------------------------------------- | ----------------------------------------------------- |
+| `--dsn-alert-border-radius`             | Border radius (0px by default; thema-overschrijfbaar) |
+| `--dsn-alert-border-width`              | Breedte van de border                                 |
+| `--dsn-alert-column-gap`                | Ruimte tussen icoon en tekst                          |
+| `--dsn-alert-icon-size`                 | Icoongrootte (ook breedte eerste grid-kolom)          |
+| `--dsn-alert-padding-block`             | Verticale padding                                     |
+| `--dsn-alert-padding-inline`            | Horizontale padding                                   |
+| `--dsn-alert-row-gap`                   | Ruimte tussen heading en body content                 |
+| `--dsn-alert-info-background-color`     | Achtergrond info variant                              |
+| `--dsn-alert-info-border-color`         | Borderkleur info variant                              |
+| `--dsn-alert-info-color`                | Tekstkleur info variant                               |
+| `--dsn-alert-info-icon-color`           | Icoonkleur info variant                               |
+| `--dsn-alert-negative-background-color` | Achtergrond negative variant                          |
+| `--dsn-alert-negative-border-color`     | Borderkleur negative variant                          |
+| `--dsn-alert-negative-color`            | Tekstkleur negative variant                           |
+| `--dsn-alert-negative-icon-color`       | Icoonkleur negative variant                           |
+| `--dsn-alert-positive-background-color` | Achtergrond positive variant                          |
+| `--dsn-alert-positive-border-color`     | Borderkleur positive variant                          |
+| `--dsn-alert-positive-color`            | Tekstkleur positive variant                           |
+| `--dsn-alert-positive-icon-color`       | Icoonkleur positive variant                           |
+| `--dsn-alert-warning-background-color`  | Achtergrond warning variant                           |
+| `--dsn-alert-warning-border-color`      | Borderkleur warning variant                           |
+| `--dsn-alert-warning-color`             | Tekstkleur warning variant                            |
+| `--dsn-alert-warning-icon-color`        | Icoonkleur warning variant                            |
 
 ## Accessibility
 

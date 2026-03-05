@@ -35,6 +35,94 @@
         "value": "{dsn.space.row.md}",
         "type": "dimension",
         "comment": "Gap between heading and body"
+      },
+      "info": {
+        "background-color": {
+          "value": "{dsn.color.info.bg-default}",
+          "type": "color",
+          "comment": "Background color for info variant (default)"
+        },
+        "border-color": {
+          "value": "{dsn.color.info.border-default}",
+          "type": "color",
+          "comment": "Border color for info variant (default)"
+        },
+        "color": {
+          "value": "{dsn.color.info.color-document}",
+          "type": "color",
+          "comment": "Text color for info variant (default)"
+        },
+        "icon-color": {
+          "value": "{dsn.color.info.color-default}",
+          "type": "color",
+          "comment": "Icon color for info variant (default)"
+        }
+      },
+      "negative": {
+        "background-color": {
+          "value": "{dsn.color.negative.bg-default}",
+          "type": "color",
+          "comment": "Background color for negative variant"
+        },
+        "border-color": {
+          "value": "{dsn.color.negative.border-default}",
+          "type": "color",
+          "comment": "Border color for negative variant"
+        },
+        "color": {
+          "value": "{dsn.color.negative.color-document}",
+          "type": "color",
+          "comment": "Text color for negative variant"
+        },
+        "icon-color": {
+          "value": "{dsn.color.negative.color-default}",
+          "type": "color",
+          "comment": "Icon color for negative variant"
+        }
+      },
+      "positive": {
+        "background-color": {
+          "value": "{dsn.color.positive.bg-default}",
+          "type": "color",
+          "comment": "Background color for positive variant"
+        },
+        "border-color": {
+          "value": "{dsn.color.positive.border-default}",
+          "type": "color",
+          "comment": "Border color for positive variant"
+        },
+        "color": {
+          "value": "{dsn.color.positive.color-document}",
+          "type": "color",
+          "comment": "Text color for positive variant"
+        },
+        "icon-color": {
+          "value": "{dsn.color.positive.color-default}",
+          "type": "color",
+          "comment": "Icon color for positive variant"
+        }
+      },
+      "warning": {
+        "background-color": {
+          "value": "{dsn.color.warning.bg-default}",
+          "type": "color",
+          "comment": "Background color for warning variant"
+        },
+        "border-color": {
+          "value": "{dsn.color.warning.border-default}",
+          "type": "color",
+          "comment": "Border color for warning variant"
+        },
+        "color": {
+          "value": "{dsn.color.warning.color-document}",
+          "type": "color",
+          "comment": "Text color for warning variant"
+        },
+        "icon-color": {
+          "value": "{dsn.color.warning.color-default}",
+          "type": "color",
+          "comment": "Icon color for warning variant"
+        }
       }
     }
   }
