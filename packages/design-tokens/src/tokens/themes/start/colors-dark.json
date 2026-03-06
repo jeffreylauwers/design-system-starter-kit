@@ -1545,6 +1545,23 @@
         "value": "transparent",
         "type": "color",
         "comment": "Fully transparent - for invisible backgrounds and borders"
+      },
+      "shadow": {
+        "direct": {
+          "value": "color-mix(in srgb, black 60%, transparent)",
+          "type": "color",
+          "comment": "Scherpe schaduwlaag — sterker dan light mode omdat donkere achtergronden meer contrast nodig hebben"
+        },
+        "ambient": {
+          "value": "color-mix(in srgb, black 40%, transparent)",
+          "type": "color",
+          "comment": "Diffuse schaduwlaag — sterker dan light mode"
+        },
+        "highlight": {
+          "value": "color-mix(in srgb, white 8%, transparent)",
+          "type": "color",
+          "comment": "Outline-laag — subtiele witte rand geeft elevated surfaces randscherpte in dark mode"
+        }
       }
     },
     "heading": {

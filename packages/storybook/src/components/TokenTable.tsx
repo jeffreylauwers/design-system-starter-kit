@@ -18,6 +18,7 @@ type PreviewType =
   | 'spacing'
   | 'typography-size'
   | 'border-radius'
+  | 'shadow'
   | 'none';
 
 interface TokenTableProps {
@@ -102,6 +103,30 @@ function BorderRadiusPreview({ cssVar }: { cssVar: string }) {
   );
 }
 
+function ShadowPreview({ cssVar }: { cssVar: string }) {
+  return (
+    <div
+      style={{
+        padding: '6px 8px',
+        background: 'var(--dsn-color-neutral-bg-document, #fcfcfc)',
+        borderRadius: 6,
+        boxShadow: `var(${cssVar})`,
+      }}
+    >
+      <span
+        style={{
+          fontSize: 11,
+          fontFamily: 'var(--dsn-text-font-family-default, sans-serif)',
+          color: 'var(--dsn-color-neutral-color-subtle, #666)',
+          whiteSpace: 'nowrap',
+        }}
+      >
+        {cssVar.replace('--dsn-box-shadow-', '')}
+      </span>
+    </div>
+  );
+}
+
 function Preview({ type, cssVar }: { type: PreviewType; cssVar: string }) {
   switch (type) {
     case 'color':
@@ -112,6 +137,8 @@ function Preview({ type, cssVar }: { type: PreviewType; cssVar: string }) {
       return <TypographySizePreview cssVar={cssVar} />;
     case 'border-radius':
       return <BorderRadiusPreview cssVar={cssVar} />;
+    case 'shadow':
+      return <ShadowPreview cssVar={cssVar} />;
     case 'none':
       return null;
   }
@@ -291,7 +318,12 @@ export function TokenTable({
         {tokens.map((token) => (
           <tr key={token.cssVar}>
             {showPreview && (
-              <td style={{ ...cellStyle, width: 60 }}>
+              <td
+                style={{
+                  ...cellStyle,
+                  width: previewType === 'shadow' ? 140 : 60,
+                }}
+              >
                 <Preview type={previewType} cssVar={token.cssVar} />
               </td>
             )}

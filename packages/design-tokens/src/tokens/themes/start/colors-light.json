@@ -1545,6 +1545,23 @@
         "value": "transparent",
         "type": "color",
         "comment": "Fully transparent - for invisible backgrounds and borders"
+      },
+      "shadow": {
+        "direct": {
+          "value": "color-mix(in srgb, black 12%, transparent)",
+          "type": "color",
+          "comment": "Scherpe schaduwlaag — direct licht, dichtbij het object"
+        },
+        "ambient": {
+          "value": "color-mix(in srgb, black 6%, transparent)",
+          "type": "color",
+          "comment": "Diffuse schaduwlaag — omgevingslicht, verder weg"
+        },
+        "highlight": {
+          "value": "transparent",
+          "type": "color",
+          "comment": "Outline-laag — transparent in light mode (no-op)"
+        }
       }
     },
     "heading": {

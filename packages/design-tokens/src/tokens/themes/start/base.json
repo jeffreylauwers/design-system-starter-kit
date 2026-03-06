@@ -516,6 +516,20 @@
         "value": "74em",
         "comment": "Extra large breakpoint - ~1184px. Reference only; use hardcoded values in CSS @media rules."
       }
+    },
+    "box-shadow": {
+      "sm": {
+        "value": "0 1px 2px 0 {dsn.color.shadow.direct}, 0 2px 4px 0 {dsn.color.shadow.ambient}, 0 0 0 1px {dsn.color.shadow.highlight}",
+        "comment": "Kleine elevatie — cards, chips, kleine floating elementen"
+      },
+      "md": {
+        "value": "0 2px 4px 0 {dsn.color.shadow.direct}, 0 8px 16px 0 {dsn.color.shadow.ambient}, 0 0 0 1px {dsn.color.shadow.highlight}",
+        "comment": "Middelgrote elevatie — dropdowns, date pickers, tooltips"
+      },
+      "lg": {
+        "value": "0 4px 8px 0 {dsn.color.shadow.direct}, 0 16px 32px 0 {dsn.color.shadow.ambient}, 0 0 0 1px {dsn.color.shadow.highlight}",
+        "comment": "Grote elevatie — modals, dialogen, side panels"
+      }
     }
   }
 }

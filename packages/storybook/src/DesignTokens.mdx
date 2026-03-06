@@ -645,3 +645,33 @@ Minimum touch/click target sizes following WCAG 2.5.5 Target Size.
     { name: 'Min Inline Size', cssVar: '--dsn-pointer-target-min-inline-size', value: '3rem (48px)' },
   ]}
 />
+
+---
+
+## Box Shadows
+
+Elevation shadows communicate depth — which surface floats above another. Each shadow is composed of two drop shadow layers (direct + ambient) and a spread-only outline layer (highlight). Only the color tokens differ between light and dark mode; the shadow structure is identical.
+
+### Shadow Colors
+
+The three primitives that power all elevation shadows. In light mode `highlight` is transparent (no visual effect). In dark mode `highlight` becomes a subtle white outline to define edges where drop shadows are less visible.
+
+<TokenTable
+  previewType="color"
+  tokens={[
+    { name: 'Direct', cssVar: '--dsn-color-shadow-direct' },
+    { name: 'Ambient', cssVar: '--dsn-color-shadow-ambient' },
+    { name: 'Highlight', cssVar: '--dsn-color-shadow-highlight' },
+  ]}
+/>
+
+### Elevation Scale
+
+<TokenTable
+  previewType="shadow"
+  tokens={[
+    { name: 'sm — Cards, chips', cssVar: '--dsn-box-shadow-sm' },
+    { name: 'md — Dropdowns, tooltips', cssVar: '--dsn-box-shadow-md' },
+    { name: 'lg — Modals, dialogs', cssVar: '--dsn-box-shadow-lg' },
+  ]}
+/>
