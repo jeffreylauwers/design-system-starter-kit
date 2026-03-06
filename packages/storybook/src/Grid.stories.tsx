@@ -1,24 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/react';
-import { Grid, GridItem } from '@dsn/components-react';
+import { Grid, GridItem, Container } from '@dsn/components-react';
 import DocsPage from './Grid.docs.mdx';
-
-/** Placeholder box voor visuele demonstratie van Grid-kolommen */
-const Box = ({ label, height }: { label?: string; height?: string }) => (
-  <div
-    style={{
-      padding: '0.75rem 1rem',
-      background: 'var(--dsn-color-neutral-bg-default)',
-      border: '1px solid var(--dsn-color-neutral-border-subtle)',
-      borderRadius: '4px',
-      fontSize: '0.875rem',
-      color: 'var(--dsn-color-neutral-color-document)',
-      fontFamily: 'monospace',
-      blockSize: height,
-    }}
-  >
-    {label ?? 'Inhoud'}
-  </div>
-);
 
 const meta: Meta<typeof Grid> = {
   title: 'Layout Components/Grid',
@@ -31,7 +13,7 @@ const meta: Meta<typeof Grid> = {
         const cls = ['dsn-grid', args.contained && 'dsn-grid--contained']
           .filter(Boolean)
           .join(' ');
-        return `<div class="${cls}">\n  <div class="dsn-col-8">Hoofdinhoud</div>\n  <div class="dsn-col-4">Sidebar</div>\n</div>`;
+        return `<div class="${cls}">\n  <div class="dsn-col-8 dsn-container">Hoofdinhoud</div>\n  <div class="dsn-col-4 dsn-container">Sidebar</div>\n</div>`;
       },
     },
   },
@@ -53,10 +35,10 @@ export const Default: Story = {
   render: (args) => (
     <Grid {...args}>
       <GridItem colSpan={8}>
-        <Box label="dsn-col-8 — Hoofdinhoud" height="80px" />
+        <Container>dsn-col-8 — Hoofdinhoud</Container>
       </GridItem>
       <GridItem colSpan={4}>
-        <Box label="dsn-col-4 — Sidebar" height="80px" />
+        <Container>dsn-col-4 — Sidebar</Container>
       </GridItem>
     </Grid>
   ),
@@ -67,10 +49,10 @@ export const Contained: Story = {
   render: () => (
     <Grid contained>
       <GridItem colSpan={8}>
-        <Box label="dsn-col-8 — Hoofdinhoud" height="80px" />
+        <Container>dsn-col-8 — Hoofdinhoud</Container>
       </GridItem>
       <GridItem colSpan={4}>
-        <Box label="dsn-col-4 — Sidebar" height="80px" />
+        <Container>dsn-col-4 — Sidebar</Container>
       </GridItem>
     </Grid>
   ),
@@ -82,10 +64,7 @@ export const Responsive: Story = {
     <Grid contained>
       {(['A', 'B', 'C'] as const).map((label) => (
         <GridItem key={label} colSpan={12} colSpanMd={6} colSpanLg={4}>
-          <Box
-            label={`col-12 → col-md-6 → col-lg-4 — Item ${label}`}
-            height="80px"
-          />
+          <Container>{`col-12 → col-md-6 → col-lg-4 — Item ${label}`}</Container>
         </GridItem>
       ))}
     </Grid>
@@ -97,7 +76,7 @@ export const FullBleed: Story = {
   render: () => (
     <Grid contained>
       <GridItem colSpan={8}>
-        <Box label="Normale content (col-8)" />
+        <Container>Normale content (col-8)</Container>
       </GridItem>
       <GridItem fullBleed>
         <div
@@ -107,11 +86,13 @@ export const FullBleed: Story = {
             borderBlock: '1px solid var(--dsn-color-neutral-border-subtle)',
           }}
         >
-          <Box label="Full-bleed sectie — breekt uit tot container-randen" />
+          <Container>
+            Full-bleed sectie — breekt uit tot container-randen
+          </Container>
         </div>
       </GridItem>
       <GridItem colSpan={8}>
-        <Box label="Vervolg content (col-8)" />
+        <Container>Vervolg content (col-8)</Container>
       </GridItem>
     </Grid>
   ),
@@ -123,7 +104,7 @@ export const AllColumns: Story = {
     <Grid>
       {([1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12] as const).map((n) => (
         <GridItem key={n} colSpan={n}>
-          <Box label={`col-${n}`} />
+          <Container>{`col-${n}`}</Container>
         </GridItem>
       ))}
     </Grid>
@@ -136,13 +117,13 @@ export const InformationDense: Story = {
     <div className="dsn-density-dense">
       <Grid>
         <GridItem colSpan={4}>
-          <Box label="col-4" height="60px" />
+          <Container>col-4</Container>
         </GridItem>
         <GridItem colSpan={4}>
-          <Box label="col-4" height="60px" />
+          <Container>col-4</Container>
         </GridItem>
         <GridItem colSpan={4}>
-          <Box label="col-4" height="60px" />
+          <Container>col-4</Container>
         </GridItem>
       </Grid>
       <p

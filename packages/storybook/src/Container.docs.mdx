@@ -1,0 +1,27 @@
+import { Meta, Story, Controls, Markdown } from '@storybook/blocks';
+import * as ContainerStories from './Container.stories';
+import docs from './Container.docs.md?raw';
+import { PreviewFrame, CodeTabs } from './components';
+
+export const [intro, rest] = docs.split('<!-- VOORBEELD -->');
+
+<Meta of={ContainerStories} />
+
+<Markdown>{intro}</Markdown>
+
+## Voorbeeld
+
+<PreviewFrame>
+  <Story of={ContainerStories.Default} />
+</PreviewFrame>
+
+<CodeTabs
+  of={ContainerStories.Default}
+  html={`<div class="dsn-container">
+  <p class="dsn-paragraph">Inhoud van de container.</p>
+</div>`}
+/>
+
+<Controls of={ContainerStories.Default} />
+
+<Markdown>{rest}</Markdown>

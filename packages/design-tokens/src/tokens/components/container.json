@@ -1,0 +1,47 @@
+{
+  "dsn": {
+    "container": {
+      "background-color": {
+        "value": "{dsn.color.neutral.bg-elevated}",
+        "type": "color",
+        "comment": "Achtergrondkleur — bg-elevated voor visuele scheiding van de pagina"
+      },
+      "border-color": {
+        "value": "{dsn.color.neutral.border-subtle}",
+        "type": "color",
+        "comment": "Subtiele border — minder prominent dan border-default"
+      },
+      "border-radius": {
+        "value": "{dsn.border.radius.md}",
+        "type": "dimension"
+      },
+      "border-width": {
+        "value": "{dsn.border.width.thin}",
+        "type": "dimension"
+      },
+      "box-shadow": {
+        "value": "none",
+        "comment": "Standaard geen schaduw — gebruik elevated variant voor een zwevend effect"
+      },
+      "color": {
+        "value": "{dsn.color.neutral.color-document}",
+        "type": "color",
+        "comment": "Tekstkleur — altijd de volledige document-kleur voor leesbaarheid"
+      },
+      "padding-block": {
+        "value": "{dsn.space.block.3xl}",
+        "type": "dimension"
+      },
+      "padding-inline": {
+        "value": "{dsn.space.inline.3xl}",
+        "type": "dimension"
+      },
+      "elevated": {
+        "box-shadow": {
+          "value": "{dsn.box-shadow.sm}",
+          "comment": "Lichte schaduw voor kaart-achtige containers (cards, panels)"
+        }
+      }
+    }
+  }
+}

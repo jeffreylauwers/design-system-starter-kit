@@ -1,22 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/react';
-import { Stack } from '@dsn/components-react';
+import { Stack, Container } from '@dsn/components-react';
 import DocsPage from './Stack.docs.mdx';
-
-/** Placeholder box voor visuele demonstratie van Stack-spacing */
-const Box = ({ label }: { label?: string }) => (
-  <div
-    style={{
-      padding: '0.75rem 1rem',
-      background: 'var(--dsn-color-neutral-bg-default)',
-      border: '1px solid var(--dsn-color-neutral-border-subtle)',
-      borderRadius: '4px',
-      fontSize: '0.875rem',
-      color: 'var(--dsn-color-neutral-color-document)',
-    }}
-  >
-    {label ?? 'Inhoud'}
-  </div>
-);
 
 const meta: Meta<typeof Stack> = {
   title: 'Layout Components/Stack',
@@ -30,7 +14,7 @@ const meta: Meta<typeof Stack> = {
         const cls = ['dsn-stack', space !== 'md' && `dsn-stack--space-${space}`]
           .filter(Boolean)
           .join(' ');
-        return `<div class="${cls}">\n  <div>...</div>\n  <div>...</div>\n  <div>...</div>\n</div>`;
+        return `<div class="${cls}">\n  <div class="dsn-container">...</div>\n  <div class="dsn-container">...</div>\n  <div class="dsn-container">...</div>\n</div>`;
       },
     },
   },
@@ -52,9 +36,9 @@ type Story = StoryObj<typeof Stack>;
 export const Default: Story = {
   render: (args) => (
     <Stack {...args}>
-      <Box />
-      <Box />
-      <Box />
+      <Container>Inhoud</Container>
+      <Container>Inhoud</Container>
+      <Container>Inhoud</Container>
     </Stack>
   ),
 };
@@ -107,9 +91,9 @@ export const AllSpaces: Story = {
             {SPACE_LABELS[space]}
           </div>
           <Stack space={space}>
-            <Box />
-            <Box />
-            <Box />
+            <Container>Inhoud</Container>
+            <Container>Inhoud</Container>
+            <Container>Inhoud</Container>
           </Stack>
         </div>
       ))}

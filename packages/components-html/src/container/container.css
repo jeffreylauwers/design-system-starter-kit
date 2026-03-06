@@ -1,0 +1,42 @@
+/**
+ * Container Component
+ * Visuele groepering van gerelateerde content met achtergrond, border en optionele schaduw.
+ *
+ * Usage:
+ * <!-- Standaard -->
+ * <div class="dsn-container">
+ *   <p class="dsn-paragraph">Inhoud</p>
+ * </div>
+ *
+ * <!-- Elevated (kaart-achtig, met schaduw) -->
+ * <div class="dsn-container dsn-container--elevated">
+ *   <p class="dsn-paragraph">Inhoud</p>
+ * </div>
+ *
+ * <!-- Semantisch element -->
+ * <section class="dsn-container">
+ *   <h2 class="dsn-heading dsn-heading--2">Sectietitel</h2>
+ *   <p class="dsn-paragraph">Inhoud</p>
+ * </section>
+ */
+
+/* ===========================
+   Base
+   =========================== */
+.dsn-container {
+  background-color: var(--dsn-container-background-color);
+  border: var(--dsn-container-border-width) solid
+    var(--dsn-container-border-color);
+  border-radius: var(--dsn-container-border-radius);
+  box-shadow: var(--dsn-container-box-shadow);
+  color: var(--dsn-container-color);
+  padding-block: var(--dsn-container-padding-block);
+  padding-inline: var(--dsn-container-padding-inline);
+}
+
+/* ===========================
+   Elevated modifier — kaart-achtige schaduw
+   =========================== */
+.dsn-container--elevated {
+  box-shadow: var(--dsn-container-elevated-box-shadow);
+}

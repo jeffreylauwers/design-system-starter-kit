@@ -1,0 +1,6 @@
+/**
+ * Container component styles for React
+ * Re-exports the base Container styles from components-html
+ */
+
+@import '../../../components-html/src/container/container.css';

@@ -516,6 +516,20 @@
         "value": "74em",
         "comment": "Extra large breakpoint - ~1184px. Reference only; use hardcoded values in CSS @media rules."
       }
+    },
+    "box-shadow": {
+      "sm": {
+        "value": "none",
+        "comment": "Small elevation — flat in wireframe theme"
+      },
+      "md": {
+        "value": "none",
+        "comment": "Medium elevation — flat in wireframe theme"
+      },
+      "lg": {
+        "value": "none",
+        "comment": "Large elevation — flat in wireframe theme"
+      }
     }
   }
 }

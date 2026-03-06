@@ -7,6 +7,7 @@
   "exports": {
     ".": "./dist/components.css",
     "./button": "./src/button/button.css",
+    "./container": "./src/container/container.css",
     "./icon": "./src/icon/icon.css",
     "./paragraph": "./src/paragraph/paragraph.css",
     "./heading": "./src/heading/heading.css",
