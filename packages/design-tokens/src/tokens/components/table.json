@@ -93,6 +93,11 @@
           "value": "{dsn.color.neutral.bg-document}",
           "type": "color",
           "comment": "Achtergrondkleur van de scroll-wrapper — moet overeenkomen met de pagina-achtergrond voor de scroll-schaduw techniek"
+        },
+        "scroll-shadow-color": {
+          "value": "{dsn.color.shadow.scroll}",
+          "type": "color",
+          "comment": "Kleur van de scroll-affordance schaduw aan de zijkanten van scrollbare tabellen"
         }
       }
     }

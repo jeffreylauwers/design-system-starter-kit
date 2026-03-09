@@ -1561,6 +1561,11 @@
           "value": "color-mix(in srgb, white 8%, transparent)",
           "type": "color",
           "comment": "Outline-laag — subtiele witte rand geeft elevated surfaces randscherpte in dark mode"
+        },
+        "scroll": {
+          "value": "rgba(255, 255, 255, 0.12)",
+          "type": "color",
+          "comment": "Scroll-affordance schaduw — lichte kleur voor zichtbaarheid op donkere achtergrond"
         }
       }
     },

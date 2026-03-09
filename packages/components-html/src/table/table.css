@@ -21,7 +21,7 @@
     --dsn-table-wrapper-background-color,
     var(--dsn-color-neutral-bg-document, #fcfcfc)
   );
-  --_shadow: var(--dsn-table-wrapper-scroll-shadow-color, rgba(0, 0, 0, 0.1));
+  --_shadow: var(--dsn-table-wrapper-scroll-shadow-color, rgba(0, 0, 0, 0.15));
 
   overflow-x: auto;
   background-color: var(--_bg);
@@ -35,12 +35,12 @@
     /* Eindschaduw (scroll): altijd aanwezig, gedekt door de einde-cover zolang je rechts bent */
     linear-gradient(to left, var(--_shadow) 0%, transparent 100%);
   background-repeat: no-repeat;
-  /* Cover (3rem) is breder dan de schaduw (1.5rem) zodat hij volledig dekt bij rust */
+  /* Cover (4rem) is breder dan de schaduw (2rem) zodat hij volledig dekt bij rust */
   background-size:
-    3rem 100%,
-    3rem 100%,
-    1.5rem 100%,
-    1.5rem 100%;
+    4rem 100%,
+    4rem 100%,
+    2rem 100%,
+    2rem 100%;
   background-position: left, right, left, right;
   background-attachment: local, local, scroll, scroll;
 }
@@ -104,7 +104,7 @@
   padding-inline-start: var(--dsn-table-cell-padding-inline-start);
   padding-inline-end: var(--dsn-table-cell-padding-inline-end);
   text-align: start;
-  vertical-align: top;
+  vertical-align: middle;
 }
 
 /* Rijkoppen (th scope="row") krijgen hetzelfde gewicht als kolomkoppen */
@@ -132,7 +132,7 @@
   padding-inline-end: var(--dsn-table-cell-padding-inline-end);
   font-weight: var(--dsn-table-footer-font-weight);
   text-align: start;
-  vertical-align: top;
+  vertical-align: middle;
 }
 
 /* ===== Kolomhoofd-inhoud (sorteerbaar) ===== */
@@ -191,4 +191,27 @@
 
 [aria-sort='descending'] .dsn-table__sort-icon--descending {
   display: inline-flex;
+}
+
+/* ===== Numerieke cellen ===== */
+/*
+ * Gebruik op <th> en <td> voor kolommen met cijfers of geldbedragen.
+ * Tabular-nums zorgt voor consistente cijferbreedte zodat komma's en
+ * decimalen netjes uitlijnen bij vergelijking.
+ */
+
+.dsn-table__cell--numeric {
+  text-align: end;
+  font-variant-numeric: tabular-nums;
+}
+
+/* ===== Selecteerbare rijen ===== */
+/*
+ * Zet aria-selected="true" op <tr> om een rij als geselecteerd te markeren.
+ * Gebruik in combinatie met een checkbox in de eerste kolom.
+ */
+
+.dsn-table tbody tr[aria-selected='true'] {
+  background-color: var(--dsn-color-neutral-bg-active);
+  color: var(--dsn-color-neutral-color-active);
 }

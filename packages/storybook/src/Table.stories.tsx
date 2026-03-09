@@ -1,5 +1,6 @@
+import { useState } from 'react';
 import type { Meta, StoryObj } from '@storybook/react';
-import { Table, Icon } from '@dsn/components-react';
+import { Table, Icon, Checkbox, Link } from '@dsn/components-react';
 import type { TableProps } from '@dsn/components-react';
 import DocsPage from './Table.docs.mdx';
 
@@ -43,20 +44,20 @@ const meta: Meta<typeof Table> = {
   <thead>
     <tr>
       <th scope="col">Product</th>
-      <th scope="col">Prijs</th>
-      <th scope="col">Voorraad</th>
+      <th scope="col" class="dsn-table__cell--numeric">Prijs</th>
+      <th scope="col" class="dsn-table__cell--numeric">Voorraad</th>
     </tr>
   </thead>
   <tbody>
     <tr>
       <td>Laptop</td>
-      <td>€999</td>
-      <td>12</td>
+      <td class="dsn-table__cell--numeric">€999</td>
+      <td class="dsn-table__cell--numeric">12</td>
     </tr>
     <tr>
       <td>Muis</td>
-      <td>€29</td>
-      <td>84</td>
+      <td class="dsn-table__cell--numeric">€29</td>
+      <td class="dsn-table__cell--numeric">84</td>
     </tr>
   </tbody>
 </table>`;
@@ -92,25 +93,29 @@ export const Default: Story = {
       <thead>
         <tr>
           <th scope="col">Product</th>
-          <th scope="col">Prijs</th>
-          <th scope="col">Voorraad</th>
+          <th scope="col" className="dsn-table__cell--numeric">
+            Prijs
+          </th>
+          <th scope="col" className="dsn-table__cell--numeric">
+            Voorraad
+          </th>
         </tr>
       </thead>
       <tbody>
         <tr>
           <td>Laptop</td>
-          <td>€999</td>
-          <td>12</td>
+          <td className="dsn-table__cell--numeric">€999</td>
+          <td className="dsn-table__cell--numeric">12</td>
         </tr>
         <tr>
           <td>Muis</td>
-          <td>€29</td>
-          <td>84</td>
+          <td className="dsn-table__cell--numeric">€29</td>
+          <td className="dsn-table__cell--numeric">84</td>
         </tr>
         <tr>
           <td>Toetsenbord</td>
-          <td>€79</td>
-          <td>34</td>
+          <td className="dsn-table__cell--numeric">€79</td>
+          <td className="dsn-table__cell--numeric">34</td>
         </tr>
       </tbody>
     </Table>
@@ -124,29 +129,35 @@ export const WithRowHeaders: Story = {
       <thead>
         <tr>
           <th scope="col">Kwartaal</th>
-          <th scope="col">Omzet</th>
-          <th scope="col">Kosten</th>
-          <th scope="col">Winst</th>
+          <th scope="col" className="dsn-table__cell--numeric">
+            Omzet
+          </th>
+          <th scope="col" className="dsn-table__cell--numeric">
+            Kosten
+          </th>
+          <th scope="col" className="dsn-table__cell--numeric">
+            Winst
+          </th>
         </tr>
       </thead>
       <tbody>
         <tr>
           <th scope="row">Q1 2025</th>
-          <td>€120.000</td>
-          <td>€80.000</td>
-          <td>€40.000</td>
+          <td className="dsn-table__cell--numeric">€120.000</td>
+          <td className="dsn-table__cell--numeric">€80.000</td>
+          <td className="dsn-table__cell--numeric">€40.000</td>
         </tr>
         <tr>
           <th scope="row">Q2 2025</th>
-          <td>€145.000</td>
-          <td>€90.000</td>
-          <td>€55.000</td>
+          <td className="dsn-table__cell--numeric">€145.000</td>
+          <td className="dsn-table__cell--numeric">€90.000</td>
+          <td className="dsn-table__cell--numeric">€55.000</td>
         </tr>
         <tr>
           <th scope="row">Q3 2025</th>
-          <td>€138.000</td>
-          <td>€85.000</td>
-          <td>€53.000</td>
+          <td className="dsn-table__cell--numeric">€138.000</td>
+          <td className="dsn-table__cell--numeric">€85.000</td>
+          <td className="dsn-table__cell--numeric">€53.000</td>
         </tr>
       </tbody>
     </Table>
@@ -160,32 +171,36 @@ export const WithFooter: Story = {
       <thead>
         <tr>
           <th scope="col">Product</th>
-          <th scope="col">Prijs</th>
-          <th scope="col">Voorraad</th>
+          <th scope="col" className="dsn-table__cell--numeric">
+            Prijs
+          </th>
+          <th scope="col" className="dsn-table__cell--numeric">
+            Voorraad
+          </th>
         </tr>
       </thead>
       <tbody>
         <tr>
           <th scope="row">Laptop</th>
-          <td>€999</td>
-          <td>12</td>
+          <td className="dsn-table__cell--numeric">€999</td>
+          <td className="dsn-table__cell--numeric">12</td>
         </tr>
         <tr>
           <th scope="row">Muis</th>
-          <td>€29</td>
-          <td>84</td>
+          <td className="dsn-table__cell--numeric">€29</td>
+          <td className="dsn-table__cell--numeric">84</td>
         </tr>
         <tr>
           <th scope="row">Toetsenbord</th>
-          <td>€79</td>
-          <td>34</td>
+          <td className="dsn-table__cell--numeric">€79</td>
+          <td className="dsn-table__cell--numeric">34</td>
         </tr>
       </tbody>
       <tfoot>
         <tr>
           <th scope="row">Totaal</th>
-          <td>—</td>
-          <td>130</td>
+          <td className="dsn-table__cell--numeric">—</td>
+          <td className="dsn-table__cell--numeric">130</td>
         </tr>
       </tfoot>
     </Table>
@@ -253,16 +268,16 @@ export const SortableColumns: Story = {
       </caption>
       <thead>
         <tr>
-          {/* Gesorteerde kolom: oplopend — icon-only knop met aria-label */}
+          {/* Gesorteerde kolom: oplopend */}
           <th scope="col" aria-sort="ascending">
             <span className="dsn-table__header-content">
               Naam
               <button
                 className="dsn-button dsn-button--size-small dsn-button--subtle dsn-button--icon-only dsn-table__sort-button"
                 type="button"
-                aria-label="Sorteer op Naam"
               >
                 <SortIcons />
+                <span className="dsn-button__label">Sorteer op Naam</span>
               </button>
             </span>
           </th>
@@ -273,9 +288,9 @@ export const SortableColumns: Story = {
               <button
                 className="dsn-button dsn-button--size-small dsn-button--subtle dsn-button--icon-only dsn-table__sort-button"
                 type="button"
-                aria-label="Sorteer op Afdeling"
               >
                 <SortIcons />
+                <span className="dsn-button__label">Sorteer op Afdeling</span>
               </button>
             </span>
           </th>
@@ -320,51 +335,401 @@ export const AllFeatures: Story = {
               <button
                 className="dsn-button dsn-button--size-small dsn-button--subtle dsn-button--icon-only dsn-table__sort-button"
                 type="button"
-                aria-label="Sorteer op Product"
               >
                 <SortIcons />
+                <span className="dsn-button__label">Sorteer op Product</span>
               </button>
             </span>
           </th>
-          <th scope="col" aria-sort="none">
+          <th scope="col" aria-sort="none" className="dsn-table__cell--numeric">
             <span className="dsn-table__header-content">
               Prijs
               <button
                 className="dsn-button dsn-button--size-small dsn-button--subtle dsn-button--icon-only dsn-table__sort-button"
                 type="button"
-                aria-label="Sorteer op Prijs"
               >
                 <SortIcons />
+                <span className="dsn-button__label">Sorteer op Prijs</span>
               </button>
             </span>
           </th>
-          <th scope="col">Voorraad</th>
+          <th scope="col" className="dsn-table__cell--numeric">
+            Voorraad
+          </th>
         </tr>
       </thead>
       <tbody>
         <tr>
           <th scope="row">Laptop</th>
-          <td>€999</td>
-          <td>12</td>
+          <td className="dsn-table__cell--numeric">€999</td>
+          <td className="dsn-table__cell--numeric">12</td>
         </tr>
         <tr>
           <th scope="row">Muis</th>
-          <td>€29</td>
-          <td>84</td>
+          <td className="dsn-table__cell--numeric">€29</td>
+          <td className="dsn-table__cell--numeric">84</td>
         </tr>
         <tr>
           <th scope="row">Toetsenbord</th>
-          <td>€79</td>
-          <td>34</td>
+          <td className="dsn-table__cell--numeric">€79</td>
+          <td className="dsn-table__cell--numeric">34</td>
         </tr>
       </tbody>
       <tfoot>
         <tr>
           <th scope="row">Totaal</th>
-          <td>—</td>
-          <td>130</td>
+          <td className="dsn-table__cell--numeric">—</td>
+          <td className="dsn-table__cell--numeric">130</td>
         </tr>
       </tfoot>
     </Table>
   ),
+};
+
+/* ===== Selecteerbare rijen ===== */
+
+const products = [
+  {
+    id: '1',
+    name: 'Laptop Pro',
+    category: 'Hardware',
+    price: '€999',
+    stock: 12,
+  },
+  {
+    id: '2',
+    name: 'Muis Ergonomisch',
+    category: 'Accessoires',
+    price: '€79',
+    stock: 84,
+  },
+  {
+    id: '3',
+    name: 'Toetsenbord Compact',
+    category: 'Accessoires',
+    price: '€129',
+    stock: 34,
+  },
+];
+
+const SelectableRowsTable = (args: TableProps) => {
+  const [selected, setSelected] = useState<Set<string>>(new Set());
+
+  const allSelected = selected.size === products.length;
+  const someSelected = selected.size > 0 && !allSelected;
+
+  const toggleAll = () => {
+    setSelected(allSelected ? new Set() : new Set(products.map((p) => p.id)));
+  };
+
+  const toggleRow = (id: string) => {
+    const next = new Set(selected);
+    if (next.has(id)) {
+      next.delete(id);
+    } else {
+      next.add(id);
+    }
+    setSelected(next);
+  };
+
+  return (
+    <Table {...args}>
+      <thead>
+        <tr>
+          <th scope="col">
+            <Checkbox
+              id="select-all"
+              checked={allSelected}
+              indeterminate={someSelected}
+              onChange={toggleAll}
+            />
+            <label htmlFor="select-all" className="dsn-visually-hidden">
+              Selecteer alle rijen
+            </label>
+          </th>
+          <th scope="col">Product</th>
+          <th scope="col">Categorie</th>
+          <th scope="col" className="dsn-table__cell--numeric">
+            Prijs
+          </th>
+          <th scope="col" className="dsn-table__cell--numeric">
+            Voorraad
+          </th>
+        </tr>
+      </thead>
+      <tbody>
+        {products.map((product) => (
+          <tr key={product.id} aria-selected={selected.has(product.id)}>
+            <td>
+              <Checkbox
+                id={`select-row-${product.id}`}
+                checked={selected.has(product.id)}
+                onChange={() => toggleRow(product.id)}
+              />
+              <label
+                htmlFor={`select-row-${product.id}`}
+                className="dsn-visually-hidden"
+              >
+                Selecteer {product.name}
+              </label>
+            </td>
+            <td>{product.name}</td>
+            <td>{product.category}</td>
+            <td className="dsn-table__cell--numeric">{product.price}</td>
+            <td className="dsn-table__cell--numeric">{product.stock}</td>
+          </tr>
+        ))}
+      </tbody>
+    </Table>
+  );
+};
+
+export const SelectableRows: Story = {
+  name: 'Selectable rows (met checkboxes)',
+  args: {
+    caption: 'Productoverzicht — selecteerbare rijen',
+  },
+  render: (args: TableProps) => <SelectableRowsTable {...args} />,
+};
+
+/* ===== Link in eerste cel ===== */
+
+export const WithLink: Story = {
+  name: 'With link in first cell',
+  args: {
+    caption: 'Producten met links',
+  },
+  render: (args: TableProps) => (
+    <Table {...args}>
+      <thead>
+        <tr>
+          <th scope="col">Product</th>
+          <th scope="col">Categorie</th>
+          <th scope="col" className="dsn-table__cell--numeric">
+            Prijs
+          </th>
+          <th scope="col" className="dsn-table__cell--numeric">
+            Voorraad
+          </th>
+        </tr>
+      </thead>
+      <tbody>
+        {products.map((product) => (
+          <tr key={product.id}>
+            <td>
+              <Link href="#">{product.name}</Link>
+            </td>
+            <td>{product.category}</td>
+            <td className="dsn-table__cell--numeric">{product.price}</td>
+            <td className="dsn-table__cell--numeric">{product.stock}</td>
+          </tr>
+        ))}
+      </tbody>
+    </Table>
+  ),
+};
+
+/* ===== Verwijder-actie ===== */
+
+export const WithDeleteAction: Story = {
+  name: 'With delete action',
+  args: {
+    caption: 'Producten met verwijderactie',
+  },
+  render: (args: TableProps) => (
+    <Table {...args}>
+      <thead>
+        <tr>
+          <th scope="col">Product</th>
+          <th scope="col">Categorie</th>
+          <th scope="col" className="dsn-table__cell--numeric">
+            Prijs
+          </th>
+          <th scope="col">Actie</th>
+        </tr>
+      </thead>
+      <tbody>
+        {products.map((product) => (
+          <tr key={product.id}>
+            <th scope="row">{product.name}</th>
+            <td>{product.category}</td>
+            <td className="dsn-table__cell--numeric">{product.price}</td>
+            <td>
+              <button
+                type="button"
+                className="dsn-button dsn-button--subtle-negative dsn-button--size-small"
+              >
+                <Icon name="trash" aria-hidden />
+                <span className="dsn-button__label">
+                  Verwijder
+                  <span className="dsn-visually-hidden"> {product.name}</span>
+                </span>
+              </button>
+            </td>
+          </tr>
+        ))}
+      </tbody>
+    </Table>
+  ),
+};
+
+/* ===== Actiemenu ===== */
+
+export const WithActionsMenu: Story = {
+  name: 'With actions menu',
+  args: {
+    caption: 'Producten met actiemenu',
+  },
+  render: (args: TableProps) => (
+    <Table {...args}>
+      <thead>
+        <tr>
+          <th scope="col">Product</th>
+          <th scope="col">Categorie</th>
+          <th scope="col" className="dsn-table__cell--numeric">
+            Prijs
+          </th>
+          <th scope="col">Acties</th>
+        </tr>
+      </thead>
+      <tbody>
+        {products.map((product) => (
+          <tr key={product.id}>
+            <th scope="row">{product.name}</th>
+            <td>{product.category}</td>
+            <td className="dsn-table__cell--numeric">{product.price}</td>
+            <td>
+              <button
+                type="button"
+                className="dsn-button dsn-button--subtle dsn-button--size-small dsn-button--icon-only"
+              >
+                <Icon name="dots-vertical" aria-hidden />
+                <span className="dsn-button__label">
+                  Toon acties
+                  <span className="dsn-visually-hidden">
+                    {' '}
+                    voor {product.name}
+                  </span>
+                </span>
+              </button>
+            </td>
+          </tr>
+        ))}
+      </tbody>
+    </Table>
+  ),
+};
+
+/* ===== Alles gecombineerd ===== */
+
+const AllTogetherTable = (args: TableProps) => {
+  const [selected, setSelected] = useState<Set<string>>(new Set());
+
+  const allSelected = selected.size === products.length;
+  const someSelected = selected.size > 0 && !allSelected;
+
+  const toggleAll = () => {
+    setSelected(allSelected ? new Set() : new Set(products.map((p) => p.id)));
+  };
+
+  const toggleRow = (id: string) => {
+    const next = new Set(selected);
+    if (next.has(id)) {
+      next.delete(id);
+    } else {
+      next.add(id);
+    }
+    setSelected(next);
+  };
+
+  return (
+    <Table {...args}>
+      <thead>
+        <tr>
+          <th scope="col">
+            <Checkbox
+              id="combined-select-all"
+              checked={allSelected}
+              indeterminate={someSelected}
+              onChange={toggleAll}
+            />
+            <label
+              htmlFor="combined-select-all"
+              className="dsn-visually-hidden"
+            >
+              Selecteer alle rijen
+            </label>
+          </th>
+          <th scope="col">Product</th>
+          <th scope="col">Categorie</th>
+          <th scope="col" className="dsn-table__cell--numeric">
+            Prijs
+          </th>
+          <th scope="col" className="dsn-table__cell--numeric">
+            Voorraad
+          </th>
+          <th scope="col">Acties</th>
+        </tr>
+      </thead>
+      <tbody>
+        {products.map((product) => (
+          <tr key={product.id} aria-selected={selected.has(product.id)}>
+            <td>
+              <Checkbox
+                id={`combined-select-row-${product.id}`}
+                checked={selected.has(product.id)}
+                onChange={() => toggleRow(product.id)}
+              />
+              <label
+                htmlFor={`combined-select-row-${product.id}`}
+                className="dsn-visually-hidden"
+              >
+                Selecteer {product.name}
+              </label>
+            </td>
+            <td>
+              <Link href="#">{product.name}</Link>
+            </td>
+            <td>{product.category}</td>
+            <td className="dsn-table__cell--numeric">{product.price}</td>
+            <td className="dsn-table__cell--numeric">{product.stock}</td>
+            <td>
+              <button
+                type="button"
+                className="dsn-button dsn-button--subtle dsn-button--size-small dsn-button--icon-only"
+              >
+                <Icon name="dots-vertical" aria-hidden />
+                <span className="dsn-button__label">
+                  Toon acties
+                  <span className="dsn-visually-hidden">
+                    {' '}
+                    voor {product.name}
+                  </span>
+                </span>
+              </button>
+            </td>
+          </tr>
+        ))}
+      </tbody>
+      <tfoot>
+        <tr>
+          <td />
+          <th scope="row">Totaal</th>
+          <td />
+          <td className="dsn-table__cell--numeric">€1.207</td>
+          <td className="dsn-table__cell--numeric">130</td>
+          <td />
+        </tr>
+      </tfoot>
+    </Table>
+  );
+};
+
+export const AllTogether: Story = {
+  name: 'All together (alles gecombineerd)',
+  args: {
+    caption: 'Productoverzicht — alle interacties',
+    scrollable: true,
+  },
+  render: (args: TableProps) => <AllTogetherTable {...args} />,
 };

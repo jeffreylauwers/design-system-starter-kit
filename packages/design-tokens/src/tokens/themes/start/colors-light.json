@@ -1561,6 +1561,11 @@
           "value": "transparent",
           "type": "color",
           "comment": "Outline-laag — transparent in light mode (no-op)"
+        },
+        "scroll": {
+          "value": "rgba(0, 0, 0, 0.15)",
+          "type": "color",
+          "comment": "Scroll-affordance schaduw voor horizontaal scrollbare tabellen"
         }
       }
     },

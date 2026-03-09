@@ -55,27 +55,41 @@ Sorteerfunctionaliteit (state management, data manipulatie) valt buiten de scope
 
 - Voeg `aria-sort="ascending"`, `aria-sort="descending"` of `aria-sort="none"` toe aan `<th>` elementen die sorteerbaar zijn.
 - Laat `aria-sort` weg op niet-sorteerbare kolommen.
-- Gebruik `dsn-button dsn-button--size-small dsn-button--subtle dsn-table__sort-button` als klasse op de knop.
+- Gebruik `dsn-button dsn-button--size-small dsn-button--subtle dsn-button--icon-only dsn-table__sort-button` als klasse op de knop.
+- Geef de knop een toegankelijke naam via `dsn-button__label` — gebruik geen `aria-label`.
 - Voeg drie sorteericonen toe in de knop — de CSS toont het juiste icoon op basis van `aria-sort`:
 
 ```html
 <th scope="col" aria-sort="ascending">
-  <button
-    class="dsn-button dsn-button--size-small dsn-button--subtle dsn-table__sort-button"
-    type="button"
-  >
+  <span class="dsn-table__header-content">
     Naam
-    <svg class="dsn-icon dsn-table__sort-icon--none" aria-hidden="true">
-      <!-- arrows-sort -->
-    </svg>
-    <svg class="dsn-icon dsn-table__sort-icon--ascending" aria-hidden="true">
-      <!-- sort-ascending -->
-    </svg>
-    <svg class="dsn-icon dsn-table__sort-icon--descending" aria-hidden="true">
-      <!-- sort-descending -->
-    </svg>
-  </button>
+    <button
+      class="dsn-button dsn-button--size-small dsn-button--subtle dsn-button--icon-only dsn-table__sort-button"
+      type="button"
+    >
+      <svg class="dsn-icon dsn-table__sort-icon--none" aria-hidden="true">
+        <!-- arrows-sort -->
+      </svg>
+      <svg class="dsn-icon dsn-table__sort-icon--ascending" aria-hidden="true">
+        <!-- sort-ascending -->
+      </svg>
+      <svg class="dsn-icon dsn-table__sort-icon--descending" aria-hidden="true">
+        <!-- sort-descending -->
+      </svg>
+      <span class="dsn-button__label">Sorteer op Naam</span>
+    </button>
+  </span>
 </th>
+```
+
+### Numerieke kolommen
+
+Voeg de klasse `dsn-table__cell--numeric` toe aan `<th>` en `<td>` voor kolommen met cijfers of geldbedragen. Dit lijnt de inhoud rechts uit en gebruikt `font-variant-numeric: tabular-nums` zodat getallen netjes onder elkaar uitlijnen.
+
+```html
+<th scope="col" class="dsn-table__cell--numeric">Prijs</th>
+<!-- ... -->
+<td class="dsn-table__cell--numeric">€999</td>
 ```
 
 ## Design tokens
@@ -103,13 +117,14 @@ Sorteerfunctionaliteit (state management, data manipulatie) valt buiten de scope
 | `--dsn-table-footer-border-block-start-width` | Breedte van de scheiding boven de footer (2px) |
 | `--dsn-table-footer-color`                    | Tekstkleur van de footer                       |
 | `--dsn-table-footer-font-weight`              | Gewicht van footercellen (vet)                 |
+| `--dsn-table-wrapper-scroll-shadow-color`     | Kleur van de scroll-affordance schaduw         |
 
 ## Accessibility
 
 - Gebruik **altijd** `scope="col"` op kolomkoppen en `scope="row"` op rijkoppen — dit is de kern van toegankelijke tabellen. Zonder `scope` kunnen schermlezers de relatie tussen cellen en koppen niet vaststellen.
 - De `<caption>` staat altijd als eerste kind van `<table>` en is zowel zichtbaar als machine-leesbaar.
 - Bij `scrollable`: de wrapper krijgt `role="region"` en `aria-labelledby` zodat schermlezers de scrollbare regio kunnen herkennen en benoemen.
-- Sorteericonen zijn **altijd** decoratief (`aria-hidden="true"`). De `aria-sort` waarde op `<th>` communiceert de sorteerrichting naar schermlezers — geen aanvullende aria-labels nodig.
+- Sorteericonen zijn **altijd** decoratief (`aria-hidden="true"`). De sorteerknop heeft een toegankelijke naam via `dsn-button__label` — bijv. `"Sorteer op Naam"`. Gebruik geen `aria-label`. De `aria-sort` waarde op `<th>` communiceert de sorteerrichting; de richting hoef je niet te herhalen in de `dsn-button__label`.
 - Gebruik **nooit** `display: grid` of `display: flex` op tabel-elementen — dit verwijdert de ingebouwde toegankelijkheidssemantiek van de browser.
 - Schermlezers (NVDA, JAWS) navigeren door tabellen met `Ctrl+Alt+pijltjestoetsen`. Bij elke cel wordt de bijbehorende kolomkop en/of rijkop automatisch voorgelezen.
 - Maak individuele cellen (`<td>`, `<th>`) nooit focusbaar via `tabindex` — dit belemmert de standaard schermlezernavigatie.
