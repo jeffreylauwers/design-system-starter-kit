@@ -163,6 +163,12 @@
   gap: var(--dsn-space-inline-sm);
 }
 
+/* In numerieke kolommen de hele header-content rechts uitlijnen,
+ * zodat de kolomtitel en het sorteerknopje uitlijnen met de data eronder. */
+.dsn-table .dsn-table__cell--numeric .dsn-table__header-content {
+  justify-content: flex-end;
+}
+
 /* ===== Sorteerknop ===== */
 /*
  * Aanvullende klasse op dsn-button dsn-button--size-small dsn-button--subtle dsn-button--icon-only.
