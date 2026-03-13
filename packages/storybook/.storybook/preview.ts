@@ -157,7 +157,7 @@ const preview: Preview = {
         // Update body classes for any CSS scoping
         const densityClass =
           projectType === 'information-dense' ? 'dense' : 'default';
-        document.body.className = `dsn-theme-${theme} dsn-mode-${mode} dsn-density-${densityClass}`;
+        document.body.className = `dsn-body dsn-theme-${theme} dsn-mode-${mode} dsn-density-${densityClass}`;
       }
 
       return Story();

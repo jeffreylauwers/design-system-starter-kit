@@ -1,0 +1,28 @@
+import { Meta, Story, Markdown } from '@storybook/blocks';
+import * as BodyStories from './Body.stories';
+import docs from './Body.docs.md?raw';
+import { PreviewFrame, CodeTabs } from './components';
+
+export const [intro, rest] = docs.split('<!-- VOORBEELD -->');
+
+<Meta of={BodyStories} />
+
+<Markdown>{intro}</Markdown>
+
+## Voorbeeld
+
+<PreviewFrame>
+  <Story of={BodyStories.Default} />
+</PreviewFrame>
+
+<CodeTabs
+  of={BodyStories.Default}
+  html={`<body class="dsn-body">
+  <!-- paginainhoud -->
+</body>`}
+  react={`<Body>
+  {/* paginainhoud */}
+</Body>`}
+/>
+
+<Markdown>{rest}</Markdown>

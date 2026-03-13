@@ -1,0 +1,6 @@
+/**
+ * Body component styles voor React
+ * Re-exporteert de basis Body stijlen vanuit components-html
+ */
+
+@import '../../../components-html/src/body/body.css';

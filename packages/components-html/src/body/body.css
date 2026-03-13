@@ -1,0 +1,8 @@
+.dsn-body {
+  background-color: var(--dsn-color-neutral-bg-document);
+  color: var(--dsn-color-neutral-color-document);
+  font-family: var(--dsn-text-font-family-default);
+  font-size: var(--dsn-text-font-size-md);
+  line-height: var(--dsn-text-line-height-md);
+  font-weight: var(--dsn-text-font-weight-default);
+}

@@ -6,6 +6,7 @@
  */
 
 // Layout Components
+export * from './Body';
 export * from './Container';
 export * from './Grid';
 export * from './Stack';
