@@ -7,7 +7,10 @@ import { configureSort } from 'storybook-multilevel-sort';
 configureSort({
   storyOrder: {
     introduction: null,
-    foundations: null,
+    foundations: {
+      'design tokens': null,
+      '*': null,
+    },
     'layout components': {
       '*': { docs: null },
     },
