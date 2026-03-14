@@ -37,13 +37,20 @@ Complete documentation voor het Design System Starter Kit.
    - CSS methodology
    - Testing strategy
 
-5. **[Storybook Configuration](./05-storybook-configuration.md)**
+5. **[CSS & Token Naming Conventions](./06-css-naming-conventions.md)**
+   - Namespace prefix `dsn-`
+   - BEM — Block, Element, Modifier
+   - CSS custom property structuur (globaal, component, lokale alias)
+   - Design token namen in JSON
+   - Snelle referentie en veelgemaakte fouten
+
+6. **[Storybook Configuration](./05-storybook-configuration.md)**
    - Architecture overview
    - Runtime theme switching
    - TokenTable component
    - Documentation structure
 
-6. **[Changelog](./changelog.md)**
+7. **[Changelog](./changelog.md)**
    - Version history
    - Feature additions
    - Breaking changes
@@ -74,6 +81,7 @@ Complete documentation voor het Design System Starter Kit.
 - **Adding a new theme?** → [Architecture: Adding a New Theme](./01-architecture.md#adding-a-new-theme)
 - **Component specs?** → [Components](./03-components.md)
 - **Token values?** → [Design Tokens Reference](./02-design-tokens-reference.md)
+- **CSS- en tokennamen?** → [CSS & Token Naming Conventions](./06-css-naming-conventions.md)
 - **Storybook setup?** → [Storybook Configuration](./05-storybook-configuration.md)
 - **Recent changes?** → [Changelog](./changelog.md)
 

@@ -391,17 +391,17 @@ import '@dsn/core/css'; // Includes reset + utilities
 .dsn-button__icon {
 } /* Element */
 .dsn-button--strong {
-} /* Modifier */
+} /* Modifier — variant */
 .dsn-button--size-small {
-} /* Modifier */
+} /* Modifier — grootte */
 ```
 
-**Guidelines:**
+- Enkelvoudige koppeltekens scheiden woorden binnen een naam
+- Dubbele underscore `__` voor elementen
+- Dubbele koppeltekens `--` voor modifiers
+- Prefix alle klassen met `dsn-`
 
-- Use single dash for word separation within names
-- Use double dash `--` for modifiers
-- Use double underscore `__` for elements
-- Prefix all component classes with `dsn-`
+Zie **[CSS & Token Naming Conventions](./06-css-naming-conventions.md)** voor de volledige specificatie, het lokale alias-scoping-patroon en een overzicht van veelgemaakte fouten.
 
 ### CSS Best Practices
 
