@@ -94,9 +94,9 @@ Kernregels:
 - Geen geneste element-namen: `dsn-alert__content__text` ❌
 - HTML-toestanden via pseudo-klassen: `.dsn-button:disabled` ✅
 
-### 4. Twee TypeScript-waarschuwingen zijn pre-existing
+### 4. TypeScript moet volledig schoon zijn
 
-`pnpm --filter storybook exec tsc --noEmit` geeft **4 warnings** in bestaande bestanden. Dit zijn bekende, pre-existing issues — geen blocker. Nieuwe code moet 0 nieuwe fouten introduceren.
+`pnpm --filter storybook exec tsc --noEmit` geeft **0 fouten en 0 warnings**. Nieuwe code mag geen nieuwe fouten of warnings introduceren.
 
 ---
 
