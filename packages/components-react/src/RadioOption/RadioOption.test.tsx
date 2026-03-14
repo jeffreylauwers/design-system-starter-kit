@@ -48,9 +48,7 @@ describe('RadioOption', () => {
 
   it('can be selected by clicking label', async () => {
     const user = userEvent.setup();
-    const { container } = render(
-      <RadioOption label="Option A" data-testid="radio" />
-    );
+    render(<RadioOption label="Option A" data-testid="radio" />);
     const radio = screen.getByTestId('radio') as HTMLInputElement;
     const label = screen.getByText('Option A');
 

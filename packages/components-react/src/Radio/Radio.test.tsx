@@ -5,7 +5,7 @@ import { Radio } from './Radio';
 
 describe('Radio', () => {
   it('renders as a radio input', () => {
-    const { container } = render(<Radio data-testid="radio" />);
+    render(<Radio data-testid="radio" />);
     const input = screen.getByTestId('radio');
     expect(input.tagName).toBe('INPUT');
     expect(input).toHaveAttribute('type', 'radio');

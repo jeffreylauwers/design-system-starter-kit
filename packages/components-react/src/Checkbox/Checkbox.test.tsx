@@ -5,7 +5,7 @@ import { Checkbox } from './Checkbox';
 
 describe('Checkbox', () => {
   it('renders as a checkbox input', () => {
-    const { container } = render(<Checkbox data-testid="checkbox" />);
+    render(<Checkbox data-testid="checkbox" />);
     const input = screen.getByTestId('checkbox');
     expect(input.tagName).toBe('INPUT');
     expect(input).toHaveAttribute('type', 'checkbox');

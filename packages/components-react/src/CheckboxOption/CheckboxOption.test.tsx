@@ -48,9 +48,7 @@ describe('CheckboxOption', () => {
 
   it('can be toggled by clicking label', async () => {
     const user = userEvent.setup();
-    const { container } = render(
-      <CheckboxOption label="Accept" data-testid="checkbox" />
-    );
+    render(<CheckboxOption label="Accept" data-testid="checkbox" />);
     const checkbox = screen.getByTestId('checkbox') as HTMLInputElement;
     const label = screen.getByText('Accept');
 
