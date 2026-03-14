@@ -25,7 +25,9 @@ De Note component plaatst extra context of een tip op een opvallende maar niet-u
 
 ### Variantkeuze
 
-- **Neutral** — standaard, voor algemene tips en aanvullende context.
+Een Note wordt bewust door een ontwerper of ontwikkelaar geplaatst. De variant kies je op basis van de intentie van de boodschap — niet op basis van een systeemtoestand. Wanneer een notitie puur aanvullend of contextgevend is, zonder specifieke lading, dan is **neutral** de juiste keuze: de content krijgt visuele nadruk zonder een semantisch signaal te claimen dat er niet is.
+
+- **Neutral** — standaard, voor aanvullende context of tips zonder specifieke lading.
 - **Info** — informatieve berichten die extra aandacht verdienen.
 - **Positive** — aanmoediging of bevestiging van een goede keuze.
 - **Negative** — kritische aanvulling, risico of fout in context.

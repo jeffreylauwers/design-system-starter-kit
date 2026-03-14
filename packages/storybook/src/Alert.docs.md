@@ -21,10 +21,13 @@ De Alert component toont een prominent bericht op de pagina — bij een succesvo
 - Het bericht interactief is (bijv. een link of knop vereist) — gebruik een **Alert** met `children` die een link bevatten, of een **Button** als de actie centraal staat.
 - Je een klein inline statuslabel wilt — gebruik een **StatusBadge**.
 - Het bericht tijdelijk is en na enkele seconden verdwijnt — gebruik een toast/snackbar patroon (nog niet beschikbaar).
+- De content redactioneel of contextgevend is zonder dat het systeem een toestand meldt — gebruik een **Note**.
 
 ## Best practices
 
 ### Variantkeuze
+
+Een Alert communiceert altijd een toestand die het systeem heeft vastgesteld. Elke variant draagt daarmee een expliciet semantisch signaal: iets is gelukt, mislukt, in behandeling of vereist aandacht. Een neutrale variant ontbreekt bewust — als het systeem iets te melden heeft, is er altijd een toon. Zonder toon is er geen reden voor een Alert.
 
 - **Info** — standaard, voor informatieve berichten zonder urgentie (`"Uw aanvraag wordt verwerkt"`).
 - **Positive** — succesberichten na een geslaagde actie (`"Uw gegevens zijn opgeslagen"`).
