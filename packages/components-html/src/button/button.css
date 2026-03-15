@@ -23,9 +23,12 @@
   cursor: pointer;
   user-select: none;
   transition:
-    background-color 0.2s ease,
-    color 0.2s ease,
-    border-color 0.2s ease;
+    background-color var(--dsn-transition-duration-normal)
+      var(--dsn-transition-easing-default),
+    color var(--dsn-transition-duration-normal)
+      var(--dsn-transition-easing-default),
+    border-color var(--dsn-transition-duration-normal)
+      var(--dsn-transition-easing-default);
 
   /* Accessibility - WCAG pointer target */
   min-block-size: var(--dsn-button-min-block-size);

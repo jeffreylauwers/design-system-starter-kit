@@ -20,8 +20,10 @@
   /* Interaction */
   cursor: pointer;
   transition:
-    color 0.2s ease,
-    text-decoration-color 0.2s ease;
+    color var(--dsn-transition-duration-normal)
+      var(--dsn-transition-easing-default),
+    text-decoration-color var(--dsn-transition-duration-normal)
+      var(--dsn-transition-easing-default);
 }
 
 /* Icon sizing */

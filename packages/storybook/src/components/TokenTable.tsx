@@ -19,6 +19,8 @@ type PreviewType =
   | 'typography-size'
   | 'border-radius'
   | 'shadow'
+  | 'transition-duration'
+  | 'transition-easing'
   | 'none';
 
 interface TokenTableProps {
@@ -127,6 +129,91 @@ function ShadowPreview({ cssVar }: { cssVar: string }) {
   );
 }
 
+function TransitionDurationPreview({ cssVar }: { cssVar: string }) {
+  return (
+    <>
+      <style>{`
+        @keyframes dsn-sweep {
+          0% { transform: translateX(-100%); }
+          100% { transform: translateX(260%); }
+        }
+      `}</style>
+      <div
+        style={{
+          width: 100,
+          height: 12,
+          borderRadius: 6,
+          background: 'var(--dsn-color-neutral-border-subtle, #e0e0e0)',
+          overflow: 'hidden',
+          position: 'relative',
+        }}
+      >
+        <div
+          style={{
+            position: 'absolute',
+            width: '30%',
+            height: '100%',
+            background: 'var(--dsn-color-action-1-bg-default, #3366cc)',
+            borderRadius: 6,
+            animationName: 'dsn-sweep',
+            animationDuration: `var(${cssVar}, 200ms)`,
+            animationTimingFunction: 'linear',
+            animationIterationCount: 'infinite',
+          }}
+        />
+      </div>
+    </>
+  );
+}
+
+function TransitionEasingPreview({ cssVar }: { cssVar: string }) {
+  return (
+    <>
+      <style>{`
+        @keyframes dsn-easing-move {
+          0% { transform: translateX(0); }
+          100% { transform: translateX(84px); }
+        }
+      `}</style>
+      <div
+        style={{
+          width: 100,
+          height: 16,
+          position: 'relative',
+        }}
+      >
+        <div
+          style={{
+            position: 'absolute',
+            top: '50%',
+            left: 8,
+            right: 8,
+            height: 2,
+            background: 'var(--dsn-color-neutral-border-subtle, #e0e0e0)',
+            transform: 'translateY(-50%)',
+          }}
+        />
+        <div
+          style={{
+            position: 'absolute',
+            width: 16,
+            height: 16,
+            borderRadius: '50%',
+            background: 'var(--dsn-color-action-1-bg-default, #3366cc)',
+            top: 0,
+            left: 0,
+            animationName: 'dsn-easing-move',
+            animationDuration: '1200ms',
+            animationTimingFunction: `var(${cssVar})`,
+            animationIterationCount: 'infinite',
+            animationDirection: 'alternate',
+          }}
+        />
+      </div>
+    </>
+  );
+}
+
 function Preview({ type, cssVar }: { type: PreviewType; cssVar: string }) {
   switch (type) {
     case 'color':
@@ -139,6 +226,10 @@ function Preview({ type, cssVar }: { type: PreviewType; cssVar: string }) {
       return <BorderRadiusPreview cssVar={cssVar} />;
     case 'shadow':
       return <ShadowPreview cssVar={cssVar} />;
+    case 'transition-duration':
+      return <TransitionDurationPreview cssVar={cssVar} />;
+    case 'transition-easing':
+      return <TransitionEasingPreview cssVar={cssVar} />;
     case 'none':
       return null;
   }

@@ -43,8 +43,8 @@
 
   /* Transitions */
   transition-property: border-color, box-shadow, background-color;
-  transition-duration: 0.2s;
-  transition-timing-function: ease-in-out;
+  transition-duration: var(--dsn-transition-duration-normal);
+  transition-timing-function: var(--dsn-transition-easing-default);
 }
 
 /* Placeholder */

@@ -103,7 +103,8 @@
   width: var(--dsn-details-icon-size);
   height: var(--dsn-details-icon-size);
   color: var(--dsn-details-summary-color);
-  transition: transform 0.2s ease;
+  transition: transform var(--dsn-transition-duration-normal)
+    var(--dsn-transition-easing-default);
 }
 
 .dsn-details[open] .dsn-details__icon {

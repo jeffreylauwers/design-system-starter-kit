@@ -59,6 +59,36 @@ fullConfigNames.forEach((name, index) => {
 console.log(`\n✅ Built ${fullConfigNames.length} full configurations\n`);
 
 // =============================================================================
+// APPEND PREFERS-REDUCED-MOTION MEDIA QUERY
+// =============================================================================
+
+console.log(
+  '🎬 Appending prefers-reduced-motion media query to CSS files...\n'
+);
+
+const reducedMotionBlock = `
+@media (prefers-reduced-motion: reduce) {
+  :root {
+    --dsn-transition-duration-instant: 0ms;
+    --dsn-transition-duration-fast: 0ms;
+    --dsn-transition-duration-normal: 0ms;
+    --dsn-transition-duration-slow: 0ms;
+    --dsn-transition-duration-slower: 0ms;
+  }
+}
+`;
+
+fullConfigNames.forEach((name) => {
+  const cssFilePath = path.join(__dirname, '..', '..', `dist/css/${name}.css`);
+  if (fs.existsSync(cssFilePath)) {
+    fs.appendFileSync(cssFilePath, reducedMotionBlock);
+    console.log(`   ✅ dist/css/${name}.css`);
+  }
+});
+
+console.log('\n✅ prefers-reduced-motion media query appended\n');
+
+// =============================================================================
 // BUILD SCOPED CONFIGURATIONS (for runtime switching)
 // =============================================================================
 

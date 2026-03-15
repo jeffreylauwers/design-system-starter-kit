@@ -1,0 +1,129 @@
+import { Meta } from '@storybook/blocks';
+import { TokenTable } from './components/TokenTable';
+import { TokenControls } from './components/TokenControls';
+
+<Meta title="Foundations/Motion" />
+
+# Motion
+
+Motion tokens beheren timing en easing op één centrale plek. Alle componenten in het design system gebruiken deze tokens — waardoor `prefers-reduced-motion` automatisch en consistent wordt gerespecteerd.
+
+<TokenControls />
+
+---
+
+## Transition Duration
+
+Duur bepaalt hoe lang een transitie duurt. De preview laat de snelheid visueel zien — langzamere tokens hebben een langere sweep.
+
+Bij `prefers-reduced-motion: reduce` worden alle duration-tokens naar `0ms` gezet via een centrale media query in het theme CSS-bestand. Componenten hoeven zelf geen media query te implementeren.
+
+<TokenTable
+  previewType="transition-duration"
+  tokens={[
+    {
+      name: 'Instant',
+      cssVar: '--dsn-transition-duration-instant',
+      value: '0ms',
+    },
+    {
+      name: 'Fast',
+      cssVar: '--dsn-transition-duration-fast',
+      value: '100ms',
+    },
+    {
+      name: 'Normal',
+      cssVar: '--dsn-transition-duration-normal',
+      value: '200ms',
+    },
+    {
+      name: 'Slow',
+      cssVar: '--dsn-transition-duration-slow',
+      value: '350ms',
+    },
+    {
+      name: 'Slower',
+      cssVar: '--dsn-transition-duration-slower',
+      value: '500ms',
+    },
+  ]}
+/>
+
+### Gebruik
+
+| Token | Use case |
+|---|---|
+| `instant` | State-changes die onmiddellijk moeten aanvoelen |
+| `fast` | Subtiele hover-states, kleurveranderingen |
+| `normal` | Standaard UI-transitions — huidige standaard voor alle componenten |
+| `slow` | Grotere bewegingen, accordions, details |
+| `slower` | Complexe animaties, page-level transitions |
+
+---
+
+## Transition Easing
+
+Easing bepaalt het acceleratieprofiel van een transitie. De preview toont een bolletje dat beweegt met die specifieke curve — zo is het verschil tussen curves direct zichtbaar.
+
+<TokenTable
+  previewType="transition-easing"
+  tokens={[
+    {
+      name: 'Default',
+      cssVar: '--dsn-transition-easing-default',
+      value: 'cubic-bezier(0.25, 0.1, 0.25, 1)',
+    },
+    {
+      name: 'Enter',
+      cssVar: '--dsn-transition-easing-enter',
+      value: 'cubic-bezier(0, 0, 0.2, 1)',
+    },
+    {
+      name: 'Exit',
+      cssVar: '--dsn-transition-easing-exit',
+      value: 'cubic-bezier(0.4, 0, 1, 1)',
+    },
+    {
+      name: 'Move',
+      cssVar: '--dsn-transition-easing-move',
+      value: 'cubic-bezier(0.4, 0, 0.2, 1)',
+    },
+    {
+      name: 'Linear',
+      cssVar: '--dsn-transition-easing-linear',
+      value: 'linear',
+    },
+  ]}
+/>
+
+### Gebruik
+
+| Token | Use case |
+|---|---|
+| `default` | Algemeen — vergelijkbaar met CSS `ease` |
+| `enter` | Elementen die het scherm binnenkomen (decelereren aan het einde) |
+| `exit` | Elementen die het scherm verlaten (accelereren) |
+| `move` | Elementen die van positie wisselen |
+| `linear` | Progress bars, loaders, continue animaties |
+
+---
+
+## prefers-reduced-motion
+
+Het design system implementeert `prefers-reduced-motion` via een centrale media query in het gegenereerde theme CSS-bestand:
+
+```css
+@media (prefers-reduced-motion: reduce) {
+  :root {
+    --dsn-transition-duration-instant: 0ms;
+    --dsn-transition-duration-fast: 0ms;
+    --dsn-transition-duration-normal: 0ms;
+    --dsn-transition-duration-slow: 0ms;
+    --dsn-transition-duration-slower: 0ms;
+  }
+}
+```
+
+Omdat alle componenten `var(--dsn-transition-duration-*)` gebruiken, worden animaties automatisch uitgeschakeld zodra een gebruiker reduced motion heeft ingesteld. Componenten hoeven zelf geen `@media (prefers-reduced-motion)` te implementeren.
+
+Easing-tokens worden niet aangepast bij reduced motion — ze zijn niet relevant als er geen beweging is.
