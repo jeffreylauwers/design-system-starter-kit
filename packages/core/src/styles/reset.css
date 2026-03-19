@@ -78,8 +78,9 @@ button {
 
 /* Improve focus visibility */
 :focus-visible {
-  outline: 2px solid currentColor;
-  outline-offset: 2px;
+  outline: var(--dsn-focus-outline-width) var(--dsn-focus-outline-style)
+    var(--dsn-focus-outline-color);
+  outline-offset: var(--dsn-focus-outline-offset);
 }
 
 /* Remove focus outline for mouse users */
