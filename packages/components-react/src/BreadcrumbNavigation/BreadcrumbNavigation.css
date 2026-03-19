@@ -1,0 +1,6 @@
+/**
+ * BreadcrumbNavigation component styles for React
+ * Re-exports the base BreadcrumbNavigation styles from components-html
+ */
+
+@import '../../../components-html/src/breadcrumb-navigation/breadcrumb-navigation.css';

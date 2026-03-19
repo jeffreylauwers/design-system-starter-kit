@@ -1,0 +1,44 @@
+import { Meta, Story, Controls, Markdown } from '@storybook/blocks';
+import * as BreadcrumbNavigationStories from './BreadcrumbNavigation.stories';
+import docs from './BreadcrumbNavigation.docs.md?raw';
+import { PreviewFrame, CodeTabs } from './components';
+
+export const [intro, rest] = docs.split('<!-- VOORBEELD -->');
+
+<Meta of={BreadcrumbNavigationStories} />
+
+<Markdown>{intro}</Markdown>
+
+## Voorbeeld
+
+<PreviewFrame>
+  <Story of={BreadcrumbNavigationStories.Default} />
+</PreviewFrame>
+
+<CodeTabs
+  of={BreadcrumbNavigationStories.Default}
+  html={`<nav aria-label="Broodkruimelpad" class="dsn-breadcrumb-navigation">
+  <ol class="dsn-breadcrumb-navigation__list">
+    <li class="dsn-breadcrumb-navigation__item">
+      <a href="/home" class="dsn-breadcrumb-navigation__link">Home</a>
+      <svg class="dsn-icon dsn-breadcrumb-navigation__separator" aria-hidden="true"><!-- chevron-right --></svg>
+    </li>
+    <li class="dsn-breadcrumb-navigation__item">
+      <a href="/supermarkt" class="dsn-breadcrumb-navigation__link">Supermarkt</a>
+      <svg class="dsn-icon dsn-breadcrumb-navigation__separator" aria-hidden="true"><!-- chevron-right --></svg>
+    </li>
+    <li class="dsn-breadcrumb-navigation__item">
+      <a href="/fruit" class="dsn-breadcrumb-navigation__link">Fruit</a>
+      <svg class="dsn-icon dsn-breadcrumb-navigation__separator" aria-hidden="true"><!-- chevron-right --></svg>
+    </li>
+    <li class="dsn-breadcrumb-navigation__item dsn-breadcrumb-navigation__item--current">
+      <a href="/appel" class="dsn-breadcrumb-navigation__link" aria-current="page">Appel</a>
+      <svg class="dsn-icon dsn-breadcrumb-navigation__separator" aria-hidden="true"><!-- chevron-right --></svg>
+    </li>
+  </ol>
+</nav>`}
+/>
+
+<Controls of={BreadcrumbNavigationStories.Default} />
+
+<Markdown>{rest}</Markdown>

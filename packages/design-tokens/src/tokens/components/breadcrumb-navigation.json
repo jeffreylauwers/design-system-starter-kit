@@ -1,0 +1,120 @@
+{
+  "dsn": {
+    "breadcrumb-navigation": {
+      "column-gap": {
+        "value": "{dsn.space.column.md}",
+        "type": "dimension",
+        "comment": "Gap between breadcrumb items"
+      },
+      "font-size": {
+        "value": "{dsn.text.font-size.sm}",
+        "type": "fontSize",
+        "comment": "Breadcrumb font size — sm (consistent met Link size small)"
+      },
+      "font-weight": {
+        "value": "{dsn.text.font-weight.default}",
+        "type": "fontWeight",
+        "comment": "Breadcrumb font weight"
+      },
+      "line-height": {
+        "value": "{dsn.text.line-height.sm}",
+        "type": "lineHeight",
+        "comment": "Breadcrumb line height — sm (consistent met Link size small)"
+      },
+      "current": {
+        "color": {
+          "value": "{dsn.color.neutral.color-subtle}",
+          "type": "color",
+          "comment": "Current page item color"
+        }
+      },
+      "item": {
+        "min-block-size": {
+          "value": "{dsn.pointer-target.min-block-size}",
+          "type": "dimension",
+          "comment": "Minimum touch/click target height"
+        },
+        "padding-block": {
+          "value": "{dsn.space.block.sm}",
+          "type": "dimension",
+          "comment": "Vertical padding to reach min-block-size"
+        },
+        "padding-inline": {
+          "value": "0px",
+          "type": "dimension",
+          "comment": "No horizontal padding on items"
+        }
+      },
+      "link": {
+        "color": {
+          "value": "{dsn.color.action-2.color-default}",
+          "type": "color",
+          "comment": "Link text color"
+        },
+        "column-gap": {
+          "value": "{dsn.space.text.xs}",
+          "type": "dimension",
+          "comment": "Gap between icon and link text"
+        },
+        "text-decoration-line": {
+          "value": "underline",
+          "type": "other",
+          "comment": "Links are underlined by default (a11y standaard)"
+        },
+        "text-underline-offset": {
+          "value": "4px",
+          "type": "dimension",
+          "comment": "Underline offset"
+        },
+        "text-decoration-thickness": {
+          "value": "auto",
+          "type": "other",
+          "comment": "Underline thickness"
+        },
+        "hover": {
+          "color": {
+            "value": "{dsn.color.action-2.color-hover}",
+            "type": "color",
+            "comment": "Link hover color"
+          },
+          "text-decoration-line": {
+            "value": "none",
+            "type": "other",
+            "comment": "Underline verdwijnt op hover als visuele feedback"
+          }
+        },
+        "active": {
+          "color": {
+            "value": "{dsn.color.action-2.color-active}",
+            "type": "color",
+            "comment": "Link active color"
+          },
+          "text-decoration-line": {
+            "value": "none",
+            "type": "other",
+            "comment": "No underline on active"
+          }
+        }
+      },
+      "separator": {
+        "color": {
+          "value": "{dsn.color.neutral.color-subtle}",
+          "type": "color",
+          "comment": "Separator icon color"
+        },
+        "size": {
+          "value": "{dsn.icon.size.sm}",
+          "type": "dimension",
+          "comment": "Separator icon size — sm (kleiner dan terug-icoon)"
+        }
+      },
+      "icon": {
+        "size": {
+          "value": "{dsn.icon.size.sm}",
+          "type": "dimension",
+          "comment": "Back-icon size — sm (consistent met Link size small)"
+        }
+      }
+    }
+  }
+}

@@ -1,6 +1,6 @@
 # Components
 
-**Last Updated:** March 13, 2026
+**Last Updated:** March 19, 2026
 
 Complete component specifications and guidelines for the Design System Starter Kit.
 
@@ -12,8 +12,9 @@ Complete component specifications and guidelines for the Design System Starter K
 2. [Layout Components](#layout-components)
 3. [Content Components](#content-components)
 4. [Display & Feedback Components](#display--feedback-components)
-5. [Form Components](#form-components)
-6. [Web Components Registration](#web-components-registration)
+5. [Navigation Components](#navigation-components)
+6. [Form Components](#form-components)
+7. [Web Components Registration](#web-components-registration)
 
 ---
 
@@ -912,6 +913,104 @@ Brengt consistente verticale ruimte aan tussen directe child-elementen via `flex
 
 ---
 
+## Navigation Components
+
+**Status:** Complete (HTML/CSS, React) — 1 component total
+
+### BreadcrumbNavigation
+
+**Status:** Complete (HTML/CSS, React)
+
+**Location:** `packages/components-{html|react}/src/BreadcrumbNavigation/`
+
+**Tokens:** `tokens/components/breadcrumb-navigation.json`
+
+**Variants (2 total):** `default`, `compact`
+
+**Props — BreadcrumbNavigation:** `aria-label`, `variant`, `children`
+
+**Props — BreadcrumbNavigationItem:** `href`, `current`, `children`
+
+**Features:**
+
+- `<nav aria-label>` landmark met `<ol>` voor semantisch geordende hiërarchie
+- `aria-current="page"` automatisch op het huidige pagina-item
+- `default` variant: items wrappen naar de volgende rij bij weinig ruimte (`flex-wrap`)
+- `compact` variant: container query collapst naar enkel het ouder-item met terug-pijl (`← Ouder`) bij smalle container (`max-width: 32rem`)
+- Terug-pijl icoon zit binnen de `<a>` — erft linkkleur en hover-stijl automatisch
+- Scheidingstekens en terug-icoon zijn decoratief (`aria-hidden="true"`)
+- RTL: richtingsgevoelige iconen worden omgedraaid via `transform: scaleX(-1)`
+- Font-size, line-height en icoongrootte volgen `sm` tokens — consistent met Link size small
+
+**CSS-klassen:**
+
+| Klasse                                     | Element | Beschrijving                                                                      |
+| ------------------------------------------ | ------- | --------------------------------------------------------------------------------- |
+| `dsn-breadcrumb-navigation`                | `<nav>` | Basiscomponent                                                                    |
+| `dsn-breadcrumb-navigation--compact`       | `<nav>` | Activeert container query responsive collapse                                     |
+| `dsn-breadcrumb-navigation__list`          | `<ol>`  | `display: flex; flex-wrap: wrap; align-items: center`                             |
+| `dsn-breadcrumb-navigation__item`          | `<li>`  | `display: flex; align-items: center`                                              |
+| `dsn-breadcrumb-navigation__item--current` | `<li>`  | Huidige pagina; muted color, geen hover                                           |
+| `dsn-breadcrumb-navigation__link`          | `<a>`   | Link met kleur, underline en hover/active/focus stijlen                           |
+| `dsn-breadcrumb-navigation__separator`     | `<svg>` | Decoratief scheidingsteken (chevron-right); verborgen op laatste item             |
+| `dsn-breadcrumb-navigation__back-icon`     | `<svg>` | Terug-pijl icoon binnen `<a>`; standaard `display: none`; getoond in compact+smal |
+
+**Usage:**
+
+```html
+<!-- HTML/CSS — standaard -->
+<nav aria-label="Broodkruimelpad" class="dsn-breadcrumb-navigation">
+  <ol class="dsn-breadcrumb-navigation__list">
+    <li class="dsn-breadcrumb-navigation__item">
+      <a href="/home" class="dsn-breadcrumb-navigation__link">Home</a>
+      <svg
+        class="dsn-icon dsn-breadcrumb-navigation__separator"
+        aria-hidden="true"
+      >
+        <!-- chevron-right -->
+      </svg>
+    </li>
+    <li
+      class="dsn-breadcrumb-navigation__item dsn-breadcrumb-navigation__item--current"
+    >
+      <a
+        href="/product"
+        class="dsn-breadcrumb-navigation__link"
+        aria-current="page"
+        >Product</a
+      >
+      <svg
+        class="dsn-icon dsn-breadcrumb-navigation__separator"
+        aria-hidden="true"
+      >
+        <!-- chevron-right -->
+      </svg>
+    </li>
+  </ol>
+</nav>
+```
+
+```tsx
+// React — standaard
+<BreadcrumbNavigation aria-label="Broodkruimelpad">
+  <BreadcrumbNavigationItem href="/home">Home</BreadcrumbNavigationItem>
+  <BreadcrumbNavigationItem href="/product" current>Product</BreadcrumbNavigationItem>
+</BreadcrumbNavigation>
+
+// React — compact variant
+<BreadcrumbNavigation aria-label="Broodkruimelpad" variant="compact">
+  <BreadcrumbNavigationItem href="/home">Home</BreadcrumbNavigationItem>
+  <BreadcrumbNavigationItem href="/categorie">Categorie</BreadcrumbNavigationItem>
+  <BreadcrumbNavigationItem href="/product" current>Product</BreadcrumbNavigationItem>
+</BreadcrumbNavigation>
+```
+
+**Placement:** Vóór `<main>`, na de primaire navigatie — zodat een skip-link alle navigatie in één keer kan overslaan.
+
+**Tests:** React (25 tests)
+
+---
+
 ## Form Components
 
 **Status:** Complete (HTML/CSS, React) — 25 components total
@@ -1223,15 +1322,15 @@ defineButton('my-custom-button');
 
 ## Component Statistics
 
-**Total Components:** 42
+**Total Components:** 44
 
 **Implementations:**
 
-- **HTML/CSS:** 42 components
-- **React:** 42 components (1002 tests total, 48 test suites)
+- **HTML/CSS:** 44 components
+- **React:** 44 components (1033 tests total, 50 test suites)
 - **Web Component:** 7 components (Button, Heading, Icon, Link, OrderedList, Paragraph, UnorderedList)
 
-**Test Coverage:** 962 tests across 46 test suites
+**Test Coverage:** 1033 tests across 50 test suites
 
 ---
 

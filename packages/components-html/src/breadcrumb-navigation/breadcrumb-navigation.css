@@ -1,0 +1,210 @@
+/**
+ * BreadcrumbNavigation Component
+ * Toont de hiërarchische locatie van de gebruiker en biedt navigatie naar bovenliggende pagina's.
+ *
+ * Usage:
+ * <!-- Standaard -->
+ * <nav aria-label="Broodkruimelpad" class="dsn-breadcrumb-navigation">
+ *   <ol class="dsn-breadcrumb-navigation__list">
+ *     <li class="dsn-breadcrumb-navigation__item">
+ *       <a href="/home" class="dsn-breadcrumb-navigation__link">Home</a>
+ *       <svg class="dsn-icon dsn-breadcrumb-navigation__separator" aria-hidden="true"><!-- chevron-right --></svg>
+ *     </li>
+ *
+ * <!-- Compact item met terug-pijl (back-icon zit binnen de <a>) -->
+ *     <li class="dsn-breadcrumb-navigation__item">
+ *       <a href="/fruit" class="dsn-breadcrumb-navigation__link">
+ *         <svg class="dsn-icon dsn-breadcrumb-navigation__back-icon" aria-hidden="true"><!-- arrow-left --></svg>
+ *         Fruit
+ *       </a>
+ *       <svg class="dsn-icon dsn-breadcrumb-navigation__separator" aria-hidden="true"><!-- chevron-right --></svg>
+ *     </li>
+ *     <li class="dsn-breadcrumb-navigation__item dsn-breadcrumb-navigation__item--current">
+ *       <a href="/appel" class="dsn-breadcrumb-navigation__link" aria-current="page">Appel</a>
+ *     </li>
+ *   </ol>
+ * </nav>
+ *
+ * <!-- Compact variant (container query responsive collapse) -->
+ * <nav aria-label="Broodkruimelpad" class="dsn-breadcrumb-navigation dsn-breadcrumb-navigation--compact">
+ *   ...
+ * </nav>
+ */
+
+/* ===========================
+   Base — nav wrapper
+   =========================== */
+.dsn-breadcrumb-navigation {
+  display: block;
+  font-size: var(--dsn-breadcrumb-navigation-font-size);
+  font-weight: var(--dsn-breadcrumb-navigation-font-weight);
+  line-height: var(--dsn-breadcrumb-navigation-line-height);
+}
+
+/* ===========================
+   List
+   =========================== */
+.dsn-breadcrumb-navigation__list {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  column-gap: var(--dsn-breadcrumb-navigation-column-gap);
+}
+
+/* ===========================
+   Item
+   =========================== */
+.dsn-breadcrumb-navigation__item {
+  display: flex;
+  align-items: center;
+  min-block-size: var(--dsn-breadcrumb-navigation-item-min-block-size);
+  padding-block: var(--dsn-breadcrumb-navigation-item-padding-block);
+  padding-inline: var(--dsn-breadcrumb-navigation-item-padding-inline);
+  gap: var(--dsn-breadcrumb-navigation-column-gap);
+}
+
+/* ===========================
+   Current page item
+   =========================== */
+.dsn-breadcrumb-navigation__item--current {
+  color: var(--dsn-breadcrumb-navigation-current-color);
+}
+
+/* ===========================
+   Link
+   =========================== */
+.dsn-breadcrumb-navigation__link {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--dsn-breadcrumb-navigation-link-column-gap);
+  color: var(--dsn-breadcrumb-navigation-link-color);
+  text-decoration-line: var(
+    --dsn-breadcrumb-navigation-link-text-decoration-line
+  );
+  text-underline-offset: var(
+    --dsn-breadcrumb-navigation-link-text-underline-offset
+  );
+  text-decoration-thickness: var(
+    --dsn-breadcrumb-navigation-link-text-decoration-thickness
+  );
+  cursor: pointer;
+  transition:
+    color var(--dsn-transition-duration-normal)
+      var(--dsn-transition-easing-default),
+    text-decoration-color var(--dsn-transition-duration-normal)
+      var(--dsn-transition-easing-default);
+}
+
+/* Current link — muted color, no underline, no hover effect */
+.dsn-breadcrumb-navigation__item--current .dsn-breadcrumb-navigation__link {
+  color: var(--dsn-breadcrumb-navigation-current-color);
+  text-decoration-line: none;
+  cursor: default;
+}
+
+/* Hover */
+.dsn-breadcrumb-navigation__link:hover:not(
+    .dsn-breadcrumb-navigation__item--current .dsn-breadcrumb-navigation__link
+  ) {
+  color: var(--dsn-breadcrumb-navigation-link-hover-color);
+  text-decoration-line: var(
+    --dsn-breadcrumb-navigation-link-hover-text-decoration-line
+  );
+}
+
+/* Active */
+.dsn-breadcrumb-navigation__link:active:not(
+    .dsn-breadcrumb-navigation__item--current .dsn-breadcrumb-navigation__link
+  ) {
+  color: var(--dsn-breadcrumb-navigation-link-active-color);
+  text-decoration-line: var(
+    --dsn-breadcrumb-navigation-link-active-text-decoration-line
+  );
+}
+
+/* Focus */
+.dsn-breadcrumb-navigation__link:focus-visible {
+  background-color: var(--dsn-focus-background-color);
+  color: var(--dsn-focus-color);
+  text-decoration: none;
+  outline: var(--dsn-focus-outline-width) var(--dsn-focus-outline-style)
+    var(--dsn-focus-outline-color);
+  outline-offset: var(--dsn-focus-outline-offset);
+  box-shadow: 0 0 0
+    calc(var(--dsn-focus-outline-offset) + var(--dsn-focus-outline-width))
+    var(--dsn-focus-inverse-outline-color);
+  box-decoration-break: clone;
+}
+
+/* ===========================
+   Separator icon
+   =========================== */
+.dsn-breadcrumb-navigation__separator {
+  flex-shrink: 0;
+  width: var(--dsn-breadcrumb-navigation-separator-size);
+  height: var(--dsn-breadcrumb-navigation-separator-size);
+  color: var(--dsn-breadcrumb-navigation-separator-color);
+}
+
+/* Verberg separator na het laatste item */
+.dsn-breadcrumb-navigation__item:last-child
+  .dsn-breadcrumb-navigation__separator {
+  display: none;
+}
+
+/* ===========================
+   Back icon (compact variant)
+   =========================== */
+.dsn-breadcrumb-navigation__back-icon {
+  display: none;
+  flex-shrink: 0;
+  width: var(--dsn-breadcrumb-navigation-icon-size);
+  height: var(--dsn-breadcrumb-navigation-icon-size);
+}
+
+/* ===========================
+   RTL — richtingsgevoelige iconen omdraaien
+   =========================== */
+[dir='rtl'] .dsn-breadcrumb-navigation__separator,
+[dir='rtl'] .dsn-breadcrumb-navigation__back-icon {
+  transform: scaleX(-1);
+}
+
+/* ===========================
+   Compact variant — container query responsive collapse
+   =========================== */
+.dsn-breadcrumb-navigation--compact {
+  container-type: inline-size;
+  container-name: breadcrumb;
+}
+
+@container breadcrumb (max-width: 32rem) {
+  /* Verberg alle items */
+  .dsn-breadcrumb-navigation--compact .dsn-breadcrumb-navigation__item {
+    display: none;
+  }
+
+  /* Toon het ouder-item (tweede van achteren) */
+  .dsn-breadcrumb-navigation--compact
+    .dsn-breadcrumb-navigation__item:nth-last-child(2) {
+    display: flex;
+    align-items: center;
+  }
+
+  /* Toon het terug-icoon in het ouder-item */
+  .dsn-breadcrumb-navigation--compact
+    .dsn-breadcrumb-navigation__item:nth-last-child(2)
+    .dsn-breadcrumb-navigation__back-icon {
+    display: block;
+  }
+
+  /* Verberg het scheidingsteken na het ouder-item */
+  .dsn-breadcrumb-navigation--compact
+    .dsn-breadcrumb-navigation__item:nth-last-child(2)
+    .dsn-breadcrumb-navigation__separator {
+    display: none;
+  }
+}

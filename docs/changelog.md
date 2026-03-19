@@ -6,6 +6,23 @@ All notable changes to this project are documented in this file.
 
 ---
 
+## Version 5.9.0 (March 19, 2026)
+
+### BreadcrumbNavigation component (issue #81)
+
+#### Added
+
+- **BreadcrumbNavigation** component — toont de hiërarchische locatie van de gebruiker en biedt navigatie naar bovenliggende pagina's
+- `BreadcrumbNavigationItem` sub-component met `href`, `current` en `children` props
+- `variant="compact"` — container query collapst naar enkel het ouder-item met terug-pijl bij smalle container (`max-width: 32rem`); back-icon zit binnen de `<a>` zodat kleur en hover automatisch mee-erven
+- `aria-current="page"` automatisch op het huidige pagina-item
+- RTL-ondersteuning: scheidingstekens en terug-pijl worden omgedraaid via `transform: scaleX(-1)` bij `[dir="rtl"]`
+- Design tokens (`tokens/components/breadcrumb-navigation.json`): font-size, line-height en icoongrootten volgen `sm` tokens — consistent met Link size small
+- Storybook stories: Default, Compact, Two items, Many items, RTL
+- 25 nieuwe React tests
+
+---
+
 ## Version 5.8.1 (March 19, 2026)
 
 ### Token-architectuur: hardcoded waarden vervangen door token-referenties

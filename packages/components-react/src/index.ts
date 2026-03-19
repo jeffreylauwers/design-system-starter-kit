@@ -53,6 +53,9 @@ export * from './Note';
 export * from './Table';
 export * from './Details';
 
+// Navigation Components
+export * from './BreadcrumbNavigation';
+
 // Form Field Components
 export * from './FormField';
 export * from './FormFieldLabel';
