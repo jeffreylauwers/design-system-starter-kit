@@ -65,7 +65,7 @@ pnpm --filter @dsn/design-tokens watch
 # Start Storybook in development mode
 pnpm dev
 
-# Run tests (1043 tests across 51 test suites)
+# Run tests (1057 tests across 52 test suites)
 pnpm test
 
 # Run tests in watch mode
@@ -186,12 +186,13 @@ All components are fully typed with TypeScript and include comprehensive JSDoc d
 | **Paragraph**     | Yes      | Yes   | Yes           |
 | **UnorderedList** | Yes      | Yes   | Yes           |
 
-**Display & Feedback Components (5)**
+**Display & Feedback Components (6)**
 
 | Component       | HTML/CSS | React | Web Component |
 | --------------- | -------- | ----- | ------------- |
 | **Alert**       | Yes      | Yes   | —             |
 | **Details**     | Yes      | Yes   | —             |
+| **DotBadge**    | Yes      | Yes   | —             |
 | **Note**        | Yes      | Yes   | —             |
 | **StatusBadge** | Yes      | Yes   | —             |
 | **Table**       | Yes      | Yes   | —             |

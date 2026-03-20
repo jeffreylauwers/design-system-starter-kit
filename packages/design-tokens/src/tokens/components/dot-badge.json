@@ -7,19 +7,19 @@
         "comment": "Diameter van de dot (8px)"
       },
       "inset-block-start": {
-        "value": "-0.25rem",
+        "value": "0.25rem",
         "type": "dimension",
-        "comment": "Verticale offset — dot steekt boven de rechterbovenhoek van de parent uit"
+        "comment": "Verticale offset — dot zit 0.25rem binnen de bovenrand van de parent"
       },
       "inset-inline-end": {
-        "value": "-0.25rem",
+        "value": "0.25rem",
         "type": "dimension",
-        "comment": "Horizontale offset — dot steekt rechts buiten de parent uit"
+        "comment": "Horizontale offset — dot zit 0.25rem binnen de rechterrand van de parent"
       },
       "pulse-duration": {
-        "value": "{dsn.transition.duration.slower}",
+        "value": "1500ms",
         "type": "duration",
-        "comment": "Duur van de pulse-animatie"
+        "comment": "Duur van de pulse-animatie — bewust hoger dan transition.duration.slower (500ms): dit is een herhalende ambient animatie, geen UI-transition"
       },
       "pulse-easing": {
         "value": "{dsn.transition.easing.default}",

@@ -643,7 +643,39 @@ Brengt consistente verticale ruimte aan tussen directe child-elementen via `flex
 
 ## Display & Feedback Components
 
-**Status:** Complete (HTML/CSS, React) — 5 components total
+**Status:** Complete (HTML/CSS, React) — 6 components total
+
+### DotBadge
+
+**Status:** Complete (HTML/CSS, React)
+
+**Location:** `packages/components-{html|react}/src/DotBadge/`
+
+**Tokens:** `tokens/components/dot-badge.json`
+
+**Variants (5 total):** `negative` (default), `positive`, `warning`, `info`, `neutral`
+
+**Props:** `variant`, `pulse`
+
+**Features:**
+
+- Kleine gekleurde stip die `position: absolute` staat t.o.v. de parent-wrapper
+- Altijd `aria-hidden="true"` — toegankelijke context via `dsn-visually-hidden` in de parent
+- `pulse` modifier voegt herhalend ring-effect toe via `::before` pseudo-element
+- Logische properties (`inset-block-start`, `inset-inline-end`) voor RTL-correctheid
+- Pulse-animatie respecteert `prefers-reduced-motion: reduce`
+
+**HTML klassen:**
+
+```html
+<span class="dsn-dot-badge dsn-dot-badge--negative" aria-hidden="true"></span>
+<span
+  class="dsn-dot-badge dsn-dot-badge--negative dsn-dot-badge--pulse"
+  aria-hidden="true"
+></span>
+```
+
+**Tests:** React (14 tests)
 
 ### StatusBadge
 

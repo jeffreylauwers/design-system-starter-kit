@@ -6,6 +6,27 @@ All notable changes to this project are documented in this file.
 
 ---
 
+## Version 5.11.0 (March 20, 2026)
+
+### DotBadge component (issue #39)
+
+#### Added
+
+- **DotBadge** component — kleine gekleurde stip die bij een Button of Link de aandacht trekt bij een statuswijziging, zonder label of getal (PR #94)
+- Vijf varianten: `negative` (default), `positive`, `warning`, `info`, `neutral`
+- `dsn-dot-badge--pulse` modifier — herhalend ring-effect via `::before` pseudo-element + `@keyframes`, respecteert `prefers-reduced-motion: reduce`
+- Altijd `aria-hidden="true"` — context via `dsn-visually-hidden` in de parent Button of Link
+- Absoluut gepositioneerd via logische properties (`inset-block-start`, `inset-inline-end`) voor RTL-correctheid
+- Componenttokens: `--dsn-dot-badge-size` (8px), `--dsn-dot-badge-inset-block-start` (0.25rem), `--dsn-dot-badge-inset-inline-end` (0.25rem), `--dsn-dot-badge-pulse-duration` (1500ms), `--dsn-dot-badge-pulse-easing`
+- Storybook stories: Default, AllVariants, WithPulse, WithButton, WithLink
+- 14 nieuwe React tests
+
+#### Added (tokens)
+
+- **Transition tokens** toegevoegd aan wireframe-thema (`tokens/themes/wireframe/base.json`) — `dsn.transition.duration.*` en `dsn.transition.easing.*` waren aanwezig in start-thema maar ontbraken in wireframe, waardoor component-token referenties faalden bij de build
+
+---
+
 ## Version 5.10.1 (March 20, 2026)
 
 ### ActionGroup fixes & story

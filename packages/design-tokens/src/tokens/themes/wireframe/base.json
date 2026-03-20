@@ -530,6 +530,52 @@
         "value": "none",
         "comment": "Large elevation — flat in wireframe theme"
       }
+    },
+    "transition": {
+      "duration": {
+        "instant": {
+          "value": "0ms",
+          "comment": "State-changes die onmiddellijk moeten aanvoelen"
+        },
+        "fast": {
+          "value": "100ms",
+          "comment": "Subtiele hover-states, kleur-transitions"
+        },
+        "normal": {
+          "value": "200ms",
+          "comment": "Standaard UI-transitions"
+        },
+        "slow": {
+          "value": "350ms",
+          "comment": "Grotere bewegingen, accordions"
+        },
+        "slower": {
+          "value": "500ms",
+          "comment": "Complexe animaties, page-level transitions"
+        }
+      },
+      "easing": {
+        "default": {
+          "value": "cubic-bezier(0.25, 0.1, 0.25, 1)",
+          "comment": "Algemeen — equivalent van CSS ease"
+        },
+        "enter": {
+          "value": "cubic-bezier(0, 0, 0.2, 1)",
+          "comment": "Elementen die het scherm binnenkomen (decelereren)"
+        },
+        "exit": {
+          "value": "cubic-bezier(0.4, 0, 1, 1)",
+          "comment": "Elementen die het scherm verlaten (accelereren)"
+        },
+        "move": {
+          "value": "cubic-bezier(0.4, 0, 0.2, 1)",
+          "comment": "Elementen die van positie wisselen"
+        },
+        "linear": {
+          "value": "linear",
+          "comment": "Lineaire easing — voor loaders en spinners"
+        }
+      }
     }
   }
 }
