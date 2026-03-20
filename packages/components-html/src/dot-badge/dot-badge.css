@@ -1,0 +1,93 @@
+/**
+ * DotBadge Component
+ * Kleine gekleurde stip die bij een Button of Link wordt geplaatst om
+ * zonder label of getal de aandacht te trekken bij een statuswijziging.
+ *
+ * Altijd aria-hidden="true" — context via dsn-visually-hidden in de parent.
+ * Parent-wrapper heeft position: relative nodig.
+ *
+ * Usage:
+ * <!-- Basis dot (negative, meest gebruikt) -->
+ * <span class="dsn-dot-badge dsn-dot-badge--negative" aria-hidden="true"></span>
+ *
+ * <!-- Met pulse-effect voor urgente statuswijzigingen -->
+ * <span class="dsn-dot-badge dsn-dot-badge--negative dsn-dot-badge--pulse" aria-hidden="true"></span>
+ *
+ * <!-- Positive variant -->
+ * <span class="dsn-dot-badge dsn-dot-badge--positive" aria-hidden="true"></span>
+ *
+ * <!-- Info variant -->
+ * <span class="dsn-dot-badge dsn-dot-badge--info" aria-hidden="true"></span>
+ *
+ * <!-- Warning variant -->
+ * <span class="dsn-dot-badge dsn-dot-badge--warning" aria-hidden="true"></span>
+ *
+ * <!-- Neutral variant -->
+ * <span class="dsn-dot-badge dsn-dot-badge--neutral" aria-hidden="true"></span>
+ */
+
+.dsn-dot-badge {
+  display: block;
+  position: absolute;
+  inline-size: var(--dsn-dot-badge-size);
+  block-size: var(--dsn-dot-badge-size);
+  border-radius: 50%;
+  background-color: var(--dsn-dot-badge-color);
+  inset-block-start: var(--dsn-dot-badge-inset-block-start);
+  inset-inline-end: var(--dsn-dot-badge-inset-inline-end);
+}
+
+/* Variant kleuren */
+.dsn-dot-badge--negative {
+  --dsn-dot-badge-color: var(--dsn-color-negative-color-default);
+}
+
+.dsn-dot-badge--positive {
+  --dsn-dot-badge-color: var(--dsn-color-positive-color-default);
+}
+
+.dsn-dot-badge--warning {
+  --dsn-dot-badge-color: var(--dsn-color-warning-color-default);
+}
+
+.dsn-dot-badge--info {
+  --dsn-dot-badge-color: var(--dsn-color-info-color-default);
+}
+
+.dsn-dot-badge--neutral {
+  --dsn-dot-badge-color: var(--dsn-color-neutral-color-default);
+}
+
+/* Pulse-effect via ::before pseudo-element — geen extra DOM-nodes nodig */
+.dsn-dot-badge--pulse::before {
+  content: '';
+  display: block;
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  background-color: var(--dsn-dot-badge-color);
+  animation: dsn-dot-badge-pulse var(--dsn-dot-badge-pulse-duration)
+    var(--dsn-dot-badge-pulse-easing) infinite;
+}
+
+@keyframes dsn-dot-badge-pulse {
+  0% {
+    transform: scale(1);
+    opacity: 0.8;
+  }
+  70% {
+    transform: scale(2.5);
+    opacity: 0;
+  }
+  100% {
+    transform: scale(2.5);
+    opacity: 0;
+  }
+}
+
+/* Animatie respecteert prefers-reduced-motion — dot blijft zichtbaar */
+@media (prefers-reduced-motion: reduce) {
+  .dsn-dot-badge--pulse::before {
+    animation: none;
+  }
+}

@@ -48,6 +48,7 @@ export * from './RadioOption';
 export * from './OptionLabel';
 
 // Display & Feedback Components
+export * from './DotBadge';
 export * from './StatusBadge';
 export * from './Alert';
 export * from './Note';

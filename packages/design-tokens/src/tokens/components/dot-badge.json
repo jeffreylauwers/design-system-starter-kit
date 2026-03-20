@@ -1,0 +1,30 @@
+{
+  "dsn": {
+    "dot-badge": {
+      "size": {
+        "value": "0.5rem",
+        "type": "dimension",
+        "comment": "Diameter van de dot (8px)"
+      },
+      "inset-block-start": {
+        "value": "-0.25rem",
+        "type": "dimension",
+        "comment": "Verticale offset — dot steekt boven de rechterbovenhoek van de parent uit"
+      },
+      "inset-inline-end": {
+        "value": "-0.25rem",
+        "type": "dimension",
+        "comment": "Horizontale offset — dot steekt rechts buiten de parent uit"
+      },
+      "pulse-duration": {
+        "value": "{dsn.transition.duration.slower}",
+        "type": "duration",
+        "comment": "Duur van de pulse-animatie"
+      },
+      "pulse-easing": {
+        "value": "{dsn.transition.easing.default}",
+        "comment": "Easing van de pulse-animatie"
+      }
+    }
+  }
+}
