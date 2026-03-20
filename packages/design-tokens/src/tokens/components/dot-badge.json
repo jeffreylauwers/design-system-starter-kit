@@ -17,9 +17,9 @@
         "comment": "Horizontale offset — dot zit 0.25rem binnen de rechterrand van de parent"
       },
       "pulse-duration": {
-        "value": "{dsn.transition.duration.slower}",
+        "value": "1500ms",
         "type": "duration",
-        "comment": "Duur van de pulse-animatie"
+        "comment": "Duur van de pulse-animatie — bewust hoger dan transition.duration.slower (500ms): dit is een herhalende ambient animatie, geen UI-transition"
       },
       "pulse-easing": {
         "value": "{dsn.transition.easing.default}",
