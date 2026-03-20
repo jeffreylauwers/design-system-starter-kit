@@ -6,6 +6,7 @@
  */
 
 // Layout Components
+export * from './ActionGroup';
 export * from './Body';
 export * from './Container';
 export * from './Grid';

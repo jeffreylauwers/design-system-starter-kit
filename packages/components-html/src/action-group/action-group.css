@@ -1,0 +1,54 @@
+/**
+ * ActionGroup Component
+ * Groups related actions (Buttons and Links) and manages their layout.
+ *
+ * Usage:
+ * <!-- Horizontal (default) — wraps automatically when viewport is too narrow -->
+ * <div class="dsn-action-group">
+ *   <button class="dsn-button dsn-button--strong dsn-button--size-default">
+ *     <span class="dsn-button__label">Opslaan</span>
+ *   </button>
+ *   <button class="dsn-button dsn-button--subtle dsn-button--size-default">
+ *     <span class="dsn-button__label">Annuleren</span>
+ *   </button>
+ * </div>
+ *
+ * <!-- Horizontal with Link as soft exit -->
+ * <div class="dsn-action-group">
+ *   <button class="dsn-button dsn-button--strong dsn-button--size-default">
+ *     <span class="dsn-button__label">Volgende stap</span>
+ *   </button>
+ *   <a class="dsn-link" href="/">Terug naar overzicht</a>
+ * </div>
+ *
+ * <!-- Vertical -->
+ * <div class="dsn-action-group dsn-action-group--vertical">
+ *   <button class="dsn-button dsn-button--strong dsn-button--size-default">
+ *     <span class="dsn-button__label">Primaire actie</span>
+ *   </button>
+ *   <button class="dsn-button dsn-button--subtle dsn-button--size-default">
+ *     <span class="dsn-button__label">Secundaire actie</span>
+ *   </button>
+ * </div>
+ */
+
+/* ===========================
+   Base layout — horizontal (default)
+   =========================== */
+.dsn-action-group {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  align-items: center;
+  column-gap: var(--dsn-action-group-column-gap);
+  row-gap: var(--dsn-action-group-row-gap);
+}
+
+/* ===========================
+   Vertical modifier
+   =========================== */
+.dsn-action-group--vertical {
+  flex-direction: column;
+  flex-wrap: nowrap;
+  align-items: flex-start;
+}

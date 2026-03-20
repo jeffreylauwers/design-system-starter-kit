@@ -1,0 +1,32 @@
+import { Meta, Story, Controls, Markdown } from '@storybook/blocks';
+import * as ActionGroupStories from './ActionGroup.stories';
+import docs from './ActionGroup.docs.md?raw';
+import { PreviewFrame, CodeTabs } from './components';
+
+export const [intro, rest] = docs.split('<!-- VOORBEELD -->');
+
+<Meta of={ActionGroupStories} />
+
+<Markdown>{intro}</Markdown>
+
+## Voorbeeld
+
+<PreviewFrame>
+  <Story of={ActionGroupStories.Default} />
+</PreviewFrame>
+
+<CodeTabs
+  of={ActionGroupStories.Default}
+  html={`<div class="dsn-action-group">
+  <button class="dsn-button dsn-button--strong dsn-button--size-default">
+    <span class="dsn-button__label">Opslaan</span>
+  </button>
+  <button class="dsn-button dsn-button--subtle dsn-button--size-default">
+    <span class="dsn-button__label">Annuleren</span>
+  </button>
+</div>`}
+/>
+
+<Controls of={ActionGroupStories.Default} />
+
+<Markdown>{rest}</Markdown>
