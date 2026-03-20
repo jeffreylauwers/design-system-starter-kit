@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react';
-import { ActionGroup, Button, Link } from '@dsn/components-react';
+import { ActionGroup, Button, Link, LinkButton } from '@dsn/components-react';
 import DocsPage from './ActionGroup.docs.mdx';
 import { rtlDecorator } from './story-helpers';
 
@@ -108,6 +108,19 @@ export const LongText: Story = {
         <Button variant="subtle">
           Annuleer en ga terug naar het overzicht
         </Button>
+      </>
+    ),
+  },
+};
+
+export const WithLinkButton: Story = {
+  name: 'With LinkButton',
+  args: {
+    children: (
+      <>
+        <Button variant="strong">Volgende stap</Button>
+        <LinkButton>Opslaan en later verder</LinkButton>
+        <LinkButton>Stoppen met formulier</LinkButton>
       </>
     ),
   },
