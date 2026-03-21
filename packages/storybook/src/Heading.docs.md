@@ -27,6 +27,7 @@ De Heading component biedt een consistente, toegankelijke manier om koppen weer 
 - **Respecteer de heading hiërarchie.** Spring geen levels over (bijv. niet direct van h2 naar h5). Dit helpt screenreaders de documentstructuur te begrijpen.
 - **Gebruik `appearance` voor visuele flexibiliteit.** Als je een h3 visueel kleiner wilt maken, gebruik dan `<Heading level={3} appearance="heading-5">` in plaats van `level={5}` te gebruiken.
 - **Houd headings kort en beschrijvend.** Goede headings zijn 1-6 woorden en beschrijven duidelijk wat volgt.
+- **Gebalanceerde regelafbrekingen.** Alle headings gebruiken `text-wrap: balance` zodat tekst gelijkmatig over regels verdeeld wordt en weeswoorden worden vermeden.
 - **Combineer met paragraphs.** Gebruik headings om secties te markeren en paragraphs voor de lopende tekst binnen die secties.
 - **Test met screenreaders.** Verifieer dat de heading structuur logisch is wanneer je door de headings navigeert (NVDA, JAWS, VoiceOver).
 
