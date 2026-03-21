@@ -131,6 +131,12 @@
   background-color: var(--dsn-radio-checked-focus-background-color);
 }
 
+.dsn-radio__input:checked:focus-visible
+  + .dsn-radio__control
+  .dsn-radio__inner-circle {
+  background-color: var(--dsn-radio-checked-focus-color);
+}
+
 /* Disabled state */
 .dsn-radio__input:disabled + .dsn-radio__control {
   border-color: var(--dsn-radio-disabled-border-color);
