@@ -1,11 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react';
-import {
-  FormField,
-  TextInput,
-  TextArea,
-  CheckboxGroup,
-  CheckboxOption,
-} from '@dsn/components-react';
+import { FormField, TextInput, TextArea } from '@dsn/components-react';
 import DocsPage from './FormField.docs.mdx';
 import {
   TEKST,
@@ -165,16 +159,6 @@ export const AllStates: Story = {
         <h3 style={{ marginBlockEnd: '0.5rem' }}>With TextArea</h3>
         <FormField label={TEKST} htmlFor="s7" description={TEKST}>
           <TextArea id="s7" rows={4} />
-        </FormField>
-      </div>
-      <div>
-        <h3 style={{ marginBlockEnd: '0.5rem' }}>With CheckboxGroup</h3>
-        <FormField label={TEKST} description={TEKST}>
-          <CheckboxGroup>
-            <CheckboxOption label={TEKST} value="1" />
-            <CheckboxOption label={TEKST} value="2" />
-            <CheckboxOption label={TEKST} value="3" />
-          </CheckboxGroup>
         </FormField>
       </div>
     </div>

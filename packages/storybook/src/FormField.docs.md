@@ -4,7 +4,7 @@ Container component dat label, description, error message, form control en statu
 
 ## Doel
 
-De FormField component is een complete form field container die alle onderdelen samenbrengt: FormFieldLabel (met optionele suffix), FormFieldDescription, FormFieldErrorMessage, de form control zelf, en FormFieldStatus. Het zorgt voor correcte volgorde, spacing en koppeling via aria-attributen. De component gebruikt een `<div>` wrapper met `<label>` element. Voor groep controls (CheckboxGroup, RadioGroup) gebruik je later de FormFieldset component die `<fieldset>` en `<legend>` gebruikt. FormField handelt automatisch ID's af voor aria-describedby koppelingen.
+De FormField component is een complete form field container die alle onderdelen samenbrengt: FormFieldLabel (met optionele suffix), FormFieldDescription, FormFieldErrorMessage, de form control zelf, en FormFieldStatus. Het zorgt voor correcte volgorde, spacing en koppeling via aria-attributen. De component gebruikt een `<div>` wrapper met `<label>` element en is uitsluitend bedoeld voor enkelvoudige inputs. Voor groep controls (CheckboxGroup, RadioGroup) gebruik je [FormFieldset](/docs/components-formfieldset--docs). FormField handelt automatisch ID's af voor aria-describedby koppelingen.
 
 > **Codevoorbeeld met context**: De HTML/CSS tab toont een `EmailInput` als representatief child. `FormField` is een wrapper — het form control dat je als child meegeeft bepaalt de daadwerkelijke invoer.
 
@@ -18,7 +18,7 @@ De FormField component is een complete form field container die alle onderdelen 
 
 ## Don't use when
 
-- Je een groep controls hebt (CheckboxGroup, RadioGroup) — gebruik [FormFieldset](/docs/components-formfieldset--docs) (komt later).
+- Je een groep controls hebt (CheckboxGroup, RadioGroup) — gebruik [FormFieldset](/docs/components-formfieldset--docs).
 - Je alleen een label zonder control nodig hebt — gebruik [FormFieldLabel](/docs/components-formfieldlabel--docs).
 - Je volledige controle wilt over de markup — gebruik de sub-componenten direct.
 
@@ -29,7 +29,7 @@ FormField combineert deze sub-componenten in de juiste volgorde:
 1. **FormFieldLabel** (verplicht) - Met optionele suffix
 2. **FormFieldDescription** (optioneel) - Help tekst
 3. **FormFieldErrorMessage** (optioneel) - Foutmelding met icoon
-4. **Form Control** (verplicht) - TextInput, TextArea, CheckboxGroup, etc.
+4. **Form Control** (verplicht) - TextInput, TextArea, of een ander enkelvoudig form control
 5. **FormFieldStatus** (optioneel) - Status feedback met variant
 
 ### Invalid state
