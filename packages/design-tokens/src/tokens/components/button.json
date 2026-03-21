@@ -495,6 +495,23 @@
           }
         }
       },
+      "disabled": {
+        "background-color": {
+          "value": "{dsn.color.neutral.bg-subtle}",
+          "type": "color",
+          "comment": "Disabled button background — neutral scale, variant-independent"
+        },
+        "color": {
+          "value": "{dsn.color.neutral.color-subtle}",
+          "type": "color",
+          "comment": "Disabled button text/icon color — neutral scale, variant-independent"
+        },
+        "border-color": {
+          "value": "{dsn.color.neutral.border-subtle}",
+          "type": "color",
+          "comment": "Disabled button border color — neutral scale, variant-independent"
+        }
+      },
       "size": {
         "default": {
           "font-size": {
