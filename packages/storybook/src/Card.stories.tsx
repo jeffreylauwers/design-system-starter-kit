@@ -121,6 +121,73 @@ export const ZonderAfbeelding: Story = {
 };
 
 // =============================================================================
+// ZonderHeader — geen afbeelding en geen placeholder
+// =============================================================================
+
+export const ZonderHeader: Story = {
+  name: 'Zonder afbeelding',
+  render: () => (
+    <div style={{ maxWidth: '22rem' }}>
+      <Card href="/artikel/slug">
+        <CardBody>
+          <CardHeading level={2}>Artikeltitel zonder afbeelding</CardHeading>
+          <Paragraph>
+            Zonder <code>CardHeader</code> toont de card alleen body en footer.
+          </Paragraph>
+        </CardBody>
+        <CardFooter>
+          <Link href="/artikel/slug" aria-hidden tabIndex={-1}>
+            Lees meer
+          </Link>
+        </CardFooter>
+      </Card>
+    </div>
+  ),
+};
+
+// =============================================================================
+// MetLangeContent — lange tekst om overflow en hoogte te testen
+// =============================================================================
+
+export const MetLangeContent: Story = {
+  name: 'Met lange content',
+  render: () => (
+    <div style={{ maxWidth: '22rem' }}>
+      <Card href="/artikel/slug">
+        <CardHeader>
+          <Image
+            src={PLACEHOLDER_16_9}
+            alt=""
+            width={800}
+            height={450}
+            ratio="16:9"
+          />
+        </CardHeader>
+        <CardBody>
+          <CardHeading level={2}>
+            Artikel met een langere titel die over meerdere regels loopt
+          </CardHeading>
+          <Paragraph>
+            Dit artikel heeft bewust meer tekstinhoud om te laten zien hoe de
+            card omgaat met langere beschrijvingen. De footer blijft altijd
+            onderaan uitlijnen dankzij de flex-layout van de card.
+          </Paragraph>
+          <Paragraph>
+            Een tweede alinea demonstreert dat de card-body onbeperkt kan
+            groeien terwijl de heading en footer op de juiste positie blijven.
+          </Paragraph>
+        </CardBody>
+        <CardFooter>
+          <Link href="/artikel/slug" aria-hidden tabIndex={-1}>
+            Lees meer
+          </Link>
+        </CardFooter>
+      </Card>
+    </div>
+  ),
+};
+
+// =============================================================================
 // MetStatusBadge — children slot in body
 // =============================================================================
 
@@ -261,15 +328,7 @@ export const CardGroep: Story = {
       </li>
       <li>
         <Card href="/artikel/2">
-          <CardHeader>
-            <Image
-              src={PLACEHOLDER_16_9_B}
-              alt=""
-              width={800}
-              height={450}
-              ratio="16:9"
-            />
-          </CardHeader>
+          <CardHeader />
           <CardBody>
             <CardHeading level={2}>
               Tweede artikel met een langere titel die over meerdere regels
@@ -289,15 +348,6 @@ export const CardGroep: Story = {
       </li>
       <li>
         <Card href="/artikel/3">
-          <CardHeader>
-            <Image
-              src={PLACEHOLDER_16_9_C}
-              alt=""
-              width={800}
-              height={450}
-              ratio="16:9"
-            />
-          </CardHeader>
           <CardBody>
             <CardHeading level={2}>Derde artikel</CardHeading>
             <Paragraph>Korte beschrijving.</Paragraph>
