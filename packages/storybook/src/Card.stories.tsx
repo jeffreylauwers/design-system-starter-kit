@@ -25,7 +25,8 @@ const meta: Meta<typeof Card> = {
     docs: { page: DocsPage },
     dsn: {
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      htmlTemplate: (_args: any) => {
+      htmlTemplate: (args: any) => {
+        const href = args.href ?? '/artikel/slug';
         return `<article class="dsn-card">
   <div class="dsn-card__header">
     <figure class="dsn-image dsn-image--ratio-16-9" aria-hidden="true">
@@ -42,19 +43,23 @@ const meta: Meta<typeof Card> = {
   </div>
   <div class="dsn-card__body">
     <h2 class="dsn-card-heading">
-      <a href="/artikel/slug" class="dsn-card-heading__link">Artikeltitel</a>
+      <a href="${href}" class="dsn-card-heading__link">Artikeltitel</a>
     </h2>
     <p class="dsn-paragraph">Korte beschrijving van het artikel die aanvullende context biedt.</p>
   </div>
   <div class="dsn-card__footer">
-    <a href="/artikel/slug" class="dsn-link" aria-hidden="true" tabindex="-1">Lees meer</a>
+    <a href="${href}" class="dsn-link" aria-hidden="true" tabindex="-1">Lees meer</a>
   </div>
 </article>`;
       },
     },
   },
-  argTypes: {},
-  args: {},
+  argTypes: {
+    href: { control: 'text' },
+  },
+  args: {
+    href: '/artikel/slug',
+  },
 };
 
 export default meta;
@@ -65,9 +70,9 @@ type Story = StoryObj<typeof Card>;
 // =============================================================================
 
 export const Default: Story = {
-  render: () => (
+  render: (args) => (
     <div style={{ maxWidth: '22rem' }}>
-      <Card href="/artikel/slug">
+      <Card href={args.href}>
         <CardHeader>
           <Image
             src={PLACEHOLDER_16_9}
