@@ -782,9 +782,10 @@ Brengt consistente verticale ruimte aan tussen directe child-elementen via `flex
 - `CardHeading` ontvangt `href` via React context van parent `Card` en wraps children in een `<a class="dsn-card-heading__link">`
 - Footer-kinderen staan boven de stretched link via `z-index: 2` in CSS
 - `CardGroup` rendert als `<ul role="list">` (standaard) of `<div>` via `as` prop
-- Hover: box-shadow verhoogd naar `md`; focus: focus-ring rondom de gehele card via CSS `:has()`
+- Standaard geen box-shadow (`none`); hover verhoogt achtergrond naar `bg-elevated` + box-shadow `md` — overgang via CSS `transition` (background-color + box-shadow)
+- Focus: focus-ring rondom de gehele card via CSS `:has(.dsn-card-heading__link:focus-visible)` — zelfde tokens als Button en Link
 - Alle spacing via component-tokens (`dsn.card.body.padding-*`, `dsn.card.footer.padding-*`)
-- Dark mode: `background: bg-elevated` zorgt voor correct elevatie-contrast
+- Standaard `background: bg-document`; hover `background: bg-elevated` voor elevatie-effect
 
 **CSS klassen:**
 

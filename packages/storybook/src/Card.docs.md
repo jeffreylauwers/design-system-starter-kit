@@ -49,28 +49,29 @@ Het Card component presenteert een zelfstandig inhoudsblok — doorgaans een afb
 
 ## Design tokens
 
-| Token                                     | Beschrijving                                           |
-| ----------------------------------------- | ------------------------------------------------------ |
-| `--dsn-card-background`                   | Achtergrondkleur (bg-elevated voor dark mode elevatie) |
-| `--dsn-card-border-radius`                | Afgeronde hoeken (8px)                                 |
-| `--dsn-card-border-width`                 | Randbreedte                                            |
-| `--dsn-card-border-color`                 | Randkleur (neutral.border-subtle)                      |
-| `--dsn-card-box-shadow`                   | Standaard schaduw (sm-elevatie)                        |
-| `--dsn-card-box-shadow-hover`             | Schaduw bij hover (md-elevatie)                        |
-| `--dsn-card-body-padding-block`           | Verticale padding van de body (16px)                   |
-| `--dsn-card-body-padding-inline`          | Horizontale padding van de body (16px)                 |
-| `--dsn-card-footer-padding-block-end`     | Onderkant padding van de footer (16px)                 |
-| `--dsn-card-footer-padding-inline`        | Horizontale padding van de footer (16px)               |
-| `--dsn-card-image-placeholder-background` | Achtergrond van de afbeeldingsplaceholder              |
-| `--dsn-card-image-placeholder-color`      | Kleur van het icoon in de placeholder                  |
-| `--dsn-card-heading-font-family`          | Lettertype van de card heading                         |
-| `--dsn-card-heading-font-size`            | Tekstgrootte van de card heading                       |
-| `--dsn-card-heading-font-weight`          | Vetgedrukt van de card heading                         |
-| `--dsn-card-heading-line-height`          | Regelafstand van de card heading                       |
-| `--dsn-card-heading-color`                | Kleur van de card heading                              |
-| `--dsn-card-heading-margin-block-end`     | Afstand onder de card heading (12px)                   |
-| `--dsn-card-group-gap`                    | Ruimte tussen cards in een groep (16px)                |
-| `--dsn-card-group-item-min-width`         | Minimale breedte per card (17.5rem)                    |
+| Token                                     | Beschrijving                              |
+| ----------------------------------------- | ----------------------------------------- |
+| `--dsn-card-background`                   | Achtergrondkleur standaard (bg-document)  |
+| `--dsn-card-background-hover`             | Achtergrondkleur bij hover (bg-elevated)  |
+| `--dsn-card-border-radius`                | Afgeronde hoeken (8px)                    |
+| `--dsn-card-border-width`                 | Randbreedte                               |
+| `--dsn-card-border-color`                 | Randkleur (neutral.border-subtle)         |
+| `--dsn-card-box-shadow`                   | Standaard schaduw (none)                  |
+| `--dsn-card-box-shadow-hover`             | Schaduw bij hover (md-elevatie)           |
+| `--dsn-card-body-padding-block`           | Verticale padding van de body (16px)      |
+| `--dsn-card-body-padding-inline`          | Horizontale padding van de body (16px)    |
+| `--dsn-card-footer-padding-block-end`     | Onderkant padding van de footer (24px)    |
+| `--dsn-card-footer-padding-inline`        | Horizontale padding van de footer (16px)  |
+| `--dsn-card-image-placeholder-background` | Achtergrond van de afbeeldingsplaceholder |
+| `--dsn-card-image-placeholder-color`      | Kleur van het icoon in de placeholder     |
+| `--dsn-card-heading-font-family`          | Lettertype van de card heading            |
+| `--dsn-card-heading-font-size`            | Tekstgrootte van de card heading          |
+| `--dsn-card-heading-font-weight`          | Vetgedrukt van de card heading            |
+| `--dsn-card-heading-line-height`          | Regelafstand van de card heading          |
+| `--dsn-card-heading-color`                | Kleur van de card heading                 |
+| `--dsn-card-heading-margin-block-end`     | Afstand onder de card heading (12px)      |
+| `--dsn-card-group-gap`                    | Ruimte tussen cards in een groep (16px)   |
+| `--dsn-card-group-item-min-width`         | Minimale breedte per card (17.5rem)       |
 
 ## Accessibility
 

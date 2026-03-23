@@ -18,10 +18,17 @@ All notable changes to this project are documented in this file.
 - `dsn-card__image-placeholder` — automatische placeholder bij `CardHeader` zonder children (`aspect-ratio: 16 / 9`, `aria-hidden="true"`)
 - Stretched-link techniek: `dsn-card-heading__link::before` met `position: absolute; inset: 0; z-index: 1` dekt de volledige card
 - `CardHeading` ontvangt `href` automatisch via React context van parent `Card`
-- `CardGroup` als `<ul role="list">` (standaard) of `<div>` via `as` prop — gelijke hoogte via `flex: 1 1 var(--dsn-card-group-item-min-width)`
-- Hover/focus-stijlen via CSS `:has(.dsn-card-heading__link:hover/focus-visible)` — focus-ring rondom de gehele card
-- Componenttokens: `--dsn-card-background`, `--dsn-card-border-*`, `--dsn-card-box-shadow`, `--dsn-card-box-shadow-hover`, `--dsn-card-body-padding-*`, `--dsn-card-footer-padding-*`, `--dsn-card-image-placeholder-*`, `--dsn-card-heading-*`, `--dsn-card-group-*`
+- `CardGroup` als `<ul role="list">` (standaard) of `<div>` via `as` prop — gelijke hoogte via `display: flex` op list-items + `flex: 1` op `dsn-card`
+- Hover/focus-stijlen via CSS `:has(.dsn-card-heading__link:hover/focus-visible)` — focus-ring rondom de gehele card (zelfde tokens als Button en Link)
+- CSS `transition` op `background-color` en `box-shadow` — vloeiende hover-overgang (tokens `--dsn-transition-duration-normal` + `--dsn-transition-easing-default`)
+- Componenttokens: `--dsn-card-background`, `--dsn-card-background-hover`, `--dsn-card-border-*`, `--dsn-card-box-shadow`, `--dsn-card-box-shadow-hover`, `--dsn-card-body-padding-*`, `--dsn-card-footer-padding-*`, `--dsn-card-image-placeholder-*`, `--dsn-card-heading-*`, `--dsn-card-group-*`
 - 43 nieuwe React tests
+
+#### Fixed
+
+- **Afbeelding border-radius onderkant** — border-radius-selector gecorrigeerd naar `.dsn-card__header > .dsn-image .dsn-image__img` zodat alleen de bovenhoeken afgerond zijn en de onderkant recht blijft
+- **Focus state** — was hardcoded kleur; nu via `--dsn-focus-outline-*` tokens, consistent met Button en Link
+- **CardGroup gelijke hoogte** — `display: flex` toegevoegd aan list-items zodat cards in een rij altijd dezelfde hoogte hebben
 
 ---
 
