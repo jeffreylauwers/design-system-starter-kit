@@ -49,6 +49,10 @@ const meta: Meta<typeof BreadcrumbNavigation> = {
 export default meta;
 type Story = StoryObj<typeof BreadcrumbNavigation>;
 
+// =============================================================================
+// DEFAULT
+// =============================================================================
+
 export const Default: Story = {
   name: 'Default',
   render: (args: BreadcrumbNavigationProps) => (
@@ -64,6 +68,10 @@ export const Default: Story = {
     </BreadcrumbNavigation>
   ),
 };
+
+// =============================================================================
+// VARIANTEN
+// =============================================================================
 
 export const Compact: Story = {
   name: 'Compact',
@@ -82,7 +90,7 @@ export const Compact: Story = {
 };
 
 export const TwoItems: Story = {
-  name: 'Two items — minimaal pad',
+  name: 'Two items — minimal path',
   render: (args: BreadcrumbNavigationProps) => (
     <BreadcrumbNavigation {...args}>
       <BreadcrumbNavigationItem href="/home">Home</BreadcrumbNavigationItem>
@@ -94,7 +102,7 @@ export const TwoItems: Story = {
 };
 
 export const ManyItems: Story = {
-  name: 'Many items — lang pad',
+  name: 'Many items — long path',
   render: (args: BreadcrumbNavigationProps) => (
     <BreadcrumbNavigation {...args}>
       <BreadcrumbNavigationItem href="/home">Home</BreadcrumbNavigationItem>
@@ -117,6 +125,10 @@ export const ManyItems: Story = {
     </BreadcrumbNavigation>
   ),
 };
+
+// =============================================================================
+// RTL
+// =============================================================================
 
 export const RTL: Story = {
   name: 'RTL',

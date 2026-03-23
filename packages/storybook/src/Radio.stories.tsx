@@ -45,7 +45,15 @@ const meta: Meta<typeof Radio> = {
 export default meta;
 type Story = StoryObj<typeof Radio>;
 
+// =============================================================================
+// DEFAULT
+// =============================================================================
+
 export const Default: Story = {};
+
+// =============================================================================
+// VARIANTEN
+// =============================================================================
 
 export const Checked: Story = {
   args: { checked: true, readOnly: true, name: 'r1', value: 'checked' },
@@ -69,6 +77,10 @@ export const DisabledChecked: Story = {
 export const Invalid: Story = {
   args: { invalid: true, name: 'r4', value: 'invalid' },
 };
+
+// =============================================================================
+// OVERZICHTSSTORIES
+// =============================================================================
 
 export const AllStates: Story = {
   name: 'All states',
@@ -153,6 +165,10 @@ export const AllStates: Story = {
     </div>
   ),
 };
+
+// =============================================================================
+// RTL
+// =============================================================================
 
 export const RTL: Story = {
   name: 'RTL',

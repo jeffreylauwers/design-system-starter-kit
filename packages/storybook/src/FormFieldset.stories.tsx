@@ -9,6 +9,7 @@ import {
 import DocsPage from './FormFieldset.docs.mdx';
 import {
   TEKST,
+  WEINIG_TEKST,
   VEEL_TEKST,
   TEKST_AR,
   VEEL_TEKST_AR,
@@ -69,6 +70,10 @@ const meta: Meta<typeof FormFieldset> = {
 export default meta;
 type Story = StoryObj<typeof FormFieldset>;
 
+// =============================================================================
+// DEFAULT
+// =============================================================================
+
 export const Default: Story = {
   render: (args) => (
     <FormFieldset {...args}>
@@ -80,6 +85,10 @@ export const Default: Story = {
     </FormFieldset>
   ),
 };
+
+// =============================================================================
+// VARIANTEN
+// =============================================================================
 
 export const WithDescription: Story = {
   name: 'With description',
@@ -119,6 +128,10 @@ export const WithRadioGroup: Story = {
     </FormFieldset>
   ),
 };
+
+// =============================================================================
+// OVERZICHTSSTORIES
+// =============================================================================
 
 export const AllStates: Story = {
   name: 'All states',
@@ -183,6 +196,22 @@ export const AllStates: Story = {
   ),
 };
 
+// =============================================================================
+// TEKST VARIANTEN
+// =============================================================================
+
+export const ShortText: Story = {
+  name: 'Short text',
+  render: (args) => (
+    <FormFieldset {...args} legend={WEINIG_TEKST}>
+      <CheckboxGroup>
+        <CheckboxOption label={WEINIG_TEKST} value="1" />
+        <CheckboxOption label={WEINIG_TEKST} value="2" />
+      </CheckboxGroup>
+    </FormFieldset>
+  ),
+};
+
 export const LongText: Story = {
   name: 'Long text',
   render: (args) => (
@@ -194,6 +223,10 @@ export const LongText: Story = {
     </FormFieldset>
   ),
 };
+
+// =============================================================================
+// RTL
+// =============================================================================
 
 export const RTL: Story = {
   name: 'RTL',

@@ -4,6 +4,7 @@ import type { IconName } from '@dsn/components-react/icon-registry.generated';
 import DocsPage from './Alert.docs.mdx';
 import {
   TEKST,
+  WEINIG_TEKST,
   VEEL_TEKST,
   TEKST_AR,
   VEEL_TEKST_AR,
@@ -145,7 +146,15 @@ const meta: Meta<typeof Alert> = {
 export default meta;
 type Story = StoryObj<typeof Alert>;
 
+// =============================================================================
+// DEFAULT
+// =============================================================================
+
 export const Default: Story = {};
+
+// =============================================================================
+// VARIANTEN
+// =============================================================================
 
 export const Positive: Story = {
   args: {
@@ -171,24 +180,11 @@ export const Warning: Story = {
   },
 };
 
-export const AllStates: Story = {
-  name: 'All states',
-  render: () => (
-    <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
-      <Alert variant="info" heading="Informatief bericht">
-        <Paragraph>{TEKST}</Paragraph>
-      </Alert>
-      <Alert variant="positive" heading="Gelukt">
-        <Paragraph>{TEKST}</Paragraph>
-      </Alert>
-      <Alert variant="negative" heading="Er is een fout opgetreden">
-        <Paragraph>{TEKST}</Paragraph>
-      </Alert>
-      <Alert variant="warning" heading="Let op">
-        <Paragraph>{TEKST}</Paragraph>
-      </Alert>
-    </div>
-  ),
+export const NoIcon: Story = {
+  name: 'No icon',
+  args: {
+    iconStart: null,
+  },
 };
 
 export const WithList: Story = {
@@ -207,11 +203,41 @@ export const WithList: Story = {
   ),
 };
 
-export const NoIcon: Story = {
-  name: 'No icon',
-  args: {
-    iconStart: null,
-  },
+// =============================================================================
+// OVERZICHTSSTORIES
+// =============================================================================
+
+export const AllVariants: Story = {
+  name: 'All variants',
+  render: () => (
+    <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
+      <Alert variant="info" heading="Informatief bericht">
+        <Paragraph>{TEKST}</Paragraph>
+      </Alert>
+      <Alert variant="positive" heading="Gelukt">
+        <Paragraph>{TEKST}</Paragraph>
+      </Alert>
+      <Alert variant="negative" heading="Er is een fout opgetreden">
+        <Paragraph>{TEKST}</Paragraph>
+      </Alert>
+      <Alert variant="warning" heading="Let op">
+        <Paragraph>{TEKST}</Paragraph>
+      </Alert>
+    </div>
+  ),
+};
+
+// =============================================================================
+// TEKST VARIANTEN
+// =============================================================================
+
+export const ShortText: Story = {
+  name: 'Short text',
+  render: () => (
+    <Alert heading="Heading">
+      <Paragraph>{WEINIG_TEKST}</Paragraph>
+    </Alert>
+  ),
 };
 
 export const LongText: Story = {
@@ -222,6 +248,10 @@ export const LongText: Story = {
     </Alert>
   ),
 };
+
+// =============================================================================
+// RTL
+// =============================================================================
 
 export const RTL: Story = {
   name: 'RTL',

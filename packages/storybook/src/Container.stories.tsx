@@ -57,7 +57,15 @@ const meta: Meta<typeof Container> = {
 export default meta;
 type Story = StoryObj<typeof Container>;
 
+// =============================================================================
+// DEFAULT
+// =============================================================================
+
 export const Default: Story = {};
+
+// =============================================================================
+// VARIANTEN
+// =============================================================================
 
 export const Elevated: Story = {
   args: {
@@ -83,6 +91,10 @@ export const ElevatedWithContent: Story = {
     </Container>
   ),
 };
+
+// =============================================================================
+// OVERZICHTSSTORIES
+// =============================================================================
 
 export const AllStates: Story = {
   name: 'All states',

@@ -33,6 +33,10 @@ const meta: Meta<typeof Stack> = {
 export default meta;
 type Story = StoryObj<typeof Stack>;
 
+// =============================================================================
+// DEFAULT
+// =============================================================================
+
 export const Default: Story = {
   render: (args) => (
     <Stack {...args}>
@@ -66,6 +70,10 @@ const SPACE_LABELS: Record<string, string> = {
   '5xl': '5xl — 64px',
   '6xl': '6xl — 160px',
 };
+
+// =============================================================================
+// OVERZICHTSSTORIES
+// =============================================================================
 
 export const AllSpaces: Story = {
   name: 'All spaces',

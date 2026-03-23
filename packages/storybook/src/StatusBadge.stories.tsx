@@ -117,7 +117,15 @@ const meta: Meta<typeof StatusBadge> = {
 export default meta;
 type Story = StoryObj<typeof StatusBadge>;
 
+// =============================================================================
+// DEFAULT
+// =============================================================================
+
 export const Default: Story = {};
+
+// =============================================================================
+// VARIANTEN
+// =============================================================================
 
 export const Info: Story = {
   args: {
@@ -147,8 +155,12 @@ export const Warning: Story = {
   },
 };
 
-export const AllStates: Story = {
-  name: 'All states',
+// =============================================================================
+// OVERZICHTSSTORIES
+// =============================================================================
+
+export const AllVariants: Story = {
+  name: 'All variants',
   render: () => (
     <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
       <div style={{ display: 'flex', gap: '0.5rem', flexWrap: 'wrap' }}>
@@ -196,6 +208,10 @@ export const WithoutIcon: Story = {
   },
 };
 
+// =============================================================================
+// TEKST VARIANTEN
+// =============================================================================
+
 export const ShortText: Story = {
   name: 'Short text',
   args: { children: WEINIG_TEKST },
@@ -205,6 +221,10 @@ export const LongText: Story = {
   name: 'Long text',
   args: { children: VEEL_TEKST },
 };
+
+// =============================================================================
+// RTL
+// =============================================================================
 
 export const RTL: Story = {
   name: 'RTL',

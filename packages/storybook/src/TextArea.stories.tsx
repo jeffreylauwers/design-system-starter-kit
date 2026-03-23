@@ -275,7 +275,3 @@ export const RTLLongText: Story = {
   decorators: [rtlDecorator],
   args: { defaultValue: VEEL_TEKST_AR, readOnly: true },
 };
-
-// =============================================================================
-// HIGH CONTRAST
-// =============================================================================

@@ -1,7 +1,14 @@
 import type { Meta, StoryObj } from '@storybook/react';
 import { RadioGroup, RadioOption } from '@dsn/components-react';
 import DocsPage from './RadioGroup.docs.mdx';
-import { TEKST, TEKST_AR, rtlDecorator } from './story-helpers';
+import {
+  TEKST,
+  WEINIG_TEKST,
+  VEEL_TEKST,
+  TEKST_AR,
+  VEEL_TEKST_AR,
+  rtlDecorator,
+} from './story-helpers';
 
 const meta: Meta<typeof RadioGroup> = {
   title: 'Components/RadioGroup',
@@ -16,6 +23,10 @@ const meta: Meta<typeof RadioGroup> = {
 export default meta;
 type Story = StoryObj<typeof RadioGroup>;
 
+// =============================================================================
+// DEFAULT
+// =============================================================================
+
 export const Default: Story = {
   render: () => (
     <RadioGroup>
@@ -25,6 +36,10 @@ export const Default: Story = {
     </RadioGroup>
   ),
 };
+
+// =============================================================================
+// OVERZICHTSSTORIES
+// =============================================================================
 
 export const AllStates: Story = {
   name: 'All states',
@@ -58,6 +73,36 @@ export const AllStates: Story = {
   ),
 };
 
+// =============================================================================
+// TEKST VARIANTEN
+// =============================================================================
+
+export const ShortText: Story = {
+  name: 'Short text',
+  render: () => (
+    <RadioGroup>
+      <RadioOption name="short" label={WEINIG_TEKST} value="1" />
+      <RadioOption name="short" label={WEINIG_TEKST} value="2" />
+      <RadioOption name="short" label={WEINIG_TEKST} value="3" />
+    </RadioGroup>
+  ),
+};
+
+export const LongText: Story = {
+  name: 'Long text',
+  render: () => (
+    <RadioGroup>
+      <RadioOption name="long" label={VEEL_TEKST} value="1" />
+      <RadioOption name="long" label={VEEL_TEKST} value="2" />
+      <RadioOption name="long" label={VEEL_TEKST} value="3" />
+    </RadioGroup>
+  ),
+};
+
+// =============================================================================
+// RTL
+// =============================================================================
+
 export const RTL: Story = {
   name: 'RTL',
   decorators: [rtlDecorator],
@@ -66,6 +111,18 @@ export const RTL: Story = {
       <RadioOption name="rtl-1" label={TEKST_AR} value="1" />
       <RadioOption name="rtl-1" label={TEKST_AR} value="2" checked readOnly />
       <RadioOption name="rtl-1" label={TEKST_AR} value="3" />
+    </RadioGroup>
+  ),
+};
+
+export const RTLLongText: Story = {
+  name: 'RTL long text',
+  decorators: [rtlDecorator],
+  render: () => (
+    <RadioGroup>
+      <RadioOption name="rtl-long" label={VEEL_TEKST_AR} value="1" />
+      <RadioOption name="rtl-long" label={VEEL_TEKST_AR} value="2" />
+      <RadioOption name="rtl-long" label={VEEL_TEKST_AR} value="3" />
     </RadioGroup>
   ),
 };

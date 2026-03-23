@@ -31,6 +31,10 @@ const meta: Meta<typeof Grid> = {
 export default meta;
 type Story = StoryObj<typeof Grid>;
 
+// =============================================================================
+// DEFAULT
+// =============================================================================
+
 export const Default: Story = {
   render: (args) => (
     <Grid {...args}>
@@ -43,6 +47,10 @@ export const Default: Story = {
     </Grid>
   ),
 };
+
+// =============================================================================
+// VARIANTEN
+// =============================================================================
 
 export const Contained: Story = {
   name: 'Contained (max-width)',
@@ -97,6 +105,10 @@ export const FullBleed: Story = {
     </Grid>
   ),
 };
+
+// =============================================================================
+// OVERZICHTSSTORIES
+// =============================================================================
 
 export const AllColumns: Story = {
   name: 'All columns (1–12)',

@@ -32,6 +32,10 @@ const meta: Meta<typeof DotBadge> = {
 export default meta;
 type Story = StoryObj<typeof DotBadge>;
 
+// =============================================================================
+// DEFAULT
+// =============================================================================
+
 export const Default: Story = {
   decorators: [
     (Story) => (
@@ -47,6 +51,10 @@ export const Default: Story = {
     ),
   ],
 };
+
+// =============================================================================
+// VARIANTEN
+// =============================================================================
 
 export const AllVariants: Story = {
   name: 'All variants',
@@ -139,6 +147,10 @@ export const WithPulse: Story = {
     </div>
   ),
 };
+
+// =============================================================================
+// OVERZICHTSSTORIES
+// =============================================================================
 
 export const WithButton: Story = {
   name: 'With Button',

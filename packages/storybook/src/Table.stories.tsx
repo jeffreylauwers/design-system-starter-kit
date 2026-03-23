@@ -3,6 +3,7 @@ import type { Meta, StoryObj } from '@storybook/react';
 import { Table, Icon, Checkbox, Link } from '@dsn/components-react';
 import type { TableProps } from '@dsn/components-react';
 import DocsPage from './Table.docs.mdx';
+import { rtlDecorator } from './story-helpers';
 
 /**
  * Drie sorteericonen in één fragment — de CSS toont er één op basis van
@@ -87,6 +88,10 @@ const meta: Meta<typeof Table> = {
 export default meta;
 type Story = StoryObj<typeof Table>;
 
+// =============================================================================
+// DEFAULT
+// =============================================================================
+
 export const Default: Story = {
   render: (args: TableProps) => (
     <Table {...args}>
@@ -121,6 +126,10 @@ export const Default: Story = {
     </Table>
   ),
 };
+
+// =============================================================================
+// VARIANTEN
+// =============================================================================
 
 export const WithRowHeaders: Story = {
   name: 'With row headers',
@@ -319,6 +328,10 @@ export const SortableColumns: Story = {
   ),
 };
 
+// =============================================================================
+// OVERZICHTSSTORIES
+// =============================================================================
+
 export const AllFeatures: Story = {
   name: 'All features (scrollable + tfoot + sortable)',
   args: {
@@ -385,6 +398,10 @@ export const AllFeatures: Story = {
     </Table>
   ),
 };
+
+// =============================================================================
+// INTERACTIESTORIES
+// =============================================================================
 
 /* ===== Selecteerbare rijen ===== */
 
@@ -726,10 +743,51 @@ const AllTogetherTable = (args: TableProps) => {
 };
 
 export const AllTogether: Story = {
-  name: 'All together (alles gecombineerd)',
+  name: 'All together',
   args: {
     caption: 'Productoverzicht — alle interacties',
     scrollable: true,
   },
   render: (args: TableProps) => <AllTogetherTable {...args} />,
+};
+
+// =============================================================================
+// RTL
+// =============================================================================
+
+export const RTL: Story = {
+  name: 'RTL',
+  decorators: [rtlDecorator],
+  render: () => (
+    <Table caption="جدول المنتجات">
+      <thead>
+        <tr>
+          <th scope="col">المنتج</th>
+          <th scope="col" className="dsn-table__cell--numeric">
+            السعر
+          </th>
+          <th scope="col" className="dsn-table__cell--numeric">
+            المخزون
+          </th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>كمبيوتر محمول</td>
+          <td className="dsn-table__cell--numeric">٩٩٩ €</td>
+          <td className="dsn-table__cell--numeric">١٢</td>
+        </tr>
+        <tr>
+          <td>فأرة</td>
+          <td className="dsn-table__cell--numeric">٢٩ €</td>
+          <td className="dsn-table__cell--numeric">٨٤</td>
+        </tr>
+        <tr>
+          <td>لوحة المفاتيح</td>
+          <td className="dsn-table__cell--numeric">٧٩ €</td>
+          <td className="dsn-table__cell--numeric">٣٤</td>
+        </tr>
+      </tbody>
+    </Table>
+  ),
 };

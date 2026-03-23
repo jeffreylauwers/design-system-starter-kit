@@ -25,6 +25,10 @@ const meta: Meta<typeof Body> = {
 export default meta;
 type Story = StoryObj<typeof Body>;
 
+// =============================================================================
+// DEFAULT
+// =============================================================================
+
 export const Default: Story = {
   render: (args: BodyProps) => (
     <Body {...args}>

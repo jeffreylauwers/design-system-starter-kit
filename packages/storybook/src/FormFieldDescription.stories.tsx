@@ -36,7 +36,15 @@ const meta: Meta<typeof FormFieldDescription> = {
 export default meta;
 type Story = StoryObj<typeof FormFieldDescription>;
 
+// =============================================================================
+// DEFAULT
+// =============================================================================
+
 export const Default: Story = {};
+
+// =============================================================================
+// TEKST VARIANTEN
+// =============================================================================
 
 export const ShortText: Story = {
   name: 'Short text',
@@ -47,6 +55,10 @@ export const LongText: Story = {
   name: 'Long text',
   args: { children: VEEL_TEKST },
 };
+
+// =============================================================================
+// RTL
+// =============================================================================
 
 export const RTL: Story = {
   name: 'RTL',

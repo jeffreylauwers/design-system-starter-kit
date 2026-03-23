@@ -49,7 +49,15 @@ const meta: Meta<typeof Checkbox> = {
 export default meta;
 type Story = StoryObj<typeof Checkbox>;
 
+// =============================================================================
+// DEFAULT
+// =============================================================================
+
 export const Default: Story = {};
+
+// =============================================================================
+// VARIANTEN
+// =============================================================================
 
 export const Checked: Story = {
   args: { checked: true, readOnly: true, 'aria-label': 'Checked' },
@@ -76,6 +84,10 @@ export const DisabledChecked: Story = {
 export const Invalid: Story = {
   args: { invalid: true, 'aria-label': 'Invalid' },
 };
+
+// =============================================================================
+// OVERZICHTSSTORIES
+// =============================================================================
 
 export const AllStates: Story = {
   name: 'All states',
@@ -168,6 +180,10 @@ export const AllStates: Story = {
     </div>
   ),
 };
+
+// =============================================================================
+// RTL
+// =============================================================================
 
 export const RTL: Story = {
   name: 'RTL',

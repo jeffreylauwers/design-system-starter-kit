@@ -59,7 +59,15 @@ const meta: Meta<typeof FormFieldStatus> = {
 export default meta;
 type Story = StoryObj<typeof FormFieldStatus>;
 
+// =============================================================================
+// DEFAULT
+// =============================================================================
+
 export const Default: Story = {};
+
+// =============================================================================
+// VARIANTEN
+// =============================================================================
 
 export const Positive: Story = {
   args: { variant: 'positive', children: TEKST },
@@ -74,6 +82,10 @@ export const WithoutIcon: Story = {
   args: { showIcon: false, children: TEKST },
 };
 
+// =============================================================================
+// OVERZICHTSSTORIES
+// =============================================================================
+
 export const AllVariants: Story = {
   name: 'All variants',
   render: () => (
@@ -85,6 +97,10 @@ export const AllVariants: Story = {
   ),
 };
 
+// =============================================================================
+// TEKST VARIANTEN
+// =============================================================================
+
 export const ShortText: Story = {
   name: 'Short text',
   args: { children: WEINIG_TEKST },
@@ -94,6 +110,10 @@ export const LongText: Story = {
   name: 'Long text',
   args: { children: VEEL_TEKST },
 };
+
+// =============================================================================
+// RTL
+// =============================================================================
 
 export const RTL: Story = {
   name: 'RTL',

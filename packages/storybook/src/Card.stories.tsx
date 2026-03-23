@@ -13,6 +13,12 @@ import {
   ButtonLink,
 } from '@dsn/components-react';
 import DocsPage from './Card.docs.mdx';
+import {
+  WEINIG_TEKST,
+  VEEL_TEKST,
+  VEEL_TEKST_AR,
+  rtlDecorator,
+} from './story-helpers';
 
 const PLACEHOLDER_16_9 = 'https://picsum.photos/seed/card1/800/450';
 const PLACEHOLDER_16_9_B = 'https://picsum.photos/seed/card2/800/450';
@@ -59,7 +65,7 @@ export default meta;
 type Story = StoryObj<typeof Card>;
 
 // =============================================================================
-// Default — card met afbeelding en stretched link
+// DEFAULT
 // =============================================================================
 
 export const Default: Story = {
@@ -94,11 +100,11 @@ export const Default: Story = {
 };
 
 // =============================================================================
-// ZonderAfbeelding — placeholder actief
+// VARIANTEN
 // =============================================================================
 
-export const ZonderAfbeelding: Story = {
-  name: 'Zonder afbeelding (placeholder)',
+export const WithImagePlaceholder: Story = {
+  name: 'With image placeholder',
   render: () => (
     <div style={{ maxWidth: '22rem' }}>
       <Card href="/artikel/slug">
@@ -120,12 +126,8 @@ export const ZonderAfbeelding: Story = {
   ),
 };
 
-// =============================================================================
-// ZonderHeader — geen afbeelding en geen placeholder
-// =============================================================================
-
-export const ZonderHeader: Story = {
-  name: 'Zonder afbeelding',
+export const WithoutHeader: Story = {
+  name: 'Without header',
   render: () => (
     <div style={{ maxWidth: '22rem' }}>
       <Card href="/artikel/slug">
@@ -145,54 +147,8 @@ export const ZonderHeader: Story = {
   ),
 };
 
-// =============================================================================
-// MetLangeContent — lange tekst om overflow en hoogte te testen
-// =============================================================================
-
-export const MetLangeContent: Story = {
-  name: 'Met lange content',
-  render: () => (
-    <div style={{ maxWidth: '22rem' }}>
-      <Card href="/artikel/slug">
-        <CardHeader>
-          <Image
-            src={PLACEHOLDER_16_9}
-            alt=""
-            width={800}
-            height={450}
-            ratio="16:9"
-          />
-        </CardHeader>
-        <CardBody>
-          <CardHeading level={2}>
-            Artikel met een langere titel die over meerdere regels loopt
-          </CardHeading>
-          <Paragraph>
-            Dit artikel heeft bewust meer tekstinhoud om te laten zien hoe de
-            card omgaat met langere beschrijvingen. De footer blijft altijd
-            onderaan uitlijnen dankzij de flex-layout van de card.
-          </Paragraph>
-          <Paragraph>
-            Een tweede alinea demonstreert dat de card-body onbeperkt kan
-            groeien terwijl de heading en footer op de juiste positie blijven.
-          </Paragraph>
-        </CardBody>
-        <CardFooter>
-          <Link href="/artikel/slug" aria-hidden tabIndex={-1}>
-            Lees meer
-          </Link>
-        </CardFooter>
-      </Card>
-    </div>
-  ),
-};
-
-// =============================================================================
-// MetStatusBadge — children slot in body
-// =============================================================================
-
-export const MetStatusBadge: Story = {
-  name: 'Met StatusBadge (children slot)',
+export const WithStatusBadge: Story = {
+  name: 'With StatusBadge',
   render: () => (
     <div style={{ maxWidth: '22rem' }}>
       <Card href="/artikel/slug">
@@ -223,12 +179,8 @@ export const MetStatusBadge: Story = {
   ),
 };
 
-// =============================================================================
-// MetButtonLink — ButtonLink in footer
-// =============================================================================
-
-export const MetButtonLink: Story = {
-  name: 'Met ButtonLink in footer',
+export const WithButtonLink: Story = {
+  name: 'With ButtonLink in footer',
   render: () => (
     <div style={{ maxWidth: '22rem' }}>
       <Card href="/artikel/slug">
@@ -263,12 +215,8 @@ export const MetButtonLink: Story = {
   ),
 };
 
-// =============================================================================
-// AndereFooterBestemming — footer-link naar andere URL (wél toegankelijk)
-// =============================================================================
-
-export const AndereFooterBestemming: Story = {
-  name: 'Footer naar andere bestemming',
+export const WithAlternativeFooter: Story = {
+  name: 'With alternative footer destination',
   render: () => (
     <div style={{ maxWidth: '22rem' }}>
       <Card href="/artikel/slug">
@@ -297,11 +245,11 @@ export const AndereFooterBestemming: Story = {
 };
 
 // =============================================================================
-// CardGroep — gelijke hoogte, footer onderaan uitlijnd
+// OVERZICHTSSTORIES
 // =============================================================================
 
-export const CardGroep: Story = {
-  name: 'CardGroup (gelijke hoogte)',
+export const CardGroupStory: Story = {
+  name: 'CardGroup (equal height)',
   render: () => (
     <CardGroup>
       <li>
@@ -364,13 +312,77 @@ export const CardGroep: Story = {
 };
 
 // =============================================================================
-// RTL — rechts-naar-links
+// TEKST VARIANTEN
+// =============================================================================
+
+export const ShortText: Story = {
+  name: 'Short text',
+  render: () => (
+    <div style={{ maxWidth: '22rem' }}>
+      <Card href="/artikel/slug">
+        <CardHeader>
+          <Image
+            src={PLACEHOLDER_16_9}
+            alt=""
+            width={800}
+            height={450}
+            ratio="16:9"
+          />
+        </CardHeader>
+        <CardBody>
+          <CardHeading level={2}>{WEINIG_TEKST}</CardHeading>
+          <Paragraph>{WEINIG_TEKST}</Paragraph>
+        </CardBody>
+        <CardFooter>
+          <Link href="/artikel/slug" aria-hidden tabIndex={-1}>
+            Lees meer
+          </Link>
+        </CardFooter>
+      </Card>
+    </div>
+  ),
+};
+
+export const LongText: Story = {
+  name: 'Long text',
+  render: () => (
+    <div style={{ maxWidth: '22rem' }}>
+      <Card href="/artikel/slug">
+        <CardHeader>
+          <Image
+            src={PLACEHOLDER_16_9}
+            alt=""
+            width={800}
+            height={450}
+            ratio="16:9"
+          />
+        </CardHeader>
+        <CardBody>
+          <CardHeading level={2}>
+            Artikel met een langere titel die over meerdere regels loopt
+          </CardHeading>
+          <Paragraph>{VEEL_TEKST}</Paragraph>
+          <Paragraph>{VEEL_TEKST}</Paragraph>
+        </CardBody>
+        <CardFooter>
+          <Link href="/artikel/slug" aria-hidden tabIndex={-1}>
+            Lees meer
+          </Link>
+        </CardFooter>
+      </Card>
+    </div>
+  ),
+};
+
+// =============================================================================
+// RTL
 // =============================================================================
 
 export const RTL: Story = {
-  name: 'RTL (rechts-naar-links)',
+  name: 'RTL',
+  decorators: [rtlDecorator],
   render: () => (
-    <div dir="rtl" style={{ maxWidth: '22rem' }}>
+    <div style={{ maxWidth: '22rem' }}>
       <Card href="/artikel/slug">
         <CardHeader>
           <Image
@@ -384,6 +396,35 @@ export const RTL: Story = {
         <CardBody>
           <CardHeading level={2}>عنوان المقال</CardHeading>
           <Paragraph>وصف مختصر للمقال يوفر سياقاً إضافياً.</Paragraph>
+        </CardBody>
+        <CardFooter>
+          <Link href="/artikel/slug" aria-hidden tabIndex={-1}>
+            اقرأ المزيد
+          </Link>
+        </CardFooter>
+      </Card>
+    </div>
+  ),
+};
+
+export const RTLLongText: Story = {
+  name: 'RTL long text',
+  decorators: [rtlDecorator],
+  render: () => (
+    <div style={{ maxWidth: '22rem' }}>
+      <Card href="/artikel/slug">
+        <CardHeader>
+          <Image
+            src={PLACEHOLDER_16_9}
+            alt=""
+            width={800}
+            height={450}
+            ratio="16:9"
+          />
+        </CardHeader>
+        <CardBody>
+          <CardHeading level={2}>{VEEL_TEKST_AR}</CardHeading>
+          <Paragraph>{VEEL_TEKST_AR}</Paragraph>
         </CardBody>
         <CardFooter>
           <Link href="/artikel/slug" aria-hidden tabIndex={-1}>
