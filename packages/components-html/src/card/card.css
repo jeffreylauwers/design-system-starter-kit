@@ -16,10 +16,16 @@
   box-shadow: var(--dsn-card-box-shadow);
   overflow: hidden;
   margin-block-start: 0;
+  transition:
+    background-color var(--dsn-transition-duration-normal)
+      var(--dsn-transition-easing-default),
+    box-shadow var(--dsn-transition-duration-normal)
+      var(--dsn-transition-easing-default);
 }
 
-/* Hover: verhoogde schaduw benadrukt interactiviteit */
+/* Hover: verhoogde achtergrond en schaduw benadrukken interactiviteit */
 .dsn-card:has(.dsn-card-heading__link:hover) {
+  background-color: var(--dsn-card-background-hover);
   box-shadow: var(--dsn-card-box-shadow-hover);
 }
 

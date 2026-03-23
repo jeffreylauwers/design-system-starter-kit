@@ -2,9 +2,14 @@
   "dsn": {
     "card": {
       "background": {
+        "value": "{dsn.color.neutral.bg-document}",
+        "type": "color",
+        "comment": "Card achtergrondkleur standaard — zelfde als paginaachtergrond"
+      },
+      "background-hover": {
         "value": "{dsn.color.neutral.bg-elevated}",
         "type": "color",
-        "comment": "Card achtergrondkleur — bg-elevated zorgt voor elevatie-effect in dark mode"
+        "comment": "Card achtergrondkleur bij hover — bg-elevated benadrukt elevatie"
       },
       "border-radius": {
         "value": "{dsn.border.radius.md}",
@@ -22,9 +27,9 @@
         "comment": "Randkleur van de card"
       },
       "box-shadow": {
-        "value": "{dsn.box-shadow.sm}",
+        "value": "none",
         "type": "shadow",
-        "comment": "Schaduw standaard — kleine elevatie (cards)"
+        "comment": "Schaduw standaard — geen schaduw by default"
       },
       "box-shadow-hover": {
         "value": "{dsn.box-shadow.md}",
