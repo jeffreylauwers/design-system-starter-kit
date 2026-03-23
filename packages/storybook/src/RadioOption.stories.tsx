@@ -61,7 +61,15 @@ const meta: Meta<typeof RadioOption> = {
 export default meta;
 type Story = StoryObj<typeof RadioOption>;
 
+// =============================================================================
+// DEFAULT
+// =============================================================================
+
 export const Default: Story = {};
+
+// =============================================================================
+// VARIANTEN
+// =============================================================================
 
 export const Checked: Story = {
   args: { checked: true, readOnly: true, label: TEKST },
@@ -80,15 +88,9 @@ export const Invalid: Story = {
   args: { invalid: true, label: TEKST },
 };
 
-export const ShortText: Story = {
-  name: 'Short text',
-  args: { label: WEINIG_TEKST },
-};
-
-export const LongText: Story = {
-  name: 'Long text',
-  args: { label: VEEL_TEKST },
-};
+// =============================================================================
+// OVERZICHTSSTORIES
+// =============================================================================
 
 export const AllStates: Story = {
   name: 'All states',
@@ -137,6 +139,24 @@ export const AllStates: Story = {
     </div>
   ),
 };
+
+// =============================================================================
+// TEKST VARIANTEN
+// =============================================================================
+
+export const ShortText: Story = {
+  name: 'Short text',
+  args: { label: WEINIG_TEKST },
+};
+
+export const LongText: Story = {
+  name: 'Long text',
+  args: { label: VEEL_TEKST },
+};
+
+// =============================================================================
+// RTL
+// =============================================================================
 
 export const RTL: Story = {
   name: 'RTL',

@@ -10,6 +10,7 @@ import type { IconName } from '@dsn/components-react/icon-registry.generated';
 import DocsPage from './Note.docs.mdx';
 import {
   TEKST,
+  WEINIG_TEKST,
   VEEL_TEKST,
   TEKST_AR,
   VEEL_TEKST_AR,
@@ -160,7 +161,15 @@ const meta: Meta<typeof Note> = {
 export default meta;
 type Story = StoryObj<typeof Note>;
 
+// =============================================================================
+// DEFAULT
+// =============================================================================
+
 export const Default: Story = {};
+
+// =============================================================================
+// VARIANTEN
+// =============================================================================
 
 export const Info: Story = {
   args: {
@@ -192,29 +201,6 @@ export const Warning: Story = {
     heading: 'Waarschuwing',
     iconStart: 'alert-triangle',
   },
-};
-
-export const AllStates: Story = {
-  name: 'All states',
-  render: () => (
-    <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
-      <Note variant="neutral" heading="Neutral">
-        <Paragraph>{TEKST}</Paragraph>
-      </Note>
-      <Note variant="info" heading="Info">
-        <Paragraph>{TEKST}</Paragraph>
-      </Note>
-      <Note variant="positive" heading="Positive">
-        <Paragraph>{TEKST}</Paragraph>
-      </Note>
-      <Note variant="negative" heading="Negative">
-        <Paragraph>{TEKST}</Paragraph>
-      </Note>
-      <Note variant="warning" heading="Warning">
-        <Paragraph>{TEKST}</Paragraph>
-      </Note>
-    </div>
-  ),
 };
 
 export const WithoutHeading: Story = {
@@ -256,6 +242,46 @@ export const AsNav: Story = {
   ),
 };
 
+// =============================================================================
+// OVERZICHTSSTORIES
+// =============================================================================
+
+export const AllVariants: Story = {
+  name: 'All variants',
+  render: () => (
+    <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
+      <Note variant="neutral" heading="Neutral">
+        <Paragraph>{TEKST}</Paragraph>
+      </Note>
+      <Note variant="info" heading="Info">
+        <Paragraph>{TEKST}</Paragraph>
+      </Note>
+      <Note variant="positive" heading="Positive">
+        <Paragraph>{TEKST}</Paragraph>
+      </Note>
+      <Note variant="negative" heading="Negative">
+        <Paragraph>{TEKST}</Paragraph>
+      </Note>
+      <Note variant="warning" heading="Warning">
+        <Paragraph>{TEKST}</Paragraph>
+      </Note>
+    </div>
+  ),
+};
+
+// =============================================================================
+// TEKST VARIANTEN
+// =============================================================================
+
+export const ShortText: Story = {
+  name: 'Short text',
+  render: () => (
+    <Note heading="Heading">
+      <Paragraph>{WEINIG_TEKST}</Paragraph>
+    </Note>
+  ),
+};
+
 export const LongText: Story = {
   name: 'Long text',
   render: () => (
@@ -264,6 +290,10 @@ export const LongText: Story = {
     </Note>
   ),
 };
+
+// =============================================================================
+// RTL
+// =============================================================================
 
 export const RTL: Story = {
   name: 'RTL',

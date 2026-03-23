@@ -3,6 +3,7 @@ import { Details, Paragraph, UnorderedList } from '@dsn/components-react';
 import DocsPage from './Details.docs.mdx';
 import {
   TEKST,
+  WEINIG_TEKST,
   VEEL_TEKST,
   TEKST_AR,
   VEEL_TEKST_AR,
@@ -47,7 +48,15 @@ const meta: Meta<typeof Details> = {
 export default meta;
 type Story = StoryObj<typeof Details>;
 
+// =============================================================================
+// DEFAULT
+// =============================================================================
+
 export const Default: Story = {};
+
+// =============================================================================
+// VARIANTEN
+// =============================================================================
 
 export const Open: Story = {
   name: 'Open (defaultOpen)',
@@ -69,14 +78,9 @@ export const WithList: Story = {
   ),
 };
 
-export const WithLongContent: Story = {
-  name: 'With long content',
-  render: () => (
-    <Details summary="Uitgebreide toelichting" defaultOpen>
-      <Paragraph>{VEEL_TEKST}</Paragraph>
-    </Details>
-  ),
-};
+// =============================================================================
+// OVERZICHTSSTORIES
+// =============================================================================
 
 export const Multiple: Story = {
   name: 'Multiple',
@@ -98,6 +102,31 @@ export const Multiple: Story = {
     </div>
   ),
 };
+
+// =============================================================================
+// TEKST VARIANTEN
+// =============================================================================
+
+export const ShortText: Story = {
+  name: 'Short text',
+  args: {
+    summary: WEINIG_TEKST,
+    children: <Paragraph>{WEINIG_TEKST}</Paragraph>,
+  },
+};
+
+export const LongText: Story = {
+  name: 'Long text',
+  render: () => (
+    <Details summary="Uitgebreide toelichting" defaultOpen>
+      <Paragraph>{VEEL_TEKST}</Paragraph>
+    </Details>
+  ),
+};
+
+// =============================================================================
+// RTL
+// =============================================================================
 
 export const RTL: Story = {
   name: 'RTL',

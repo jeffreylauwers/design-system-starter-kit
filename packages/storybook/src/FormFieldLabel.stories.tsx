@@ -40,7 +40,15 @@ const meta: Meta<typeof FormFieldLabel> = {
 export default meta;
 type Story = StoryObj<typeof FormFieldLabel>;
 
+// =============================================================================
+// DEFAULT
+// =============================================================================
+
 export const Default: Story = {};
+
+// =============================================================================
+// VARIANTEN
+// =============================================================================
 
 export const WithOptionalSuffix: Story = {
   name: 'With optional suffix',
@@ -51,6 +59,10 @@ export const WithRequiredSuffix: Story = {
   name: 'With required suffix',
   args: { children: TEKST, suffix: '(verplicht)' },
 };
+
+// =============================================================================
+// OVERZICHTSSTORIES
+// =============================================================================
 
 export const AllVariants: Story = {
   name: 'All variants',
@@ -67,6 +79,10 @@ export const AllVariants: Story = {
   ),
 };
 
+// =============================================================================
+// TEKST VARIANTEN
+// =============================================================================
+
 export const ShortText: Story = {
   name: 'Short text',
   args: { children: WEINIG_TEKST },
@@ -76,6 +92,10 @@ export const LongText: Story = {
   name: 'Long text',
   args: { children: VEEL_TEKST },
 };
+
+// =============================================================================
+// RTL
+// =============================================================================
 
 export const RTL: Story = {
   name: 'RTL',

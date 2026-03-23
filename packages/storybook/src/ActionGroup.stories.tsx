@@ -45,7 +45,15 @@ const meta: Meta<typeof ActionGroup> = {
 export default meta;
 type Story = StoryObj<typeof ActionGroup>;
 
+// =============================================================================
+// DEFAULT
+// =============================================================================
+
 export const Default: Story = {};
+
+// =============================================================================
+// VARIANTEN
+// =============================================================================
 
 export const WithLink: Story = {
   name: 'With Link',
@@ -84,6 +92,10 @@ export const SingleAction: Story = {
     children: <Button variant="strong">Verstuur aanvraag</Button>,
   },
 };
+
+// =============================================================================
+// TEKST VARIANTEN
+// =============================================================================
 
 export const ShortText: Story = {
   name: 'Short text',
@@ -126,15 +138,17 @@ export const WithLinkButton: Story = {
   },
 };
 
+// =============================================================================
+// RTL
+// =============================================================================
+
 export const RTL: Story = {
   name: 'RTL',
   decorators: [rtlDecorator],
   render: () => (
-    <div dir="rtl">
-      <ActionGroup>
-        <Button variant="strong">حفظ</Button>
-        <Button variant="subtle">إلغاء</Button>
-      </ActionGroup>
-    </div>
+    <ActionGroup>
+      <Button variant="strong">حفظ</Button>
+      <Button variant="subtle">إلغاء</Button>
+    </ActionGroup>
   ),
 };

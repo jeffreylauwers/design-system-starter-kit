@@ -3,6 +3,7 @@ import { FormField, TextInput, TextArea } from '@dsn/components-react';
 import DocsPage from './FormField.docs.mdx';
 import {
   TEKST,
+  WEINIG_TEKST,
   VEEL_TEKST,
   TEKST_AR,
   VEEL_TEKST_AR,
@@ -66,6 +67,10 @@ const meta: Meta<typeof FormField> = {
 export default meta;
 type Story = StoryObj<typeof FormField>;
 
+// =============================================================================
+// DEFAULT
+// =============================================================================
+
 export const Default: Story = {
   args: {
     label: TEKST,
@@ -77,6 +82,10 @@ export const Default: Story = {
     </FormField>
   ),
 };
+
+// =============================================================================
+// VARIANTEN
+// =============================================================================
 
 export const WithDescription: Story = {
   name: 'With description',
@@ -104,6 +113,10 @@ export const WithStatus: Story = {
     </FormField>
   ),
 };
+
+// =============================================================================
+// OVERZICHTSSTORIES
+// =============================================================================
 
 export const AllStates: Story = {
   name: 'All states',
@@ -165,6 +178,19 @@ export const AllStates: Story = {
   ),
 };
 
+// =============================================================================
+// TEKST VARIANTEN
+// =============================================================================
+
+export const ShortText: Story = {
+  name: 'Short text',
+  render: (args) => (
+    <FormField {...args} label={WEINIG_TEKST} htmlFor="st-1">
+      <TextInput id="st-1" defaultValue={WEINIG_TEKST} />
+    </FormField>
+  ),
+};
+
 export const LongText: Story = {
   name: 'Long text',
   render: (args) => (
@@ -178,6 +204,10 @@ export const LongText: Story = {
     </FormField>
   ),
 };
+
+// =============================================================================
+// RTL
+// =============================================================================
 
 export const RTL: Story = {
   name: 'RTL',
