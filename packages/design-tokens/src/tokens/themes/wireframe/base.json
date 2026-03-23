@@ -3,8 +3,8 @@
     "text": {
       "font-family": {
         "default": {
-          "value": "'Comic Neue', 'Comic Sans MS', 'Comic Sans', cursive",
-          "comment": "Comic Neue (Google Fonts) with Comic Sans MS fallback for wireframe"
+          "value": "'Comic Sans MS', 'Comic Sans', 'Comic Neue', cursive",
+          "comment": "Comic Sans MS as primary font with Comic Neue fallback for wireframe"
         },
         "monospace": {
           "value": "ui-monospace, SFMono-Regular, Consolas, 'Liberation Mono', Menlo, monospace",
@@ -54,8 +54,8 @@
     },
     "heading": {
       "font-family": {
-        "value": "'Comic Neue', 'Comic Sans MS', 'Comic Sans', cursive",
-        "comment": "Comic Neue (Google Fonts) with Comic Sans MS fallback for headings"
+        "value": "'Comic Sans MS', 'Comic Sans', 'Comic Neue', cursive",
+        "comment": "Comic Sans MS as primary font with Comic Neue fallback for headings"
       },
       "font-weight": {
         "value": "600",
