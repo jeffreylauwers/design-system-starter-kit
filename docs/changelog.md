@@ -6,6 +6,34 @@ All notable changes to this project are documented in this file.
 
 ---
 
+## Version 5.13.2 (March 23, 2026)
+
+### Storybook story-structuur — consistentie (PR #111)
+
+#### Changed
+
+- Vaste sectie-comments toegevoegd aan alle 45 story-bestanden: `// DEFAULT`, `// VARIANTEN`, `// OVERZICHTSSTORIES`, `// TEKST VARIANTEN`, `// RTL`
+- `AllStates` → `AllVariants` bij Alert, Note en StatusBadge — deze componenten tonen visuele kleurvarianten, geen interactieve states
+- Lege `// HIGH CONTRAST` secties verwijderd uit alle bestanden (niet meer in gebruik)
+- Lege `// LARGE TEXT` secties verwijderd (Select, NumberInput, PasswordInput, DateInput, TimeInput, DateInputGroup)
+- Nederlandse story-namen vertaald naar Engels (BreadcrumbNavigation, Table)
+- ShortText/LongText stories toegevoegd aan CheckboxGroup, RadioGroup, Details, FormField en FormFieldset
+- RTL story toegevoegd aan Table
+- Card story-namen vertaald naar Engelse namen
+- `/new-component-issue` command bijgewerkt met story-structuurrichtlijnen
+
+---
+
+## Version 5.13.1 (March 23, 2026)
+
+### Wireframe font-stack correctie (PR #110)
+
+#### Fixed
+
+- **Wireframe font-stack** — Comic Sans MS is nu het primaire font (standaard beschikbaar op de meeste desktops); Comic Neue (via Google Fonts) dient als fallback voor omgevingen zonder Comic Sans (bijv. Android). Voorheen stond de volgorde omgekeerd.
+
+---
+
 ## Version 5.13.0 (March 23, 2026)
 
 ### Card component (issue #107)
