@@ -84,12 +84,12 @@
           "comment": "Kleur van de card heading"
         },
         "font-size": {
-          "value": "{dsn.text.xl.font-size}",
+          "value": "{dsn.text.font-size.xl}",
           "type": "fontSize",
           "comment": "Tekstgrootte van de card heading (heading-3 niveau)"
         },
         "line-height": {
-          "value": "{dsn.text.xl.line-height}",
+          "value": "{dsn.text.line-height.xl}",
           "type": "lineHeight",
           "comment": "Regelafstand van de card heading"
         },
