@@ -55,8 +55,17 @@
 /* Card body — groeit zodat footer altijd onderaan blijft */
 .dsn-card__body {
   flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: var(--dsn-card-body-row-gap);
   padding-block: var(--dsn-card-body-padding-block);
   padding-inline: var(--dsn-card-body-padding-inline);
+}
+
+/* Inline-elementen in de body (badges, tags) nemen hun eigen breedte — niet full-width */
+.dsn-card__body > .dsn-status-badge,
+.dsn-card__body > .dsn-dot-badge {
+  align-self: flex-start;
 }
 
 /* Card footer — uitgelijnde onderkant */
@@ -108,7 +117,7 @@
   color: var(--dsn-card-heading-color);
   text-wrap: balance;
   margin-block-start: 0;
-  margin-block-end: var(--dsn-card-heading-margin-block-end);
+  margin-block-end: 0;
 }
 
 /* Link in de heading — erft kleur en maakt de card klikbaar via stretched link */

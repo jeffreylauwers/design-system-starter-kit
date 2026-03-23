@@ -46,6 +46,11 @@
           "value": "{dsn.space.inline.xl}",
           "type": "spacing",
           "comment": "Horizontale padding van de card body (16px)"
+        },
+        "row-gap": {
+          "value": "{dsn.space.block.lg}",
+          "type": "spacing",
+          "comment": "Verticale ruimte tussen directe kinderen van de card body (12px)"
         }
       },
       "footer": {
@@ -97,11 +102,6 @@
           "value": "{dsn.text.line-height.lg}",
           "type": "lineHeight",
           "comment": "Regelafstand van de card heading"
-        },
-        "margin-block-end": {
-          "value": "{dsn.space.block.lg}",
-          "type": "spacing",
-          "comment": "Afstand onder de card heading (12px)"
         }
       },
       "group": {
