@@ -27,20 +27,11 @@ const meta: Meta<typeof Card> = {
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
       htmlTemplate: (args: any) => {
         const href = args.href ?? '/artikel/slug';
-        return `<article class="dsn-card">
-  <div class="dsn-card__header">
-    <figure class="dsn-image dsn-image--ratio-16-9" aria-hidden="true">
-      <img
-        class="dsn-image__img"
-        src="${PLACEHOLDER_16_9}"
-        alt=""
-        width="800"
-        height="450"
-        loading="lazy"
-        decoding="async"
-      />
-    </figure>
-  </div>
+        const header =
+          args.showImage !== false
+            ? `\n  <div class="dsn-card__header">\n    <figure class="dsn-image dsn-image--ratio-16-9" aria-hidden="true">\n      <img\n        class="dsn-image__img"\n        src="${PLACEHOLDER_16_9}"\n        alt=""\n        width="800"\n        height="450"\n        loading="lazy"\n        decoding="async"\n      />\n    </figure>\n  </div>`
+            : '';
+        return `<article class="dsn-card">${header}
   <div class="dsn-card__body">
     <h2 class="dsn-card-heading">
       <a href="${href}" class="dsn-card-heading__link">Artikeltitel</a>
@@ -56,9 +47,11 @@ const meta: Meta<typeof Card> = {
   },
   argTypes: {
     href: { control: 'text' },
+    showImage: { control: 'boolean' },
   },
   args: {
     href: '/artikel/slug',
+    showImage: true,
   },
 };
 
@@ -73,15 +66,17 @@ export const Default: Story = {
   render: (args) => (
     <div style={{ maxWidth: '22rem' }}>
       <Card href={args.href}>
-        <CardHeader>
-          <Image
-            src={PLACEHOLDER_16_9}
-            alt=""
-            width={800}
-            height={450}
-            ratio="16:9"
-          />
-        </CardHeader>
+        {args.showImage && (
+          <CardHeader>
+            <Image
+              src={PLACEHOLDER_16_9}
+              alt=""
+              width={800}
+              height={450}
+              ratio="16:9"
+            />
+          </CardHeader>
+        )}
         <CardBody>
           <CardHeading level={2}>Artikeltitel</CardHeading>
           <Paragraph>
@@ -89,7 +84,7 @@ export const Default: Story = {
           </Paragraph>
         </CardBody>
         <CardFooter>
-          <Link href="/artikel/slug" aria-hidden tabIndex={-1}>
+          <Link href={args.href} aria-hidden tabIndex={-1}>
             Lees meer
           </Link>
         </CardFooter>
