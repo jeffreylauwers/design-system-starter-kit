@@ -302,7 +302,9 @@
 
 /* Disabled State */
 .dsn-button:disabled {
-  opacity: 0.5;
+  background-color: var(--dsn-button-disabled-background-color);
+  color: var(--dsn-button-disabled-color);
+  border-color: var(--dsn-button-disabled-border-color);
   cursor: not-allowed;
 }
 

@@ -125,6 +125,9 @@ De Button component biedt een consistente, toegankelijke manier om acties te tri
 | `--dsn-button-subtle-positive-hover-background-color`   | Achtergrondkleur subtle-positive hover          |
 | `--dsn-button-subtle-positive-hover-border-color`       | Borderkleur subtle-positive hover               |
 | `--dsn-button-subtle-positive-hover-color`              | Tekstkleur subtle-positive hover                |
+| `--dsn-button-disabled-background-color`                | Achtergrondkleur disabled state (neutral scale) |
+| `--dsn-button-disabled-color`                           | Tekstkleur disabled state (neutral scale)       |
+| `--dsn-button-disabled-border-color`                    | Borderkleur disabled state (neutral scale)      |
 | `--dsn-button-size-default-font-size`                   | Font size default variant                       |
 | `--dsn-button-size-default-gap`                         | Ruimte tussen icoon en tekst default variant    |
 | `--dsn-button-size-default-icon-only-padding`           | Padding voor icon-only default variant          |
