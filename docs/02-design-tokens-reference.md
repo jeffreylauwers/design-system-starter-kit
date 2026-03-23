@@ -47,7 +47,7 @@ Complete reference for all design tokens in the Design System Starter Kit.
   "dsn": {
     "text": {
       "font-family": {
-        "default": "'Comic Sans MS', 'Comic Sans', cursive",
+        "default": "'Comic Sans MS', 'Comic Sans', 'Comic Neue', cursive",
         "monospace": "ui-monospace, SFMono-Regular, 'SF Mono', Menlo, Monaco, Consolas, monospace"
       }
     }
