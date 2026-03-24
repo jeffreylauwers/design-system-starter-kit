@@ -15,7 +15,9 @@
    pointer-events: none blokkeert ook hover/active (Button's :not(:disabled) matcht
    altijd op <a>, dus we kunnen niet op die guards vertrouwen). */
 .dsn-button-link[aria-disabled='true'] {
-  opacity: 0.5;
+  background-color: var(--dsn-button-disabled-background-color);
+  color: var(--dsn-button-disabled-color);
+  border-color: var(--dsn-button-disabled-border-color);
   cursor: not-allowed;
   pointer-events: none;
 }

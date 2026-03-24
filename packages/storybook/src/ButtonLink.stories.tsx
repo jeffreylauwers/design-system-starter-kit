@@ -175,6 +175,10 @@ export const Default: Story = {};
 // VARIANTEN
 // =============================================================================
 
+export const Strong: Story = {
+  args: { variant: 'strong' },
+};
+
 export const DefaultVariant: Story = {
   name: 'Default variant',
   args: { variant: 'default' },
@@ -182,6 +186,14 @@ export const DefaultVariant: Story = {
 
 export const Subtle: Story = {
   args: { variant: 'subtle' },
+};
+
+export const Small: Story = {
+  args: { size: 'small' },
+};
+
+export const Large: Story = {
+  args: { size: 'large' },
 };
 
 export const Disabled: Story = {
@@ -192,23 +204,197 @@ export const External: Story = {
   args: { href: 'https://example.com', external: true },
 };
 
+export const FullWidth: Story = {
+  args: { fullWidth: true },
+};
+
+export const NegativeSentiment: Story = {
+  name: 'Negative sentiment',
+  args: { variant: 'strong-negative' },
+};
+
+export const PositiveSentiment: Story = {
+  name: 'Positive sentiment',
+  args: { variant: 'strong-positive' },
+};
+
 export const WithIconStart: Story = {
   name: 'With icon start',
-  args: { iconStart: <Icon name="arrow-left" aria-hidden /> },
+  render: () => (
+    <div
+      style={{
+        display: 'flex',
+        gap: '0.5rem',
+        alignItems: 'center',
+        flexWrap: 'wrap',
+      }}
+    >
+      <ButtonLink
+        href="/"
+        variant="strong"
+        iconStart={<Icon name="check" aria-hidden />}
+      >
+        {TEKST}
+      </ButtonLink>
+      <ButtonLink
+        href="/"
+        variant="default"
+        iconStart={<Icon name="edit" aria-hidden />}
+      >
+        {TEKST}
+      </ButtonLink>
+      <ButtonLink
+        href="/"
+        variant="subtle"
+        iconStart={<Icon name="download" aria-hidden />}
+      >
+        {TEKST}
+      </ButtonLink>
+      <ButtonLink
+        href="/"
+        variant="strong-negative"
+        iconStart={<Icon name="trash" aria-hidden />}
+      >
+        {TEKST}
+      </ButtonLink>
+    </div>
+  ),
 };
 
 export const WithIconEnd: Story = {
   name: 'With icon end',
-  args: { iconEnd: <Icon name="arrow-right" aria-hidden /> },
+  render: () => (
+    <div
+      style={{
+        display: 'flex',
+        gap: '0.5rem',
+        alignItems: 'center',
+        flexWrap: 'wrap',
+      }}
+    >
+      <ButtonLink
+        href="/"
+        variant="strong"
+        iconEnd={<Icon name="arrow-right" aria-hidden />}
+      >
+        {TEKST}
+      </ButtonLink>
+      <ButtonLink
+        href="/"
+        variant="default"
+        iconEnd={<Icon name="arrow-right" aria-hidden />}
+      >
+        {TEKST}
+      </ButtonLink>
+      <ButtonLink
+        href="/"
+        variant="subtle"
+        iconEnd={<Icon name="chevron-down" aria-hidden />}
+      >
+        {TEKST}
+      </ButtonLink>
+    </div>
+  ),
+};
+
+export const WithIconStartAndEnd: Story = {
+  name: 'With icon start and end',
+  render: () => (
+    <div
+      style={{
+        display: 'flex',
+        gap: '0.5rem',
+        alignItems: 'center',
+        flexWrap: 'wrap',
+      }}
+    >
+      <ButtonLink
+        href="/"
+        variant="strong"
+        iconStart={<Icon name="check" aria-hidden />}
+        iconEnd={<Icon name="arrow-right" aria-hidden />}
+      >
+        {TEKST}
+      </ButtonLink>
+      <ButtonLink
+        href="/"
+        variant="default"
+        iconStart={<Icon name="edit" aria-hidden />}
+        iconEnd={<Icon name="chevron-down" aria-hidden />}
+      >
+        {TEKST}
+      </ButtonLink>
+    </div>
+  ),
+};
+
+export const IconSizes: Story = {
+  name: 'Icon sizes per button size',
+  render: () => (
+    <div style={{ display: 'flex', gap: '0.5rem', alignItems: 'center' }}>
+      <ButtonLink
+        href="/"
+        size="small"
+        iconStart={<Icon name="check" aria-hidden />}
+      >
+        {TEKST}
+      </ButtonLink>
+      <ButtonLink
+        href="/"
+        size="default"
+        iconStart={<Icon name="check" aria-hidden />}
+      >
+        {TEKST}
+      </ButtonLink>
+      <ButtonLink
+        href="/"
+        size="large"
+        iconStart={<Icon name="check" aria-hidden />}
+      >
+        {TEKST}
+      </ButtonLink>
+    </div>
+  ),
 };
 
 export const IconOnly: Story = {
   name: 'Icon only',
-  args: {
-    iconOnly: true,
-    iconStart: <Icon name="download" aria-hidden />,
-    children: 'Download',
-  },
+  render: () => (
+    <div style={{ display: 'flex', gap: '0.5rem', alignItems: 'center' }}>
+      <ButtonLink
+        href="/"
+        variant="strong"
+        iconOnly
+        iconStart={<Icon name="plus" aria-hidden />}
+      >
+        Toevoegen
+      </ButtonLink>
+      <ButtonLink
+        href="/"
+        variant="default"
+        iconOnly
+        iconStart={<Icon name="settings" aria-hidden />}
+      >
+        Instellingen
+      </ButtonLink>
+      <ButtonLink
+        href="/"
+        variant="subtle"
+        iconOnly
+        iconStart={<Icon name="x" aria-hidden />}
+      >
+        Sluiten
+      </ButtonLink>
+      <ButtonLink
+        href="/"
+        variant="strong-negative"
+        iconOnly
+        iconStart={<Icon name="trash" aria-hidden />}
+      >
+        Verwijderen
+      </ButtonLink>
+    </div>
+  ),
 };
 
 // =============================================================================
@@ -227,12 +413,12 @@ export const AllVariants: Story = {
           flexWrap: 'wrap',
         }}
       >
-        <ButtonLink href="/">{TEKST} (strong)</ButtonLink>
+        <ButtonLink href="/">{TEKST}</ButtonLink>
         <ButtonLink href="/" variant="default">
-          {TEKST} (default)
+          {TEKST}
         </ButtonLink>
         <ButtonLink href="/" variant="subtle">
-          {TEKST} (subtle)
+          {TEKST}
         </ButtonLink>
       </div>
       <div
@@ -244,13 +430,13 @@ export const AllVariants: Story = {
         }}
       >
         <ButtonLink href="/" variant="strong-negative">
-          {TEKST} (strong-negative)
+          {TEKST}
         </ButtonLink>
         <ButtonLink href="/" variant="default-negative">
-          {TEKST} (default-negative)
+          {TEKST}
         </ButtonLink>
         <ButtonLink href="/" variant="subtle-negative">
-          {TEKST} (subtle-negative)
+          {TEKST}
         </ButtonLink>
       </div>
       <div
@@ -262,46 +448,52 @@ export const AllVariants: Story = {
         }}
       >
         <ButtonLink href="/" variant="strong-positive">
-          {TEKST} (strong-positive)
+          {TEKST}
         </ButtonLink>
         <ButtonLink href="/" variant="default-positive">
-          {TEKST} (default-positive)
+          {TEKST}
         </ButtonLink>
         <ButtonLink href="/" variant="subtle-positive">
-          {TEKST} (subtle-positive)
+          {TEKST}
         </ButtonLink>
       </div>
-      <div
-        style={{
-          display: 'flex',
-          gap: '0.5rem',
-          alignItems: 'center',
-          flexWrap: 'wrap',
-        }}
-      >
-        <ButtonLink href="/" size="small">
-          {TEKST} (small)
-        </ButtonLink>
-        <ButtonLink href="/">{TEKST} (default)</ButtonLink>
-        <ButtonLink href="/" size="large">
-          {TEKST} (large)
-        </ButtonLink>
-      </div>
-      <div
-        style={{
-          display: 'flex',
-          gap: '0.5rem',
-          alignItems: 'center',
-          flexWrap: 'wrap',
-        }}
-      >
-        <ButtonLink href="/" disabled>
-          {TEKST} (disabled)
-        </ButtonLink>
-        <ButtonLink href="https://example.com" external>
-          {TEKST} (external)
-        </ButtonLink>
-      </div>
+    </div>
+  ),
+};
+
+export const AllSizes: Story = {
+  name: 'All sizes',
+  render: () => (
+    <div style={{ display: 'flex', gap: '0.5rem', alignItems: 'center' }}>
+      <ButtonLink href="/" size="small">
+        {TEKST}
+      </ButtonLink>
+      <ButtonLink href="/">{TEKST}</ButtonLink>
+      <ButtonLink href="/" size="large">
+        {TEKST}
+      </ButtonLink>
+    </div>
+  ),
+};
+
+export const AllStates: Story = {
+  name: 'All states',
+  render: () => (
+    <div
+      style={{
+        display: 'flex',
+        gap: '0.5rem',
+        alignItems: 'center',
+        flexWrap: 'wrap',
+      }}
+    >
+      <ButtonLink href="/">{TEKST}</ButtonLink>
+      <ButtonLink href="/" disabled>
+        {TEKST}
+      </ButtonLink>
+      <ButtonLink href="https://example.com" external>
+        {TEKST}
+      </ButtonLink>
     </div>
   ),
 };

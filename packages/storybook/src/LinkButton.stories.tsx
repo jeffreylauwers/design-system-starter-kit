@@ -151,6 +151,14 @@ export const Default: Story = {};
 // VARIANTEN
 // =============================================================================
 
+export const Small: Story = {
+  args: { size: 'small' },
+};
+
+export const Large: Story = {
+  args: { size: 'large' },
+};
+
 export const Disabled: Story = {
   args: { disabled: true },
 };
@@ -169,42 +177,23 @@ export const WithIconEnd: Story = {
 // OVERZICHTSSTORIES
 // =============================================================================
 
+export const AllSizes: Story = {
+  name: 'All sizes',
+  render: () => (
+    <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
+      <LinkButton size="small">{TEKST}</LinkButton>
+      <LinkButton size="default">{TEKST}</LinkButton>
+      <LinkButton size="large">{TEKST}</LinkButton>
+    </div>
+  ),
+};
+
 export const AllStates: Story = {
   name: 'All states',
   render: () => (
-    <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
-      <div>
-        <h3 style={{ marginBlockEnd: '0.5rem' }}>States</h3>
-        <div
-          style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem' }}
-        >
-          <LinkButton>{TEKST}</LinkButton>
-          <LinkButton disabled>{TEKST} (disabled)</LinkButton>
-        </div>
-      </div>
-      <div>
-        <h3 style={{ marginBlockEnd: '0.5rem' }}>Met iconen</h3>
-        <div
-          style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem' }}
-        >
-          <LinkButton iconStart={<Icon name="arrow-left" aria-hidden />}>
-            {TEKST}
-          </LinkButton>
-          <LinkButton iconEnd={<Icon name="arrow-right" aria-hidden />}>
-            {TEKST}
-          </LinkButton>
-        </div>
-      </div>
-      <div>
-        <h3 style={{ marginBlockEnd: '0.5rem' }}>Alle maten</h3>
-        <div
-          style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem' }}
-        >
-          <LinkButton size="small">{TEKST} (small)</LinkButton>
-          <LinkButton size="default">{TEKST} (default)</LinkButton>
-          <LinkButton size="large">{TEKST} (large)</LinkButton>
-        </div>
-      </div>
+    <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
+      <LinkButton>{TEKST}</LinkButton>
+      <LinkButton disabled>{TEKST} (disabled)</LinkButton>
     </div>
   ),
 };
