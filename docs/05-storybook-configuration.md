@@ -287,6 +287,7 @@ Custom React components voor Storybook documentation, gelocaliseerd in `packages
 **Features:**
 
 - `dsn-body` class op de wrapper div — zorgt voor correcte typography tokens (`font-size`, `font-family`, `line-height`, `font-weight`) en achtergrondkleur (`--dsn-color-neutral-bg-document`); gedrag identiek aan de afzonderlijke story-canvassen
+- `sb-unstyled` class op de wrapper div — sluit de PreviewFrame en al zijn kind-elementen uit van Storybook's docs-pagina CSS-reset (`.css-qa4clq :where(div:not(.sb-unstyled, ...))`), die anders `font-size: 16px` zou opleggen en de token-waarde overschrijven
 - Subtiele border (`--dsn-color-neutral-border-subtle`) en border-radius bovenaan
 - Geen onderkant border — verbindt visueel met de CodeTabs eronder als één geheel
 
