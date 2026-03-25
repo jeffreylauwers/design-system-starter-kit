@@ -6,6 +6,23 @@ All notable changes to this project are documented in this file.
 
 ---
 
+## Version 5.14.0 (March 25, 2026)
+
+### Backdrop component (issue #113)
+
+#### Added
+
+- **Backdrop** component — vaste, volledig-scherm overlay die de achtergrondinhoud verhult achter een Modal Dialog of Drawer (PR #114)
+- `<div class="dsn-backdrop" aria-hidden="true">` — altijd decoratief, geen ARIA-rol
+- `dsn-backdrop--no-blur` modifier — schakelt `backdrop-filter: blur()` uit voor omgevingen zonder support
+- Component tokens: `--dsn-backdrop-background-color`, `--dsn-backdrop-opacity` (50%), `--dsn-backdrop-blur` (4px), `--dsn-backdrop-z-index` (400)
+- Kleurtoken `backdrop.background-color` in zowel `colors-light.json` als `colors-dark.json` — altijd donker ongeacht light/dark mode (zelfde patroon als box-shadow kleurtokens)
+- Semi-transparantie via `color-mix(in srgb, ...)` met expliciete fallback voor browsers zonder support
+- React `blur` prop (boolean, default `true`) — togglet `dsn-backdrop--no-blur` modifier
+- 8 React tests
+
+---
+
 ## Version 5.13.2 (March 23, 2026)
 
 ### Storybook story-structuur — consistentie (PR #111)

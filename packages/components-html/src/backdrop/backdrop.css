@@ -1,0 +1,29 @@
+/**
+ * Backdrop Component
+ * Vaste, volledig-scherm overlay die de achtergrondinhoud visueel verhult
+ * wanneer een modaal UI-element open is (Modal Dialog, Drawer).
+ *
+ * Altijd aria-hidden="true" — puur decoratief, geen interactieve rol.
+ * Conditioneel renderen vanuit de parent.
+ *
+ * Usage:
+ * <div class="dsn-backdrop" aria-hidden="true"></div>
+ */
+
+.dsn-backdrop {
+  position: fixed;
+  inset: 0;
+  /* Fallback voor omgevingen zonder color-mix() support (~6%) */
+  background-color: var(--dsn-backdrop-background-color);
+  background-color: color-mix(
+    in srgb,
+    var(--dsn-backdrop-background-color) var(--dsn-backdrop-opacity),
+    transparent
+  );
+  backdrop-filter: blur(var(--dsn-backdrop-blur));
+  z-index: var(--dsn-backdrop-z-index);
+}
+
+.dsn-backdrop--no-blur {
+  backdrop-filter: none;
+}
