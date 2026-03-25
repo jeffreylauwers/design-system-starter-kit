@@ -1,0 +1,19 @@
+{
+  "version": "0.0.1",
+  "configurations": [
+    {
+      "name": "storybook",
+      "runtimeExecutable": "pnpm",
+      "runtimeArgs": [
+        "--filter",
+        "storybook",
+        "exec",
+        "storybook",
+        "dev",
+        "-p",
+        "6007"
+      ],
+      "port": 6007
+    }
+  ]
+}
