@@ -6,6 +6,16 @@ All notable changes to this project are documented in this file.
 
 ---
 
+## Version 5.14.2 (March 25, 2026)
+
+### Storybook: PreviewFrame font-size override opgelost (sb-unstyled)
+
+#### Fixed
+
+- **PreviewFrame** — `sb-unstyled` class toegevoegd aan de wrapper div. Storybook's docs-pagina CSS bevat een regel `.css-qa4clq :where(div:not(.sb-anchor, .sb-unstyled, .sb-unstyled div))` die `font-size: 16px` instelde op alle `div`-elementen in de docs-pagina. Doordat deze selector dezelfde specificiteit had als `.dsn-body` en later geladen werd, overschreef die de token-waarde `var(--dsn-text-font-size-md)`. Componenten als Card en Details lieten daardoor een verkeerde font-size zien in het visuele voorbeeld op Docs-pagina's — ondanks dat losse stories wél correct werkten. De `sb-unstyled` class sluit de wrapper én al zijn kind-divs expliciet uit van die Storybook-reset.
+
+---
+
 ## Version 5.14.1 (March 25, 2026)
 
 ### Storybook: dsn-body op PreviewFrame visuele voorbeelden (PR #119)
