@@ -12,12 +12,12 @@ interface PreviewFrameProps {
 export function PreviewFrame({ children }: PreviewFrameProps) {
   return (
     <div
+      className="dsn-body"
       style={{
         border: '1px solid var(--dsn-color-neutral-border-subtle, #C4C4C4)',
         borderRadius: '4px 4px 0 0',
         borderBottom: 'none',
         padding: '32px 24px',
-        background: 'var(--dsn-color-neutral-bg-document, #FCFCFC)',
       }}
     >
       {children}
