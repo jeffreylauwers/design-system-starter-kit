@@ -1745,6 +1745,13 @@
           "comment": "Focus outline color for use on tinted/dark backgrounds - opposite of outline-color"
         }
       }
+    },
+    "backdrop": {
+      "background-color": {
+        "value": "{dsn.color.neutral-inverse.bg-document}",
+        "type": "color",
+        "comment": "Achtergrondkleur van de backdrop — altijd donker, ongeacht light mode. Gebruikt neutral-inverse.bg-document (#242424) zodat de overlay donker blijft in light mode."
+      }
     }
   }
 }

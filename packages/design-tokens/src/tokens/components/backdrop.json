@@ -1,0 +1,21 @@
+{
+  "dsn": {
+    "backdrop": {
+      "opacity": {
+        "value": "50%",
+        "type": "opacity",
+        "comment": "Bepaalt hoe doorzichtig de overlay is — gebruikt in color-mix()"
+      },
+      "blur": {
+        "value": "4px",
+        "type": "dimension",
+        "comment": "backdrop-filter: blur() op de overlay — valt gracefully weg zonder support"
+      },
+      "z-index": {
+        "value": "400",
+        "type": "number",
+        "comment": "Moet lager zijn dan Modal/Drawer z-index — afstemmen zodra die componenten gedefinieerd worden"
+      }
+    }
+  }
+}

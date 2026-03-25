@@ -1,0 +1,25 @@
+import { Meta, Story, Controls, Markdown } from '@storybook/blocks';
+import * as BackdropStories from './Backdrop.stories';
+import docs from './Backdrop.docs.md?raw';
+import { PreviewFrame, CodeTabs } from './components';
+
+export const [intro, rest] = docs.split('<!-- VOORBEELD -->');
+
+<Meta of={BackdropStories} />
+
+<Markdown>{intro}</Markdown>
+
+## Voorbeeld
+
+<PreviewFrame>
+  <Story of={BackdropStories.Default} />
+</PreviewFrame>
+
+<CodeTabs
+  of={BackdropStories.Default}
+  html={`<div class="dsn-backdrop" aria-hidden="true"></div>`}
+/>
+
+<Controls of={BackdropStories.Default} />
+
+<Markdown>{rest}</Markdown>

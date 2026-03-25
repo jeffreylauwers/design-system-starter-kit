@@ -761,7 +761,58 @@ Brengt consistente verticale ruimte aan tussen directe child-elementen via `flex
 
 ## Display & Feedback Components
 
-**Status:** Complete (HTML/CSS, React) — 7 components total
+**Status:** Complete (HTML/CSS, React) — 8 components total
+
+### Backdrop
+
+**Status:** Complete (HTML/CSS, React)
+
+**Location:** `packages/components-{html|react}/src/backdrop/` / `packages/components-react/src/Backdrop/`
+
+**Tokens:** `tokens/components/backdrop.json` + `tokens/themes/start/colors-light.json` / `colors-dark.json`
+
+**Features:**
+
+- `position: fixed; inset: 0` — bedekt het volledige viewport
+- Semi-transparante overlay via `color-mix(in srgb, var(--dsn-backdrop-background-color) var(--dsn-backdrop-opacity), transparent)` — kleur en transparantie via losse tokens
+- `backdrop-filter: blur()` — valt gracefully weg bij browsers zonder support (~6%); fallback via `dsn-backdrop--no-blur` modifier of `blur={false}` prop
+- Altijd `aria-hidden="true"` — puur decoratief, geen ARIA-rol
+- `background-color` per thema apart gedefinieerd zodat overlay altijd donker is, ongeacht light/dark mode (patroon identiek aan box-shadow kleurtokens)
+- `blur` prop (boolean, default `true`) — togglet `dsn-backdrop--no-blur` modifier
+
+**CSS klassen:**
+
+| Klasse                  | Element | Beschrijving                                                           |
+| ----------------------- | ------- | ---------------------------------------------------------------------- |
+| `dsn-backdrop`          | `<div>` | Vaste overlay over het volledige viewport; semi-transparante blur-laag |
+| `dsn-backdrop--no-blur` | `<div>` | Modifier — schakelt backdrop-filter uit (fallback)                     |
+
+**Props (React):**
+
+| Prop   | Type                        | Default | Beschrijving                                                     |
+| ------ | --------------------------- | ------- | ---------------------------------------------------------------- |
+| `blur` | `boolean`                   | `true`  | Schakelt blur-filter in/uit via `dsn-backdrop--no-blur` modifier |
+| `ref`  | `React.Ref<HTMLDivElement>` | —       | Doorgegeven via `React.forwardRef`                               |
+
+**Gebruik:**
+
+```html
+<!-- HTML/CSS — basis -->
+<div class="dsn-backdrop" aria-hidden="true"></div>
+
+<!-- HTML/CSS — zonder blur (fallback) -->
+<div class="dsn-backdrop dsn-backdrop--no-blur" aria-hidden="true"></div>
+```
+
+```tsx
+// React — conditioneel renderen vanuit parent
+{
+  isOpen && <Backdrop />;
+}
+{
+  isOpen && <Backdrop blur={false} />;
+}
+```
 
 ### Card
 
