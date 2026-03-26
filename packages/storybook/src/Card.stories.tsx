@@ -1,3 +1,4 @@
+import React from 'react';
 import type { Meta, StoryObj } from '@storybook/react';
 import {
   Card,
@@ -21,10 +22,10 @@ import {
 } from './story-helpers';
 
 const PLACEHOLDER_16_9 = 'https://picsum.photos/seed/card1/800/450';
-const PLACEHOLDER_16_9_B = 'https://picsum.photos/seed/card2/800/450';
-const PLACEHOLDER_16_9_C = 'https://picsum.photos/seed/card3/800/450';
 
-const meta: Meta<typeof Card> = {
+type CardStoryArgs = React.ComponentProps<typeof Card> & { showImage: boolean };
+
+const meta: Meta<CardStoryArgs> = {
   title: 'Components/Card',
   component: Card,
   parameters: {
@@ -62,7 +63,7 @@ const meta: Meta<typeof Card> = {
 };
 
 export default meta;
-type Story = StoryObj<typeof Card>;
+type Story = StoryObj<CardStoryArgs>;
 
 // =============================================================================
 // DEFAULT
