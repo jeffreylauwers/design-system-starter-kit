@@ -6,6 +6,26 @@ All notable changes to this project are documented in this file.
 
 ---
 
+## Version 5.15.0 (March 26, 2026)
+
+### ModalDialog component (issue #114)
+
+#### Added
+
+- **ModalDialog** component — modaal dialoogvenster gebaseerd op het native `<dialog>` element (PR #120)
+- Compound component patroon: `ModalDialog`, `ModalDialogHeader`, `ModalDialogHeading`, `ModalDialogBody`, `ModalDialogFooter`
+- `.showModal()` intern afgehandeld via `isOpen` prop — garandeert native focus-trap, `aria-modal` semantiek en `inert`-attribuut op de achtergrond
+- `aria-labelledby` automatisch gekoppeld aan `ModalDialogHeading` via `React.useId()` — geen handmatige ID nodig
+- Escape-toets sluit via native `cancel`-event; sluitknop altijd aanwezig in header
+- Scroll-affordance schaduw in body (Lea Verou verticale techniek)
+- Open/sluitanimatie via `@starting-style`, `opacity`, `transform` en `allow-discrete` — schakelbaar via `prefers-reduced-motion`
+- `display: flex` alleen op `[open]` staat — UA `display: none` blijft van kracht wanneer gesloten; `flex-direction: column` op basis-selector voorkomt layout-glitch tijdens sluitanimatie
+- `level` prop (1–6, default `2`) op `ModalDialogHeading` — visueel uiterlijk altijd gelijk
+- 18 componenttokens: achtergrond, rand, schaduw, max-breedte, heading-typografie, paddings
+- 16 React tests
+
+---
+
 ## Version 5.14.2 (March 25, 2026)
 
 ### Storybook: PreviewFrame font-size override opgelost (sb-unstyled)

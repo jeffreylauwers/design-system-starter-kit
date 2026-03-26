@@ -1,0 +1,198 @@
+/* ===== Modal Dialog ===== */
+
+/*
+ * dsn-modal-dialog — Modaal dialoogvenster
+ *
+ * Gebaseerd op het native <dialog> element.
+ * Altijd openen via .showModal() (niet .show()) voor:
+ *   - Automatische aria-modal=true semantiek
+ *   - Automatische inert-attribuut op achtergrond
+ *   - Natieve focus-trap
+ *   - ::backdrop pseudo-element
+ *
+ * HTML-structuur:
+ *
+ * <dialog class="dsn-modal-dialog" aria-labelledby="dialog-title">
+ *   <div class="dsn-modal-dialog__header">
+ *     <h2 class="dsn-modal-dialog-heading" id="dialog-title">Titel</h2>
+ *     <button type="button" class="dsn-button dsn-button--subtle dsn-button--size-small dsn-button--icon-only">
+ *       <svg class="dsn-icon" aria-hidden="true"><!-- x --></svg>
+ *       <span class="dsn-button__label">Sluiten</span>
+ *     </button>
+ *   </div>
+ *   <div class="dsn-modal-dialog__body">
+ *     <!-- inhoud -->
+ *   </div>
+ *   <div class="dsn-modal-dialog__footer">
+ *     <div class="dsn-action-group">
+ *       <!-- knoppen -->
+ *     </div>
+ *   </div>
+ * </dialog>
+ */
+
+.dsn-modal-dialog {
+  /* Reset native <dialog> styling */
+  border: var(--dsn-modal-dialog-border-width) solid
+    var(--dsn-modal-dialog-border-color);
+  border-radius: var(--dsn-modal-dialog-border-radius);
+  box-shadow: var(--dsn-modal-dialog-box-shadow);
+  background: var(--dsn-modal-dialog-background);
+  padding: 0;
+
+  /* Grootte en positionering */
+  inline-size: min(var(--dsn-modal-dialog-max-width), calc(100svw - 2rem));
+  max-block-size: min(calc(100svh - 4rem), 40rem);
+  margin: auto;
+
+  /* Altijd flex-direction column, ook tijdens sluitanimatie */
+  flex-direction: column;
+
+  /* Animatietransitie (ook voor sluitanimatie) */
+  opacity: 1;
+  transform: translateY(0) scale(1);
+  transition:
+    opacity var(--dsn-transition-duration-normal)
+      var(--dsn-transition-easing-default),
+    transform var(--dsn-transition-duration-normal)
+      var(--dsn-transition-easing-default),
+    display var(--dsn-transition-duration-normal)
+      var(--dsn-transition-easing-default) allow-discrete,
+    overlay var(--dsn-transition-duration-normal)
+      var(--dsn-transition-easing-default) allow-discrete;
+}
+
+/*
+ * Flexbox layout alleen bij open staat.
+ * Gebruik [open] zodat de UA-stylesheet's display:none van kracht blijft
+ * wanneer de dialog gesloten is — anders overschrijft display:flex de UA.
+ */
+.dsn-modal-dialog[open] {
+  display: flex;
+}
+
+/* Openingsanimatie: startwaarden voor de [open] staat */
+@starting-style {
+  .dsn-modal-dialog[open] {
+    opacity: 0;
+    transform: translateY(-0.5rem) scale(0.98);
+  }
+}
+
+/* Animatie uitschakelen bij prefers-reduced-motion */
+@media (prefers-reduced-motion: reduce) {
+  .dsn-modal-dialog {
+    transition: none;
+  }
+}
+
+/* Native backdrop van het dialog element */
+.dsn-modal-dialog::backdrop {
+  background: var(--dsn-backdrop-background, rgba(0, 0, 0, 0.5));
+  backdrop-filter: var(--dsn-backdrop-blur, blur(2px));
+  opacity: 1;
+  transition:
+    opacity var(--dsn-transition-duration-normal)
+      var(--dsn-transition-easing-default),
+    display var(--dsn-transition-duration-normal)
+      var(--dsn-transition-easing-default) allow-discrete,
+    overlay var(--dsn-transition-duration-normal)
+      var(--dsn-transition-easing-default) allow-discrete;
+}
+
+@starting-style {
+  .dsn-modal-dialog[open]::backdrop {
+    opacity: 0;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .dsn-modal-dialog::backdrop {
+    transition: none;
+  }
+}
+
+/* ===== Header ===== */
+
+.dsn-modal-dialog__header {
+  display: flex;
+  align-items: center;
+  gap: var(--dsn-space-inline-xl);
+  flex-shrink: 0;
+
+  padding-block-start: var(--dsn-modal-dialog-header-padding-block-start);
+  padding-block-end: var(--dsn-modal-dialog-header-padding-block-end);
+  padding-inline: var(--dsn-modal-dialog-header-padding-inline);
+
+  /* Scheidingslijn onder de header */
+  border-block-end: var(--dsn-modal-dialog-border-width) solid
+    var(--dsn-modal-dialog-border-color);
+}
+
+/* ===== Heading ===== */
+
+.dsn-modal-dialog-heading {
+  flex: 1;
+  margin: 0;
+
+  font-family: var(--dsn-modal-dialog-heading-font-family);
+  font-weight: var(--dsn-modal-dialog-heading-font-weight);
+  font-size: var(--dsn-modal-dialog-heading-font-size);
+  line-height: var(--dsn-modal-dialog-heading-line-height);
+  color: var(--dsn-modal-dialog-heading-color);
+}
+
+/* ===== Body met scroll-affordance ===== */
+/*
+ * Scroll-affordance schaduw (Lea Verou techniek — verticale variant):
+ * - Dekkende overlagen (background-attachment: local) scrollen mee met de content
+ *   en verbergen de schaduwen wanneer je aan het begin of einde bent.
+ * - Schaduw-overlagen (background-attachment: scroll) blijven gefixeerd.
+ * - Resultaat: schaduw is zichtbaar zodra er content is om naartoe te scrollen.
+ *
+ * ⚠️ Vereist dat de achtergrondkleur overeenkomt met de dialoogachtergrond.
+ */
+
+.dsn-modal-dialog__body {
+  --_bg: var(--dsn-modal-dialog-background);
+  --_shadow: var(--dsn-color-shadow-scroll, rgba(0, 0, 0, 0.12));
+
+  flex: 1;
+  overflow-y: auto;
+
+  padding-block: var(--dsn-modal-dialog-body-padding-block);
+  padding-inline: var(--dsn-modal-dialog-body-padding-inline);
+
+  background-color: var(--_bg);
+  background-image:
+    /* Top-cover (local): verbergt de bovenschaduw als je helemaal boven bent */
+    linear-gradient(to bottom, var(--_bg) 0%, transparent 100%),
+    /* Onder-cover (local): verbergt de onderschaduw als je helemaal onder bent */
+    linear-gradient(to top, var(--_bg) 0%, transparent 100%),
+    /* Bovenschaduw (scroll): altijd aanwezig */
+    linear-gradient(to bottom, var(--_shadow) 0%, transparent 100%),
+    /* Onderschaduw (scroll): altijd aanwezig */
+    linear-gradient(to top, var(--_shadow) 0%, transparent 100%);
+  background-repeat: no-repeat;
+  background-size:
+    100% 4rem,
+    100% 4rem,
+    100% 2rem,
+    100% 2rem;
+  background-position: top, bottom, top, bottom;
+  background-attachment: local, local, scroll, scroll;
+}
+
+/* ===== Footer ===== */
+
+.dsn-modal-dialog__footer {
+  flex-shrink: 0;
+
+  padding-block-start: var(--dsn-modal-dialog-footer-padding-block-start);
+  padding-block-end: var(--dsn-modal-dialog-footer-padding-block-end);
+  padding-inline: var(--dsn-modal-dialog-footer-padding-inline);
+
+  /* Scheidingslijn boven de footer */
+  border-block-start: var(--dsn-modal-dialog-border-width) solid
+    var(--dsn-modal-dialog-border-color);
+}

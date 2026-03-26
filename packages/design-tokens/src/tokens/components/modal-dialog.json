@@ -1,0 +1,109 @@
+{
+  "dsn": {
+    "modal-dialog": {
+      "background": {
+        "value": "{dsn.color.neutral.bg-elevated}",
+        "type": "color",
+        "comment": "Achtergrondkleur van het dialoogvenster — bg-elevated benadrukt elevatie boven de pagina"
+      },
+      "border-radius": {
+        "value": "{dsn.border.radius.lg}",
+        "type": "dimension",
+        "comment": "Afgeronde hoeken van het dialoogvenster (12px)"
+      },
+      "border-width": {
+        "value": "{dsn.border.width.thin}",
+        "type": "borderWidth",
+        "comment": "Randbreedte van het dialoogvenster"
+      },
+      "border-color": {
+        "value": "{dsn.color.neutral.border-subtle}",
+        "type": "color",
+        "comment": "Randkleur van het dialoogvenster"
+      },
+      "box-shadow": {
+        "value": "{dsn.box-shadow.lg}",
+        "type": "shadow",
+        "comment": "Schaduw van het dialoogvenster — hoogste elevatie (lg)"
+      },
+      "max-width": {
+        "value": "40rem",
+        "type": "dimension",
+        "comment": "Maximale breedte van het dialoogvenster (640px)"
+      },
+      "heading": {
+        "font-family": {
+          "value": "{dsn.heading.font-family}",
+          "type": "fontFamily",
+          "comment": "Lettertype van de dialoogvenster-heading"
+        },
+        "font-weight": {
+          "value": "{dsn.heading.font-weight}",
+          "type": "fontWeight",
+          "comment": "Vetgedrukt van de dialoogvenster-heading"
+        },
+        "color": {
+          "value": "{dsn.heading.color}",
+          "type": "color",
+          "comment": "Kleur van de dialoogvenster-heading"
+        },
+        "font-size": {
+          "value": "{dsn.text.font-size.xl}",
+          "type": "fontSize",
+          "comment": "Tekstgrootte van de dialoogvenster-heading"
+        },
+        "line-height": {
+          "value": "{dsn.text.line-height.xl}",
+          "type": "lineHeight",
+          "comment": "Regelafstand van de dialoogvenster-heading"
+        }
+      },
+      "header": {
+        "padding-block-start": {
+          "value": "{dsn.space.block.xl}",
+          "type": "spacing",
+          "comment": "Bovenkant padding van de header (16px)"
+        },
+        "padding-block-end": {
+          "value": "{dsn.space.block.xl}",
+          "type": "spacing",
+          "comment": "Onderkant padding van de header (16px)"
+        },
+        "padding-inline": {
+          "value": "{dsn.space.inline.xl}",
+          "type": "spacing",
+          "comment": "Horizontale padding van de header (16px)"
+        }
+      },
+      "body": {
+        "padding-block": {
+          "value": "{dsn.space.block.3xl}",
+          "type": "spacing",
+          "comment": "Verticale padding van de body (24px)"
+        },
+        "padding-inline": {
+          "value": "{dsn.space.inline.xl}",
+          "type": "spacing",
+          "comment": "Horizontale padding van de body (16px)"
+        }
+      },
+      "footer": {
+        "padding-block-start": {
+          "value": "{dsn.space.block.xl}",
+          "type": "spacing",
+          "comment": "Bovenkant padding van de footer (16px)"
+        },
+        "padding-block-end": {
+          "value": "{dsn.space.block.xl}",
+          "type": "spacing",
+          "comment": "Onderkant padding van de footer (16px)"
+        },
+        "padding-inline": {
+          "value": "{dsn.space.inline.xl}",
+          "type": "spacing",
+          "comment": "Horizontale padding van de footer (16px)"
+        }
+      }
+    }
+  }
+}

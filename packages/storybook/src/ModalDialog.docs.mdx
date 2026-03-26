@@ -1,0 +1,46 @@
+import { Meta, Story, Controls, Markdown } from '@storybook/blocks';
+import * as ModalDialogStories from './ModalDialog.stories';
+import docs from './ModalDialog.docs.md?raw';
+import { PreviewFrame, CodeTabs } from './components';
+
+export const [intro, rest] = docs.split('<!-- VOORBEELD -->');
+
+<Meta of={ModalDialogStories} />
+
+<Markdown>{intro}</Markdown>
+
+## Voorbeeld
+
+<PreviewFrame>
+  <Story of={ModalDialogStories.Default} />
+</PreviewFrame>
+
+<CodeTabs
+  of={ModalDialogStories.Default}
+  html={`<dialog class="dsn-modal-dialog" open aria-labelledby="dialog-title">
+  <div class="dsn-modal-dialog__header">
+    <h2 class="dsn-modal-dialog-heading" id="dialog-title">Dialoogvenster titel</h2>
+    <button type="button" class="dsn-button dsn-button--subtle dsn-button--size-small dsn-button--icon-only">
+      <svg class="dsn-icon" aria-hidden="true"><!-- x --></svg>
+      <span class="dsn-button__label">Sluiten</span>
+    </button>
+  </div>
+  <div class="dsn-modal-dialog__body">
+    <p class="dsn-paragraph">Tekst</p>
+  </div>
+  <div class="dsn-modal-dialog__footer">
+    <div class="dsn-action-group">
+      <button type="button" class="dsn-button dsn-button--strong dsn-button--size-medium">
+        <span class="dsn-button__label">Bevestigen</span>
+      </button>
+      <button type="button" class="dsn-button dsn-button--default dsn-button--size-medium">
+        <span class="dsn-button__label">Annuleren</span>
+      </button>
+    </div>
+  </div>
+</dialog>`}
+/>
+
+<Controls of={ModalDialogStories.Default} />
+
+<Markdown>{rest}</Markdown>

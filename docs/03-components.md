@@ -761,7 +761,7 @@ Brengt consistente verticale ruimte aan tussen directe child-elementen via `flex
 
 ## Display & Feedback Components
 
-**Status:** Complete (HTML/CSS, React) — 8 components total
+**Status:** Complete (HTML/CSS, React) — 9 components total
 
 ### Backdrop
 
@@ -1300,6 +1300,123 @@ Brengt consistente verticale ruimte aan tussen directe child-elementen via `flex
 
 **Tests:** React (19 tests)
 
+### ModalDialog
+
+**Status:** Complete (HTML/CSS, React)
+
+**Location:** `packages/components-{html|react}/src/modal-dialog/` / `packages/components-react/src/ModalDialog/`
+
+**Tokens:** `tokens/components/modal-dialog.json`
+
+**Sub-components:** `ModalDialog`, `ModalDialogHeader`, `ModalDialogHeading`, `ModalDialogBody`, `ModalDialogFooter`
+
+**Features:**
+
+- Gebaseerd op het native `<dialog>` element met `.showModal()` — ingebakken focus-trap, `aria-modal`, `inert`-attribuut op de achtergrond
+- Compound component patroon met React Context — `headingId` en `onClose` automatisch doorgegeven aan sub-componenten
+- `aria-labelledby` automatisch gekoppeld aan `ModalDialogHeading` via `React.useId()` — geen handmatige ID nodig
+- Sluitknop (`dsn-button--icon-only`) altijd aanwezig in de header — nooit `aria-label`; tekst via `dsn-button__label`
+- Escape sluit via native `cancel`-event (`handleCancel` roept `onClose` aan)
+- Scroll-affordance schaduw in body (Lea Verou verticale techniek)
+- Open/sluitanimatie via `@starting-style`, `opacity`, `transform` en `allow-discrete`
+- `display: flex` alleen op `[open]` staat — UA `display: none` blijft van kracht wanneer gesloten
+- `flex-direction: column` op de basis-selector — voorkomt layout-glitch tijdens sluitanimatie
+- Reduceer-motie-ondersteuning via `prefers-reduced-motion: reduce`
+- `level` prop op `ModalDialogHeading` (1–6, default `2`) — visueel uiterlijk altijd gelijk
+
+**CSS klassen:**
+
+| Klasse                     | Element    | Beschrijving                                                  |
+| -------------------------- | ---------- | ------------------------------------------------------------- |
+| `dsn-modal-dialog`         | `<dialog>` | Root — native dialog; `display: flex` alleen bij `[open]`     |
+| `dsn-modal-dialog__header` | `<div>`    | Flexbox header met heading + sluitknop; border-block-end      |
+| `dsn-modal-dialog-heading` | `<h2>`     | Heading sub-component; `flex: 1`; typografie via eigen tokens |
+| `dsn-modal-dialog__body`   | `<div>`    | Scrollbare inhoud; scroll-affordance schaduwen via background |
+| `dsn-modal-dialog__footer` | `<div>`    | Actiesectie; border-block-start; `flex-shrink: 0`             |
+
+**Props (React — ModalDialog):**
+
+| Prop       | Type                           | Default | Beschrijving                                             |
+| ---------- | ------------------------------ | ------- | -------------------------------------------------------- |
+| `isOpen`   | `boolean`                      | —       | Bepaalt of het dialoogvenster getoond wordt              |
+| `onClose`  | `() => void`                   | —       | Callback bij sluiten (sluitknop, Escape, buiten klikken) |
+| `children` | `React.ReactNode`              | —       | Sub-componenten: Header, Body, Footer                    |
+| `ref`      | `React.Ref<HTMLDialogElement>` | —       | Doorgegeven via `React.forwardRef`                       |
+
+**HTML/CSS:**
+
+```html
+<button
+  type="button"
+  class="dsn-button dsn-button--default dsn-button--size-medium"
+  onclick="this.nextElementSibling.showModal()"
+>
+  <span class="dsn-button__label">Dialoogvenster openen</span>
+</button>
+<dialog class="dsn-modal-dialog" aria-labelledby="dialog-title">
+  <div class="dsn-modal-dialog__header">
+    <h2 class="dsn-modal-dialog-heading" id="dialog-title">
+      Bevestig verwijderen
+    </h2>
+    <button
+      type="button"
+      class="dsn-button dsn-button--subtle dsn-button--size-small dsn-button--icon-only"
+      onclick="this.closest('dialog').close()"
+    >
+      <svg class="dsn-icon" aria-hidden="true"><!-- x --></svg>
+      <span class="dsn-button__label">Sluiten</span>
+    </button>
+  </div>
+  <div class="dsn-modal-dialog__body">
+    <p class="dsn-paragraph">Weet u zeker dat u dit item wilt verwijderen?</p>
+  </div>
+  <div class="dsn-modal-dialog__footer">
+    <div class="dsn-action-group">
+      <button
+        type="button"
+        class="dsn-button dsn-button--strong dsn-button--size-medium"
+        onclick="this.closest('dialog').close()"
+      >
+        <span class="dsn-button__label">Verwijderen</span>
+      </button>
+      <button
+        type="button"
+        class="dsn-button dsn-button--default dsn-button--size-medium"
+        onclick="this.closest('dialog').close()"
+      >
+        <span class="dsn-button__label">Annuleren</span>
+      </button>
+    </div>
+  </div>
+</dialog>
+```
+
+**React:**
+
+```tsx
+const [isOpen, setIsOpen] = React.useState(false);
+
+<Button variant="default" onClick={() => setIsOpen(true)}>
+  Dialoogvenster openen
+</Button>
+<ModalDialog isOpen={isOpen} onClose={() => setIsOpen(false)}>
+  <ModalDialogHeader>
+    <ModalDialogHeading>Bevestig verwijderen</ModalDialogHeading>
+  </ModalDialogHeader>
+  <ModalDialogBody>
+    <Paragraph>Weet u zeker dat u dit item wilt verwijderen?</Paragraph>
+  </ModalDialogBody>
+  <ModalDialogFooter>
+    <ActionGroup>
+      <Button variant="strong" onClick={() => setIsOpen(false)}>Verwijderen</Button>
+      <Button variant="default" onClick={() => setIsOpen(false)}>Annuleren</Button>
+    </ActionGroup>
+  </ModalDialogFooter>
+</ModalDialog>
+```
+
+**Tests:** React (16 tests)
+
 ---
 
 ## Navigation Components
@@ -1711,15 +1828,15 @@ defineButton('my-custom-button');
 
 ## Component Statistics
 
-**Total Components:** 46
+**Total Components:** 47
 
 **Implementations:**
 
-- **HTML/CSS:** 46 components
-- **React:** 46 components (1125 tests total, 54 test suites)
+- **HTML/CSS:** 47 components
+- **React:** 47 components (1149 tests total, 56 test suites)
 - **Web Component:** 7 components (Button, Heading, Icon, Link, OrderedList, Paragraph, UnorderedList)
 
-**Test Coverage:** 1125 tests across 54 test suites
+**Test Coverage:** 1149 tests across 56 test suites
 
 ---
 
