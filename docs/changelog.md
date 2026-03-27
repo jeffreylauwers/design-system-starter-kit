@@ -6,6 +6,30 @@ All notable changes to this project are documented in this file.
 
 ---
 
+## Version 5.16.0 (March 27, 2026)
+
+### Drawer component (issue #115)
+
+#### Added
+
+- **Drawer** component — zijpaneel gebaseerd op het native `<dialog>` element (PR #124)
+- Compound component patroon: `Drawer`, `DrawerHeader`, `DrawerHeading`, `DrawerBody`, `DrawerFooter`
+- `modal` prop (default `true`) — `.showModal()` voor modaal gebruik (focus-trap, backdrop, `aria-modal`), `.show()` voor niet-modaal gebruik waarbij de achtergrond interactief blijft
+- `side` prop (`'right'` | `'left'`, default `'right'`) — positioneert het paneel aan de gewenste zijde van het scherm
+- `aria-labelledby` automatisch gekoppeld aan `DrawerHeading` via `React.useId()` — geen handmatige ID nodig
+- Modal variant: Escape sluit via native `cancel`-event; niet-modaal variant: handmatige `keydown`-listener op Escape
+- Slide-in animatie via `@starting-style` en `translateX` (rechts: van `100%`; links: van `-100%`)
+- `::backdrop` met opacity-transitie voor de modal variant
+- Scroll-affordance schaduw in body (Lea Verou verticale techniek)
+- Border alleen aan de binnenzijde — `border-inline-start` voor rechts, `border-inline-end` voor links; geen border-radius
+- `max-width` begrensd (25rem); `min-gap` garandeert dat de achtergrondpagina altijd zichtbaar blijft (3rem)
+- `level` prop (1–6, default `2`) op `DrawerHeading` — visueel uiterlijk altijd gelijk
+- 19 componenttokens: achtergrond, rand, schaduw, max-breedte, min-gap, heading-typografie, paddings
+- 20 React tests
+- `new-component-issue` skill uitgebreid: `index.ts` barrel file per componentdirectory toegevoegd aan React acceptatiecriteria
+
+---
+
 ## Version 5.15.0 (March 26, 2026)
 
 ### ModalDialog component (issue #114)

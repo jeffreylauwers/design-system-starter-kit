@@ -761,7 +761,7 @@ Brengt consistente verticale ruimte aan tussen directe child-elementen via `flex
 
 ## Display & Feedback Components
 
-**Status:** Complete (HTML/CSS, React) — 9 components total
+**Status:** Complete (HTML/CSS, React) — 10 components total
 
 ### Backdrop
 
@@ -1416,6 +1416,130 @@ const [isOpen, setIsOpen] = React.useState(false);
 ```
 
 **Tests:** React (16 tests)
+
+### Drawer
+
+**Status:** Complete (HTML/CSS, React)
+
+**Location:** `packages/components-{html|react}/src/drawer/` / `packages/components-react/src/Drawer/`
+
+**Tokens:** `tokens/components/drawer.json`
+
+**Sub-components:** `Drawer`, `DrawerHeader`, `DrawerHeading`, `DrawerBody`, `DrawerFooter`
+
+**Features:**
+
+- Gebaseerd op het native `<dialog>` element — `modal` prop bepaalt `.showModal()` (focus-trap, backdrop, `aria-modal`) of `.show()` (niet-modaal, achtergrond blijft interactief)
+- `side` prop (`'right'` | `'left'`, default `'right'`) — positioneert het paneel aan de juiste of linker zijkant van het scherm
+- Compound component patroon met React Context — `headingId` en `onClose` automatisch doorgegeven aan sub-componenten
+- `aria-labelledby` automatisch gekoppeld aan `DrawerHeading` via `React.useId()` — geen handmatige ID nodig
+- Sluitknop (`dsn-button--icon-only`) altijd aanwezig in de header — nooit `aria-label`; tekst via `dsn-button__label`
+- Modal variant: Escape sluit via native `cancel`-event; niet-modaal variant: handmatige `keydown`-listener op Escape
+- Slide-in animatie via `@starting-style` en `translateX` (rechts: van `100%`; links: van `-100%`)
+- `::backdrop` met opacity-transitie voor de modal variant
+- Scroll-affordance schaduw in body (Lea Verou verticale techniek)
+- Border alleen aan de binnenzijde — `border-inline-start` voor rechts, `border-inline-end` voor links; geen border-radius
+- `max-width` begrensd via token; `min-gap` garandeert dat de achtergrondpagina zichtbaar blijft
+- Reduceer-motie-ondersteuning via `prefers-reduced-motion: reduce`
+- `level` prop op `DrawerHeading` (1–6, default `2`) — visueel uiterlijk altijd gelijk
+
+**CSS klassen:**
+
+| Klasse                   | Element    | Beschrijving                                                  |
+| ------------------------ | ---------- | ------------------------------------------------------------- |
+| `dsn-drawer`             | `<dialog>` | Root — native dialog; `position: fixed; inset-block: 0`       |
+| `dsn-drawer--side-right` | `<dialog>` | Positioneert rechts; slide-in van rechts; border links        |
+| `dsn-drawer--side-left`  | `<dialog>` | Positioneert links; slide-in van links; border rechts         |
+| `dsn-drawer__header`     | `<div>`    | Flexbox header met heading + sluitknop; border-block-end      |
+| `dsn-drawer-heading`     | `<h2>`     | Heading sub-component; `flex: 1`; typografie via eigen tokens |
+| `dsn-drawer__body`       | `<div>`    | Scrollbare inhoud; scroll-affordance schaduwen via background |
+| `dsn-drawer__footer`     | `<div>`    | Actiesectie; border-block-start; `flex-shrink: 0`             |
+
+**Props (React — Drawer):**
+
+| Prop       | Type                           | Default   | Beschrijving                                       |
+| ---------- | ------------------------------ | --------- | -------------------------------------------------- |
+| `isOpen`   | `boolean`                      | —         | Bepaalt of het zijpaneel getoond wordt             |
+| `onClose`  | `() => void`                   | —         | Callback bij sluiten (sluitknop, Escape)           |
+| `modal`    | `boolean`                      | `true`    | Modal (focus-trap, backdrop) of niet-modaal        |
+| `side`     | `'right' \| 'left'`            | `'right'` | Zijde van het scherm waaraan het paneel verschijnt |
+| `children` | `React.ReactNode`              | —         | Sub-componenten: Header, Body, Footer              |
+| `ref`      | `React.Ref<HTMLDialogElement>` | —         | Doorgegeven via `React.forwardRef`                 |
+
+**HTML/CSS:**
+
+```html
+<button
+  type="button"
+  class="dsn-button dsn-button--default dsn-button--size-medium"
+  onclick="this.nextElementSibling.showModal()"
+>
+  <span class="dsn-button__label">Zijpaneel openen</span>
+</button>
+<dialog
+  class="dsn-drawer dsn-drawer--side-right"
+  aria-labelledby="drawer-title"
+>
+  <div class="dsn-drawer__header">
+    <h2 class="dsn-drawer-heading" id="drawer-title">Zijpaneel titel</h2>
+    <button
+      type="button"
+      class="dsn-button dsn-button--subtle dsn-button--size-small dsn-button--icon-only"
+      onclick="this.closest('dialog').close()"
+    >
+      <svg class="dsn-icon" aria-hidden="true"><!-- x --></svg>
+      <span class="dsn-button__label">Sluiten</span>
+    </button>
+  </div>
+  <div class="dsn-drawer__body">
+    <p class="dsn-paragraph">Inhoud van het zijpaneel.</p>
+  </div>
+  <div class="dsn-drawer__footer">
+    <div class="dsn-action-group">
+      <button
+        type="button"
+        class="dsn-button dsn-button--strong dsn-button--size-medium"
+        onclick="this.closest('dialog').close()"
+      >
+        <span class="dsn-button__label">Toepassen</span>
+      </button>
+      <button
+        type="button"
+        class="dsn-button dsn-button--default dsn-button--size-medium"
+        onclick="this.closest('dialog').close()"
+      >
+        <span class="dsn-button__label">Annuleren</span>
+      </button>
+    </div>
+  </div>
+</dialog>
+```
+
+**React:**
+
+```tsx
+const [isOpen, setIsOpen] = React.useState(false);
+
+<Button variant="default" onClick={() => setIsOpen(true)}>
+  Zijpaneel openen
+</Button>
+<Drawer isOpen={isOpen} onClose={() => setIsOpen(false)} side="right">
+  <DrawerHeader>
+    <DrawerHeading>Zijpaneel titel</DrawerHeading>
+  </DrawerHeader>
+  <DrawerBody>
+    <Paragraph>Inhoud van het zijpaneel.</Paragraph>
+  </DrawerBody>
+  <DrawerFooter>
+    <ActionGroup>
+      <Button variant="strong" onClick={() => setIsOpen(false)}>Toepassen</Button>
+      <Button variant="default" onClick={() => setIsOpen(false)}>Annuleren</Button>
+    </ActionGroup>
+  </DrawerFooter>
+</Drawer>
+```
+
+**Tests:** React (20 tests)
 
 ---
 
