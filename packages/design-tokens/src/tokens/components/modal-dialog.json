@@ -48,12 +48,12 @@
           "comment": "Kleur van de dialoogvenster-heading"
         },
         "font-size": {
-          "value": "{dsn.text.font-size.xl}",
+          "value": "{dsn.text.font-size.lg}",
           "type": "fontSize",
           "comment": "Tekstgrootte van de dialoogvenster-heading"
         },
         "line-height": {
-          "value": "{dsn.text.line-height.xl}",
+          "value": "{dsn.text.line-height.lg}",
           "type": "lineHeight",
           "comment": "Regelafstand van de dialoogvenster-heading"
         }
