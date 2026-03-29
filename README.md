@@ -397,7 +397,7 @@ MIT - Jeffrey Lauwers
 ## Links
 
 - [Repository](https://github.com/jeffreylauwers/design-system-starter-kit)
-- [Live Storybook](https://jeffreylauwers.github.io/design-system-starterkit/)
+- [Live Storybook](https://jeffreylauwers.github.io/design-system-starter-kit/)
 - [Documentation](./docs/)
 
 ---

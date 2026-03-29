@@ -6,7 +6,7 @@
   "scripts": {
     "dev": "storybook dev -p 6006",
     "build": "storybook build -o dist",
-    "build:gh-pages": "STORYBOOK_BASE_PATH=/design-system-starterkit/ storybook build -o dist",
+    "build:gh-pages": "STORYBOOK_BASE_PATH=/design-system-starter-kit/ storybook build -o dist",
     "test-storybook": "test-storybook",
     "clean": "rm -rf dist"
   },

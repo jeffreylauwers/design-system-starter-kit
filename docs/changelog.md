@@ -710,7 +710,7 @@ The component architecture was refactored in v4.2.0 but tests weren't updated:
 **GitHub Pages Setup**
 
 - **Automated Storybook deployment** — GitHub Actions workflow deploys Storybook to GitHub Pages on every push to main
-- **Live Storybook URL** — [https://jeffreylauwers.github.io/design-system-starterkit/](https://jeffreylauwers.github.io/design-system-starterkit/)
+- **Live Storybook URL** — [https://jeffreylauwers.github.io/design-system-starter-kit/](https://jeffreylauwers.github.io/design-system-starter-kit/)
 - **Base path configuration** — Vite base path configured via `STORYBOOK_BASE_PATH` environment variable
 - **Relative asset paths** — Design tokens use relative paths (`./design-tokens/dist/css`) for GitHub Pages compatibility
 
