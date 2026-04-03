@@ -21,7 +21,7 @@
         "comment": "Verticale padding"
       },
       "padding-inline": {
-        "value": "{dsn.space.inline.xs}",
+        "value": "{dsn.space.inline.sm}",
         "type": "dimension",
         "comment": "Horizontale padding"
       },

@@ -1,6 +1,6 @@
 # Components
 
-**Last Updated:** March 21, 2026
+**Last Updated:** April 3, 2026
 
 Complete component specifications and guidelines for the Design System Starter Kit.
 
@@ -761,7 +761,7 @@ Brengt consistente verticale ruimte aan tussen directe child-elementen via `flex
 
 ## Display & Feedback Components
 
-**Status:** Complete (HTML/CSS, React) — 10 components total
+**Status:** Complete (HTML/CSS, React) — 11 components total
 
 ### Backdrop
 
@@ -981,6 +981,47 @@ Brengt consistente verticale ruimte aan tussen directe child-elementen via `flex
 ```
 
 **Tests:** React (14 tests)
+
+### NumberBadge
+
+**Status:** Complete (HTML/CSS, React)
+
+**Location:** `packages/components-{html|react}/src/number-badge/` / `packages/components-react/src/NumberBadge/`
+
+**Tokens:** `tokens/components/number-badge.json`
+
+**Variants (5 total):** `negative` (default), `positive`, `warning`, `info`, `neutral`
+
+**Props:** `variant`, `maxCount`, `children`
+
+**Features:**
+
+- Compact inline pill-badge voor gebruik binnen een Button of Menu-item (via `iconEnd`)
+- Altijd `aria-hidden="true"` — toegankelijke context via `dsn-visually-hidden` in de parent
+- `maxCount` prop kapt het getal af: toont `{maxCount}+` als `children` groter is (werkt op zowel `number` als numerieke strings)
+- `min-inline-size: calc(1lh + 2 * padding-block)` — badge blijft cirkelrond bij 1–2 cijfers, schaalt mee met de fluid type scale
+- Inverse kleuren: witte tekst op volle signaalachtergrond (`*-inverse-bg-default` + `*-inverse-color-default`)
+- Transparante border voor Windows High Contrast mode ondersteuning
+
+**HTML klassen:**
+
+```html
+<!-- Standalone -->
+<span class="dsn-number-badge dsn-number-badge--negative" aria-hidden="true"
+  >5</span
+>
+
+<!-- In een Button (buiten het label, als iconEnd) -->
+<button type="button" class="dsn-button dsn-button--subtle">
+  <svg class="dsn-icon" aria-hidden="true"><!-- inbox --></svg>
+  <span class="dsn-button__label">Inbox</span>
+  <span class="dsn-number-badge dsn-number-badge--negative" aria-hidden="true"
+    >5</span
+  >
+</button>
+```
+
+**Tests:** React (12 tests)
 
 ### StatusBadge
 

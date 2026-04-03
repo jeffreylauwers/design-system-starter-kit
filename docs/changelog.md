@@ -6,6 +6,23 @@ All notable changes to this project are documented in this file.
 
 ---
 
+## Version 5.17.0 (April 3, 2026)
+
+### NumberBadge component (issue #130)
+
+#### Added
+
+- **NumberBadge** component — compact inline pill-badge voor het tonen van getallen (bijv. ongelezen berichten, openstaande taken) binnen een Button of Menu-item (PR #131)
+- 5 varianten: `negative` (default), `positive`, `warning`, `info`, `neutral`
+- `maxCount` prop: kapt het getal af met `{maxCount}+` bij overschrijding — werkt op zowel `number` als numerieke string children
+- Altijd `aria-hidden="true"` — toegankelijke context via `dsn-visually-hidden` in de parent
+- `min-inline-size: calc(1lh + 2 * padding-block)` — badge blijft cirkelrond bij 1–2 cijfers, schaalt mee met de fluid type scale
+- Inverse kleuren: volle signaalachtergrond met witte tekst (`*-inverse-bg-default` + `*-inverse-color-default`)
+- Transparante border voor Windows High Contrast mode ondersteuning
+- 12 React tests, 19 design tokens
+
+---
+
 ## Version 5.16.0 (March 27, 2026)
 
 ### Drawer component (issue #115)
