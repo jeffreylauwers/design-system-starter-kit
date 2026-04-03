@@ -1,0 +1,25 @@
+import { Meta, Story, Controls, Markdown } from '@storybook/blocks';
+import * as NumberBadgeStories from './NumberBadge.stories';
+import docs from './NumberBadge.docs.md?raw';
+import { PreviewFrame, CodeTabs } from './components';
+
+export const [intro, rest] = docs.split('<!-- VOORBEELD -->');
+
+<Meta of={NumberBadgeStories} />
+
+<Markdown>{intro}</Markdown>
+
+## Voorbeeld
+
+<PreviewFrame>
+  <Story of={NumberBadgeStories.Default} />
+</PreviewFrame>
+
+<CodeTabs
+  of={NumberBadgeStories.Default}
+  html={`<span class="dsn-number-badge dsn-number-badge--negative" aria-hidden="true">5</span>`}
+/>
+
+<Controls of={NumberBadgeStories.Default} />
+
+<Markdown>{rest}</Markdown>

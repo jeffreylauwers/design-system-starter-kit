@@ -1,0 +1,105 @@
+{
+  "dsn": {
+    "number-badge": {
+      "font-size": {
+        "value": "{dsn.text.font-size.sm}",
+        "type": "fontSize",
+        "comment": "NumberBadge font size — zelfde schaal als StatusBadge (kleinst beschikbare stap)"
+      },
+      "line-height": {
+        "value": "{dsn.text.line-height.sm}",
+        "type": "lineHeight",
+        "comment": "NumberBadge line height"
+      },
+      "font-weight": {
+        "value": "{dsn.text.font-weight.bold}",
+        "comment": "NumberBadge font weight — bold voor leesbaarheid op kleine afmeting"
+      },
+      "padding-block": {
+        "value": "0px",
+        "type": "dimension",
+        "comment": "Verticale padding"
+      },
+      "padding-inline": {
+        "value": "{dsn.space.inline.xs}",
+        "type": "dimension",
+        "comment": "Horizontale padding"
+      },
+      "border-radius": {
+        "value": "{dsn.border.radius.round}",
+        "type": "dimension",
+        "comment": "Pill-vorm via volledig ronde border-radius"
+      },
+      "border-width": {
+        "value": "{dsn.border.width.thin}",
+        "type": "dimension",
+        "comment": "Transparante border voor forced-colors / High Contrast mode ondersteuning"
+      },
+      "border-color": {
+        "value": "{dsn.color.transparent}",
+        "type": "color",
+        "comment": "Transparant by default; zichtbaar in forced-colors / High Contrast mode"
+      },
+      "negative": {
+        "color": {
+          "value": "{dsn.color.negative-inverse.color-default}",
+          "type": "color",
+          "comment": "Tekstkleur voor negative variant (wit op donkere achtergrond)"
+        },
+        "background-color": {
+          "value": "{dsn.color.negative-inverse.bg-default}",
+          "type": "color",
+          "comment": "Achtergrondkleur voor negative variant"
+        }
+      },
+      "positive": {
+        "color": {
+          "value": "{dsn.color.positive-inverse.color-default}",
+          "type": "color",
+          "comment": "Tekstkleur voor positive variant (wit op donkere achtergrond)"
+        },
+        "background-color": {
+          "value": "{dsn.color.positive-inverse.bg-default}",
+          "type": "color",
+          "comment": "Achtergrondkleur voor positive variant"
+        }
+      },
+      "warning": {
+        "color": {
+          "value": "{dsn.color.warning-inverse.color-default}",
+          "type": "color",
+          "comment": "Tekstkleur voor warning variant (wit op donkere achtergrond)"
+        },
+        "background-color": {
+          "value": "{dsn.color.warning-inverse.bg-default}",
+          "type": "color",
+          "comment": "Achtergrondkleur voor warning variant"
+        }
+      },
+      "info": {
+        "color": {
+          "value": "{dsn.color.info-inverse.color-default}",
+          "type": "color",
+          "comment": "Tekstkleur voor info variant (wit op donkere achtergrond)"
+        },
+        "background-color": {
+          "value": "{dsn.color.info-inverse.bg-default}",
+          "type": "color",
+          "comment": "Achtergrondkleur voor info variant"
+        }
+      },
+      "neutral": {
+        "color": {
+          "value": "{dsn.color.neutral-inverse.color-default}",
+          "type": "color",
+          "comment": "Tekstkleur voor neutral variant (wit op donkere achtergrond)"
+        },
+        "background-color": {
+          "value": "{dsn.color.neutral-inverse.bg-default}",
+          "type": "color",
+          "comment": "Achtergrondkleur voor neutral variant"
+        }
+      }
+    }
+  }
+}
