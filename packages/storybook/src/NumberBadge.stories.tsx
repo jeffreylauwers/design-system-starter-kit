@@ -43,12 +43,7 @@ type Story = StoryObj<typeof NumberBadge>;
 // =============================================================================
 
 export const Default: Story = {
-  render: (args) => (
-    <Button variant="subtle" iconStart={<Icon name="mail" aria-hidden />}>
-      <span className="dsn-button__label">Inbox</span>
-      <NumberBadge {...args} />
-    </Button>
-  ),
+  render: (args) => <NumberBadge {...args} />,
 };
 
 // =============================================================================
@@ -84,12 +79,19 @@ export const MaxCount: Story = {
   name: 'Max count (99+)',
   args: { variant: 'negative', maxCount: 99, children: 128 },
   render: (args) => (
-    <Button variant="subtle" iconStart={<Icon name="mail" aria-hidden />}>
+    <Button
+      variant="subtle"
+      iconStart={<Icon name="mail" aria-hidden />}
+      iconEnd={
+        <NumberBadge variant={args.variant} maxCount={args.maxCount}>
+          {args.children}
+        </NumberBadge>
+      }
+    >
       <span>
         Inbox
         <span className="dsn-visually-hidden">, 128 ongelezen berichten</span>
       </span>
-      <NumberBadge {...args} />
     </Button>
   ),
 };
@@ -98,12 +100,19 @@ export const HighCount: Story = {
   name: 'High count (above max)',
   args: { variant: 'negative', maxCount: 99, children: 256 },
   render: (args) => (
-    <Button variant="subtle" iconStart={<Icon name="bell" aria-hidden />}>
+    <Button
+      variant="subtle"
+      iconStart={<Icon name="bell" aria-hidden />}
+      iconEnd={
+        <NumberBadge variant={args.variant} maxCount={args.maxCount}>
+          {args.children}
+        </NumberBadge>
+      }
+    >
       <span>
         Meldingen
         <span className="dsn-visually-hidden">, 256 ongelezen meldingen</span>
       </span>
-      <NumberBadge {...args} />
     </Button>
   ),
 };
@@ -111,6 +120,62 @@ export const HighCount: Story = {
 // =============================================================================
 // OVERZICHTSSTORIES
 // =============================================================================
+
+export const InButton: Story = {
+  name: 'In Button',
+  render: () => (
+    <div
+      style={{
+        display: 'flex',
+        gap: '1rem',
+        flexWrap: 'wrap',
+        alignItems: 'center',
+      }}
+    >
+      {/* Subtle button met klein getal */}
+      <Button
+        variant="subtle"
+        iconStart={<Icon name="mail" aria-hidden />}
+        iconEnd={<NumberBadge variant="negative">5</NumberBadge>}
+      >
+        Inbox
+      </Button>
+
+      {/* Subtle button met afgekapt getal */}
+      <Button
+        variant="subtle"
+        iconStart={<Icon name="mail" aria-hidden />}
+        iconEnd={
+          <NumberBadge variant="negative" maxCount={99}>
+            128
+          </NumberBadge>
+        }
+      >
+        <span>
+          Inbox
+          <span className="dsn-visually-hidden">, 128 ongelezen berichten</span>
+        </span>
+      </Button>
+
+      {/* Default button */}
+      <Button
+        variant="default"
+        iconStart={<Icon name="bell" aria-hidden />}
+        iconEnd={<NumberBadge variant="info">3</NumberBadge>}
+      >
+        Meldingen
+      </Button>
+
+      {/* Zonder icoon */}
+      <Button
+        variant="subtle"
+        iconEnd={<NumberBadge variant="warning">12</NumberBadge>}
+      >
+        Taken
+      </Button>
+    </div>
+  ),
+};
 
 export const AllVariants: Story = {
   name: 'All variants',

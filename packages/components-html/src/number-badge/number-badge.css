@@ -1,19 +1,22 @@
 /**
  * NumberBadge Component
  * Compact inline-element dat een getal toont (bijv. ongelezen berichten of openstaande taken).
- * Geplaatst binnen een Button of Menu-item, naast het label.
+ * Geplaatst binnen een Button of Menu-item, naast het label, via de iconEnd-positie.
  *
  * Altijd aria-hidden="true" — context via dsn-visually-hidden in de parent.
  *
  * Usage:
- * <!-- Basis (inline in een Button) -->
+ * <!-- Standalone -->
+ * <span class="dsn-number-badge dsn-number-badge--negative" aria-hidden="true">5</span>
+ *
+ * <!-- Inline in een Button (buiten het label, als iconEnd) -->
  * <button type="button" class="dsn-button dsn-button--subtle">
  *   <svg class="dsn-icon" aria-hidden="true"><!-- inbox --></svg>
  *   <span class="dsn-button__label">Inbox</span>
  *   <span class="dsn-number-badge dsn-number-badge--negative" aria-hidden="true">5</span>
  * </button>
  *
- * <!-- Afgekapt getal (99+) -->
+ * <!-- Afgekapt getal (99+) — screenreader-context in dsn-button__label -->
  * <button type="button" class="dsn-button dsn-button--subtle">
  *   <svg class="dsn-icon" aria-hidden="true"><!-- inbox --></svg>
  *   <span class="dsn-button__label">
@@ -24,7 +27,6 @@
  * </button>
  *
  * <!-- Standalone varianten -->
- * <span class="dsn-number-badge dsn-number-badge--negative" aria-hidden="true">5</span>
  * <span class="dsn-number-badge dsn-number-badge--positive" aria-hidden="true">5</span>
  * <span class="dsn-number-badge dsn-number-badge--warning" aria-hidden="true">5</span>
  * <span class="dsn-number-badge dsn-number-badge--info" aria-hidden="true">5</span>
@@ -35,7 +37,12 @@
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  min-inline-size: var(--dsn-number-badge-min-inline-size);
+  /*
+   * min-inline-size = hoogte van de badge: 1lh (regel) + 2× padding-block
+   * De 1lh-unit schaalt mee met de fluid type scale — bij een ééncijferig
+   * getal blijft de badge altijd een perfecte cirkel ongeacht de font-size.
+   */
+  min-inline-size: calc(1lh + 2 * var(--dsn-number-badge-padding-block));
   padding-block: var(--dsn-number-badge-padding-block);
   padding-inline: var(--dsn-number-badge-padding-inline);
   border-radius: var(--dsn-number-badge-border-radius);

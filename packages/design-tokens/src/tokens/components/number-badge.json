@@ -15,11 +15,6 @@
         "value": "{dsn.text.font-weight.bold}",
         "comment": "NumberBadge font weight — bold voor leesbaarheid op kleine afmeting"
       },
-      "min-inline-size": {
-        "value": "1.25rem",
-        "type": "dimension",
-        "comment": "Minimumbreedte zodat een ééncijferig getal een perfecte cirkel blijft (20px)"
-      },
       "padding-block": {
         "value": "{dsn.space.block.xs}",
         "type": "dimension",
@@ -47,60 +42,60 @@
       },
       "negative": {
         "color": {
-          "value": "{dsn.color.negative.color-default}",
+          "value": "{dsn.color.negative-inverse.color-default}",
           "type": "color",
-          "comment": "Tekstkleur voor negative variant"
+          "comment": "Tekstkleur voor negative variant (wit op donkere achtergrond)"
         },
         "background-color": {
-          "value": "{dsn.color.negative.bg-default}",
+          "value": "{dsn.color.negative-inverse.bg-default}",
           "type": "color",
           "comment": "Achtergrondkleur voor negative variant"
         }
       },
       "positive": {
         "color": {
-          "value": "{dsn.color.positive.color-default}",
+          "value": "{dsn.color.positive-inverse.color-default}",
           "type": "color",
-          "comment": "Tekstkleur voor positive variant"
+          "comment": "Tekstkleur voor positive variant (wit op donkere achtergrond)"
         },
         "background-color": {
-          "value": "{dsn.color.positive.bg-default}",
+          "value": "{dsn.color.positive-inverse.bg-default}",
           "type": "color",
           "comment": "Achtergrondkleur voor positive variant"
         }
       },
       "warning": {
         "color": {
-          "value": "{dsn.color.warning.color-default}",
+          "value": "{dsn.color.warning-inverse.color-default}",
           "type": "color",
-          "comment": "Tekstkleur voor warning variant"
+          "comment": "Tekstkleur voor warning variant (wit op donkere achtergrond)"
         },
         "background-color": {
-          "value": "{dsn.color.warning.bg-default}",
+          "value": "{dsn.color.warning-inverse.bg-default}",
           "type": "color",
           "comment": "Achtergrondkleur voor warning variant"
         }
       },
       "info": {
         "color": {
-          "value": "{dsn.color.info.color-default}",
+          "value": "{dsn.color.info-inverse.color-default}",
           "type": "color",
-          "comment": "Tekstkleur voor info variant"
+          "comment": "Tekstkleur voor info variant (wit op donkere achtergrond)"
         },
         "background-color": {
-          "value": "{dsn.color.info.bg-default}",
+          "value": "{dsn.color.info-inverse.bg-default}",
           "type": "color",
           "comment": "Achtergrondkleur voor info variant"
         }
       },
       "neutral": {
         "color": {
-          "value": "{dsn.color.neutral.color-default}",
+          "value": "{dsn.color.neutral-inverse.color-default}",
           "type": "color",
-          "comment": "Tekstkleur voor neutral variant"
+          "comment": "Tekstkleur voor neutral variant (wit op donkere achtergrond)"
         },
         "background-color": {
-          "value": "{dsn.color.neutral.bg-default}",
+          "value": "{dsn.color.neutral-inverse.bg-default}",
           "type": "color",
           "comment": "Achtergrondkleur voor neutral variant"
         }
