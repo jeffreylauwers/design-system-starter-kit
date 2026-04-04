@@ -140,6 +140,7 @@ MenuLink gebruikt twee token-sets. De gedeelde `--dsn-menu-item-*` tokens zijn o
 | `--dsn-menu-item-padding-block`           | Verticale padding            |
 | `--dsn-menu-item-padding-inline`          | Horizontale padding          |
 | `--dsn-menu-item-gap`                     | Ruimte tussen icoon en label |
+| `--dsn-menu-item-min-block-size`          | Minimale raakbare hoogte     |
 | `--dsn-menu-item-icon-size`               | Icoongrootte                 |
 | `--dsn-menu-item-color`                   | Tekstkleur (standaard)       |
 | `--dsn-menu-item-background-color`        | Achtergrondkleur (standaard) |

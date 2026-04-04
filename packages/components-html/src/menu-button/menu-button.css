@@ -41,6 +41,7 @@
   display: inline-flex;
   align-items: center;
   width: 100%;
+  min-block-size: var(--dsn-menu-item-min-block-size);
   gap: var(--dsn-menu-item-gap);
   padding-block: var(--dsn-menu-item-padding-block);
   padding-inline: var(--dsn-menu-item-padding-inline);

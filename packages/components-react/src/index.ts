@@ -59,6 +59,7 @@ export * from './Details';
 
 // Navigation Components
 export * from './BreadcrumbNavigation';
+export * from './Menu';
 export * from './MenuButton';
 export * from './MenuLink';
 

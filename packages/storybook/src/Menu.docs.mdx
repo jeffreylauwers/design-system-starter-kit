@@ -1,0 +1,38 @@
+import { Meta, Story, Controls, Markdown } from '@storybook/blocks';
+import * as MenuStories from './Menu.stories';
+import docs from './Menu.docs.md?raw';
+import { PreviewFrame, CodeTabs } from './components';
+
+export const [intro, rest] = docs.split('<!-- VOORBEELD -->');
+
+<Meta of={MenuStories} />
+
+<Markdown>{intro}</Markdown>
+
+## Voorbeeld
+
+<PreviewFrame>
+  <Story of={MenuStories.Default} />
+</PreviewFrame>
+
+<CodeTabs
+  of={MenuStories.Default}
+  html={`<ul class="dsn-menu">
+  <li class="dsn-menu-link">
+    <a class="dsn-menu-link__link" href="/home" aria-current="page">
+      <svg class="dsn-icon" aria-hidden="true"><!-- home --></svg>
+      <span class="dsn-menu-link__label">Home</span>
+    </a>
+  </li>
+  <li class="dsn-menu-button">
+    <button type="button" class="dsn-menu-button__button">
+      <svg class="dsn-icon" aria-hidden="true"><!-- user --></svg>
+      <span class="dsn-menu-button__label">Uitloggen</span>
+    </button>
+  </li>
+</ul>`}
+/>
+
+<Controls of={MenuStories.Default} />
+
+<Markdown>{rest}</Markdown>

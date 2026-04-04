@@ -31,6 +31,11 @@
         "type": "dimension",
         "comment": "Gedeeld: ruimte tussen icoon, label en badge"
       },
+      "min-block-size": {
+        "value": "{dsn.pointer-target.min-block-size}",
+        "type": "dimension",
+        "comment": "Gedeeld: minimale raakbare hoogte — WCAG pointer target"
+      },
       "icon-size": {
         "value": "{dsn.icon.size.md}",
         "type": "dimension",
