@@ -140,6 +140,24 @@
 }
 
 /* =============================================================================
+   Current in horizontale Menu — border-block-end indicator
+   Overschrijft de border-inline-start uit de verticale variant.
+   ============================================================================= */
+
+.dsn-menu--horizontal .dsn-menu-link__link[aria-current='page'] {
+  border-inline-start: none;
+  /* Reset de padding-compensatie van de verticale variant */
+  padding-inline-start: var(--dsn-menu-item-padding-inline);
+  border-block-end: var(--dsn-menu-link-current-indicator-width) solid
+    var(--dsn-menu-link-current-indicator-color);
+  /* Compenseer de indicator-hoogte zodat de tekst verticaal uitlijnt met niet-actieve items */
+  padding-block-end: calc(
+    var(--dsn-menu-item-padding-block) -
+      var(--dsn-menu-link-current-indicator-width)
+  );
+}
+
+/* =============================================================================
    Niveau-inspringing (level-indent) — via margin-inline-start
    Zodat de border-inline-start indicator dicht bij de tekst blijft.
    ============================================================================= */

@@ -3,9 +3,9 @@
     "menu": {
       "gap": {
         "vertical": {
-          "value": "0",
+          "value": "{dsn.space.block.xs}",
           "type": "spacing",
-          "comment": "Geen gap — items hebben zelf padding-block voor witruimte"
+          "comment": "Kleine ruimte tussen items in verticale oriëntatie"
         },
         "horizontal": {
           "value": "{dsn.space.inline.sm}",
