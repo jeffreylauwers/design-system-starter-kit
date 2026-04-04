@@ -1,6 +1,6 @@
 # Components
 
-**Last Updated:** April 3, 2026
+**Last Updated:** April 4, 2026
 
 Complete component specifications and guidelines for the Design System Starter Kit.
 
@@ -1586,7 +1586,7 @@ const [isOpen, setIsOpen] = React.useState(false);
 
 ## Navigation Components
 
-**Status:** Complete (HTML/CSS, React) — 1 component total
+**Status:** Complete (HTML/CSS, React) — 3 components total
 
 ### BreadcrumbNavigation
 
@@ -1679,6 +1679,148 @@ const [isOpen, setIsOpen] = React.useState(false);
 **Placement:** Vóór `<main>`, na de primaire navigatie — zodat een skip-link alle navigatie in één keer kan overslaan.
 
 **Tests:** React (25 tests)
+
+---
+
+### MenuLink
+
+**Status:** Complete (HTML/CSS, React)
+
+**Location:** `packages/components-{html|react}/src/MenuLink/`
+
+**Tokens:** `tokens/components/menu-item.json` (gedeeld) + `tokens/components/menu-link.json` (MenuLink-specifiek)
+
+**Props:** `href`, `level` (1–4), `current`, `iconStart`, `iconEnd`, `numberBadge`, `subItems`, `expanded`, `onExpandToggle`, `children`, `className`
+
+**Features:**
+
+- Semantisch een `<a>`, visueel consistent met MenuButton — gebruik voor URL-navigatie
+- Rendeert als `<li class="dsn-menu-link">` — altijd in een `<ul>` plaatsen
+- `level` prop (1–4) stelt hiërarchische inspringing in via `margin-inline-start` op de link
+- `current` prop voegt `aria-current="page"` toe en toont een `border-inline-start` indicator (3px)
+- `subItems` prop toont een uitklapknop naast de link; `expanded` beheert de open/dichte staat
+- `numberBadge` slot voor een `<NumberBadge>` rechts van het label
+- Gedeelde visuele stijl via `--dsn-menu-item-*` tokens; current-staat via `--dsn-menu-link-current-*`
+
+**CSS-klassen:**
+
+| Klasse                         | Element    | Beschrijving                                              |
+| ------------------------------ | ---------- | --------------------------------------------------------- |
+| `dsn-menu-link`                | `<li>`     | Basiscomponent — altijd aanwezig                          |
+| `dsn-menu-link--level-2`       | `<li>`     | Inspringing: 1× `level-indent`                            |
+| `dsn-menu-link--level-3`       | `<li>`     | Inspringing: 2× `level-indent`                            |
+| `dsn-menu-link--level-4`       | `<li>`     | Inspringing: 3× `level-indent`                            |
+| `dsn-menu-link__link`          | `<a>`      | De navigatielink — bevat icoon, label, badge              |
+| `dsn-menu-link__label`         | `<span>`   | Zichtbare linktekst                                       |
+| `dsn-menu-link__divider`       | `<span>`   | Decoratieve scheidingslijn tussen link en uitklapknop     |
+| `dsn-menu-link__expand-button` | `<button>` | Uitklapknop; `aria-expanded` toggle; chevron roteert 180° |
+
+**Usage:**
+
+```html
+<!-- HTML/CSS — level 1, standaard -->
+<ul style="list-style: none; margin: 0; padding: 0;">
+  <li class="dsn-menu-link">
+    <a class="dsn-menu-link__link" href="/dashboard">
+      <svg class="dsn-icon" aria-hidden="true"><!-- home --></svg>
+      <span class="dsn-menu-link__label">Dashboard</span>
+    </a>
+  </li>
+  <!-- level 2, actieve pagina -->
+  <li class="dsn-menu-link dsn-menu-link--level-2">
+    <a class="dsn-menu-link__link" href="/rapporten" aria-current="page">
+      <span class="dsn-menu-link__label">Rapporten</span>
+    </a>
+  </li>
+</ul>
+```
+
+```tsx
+// React
+<MenuLink href="/dashboard" iconStart={<Icon name="home" aria-hidden />}>
+  Dashboard
+</MenuLink>
+<MenuLink href="/rapporten" level={2} current>
+  Rapporten
+</MenuLink>
+<MenuLink href="/inbox" numberBadge={<NumberBadge variant="negative">5</NumberBadge>}>
+  Inbox
+</MenuLink>
+```
+
+**Tests:** React (27 tests)
+
+---
+
+### MenuButton
+
+**Status:** Complete (HTML/CSS, React)
+
+**Location:** `packages/components-{html|react}/src/MenuButton/`
+
+**Tokens:** `tokens/components/menu-item.json` (gedeeld met MenuLink)
+
+**Props:** `iconStart`, `iconEnd`, `dotBadge`, `children`, `className` + alle native `<button>` attributen
+
+**Features:**
+
+- Semantisch een `<button>`, visueel consistent met MenuLink — gebruik voor JS-acties (uitloggen, modal openen, etc.)
+- Rendeert als `<li class="dsn-menu-button">` — altijd in een `<ul>` plaatsen
+- `dotBadge` slot voor een `<DotBadge>` die rechtsboven de tekst zweeft (gerenderd in de label-span, `position: relative`)
+- Geen disabled state — niet van toepassing in navigatiecontext
+- Volledig gedeelde visuele stijl via `--dsn-menu-item-*` tokens
+
+**CSS-klassen:**
+
+| Klasse                    | Element    | Beschrijving                                                             |
+| ------------------------- | ---------- | ------------------------------------------------------------------------ |
+| `dsn-menu-button`         | `<li>`     | Basiscomponent — altijd aanwezig                                         |
+| `dsn-menu-button__button` | `<button>` | De knop — button-reset + volledige breedte, flexbox layout               |
+| `dsn-menu-button__label`  | `<span>`   | Zichtbare knoptekst; `flex: 1`; `position: relative` voor dotBadge anker |
+
+**Usage:**
+
+```html
+<!-- HTML/CSS -->
+<ul style="list-style: none; margin: 0; padding: 0;">
+  <li class="dsn-menu-button">
+    <button type="button" class="dsn-menu-button__button">
+      <svg class="dsn-icon" aria-hidden="true"><!-- settings --></svg>
+      <span class="dsn-menu-button__label">Instellingen</span>
+    </button>
+  </li>
+  <!-- met DotBadge -->
+  <li class="dsn-menu-button">
+    <button type="button" class="dsn-menu-button__button">
+      <svg class="dsn-icon" aria-hidden="true"><!-- bell --></svg>
+      <span class="dsn-menu-button__label">
+        Meldingen
+        <span class="dsn-visually-hidden">, nieuwe meldingen beschikbaar</span>
+        <span
+          class="dsn-dot-badge dsn-dot-badge--negative"
+          aria-hidden="true"
+        ></span>
+      </span>
+    </button>
+  </li>
+</ul>
+```
+
+```tsx
+// React
+<MenuButton iconStart={<Icon name="settings" aria-hidden />}>
+  Instellingen
+</MenuButton>
+<MenuButton
+  iconStart={<Icon name="bell" aria-hidden />}
+  dotBadge={<DotBadge variant="negative" />}
+>
+  Meldingen
+  <span className="dsn-visually-hidden">, nieuwe meldingen beschikbaar</span>
+</MenuButton>
+```
+
+**Tests:** React (13 tests)
 
 ---
 

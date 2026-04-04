@@ -128,22 +128,32 @@ De uitklapknop is een zelfstandige `<button>` naast de `<a>`. Gebruik altijd `ar
 
 ## Design tokens
 
+MenuLink gebruikt twee token-sets. De gedeelde `--dsn-menu-item-*` tokens zijn ook van toepassing op `MenuButton` — wijzigingen hier gelden voor beide componenten.
+
+### Gedeeld met MenuButton (`--dsn-menu-item-*`)
+
+| Token                                     | Beschrijving                 |
+| ----------------------------------------- | ---------------------------- |
+| `--dsn-menu-item-font-size`               | Lettergrootte                |
+| `--dsn-menu-item-font-weight`             | Letterdikte (regular)        |
+| `--dsn-menu-item-line-height`             | Regelhoogte                  |
+| `--dsn-menu-item-padding-block`           | Verticale padding            |
+| `--dsn-menu-item-padding-inline`          | Horizontale padding          |
+| `--dsn-menu-item-gap`                     | Ruimte tussen icoon en label |
+| `--dsn-menu-item-icon-size`               | Icoongrootte                 |
+| `--dsn-menu-item-color`                   | Tekstkleur (standaard)       |
+| `--dsn-menu-item-background-color`        | Achtergrondkleur (standaard) |
+| `--dsn-menu-item-hover-color`             | Tekstkleur bij hover         |
+| `--dsn-menu-item-hover-background-color`  | Achtergrondkleur bij hover   |
+| `--dsn-menu-item-active-color`            | Tekstkleur bij active        |
+| `--dsn-menu-item-active-background-color` | Achtergrondkleur bij active  |
+
+### MenuLink-specifiek (`--dsn-menu-link-*`)
+
 | Token                                             | Beschrijving                                                         |
 | ------------------------------------------------- | -------------------------------------------------------------------- |
-| `--dsn-menu-link-font-size`                       | Lettergrootte                                                        |
-| `--dsn-menu-link-font-weight`                     | Letterdikte (regular)                                                |
-| `--dsn-menu-link-line-height`                     | Regelhoogte                                                          |
-| `--dsn-menu-link-padding-block`                   | Verticale padding                                                    |
-| `--dsn-menu-link-padding-inline`                  | Horizontale padding                                                  |
-| `--dsn-menu-link-gap`                             | Ruimte tussen icoon en label                                         |
-| `--dsn-menu-link-icon-size`                       | Icoongrootte                                                         |
 | `--dsn-menu-link-level-indent`                    | Inspringing per niveau (level 2–4) via margin-inline-start           |
-| `--dsn-menu-link-color`                           | Tekstkleur (standaard)                                               |
-| `--dsn-menu-link-background-color`                | Achtergrondkleur (standaard)                                         |
-| `--dsn-menu-link-hover-color`                     | Tekstkleur bij hover                                                 |
-| `--dsn-menu-link-hover-background-color`          | Achtergrondkleur bij hover                                           |
-| `--dsn-menu-link-active-color`                    | Tekstkleur bij active                                                |
-| `--dsn-menu-link-active-background-color`         | Achtergrondkleur bij active                                          |
+| `--dsn-menu-link-current-font-weight`             | Letterdikte voor de actieve/huidige pagina (bold)                    |
 | `--dsn-menu-link-current-color`                   | Tekstkleur voor de actieve/huidige pagina                            |
 | `--dsn-menu-link-current-background-color`        | Achtergrondkleur voor de actieve/huidige pagina (action-2.bg-active) |
 | `--dsn-menu-link-current-indicator-color`         | Kleur van de border-inline-start indicator                           |
