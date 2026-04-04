@@ -257,6 +257,46 @@ Elke `.stories.tsx` volgt altijd deze sectievolgorde (met `// ===` comments als 
 
 Geen `// HIGH CONTRAST` sectie — daar zijn we van af gestapt.
 
+**Story `name:` properties — altijd Engels:**
+
+De `export const` naam en de optionele `name:` string in het story-object moeten **altijd Engels** zijn. Dit geldt ook als de `export const` naam zichzelf al beschrijft — gebruik dan géén `name:` property.
+
+```ts
+// ✅ Correct — Engelse name property
+export const WithIconStart: Story = {
+  name: 'With icon start',
+  // ...
+};
+
+export const AllStates: Story = {
+  name: 'All states',
+  // ...
+};
+
+export const Current: Story = {
+  name: 'Current (active page)',
+  // ...
+};
+
+// ❌ Fout — Nederlandse name property
+export const WithIconStart: Story = {
+  name: 'Met icoon start', // ❌
+};
+
+export const AllStates: Story = {
+  name: 'Alle staten', // ❌
+};
+```
+
+Veelgebruikte Engelse vertalingen:
+- `'Met icoon start'` → `'With icon start'`
+- `'Met icoon end'` → `'With icon end'`
+- `'Alle staten'` → `'All states'`
+- `'Alle varianten'` → `'All variants'`
+- `'Volledig navigatiemenu'` → `'Full navigation menu'`
+- `'Niveau-hiërarchie'` → `'Level hierarchy'`
+- `'Uitgevouwen met subpagina's'` → `'Expanded with sub-pages'`
+
 ---
 
 ## Stap 4 — Toon ter review
@@ -289,3 +329,4 @@ Rapporteer de URL van het aangemaakte issue.
 - Labels zijn altijd `feat,component,needs refinement` — geen uitzonderingen voor nieuwe componenten
 - **Geen Figma-verwijzingen** — er is geen Figma in dit project; schrijf nooit "valideren in Figma", "zie Figma" of soortgelijke verwijzingen
 - **Token schrijfwijze** — controleer altijd of sub-groepen als geneste objecten zijn geschreven (zie stap 2e)
+- **Story namen altijd Engels** — zowel `export const` namen als `name:` properties in story-objecten zijn altijd Engelstalig; Nederlandse `name:` properties zijn een bug (zie voorbeelden in de Storybook story-structuur sectie hierboven)

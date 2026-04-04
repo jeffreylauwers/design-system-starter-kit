@@ -149,7 +149,7 @@ export const Default: Story = {
 // =============================================================================
 
 export const WithIconStart: Story = {
-  name: 'Met icoon start',
+  name: 'With icon start',
   args: {
     iconStart: <Icon name="settings" aria-hidden />,
   },
@@ -157,7 +157,7 @@ export const WithIconStart: Story = {
 };
 
 export const WithIconEnd: Story = {
-  name: 'Met icoon end',
+  name: 'With icon end',
   args: {
     iconEnd: <Icon name="arrow-right" aria-hidden />,
   },
@@ -165,7 +165,7 @@ export const WithIconEnd: Story = {
 };
 
 export const WithDotBadge: Story = {
-  name: 'Met DotBadge',
+  name: 'With DotBadge',
   args: {
     iconStart: <Icon name="bell" aria-hidden />,
     dotBadge: <DotBadge variant="negative" />,
@@ -196,7 +196,7 @@ export const LongText: Story = {
 // =============================================================================
 
 export const AllStates: Story = {
-  name: 'Alle staten',
+  name: 'All states',
   render: () => (
     <ul style={{ listStyle: 'none', margin: 0, padding: 0 }}>
       <MenuButton>Standaard</MenuButton>
