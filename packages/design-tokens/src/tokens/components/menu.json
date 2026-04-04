@@ -1,0 +1,18 @@
+{
+  "dsn": {
+    "menu": {
+      "gap": {
+        "vertical": {
+          "value": "0",
+          "type": "spacing",
+          "comment": "Geen gap — items hebben zelf padding-block voor witruimte"
+        },
+        "horizontal": {
+          "value": "{dsn.space.inline.sm}",
+          "type": "spacing",
+          "comment": "Ruimte tussen items in horizontale oriëntatie"
+        }
+      }
+    }
+  }
+}

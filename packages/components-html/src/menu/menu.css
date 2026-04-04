@@ -1,0 +1,45 @@
+/**
+ * Menu Component
+ * Containercomponent voor MenuLink- en MenuButton-items.
+ * Rendert een <ul> met verticale (standaard) of horizontale oriëntatie.
+ *
+ * Altijd gewrapped in een semantisch element (<nav>) — verantwoordelijkheid van de ouder.
+ *
+ * Structuur:
+ * <ul class="dsn-menu">
+ *   <li class="dsn-menu-link dsn-menu-link--level-1">...</li>
+ *   <li class="dsn-menu-button">...</li>
+ * </ul>
+ *
+ * Horizontaal:
+ * <ul class="dsn-menu dsn-menu--horizontal">
+ *   ...
+ * </ul>
+ */
+
+/* =============================================================================
+   Base
+   ============================================================================= */
+
+.dsn-menu {
+  /* Reset */
+  list-style: none;
+  margin: 0;
+  padding: 0;
+
+  /* Layout — verticaal (standaard) */
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  gap: var(--dsn-menu-gap-vertical);
+}
+
+/* =============================================================================
+   Horizontale oriëntatie
+   ============================================================================= */
+
+.dsn-menu--horizontal {
+  flex-direction: row;
+  align-items: center;
+  gap: var(--dsn-menu-gap-horizontal);
+}
