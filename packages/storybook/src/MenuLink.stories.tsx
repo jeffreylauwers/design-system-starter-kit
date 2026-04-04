@@ -163,13 +163,13 @@ export const Default: Story = {
 // =============================================================================
 
 export const Current: Story = {
-  name: 'Current (actieve pagina)',
+  name: 'Current (active page)',
   args: { current: true },
   render: renderSingle,
 };
 
 export const WithIconStart: Story = {
-  name: 'Met icoon start',
+  name: 'With icon start',
   args: {
     iconStart: <Icon name="home" aria-hidden />,
   },
@@ -177,7 +177,7 @@ export const WithIconStart: Story = {
 };
 
 export const WithIconEnd: Story = {
-  name: 'Met icoon end',
+  name: 'With icon end',
   args: {
     iconEnd: <Icon name="arrow-right" aria-hidden />,
   },
@@ -185,7 +185,7 @@ export const WithIconEnd: Story = {
 };
 
 export const WithNumberBadge: Story = {
-  name: 'Met NumberBadge',
+  name: 'With NumberBadge',
   args: {
     href: '/inbox',
     iconStart: <Icon name="mail" aria-hidden />,
@@ -196,7 +196,7 @@ export const WithNumberBadge: Story = {
 };
 
 export const WithExpandButton: Story = {
-  name: 'Met uitklapknop (subItems)',
+  name: 'With expand button (subItems)',
   args: {
     href: '/rapporten',
     children: 'Rapporten',
@@ -221,7 +221,7 @@ export const LongText: Story = {
 // =============================================================================
 
 export const Levels: Story = {
-  name: 'Niveau-hiërarchie (level 1–4)',
+  name: 'Level hierarchy (level 1–4)',
   render: () => (
     <ul style={{ listStyle: 'none', margin: 0, padding: 0 }}>
       <MenuLink href="/rapporten" current>
@@ -241,7 +241,7 @@ export const Levels: Story = {
 };
 
 export const ExpandedWithSubItems: Story = {
-  name: "Uitgevouwen met subpagina's",
+  name: 'Expanded with sub-pages',
   render: () => (
     <ul style={{ listStyle: 'none', margin: 0, padding: 0 }}>
       <MenuLink
@@ -266,7 +266,7 @@ export const ExpandedWithSubItems: Story = {
 };
 
 export const FullNavigation: Story = {
-  name: 'Volledig navigatiemenu',
+  name: 'Full navigation menu',
   render: () => (
     <nav aria-label="Primaire navigatie" style={{ maxWidth: '280px' }}>
       <ul style={{ listStyle: 'none', margin: 0, padding: 0 }}>
@@ -315,7 +315,7 @@ export const FullNavigation: Story = {
 };
 
 export const AllStates: Story = {
-  name: 'Alle staten',
+  name: 'All states',
   render: () => (
     <ul style={{ listStyle: 'none', margin: 0, padding: 0 }}>
       <MenuLink href="/standaard">Standaard</MenuLink>
