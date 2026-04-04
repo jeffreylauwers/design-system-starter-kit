@@ -1,0 +1,75 @@
+{
+  "dsn": {
+    "menu-item": {
+      "font-size": {
+        "value": "{dsn.text.font-size.md}",
+        "type": "dimension",
+        "comment": "Gedeeld: lettergrootte voor MenuLink en MenuButton"
+      },
+      "font-weight": {
+        "value": "{dsn.text.font-weight.default}",
+        "type": "fontWeight",
+        "comment": "Gedeeld: letterdikte — regular voor navigatie-items"
+      },
+      "line-height": {
+        "value": "{dsn.text.line-height.md}",
+        "type": "lineHeight",
+        "comment": "Gedeeld: regelhoogte"
+      },
+      "padding-block": {
+        "value": "{dsn.space.block.md}",
+        "type": "dimension",
+        "comment": "Gedeeld: verticale padding"
+      },
+      "padding-inline": {
+        "value": "{dsn.space.inline.lg}",
+        "type": "dimension",
+        "comment": "Gedeeld: horizontale padding"
+      },
+      "gap": {
+        "value": "{dsn.space.inline.md}",
+        "type": "dimension",
+        "comment": "Gedeeld: ruimte tussen icoon, label en badge"
+      },
+      "icon-size": {
+        "value": "{dsn.icon.size.md}",
+        "type": "dimension",
+        "comment": "Gedeeld: icoongrootte"
+      },
+      "color": {
+        "value": "{dsn.color.action-2.color-default}",
+        "type": "color",
+        "comment": "Gedeeld: standaard tekstkleur"
+      },
+      "background-color": {
+        "value": "{dsn.color.transparent}",
+        "type": "color",
+        "comment": "Gedeeld: standaard achtergrondkleur"
+      },
+      "hover": {
+        "color": {
+          "value": "{dsn.color.action-2.color-hover}",
+          "type": "color",
+          "comment": "Gedeeld: hover tekstkleur"
+        },
+        "background-color": {
+          "value": "{dsn.color.action-2.bg-hover}",
+          "type": "color",
+          "comment": "Gedeeld: hover achtergrondkleur"
+        }
+      },
+      "active": {
+        "color": {
+          "value": "{dsn.color.action-2.color-active}",
+          "type": "color",
+          "comment": "Gedeeld: active tekstkleur"
+        },
+        "background-color": {
+          "value": "{dsn.color.action-2.bg-active}",
+          "type": "color",
+          "comment": "Gedeeld: active achtergrondkleur"
+        }
+      }
+    }
+  }
+}

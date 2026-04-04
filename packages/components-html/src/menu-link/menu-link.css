@@ -3,6 +3,9 @@
  * Navigatielink met niveau-hiërarchie, actieve staat en uitklapbare subnavigatie.
  * Semantisch een `<a>`, visueel consistent met MenuButton.
  *
+ * Gedeelde visuele stijl via --dsn-menu-item-* tokens (menu-item.json).
+ * MenuLink-specifieke tokens via --dsn-menu-link-* (current-staat, level-indent).
+ *
  * Structuur:
  * <li class="dsn-menu-link">
  *   <a class="dsn-menu-link__link" href="/pagina">
@@ -56,16 +59,16 @@
   display: inline-flex;
   align-items: center;
   flex: 1;
-  gap: var(--dsn-menu-link-gap);
-  padding-block: var(--dsn-menu-link-padding-block);
-  padding-inline: var(--dsn-menu-link-padding-inline);
+  gap: var(--dsn-menu-item-gap);
+  padding-block: var(--dsn-menu-item-padding-block);
+  padding-inline: var(--dsn-menu-item-padding-inline);
   font-family: inherit;
-  font-size: var(--dsn-menu-link-font-size);
-  font-weight: var(--dsn-menu-link-font-weight);
-  line-height: var(--dsn-menu-link-line-height);
+  font-size: var(--dsn-menu-item-font-size);
+  font-weight: var(--dsn-menu-item-font-weight);
+  line-height: var(--dsn-menu-item-line-height);
   text-decoration: none;
-  color: var(--dsn-menu-link-color);
-  background-color: var(--dsn-menu-link-background-color);
+  color: var(--dsn-menu-item-color);
+  background-color: var(--dsn-menu-item-background-color);
   transition:
     background-color var(--dsn-transition-duration-normal)
       var(--dsn-transition-easing-default),
@@ -74,8 +77,8 @@
 }
 
 .dsn-menu-link__link > .dsn-icon {
-  width: var(--dsn-menu-link-icon-size);
-  height: var(--dsn-menu-link-icon-size);
+  width: var(--dsn-menu-item-icon-size);
+  height: var(--dsn-menu-item-icon-size);
   flex-shrink: 0;
 }
 
@@ -89,13 +92,13 @@
    ============================================================================= */
 
 .dsn-menu-link__link:hover {
-  color: var(--dsn-menu-link-hover-color);
-  background-color: var(--dsn-menu-link-hover-background-color);
+  color: var(--dsn-menu-item-hover-color);
+  background-color: var(--dsn-menu-item-hover-background-color);
 }
 
 .dsn-menu-link__link:active {
-  color: var(--dsn-menu-link-active-color);
-  background-color: var(--dsn-menu-link-active-background-color);
+  color: var(--dsn-menu-item-active-color);
+  background-color: var(--dsn-menu-item-active-background-color);
 }
 
 .dsn-menu-link__link:focus-visible {
@@ -121,7 +124,7 @@
     var(--dsn-menu-link-current-indicator-color);
   /* Compenseer de indicator-breedte zodat de tekst horizontaal uitlijnt met niet-actieve items */
   padding-inline-start: calc(
-    var(--dsn-menu-link-padding-inline) -
+    var(--dsn-menu-item-padding-inline) -
       var(--dsn-menu-link-current-indicator-width)
   );
 }

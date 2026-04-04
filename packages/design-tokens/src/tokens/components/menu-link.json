@@ -1,128 +1,59 @@
 {
   "dsn": {
     "menu-link": {
-      "font-size": {
-        "value": "{dsn.text.font-size.md}",
-        "type": "dimension",
-        "comment": "MenuLink font size"
-      },
-      "font-weight": {
-        "value": "{dsn.text.font-weight.default}",
-        "type": "fontWeight",
-        "comment": "MenuLink font weight — regular voor navigatielinks"
-      },
-      "line-height": {
-        "value": "{dsn.text.line-height.md}",
-        "type": "lineHeight",
-        "comment": "MenuLink line height"
-      },
-      "padding-block": {
-        "value": "{dsn.space.block.md}",
-        "type": "dimension",
-        "comment": "Verticale padding van de link"
-      },
-      "padding-inline": {
-        "value": "{dsn.space.inline.lg}",
-        "type": "dimension",
-        "comment": "Horizontale padding van de link"
-      },
-      "gap": {
-        "value": "{dsn.space.inline.md}",
-        "type": "dimension",
-        "comment": "Ruimte tussen icoon, label en badge"
-      },
-      "icon-size": {
-        "value": "{dsn.icon.size.md}",
-        "type": "dimension",
-        "comment": "Icoongrootte in de link"
-      },
       "level-indent": {
         "value": "{dsn.space.inline.3xl}",
         "type": "dimension",
-        "comment": "Inspringing per hiërarchisch niveau (level 2–4) — via margin-inline-start op de link"
-      },
-      "color": {
-        "value": "{dsn.color.action-1.color-default}",
-        "type": "color",
-        "comment": "Standaard tekstkleur"
-      },
-      "background-color": {
-        "value": "{dsn.color.transparent}",
-        "type": "color",
-        "comment": "Standaard achtergrondkleur"
-      },
-      "hover": {
-        "color": {
-          "value": "{dsn.color.action-1.color-hover}",
-          "type": "color",
-          "comment": "Hover tekstkleur"
-        },
-        "background-color": {
-          "value": "{dsn.color.action-1.bg-hover}",
-          "type": "color",
-          "comment": "Hover achtergrondkleur"
-        }
-      },
-      "active": {
-        "color": {
-          "value": "{dsn.color.action-1.color-active}",
-          "type": "color",
-          "comment": "Active tekstkleur"
-        },
-        "background-color": {
-          "value": "{dsn.color.action-1.bg-active}",
-          "type": "color",
-          "comment": "Active achtergrondkleur"
-        }
+        "comment": "MenuLink-specifiek: inspringing per hiërarchisch niveau (level 2–4) — via margin-inline-start op de link"
       },
       "current": {
         "font-weight": {
           "value": "{dsn.text.font-weight.bold}",
           "type": "fontWeight",
-          "comment": "Font weight voor de actieve/huidige pagina — bold voor visuele nadruk"
+          "comment": "MenuLink-specifiek: font weight voor de actieve/huidige pagina — bold voor visuele nadruk"
         },
         "color": {
           "value": "{dsn.color.action-2.color-default}",
           "type": "color",
-          "comment": "Tekstkleur voor de actieve/huidige pagina — niet inverse, volgt action-2 subtle-active stijl"
+          "comment": "MenuLink-specifiek: tekstkleur voor de actieve/huidige pagina"
         },
         "background-color": {
           "value": "{dsn.color.action-2.bg-active}",
           "type": "color",
-          "comment": "Achtergrondkleur voor de actieve/huidige pagina — action-2.bg-active (zelfde als Button Subtle active)"
+          "comment": "MenuLink-specifiek: achtergrondkleur voor de actieve/huidige pagina"
         },
         "indicator-color": {
           "value": "{dsn.color.action-2.color-default}",
           "type": "color",
-          "comment": "Kleur van de border-inline-start indicator bij de actieve pagina"
+          "comment": "MenuLink-specifiek: kleur van de border-inline-start indicator"
         },
         "indicator-width": {
           "value": "3px",
           "type": "dimension",
-          "comment": "Breedte van de border-inline-start indicator bij de actieve pagina"
+          "comment": "MenuLink-specifiek: breedte van de border-inline-start indicator"
         },
         "hover": {
           "color": {
             "value": "{dsn.color.action-2.color-default}",
             "type": "color",
-            "comment": "Hover tekstkleur voor de actieve/huidige pagina"
+            "comment": "MenuLink-specifiek: hover tekstkleur voor de actieve pagina"
           },
           "background-color": {
             "value": "{dsn.color.action-2.bg-active}",
             "type": "color",
-            "comment": "Hover achtergrondkleur voor de actieve/huidige pagina — blijft bg-active"
+            "comment": "MenuLink-specifiek: hover achtergrondkleur voor de actieve pagina — blijft bg-active"
           }
         },
         "active": {
           "color": {
             "value": "{dsn.color.action-2.color-default}",
             "type": "color",
-            "comment": "Active tekstkleur voor de actieve/huidige pagina"
+            "comment": "MenuLink-specifiek: active tekstkleur voor de actieve pagina"
           },
           "background-color": {
             "value": "{dsn.color.action-2.bg-active}",
             "type": "color",
-            "comment": "Active achtergrondkleur voor de actieve/huidige pagina"
+            "comment": "MenuLink-specifiek: active achtergrondkleur voor de actieve pagina"
           }
         }
       }

@@ -6,6 +6,39 @@ All notable changes to this project are documented in this file.
 
 ---
 
+## Version 5.18.0 (April 4, 2026)
+
+### MenuButton component + gedeelde menu-item tokens
+
+#### Added
+
+- **MenuButton** component — navigatieknop voor JavaScript-acties (uitloggen, modal openen, etc.); semantisch een `<button>`, visueel identiek aan MenuLink
+- `iconStart`, `iconEnd`, `dotBadge` props; `dotBadge` zweeft rechtsboven de tekst via `position: relative` op de label-span
+- 13 React tests
+
+#### Changed
+
+- **Tokens gerefactored:** gedeelde visuele stijl van MenuLink en MenuButton samengebracht in nieuw bestand `tokens/components/menu-item.json` (`dsn.menu-item.*` namespace)
+- `tokens/components/menu-link.json` bevat nu alleen nog MenuLink-specifieke tokens (`current.*` en `level-indent`)
+- `tokens/components/menu-button.json` verwijderd — vervangen door de gedeelde `menu-item.json`
+- Kleurverwijzingen van MenuLink en MenuButton gewijzigd van `action-1` naar `action-2` — consistent met `Link`
+
+---
+
+### MenuLink component
+
+#### Added
+
+- **MenuLink** component — navigatielink met niveau-hiërarchie, actieve pagina-staat en uitklapbare subnavigatie
+- `level` prop (1–4): toenemende `padding-inline-start` inspringing via `margin-inline-start` op de link
+- `current` prop: `aria-current="page"` + visuele `border-inline-start` indicator (3px, `action-2` kleur)
+- `subItems` + `expanded` + `onExpandToggle`: uitklapknop naast de link met `aria-expanded` en roterende chevron
+- `iconStart`, `iconEnd`, `numberBadge` props
+- Storybook stories: Default, Current, Met icoon start/end, Met NumberBadge, Met uitklapknop, Niveauhiërarchie, Volledig navigatiemenu, Alle staten, RTL, RTL long text
+- 27 React tests
+
+---
+
 ## Version 5.17.0 (April 3, 2026)
 
 ### NumberBadge component (issue #130)

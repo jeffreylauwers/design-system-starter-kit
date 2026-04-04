@@ -1,0 +1,31 @@
+import { Meta, Story, Controls, Markdown } from '@storybook/blocks';
+import * as MenuButtonStories from './MenuButton.stories';
+import docs from './MenuButton.docs.md?raw';
+import { PreviewFrame, CodeTabs } from './components';
+
+export const [intro, rest] = docs.split('<!-- VOORBEELD -->');
+
+<Meta of={MenuButtonStories} />
+
+<Markdown>{intro}</Markdown>
+
+## Voorbeeld
+
+<PreviewFrame>
+  <Story of={MenuButtonStories.Default} />
+</PreviewFrame>
+
+<CodeTabs
+  of={MenuButtonStories.Default}
+  html={`<ul style="list-style: none; margin: 0; padding: 0;">
+  <li class="dsn-menu-button">
+    <button type="button" class="dsn-menu-button__button">
+      <span class="dsn-menu-button__label">Dashboard</span>
+    </button>
+  </li>
+</ul>`}
+/>
+
+<Controls of={MenuButtonStories.Default} />
+
+<Markdown>{rest}</Markdown>

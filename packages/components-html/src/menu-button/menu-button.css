@@ -1,0 +1,105 @@
+/**
+ * MenuButton Component
+ * Navigatieknop voor JS-acties met icoon- en badge-ondersteuning.
+ * Semantisch een `<button>`, visueel consistent met MenuLink.
+ *
+ * Gedeelde visuele stijl via --dsn-menu-item-* tokens (menu-item.json).
+ *
+ * Structuur:
+ * <li class="dsn-menu-button">
+ *   <button type="button" class="dsn-menu-button__button">
+ *     <svg class="dsn-icon" aria-hidden="true"><!-- icoon-start --></svg>
+ *     <span class="dsn-menu-button__label">Label</span>
+ *     <span class="dsn-dot-badge dsn-dot-badge--negative" aria-hidden="true"></span>
+ *     <svg class="dsn-icon" aria-hidden="true"><!-- icoon-end --></svg>
+ *   </button>
+ * </li>
+ */
+
+/* =============================================================================
+   List item
+   ============================================================================= */
+
+.dsn-menu-button {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+/* =============================================================================
+   Button
+   ============================================================================= */
+
+.dsn-menu-button__button {
+  /* Button reset */
+  appearance: none;
+  background: none;
+  border: 0;
+  cursor: pointer;
+
+  /* Layout */
+  display: inline-flex;
+  align-items: center;
+  width: 100%;
+  gap: var(--dsn-menu-item-gap);
+  padding-block: var(--dsn-menu-item-padding-block);
+  padding-inline: var(--dsn-menu-item-padding-inline);
+
+  /* Typography */
+  font-family: inherit;
+  font-size: var(--dsn-menu-item-font-size);
+  font-weight: var(--dsn-menu-item-font-weight);
+  line-height: var(--dsn-menu-item-line-height);
+  text-align: start;
+
+  /* Colors */
+  color: var(--dsn-menu-item-color);
+  background-color: var(--dsn-menu-item-background-color);
+
+  /* Transitions */
+  transition:
+    background-color var(--dsn-transition-duration-normal)
+      var(--dsn-transition-easing-default),
+    color var(--dsn-transition-duration-normal)
+      var(--dsn-transition-easing-default);
+}
+
+.dsn-menu-button__button > .dsn-icon {
+  width: var(--dsn-menu-item-icon-size);
+  height: var(--dsn-menu-item-icon-size);
+  flex-shrink: 0;
+}
+
+.dsn-menu-button__label {
+  /* De <button> zelf is full-width via width: 100%.
+     Het label vult de resterende ruimte zodat iconEnd rechts uitlijnt.
+     position: relative zodat de dotBadge zich absoluut rechtsboven de tekst positioneert. */
+  flex: 1;
+  text-align: start;
+  position: relative;
+}
+
+/* =============================================================================
+   States
+   ============================================================================= */
+
+.dsn-menu-button__button:hover {
+  color: var(--dsn-menu-item-hover-color);
+  background-color: var(--dsn-menu-item-hover-background-color);
+}
+
+.dsn-menu-button__button:active {
+  color: var(--dsn-menu-item-active-color);
+  background-color: var(--dsn-menu-item-active-background-color);
+}
+
+.dsn-menu-button__button:focus-visible {
+  background-color: var(--dsn-focus-background-color);
+  color: var(--dsn-focus-color);
+  outline: var(--dsn-focus-outline-width) var(--dsn-focus-outline-style)
+    var(--dsn-focus-outline-color);
+  outline-offset: var(--dsn-focus-outline-offset);
+  box-shadow: 0 0 0
+    calc(var(--dsn-focus-outline-offset) + var(--dsn-focus-outline-width))
+    var(--dsn-focus-inverse-outline-color);
+}
