@@ -65,12 +65,12 @@ function generateLightPalette(
   _baseHex: string
 ): { tokens: TokenMap; inverseTokens: InverseTokenMap } {
   // Track 1: Backgrounds (very light, barely tinted)
-  const bgDocument = makeOklch(0.975, C(baseC * 0.06), H);
-  const bgElevated = makeOklch(0.975, C(baseC * 0.06), H);
+  const bgDocument = makeOklch(0.99, C(baseC * 0.06), H);
+  const bgElevated = makeOklch(0.99, C(baseC * 0.06), H);
   const bgSubtle = makeOklch(0.955, C(baseC * 0.1), H);
-  const bgDefault = makeOklch(0.935, C(baseC * 0.14), H);
-  const bgHover = makeOklch(0.915, C(baseC * 0.18), H);
-  const bgActive = makeOklch(0.895, C(baseC * 0.22), H);
+  const bgDefault = makeOklch(0.915, C(baseC * 0.14), H);
+  const bgHover = makeOklch(0.895, C(baseC * 0.18), H);
+  const bgActive = makeOklch(0.875, C(baseC * 0.22), H);
 
   // Track 2: Borders (mid-range L, higher C)
   // Anchor at L=0.52 for cross-group visual alignment; adjust only if needed.
@@ -238,9 +238,9 @@ function generateDarkPalette(
   const bgDocument = makeOklch(0.12, C(baseC * 0.12), H);
   const bgElevated = makeOklch(0.155, C(baseC * 0.14), H); // lighter for elevation
   const bgSubtle = makeOklch(0.175, C(baseC * 0.16), H);
-  const bgDefault = makeOklch(0.2, C(baseC * 0.18), H);
-  const bgHover = makeOklch(0.23, C(baseC * 0.2), H);
-  const bgActive = makeOklch(0.26, C(baseC * 0.22), H);
+  const bgDefault = makeOklch(0.23, C(baseC * 0.18), H);
+  const bgHover = makeOklch(0.26, C(baseC * 0.2), H);
+  const bgActive = makeOklch(0.29, C(baseC * 0.22), H);
 
   // Borders: mid-range, visible on dark bg
   // Anchor at L=0.52 for cross-group visual alignment; adjust only if needed.
