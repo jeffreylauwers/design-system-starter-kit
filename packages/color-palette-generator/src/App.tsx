@@ -1,6 +1,7 @@
 import { useState, useCallback } from 'react';
 import { PaletteGrid } from './components/PaletteGrid';
 import { Toolbar } from './components/Toolbar';
+import { DocumentationSection } from './components/DocumentationSection';
 import { parseToOklch } from './engine/oklch';
 import { buildColorGroup } from './engine/palette';
 import { exportDtcg, exportGeneric, downloadJson } from './engine/export';
@@ -158,6 +159,8 @@ export function App() {
             <span>Klik op een swatch om de kleurwaarde te kopiëren</span>
           </div>
         </div>
+
+        <DocumentationSection />
       </main>
     </div>
   );
