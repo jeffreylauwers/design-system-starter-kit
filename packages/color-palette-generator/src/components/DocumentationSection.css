@@ -1,0 +1,255 @@
+.doc-section {
+  margin-top: 40px;
+  padding-top: 32px;
+  border-top: 1px solid var(--border-subtle);
+  display: flex;
+  flex-direction: column;
+  gap: 32px;
+}
+
+/* ── Blokken ── */
+
+.doc-block {
+  background: var(--bg-surface);
+  border: 1px solid var(--border-subtle);
+  border-radius: 10px;
+  padding: 24px 28px;
+}
+
+.doc-block--feedback {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 12px;
+}
+
+/* ── Typografie ── */
+
+.doc-block__title {
+  margin: 0 0 14px;
+  font-size: 16px;
+  font-weight: 700;
+  color: var(--text-primary);
+  letter-spacing: -0.01em;
+}
+
+.doc-block p {
+  margin: 0 0 12px;
+  font-size: 14px;
+  line-height: 1.65;
+  color: var(--text-secondary);
+  max-width: 72ch;
+}
+
+.doc-block p:last-child {
+  margin-bottom: 0;
+}
+
+/* ── Lijsten ── */
+
+.doc-list {
+  margin: 0 0 12px;
+  padding-left: 20px;
+  font-size: 14px;
+  line-height: 1.65;
+  color: var(--text-secondary);
+  max-width: 72ch;
+}
+
+.doc-list--ordered {
+  padding-left: 22px;
+}
+
+.doc-list--nested {
+  margin: 6px 0 0;
+}
+
+.doc-list li {
+  margin-bottom: 8px;
+}
+
+.doc-list li:last-child {
+  margin-bottom: 0;
+}
+
+/* ── Code ── */
+
+.doc-code {
+  font-family: 'Fira Code', 'Cascadia Code', ui-monospace, monospace;
+  font-size: 12px;
+  background: var(--bg-surface-raised);
+  border: 1px solid var(--border-subtle);
+  border-radius: 4px;
+  padding: 1px 5px;
+  color: var(--text-primary);
+}
+
+/* ── Links ── */
+
+.doc-link {
+  color: var(--accent);
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+
+.doc-link:hover {
+  color: var(--accent-hover);
+}
+
+/* ── Track-kaarten ── */
+
+.doc-tracks {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 12px;
+  margin: 12px 0 16px;
+}
+
+.doc-track {
+  background: var(--bg-surface-raised);
+  border: 1px solid var(--border-subtle);
+  border-radius: 8px;
+  padding: 14px 16px;
+}
+
+.doc-track__label {
+  display: inline-block;
+  margin-bottom: 8px;
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--text-primary);
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+.doc-track__desc {
+  margin: 0;
+  font-size: 13px;
+  line-height: 1.55;
+  color: var(--text-secondary);
+}
+
+/* ── Technische details (details/summary) ── */
+
+.doc-details {
+  margin-top: 20px;
+  border: 1px solid var(--border-subtle);
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.doc-details__summary {
+  padding: 12px 16px;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text-secondary);
+  cursor: pointer;
+  list-style: none;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  user-select: none;
+  background: var(--bg-surface-raised);
+  transition: background 0.12s;
+}
+
+.doc-details__summary::-webkit-details-marker {
+  display: none;
+}
+
+.doc-details__summary::before {
+  content: '›';
+  font-size: 16px;
+  line-height: 1;
+  transition: transform 0.18s;
+  display: inline-block;
+  color: var(--text-muted);
+}
+
+.doc-details[open] .doc-details__summary::before {
+  transform: rotate(90deg);
+}
+
+.doc-details__summary:hover {
+  background: var(--bg-hover);
+}
+
+.doc-details__body {
+  padding: 20px 20px 16px;
+  border-top: 1px solid var(--border-subtle);
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+}
+
+.doc-details__body p {
+  margin: 0 0 12px;
+  font-size: 14px;
+  line-height: 1.65;
+  color: var(--text-secondary);
+  max-width: 72ch;
+}
+
+.doc-details__body p:last-child {
+  margin-bottom: 0;
+}
+
+.doc-details__body .doc-list {
+  margin: 0 0 12px;
+}
+
+/* ── Token-tabel ── */
+
+.doc-table {
+  width: 100%;
+  max-width: 640px;
+  border-collapse: collapse;
+  font-size: 13px;
+  margin: 4px 0 16px;
+}
+
+.doc-table th,
+.doc-table td {
+  text-align: left;
+  padding: 7px 12px;
+  border: 1px solid var(--border-subtle);
+  color: var(--text-secondary);
+}
+
+.doc-table th {
+  background: var(--bg-surface-raised);
+  font-weight: 600;
+  color: var(--text-primary);
+  font-size: 12px;
+}
+
+.doc-table tr:nth-child(even) td {
+  background: var(--bg-surface-raised);
+}
+
+/* ── Feedback-knop ── */
+
+.doc-feedback-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 9px 16px;
+  background: var(--accent);
+  color: white;
+  border-radius: 7px;
+  font-size: 14px;
+  font-weight: 600;
+  text-decoration: none;
+  transition:
+    background 0.12s,
+    transform 0.1s;
+}
+
+.doc-feedback-btn:hover {
+  background: var(--accent-hover);
+  transform: translateY(-1px);
+}
+
+.doc-feedback-btn:active {
+  transform: translateY(0);
+}
