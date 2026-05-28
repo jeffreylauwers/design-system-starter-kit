@@ -1,0 +1,9 @@
+.dsn-pre-heading {
+  display: block;
+  color: var(--dsn-pre-heading-color);
+  font-family: var(--dsn-pre-heading-font-family);
+  font-size: var(--dsn-pre-heading-font-size);
+  font-weight: var(--dsn-pre-heading-font-weight);
+  line-height: var(--dsn-pre-heading-line-height);
+  margin-block-end: var(--dsn-pre-heading-margin-block-end);
+}

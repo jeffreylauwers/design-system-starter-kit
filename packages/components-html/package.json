@@ -29,6 +29,8 @@
     "./form-field-status": "./src/form-field-status/form-field-status.css",
     "./grid": "./src/grid/grid.css",
     "./heading": "./src/heading/heading.css",
+    "./heading-group": "./src/heading-group/heading-group.css",
+    "./pre-heading": "./src/pre-heading/pre-heading.css",
     "./hero": "./src/hero/hero.css",
     "./icon": "./src/icon/icon.css",
     "./image": "./src/image/image.css",
