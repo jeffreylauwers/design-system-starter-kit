@@ -188,6 +188,32 @@
       ]
     },
     {
+      "name": "HeadingGroup",
+      "cssBlock": "dsn-heading-group",
+      "category": "content",
+      "purpose": "Heading with an integrated pre-heading; renders as a flex-column hx element combining PreHeading and Heading in one API.",
+      "platforms": ["html-css", "react"],
+      "primaryProps": [
+        { "name": "level", "values": [1, 2, 3, 4, 5, 6], "default": 2 },
+        {
+          "name": "appearance",
+          "values": [1, 2, 3, 4, 5, 6],
+          "default": "matches level"
+        },
+        { "name": "preHeading", "type": "ReactNode", "required": false }
+      ]
+    },
+    {
+      "name": "PreHeading",
+      "cssBlock": "dsn-pre-heading",
+      "category": "content",
+      "purpose": "Block-level span placed as first child inside a heading element; becomes part of the heading's accessible name.",
+      "platforms": ["html-css", "react"],
+      "primaryProps": [
+        { "name": "children", "type": "ReactNode", "required": true }
+      ]
+    },
+    {
       "name": "Paragraph",
       "cssBlock": "dsn-paragraph",
       "category": "content",

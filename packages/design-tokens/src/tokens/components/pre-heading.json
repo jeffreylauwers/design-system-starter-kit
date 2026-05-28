@@ -1,0 +1,36 @@
+{
+  "dsn": {
+    "pre-heading": {
+      "color": {
+        "$type": "color",
+        "$value": "{dsn.color.neutral.color-document}",
+        "$description": "Pre-heading text color"
+      },
+      "font-family": {
+        "$type": "fontFamily",
+        "$value": "{dsn.text.font-family.default}",
+        "$description": "Pre-heading font family"
+      },
+      "font-size": {
+        "$type": "fontSize",
+        "$value": "{dsn.text.font-size.md}",
+        "$description": "Pre-heading font size (same as body text)"
+      },
+      "font-weight": {
+        "$type": "fontWeight",
+        "$value": "{dsn.text.font-weight.bold}",
+        "$description": "Pre-heading font weight (bold to distinguish from heading text)"
+      },
+      "line-height": {
+        "$type": "lineHeight",
+        "$value": "{dsn.text.line-height.md}",
+        "$description": "Pre-heading line height"
+      },
+      "margin-block-end": {
+        "$type": "spacing",
+        "$value": "{dsn.space.row.xs}",
+        "$description": "Space between pre-heading and heading text"
+      }
+    }
+  }
+}

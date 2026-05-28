@@ -16,6 +16,8 @@ export * from './Stack';
 
 // Layout & Typography
 export * from './Heading';
+export * from './HeadingGroup';
+export * from './PreHeading';
 export * from './Paragraph';
 export * from './Link';
 export * from './UnorderedList';
