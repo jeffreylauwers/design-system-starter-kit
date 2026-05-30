@@ -10,7 +10,7 @@ PreHeading is een `<span>` met `display: block` die als eerste kind binnen een `
 
 Gebruik PreHeading voor:
 
-- Stap-indicatoren in meerstappenformulieren: "Stap 2" boven "Uw gegevens"
+- Stap-indicatoren in meerstappenformulieren: "Stap 2 van 4" boven "Uw gegevens"
 - Sectie-categorisering: "Diensten" boven "We helpen u groeien"
 - Processtap-context: "Stap 1 van 4" boven de staptitel
 
@@ -36,23 +36,23 @@ PreHeading staat altijd als eerste kind van een `<hx>` element. Gebruik het nooi
 <!-- ✅ Correct: PreHeading als eerste kind van een heading -->
 <h2 class="dsn-heading dsn-heading--heading-2">
   <span class="dsn-pre-heading"
-    >Stap 2<span class="dsn-visually-hidden">:</span></span
+    >Stap 2 van 4<span class="dsn-visually-hidden">:</span></span
   >
   Uw gegevens
 </h2>
 
 <!-- ❌ Nooit: PreHeading als zelfstandig element -->
-<span class="dsn-pre-heading">Stap 2</span>
+<span class="dsn-pre-heading">Stap 2 van 4</span>
 <h2 class="dsn-heading dsn-heading--heading-2">Uw gegevens</h2>
 ```
 
 ### Interpunctie voor screenreaders
 
-Bij stap-indicatoren: sluit de pre-heading af met een visueel verborgen dubbele punt. Dit zorgt voor een duidelijke scheiding in de accessible name ("Stap 2: Uw gegevens" in plaats van "Stap 2 Uw gegevens").
+Bij stap-indicatoren: sluit de pre-heading af met een visueel verborgen dubbele punt. Dit zorgt voor een duidelijke scheiding in de accessible name ("Stap 2 van 4: Uw gegevens" in plaats van "Stap 2 van 4 Uw gegevens").
 
 ```html
 <span class="dsn-pre-heading">
-  Stap 2<span class="dsn-visually-hidden">:</span>
+  Stap 2 van 4<span class="dsn-visually-hidden">:</span>
 </span>
 ```
 
@@ -77,6 +77,6 @@ Wanneer je de pre-heading en heading altijd samen gebruikt, overweeg dan de [Hea
 
 - De `<span class="dsn-pre-heading">` heeft geen eigen ARIA-rol. De inhoud wordt onderdeel van de accessible name van de bovenliggende heading.
 - Screenreaders (NVDA, JAWS, VoiceOver) lezen de volledige heading inclusief pre-heading als één heading.
-- Bij heading-navigatie horen gebruikers de complete heading: "Stap 2: Uw gegevens (niveau 2)".
+- Bij heading-navigatie horen gebruikers de complete heading: "Stap 2 van 4: Uw gegevens (niveau 2)".
 - `display: block` heeft geen effect op de semantische heading; het is puur visueel.
 - Gebruik `<span class="dsn-visually-hidden">:</span>` bij stap-indicatoren voor een duidelijke scheidingstekst in de accessible name.
