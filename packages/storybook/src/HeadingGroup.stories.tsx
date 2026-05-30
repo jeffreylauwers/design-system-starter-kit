@@ -41,7 +41,7 @@ const meta: Meta<typeof HeadingGroup> = {
   },
   args: {
     level: 2,
-    preHeading: 'Stap 2',
+    preHeading: 'Stap 2 van 4',
     children: 'Uw gegevens',
   },
 };
@@ -66,7 +66,7 @@ export const WithStep: Story = {
       level={2}
       preHeading={
         <>
-          Stap 2<span className="dsn-visually-hidden">:</span>
+          Stap 2 van 4<span className="dsn-visually-hidden">:</span>
         </>
       }
     >
@@ -110,16 +110,16 @@ export const AllLevels: Story = {
   name: 'All Levels',
   render: () => (
     <div style={{ display: 'flex', flexDirection: 'column', gap: '2rem' }}>
-      <HeadingGroup level={1} preHeading="Stap 1">
+      <HeadingGroup level={1} preHeading="Stap 1 van 4">
         Heading 1
       </HeadingGroup>
-      <HeadingGroup level={2} preHeading="Stap 2">
+      <HeadingGroup level={2} preHeading="Stap 2 van 4">
         Heading 2
       </HeadingGroup>
-      <HeadingGroup level={3} preHeading="Stap 3">
+      <HeadingGroup level={3} preHeading="Stap 3 van 4">
         Heading 3
       </HeadingGroup>
-      <HeadingGroup level={4} preHeading="Stap 4">
+      <HeadingGroup level={4} preHeading="Stap 4 van 4">
         Heading 4
       </HeadingGroup>
     </div>

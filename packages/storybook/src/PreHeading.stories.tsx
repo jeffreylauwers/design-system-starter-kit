@@ -17,7 +17,7 @@ const meta: Meta<typeof PreHeading> = {
     },
   },
   args: {
-    children: 'Stap 2',
+    children: 'Stap 2 van 4',
   },
 };
 
@@ -66,7 +66,7 @@ export const WithVisuallyHiddenColon: Story = {
   render: () => (
     <Heading level={2}>
       <PreHeading>
-        Stap 2<span className="dsn-visually-hidden">:</span>
+        Stap 2 van 4<span className="dsn-visually-hidden">:</span>
       </PreHeading>
       Uw gegevens
     </Heading>
@@ -83,25 +83,25 @@ export const AllHeadingLevels: Story = {
     <div style={{ display: 'flex', flexDirection: 'column', gap: '2rem' }}>
       <Heading level={1}>
         <PreHeading>
-          Stap 1<span className="dsn-visually-hidden">:</span>
+          Stap 1 van 4<span className="dsn-visually-hidden">:</span>
         </PreHeading>
         Heading 1
       </Heading>
       <Heading level={2}>
         <PreHeading>
-          Stap 2<span className="dsn-visually-hidden">:</span>
+          Stap 2 van 4<span className="dsn-visually-hidden">:</span>
         </PreHeading>
         Heading 2
       </Heading>
       <Heading level={3}>
         <PreHeading>
-          Stap 3<span className="dsn-visually-hidden">:</span>
+          Stap 3 van 4<span className="dsn-visually-hidden">:</span>
         </PreHeading>
         Heading 3
       </Heading>
       <Heading level={4}>
         <PreHeading>
-          Stap 4<span className="dsn-visually-hidden">:</span>
+          Stap 4 van 4<span className="dsn-visually-hidden">:</span>
         </PreHeading>
         Heading 4
       </Heading>
