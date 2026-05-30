@@ -91,8 +91,8 @@ Complete documentation voor het Design System Starter Kit.
 
 - **Tokens per configuration:** ~1100 (400 semantic + 700 component)
 - **Configurations:** 8 (2 themes × 2 modes × 2 project types)
-- **Components:** 65 (7 layout + 10 content + 16 display/feedback + 1 branding + 5 navigation + 25 form + 1 accessibility; HTML/CSS + React)
-- **Tests:** 1495 across 73 test suites
+- **Components:** 71 (HTML/CSS + React)
+- **Tests:** 1549 across 75 test suites
 - **Storybook stories:** 130+
 
 ---

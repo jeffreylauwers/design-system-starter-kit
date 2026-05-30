@@ -1,6 +1,6 @@
 # Components
 
-**Last Updated:** May 8, 2026
+**Last Updated:** May 30, 2026
 
 Complete component specifications and guidelines for the Design System Starter Kit.
 
@@ -692,6 +692,74 @@ Brengt consistente verticale ruimte aan tussen directe child-elementen via `flex
 
 **Tests:** React (13 tests), Web Component (24 tests)
 
+### PreHeading Component
+
+**Status:** Complete (HTML/CSS, React)
+
+**Location:** `packages/components-{html|react}/src/pre-heading/` / `packages/components-react/src/PreHeading/`
+
+**Tokens:** `tokens/components/pre-heading.json`
+
+**Features:**
+
+- `<span class="dsn-pre-heading">` met `display: block` als eerste kind binnen een `<hx class="dsn-heading">`
+- Geen eigen ARIA-rol: inhoud wordt onderdeel van de accessible name van de bovenliggende heading
+- Screenreaders lezen pre-heading en heading als één heading
+
+**HTML klassen:**
+
+```html
+<h2 class="dsn-heading dsn-heading--heading-2 dsn-heading-group">
+  <span class="dsn-pre-heading">Stap 2 van 4</span>
+  Uw gegevens
+</h2>
+```
+
+**React:**
+
+```tsx
+<Heading level={2}>
+  <PreHeading>Stap 2 van 4</PreHeading>
+  Uw gegevens
+</Heading>
+```
+
+**Tests:** React (6 tests)
+
+### HeadingGroup Component
+
+**Status:** Complete (HTML/CSS, React)
+
+**Location:** `packages/components-{html|react}/src/heading-group/` / `packages/components-react/src/HeadingGroup/`
+
+**Props:** `level`, `appearance`, `preHeading`
+
+**Features:**
+
+- Combineert [Heading](#heading-component) en [PreHeading](#preheading-component) in één component
+- `preHeading` prop wraps inhoud automatisch in `<span class="dsn-pre-heading">`
+- Voegt `dsn-heading-group` toe zodat pre-heading en heading-tekst als flex-kolom gestapeld worden weergegeven
+- Zelfde `level` en `appearance` props als Heading
+
+**HTML klassen:**
+
+```html
+<h2 class="dsn-heading dsn-heading--heading-2 dsn-heading-group">
+  <span class="dsn-pre-heading">Stap 2 van 4</span>
+  Uw gegevens
+</h2>
+```
+
+**React:**
+
+```tsx
+<HeadingGroup level={2} preHeading="Stap 2 van 4">
+  Uw gegevens
+</HeadingGroup>
+```
+
+**Tests:** React (8 tests)
+
 ### UnorderedList Component
 
 **Status:** Complete (HTML/CSS, React, Web Component)
@@ -1273,7 +1341,7 @@ Brengt consistente verticale ruimte aan tussen directe child-elementen via `flex
 
 **Tokens:** `tokens/components/progress-bar.json`
 
-**Props:** `label`, `value`, `max`, `description`, `id`
+**Props:** `label`, `value`, `max`, `description`, `id`, `hideValue`
 
 **Features:**
 
@@ -1284,6 +1352,7 @@ Brengt consistente verticale ruimte aan tussen directe child-elementen via `flex
 - Cross-browser CSS: `::-webkit-progress-bar/value` (Chrome/Safari) + `::-moz-progress-bar` (Firefox)
 - Pill-vorm via `border-radius: round`, fill-animatie met `prefers-reduced-motion` support
 - `useId()` voor automatisch gegenereerd ID als geen `id` prop meegegeven
+- `hideValue` prop verbergt het zichtbare percentage-getal (voor decoratief gebruik)
 
 **HTML klassen:**
 

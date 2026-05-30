@@ -6,6 +6,29 @@ All notable changes to this project are documented in this file.
 
 ---
 
+## Version 1.0.2 (May 30, 2026)
+
+### Components & Stories
+
+#### Added
+
+- **PreHeading component** (PR #280): `<span class="dsn-pre-heading">` met `display: block` voor stap-indicatoren en categorielabels boven een heading. Semantisch onderdeel van de bovenliggende heading (geen eigen ARIA-rol). Tokens: `tokens/components/pre-heading.json`
+- **HeadingGroup component** (PR #280): combineert Heading en PreHeading in één component via de `preHeading` prop. Voegt `dsn-heading-group` toe voor flex-kolom stapeling
+- **OKLCH kleurenpalet generator** (PR #271–#277): interactieve tool in Storybook waarmee een volledig kleurenpalet op basis van OKLCH gegenereerd kan worden, inclusief contrast-berekening, hover-preview, documentatiesectie en CSS/JSON-export
+- **Framework-agnostisch component manifest** (PR #269): `packages/components-html` bevat nu een `component-manifest.json` met metadata over alle HTML/CSS-componenten (BEM-klassen, exportpaden, token-verwijzingen)
+
+#### Changed
+
+- **ProgressBar**: `hideValue` prop toegevoegd om het zichtbare percentage-getal te verbergen (decoratief gebruik) (PR #282)
+- **FormStep stories**: progress stories toegevoegd aan FormStep (PR #282); modal stories verplaatst van Simple Details naar Example story categorie
+
+#### Fixed
+
+- **PreHeading / HeadingGroup stories**: tekst gewijzigd van 'Stap X' naar 'Stap X van 4' voor een realistischer voorbeeld (PR #281)
+- **Alert, Note, Popover**: onjuiste HTML/CSS-voorbeelden gecorrigeerd in de Storybook-docs (PR #270)
+
+---
+
 ## Version 1.0.1 (May 16, 2026)
 
 ### npm publishing
