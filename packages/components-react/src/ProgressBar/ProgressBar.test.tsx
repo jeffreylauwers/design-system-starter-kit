@@ -143,4 +143,23 @@ describe('ProgressBar', () => {
     const percentage = container.querySelector('.dsn-progress-bar__percentage');
     expect(percentage).toHaveTextContent('100%');
   });
+
+  it('hides percentage when hideValue is true', () => {
+    const { container } = render(
+      <ProgressBar label="Uploaden" value={35} hideValue />
+    );
+    expect(
+      container.querySelector('.dsn-progress-bar__percentage')
+    ).not.toBeInTheDocument();
+    expect(
+      container.querySelector('.dsn-progress-bar__header')
+    ).not.toBeInTheDocument();
+  });
+
+  it('shows percentage by default when hideValue is not set', () => {
+    const { container } = render(<ProgressBar label="Uploaden" value={35} />);
+    expect(
+      container.querySelector('.dsn-progress-bar__percentage')
+    ).toBeInTheDocument();
+  });
 });

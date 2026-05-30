@@ -5,7 +5,7 @@ import './ProgressBar.css';
 export interface ProgressBarProps extends React.HTMLAttributes<HTMLDivElement> {
   /**
    * Visueel verborgen label dat de voortgangsbalk beschrijft voor screenreaders.
-   * Altijd vereist — gekoppeld via <label for> aan het <progress>-element.
+   * Altijd vereist — gekoppeld via `<label for>` aan het `<progress>`-element.
    */
   label: string;
 
@@ -26,10 +26,16 @@ export interface ProgressBarProps extends React.HTMLAttributes<HTMLDivElement> {
   description?: React.ReactNode;
 
   /**
-   * ID voor het <progress>-element en de bijbehorende <label>.
+   * ID voor het `<progress>`-element en de bijbehorende `<label>`.
    * Automatisch gegenereerd via useId() indien weggelaten.
    */
   id?: string;
+
+  /**
+   * Verbergt het zichtbare percentage-getal. Gebruik dit voor decoratief gebruik
+   * in combinatie met aria-hidden="true" op de component.
+   */
+  hideValue?: boolean;
 }
 
 /**
@@ -57,7 +63,19 @@ export interface ProgressBarProps extends React.HTMLAttributes<HTMLDivElement> {
  * ```
  */
 export const ProgressBar = React.forwardRef<HTMLDivElement, ProgressBarProps>(
-  ({ className, label, value, max = 100, description, id, ...props }, ref) => {
+  (
+    {
+      className,
+      label,
+      value,
+      max = 100,
+      description,
+      hideValue,
+      id,
+      ...props
+    },
+    ref
+  ) => {
     const generatedId = useId();
     const progressId = id ?? generatedId;
     const percentage = Math.round((value / max) * 100);
@@ -71,14 +89,16 @@ export const ProgressBar = React.forwardRef<HTMLDivElement, ProgressBarProps>(
         <label className="dsn-visually-hidden" htmlFor={progressId}>
           {label}
         </label>
-        <div className="dsn-progress-bar__header">
-          <p
-            className="dsn-paragraph dsn-progress-bar__percentage"
-            aria-hidden="true"
-          >
-            {percentage}%
-          </p>
-        </div>
+        {!hideValue && (
+          <div className="dsn-progress-bar__header">
+            <p
+              className="dsn-paragraph dsn-progress-bar__percentage"
+              aria-hidden="true"
+            >
+              {percentage}%
+            </p>
+          </div>
+        )}
         <progress
           id={progressId}
           className="dsn-progress-bar__bar"
