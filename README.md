@@ -198,19 +198,21 @@ All components are fully typed with TypeScript and include comprehensive JSDoc d
 | **PageLayout**      | Yes      | Yes   | No            |
 | **Stack**           | Yes      | Yes   | No            |
 
-**Content Components (10)**
+**Content Components (12)**
 
 | Component         | HTML/CSS | React | Web Component |
 | ----------------- | -------- | ----- | ------------- |
 | **Button**        | Yes      | Yes   | Yes           |
 | **ButtonLink**    | Yes      | Yes   | No            |
 | **Heading**       | Yes      | Yes   | Yes           |
+| **HeadingGroup**  | Yes      | Yes   | No            |
 | **Icon**          | Yes      | Yes   | Yes           |
 | **Image**         | Yes      | Yes   | No            |
 | **Link**          | Yes      | Yes   | Yes           |
 | **LinkButton**    | Yes      | Yes   | No            |
 | **OrderedList**   | Yes      | Yes   | Yes           |
 | **Paragraph**     | Yes      | Yes   | Yes           |
+| **PreHeading**    | Yes      | Yes   | No            |
 | **UnorderedList** | Yes      | Yes   | Yes           |
 
 **Display & Feedback Components (17)**
