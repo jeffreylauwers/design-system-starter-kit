@@ -36,7 +36,7 @@ De `preHeading` prop accepteert zowel strings als ReactNode. Gebruik een ReactNo
 // ReactNode met visueel verborgen dubbele punt (stap-indicator)
 <HeadingGroup
   level={2}
-  preHeading={<>Stap 2<span className="dsn-visually-hidden">:</span></>}
+  preHeading={<>Stap 2 van 4<span className="dsn-visually-hidden">:</span></>}
 >
   Uw gegevens
 </HeadingGroup>
@@ -47,7 +47,7 @@ De `preHeading` prop accepteert zowel strings als ReactNode. Gebruik een ReactNo
 ```html
 <h2 class="dsn-heading dsn-heading--heading-2 dsn-heading-group">
   <span class="dsn-pre-heading"
-    >Stap 2<span class="dsn-visually-hidden">:</span></span
+    >Stap 2 van 4<span class="dsn-visually-hidden">:</span></span
   >
   Uw gegevens
 </h2>
@@ -77,6 +77,6 @@ HeadingGroup voegt geen nieuwe design tokens toe. Het hergebruikt tokens van `ds
 
 - HeadingGroup rendert als `<hx>` element. De accessible name omvat zowel de pre-heading als de heading-tekst.
 - Dezelfde ARIA-regels als het Heading component zijn van toepassing.
-- Screenreaders lezen de volledige heading inclusief pre-heading als één heading: "Stap 2: Uw gegevens (niveau 2)".
+- Screenreaders lezen de volledige heading inclusief pre-heading als één heading: "Stap 2 van 4: Uw gegevens (niveau 2)".
 - `dsn-heading-group` voegt alleen `display: flex; flex-direction: column` toe en heeft geen eigen ARIA-rol.
 - Gebruik `<span className="dsn-visually-hidden">:</span>` bij stap-indicatoren voor een duidelijke scheidingstekst in de accessible name.
