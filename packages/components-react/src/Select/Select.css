@@ -60,6 +60,14 @@
   border-color: var(--dsn-text-input-invalid-border-color);
 }
 
+/* Forced colors (High Contrast mode) */
+@media (forced-colors: active) {
+  .dsn-select__icon {
+    forced-color-adjust: auto;
+    color: ButtonText;
+  }
+}
+
 /* Remove native arrow in IE/Edge */
 .dsn-select::-ms-expand {
   display: none;

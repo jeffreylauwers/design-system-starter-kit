@@ -210,6 +210,8 @@ Groepeert gerelateerde acties en verzorgt de lay-out van Buttons en Links. Horiz
 
 **Design tokens:** `--dsn-action-group-column-gap` (12px: horizontale ruimte tussen acties), `--dsn-action-group-row-gap` (4px: ruimte tussen gewrapte rijen).
 
+**Verticale uitlijning van Links:** In de horizontale richting worden directe `dsn-link` en `dsn-link-button` children verticaal gecentreerd met naaststaande Buttons via `align-self: center`. Dit overschrijft het `align-self: flex-start` dat Links standaard hebben (om uitrekken in verticale contexten te voorkomen).
+
 ---
 
 ### Body
@@ -282,7 +284,13 @@ Laat een sectie "uitslaan" buiten een beperkte paginabreedte om de volledige vie
 
 **Vereiste:** Gebruik alleen binnen `PageBody` of een parent met `overflow-x: clip`.
 
-**Design tokens:** Geen eigen component tokens. Gebruikt `--dsn-page-max-inline-size` en `--dsn-page-body-padding-inline` voor de inner wrapper (verantwoordelijkheid van de consumer).
+**Design tokens:**
+
+| Token                                       | Waarde                    | Beschrijving                                                                     |
+| ------------------------------------------- | ------------------------- | -------------------------------------------------------------------------------- |
+| `--dsn-breakout-section-border-block-width` | `{dsn.border.width.thin}` | Transparante border-block — zichtbaar als sectieafbakening in forced-colors mode |
+
+Gebruikt ook `--dsn-page-max-inline-size` en `--dsn-page-body-padding-inline` voor de inner wrapper (verantwoordelijkheid van de consumer).
 
 ---
 
@@ -386,17 +394,18 @@ Prominente introductiesectie direct onder de `PageHeader`. Beslaat de volledige 
 
 **Design tokens:**
 
-| Token                                 | Waarde                                       | Beschrijving                                  |
-| ------------------------------------- | -------------------------------------------- | --------------------------------------------- |
-| `--dsn-hero-block-size`               | `70svh`                                      | Streefhoogte (via `min-block-size: max(...)`) |
-| `--dsn-hero-min-block-size`           | `400px`                                      | Vloer: minimale hoogte                        |
-| `--dsn-hero-padding-block`            | `{dsn.space.block.4xl}`                      | Verticale padding van de inhoud               |
-| `--dsn-hero-padding-inline`           | `{dsn.space.inline.xl}`                      | Horizontale padding (afgestemd op PageBody)   |
-| `--dsn-hero-background-color-default` | `{dsn.color.accent-1.bg-default}`            | Achtergrond default                           |
-| `--dsn-hero-background-color-inverse` | `{dsn.color.accent-1-inverse.bg-default}`    | Achtergrond inverse                           |
-| `--dsn-hero-color-default`            | `{dsn.color.accent-1.color-default}`         | Tekstkleur default                            |
-| `--dsn-hero-color-inverse`            | `{dsn.color.accent-1-inverse.color-default}` | Tekstkleur inverse                            |
-| `--dsn-hero-image-blend-color`        | `{dsn.color.accent-1-inverse.bg-default}`    | Blendkleur bij `image-blend`                  |
+| Token                                 | Waarde                                       | Beschrijving                                                                     |
+| ------------------------------------- | -------------------------------------------- | -------------------------------------------------------------------------------- |
+| `--dsn-hero-block-size`               | `70svh`                                      | Streefhoogte (via `min-block-size: max(...)`)                                    |
+| `--dsn-hero-min-block-size`           | `400px`                                      | Vloer: minimale hoogte                                                           |
+| `--dsn-hero-padding-block`            | `{dsn.space.block.4xl}`                      | Verticale padding van de inhoud                                                  |
+| `--dsn-hero-padding-inline`           | `{dsn.space.inline.xl}`                      | Horizontale padding (afgestemd op PageBody)                                      |
+| `--dsn-hero-background-color-default` | `{dsn.color.accent-1.bg-default}`            | Achtergrond default                                                              |
+| `--dsn-hero-background-color-inverse` | `{dsn.color.accent-1-inverse.bg-default}`    | Achtergrond inverse                                                              |
+| `--dsn-hero-color-default`            | `{dsn.color.accent-1.color-default}`         | Tekstkleur default                                                               |
+| `--dsn-hero-color-inverse`            | `{dsn.color.accent-1-inverse.color-default}` | Tekstkleur inverse                                                               |
+| `--dsn-hero-image-blend-color`        | `{dsn.color.accent-1-inverse.bg-default}`    | Blendkleur bij `image-blend`                                                     |
+| `--dsn-hero-border-block-width`       | `{dsn.border.width.thin}`                    | Transparante border-block — zichtbaar als sectieafbakening in forced-colors mode |
 
 **Location:** `packages/components-{html|react}/src/Hero/`
 

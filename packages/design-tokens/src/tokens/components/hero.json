@@ -45,6 +45,11 @@
           "$description": "Tekstkleur in de inverse Hero — lichte kleur op donkere achtergrond"
         }
       },
+      "border-block-width": {
+        "$value": "{dsn.border.width.thin}",
+        "$type": "dimension",
+        "$description": "Breedte van de transparante border-block op de Hero — zichtbaar in forced-colors / High Contrast mode om de sectieafbakening aan te geven"
+      },
       "image": {
         "blend-color": {
           "$value": "{dsn.color.accent-1-inverse.bg-default}",

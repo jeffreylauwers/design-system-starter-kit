@@ -79,6 +79,19 @@
 }
 
 /* =============================================================================
+   Forced colors (High Contrast mode)
+   Default variant mist op large viewport een border-block-end (navbar neemt de
+   visuele scheiding over). In forced-colors mode is die achtergrondkleur niet
+   zichtbaar, dus de border herstellen voor sectieafbakening.
+   ============================================================================= */
+
+@media (forced-colors: active) and (min-width: 64em) {
+  .dsn-page-header:not(.dsn-page-header--compact) {
+    border-block-end: var(--dsn-border-width-thick) solid transparent;
+  }
+}
+
+/* =============================================================================
    Masthead (large viewport) — neutrale achtergrond, logo + servicemenu + zoek
    ============================================================================= */
 

@@ -82,6 +82,20 @@
   margin-block-start: var(--dsn-progress-bar-gap-footer);
 }
 
+/* Forced colors (High Contrast mode)
+   appearance: none schakelt alle browser-styling uit waardoor track en fill
+   onzichtbaar worden. appearance: auto herstelt de native progress-stijl
+   zodat de browser zijn eigen system colors toepast. */
+@media (forced-colors: active) {
+  .dsn-progress-bar__bar {
+    appearance: auto;
+    block-size: revert;
+    border: revert;
+    border-radius: revert;
+    background-color: revert;
+  }
+}
+
 @media (prefers-reduced-motion: reduce) {
   .dsn-progress-bar__bar::-webkit-progress-value,
   .dsn-progress-bar__bar::-moz-progress-bar {

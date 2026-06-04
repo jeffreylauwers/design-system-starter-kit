@@ -44,6 +44,14 @@
   row-gap: var(--dsn-action-group-row-gap);
 }
 
+/* Link en LinkButton hebben align-self: flex-start om uitrekken te voorkomen
+   in verticale contexten — in een horizontale ActionGroup resetten we dit
+   zodat ze verticaal centreren met de Buttons naast hen. */
+.dsn-action-group:not(.dsn-action-group--vertical) > .dsn-link,
+.dsn-action-group:not(.dsn-action-group--vertical) > .dsn-link-button {
+  align-self: center;
+}
+
 /* ===========================
    Vertical modifier
    =========================== */

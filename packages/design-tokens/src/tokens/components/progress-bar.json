@@ -8,9 +8,9 @@
           "$description": "Grijze achtergrondtrack"
         },
         "fill": {
-          "$value": "{dsn.color.accent-1.color-default}",
+          "$value": "{dsn.color.accent-1-inverse.bg-default}",
           "$type": "color",
-          "$description": "Blauwe vulbalk — zelfde primaire accentkleur als Spinner"
+          "$description": "Vulbalk — donkerblauwe inverse achtergrondkleur voor voldoende contrast op de lichte track"
         }
       },
       "block-size": {

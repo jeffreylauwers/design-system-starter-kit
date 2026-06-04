@@ -6,6 +6,36 @@ All notable changes to this project are documented in this file.
 
 ---
 
+## Version 1.0.3 (June 4, 2026)
+
+### Accessibility — Forced Colors Mode
+
+#### Fixed
+
+- **BreakoutSection**: transparante `border-block-start` en `border-block-end` toegevoegd (`--dsn-breakout-section-border-block-width`, 1px) — sectieafbakening zichtbaar in forced-colors / High Contrast mode. Nieuw token-bestand `tokens/components/breakout-section.json`
+- **Hero**: transparante `border-block-start` en `border-block-end` toegevoegd (`--dsn-hero-border-block-width`, 1px) — sectieafbakening zichtbaar in forced-colors / High Contrast mode
+- **Details**: chevron-icoon kleurt nu `LinkText` in forced-colors mode via `@media (forced-colors: active)`
+- **DotBadge**: transparante border (1px) toegevoegd zodat de stip zichtbaar blijft in forced-colors mode; pulse-animatie uitgeschakeld in forced-colors mode (opacity-animatie op systeemkleuren is onbetrouwbaar)
+- **File**: bestandsicoon (`.dsn-file__media > .dsn-icon`) en status-icoon (`.dsn-file__status-icon`) kleuren nu `CanvasText` in forced-colors mode
+- **Select**: chevron-icoon kleurt nu `ButtonText` in forced-colors mode
+- **SearchInput**: vergrootglasicoon kleurt nu `ButtonText` in forced-colors mode
+- **PageHeader**: default variant (large viewport) krijgt `border-block-end: var(--dsn-border-width-thick) solid transparent` in forced-colors mode — de navbar-achtergrond die normaal de scheiding verzorgt is niet zichtbaar in high contrast
+- **Spinner**: track verborgen (`stroke: transparent`), arc kleurt `CanvasText` via `forced-color-adjust: none` in forced-colors mode
+- **Radio**: checked state toont inner circle correct in forced-colors mode via `forced-color-adjust: none` op `.dsn-radio__control`; gebruikt `Highlight`/`HighlightText`/`GrayText` system colors
+- **ProgressBar**: `appearance: auto` + `revert` op custom styles in forced-colors mode zodat de browser native progress-stijl met system colors toepast
+
+#### Changed
+
+- **ProgressBar**: `--dsn-progress-bar-color-fill` gewijzigd van `{dsn.color.accent-1.color-default}` naar `{dsn.color.accent-1-inverse.bg-default}` voor hogere contrastverhouding
+
+### Bug fixes
+
+#### Fixed
+
+- **ActionGroup**: Links en LinkButtons centreren nu verticaal met naaststaande Buttons in horizontale richting — `align-self: flex-start` van `.dsn-link` en `.dsn-link-button` wordt gereset via scoped selector op `.dsn-action-group:not(.dsn-action-group--vertical)`
+
+---
+
 ## Version 1.0.2 (May 30, 2026)
 
 ### Components & Stories

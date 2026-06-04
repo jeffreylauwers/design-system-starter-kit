@@ -26,6 +26,10 @@
 
 .dsn-hero {
   margin-inline: calc(50% - 50vw);
+  border-block-start: var(--dsn-hero-border-block-width) solid
+    var(--dsn-color-transparent);
+  border-block-end: var(--dsn-hero-border-block-width) solid
+    var(--dsn-color-transparent);
   min-block-size: max(
     var(--dsn-hero-min-block-size),
     var(--dsn-hero-block-size)
