@@ -1,6 +1,6 @@
 {
   "name": "@dsn-starter-kit/components-react",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "React components for the design system",
   "main": "dist/index.js",
   "module": "dist/index.js",
