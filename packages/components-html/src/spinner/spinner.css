@@ -82,6 +82,23 @@
   }
 }
 
+/* Forced colors (High Contrast mode)
+   SVG stroke wordt genegeerd — forced-color-adjust: auto laat de browser
+   de kleuren overnemen. Track verbergen: enkel de arc is informatief. */
+@media (forced-colors: active) {
+  .dsn-spinner__circle {
+    forced-color-adjust: none;
+  }
+
+  .dsn-spinner__track {
+    stroke: transparent;
+  }
+
+  .dsn-spinner__arc {
+    stroke: CanvasText;
+  }
+}
+
 /* prefers-reduced-motion: subtiel pulseren i.p.v. roteren */
 @media (prefers-reduced-motion: reduce) {
   .dsn-spinner__circle {

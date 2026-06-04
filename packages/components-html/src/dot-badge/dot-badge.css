@@ -95,3 +95,16 @@
     animation: none;
   }
 }
+
+/* Forced colors (High Contrast mode)
+   background-color wordt vervangen door Canvas — dot is onzichtbaar zonder border.
+   Pulse-animatie uitschakelen: opacity-animatie op systeemkleuren is onbetrouwbaar. */
+@media (forced-colors: active) {
+  .dsn-dot-badge {
+    border: 1px solid transparent;
+  }
+
+  .dsn-dot-badge--pulse::before {
+    animation: none;
+  }
+}

@@ -30,6 +30,14 @@
   padding-inline-start: var(--dsn-search-input-padding-inline-start-with-icon);
 }
 
+/* Forced colors (High Contrast mode) */
+@media (forced-colors: active) {
+  .dsn-search-input__icon {
+    forced-color-adjust: auto;
+    color: ButtonText;
+  }
+}
+
 /* Hide browser-native clear button — will be implemented as a separate pattern */
 .dsn-search-input::-webkit-search-cancel-button {
   display: none;

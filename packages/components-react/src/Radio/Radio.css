@@ -157,6 +157,42 @@
   transform: scale(1);
 }
 
+/* Forced colors (High Contrast mode)
+   background-color wordt genegeerd — inner circle verdwijnt tegen de control achtergrond.
+   Highlight/HighlightText zijn de system colors voor geselecteerde form controls. */
+@media (forced-colors: active) {
+  .dsn-radio__control {
+    forced-color-adjust: none;
+    border-color: ButtonText;
+    background-color: Field;
+  }
+
+  .dsn-radio__input:checked + .dsn-radio__control {
+    border-color: Highlight;
+    background-color: Highlight;
+  }
+
+  .dsn-radio__input:checked + .dsn-radio__control .dsn-radio__inner-circle {
+    background-color: HighlightText;
+  }
+
+  .dsn-radio__input:checked:disabled + .dsn-radio__control {
+    border-color: GrayText;
+    background-color: GrayText;
+  }
+
+  .dsn-radio__input:checked:disabled
+    + .dsn-radio__control
+    .dsn-radio__inner-circle {
+    background-color: Field;
+  }
+
+  .dsn-radio__input:disabled + .dsn-radio__control {
+    border-color: GrayText;
+    background-color: Field;
+  }
+}
+
 /* Invalid state */
 .dsn-radio__input--invalid + .dsn-radio__control {
   border-width: var(--dsn-radio-invalid-border-width);

@@ -506,6 +506,36 @@ Zie **[CSS & Token Naming Conventions](./06-css-naming-conventions.md)** voor de
 }
 ```
 
+**Ondersteuning voor forced-colors (High Contrast mode):**
+
+In Windows High Contrast mode / forced-colors mode worden `background-color`, `color`, SVG `fill` en `stroke` vervangen door system colors. Dit maakt iconen, badges en andere kleur-afhankelijke visuele elementen onzichtbaar of ononderscheidbaar. Voeg bij elk nieuw component een `@media (forced-colors: active)` block toe waar nodig.
+
+**Wanneer en hoe:**
+
+| Situatie                                                          | Oplossing                                                                                                               |
+| ----------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------- |
+| Icoon (SVG via `color`) onzichtbaar of verkeerde kleur            | `forced-color-adjust: auto; color: LinkText` (interactief) of `ButtonText` (form control) of `CanvasText` (informatief) |
+| Element enkel zichtbaar via `background-color` (dot, badge, stip) | `border: 1px solid transparent` — browser zet `transparent` om naar een system color                                    |
+| Sectieafbakening via achtergrond (Hero, BreakoutSection)          | `border-block-start/end: Xpx solid transparent`                                                                         |
+| Custom form control (radio, checkbox) met inner indicator         | `forced-color-adjust: none` + expliciete system colors: `Highlight`, `HighlightText`, `Field`, `ButtonText`, `GrayText` |
+| Native element met `appearance: none` (progress, select)          | `appearance: auto` in forced-colors om native browser-stijl te herstellen                                               |
+| SVG met `stroke` (Spinner)                                        | `forced-color-adjust: none` op de SVG + expliciete `stroke: CanvasText` / `stroke: transparent` per child               |
+| Animatie die steunt op `opacity` of `background-color`            | `animation: none` in forced-colors — animaties op system colors zijn onbetrouwbaar                                      |
+
+**System color keywords (meest gebruikt):**
+
+| Keyword         | Gebruik                                             |
+| --------------- | --------------------------------------------------- |
+| `CanvasText`    | Standaard tekst- en informatieve icoonkleur         |
+| `LinkText`      | Interactieve links en klikbare iconen               |
+| `ButtonText`    | Tekst en iconen op form controls / buttons          |
+| `Highlight`     | Achtergrond van geselecteerde/actieve form controls |
+| `HighlightText` | Tekst op `Highlight`-achtergrond                    |
+| `Field`         | Achtergrond van invoervelden                        |
+| `GrayText`      | Disabled elementen                                  |
+
+**Verificatie:** test in Chrome DevTools via Rendering → Emulate CSS media feature `forced-colors: active`.
+
 ---
 
 ## Testing Strategy
@@ -676,6 +706,7 @@ Before submitting a PR:
 - [ ] Documentation updated
 - [ ] Storybook stories added/updated
 - [ ] No console errors or warnings
+- [ ] Forced-colors mode gecontroleerd (Chrome DevTools → Rendering → `forced-colors: active`): iconen zichtbaar, kleur-afhankelijke elementen onderscheidbaar
 
 ---
 

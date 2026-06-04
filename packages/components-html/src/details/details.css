@@ -112,6 +112,20 @@
 }
 
 /* ===========================
+   Forced colors (High Contrast mode)
+   =========================== */
+@media (forced-colors: active) {
+  .dsn-details__icon {
+    forced-color-adjust: auto;
+    color: LinkText;
+  }
+
+  .dsn-details__summary:hover .dsn-details__icon {
+    color: LinkText;
+  }
+}
+
+/* ===========================
    Content area
    =========================== */
 .dsn-details__content {

@@ -15,4 +15,8 @@
 .dsn-breakout-section {
   margin-block: var(--dsn-space-block-4xl);
   margin-inline: calc(50% - 50vw);
+  border-block-start: var(--dsn-breakout-section-border-block-width) solid
+    var(--dsn-color-transparent);
+  border-block-end: var(--dsn-breakout-section-border-block-width) solid
+    var(--dsn-color-transparent);
 }

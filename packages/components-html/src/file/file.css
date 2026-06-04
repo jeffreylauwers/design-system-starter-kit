@@ -177,6 +177,22 @@ span.dsn-file__name {
 }
 
 /* =============================================================================
+   Forced colors (High Contrast mode)
+   ============================================================================= */
+
+@media (forced-colors: active) {
+  .dsn-file__media > .dsn-icon {
+    forced-color-adjust: auto;
+    color: CanvasText;
+  }
+
+  .dsn-file__status-icon {
+    forced-color-adjust: auto;
+    color: CanvasText;
+  }
+}
+
+/* =============================================================================
    FileList — ul wrapper voor meerdere File items
    ============================================================================= */
 
