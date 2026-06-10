@@ -11,10 +11,10 @@
         "$type": "dimension",
         "$description": "Vertical gap between grid rows (overridden to column.md in information-dense)"
       },
-      "margin": {
-        "$value": "{dsn.space.column.3xl}",
+      "padding-inline": {
+        "$value": "0px",
         "$type": "dimension",
-        "$description": "Outer padding on both sides of the grid container"
+        "$description": "Outer padding-inline of the grid container. Default 0: grids sit inside dsn-page-body__inner which already provides horizontal padding."
       },
       "max-width": {
         "$value": "74rem",

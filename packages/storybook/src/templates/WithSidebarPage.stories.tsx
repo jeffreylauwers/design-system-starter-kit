@@ -298,7 +298,7 @@ function GridContent() {
   return (
     <Stack space="2xl">
       {/* Rij 1: volle breedte */}
-      <Grid style={{ '--dsn-grid-margin': '0' } as React.CSSProperties}>
+      <Grid>
         <GridItem colSpan={12}>
           <Container>
             <Paragraph>Rij 1 — volle breedte (12 kolommen)</Paragraph>
@@ -307,7 +307,7 @@ function GridContent() {
       </Grid>
 
       {/* Rij 2: 2 kolommen vanaf md */}
-      <Grid style={{ '--dsn-grid-margin': '0' } as React.CSSProperties}>
+      <Grid>
         <GridItem colSpan={12} colSpanMd={6}>
           <Container>
             <Paragraph>Rij 2 — kolom 1 van 2</Paragraph>
@@ -321,7 +321,7 @@ function GridContent() {
       </Grid>
 
       {/* Rij 3: 3 kolommen vanaf md */}
-      <Grid style={{ '--dsn-grid-margin': '0' } as React.CSSProperties}>
+      <Grid>
         <GridItem colSpan={12} colSpanMd={4}>
           <Container>
             <Paragraph>Rij 3 — kolom 1 van 3</Paragraph>

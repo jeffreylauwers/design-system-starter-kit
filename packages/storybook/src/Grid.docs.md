@@ -92,14 +92,14 @@ Responsive varianten werken hetzelfde als bij `colSpan`: suffix `Sm`, `Md` of `L
 
 ## Full-bleed
 
-Een `GridItem` met `fullBleed` (of `<div class="dsn-full-bleed">`) breekt visueel uit tot de buitenrand van de grid container. Het item beslaat de volle breedte inclusief de `--dsn-grid-margin`. Dit is handig voor achtergrondvlakken die "edge-to-edge" lopen.
+Een `GridItem` met `fullBleed` (of `<div class="dsn-full-bleed">`) breekt visueel uit tot de buitenrand van de grid container. Het item beslaat de volle breedte inclusief de `--dsn-grid-padding-inline`. Dit is handig voor achtergrondvlakken die "edge-to-edge" lopen.
 
 ```html
 <div class="dsn-grid dsn-grid--contained">
   <div class="dsn-col-8">Normale content</div>
   <div class="dsn-full-bleed">
     <div
-      style="background: var(--dsn-color-neutral-bg-subtle); padding: 1.5rem var(--dsn-grid-margin);"
+      style="background: var(--dsn-color-neutral-bg-subtle); padding: 1.5rem var(--dsn-grid-padding-inline);"
     >
       Edge-to-edge sectie
     </div>
@@ -114,13 +114,13 @@ Grid en GridItem zijn puur visuele layout utilities. Ze voegen geen ARIA-attribu
 
 ## Design tokens
 
-| Token                  | Standaard waarde                     | Omschrijving                                                        |
-| ---------------------- | ------------------------------------ | ------------------------------------------------------------------- |
-| `--dsn-grid-gutter`    | `var(--dsn-space-column-xl)` (16px)  | Horizontale ruimte tussen kolommen; 8px in information-dense        |
-| `--dsn-grid-row-gap`   | `var(--dsn-space-column-xl)` (16px)  | Verticale ruimte tussen rijen; 8px in information-dense             |
-| `--dsn-grid-margin`    | `var(--dsn-space-column-3xl)` (24px) | Outer padding aan weerszijden van de grid container                 |
-| `--dsn-grid-max-width` | `74rem` (~1184px)                    | Maximale breedte bij `contained` variant                            |
-| `--dsn-breakpoint-sm`  | `36em`                               | Referentiewaarde small breakpoint (niet te gebruiken in CSS @media) |
-| `--dsn-breakpoint-md`  | `44em`                               | Referentiewaarde medium breakpoint                                  |
-| `--dsn-breakpoint-lg`  | `64em`                               | Referentiewaarde large breakpoint                                   |
-| `--dsn-breakpoint-xl`  | `74em`                               | Referentiewaarde extra large breakpoint                             |
+| Token                       | Standaard waarde                    | Omschrijving                                                                                                                                                                             |
+| --------------------------- | ----------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `--dsn-grid-gutter`         | `var(--dsn-space-column-xl)` (16px) | Horizontale ruimte tussen kolommen; 8px in information-dense                                                                                                                             |
+| `--dsn-grid-row-gap`        | `var(--dsn-space-column-xl)` (16px) | Verticale ruimte tussen rijen; 8px in information-dense                                                                                                                                  |
+| `--dsn-grid-padding-inline` | `0px`                               | Outer padding-inline van de grid container. Standaard 0: grids staan doorgaans binnen `dsn-page-body__inner` die al voor horizontale padding zorgt. Zet expliciet voor standalone grids. |
+| `--dsn-grid-max-width`      | `74rem` (~1184px)                   | Maximale breedte bij `contained` variant                                                                                                                                                 |
+| `--dsn-breakpoint-sm`       | `36em`                              | Referentiewaarde small breakpoint (niet te gebruiken in CSS @media)                                                                                                                      |
+| `--dsn-breakpoint-md`       | `44em`                              | Referentiewaarde medium breakpoint                                                                                                                                                       |
+| `--dsn-breakpoint-lg`       | `64em`                              | Referentiewaarde large breakpoint                                                                                                                                                        |
+| `--dsn-breakpoint-xl`       | `74em`                              | Referentiewaarde extra large breakpoint                                                                                                                                                  |

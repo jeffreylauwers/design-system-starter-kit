@@ -82,7 +82,17 @@ export const Responsive: Story = {
 export const FullBleed: Story = {
   name: 'Full-bleed',
   render: () => (
-    <Grid contained>
+    // --dsn-grid-padding-inline expliciet gezet voor de demo zodat de full-bleed
+    // uitbraak zichtbaar is. In productie staat de default op 0 omdat de padding
+    // al door dsn-page-body__inner wordt geleverd.
+    <Grid
+      contained
+      style={
+        {
+          '--dsn-grid-padding-inline': 'var(--dsn-space-column-3xl)',
+        } as React.CSSProperties
+      }
+    >
       <GridItem colSpan={8}>
         <Container>Normale content (col-8)</Container>
       </GridItem>
@@ -90,7 +100,7 @@ export const FullBleed: Story = {
         <div
           style={{
             background: 'var(--dsn-color-neutral-bg-subtle)',
-            padding: '1.5rem var(--dsn-grid-margin)',
+            padding: '1.5rem var(--dsn-grid-padding-inline)',
             borderBlock: '1px solid var(--dsn-color-neutral-border-subtle)',
           }}
         >
