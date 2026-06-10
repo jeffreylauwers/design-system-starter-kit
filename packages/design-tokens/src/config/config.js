@@ -248,9 +248,19 @@ export function createHeroImageForceLightConfig() {
           {
             destination: 'start-light-hero-image.css',
             format: 'css/variables-scoped',
-            filter: (token) => token.$type === 'color',
+            // Primitieve kleurschaal (dsn.color.*) + hero-specifieke tokens (dsn.hero.*).
+            // Probleem: component-tokens erven van :root als resolved waarde. In dark
+            // mode is --dsn-hero-color-inverse geërfd als #000000. Door hero-tokens
+            // expliciet te declareren op het element worden var()-referenties opnieuw
+            // resolved met de lokale lichte kleurwaarden.
+            // Uitgesloten: generieke component-tokens zoals --dsn-heading-* en
+            // --dsn-button-* (die beheert hero.css zelf via var(--dsn-hero-color-*)).
+            filter: (token) =>
+              token.$type === 'color' &&
+              (token.name.startsWith('dsn-color-') ||
+                token.name.startsWith('dsn-hero-')),
             options: {
-              selector: '.dsn-hero--image',
+              selector: '.dsn-theme-start .dsn-hero--image',
               outputReferences: false,
             },
           },
