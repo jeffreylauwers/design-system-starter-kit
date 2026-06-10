@@ -80,6 +80,19 @@ Updaten bij: nieuwe naamgevingspatronen, nieuwe utility-klassen, wijzigingen in 
 
 Updaten bij: nieuwe addons, nieuwe story-types, gewijzigde Storybook config, nieuwe TokenTable features.
 
+### `docs/decisions/`
+
+Controleer of recente commits een beslissing bevatten die een decision record rechtvaardigt. Maak een nieuw record aan als **minstens één** van deze vragen 'ja' is:
+
+- Is er een naamconventie, token-architectuur of component-API veranderd?
+- Is er een keuze gemaakt waarbij redelijke mensen het oneens hadden kunnen zijn?
+- Is er een vraag beantwoord die al eerder opkwam (of zeker nog zal opkomen)?
+- Is er een expliciete trade-off geaccepteerd die toekomstige contributors zouden kunnen terugdraaien zonder de context te kennen?
+
+Zo ja: maak een nieuw bestand aan in `docs/decisions/` met naamconventie `DR-{JAAR}-{VOLGNUMMER}-{korte-beschrijving}.md` en voeg het toe aan de index in `docs/decisions/README.md`. Gebruik de structuur van een bestaand record als template.
+
+Sla deze stap over als de recente commits alleen bug fixes, stijlwijzigingen of toevoegingen zijn die de bestaande patronen volgen.
+
 ### `docs/changelog.md`
 
 Voeg een nieuwe entry toe voor commits die nog niet gedocumenteerd zijn. Formaat:
