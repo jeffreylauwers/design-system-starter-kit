@@ -51,10 +51,20 @@
         "$description": "Breedte van de transparante border-block op de Hero — zichtbaar in forced-colors / High Contrast mode om de sectieafbakening aan te geven"
       },
       "image": {
+        "text-color": {
+          "$value": "#ffffff",
+          "$type": "color",
+          "$description": "Tekstkleur in de image/image-blend hero — statisch wit voor contrast op foto-achtergrond, ongeacht kleurmodus"
+        },
         "blend-color": {
           "$value": "{dsn.color.accent-1-inverse.bg-default}",
           "$type": "color",
-          "$description": "Blendkleur voor de image-blend variant — zelfde als inverse achtergrond voor visuele samenhang"
+          "$description": "Blendkleur voor de image-blend variant in light mode — donker blauw via multiply"
+        },
+        "blend-color-dark": {
+          "$value": "{dsn.color.accent-1.bg-document}",
+          "$type": "color",
+          "$description": "Blendkleur voor de image-blend variant in dark mode — resolveert naar donker navy (#001126) zodat multiply de foto verdonkert"
         }
       }
     }
