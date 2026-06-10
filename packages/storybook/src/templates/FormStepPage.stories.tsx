@@ -125,7 +125,7 @@ function FormStepExamplePage() {
         />
         <PageBody>
           <main id="main-content" tabIndex={-1} style={mainStyle}>
-            <Grid style={{ '--dsn-grid-margin': '0' } as React.CSSProperties}>
+            <Grid>
               <GridItem colSpan={12} colStartLg={3} colEndLg={11}>
                 <Stack space="3xl">
                   <Heading level={1}>Titel formulier</Heading>
@@ -226,7 +226,7 @@ function FormStepExampleWithProgressPage() {
         />
         <PageBody>
           <main id="main-content" tabIndex={-1} style={mainStyle}>
-            <Grid style={{ '--dsn-grid-margin': '0' } as React.CSSProperties}>
+            <Grid>
               <GridItem colSpan={12} colStartLg={3} colEndLg={11}>
                 <Stack space="3xl">
                   <Heading level={1}>Titel formulier</Heading>
@@ -335,7 +335,7 @@ function FormStepExampleWithProgressBarPage() {
         />
         <PageBody>
           <main id="main-content" tabIndex={-1} style={mainStyle}>
-            <Grid style={{ '--dsn-grid-margin': '0' } as React.CSSProperties}>
+            <Grid>
               <GridItem colSpan={12} colStartLg={3} colEndLg={11}>
                 <Stack space="3xl">
                   <Heading level={1}>Titel formulier</Heading>
@@ -487,7 +487,7 @@ export const WithSaveForLaterModal: Story = {
         />
         <PageBody>
           <main id="main-content" tabIndex={-1} style={mainStyle}>
-            <Grid style={{ '--dsn-grid-margin': '0' } as React.CSSProperties}>
+            <Grid>
               <GridItem colSpan={12} colStartLg={3} colEndLg={11}>
                 <Stack space="3xl">
                   <Heading level={1}>Titel formulier</Heading>
@@ -603,7 +603,7 @@ export const WithStopFormModal: Story = {
         />
         <PageBody>
           <main id="main-content" tabIndex={-1} style={mainStyle}>
-            <Grid style={{ '--dsn-grid-margin': '0' } as React.CSSProperties}>
+            <Grid>
               <GridItem colSpan={12} colStartLg={3} colEndLg={11}>
                 <Stack space="3xl">
                   <Heading level={1}>Titel formulier</Heading>

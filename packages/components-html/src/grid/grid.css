@@ -41,7 +41,7 @@
   grid-template-columns: repeat(12, 1fr);
   column-gap: var(--dsn-grid-gutter);
   row-gap: var(--dsn-grid-row-gap);
-  padding-inline: var(--dsn-grid-margin);
+  padding-inline: var(--dsn-grid-padding-inline);
 }
 
 /* Max-width variant — gecentreerd met margin-inline: auto */
@@ -64,7 +64,7 @@
 
 .dsn-full-bleed {
   grid-column: 1 / -1;
-  margin-inline: calc(-1 * var(--dsn-grid-margin));
+  margin-inline: calc(-1 * var(--dsn-grid-padding-inline));
 }
 
 /* ============================================================

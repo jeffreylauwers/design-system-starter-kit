@@ -99,6 +99,7 @@
   color: var(--dsn-hero-color-inverse);
 
   /* Tekst-componenten */
+  --dsn-pre-heading-color: var(--dsn-hero-color-inverse);
   --dsn-heading-level-1-color: var(--dsn-hero-color-inverse);
   --dsn-heading-level-2-color: var(--dsn-hero-color-inverse);
   --dsn-heading-level-3-color: var(--dsn-hero-color-inverse);
@@ -146,6 +147,7 @@
   color: var(--dsn-hero-color-inverse);
 
   /* Tekst-componenten */
+  --dsn-pre-heading-color: var(--dsn-hero-color-inverse);
   --dsn-heading-level-1-color: var(--dsn-hero-color-inverse);
   --dsn-heading-level-2-color: var(--dsn-hero-color-inverse);
   --dsn-heading-level-3-color: var(--dsn-hero-color-inverse);

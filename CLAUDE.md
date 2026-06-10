@@ -117,6 +117,94 @@ Tokens zijn gelaagd: `base.json` (gedeelde primitieven) → component-token JSON
 
 `pnpm --filter storybook exec tsc --noEmit` geeft **0 fouten en 0 warnings**. Nieuwe code mag geen nieuwe fouten of warnings introduceren.
 
+### 6. Navigatie: homepage krijgt altijd een 'Home' item als eerste, met `current`
+
+Wanneer een URL een homepage is (domein zonder pad, of pad eindigt op `/`), **voeg dan 'Home' toe als eerste navigatie-item** en markeer dit als `current`. Niet een willekeurig ander item als current markeren.
+
+```tsx
+// ✅ Homepage: Home als eerste item, current
+<MenuLink href="/" level={1} current>Home</MenuLink>
+<MenuLink href="/over" level={1}>Over</MenuLink>
+
+// ❌ Homepage maar 'Contact' current — misleidend
+<MenuLink href="/over" level={1}>Over</MenuLink>
+<MenuLink href="/contact" level={1} current>Contact</MenuLink>
+```
+
+Dit geldt ook als de originele website zelf geen 'Home' in de navigatie heeft — de gedeelde URL is de homepage, dus voeg het toe.
+
+### 7. Cards: CardGroup vs Grid — kies bewust en gebruik mobile-first colSpan
+
+**Wanneer CardGroup:**
+
+- Gelijkwaardige cards waarbij het aantal variabel kan zijn
+- Auto-responsive gewenst: cards wrappen automatisch zodra ze niet meer passen op `--dsn-card-group-item-min-width` (280px)
+- Geen noodzaak voor expliciete kolomcontrole
+
+**Wanneer Grid + GridItem:**
+
+- Expliciete kolomverdeling vereist (bijv. 8+4 layout naast andere content)
+- Cards moeten uitlijnen met niet-card-inhoud in hetzelfde grid
+
+**Kritieke regel bij Grid + cards: altijd mobile-first, begin met `colSpan={12}`**
+
+```tsx
+// ✅ Mobile-first: 1-kolom → 2-kolom sm → 3-kolom md
+<GridItem colSpan={12} colSpanSm={6} colSpanMd={4}>
+
+// ✅ Mobile-first: 1-kolom → 2-kolom md
+<GridItem colSpan={12} colSpanMd={6}>
+
+// ❌ Desktop-first: cards worden te smal op mobile
+<GridItem colSpan={4}>
+<GridItem colSpan={4} colSpanSm={6} colSpanMd={4}>
+```
+
+`colSpan={12}` als basis garandeert dat cards op kleine viewports dezelfde volledige breedte pakken als gestackte CardGroup-cards. Daarnaast: Cards in GridItems altijd `style={{ height: '100%' }}` geven zodat ze de volledige GridItem-hoogte vullen (CardGroup regelt dit automatisch via flex).
+
+### 8. Inverse context: alle tekst-componenten meenemen
+
+Wanneer een container-component (Hero, PageHeader, PageFooter) kleur-overrides definieert voor een inverse/donkere achtergrond, moeten **alle** tekst-componenten met een eigen `--dsn-*-color` custom property worden meegenomen — inclusief `PreHeading`. De override-lijst in de CSS moet compleet zijn:
+
+```css
+/* ✅ Compleet: alle tekst-componenten overschreven */
+--dsn-pre-heading-color: var(--dsn-hero-color-inverse);
+--dsn-heading-level-1-color: var(--dsn-hero-color-inverse);
+--dsn-paragraph-color: var(--dsn-hero-color-inverse);
+
+/* ❌ Onvolledig: PreHeading mist → donkere tekst op donkere achtergrond */
+--dsn-heading-level-1-color: var(--dsn-hero-color-inverse);
+--dsn-paragraph-color: var(--dsn-hero-color-inverse);
+```
+
+Controleer bij elke nieuwe inverse container of `--dsn-pre-heading-color` is opgenomen.
+
+### 9. Paginastructuur: gebruik dsn-page-body\_\_inner, geen inline max-inline-size
+
+Content op een pagina zit altijd binnen `PageBody`, die automatisch `dsn-page-body__inner` rendert met de juiste `max-inline-size` en `padding-inline`. **Voeg geen extra wrapper divs toe met hardcoded `max-inline-size: 960px`.**
+
+```tsx
+// ✅ Content is al geconstrained door dsn-page-body__inner
+<PageBody>
+  <main>
+    <section style={{ paddingBlock: 'var(--dsn-space-block-6xl)' }}>
+      <Heading>...</Heading>
+    </section>
+  </main>
+</PageBody>
+
+// ❌ Onnodige re-constraint — dsn-page-body__inner doet dit al
+<PageBody>
+  <main>
+    <div style={{ maxInlineSize: '960px', marginInline: 'auto', paddingInline: '...' }}>
+      <Heading>...</Heading>
+    </div>
+  </main>
+</PageBody>
+```
+
+Content **binnen** een `BreakoutSection` of `Hero` (die uitbreken uit de inner wrapper) moet wél opnieuw geconstrained worden — gebruik dan `className="dsn-page-body__inner"`.
+
 ---
 
 ## Nieuw component bouwen: checklist
