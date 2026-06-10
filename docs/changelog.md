@@ -6,6 +6,33 @@ All notable changes to this project are documented in this file.
 
 ---
 
+## Version 1.0.4 (June 10, 2026)
+
+### Hero — dark mode contrast
+
+#### Fixed
+
+- **Hero `image` en `image-blend` varianten in dark mode**: tekst, knoppen en blend-kleur gebruikten de donkere `accent-1-inverse` kleurschaal, waardoor zwarte tekst op de foto-achtergrond verscheen. Een foto-achtergrond vereist altijd lichte kleuren ongeacht de kleurmodus.
+
+  **Oplossing**: de token-build genereert nu per thema een scoped CSS-bestand (`{theme}-light-hero-image.css`) dat alle light-mode kleurwaarden declareert op `.dsn-theme-{theme} .dsn-hero--image`. Daarmee overschrijft het element lokaal de dark-mode `:root`-variabelen, terwijl de rest van de pagina dark mode blijft. In light mode zijn de declaraties identiek aan `:root` (geen effect).
+  - Start dark mode: witte tekst, donkerblauwe blend-overlay (`#1b59a4`), lichte strong-button
+  - Wireframe dark mode: witte tekst, zwarte blend-overlay (eigen Wireframe-kleuren)
+
+- **`build-css.js`** in `@dsn-starter-kit/components-react`: CSS `@import` met packagenamen (bijv. `@dsn-starter-kit/design-tokens/css/scoped/...`) werden niet herkend en behandeld als relatief pad. `resolvePackageImport()` toegevoegd die via de directory-boom `node_modules` opspoort en `package.json` exports raadpleegt voor het juiste bestandspad.
+
+#### Changed (token/build)
+
+- Nieuw token-build output: `createHeroImageForceLightConfigs()` in `packages/design-tokens/src/config/config.js` genereert per thema een scoped CSS-bestand (`dist/css/scoped/{theme}-light-hero-image.css`). Filtert op `dsn-color-*` en `dsn-hero-*` tokens — generieke component-tokens (`dsn-heading-*`, `dsn-button-*`) zijn uitgesloten omdat de hero die zelf beheert.
+- Nieuwe package exports in `@dsn-starter-kit/design-tokens`: `./css/scoped/start-hero-image-light` en `./css/scoped/wireframe-hero-image-light`
+
+### Grid token
+
+#### Changed
+
+- **Grid `margin` token hernoemd naar `padding-inline`** (PR #286): `dsn.grid.margin` → `dsn.grid.padding-inline`; CSS custom property `--dsn-grid-margin` → `--dsn-grid-padding-inline`. Alle template stories bijgewerkt. De `dsn-full-bleed` klasse gebruikt nu `calc(-1 * var(--dsn-grid-padding-inline))`.
+
+---
+
 ## Version 1.0.3 (June 4, 2026)
 
 ### Accessibility — Forced Colors Mode
