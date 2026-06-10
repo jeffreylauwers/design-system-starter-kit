@@ -1,3 +1,8 @@
+/* Force light-mode kleurwaarden binnen image hero — voorkomt donkere tekst op foto.
+   Per thema gescoopt (.dsn-theme-{name} .dsn-hero--image); gegenereerd door token-build. */
+@import '@dsn-starter-kit/design-tokens/css/scoped/start-hero-image-light';
+@import '@dsn-starter-kit/design-tokens/css/scoped/wireframe-hero-image-light';
+
 /**
  * Hero Component
  * Prominente introductiesectie direct onder de PageHeader. Beslaat de volledige

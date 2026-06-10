@@ -15,7 +15,7 @@ StyleDictionary.registerFormat({
 
     const lines = dictionary.allTokens.map((token) => {
       const comment = token.description ? ` /* ${token.description} */` : '';
-      let value = token.value;
+      let value = token.value ?? token.$value;
 
       // If outputReferences is enabled and the original value had references,
       // convert them to CSS custom property references
@@ -224,6 +224,54 @@ function createThemeBaseScopedConfig(theme) {
       },
     },
   };
+}
+
+/**
+ * Creates a scoped CSS file per thema met light-mode kleurwaarden gescoopt op .dsn-hero--image.
+ * Dit zorgt dat de image/image-blend Hero altijd in light-mode kleuren rendert,
+ * ongeacht of de pagina in dark mode staat. De :root dark-mode waarden worden
+ * lokaal overschreven — in light mode zijn de waarden identiek aan :root (geen effect).
+ *
+ * CSS-erfenis-toelichting: component-tokens zoals --dsn-hero-color-inverse erven van
+ * :root als resolved waarden (#000000 in dark mode). Door ze expliciet op het element
+ * te declareren, resolven var()-referenties opnieuw met de lokale lichte kleurwaarden.
+ */
+function createHeroImageForceLightConfigForTheme(theme) {
+  return {
+    source: [
+      `src/tokens/themes/${theme}/base.json`,
+      `src/tokens/themes/${theme}/colors-light.json`,
+      'src/tokens/components/*.json',
+      'src/tokens/project-types/default/*.json',
+    ],
+    platforms: {
+      css: {
+        transformGroup: 'css',
+        buildPath: 'dist/css/scoped/',
+        files: [
+          {
+            destination: `${theme}-light-hero-image.css`,
+            format: 'css/variables-scoped',
+            // Primitieve kleurschaal (dsn.color.*) + hero-specifieke tokens (dsn.hero.*).
+            // Generieke component-tokens zoals --dsn-heading-* en --dsn-button-* zijn
+            // uitgesloten — die beheert hero.css zelf via var(--dsn-hero-color-*).
+            filter: (token) =>
+              token.$type === 'color' &&
+              (token.name.startsWith('dsn-color-') ||
+                token.name.startsWith('dsn-hero-')),
+            options: {
+              selector: `.dsn-theme-${theme} .dsn-hero--image`,
+              outputReferences: false,
+            },
+          },
+        ],
+      },
+    },
+  };
+}
+
+export function createHeroImageForceLightConfigs() {
+  return themes.map((theme) => createHeroImageForceLightConfigForTheme(theme));
 }
 
 // =============================================================================

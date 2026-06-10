@@ -8,6 +8,7 @@ import {
   projectTypes,
   fullConfigs,
   scopedConfigs,
+  createHeroImageForceLightConfigs,
 } from './config.js';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
@@ -196,10 +197,30 @@ function printSummary() {
   console.log('\n🎉 Build complete!\n');
 }
 
+async function buildHeroImageForceLightConfigs() {
+  console.log(
+    '🦸 Building hero image force-light configs (light-mode colors scoped to .dsn-hero--image per theme)...\n'
+  );
+  const configs = createHeroImageForceLightConfigs();
+  for (const config of configs) {
+    const destination = config.platforms.css.files[0].destination;
+    try {
+      const sd = new StyleDictionary(config);
+      await sd.buildAllPlatforms();
+      console.log(`   ✅ dist/css/scoped/${destination}`);
+    } catch (error) {
+      console.error(`   ❌ Error building ${destination}:`, error.message);
+      process.exit(1);
+    }
+  }
+  console.log();
+}
+
 async function main() {
   await buildFullConfigs();
   await appendReducedMotion();
   await buildScopedConfigs();
+  await buildHeroImageForceLightConfigs();
   createBackwardCompatibilityAliases();
   printSummary();
 }

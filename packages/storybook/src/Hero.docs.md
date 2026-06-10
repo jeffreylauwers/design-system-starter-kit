@@ -39,6 +39,14 @@ Bij `variant="image"` of `"image-blend"` levert u de afbeelding via de `backgrou
 
 Gebruik bij voorkeur `variant="image-blend"` boven `variant="image"`: de kleur-overlay verbetert de kans op voldoende contrast en geeft de Hero een consistentere uitstraling bij wisselende afbeeldingen.
 
+### Dark mode
+
+De `image` en `image-blend` varianten renderen altijd in light-mode kleuren, ook als de pagina in dark mode staat. Een foto-achtergrond vereist lichte tekst en een donkere overlay ongeacht de kleurmodus — de semantische "inverse" kleuren van de donkere kleurschaal zijn hier niet bruikbaar.
+
+Dit gedrag is ingebakken via gegenereerde scoped CSS (per thema): het component overschrijft lokaal de dark-mode `:root`-variabelen. U hoeft hier als gebruiker van het component niets voor te doen.
+
+De `default` en `inverse` varianten volgen wél de actieve kleurmodus.
+
 ### Hoogte
 
 De standaardhoogte is `70svh` met een minimum van `400px`. Overschrijf `--dsn-hero-block-size` via een inline stijl om de hoogte per instantie aan te passen:
