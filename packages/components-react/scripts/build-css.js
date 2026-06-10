@@ -16,11 +16,63 @@ const path = require('path');
 const SRC_DIR = path.resolve(__dirname, '../src');
 const DIST_DIR = path.resolve(__dirname, '../dist');
 
+/**
+ * Resolves a package import (e.g. '@scope/pkg/subpath') to an absolute path.
+ * Walks up the directory tree searching for node_modules, then uses package.json
+ * exports to find the actual file.
+ */
+function resolvePackageImport(importPath, startDir) {
+  const parts = importPath.split('/');
+  const packageName = importPath.startsWith('@')
+    ? parts.slice(0, 2).join('/')
+    : parts[0];
+  const subPath = importPath.startsWith('@')
+    ? parts.slice(2).join('/')
+    : parts.slice(1).join('/');
+
+  let dir = startDir;
+  while (dir !== path.dirname(dir)) {
+    const packageDir = path.join(
+      dir,
+      'node_modules',
+      ...packageName.split('/')
+    );
+    if (fs.existsSync(packageDir)) {
+      const pkgJsonPath = path.join(packageDir, 'package.json');
+      if (fs.existsSync(pkgJsonPath)) {
+        const pkg = JSON.parse(fs.readFileSync(pkgJsonPath, 'utf-8'));
+        const exportKey = subPath ? `./${subPath}` : '.';
+        const exports = pkg.exports || {};
+        if (exports[exportKey]) {
+          const entry = exports[exportKey];
+          const filePath =
+            typeof entry === 'string' ? entry : entry.default || entry.import;
+          return path.join(packageDir, filePath);
+        }
+      }
+      // Fallback: direct subpath within the package
+      if (subPath) {
+        return path.join(packageDir, subPath);
+      }
+    }
+    dir = path.dirname(dir);
+  }
+  throw new Error(
+    `Package not found: ${packageName} (imported from ${startDir})`
+  );
+}
+
 function resolveImports(cssContent, baseDir) {
   return cssContent.replace(
     /@import\s+['"]([^'"]+)['"]\s*;/g,
     (match, importPath) => {
-      const resolved = path.resolve(baseDir, importPath);
+      // Package import: doesn't start with . or /
+      const isPackageImport =
+        !importPath.startsWith('.') && !importPath.startsWith('/');
+      const resolved = isPackageImport
+        ? resolvePackageImport(importPath, baseDir)
+        : path.resolve(baseDir, importPath);
+
       if (!fs.existsSync(resolved)) {
         throw new Error(
           `CSS import not found: ${resolved} (imported from ${baseDir})`
