@@ -20,7 +20,8 @@
     "./css/dark-scoped": "./dist/css/variables-dark-scoped.css",
     "./scss": "./dist/scss/_variables.scss",
     "./scss/dark": "./dist/scss/_variables-dark.scss",
-    "./css/scoped/hero-image-light": "./dist/css/scoped/start-light-hero-image.css"
+    "./css/scoped/start-hero-image-light": "./dist/css/scoped/start-light-hero-image.css",
+    "./css/scoped/wireframe-hero-image-light": "./dist/css/scoped/wireframe-light-hero-image.css"
   },
   "files": [
     "dist"

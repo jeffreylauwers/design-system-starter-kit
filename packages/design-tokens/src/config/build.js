@@ -8,7 +8,7 @@ import {
   projectTypes,
   fullConfigs,
   scopedConfigs,
-  createHeroImageForceLightConfig,
+  createHeroImageForceLightConfigs,
 } from './config.js';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
@@ -197,28 +197,30 @@ function printSummary() {
   console.log('\n🎉 Build complete!\n');
 }
 
-async function buildHeroImageForceLightConfig() {
+async function buildHeroImageForceLightConfigs() {
   console.log(
-    '🦸 Building hero image force-light config (light-mode colors scoped to .dsn-hero--image)...\n'
+    '🦸 Building hero image force-light configs (light-mode colors scoped to .dsn-hero--image per theme)...\n'
   );
-  try {
-    const sd = new StyleDictionary(createHeroImageForceLightConfig());
-    await sd.buildAllPlatforms();
-    console.log('   ✅ dist/css/scoped/start-light-hero-image.css\n');
-  } catch (error) {
-    console.error(
-      '   ❌ Error building hero image force-light:',
-      error.message
-    );
-    process.exit(1);
+  const configs = createHeroImageForceLightConfigs();
+  for (const config of configs) {
+    const destination = config.platforms.css.files[0].destination;
+    try {
+      const sd = new StyleDictionary(config);
+      await sd.buildAllPlatforms();
+      console.log(`   ✅ dist/css/scoped/${destination}`);
+    } catch (error) {
+      console.error(`   ❌ Error building ${destination}:`, error.message);
+      process.exit(1);
+    }
   }
+  console.log();
 }
 
 async function main() {
   await buildFullConfigs();
   await appendReducedMotion();
   await buildScopedConfigs();
-  await buildHeroImageForceLightConfig();
+  await buildHeroImageForceLightConfigs();
   createBackwardCompatibilityAliases();
   printSummary();
 }

@@ -227,16 +227,20 @@ function createThemeBaseScopedConfig(theme) {
 }
 
 /**
- * Creates a scoped CSS file met alle start-light kleurwaarden gescoopt op .dsn-hero--image.
+ * Creates a scoped CSS file per thema met light-mode kleurwaarden gescoopt op .dsn-hero--image.
  * Dit zorgt dat de image/image-blend Hero altijd in light-mode kleuren rendert,
  * ongeacht of de pagina in dark mode staat. De :root dark-mode waarden worden
  * lokaal overschreven — in light mode zijn de waarden identiek aan :root (geen effect).
+ *
+ * CSS-erfenis-toelichting: component-tokens zoals --dsn-hero-color-inverse erven van
+ * :root als resolved waarden (#000000 in dark mode). Door ze expliciet op het element
+ * te declareren, resolven var()-referenties opnieuw met de lokale lichte kleurwaarden.
  */
-export function createHeroImageForceLightConfig() {
+function createHeroImageForceLightConfigForTheme(theme) {
   return {
     source: [
-      'src/tokens/themes/start/base.json',
-      'src/tokens/themes/start/colors-light.json',
+      `src/tokens/themes/${theme}/base.json`,
+      `src/tokens/themes/${theme}/colors-light.json`,
       'src/tokens/components/*.json',
       'src/tokens/project-types/default/*.json',
     ],
@@ -246,21 +250,17 @@ export function createHeroImageForceLightConfig() {
         buildPath: 'dist/css/scoped/',
         files: [
           {
-            destination: 'start-light-hero-image.css',
+            destination: `${theme}-light-hero-image.css`,
             format: 'css/variables-scoped',
             // Primitieve kleurschaal (dsn.color.*) + hero-specifieke tokens (dsn.hero.*).
-            // Probleem: component-tokens erven van :root als resolved waarde. In dark
-            // mode is --dsn-hero-color-inverse geërfd als #000000. Door hero-tokens
-            // expliciet te declareren op het element worden var()-referenties opnieuw
-            // resolved met de lokale lichte kleurwaarden.
-            // Uitgesloten: generieke component-tokens zoals --dsn-heading-* en
-            // --dsn-button-* (die beheert hero.css zelf via var(--dsn-hero-color-*)).
+            // Generieke component-tokens zoals --dsn-heading-* en --dsn-button-* zijn
+            // uitgesloten — die beheert hero.css zelf via var(--dsn-hero-color-*).
             filter: (token) =>
               token.$type === 'color' &&
               (token.name.startsWith('dsn-color-') ||
                 token.name.startsWith('dsn-hero-')),
             options: {
-              selector: '.dsn-theme-start .dsn-hero--image',
+              selector: `.dsn-theme-${theme} .dsn-hero--image`,
               outputReferences: false,
             },
           },
@@ -268,6 +268,10 @@ export function createHeroImageForceLightConfig() {
       },
     },
   };
+}
+
+export function createHeroImageForceLightConfigs() {
+  return themes.map((theme) => createHeroImageForceLightConfigForTheme(theme));
 }
 
 // =============================================================================
