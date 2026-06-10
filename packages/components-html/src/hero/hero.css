@@ -1,3 +1,7 @@
+/* Force light-mode kleurwaarden binnen image hero — voorkomt donkere tekst op foto.
+   Gegenereerd door de token-build; vervangt alle :root dark-mode overrides lokaal. */
+@import '@dsn-starter-kit/design-tokens/css/scoped/hero-image-light';
+
 /**
  * Hero Component
  * Prominente introductiesectie direct onder de PageHeader. Beslaat de volledige
@@ -144,17 +148,17 @@
   background-image: var(--dsn-hero-bg-image);
   background-size: cover;
   background-position: center;
-  color: var(--dsn-hero-image-text-color);
+  color: var(--dsn-hero-color-inverse);
 
-  /* Tekst-componenten — altijd lichte kleur ongeacht kleurmodus */
-  --dsn-pre-heading-color: var(--dsn-hero-image-text-color);
-  --dsn-heading-level-1-color: var(--dsn-hero-image-text-color);
-  --dsn-heading-level-2-color: var(--dsn-hero-image-text-color);
-  --dsn-heading-level-3-color: var(--dsn-hero-image-text-color);
-  --dsn-heading-level-4-color: var(--dsn-hero-image-text-color);
-  --dsn-heading-level-5-color: var(--dsn-hero-image-text-color);
-  --dsn-heading-level-6-color: var(--dsn-hero-image-text-color);
-  --dsn-paragraph-color: var(--dsn-hero-image-text-color);
+  /* Tekst-componenten */
+  --dsn-pre-heading-color: var(--dsn-hero-color-inverse);
+  --dsn-heading-level-1-color: var(--dsn-hero-color-inverse);
+  --dsn-heading-level-2-color: var(--dsn-hero-color-inverse);
+  --dsn-heading-level-3-color: var(--dsn-hero-color-inverse);
+  --dsn-heading-level-4-color: var(--dsn-hero-color-inverse);
+  --dsn-heading-level-5-color: var(--dsn-hero-color-inverse);
+  --dsn-heading-level-6-color: var(--dsn-hero-color-inverse);
+  --dsn-paragraph-color: var(--dsn-hero-color-inverse);
 
   /* Buttons — zelfde als inverse */
   --dsn-button-strong-background-color: var(--dsn-color-action-1-bg-default);
@@ -189,10 +193,6 @@
 .dsn-hero--image.dsn-hero--image-blend {
   background-color: var(--dsn-hero-image-blend-color);
   background-blend-mode: multiply;
-}
-
-.dsn-theme-dark .dsn-hero--image.dsn-hero--image-blend {
-  background-color: var(--dsn-hero-image-blend-color-dark);
 }
 
 /* =============================================================================

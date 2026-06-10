@@ -8,6 +8,7 @@ import {
   projectTypes,
   fullConfigs,
   scopedConfigs,
+  createHeroImageForceLightConfig,
 } from './config.js';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
@@ -196,10 +197,28 @@ function printSummary() {
   console.log('\n🎉 Build complete!\n');
 }
 
+async function buildHeroImageForceLightConfig() {
+  console.log(
+    '🦸 Building hero image force-light config (light-mode colors scoped to .dsn-hero--image)...\n'
+  );
+  try {
+    const sd = new StyleDictionary(createHeroImageForceLightConfig());
+    await sd.buildAllPlatforms();
+    console.log('   ✅ dist/css/scoped/start-light-hero-image.css\n');
+  } catch (error) {
+    console.error(
+      '   ❌ Error building hero image force-light:',
+      error.message
+    );
+    process.exit(1);
+  }
+}
+
 async function main() {
   await buildFullConfigs();
   await appendReducedMotion();
   await buildScopedConfigs();
+  await buildHeroImageForceLightConfig();
   createBackwardCompatibilityAliases();
   printSummary();
 }

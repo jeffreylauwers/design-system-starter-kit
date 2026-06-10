@@ -15,7 +15,7 @@ StyleDictionary.registerFormat({
 
     const lines = dictionary.allTokens.map((token) => {
       const comment = token.description ? ` /* ${token.description} */` : '';
-      let value = token.value;
+      let value = token.value ?? token.$value;
 
       // If outputReferences is enabled and the original value had references,
       // convert them to CSS custom property references
@@ -218,6 +218,40 @@ function createThemeBaseScopedConfig(theme) {
             options: {
               selector: `.dsn-theme-${theme}`,
               outputReferences: true,
+            },
+          },
+        ],
+      },
+    },
+  };
+}
+
+/**
+ * Creates a scoped CSS file met alle start-light kleurwaarden gescoopt op .dsn-hero--image.
+ * Dit zorgt dat de image/image-blend Hero altijd in light-mode kleuren rendert,
+ * ongeacht of de pagina in dark mode staat. De :root dark-mode waarden worden
+ * lokaal overschreven — in light mode zijn de waarden identiek aan :root (geen effect).
+ */
+export function createHeroImageForceLightConfig() {
+  return {
+    source: [
+      'src/tokens/themes/start/base.json',
+      'src/tokens/themes/start/colors-light.json',
+      'src/tokens/components/*.json',
+      'src/tokens/project-types/default/*.json',
+    ],
+    platforms: {
+      css: {
+        transformGroup: 'css',
+        buildPath: 'dist/css/scoped/',
+        files: [
+          {
+            destination: 'start-light-hero-image.css',
+            format: 'css/variables-scoped',
+            filter: (token) => token.$type === 'color',
+            options: {
+              selector: '.dsn-hero--image',
+              outputReferences: false,
             },
           },
         ],
