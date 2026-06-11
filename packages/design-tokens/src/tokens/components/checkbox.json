@@ -12,7 +12,7 @@
       "border-radius": {
         "$value": "{dsn.border.radius.square}",
         "$type": "dimension",
-        "$description": "Square corners for checkbox"
+        "$description": "Vierkante hoeken voor de checkbox"
       },
       "border-width": {
         "$value": "{dsn.border.width.thin}",
@@ -21,7 +21,7 @@
       "size": {
         "$value": "calc(var(--dsn-text-font-size-md) * var(--dsn-text-line-height-md))",
         "$type": "dimension",
-        "$description": "Size of the checkbox - fluid based on text size and line-height"
+        "$description": "Grootte van de checkbox — vloeiend op basis van tekstgrootte en line-height"
       },
       "active": {
         "background-color": {
@@ -53,7 +53,7 @@
         "color": {
           "$value": "{dsn.color.neutral-inverse.color-default}",
           "$type": "color",
-          "$description": "Check icon color"
+          "$description": "Kleur van het vinkje"
         }
       },
       "disabled": {
@@ -192,7 +192,7 @@
         "color": {
           "$value": "{dsn.color.neutral-inverse.color-default}",
           "$type": "color",
-          "$description": "Indeterminate icon (minus) color"
+          "$description": "Kleur van het indeterminate-icoon (minteken)"
         }
       },
       "indeterminate-active": {
@@ -267,7 +267,7 @@
         "size": {
           "$value": "calc(var(--dsn-checkbox-size) * 0.67)",
           "$type": "dimension",
-          "$description": "Check icon size - 67% of checkbox size for proper visual balance"
+          "$description": "Grootte van het vinkje — 67% van de checkboxgrootte voor een goede visuele balans"
         }
       }
     }

@@ -4,32 +4,32 @@
       "button-inset-inline-end": {
         "$value": "{dsn.space.inline.sm}",
         "$type": "dimension",
-        "$description": "Distance from the inline-end border to the clock button (4px)"
+        "$description": "Afstand van de inline-end border tot de klokknop (4px)"
       },
       "icon-color": {
         "$value": "{dsn.color.action-2.color-default}",
         "$type": "color",
-        "$description": "Clock icon color (interactive, action color)"
+        "$description": "Kleur van het klokicoon (interactief, actie-kleur)"
       },
       "icon-gap": {
         "$value": "{dsn.space.text.md}",
         "$type": "dimension",
-        "$description": "Gap between clock button and input text"
+        "$description": "Ruimte tussen de klokknop en de invoertekst"
       },
       "icon-hover-color": {
         "$value": "{dsn.color.action-2.color-hover}",
         "$type": "color",
-        "$description": "Clock icon hover color"
+        "$description": "Kleur van het klokicoon op hover"
       },
       "icon-size": {
         "$value": "{dsn.button.size.small.icon-size}",
         "$type": "dimension",
-        "$description": "Clock icon size — matches the small button icon size"
+        "$description": "Grootte van het klokicoon — gelijk aan de icoongrootte van de small button"
       },
       "padding-inline-end-with-icon": {
         "$value": "calc(({dsn.button.size.small.icon-only-padding} * 2) + {dsn.time-input.icon-size} + {dsn.time-input.button-inset-inline-end} + {dsn.time-input.icon-gap})",
         "$type": "dimension",
-        "$description": "Right padding when icon is present: (button-padding × 2) + icon-size + button-inset + gap"
+        "$description": "Rechter padding wanneer een icoon aanwezig is: (knop-padding × 2) + icoongrootte + knop-inset + ruimte"
       }
     }
   }

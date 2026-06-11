@@ -5,58 +5,58 @@
         "border-block-end-color": {
           "$value": "{dsn.color.neutral.border-subtle}",
           "$type": "color",
-          "$description": "Color of the row separator border"
+          "$description": "Kleur van de rij-scheidingsborder"
         },
         "border-block-end-width": {
           "$value": "{dsn.border.width.thin}",
           "$type": "dimension",
-          "$description": "Width of the row separator border"
+          "$description": "Breedte van de rij-scheidingsborder"
         },
         "gap": {
           "$value": "{dsn.space.inline.lg}",
           "$type": "dimension",
-          "$description": "Horizontal gap between columns in the grid layout"
+          "$description": "Horizontale ruimte tussen kolommen in de gridindeling"
         },
         "padding-block": {
           "$value": "{dsn.space.block.lg}",
           "$type": "dimension",
-          "$description": "Vertical spacing around each row — applies in both stacked and grid layout; matches Table cell padding"
+          "$description": "Verticale ruimte rondom elke rij — geldt voor zowel gestapelde als gridindeling; komt overeen met de celpadding van de Table"
         }
       },
       "key": {
         "color": {
           "$value": "{dsn.color.neutral.color-document}",
           "$type": "color",
-          "$description": "Text color of the key cell"
+          "$description": "Tekstkleur van de sleutelcel"
         },
         "font-weight": {
           "$value": "{dsn.text.font-weight.bold}",
           "$type": "fontWeight",
-          "$description": "Bold weight distinguishes the key from the value visually"
+          "$description": "Vet gewicht onderscheidt de sleutel visueel van de waarde"
         },
         "basis": {
           "$value": "30%",
           "$type": "dimension",
-          "$description": "Width of the key column in the grid layout"
+          "$description": "Breedte van de sleutelkolom in de gridindeling"
         }
       },
       "value": {
         "color": {
           "$value": "{dsn.color.neutral.color-document}",
           "$type": "color",
-          "$description": "Text color of the value cell"
+          "$description": "Tekstkleur van de waardecel"
         }
       },
       "actions": {
         "gap": {
           "$value": "{dsn.space.inline.3xl}",
           "$type": "dimension",
-          "$description": "Gap between multiple action links in a single row"
+          "$description": "Ruimte tussen meerdere actielinks in één rij"
         },
         "margin-block-start-stacked": {
           "$value": "{dsn.space.block.md}",
           "$type": "dimension",
-          "$description": "Extra space above the actions cell in the stacked (mobile) layout"
+          "$description": "Extra ruimte boven de actiescel in de gestapelde (mobiele) indeling"
         }
       }
     }

@@ -4,32 +4,32 @@
       "color": {
         "$value": "{dsn.color.neutral.color-document}",
         "$type": "color",
-        "$description": "Form field label suffix text color"
+        "$description": "Tekstkleur van het labelachtervoegsel"
       },
       "font-family": {
         "$value": "{dsn.text.font-family.default}",
         "$type": "fontFamily",
-        "$description": "Form field label suffix font family"
+        "$description": "Font-familie van het labelachtervoegsel"
       },
       "font-size": {
         "$value": "{dsn.text.font-size.md}",
         "$type": "fontSize",
-        "$description": "Form field label suffix font size"
+        "$description": "Font-size van het labelachtervoegsel"
       },
       "font-weight": {
         "$value": "{dsn.text.font-weight.default}",
         "$type": "fontWeight",
-        "$description": "Form field label suffix font weight"
+        "$description": "Font-gewicht van het labelachtervoegsel"
       },
       "line-height": {
         "$value": "{dsn.text.line-height.md}",
         "$type": "lineHeight",
-        "$description": "Form field label suffix line height"
+        "$description": "Line-height van het labelachtervoegsel"
       },
       "margin-inline-start": {
         "$value": "{dsn.space.text.sm}",
         "$type": "dimension",
-        "$description": "Space between label text and suffix text"
+        "$description": "Ruimte tussen de labeltekst en het achtervoegsel"
       }
     }
   }

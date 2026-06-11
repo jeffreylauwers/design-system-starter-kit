@@ -4,27 +4,27 @@
       "icon-color": {
         "$value": "{dsn.color.action-1.color-default}",
         "$type": "color",
-        "$description": "Chevron icon color — same as subtle button icon color"
+        "$description": "Kleur van het chevron-icoon — gelijk aan de icoonkleur van de subtle button"
       },
       "icon-gap": {
         "$value": "{dsn.space.text.md}",
         "$type": "dimension",
-        "$description": "Gap between chevron icon and select text"
+        "$description": "Ruimte tussen het chevron-icoon en de selectietekst"
       },
       "icon-inset-inline-end": {
         "$value": "{dsn.space.inline.md}",
         "$type": "dimension",
-        "$description": "Distance from the inline-end border to the chevron icon (8px)"
+        "$description": "Afstand van de inline-end border tot het chevron-icoon (8px)"
       },
       "icon-size": {
         "$value": "{dsn.icon.size.md}",
         "$type": "dimension",
-        "$description": "Chevron-down icon size — matches the medium icon size"
+        "$description": "Grootte van het chevron-down icoon — gelijk aan de medium icoongrootte"
       },
       "padding-inline-end-with-icon": {
         "$value": "calc({dsn.select.icon-size} + {dsn.select.icon-gap} + {dsn.select.icon-inset-inline-end})",
         "$type": "dimension",
-        "$description": "Right padding when icon is present: icon-size + gap + inset"
+        "$description": "Rechter padding wanneer een icoon aanwezig is: icoongrootte + ruimte + inset"
       }
     }
   }

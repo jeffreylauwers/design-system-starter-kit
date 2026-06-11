@@ -4,110 +4,110 @@
       "border-color": {
         "$value": "{dsn.color.transparent}",
         "$type": "color",
-        "$description": "Status badge border color (transparent by default; visible in forced-colors / High Contrast mode)"
+        "$description": "Borderkleur van de StatusBadge (standaard transparant; zichtbaar in forced-colors / High Contrast-modus)"
       },
       "border-radius": {
         "$value": "{dsn.border.radius.sm}",
         "$type": "dimension",
-        "$description": "Status badge border radius"
+        "$description": "Border-radius van de StatusBadge"
       },
       "border-width": {
         "$value": "{dsn.border.width.thin}",
         "$type": "dimension",
-        "$description": "Status badge border width"
+        "$description": "Border-breedte van de StatusBadge"
       },
       "font-size": {
         "$value": "{dsn.text.font-size.sm}",
         "$type": "fontSize",
-        "$description": "Status badge font size"
+        "$description": "Font-size van de StatusBadge"
       },
       "gap": {
         "$value": "{dsn.space.text.sm}",
         "$type": "dimension",
-        "$description": "Gap between icon and label"
+        "$description": "Ruimte tussen icoon en label"
       },
       "icon-size": {
         "$value": "{dsn.icon.size.sm}",
         "$type": "dimension",
-        "$description": "Status badge icon size"
+        "$description": "Icoongrootte van de StatusBadge"
       },
       "line-height": {
         "$value": "{dsn.text.line-height.sm}",
         "$type": "lineHeight",
-        "$description": "Status badge line height"
+        "$description": "Line-height van de StatusBadge"
       },
       "padding-block": {
         "$value": "{dsn.space.block.xs}",
         "$type": "dimension",
-        "$description": "Vertical padding"
+        "$description": "Verticale padding"
       },
       "padding-inline": {
         "$value": "{dsn.space.inline.md}",
         "$type": "dimension",
-        "$description": "Horizontal padding"
+        "$description": "Horizontale padding"
       },
       "text-transform": {
         "$value": "none",
-        "$description": "Status badge text transform (none by default; themes can override to uppercase)"
+        "$description": "Teksttransformatie van de StatusBadge (standaard geen; thema's kunnen naar hoofdletters overschakelen)"
       },
       "info": {
         "background-color": {
           "$value": "{dsn.color.info.bg-default}",
           "$type": "color",
-          "$description": "Background color for info variant"
+          "$description": "Achtergrondkleur voor info variant"
         },
         "color": {
           "$value": "{dsn.color.info.color-default}",
           "$type": "color",
-          "$description": "Text color for info variant"
+          "$description": "Tekstkleur voor info variant"
         }
       },
       "negative": {
         "background-color": {
           "$value": "{dsn.color.negative.bg-default}",
           "$type": "color",
-          "$description": "Background color for negative variant"
+          "$description": "Achtergrondkleur voor negative variant"
         },
         "color": {
           "$value": "{dsn.color.negative.color-default}",
           "$type": "color",
-          "$description": "Text color for negative variant"
+          "$description": "Tekstkleur voor negative variant"
         }
       },
       "neutral": {
         "background-color": {
           "$value": "{dsn.color.neutral.bg-default}",
           "$type": "color",
-          "$description": "Background color for neutral variant"
+          "$description": "Achtergrondkleur voor neutral variant"
         },
         "color": {
           "$value": "{dsn.color.neutral.color-default}",
           "$type": "color",
-          "$description": "Text color for neutral variant"
+          "$description": "Tekstkleur voor neutral variant"
         }
       },
       "positive": {
         "background-color": {
           "$value": "{dsn.color.positive.bg-default}",
           "$type": "color",
-          "$description": "Background color for positive variant"
+          "$description": "Achtergrondkleur voor positive variant"
         },
         "color": {
           "$value": "{dsn.color.positive.color-default}",
           "$type": "color",
-          "$description": "Text color for positive variant"
+          "$description": "Tekstkleur voor positive variant"
         }
       },
       "warning": {
         "background-color": {
           "$value": "{dsn.color.warning.bg-default}",
           "$type": "color",
-          "$description": "Background color for warning variant"
+          "$description": "Achtergrondkleur voor warning variant"
         },
         "color": {
           "$value": "{dsn.color.warning.color-default}",
           "$type": "color",
-          "$description": "Text color for warning variant"
+          "$description": "Tekstkleur voor warning variant"
         }
       }
     }

@@ -4,32 +4,32 @@
       "color": {
         "$value": "{dsn.color.neutral.color-subtle}",
         "$type": "color",
-        "$description": "Form field description text color"
+        "$description": "Tekstkleur van de formulierveldbeschrijving"
       },
       "font-family": {
         "$value": "{dsn.text.font-family.default}",
         "$type": "fontFamily",
-        "$description": "Form field description font family"
+        "$description": "Font-familie van de formulierveldbeschrijving"
       },
       "font-size": {
         "$value": "{dsn.text.font-size.md}",
         "$type": "fontSize",
-        "$description": "Form field description font size"
+        "$description": "Font-size van de formulierveldbeschrijving"
       },
       "font-weight": {
         "$value": "{dsn.text.font-weight.default}",
         "$type": "fontWeight",
-        "$description": "Form field description font weight"
+        "$description": "Font-gewicht van de formulierveldbeschrijving"
       },
       "line-height": {
         "$value": "{dsn.text.line-height.md}",
         "$type": "lineHeight",
-        "$description": "Form field description line height"
+        "$description": "Line-height van de formulierveldbeschrijving"
       },
       "margin-block-end": {
         "$value": "{dsn.space.block.md}",
         "$type": "dimension",
-        "$description": "Space below description before form control"
+        "$description": "Ruimte onder de beschrijving voor het formulierbesturingselement"
       }
     }
   }

@@ -4,72 +4,72 @@
       "color": {
         "$value": "{dsn.color.neutral.color-document}",
         "$type": "color",
-        "$description": "Paragraph text color"
+        "$description": "Tekstkleur van de alinea"
       },
       "font-family": {
         "$value": "{dsn.text.font-family.default}",
         "$type": "fontFamily",
-        "$description": "Paragraph font family"
+        "$description": "Font-familie van de alinea"
       },
       "font-weight": {
         "$value": "{dsn.text.font-weight.default}",
         "$type": "fontWeight",
-        "$description": "Paragraph font weight"
+        "$description": "Font-gewicht van de alinea"
       },
       "max-inline-size": {
         "$value": "{dsn.text.max-inline-size}",
         "$type": "sizing",
-        "$description": "Paragraph max width for readability"
+        "$description": "Maximale breedte van de alinea voor leesbaarheid"
       },
       "default": {
         "font-size": {
           "$value": "{dsn.text.font-size.md}",
           "$type": "fontSize",
-          "$description": "Default paragraph font size"
+          "$description": "Font-size van de standaard alinea"
         },
         "line-height": {
           "$value": "{dsn.text.line-height.md}",
           "$type": "lineHeight",
-          "$description": "Default paragraph line height"
+          "$description": "Line-height van de standaard alinea"
         },
         "margin-block-end": {
           "$value": "{dsn.space.row.lg}",
           "$type": "spacing",
-          "$description": "Default paragraph bottom margin"
+          "$description": "Onderste margin van de standaard alinea"
         }
       },
       "lead": {
         "font-size": {
           "$value": "{dsn.text.font-size.lg}",
           "$type": "fontSize",
-          "$description": "Lead paragraph font size"
+          "$description": "Font-size van de inleidende alinea"
         },
         "line-height": {
           "$value": "{dsn.text.line-height.lg}",
           "$type": "lineHeight",
-          "$description": "Lead paragraph line height"
+          "$description": "Line-height van de inleidende alinea"
         },
         "margin-block-end": {
           "$value": "{dsn.space.row.xl}",
           "$type": "spacing",
-          "$description": "Lead paragraph bottom margin"
+          "$description": "Onderste margin van de inleidende alinea"
         }
       },
       "small-print": {
         "font-size": {
           "$value": "{dsn.text.font-size.sm}",
           "$type": "fontSize",
-          "$description": "Small print paragraph font size"
+          "$description": "Font-size van de kleine tekst alinea"
         },
         "line-height": {
           "$value": "{dsn.text.line-height.sm}",
           "$type": "lineHeight",
-          "$description": "Small print paragraph line height"
+          "$description": "Line-height van de kleine tekst alinea"
         },
         "margin-block-end": {
           "$value": "{dsn.space.row.md}",
           "$type": "spacing",
-          "$description": "Small print paragraph bottom margin"
+          "$description": "Onderste margin van de kleine tekst alinea"
         }
       }
     }

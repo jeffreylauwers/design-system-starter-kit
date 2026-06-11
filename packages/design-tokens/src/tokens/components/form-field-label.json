@@ -4,37 +4,37 @@
       "color": {
         "$value": "{dsn.color.neutral.color-document}",
         "$type": "color",
-        "$description": "Form field label text color"
+        "$description": "Tekstkleur van het formulierveldlabel"
       },
       "font-family": {
         "$value": "{dsn.text.font-family.default}",
         "$type": "fontFamily",
-        "$description": "Form field label font family"
+        "$description": "Font-familie van het formulierveldlabel"
       },
       "font-size": {
         "$value": "{dsn.text.font-size.md}",
         "$type": "fontSize",
-        "$description": "Form field label font size"
+        "$description": "Font-size van het formulierveldlabel"
       },
       "font-weight": {
         "$value": "{dsn.text.font-weight.bold}",
         "$type": "fontWeight",
-        "$description": "Form field label font weight"
+        "$description": "Font-gewicht van het formulierveldlabel"
       },
       "line-height": {
         "$value": "{dsn.text.line-height.md}",
         "$type": "lineHeight",
-        "$description": "Form field label line height"
+        "$description": "Line-height van het formulierveldlabel"
       },
       "margin-block-end": {
         "$value": "{dsn.space.block.md}",
         "$type": "dimension",
-        "$description": "Space below label before form control (when no description follows)"
+        "$description": "Ruimte onder het label voor het formulierbesturingselement (wanneer geen beschrijving volgt)"
       },
       "margin-block-end-with-description": {
         "$value": "{dsn.space.block.sm}",
         "$type": "dimension",
-        "$description": "Space below label when description follows"
+        "$description": "Ruimte onder het label wanneer een beschrijving volgt"
       }
     }
   }

@@ -4,17 +4,17 @@
       "icon-gap": {
         "$value": "{dsn.space.text.md}",
         "$type": "dimension",
-        "$description": "Gap between search icon and input text"
+        "$description": "Ruimte tussen het zoekicoon en de invoertekst"
       },
       "icon-size": {
         "$value": "{dsn.icon.size.md}",
         "$type": "dimension",
-        "$description": "Search input icon size"
+        "$description": "Icoongrootte van het zoekinvoerveld"
       },
       "padding-inline-start-with-icon": {
         "$value": "calc({dsn.search-input.icon-size} + {dsn.search-input.icon-gap} + {dsn.form-control.padding-inline-start})",
         "$type": "dimension",
-        "$description": "Left padding when icon is present"
+        "$description": "Linker padding wanneer een icoon aanwezig is"
       }
     }
   }

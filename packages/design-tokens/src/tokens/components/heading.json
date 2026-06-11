@@ -5,192 +5,192 @@
         "color": {
           "$value": "{dsn.heading.color}",
           "$type": "color",
-          "$description": "Heading 1 text color"
+          "$description": "Tekstkleur van Heading 1"
         },
         "font-family": {
           "$value": "{dsn.heading.font-family}",
           "$type": "fontFamily",
-          "$description": "Heading 1 font family"
+          "$description": "Font-familie van Heading 1"
         },
         "font-size": {
           "$value": "{dsn.text.font-size.3xl}",
           "$type": "fontSize",
-          "$description": "Heading 1 font size"
+          "$description": "Font-size van Heading 1"
         },
         "font-weight": {
           "$value": "{dsn.heading.font-weight}",
           "$type": "fontWeight",
-          "$description": "Heading 1 font weight"
+          "$description": "Font-gewicht van Heading 1"
         },
         "line-height": {
           "$value": "{dsn.text.line-height.3xl}",
           "$type": "lineHeight",
-          "$description": "Heading 1 line height"
+          "$description": "Line-height van Heading 1"
         },
         "margin-block-end": {
           "$value": "{dsn.space.row.xl}",
           "$type": "spacing",
-          "$description": "Heading 1 bottom margin"
+          "$description": "Onderste margin van Heading 1"
         }
       },
       "level-2": {
         "color": {
           "$value": "{dsn.heading.color}",
           "$type": "color",
-          "$description": "Heading 2 text color"
+          "$description": "Tekstkleur van Heading 2"
         },
         "font-family": {
           "$value": "{dsn.heading.font-family}",
           "$type": "fontFamily",
-          "$description": "Heading 2 font family"
+          "$description": "Font-familie van Heading 2"
         },
         "font-size": {
           "$value": "{dsn.text.font-size.2xl}",
           "$type": "fontSize",
-          "$description": "Heading 2 font size"
+          "$description": "Font-size van Heading 2"
         },
         "font-weight": {
           "$value": "{dsn.heading.font-weight}",
           "$type": "fontWeight",
-          "$description": "Heading 2 font weight"
+          "$description": "Font-gewicht van Heading 2"
         },
         "line-height": {
           "$value": "{dsn.text.line-height.2xl}",
           "$type": "lineHeight",
-          "$description": "Heading 2 line height"
+          "$description": "Line-height van Heading 2"
         },
         "margin-block-end": {
           "$value": "{dsn.space.row.xl}",
           "$type": "spacing",
-          "$description": "Heading 2 bottom margin"
+          "$description": "Onderste margin van Heading 2"
         }
       },
       "level-3": {
         "color": {
           "$value": "{dsn.heading.color}",
           "$type": "color",
-          "$description": "Heading 3 text color"
+          "$description": "Tekstkleur van Heading 3"
         },
         "font-family": {
           "$value": "{dsn.heading.font-family}",
           "$type": "fontFamily",
-          "$description": "Heading 3 font family"
+          "$description": "Font-familie van Heading 3"
         },
         "font-size": {
           "$value": "{dsn.text.font-size.xl}",
           "$type": "fontSize",
-          "$description": "Heading 3 font size"
+          "$description": "Font-size van Heading 3"
         },
         "font-weight": {
           "$value": "{dsn.heading.font-weight}",
           "$type": "fontWeight",
-          "$description": "Heading 3 font weight"
+          "$description": "Font-gewicht van Heading 3"
         },
         "line-height": {
           "$value": "{dsn.text.line-height.xl}",
           "$type": "lineHeight",
-          "$description": "Heading 3 line height"
+          "$description": "Line-height van Heading 3"
         },
         "margin-block-end": {
           "$value": "{dsn.space.row.lg}",
           "$type": "spacing",
-          "$description": "Heading 3 bottom margin"
+          "$description": "Onderste margin van Heading 3"
         }
       },
       "level-4": {
         "color": {
           "$value": "{dsn.heading.color}",
           "$type": "color",
-          "$description": "Heading 4 text color"
+          "$description": "Tekstkleur van Heading 4"
         },
         "font-family": {
           "$value": "{dsn.heading.font-family}",
           "$type": "fontFamily",
-          "$description": "Heading 4 font family"
+          "$description": "Font-familie van Heading 4"
         },
         "font-size": {
           "$value": "{dsn.text.font-size.lg}",
           "$type": "fontSize",
-          "$description": "Heading 4 font size"
+          "$description": "Font-size van Heading 4"
         },
         "font-weight": {
           "$value": "{dsn.heading.font-weight}",
           "$type": "fontWeight",
-          "$description": "Heading 4 font weight"
+          "$description": "Font-gewicht van Heading 4"
         },
         "line-height": {
           "$value": "{dsn.text.line-height.lg}",
           "$type": "lineHeight",
-          "$description": "Heading 4 line height"
+          "$description": "Line-height van Heading 4"
         },
         "margin-block-end": {
           "$value": "{dsn.space.row.lg}",
           "$type": "spacing",
-          "$description": "Heading 4 bottom margin"
+          "$description": "Onderste margin van Heading 4"
         }
       },
       "level-5": {
         "color": {
           "$value": "{dsn.heading.color}",
           "$type": "color",
-          "$description": "Heading 5 text color"
+          "$description": "Tekstkleur van Heading 5"
         },
         "font-family": {
           "$value": "{dsn.heading.font-family}",
           "$type": "fontFamily",
-          "$description": "Heading 5 font family"
+          "$description": "Font-familie van Heading 5"
         },
         "font-size": {
           "$value": "{dsn.text.font-size.md}",
           "$type": "fontSize",
-          "$description": "Heading 5 font size"
+          "$description": "Font-size van Heading 5"
         },
         "font-weight": {
           "$value": "{dsn.heading.font-weight}",
           "$type": "fontWeight",
-          "$description": "Heading 5 font weight"
+          "$description": "Font-gewicht van Heading 5"
         },
         "line-height": {
           "$value": "{dsn.text.line-height.md}",
           "$type": "lineHeight",
-          "$description": "Heading 5 line height"
+          "$description": "Line-height van Heading 5"
         },
         "margin-block-end": {
           "$value": "{dsn.space.row.md}",
           "$type": "spacing",
-          "$description": "Heading 5 bottom margin"
+          "$description": "Onderste margin van Heading 5"
         }
       },
       "level-6": {
         "color": {
           "$value": "{dsn.heading.color}",
           "$type": "color",
-          "$description": "Heading 6 text color"
+          "$description": "Tekstkleur van Heading 6"
         },
         "font-family": {
           "$value": "{dsn.heading.font-family}",
           "$type": "fontFamily",
-          "$description": "Heading 6 font family"
+          "$description": "Font-familie van Heading 6"
         },
         "font-size": {
           "$value": "{dsn.text.font-size.sm}",
           "$type": "fontSize",
-          "$description": "Heading 6 font size"
+          "$description": "Font-size van Heading 6"
         },
         "font-weight": {
           "$value": "{dsn.heading.font-weight}",
           "$type": "fontWeight",
-          "$description": "Heading 6 font weight"
+          "$description": "Font-gewicht van Heading 6"
         },
         "line-height": {
           "$value": "{dsn.text.line-height.sm}",
           "$type": "lineHeight",
-          "$description": "Heading 6 line height"
+          "$description": "Line-height van Heading 6"
         },
         "margin-block-end": {
           "$value": "{dsn.space.row.md}",
           "$type": "spacing",
-          "$description": "Heading 6 bottom margin"
+          "$description": "Onderste margin van Heading 6"
         }
       }
     }

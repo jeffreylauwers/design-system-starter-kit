@@ -4,298 +4,298 @@
       "font-family": {
         "default": {
           "$value": "'Comic Sans MS', 'Comic Sans', 'Comic Neue', cursive",
-          "$description": "Comic Sans MS as primary font with Comic Neue fallback for wireframe"
+          "$description": "Comic Sans MS als primair lettertype met Comic Neue als fallback voor wireframe"
         },
         "monospace": {
           "$value": "ui-monospace, SFMono-Regular, Consolas, 'Liberation Mono', Menlo, monospace",
-          "$description": "System monospace font stack"
+          "$description": "Systeem monospace lettertypestapel"
         }
       },
       "font-weight": {
         "default": {
           "$value": "400",
-          "$description": "Regular weight"
+          "$description": "Regulier gewicht"
         },
         "bold": {
           "$value": "600",
-          "$description": "Semi-bold weight for wireframe"
+          "$description": "Semi-vet gewicht voor wireframe"
         }
       },
       "line-height": {
         "sm": {
           "$value": "1.4",
-          "$description": "140% line height for small text"
+          "$description": "140% regelafstand voor kleine tekst"
         },
         "md": {
           "$value": "1.4",
-          "$description": "140% line height for medium text"
+          "$description": "140% regelafstand voor middelgrote tekst"
         },
         "lg": {
           "$value": "1.2",
-          "$description": "120% line height for large text"
+          "$description": "120% regelafstand voor grote tekst"
         },
         "xl": {
           "$value": "1.2",
-          "$description": "120% line height for headings"
+          "$description": "120% regelafstand voor koppen"
         },
         "2xl": {
           "$value": "1.2",
-          "$description": "120% line height for large headings"
+          "$description": "120% regelafstand voor grote koppen"
         },
         "3xl": {
           "$value": "1.1",
-          "$description": "110% line height for display text"
+          "$description": "110% regelafstand voor display-tekst"
         },
         "4xl": {
           "$value": "1.1",
-          "$description": "110% line height for hero text"
+          "$description": "110% regelafstand voor hero-tekst"
         }
       },
       "max-inline-size": {
         "$value": "65ch",
         "$type": "sizing",
-        "$description": "Maximum line length for readable body text (paragraphs, lists)"
+        "$description": "Maximale regellengte voor leesbare bodytekst (paragrafen, lijsten)"
       }
     },
     "heading": {
       "font-family": {
         "$value": "'Comic Sans MS', 'Comic Sans', 'Comic Neue', cursive",
-        "$description": "Comic Sans MS as primary font with Comic Neue fallback for headings"
+        "$description": "Comic Sans MS als primair lettertype met Comic Neue als fallback voor koppen"
       },
       "font-weight": {
         "$value": "600",
-        "$description": "Semi-bold weight for headings"
+        "$description": "Semi-vet gewicht voor koppen"
       }
     },
     "space": {
       "none": {
         "$value": "0px",
-        "$description": "No spacing"
+        "$description": "Geen afstand"
       },
       "base": {
         "$value": "0.5rem",
-        "$description": "8px - Base unit for 8pt grid system"
+        "$description": "8px - Basiseenheid voor het 8pt-rastersysteem"
       },
       "block": {
         "2xs": {
           "$value": "calc(0.5rem * 0.125)",
-          "$description": "1px - Vertical spacing within components"
+          "$description": "1px - Verticale ruimte binnen componenten"
         },
         "xs": {
           "$value": "calc(0.5rem * 0.25)",
-          "$description": "2px - Vertical spacing within components"
+          "$description": "2px - Verticale ruimte binnen componenten"
         },
         "sm": {
           "$value": "calc(0.5rem * 0.5)",
-          "$description": "4px - Vertical spacing within components"
+          "$description": "4px - Verticale ruimte binnen componenten"
         },
         "md": {
           "$value": "calc(0.5rem * 1)",
-          "$description": "8px - Vertical spacing within components"
+          "$description": "8px - Verticale ruimte binnen componenten"
         },
         "lg": {
           "$value": "calc(0.5rem * 1.5)",
-          "$description": "12px - Vertical spacing within components"
+          "$description": "12px - Verticale ruimte binnen componenten"
         },
         "xl": {
           "$value": "calc(0.5rem * 2)",
-          "$description": "16px - Vertical spacing within components"
+          "$description": "16px - Verticale ruimte binnen componenten"
         },
         "2xl": {
           "$value": "calc(0.5rem * 2.5)",
-          "$description": "20px - Vertical spacing within components"
+          "$description": "20px - Verticale ruimte binnen componenten"
         },
         "3xl": {
           "$value": "calc(0.5rem * 3)",
-          "$description": "24px - Vertical spacing within components"
+          "$description": "24px - Verticale ruimte binnen componenten"
         },
         "4xl": {
           "$value": "calc(0.5rem * 4)",
-          "$description": "32px - Vertical spacing within components"
+          "$description": "32px - Verticale ruimte binnen componenten"
         },
         "5xl": {
           "$value": "calc(0.5rem * 6)",
-          "$description": "48px - Vertical spacing within components"
+          "$description": "48px - Verticale ruimte binnen componenten"
         },
         "6xl": {
           "$value": "calc(0.5rem * 8)",
-          "$description": "64px - Vertical spacing within components"
+          "$description": "64px - Verticale ruimte binnen componenten"
         }
       },
       "inline": {
         "2xs": {
           "$value": "calc(0.5rem * 0.125)",
-          "$description": "1px - Horizontal spacing within components"
+          "$description": "1px - Horizontale ruimte binnen componenten"
         },
         "xs": {
           "$value": "calc(0.5rem * 0.25)",
-          "$description": "2px - Horizontal spacing within components"
+          "$description": "2px - Horizontale ruimte binnen componenten"
         },
         "sm": {
           "$value": "calc(0.5rem * 0.5)",
-          "$description": "4px - Horizontal spacing within components"
+          "$description": "4px - Horizontale ruimte binnen componenten"
         },
         "md": {
           "$value": "calc(0.5rem * 1)",
-          "$description": "8px - Horizontal spacing within components"
+          "$description": "8px - Horizontale ruimte binnen componenten"
         },
         "lg": {
           "$value": "calc(0.5rem * 1.5)",
-          "$description": "12px - Horizontal spacing within components"
+          "$description": "12px - Horizontale ruimte binnen componenten"
         },
         "xl": {
           "$value": "calc(0.5rem * 2)",
-          "$description": "16px - Horizontal spacing within components"
+          "$description": "16px - Horizontale ruimte binnen componenten"
         },
         "2xl": {
           "$value": "calc(0.5rem * 2.5)",
-          "$description": "20px - Horizontal spacing within components"
+          "$description": "20px - Horizontale ruimte binnen componenten"
         },
         "3xl": {
           "$value": "calc(0.5rem * 3)",
-          "$description": "24px - Horizontal spacing within components"
+          "$description": "24px - Horizontale ruimte binnen componenten"
         },
         "4xl": {
           "$value": "calc(0.5rem * 4)",
-          "$description": "32px - Horizontal spacing within components"
+          "$description": "32px - Horizontale ruimte binnen componenten"
         },
         "5xl": {
           "$value": "calc(0.5rem * 6)",
-          "$description": "48px - Horizontal spacing within components"
+          "$description": "48px - Horizontale ruimte binnen componenten"
         },
         "6xl": {
           "$value": "calc(0.5rem * 8)",
-          "$description": "64px - Horizontal spacing within components"
+          "$description": "64px - Horizontale ruimte binnen componenten"
         }
       },
       "text": {
         "3xs": {
           "$value": "calc(0.5rem * 0.125)",
-          "$description": "1px - Spacing between text and icons"
+          "$description": "1px - Ruimte tussen tekst en iconen"
         },
         "2xs": {
           "$value": "calc(0.5rem * 0.25)",
-          "$description": "2px - Spacing between text and icons"
+          "$description": "2px - Ruimte tussen tekst en iconen"
         },
         "xs": {
           "$value": "calc(0.5rem * 0.25)",
-          "$description": "2px - Spacing between text and icons"
+          "$description": "2px - Ruimte tussen tekst en iconen"
         },
         "sm": {
           "$value": "calc(0.5rem * 0.5)",
-          "$description": "4px - Spacing between text and icons"
+          "$description": "4px - Ruimte tussen tekst en iconen"
         },
         "md": {
           "$value": "calc(0.5rem * 1)",
-          "$description": "8px - Spacing between text and icons"
+          "$description": "8px - Ruimte tussen tekst en iconen"
         },
         "lg": {
           "$value": "calc(0.5rem * 1.5)",
-          "$description": "12px - Spacing between text and icons"
+          "$description": "12px - Ruimte tussen tekst en iconen"
         },
         "xl": {
           "$value": "calc(0.5rem * 2)",
-          "$description": "16px - Spacing between text and icons"
+          "$description": "16px - Ruimte tussen tekst en iconen"
         },
         "2xl": {
           "$value": "calc(0.5rem * 2.5)",
-          "$description": "20px - Spacing between text and icons"
+          "$description": "20px - Ruimte tussen tekst en iconen"
         },
         "3xl": {
           "$value": "calc(0.5rem * 3)",
-          "$description": "24px - Spacing between text and icons"
+          "$description": "24px - Ruimte tussen tekst en iconen"
         }
       },
       "column": {
         "2xs": {
           "$value": "calc(0.5rem * 0.125)",
-          "$description": "1px - Horizontal spacing between components"
+          "$description": "1px - Horizontale ruimte tussen componenten"
         },
         "xs": {
           "$value": "calc(0.5rem * 0.25)",
-          "$description": "2px - Horizontal spacing between components"
+          "$description": "2px - Horizontale ruimte tussen componenten"
         },
         "sm": {
           "$value": "calc(0.5rem * 0.5)",
-          "$description": "4px - Horizontal spacing between components"
+          "$description": "4px - Horizontale ruimte tussen componenten"
         },
         "md": {
           "$value": "calc(0.5rem * 1)",
-          "$description": "8px - Horizontal spacing between components"
+          "$description": "8px - Horizontale ruimte tussen componenten"
         },
         "lg": {
           "$value": "calc(0.5rem * 1.5)",
-          "$description": "12px - Horizontal spacing between components"
+          "$description": "12px - Horizontale ruimte tussen componenten"
         },
         "xl": {
           "$value": "calc(0.5rem * 2)",
-          "$description": "16px - Horizontal spacing between components"
+          "$description": "16px - Horizontale ruimte tussen componenten"
         },
         "2xl": {
           "$value": "calc(0.5rem * 2.5)",
-          "$description": "20px - Horizontal spacing between components"
+          "$description": "20px - Horizontale ruimte tussen componenten"
         },
         "3xl": {
           "$value": "calc(0.5rem * 3)",
-          "$description": "24px - Horizontal spacing between components"
+          "$description": "24px - Horizontale ruimte tussen componenten"
         },
         "4xl": {
           "$value": "calc(0.5rem * 4)",
-          "$description": "32px - Horizontal spacing between components"
+          "$description": "32px - Horizontale ruimte tussen componenten"
         },
         "5xl": {
           "$value": "calc(0.5rem * 8)",
-          "$description": "64px - Horizontal spacing between components"
+          "$description": "64px - Horizontale ruimte tussen componenten"
         },
         "6xl": {
           "$value": "calc(0.5rem * 20)",
-          "$description": "160px - Horizontal spacing between components"
+          "$description": "160px - Horizontale ruimte tussen componenten"
         }
       },
       "row": {
         "2xs": {
           "$value": "calc(0.5rem * 0.125)",
-          "$description": "1px - Vertical spacing between components"
+          "$description": "1px - Verticale ruimte tussen componenten"
         },
         "xs": {
           "$value": "calc(0.5rem * 0.25)",
-          "$description": "2px - Vertical spacing between components"
+          "$description": "2px - Verticale ruimte tussen componenten"
         },
         "sm": {
           "$value": "calc(0.5rem * 0.5)",
-          "$description": "4px - Vertical spacing between components"
+          "$description": "4px - Verticale ruimte tussen componenten"
         },
         "md": {
           "$value": "calc(0.5rem * 1)",
-          "$description": "8px - Vertical spacing between components"
+          "$description": "8px - Verticale ruimte tussen componenten"
         },
         "lg": {
           "$value": "calc(0.5rem * 1.5)",
-          "$description": "12px - Vertical spacing between components"
+          "$description": "12px - Verticale ruimte tussen componenten"
         },
         "xl": {
           "$value": "calc(0.5rem * 2)",
-          "$description": "16px - Vertical spacing between components"
+          "$description": "16px - Verticale ruimte tussen componenten"
         },
         "2xl": {
           "$value": "calc(0.5rem * 2.5)",
-          "$description": "20px - Vertical spacing between components"
+          "$description": "20px - Verticale ruimte tussen componenten"
         },
         "3xl": {
           "$value": "calc(0.5rem * 3)",
-          "$description": "24px - Vertical spacing between components"
+          "$description": "24px - Verticale ruimte tussen componenten"
         },
         "4xl": {
           "$value": "calc(0.5rem * 4)",
-          "$description": "32px - Vertical spacing between components"
+          "$description": "32px - Verticale ruimte tussen componenten"
         },
         "5xl": {
           "$value": "calc(0.5rem * 8)",
-          "$description": "64px - Vertical spacing between components"
+          "$description": "64px - Verticale ruimte tussen componenten"
         },
         "6xl": {
           "$value": "calc(0.5rem * 20)",
-          "$description": "160px - Vertical spacing between components"
+          "$description": "160px - Verticale ruimte tussen componenten"
         }
       }
     },
@@ -335,203 +335,203 @@
       "min-block-size": {
         "$value": "3rem",
         "$type": "dimension",
-        "$description": "WCAG 2.5.5 Target Size - Minimum 48px (3rem) touch target"
+        "$description": "WCAG 2.5.5 Target Size - minimaal 48px (3rem) aanraakdoelwit"
       },
       "min-inline-size": {
         "$value": "3rem",
         "$type": "dimension",
-        "$description": "WCAG 2.5.5 Target Size - Minimum 48px (3rem) touch target"
+        "$description": "WCAG 2.5.5 Target Size - minimaal 48px (3rem) aanraakdoelwit"
       }
     },
     "border": {
       "radius": {
         "square": {
           "$value": "0px",
-          "$description": "No border radius — square corners"
+          "$description": "Geen afronding — scherpe hoeken"
         },
         "sm": {
           "$value": "2px",
-          "$description": "Small border radius - minimal for wireframe"
+          "$description": "Kleine afronding — minimaal voor wireframe"
         },
         "md": {
           "$value": "4px",
-          "$description": "Medium border radius - minimal for wireframe"
+          "$description": "Middelgrote afronding — minimaal voor wireframe"
         },
         "lg": {
           "$value": "8px",
-          "$description": "Large border radius - minimal for wireframe"
+          "$description": "Grote afronding — minimaal voor wireframe"
         },
         "round": {
           "$value": "999px",
-          "$description": "Fully rounded (pills, circles)"
+          "$description": "Volledig afgerond (pills, cirkels)"
         }
       },
       "width": {
         "none": {
           "$value": "0px",
-          "$description": "No border width"
+          "$description": "Geen randbreedte"
         },
         "thin": {
           "$value": "2px",
-          "$description": "Thin border"
+          "$description": "Dunne rand"
         },
         "medium": {
           "$value": "4px",
-          "$description": "Medium border"
+          "$description": "Middelgrote rand"
         },
         "thick": {
           "$value": "8px",
-          "$description": "Thick border"
+          "$description": "Dikke rand"
         }
       }
     },
     "focus": {
       "outline-offset": {
         "$value": "2px",
-        "$description": "Focus outline offset"
+        "$description": "Offset van de focusomtrek"
       },
       "outline-style": {
         "$value": "solid",
-        "$description": "Focus outline style - solid for wireframe"
+        "$description": "Stijl van de focusomtrek — solid voor wireframe"
       },
       "outline-width": {
         "$value": "2px",
-        "$description": "Focus outline width"
+        "$description": "Breedte van de focusomtrek"
       }
     },
     "form-control": {
       "font-family": {
         "$value": "{dsn.text.font-family.default}",
         "$type": "fontFamily",
-        "$description": "Form control font family"
+        "$description": "Lettertype van form controls"
       },
       "font-size": {
         "$value": "{dsn.text.font-size.md}",
         "$type": "fontSize",
-        "$description": "Form control font size"
+        "$description": "Lettergrootte van form controls"
       },
       "font-weight": {
         "$value": "{dsn.text.font-weight.default}",
         "$type": "fontWeight",
-        "$description": "Form control font weight"
+        "$description": "Lettergewicht van form controls"
       },
       "line-height": {
         "$value": "{dsn.text.line-height.md}",
         "$type": "lineHeight",
-        "$description": "Form control line height"
+        "$description": "Regelafstand van form controls"
       },
       "padding-block-start": {
         "$value": "{dsn.space.block.lg}",
         "$type": "dimension",
-        "$description": "Form control top padding"
+        "$description": "Bovenste padding van form controls"
       },
       "padding-block-end": {
         "$value": "{dsn.space.block.lg}",
         "$type": "dimension",
-        "$description": "Form control bottom padding"
+        "$description": "Onderste padding van form controls"
       },
       "padding-inline-start": {
         "$value": "{dsn.space.inline.lg}",
         "$type": "dimension",
-        "$description": "Form control left padding"
+        "$description": "Linker padding van form controls"
       },
       "padding-inline-end": {
         "$value": "{dsn.space.inline.lg}",
         "$type": "dimension",
-        "$description": "Form control right padding"
+        "$description": "Rechter padding van form controls"
       },
       "max-inline-size": {
         "$value": "25rem",
         "$type": "dimension",
-        "$description": "Form control maximum width"
+        "$description": "Maximale breedte van form controls"
       },
       "border-radius": {
         "$value": "2px",
         "$type": "dimension",
-        "$description": "Form control border radius - minimal for wireframe"
+        "$description": "Afronding van form controls — minimaal voor wireframe"
       },
       "border-width": {
         "$value": "{dsn.border.width.thin}",
         "$type": "dimension",
-        "$description": "Form control border width"
+        "$description": "Randbreedte van form controls"
       },
       "width": {
         "xs": {
           "$value": "8ch",
           "$type": "dimension",
-          "$description": "Extra small width - for short inputs (e.g., postal code, 6 characters)"
+          "$description": "Extra kleine breedte — voor korte invoervelden (bijv. postcode, 6 tekens)"
         },
         "sm": {
           "$value": "16ch",
           "$type": "dimension",
-          "$description": "Small width - for medium inputs (e.g., phone number, 10-12 digits)"
+          "$description": "Kleine breedte — voor middelgrote invoervelden (bijv. telefoonnummer, 10-12 cijfers)"
         },
         "md": {
           "$value": "32ch",
           "$type": "dimension",
-          "$description": "Medium width (default) - for standard inputs (e.g., email, name)"
+          "$description": "Middelgrote breedte (standaard) — voor standaard invoervelden (bijv. e-mail, naam)"
         },
         "lg": {
           "$value": "48ch",
           "$type": "dimension",
-          "$description": "Large width - for longer inputs (e.g., URL)"
+          "$description": "Grote breedte — voor langere invoervelden (bijv. URL)"
         },
         "xl": {
           "$value": "64ch",
           "$type": "dimension",
-          "$description": "Extra large width - for very long text fields"
+          "$description": "Extra grote breedte — voor zeer lange tekstvelden"
         },
         "full": {
           "$value": "100%",
           "$type": "dimension",
-          "$description": "Full width - responsive to container"
+          "$description": "Volledige breedte — responsief aan de container"
         }
       },
       "hover": {
         "border-width": {
           "$value": "{dsn.border.width.medium}",
           "$type": "dimension",
-          "$description": "Form control hover border width"
+          "$description": "Randbreedte van form controls in hover state"
         }
       },
       "focus": {
         "border-width": {
           "$value": "{dsn.border.width.medium}",
           "$type": "dimension",
-          "$description": "Form control focus border width"
+          "$description": "Randbreedte van form controls in focus state"
         }
       },
       "active": {
         "border-width": {
           "$value": "{dsn.border.width.medium}",
           "$type": "dimension",
-          "$description": "Form control active border width"
+          "$description": "Randbreedte van form controls in active state"
         }
       },
       "invalid": {
         "border-width": {
           "$value": "{dsn.border.width.medium}",
           "$type": "dimension",
-          "$description": "Form control invalid border width"
+          "$description": "Randbreedte van form controls in invalid state"
         }
       }
     },
     "breakpoint": {
       "sm": {
         "$value": "36em",
-        "$description": "Small breakpoint - ~576px. Reference only; use hardcoded values in CSS @media rules."
+        "$description": "Klein breakpoint - ~576px. Alleen als referentie; gebruik hardcoded waarden in CSS @media rules."
       },
       "md": {
         "$value": "44em",
-        "$description": "Medium breakpoint - ~704px. Reference only; use hardcoded values in CSS @media rules."
+        "$description": "Middelgroot breakpoint - ~704px. Alleen als referentie; gebruik hardcoded waarden in CSS @media rules."
       },
       "lg": {
         "$value": "64em",
-        "$description": "Large breakpoint - ~1024px. Reference only; use hardcoded values in CSS @media rules."
+        "$description": "Groot breakpoint - ~1024px. Alleen als referentie; gebruik hardcoded waarden in CSS @media rules."
       },
       "xl": {
         "$value": "74em",
-        "$description": "Extra large breakpoint - ~1184px. Reference only; use hardcoded values in CSS @media rules."
+        "$description": "Extra groot breakpoint - ~1184px. Alleen als referentie; gebruik hardcoded waarden in CSS @media rules."
       }
     },
     "box-shadow": {
@@ -541,15 +541,15 @@
       },
       "sm": {
         "$value": "none",
-        "$description": "Small elevation — flat in wireframe theme"
+        "$description": "Kleine elevatie — vlak in wireframe thema"
       },
       "md": {
         "$value": "none",
-        "$description": "Medium elevation — flat in wireframe theme"
+        "$description": "Middelgrote elevatie — vlak in wireframe thema"
       },
       "lg": {
         "$value": "none",
-        "$description": "Large elevation — flat in wireframe theme"
+        "$description": "Grote elevatie — vlak in wireframe thema"
       }
     },
     "z-index": {

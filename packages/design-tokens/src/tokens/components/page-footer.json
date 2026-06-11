@@ -4,7 +4,7 @@
       "background-color": {
         "$value": "{dsn.color.accent-1.bg-default}",
         "$type": "color",
-        "$description": "Achtergrondkleur van de PageFooter — merkkleur accent-1 als huisstijldrager"
+        "$description": "Achtergrondkleur van de PageFooter"
       },
       "border-block-start-width": {
         "$value": "{dsn.border.width.thick}",
@@ -14,7 +14,7 @@
       "border-block-start-color": {
         "$value": "{dsn.color.accent-1.border-default}",
         "$type": "color",
-        "$description": "Kleur van de bovenkantrand — accent-1 border-default voor subtiele maar zichtbare scheiding met de pagina-inhoud"
+        "$description": "Kleur van de bovenkantrand"
       },
       "padding-block": {
         "$value": "{dsn.space.block.6xl}",
