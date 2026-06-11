@@ -4,146 +4,146 @@
       "border-inline-start-width": {
         "$value": "{dsn.border.width.medium}",
         "$type": "dimension",
-        "$description": "Note left border width"
+        "$description": "Breedte van de linkerborder van de Note"
       },
       "column-gap": {
         "$value": "{dsn.space.inline.md}",
         "$type": "dimension",
-        "$description": "Gap between icon and content"
+        "$description": "Ruimte tussen icoon en inhoud"
       },
       "icon-size": {
         "$value": "{dsn.icon.size.xl}",
         "$type": "dimension",
-        "$description": "Note icon size (also used as grid column width)"
+        "$description": "Icoongrootte van de Note (ook gebruikt als breedte van de gridkolom)"
       },
       "padding-block": {
         "$value": "{dsn.space.block.xl}",
         "$type": "dimension",
-        "$description": "Vertical padding"
+        "$description": "Verticale padding"
       },
       "padding-inline-end": {
         "$value": "{dsn.space.inline.xl}",
         "$type": "dimension",
-        "$description": "Horizontal padding inline-end"
+        "$description": "Horizontale padding aan het einde"
       },
       "padding-inline-start": {
         "$value": "{dsn.space.inline.xl}",
         "$type": "dimension",
-        "$description": "Horizontal padding inline-start (after the border)"
+        "$description": "Horizontale padding aan het begin (na de border)"
       },
       "row-gap": {
         "$value": "{dsn.space.row.md}",
         "$type": "dimension",
-        "$description": "Gap between heading and body"
+        "$description": "Ruimte tussen koptekst en inhoud"
       },
       "info": {
         "background-color": {
           "$value": "{dsn.color.info.bg-default}",
           "$type": "color",
-          "$description": "Background color for info variant"
+          "$description": "Achtergrondkleur voor info variant"
         },
         "border-inline-start-color": {
           "$value": "{dsn.color.info.border-default}",
           "$type": "color",
-          "$description": "Left border color for info variant"
+          "$description": "Kleur van de linkerborder voor info variant"
         },
         "color": {
           "$value": "{dsn.color.info.color-document}",
           "$type": "color",
-          "$description": "Text color for info variant"
+          "$description": "Tekstkleur voor info variant"
         },
         "icon-color": {
           "$value": "{dsn.color.info.color-default}",
           "$type": "color",
-          "$description": "Icon color for info variant"
+          "$description": "Icoonkleur voor info variant"
         }
       },
       "negative": {
         "background-color": {
           "$value": "{dsn.color.negative.bg-default}",
           "$type": "color",
-          "$description": "Background color for negative variant"
+          "$description": "Achtergrondkleur voor negative variant"
         },
         "border-inline-start-color": {
           "$value": "{dsn.color.negative.border-default}",
           "$type": "color",
-          "$description": "Left border color for negative variant"
+          "$description": "Kleur van de linkerborder voor negative variant"
         },
         "color": {
           "$value": "{dsn.color.negative.color-document}",
           "$type": "color",
-          "$description": "Text color for negative variant"
+          "$description": "Tekstkleur voor negative variant"
         },
         "icon-color": {
           "$value": "{dsn.color.negative.color-default}",
           "$type": "color",
-          "$description": "Icon color for negative variant"
+          "$description": "Icoonkleur voor negative variant"
         }
       },
       "neutral": {
         "background-color": {
           "$value": "{dsn.color.neutral.bg-default}",
           "$type": "color",
-          "$description": "Background color for neutral variant (default)"
+          "$description": "Achtergrondkleur voor neutral variant (standaard)"
         },
         "border-inline-start-color": {
           "$value": "{dsn.color.neutral.border-default}",
           "$type": "color",
-          "$description": "Left border color for neutral variant (default)"
+          "$description": "Kleur van de linkerborder voor neutral variant (standaard)"
         },
         "color": {
           "$value": "{dsn.color.neutral.color-document}",
           "$type": "color",
-          "$description": "Text color for neutral variant (default)"
+          "$description": "Tekstkleur voor neutral variant (standaard)"
         },
         "icon-color": {
           "$value": "{dsn.color.neutral.color-default}",
           "$type": "color",
-          "$description": "Icon color for neutral variant (default)"
+          "$description": "Icoonkleur voor neutral variant (standaard)"
         }
       },
       "positive": {
         "background-color": {
           "$value": "{dsn.color.positive.bg-default}",
           "$type": "color",
-          "$description": "Background color for positive variant"
+          "$description": "Achtergrondkleur voor positive variant"
         },
         "border-inline-start-color": {
           "$value": "{dsn.color.positive.border-default}",
           "$type": "color",
-          "$description": "Left border color for positive variant"
+          "$description": "Kleur van de linkerborder voor positive variant"
         },
         "color": {
           "$value": "{dsn.color.positive.color-document}",
           "$type": "color",
-          "$description": "Text color for positive variant"
+          "$description": "Tekstkleur voor positive variant"
         },
         "icon-color": {
           "$value": "{dsn.color.positive.color-default}",
           "$type": "color",
-          "$description": "Icon color for positive variant"
+          "$description": "Icoonkleur voor positive variant"
         }
       },
       "warning": {
         "background-color": {
           "$value": "{dsn.color.warning.bg-default}",
           "$type": "color",
-          "$description": "Background color for warning variant"
+          "$description": "Achtergrondkleur voor warning variant"
         },
         "border-inline-start-color": {
           "$value": "{dsn.color.warning.border-default}",
           "$type": "color",
-          "$description": "Left border color for warning variant"
+          "$description": "Kleur van de linkerborder voor warning variant"
         },
         "color": {
           "$value": "{dsn.color.warning.color-document}",
           "$type": "color",
-          "$description": "Text color for warning variant"
+          "$description": "Tekstkleur voor warning variant"
         },
         "icon-color": {
           "$value": "{dsn.color.warning.color-default}",
           "$type": "color",
-          "$description": "Icon color for warning variant"
+          "$description": "Icoonkleur voor warning variant"
         }
       }
     }

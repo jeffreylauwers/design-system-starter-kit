@@ -4,52 +4,52 @@
       "color": {
         "$value": "{dsn.color.neutral.color-document}",
         "$type": "color",
-        "$description": "Ordered list text color"
+        "$description": "Tekstkleur van de geordende lijst"
       },
       "font-family": {
         "$value": "{dsn.text.font-family.default}",
         "$type": "fontFamily",
-        "$description": "Ordered list font family"
+        "$description": "Font-familie van de geordende lijst"
       },
       "font-size": {
         "$value": "{dsn.text.font-size.md}",
         "$type": "fontSize",
-        "$description": "Ordered list font size"
+        "$description": "Font-size van de geordende lijst"
       },
       "font-weight": {
         "$value": "{dsn.text.font-weight.default}",
         "$type": "fontWeight",
-        "$description": "Ordered list font weight"
+        "$description": "Font-gewicht van de geordende lijst"
       },
       "max-inline-size": {
         "$value": "{dsn.text.max-inline-size}",
         "$type": "sizing",
-        "$description": "Ordered list max width for readability"
+        "$description": "Maximale breedte van de geordende lijst voor leesbaarheid"
       },
       "gap": {
         "$value": "{dsn.space.row.sm}",
         "$type": "spacing",
-        "$description": "Space between list items"
+        "$description": "Ruimte tussen lijstitems"
       },
       "line-height": {
         "$value": "{dsn.text.line-height.md}",
         "$type": "lineHeight",
-        "$description": "Ordered list line height"
+        "$description": "Line-height van de geordende lijst"
       },
       "margin-block-end": {
         "$value": "{dsn.space.row.lg}",
         "$type": "spacing",
-        "$description": "Ordered list bottom margin"
+        "$description": "Onderste margin van de geordende lijst"
       },
       "marker-color": {
         "$value": "{dsn.color.neutral.color-document}",
         "$type": "color",
-        "$description": "Number marker color"
+        "$description": "Kleur van het nummermarkeerteken"
       },
       "padding-inline-start": {
         "$value": "{dsn.space.inline.3xl}",
         "$type": "spacing",
-        "$description": "Ordered list left indentation"
+        "$description": "Inspringing aan de linkerkant van de geordende lijst"
       }
     }
   }

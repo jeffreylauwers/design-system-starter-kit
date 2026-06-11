@@ -4,42 +4,42 @@
       "color": {
         "$value": "{dsn.color.negative.color-default}",
         "$type": "color",
-        "$description": "Form field error message text color (negative sentiment)"
+        "$description": "Tekstkleur van de foutmelding (negative sentiment)"
       },
       "font-family": {
         "$value": "{dsn.text.font-family.default}",
         "$type": "fontFamily",
-        "$description": "Form field error message font family"
+        "$description": "Font-familie van de foutmelding"
       },
       "font-size": {
         "$value": "{dsn.text.font-size.md}",
         "$type": "fontSize",
-        "$description": "Form field error message font size"
+        "$description": "Font-size van de foutmelding"
       },
       "font-weight": {
         "$value": "{dsn.text.font-weight.default}",
         "$type": "fontWeight",
-        "$description": "Form field error message font weight"
+        "$description": "Font-gewicht van de foutmelding"
       },
       "gap": {
         "$value": "{dsn.space.text.sm}",
         "$type": "dimension",
-        "$description": "Space between icon and error message text"
+        "$description": "Ruimte tussen icoon en foutmeldingstekst"
       },
       "icon-size": {
         "$value": "{dsn.icon.size.md}",
         "$type": "dimension",
-        "$description": "Error message icon size"
+        "$description": "Icoongrootte van de foutmelding"
       },
       "line-height": {
         "$value": "{dsn.text.line-height.md}",
         "$type": "lineHeight",
-        "$description": "Form field error message line height"
+        "$description": "Line-height van de foutmelding"
       },
       "margin-block-end": {
         "$value": "{dsn.space.block.md}",
         "$type": "dimension",
-        "$description": "Space below error message before form control"
+        "$description": "Ruimte onder de foutmelding voor het formulierbesturingselement"
       }
     }
   }

@@ -4,51 +4,51 @@
       "row-gap": {
         "$value": "{dsn.space.row.md}",
         "$type": "dimension",
-        "$description": "Vertical gap between summary and content"
+        "$description": "Verticale ruimte tussen summary en inhoud"
       },
       "summary": {
         "color": {
           "$value": "{dsn.color.action-2.color-default}",
           "$type": "color",
-          "$description": "Summary label color (follows Link via action-2)"
+          "$description": "Kleur van het summary-label (volgt Link via action-2)"
         },
         "gap": {
           "$value": "{dsn.space.text.sm}",
           "$type": "dimension",
-          "$description": "Gap between chevron icon and label text"
+          "$description": "Ruimte tussen het chevron-icoon en de labeltekst"
         },
         "text-decoration-line": {
           "$value": "none",
           "$type": "other",
-          "$description": "No underline by default; appears on hover"
+          "$description": "Standaard geen onderstreping; verschijnt op hover"
         },
         "text-underline-offset": {
           "$value": "4px",
           "$type": "dimension",
-          "$description": "Underline offset for hover state"
+          "$description": "Onderstrepingsafstand voor de hover-staat"
         },
         "text-decoration-thickness": {
           "$value": "auto",
           "$type": "other",
-          "$description": "Underline thickness for hover state"
+          "$description": "Dikte van de onderstreping voor de hover-staat"
         },
         "hover": {
           "color": {
             "$value": "{dsn.color.action-2.color-hover}",
             "$type": "color",
-            "$description": "Summary label color on hover"
+            "$description": "Kleur van het summary-label op hover"
           },
           "text-decoration-line": {
             "$value": "underline",
             "$type": "other",
-            "$description": "Underline appears on hover"
+            "$description": "Onderstreping verschijnt op hover"
           }
         },
         "active": {
           "color": {
             "$value": "{dsn.color.action-2.color-active}",
             "$type": "color",
-            "$description": "Summary label color on active"
+            "$description": "Kleur van het summary-label op active"
           }
         }
       },
@@ -56,39 +56,39 @@
         "size": {
           "$value": "{dsn.icon.size.md}",
           "$type": "dimension",
-          "$description": "Chevron icon size"
+          "$description": "Grootte van het chevron-icoon"
         }
       },
       "content": {
         "background-color": {
           "$value": "transparent",
           "$type": "color",
-          "$description": "Content area background"
+          "$description": "Achtergrond van het inhoudsgebied"
         },
         "border-color": {
           "$value": "{dsn.color.neutral.border-subtle}",
           "$type": "color",
-          "$description": "Left border color for visual grouping"
+          "$description": "Kleur van de linkerborder voor visuele groepering"
         },
         "border-inline-start-width": {
           "$value": "{dsn.border.width.medium}",
           "$type": "dimension",
-          "$description": "Left border width"
+          "$description": "Breedte van de linkerborder"
         },
         "padding-inline-start": {
           "$value": "{dsn.space.inline.xl}",
           "$type": "dimension",
-          "$description": "Left padding — aligns content with label text"
+          "$description": "Linker padding — lijnt de inhoud uit met de labeltekst"
         },
         "padding-inline-end": {
           "$value": "{dsn.space.inline.xl}",
           "$type": "dimension",
-          "$description": "Right padding"
+          "$description": "Rechter padding"
         },
         "padding-block": {
           "$value": "{dsn.space.block.xl}",
           "$type": "dimension",
-          "$description": "Top and bottom padding"
+          "$description": "Boven- en onderpadding"
         }
       }
     }

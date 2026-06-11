@@ -5,12 +5,12 @@
         "track": {
           "$value": "{dsn.color.neutral.bg-default}",
           "$type": "color",
-          "$description": "Grijze achtergrondtrack"
+          "$description": "Achtergrondtrack"
         },
         "fill": {
           "$value": "{dsn.color.accent-1-inverse.bg-default}",
           "$type": "color",
-          "$description": "Vulbalk — donkerblauwe inverse achtergrondkleur voor voldoende contrast op de lichte track"
+          "$description": "Vulbalk achtergrondkleur"
         }
       },
       "block-size": {

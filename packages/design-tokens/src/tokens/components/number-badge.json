@@ -44,7 +44,7 @@
         "color": {
           "$value": "{dsn.color.negative-inverse.color-default}",
           "$type": "color",
-          "$description": "Tekstkleur voor negative variant (wit op donkere achtergrond)"
+          "$description": "Tekstkleur voor negative variant"
         },
         "background-color": {
           "$value": "{dsn.color.negative-inverse.bg-default}",
@@ -56,7 +56,7 @@
         "color": {
           "$value": "{dsn.color.positive-inverse.color-default}",
           "$type": "color",
-          "$description": "Tekstkleur voor positive variant (wit op donkere achtergrond)"
+          "$description": "Tekstkleur voor positive variant"
         },
         "background-color": {
           "$value": "{dsn.color.positive-inverse.bg-default}",
@@ -68,7 +68,7 @@
         "color": {
           "$value": "{dsn.color.warning-inverse.color-default}",
           "$type": "color",
-          "$description": "Tekstkleur voor warning variant (wit op donkere achtergrond)"
+          "$description": "Tekstkleur voor warning variant"
         },
         "background-color": {
           "$value": "{dsn.color.warning-inverse.bg-default}",
@@ -80,7 +80,7 @@
         "color": {
           "$value": "{dsn.color.info-inverse.color-default}",
           "$type": "color",
-          "$description": "Tekstkleur voor info variant (wit op donkere achtergrond)"
+          "$description": "Tekstkleur voor info variant"
         },
         "background-color": {
           "$value": "{dsn.color.info-inverse.bg-default}",
@@ -92,7 +92,7 @@
         "color": {
           "$value": "{dsn.color.neutral-inverse.color-default}",
           "$type": "color",
-          "$description": "Tekstkleur voor neutral variant (wit op donkere achtergrond)"
+          "$description": "Tekstkleur voor neutral variant"
         },
         "background-color": {
           "$value": "{dsn.color.neutral-inverse.bg-default}",

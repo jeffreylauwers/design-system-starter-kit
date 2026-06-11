@@ -4,238 +4,238 @@
       "background-color": {
         "$value": "{dsn.form-control.background-color}",
         "$type": "color",
-        "$description": "Text area background color"
+        "$description": "Achtergrondkleur van het tekstveld"
       },
       "border-color": {
         "$value": "{dsn.form-control.border-color}",
         "$type": "color",
-        "$description": "Text area border color"
+        "$description": "Borderkleur van het tekstveld"
       },
       "border-radius": {
         "$value": "{dsn.form-control.border-radius}",
         "$type": "dimension",
-        "$description": "Text area border radius"
+        "$description": "Border-radius van het tekstveld"
       },
       "border-width": {
         "$value": "{dsn.form-control.border-width}",
         "$type": "dimension",
-        "$description": "Text area border width"
+        "$description": "Border-breedte van het tekstveld"
       },
       "color": {
         "$value": "{dsn.form-control.color}",
         "$type": "color",
-        "$description": "Text area text color"
+        "$description": "Tekstkleur van het tekstveld"
       },
       "font-family": {
         "$value": "{dsn.form-control.font-family}",
         "$type": "fontFamily",
-        "$description": "Text area font family"
+        "$description": "Font-familie van het tekstveld"
       },
       "font-size": {
         "$value": "{dsn.form-control.font-size}",
         "$type": "fontSize",
-        "$description": "Text area font size"
+        "$description": "Font-size van het tekstveld"
       },
       "font-weight": {
         "$value": "{dsn.form-control.font-weight}",
         "$type": "fontWeight",
-        "$description": "Text area font weight"
+        "$description": "Font-gewicht van het tekstveld"
       },
       "line-height": {
         "$value": "{dsn.form-control.line-height}",
         "$type": "lineHeight",
-        "$description": "Text area line height"
+        "$description": "Line-height van het tekstveld"
       },
       "min-block-size": {
         "$value": "{dsn.pointer-target.min-block-size}",
         "$type": "dimension",
-        "$description": "Text area minimum height"
+        "$description": "Minimale hoogte van het tekstveld"
       },
       "min-inline-size": {
         "$value": "{dsn.pointer-target.min-inline-size}",
         "$type": "dimension",
-        "$description": "Text area minimum width"
+        "$description": "Minimale breedte van het tekstveld"
       },
       "outline-offset": {
         "$value": "0px",
         "$type": "dimension",
-        "$description": "Text area outline offset"
+        "$description": "Outline-afstand van het tekstveld"
       },
       "padding-block-end": {
         "$value": "{dsn.form-control.padding-block-end}",
         "$type": "dimension",
-        "$description": "Text area bottom padding"
+        "$description": "Onderste padding van het tekstveld"
       },
       "padding-block-start": {
         "$value": "{dsn.form-control.padding-block-start}",
         "$type": "dimension",
-        "$description": "Text area top padding"
+        "$description": "Bovenste padding van het tekstveld"
       },
       "padding-inline-end": {
         "$value": "{dsn.form-control.padding-inline-end}",
         "$type": "dimension",
-        "$description": "Text area right padding"
+        "$description": "Rechter padding van het tekstveld"
       },
       "padding-inline-start": {
         "$value": "{dsn.form-control.padding-inline-start}",
         "$type": "dimension",
-        "$description": "Text area left padding"
+        "$description": "Linker padding van het tekstveld"
       },
       "resize": {
         "$value": "vertical",
         "$type": "other",
-        "$description": "Text area resize behavior (vertical, horizontal, both, none)"
+        "$description": "Formaat-aanpassingsgedrag van het tekstveld (vertical, horizontal, both, none)"
       },
       "disabled": {
         "background-color": {
           "$value": "{dsn.form-control.disabled.background-color}",
           "$type": "color",
-          "$description": "Text area disabled background"
+          "$description": "Achtergrond van het tekstveld op disabled"
         },
         "border-color": {
           "$value": "{dsn.form-control.disabled.border-color}",
           "$type": "color",
-          "$description": "Text area disabled border"
+          "$description": "Border van het tekstveld op disabled"
         },
         "color": {
           "$value": "{dsn.form-control.disabled.color}",
           "$type": "color",
-          "$description": "Text area disabled text color"
+          "$description": "Tekstkleur van het tekstveld op disabled"
         }
       },
       "focus": {
         "background-color": {
           "$value": "{dsn.form-control.focus.background-color}",
           "$type": "color",
-          "$description": "Text area focus background"
+          "$description": "Achtergrond van het tekstveld op focus"
         },
         "border-color": {
           "$value": "{dsn.form-control.focus.border-color}",
           "$type": "color",
-          "$description": "Text area focus border"
+          "$description": "Border van het tekstveld op focus"
         },
         "box-shadow-x": {
           "$value": "0",
           "$type": "dimension",
-          "$description": "Text area focus box shadow x offset"
+          "$description": "X-verschuiving van de box-shadow op focus"
         },
         "box-shadow-y": {
           "$value": "0",
           "$type": "dimension",
-          "$description": "Text area focus box shadow y offset"
+          "$description": "Y-verschuiving van de box-shadow op focus"
         },
         "box-shadow-blur": {
           "$value": "0",
           "$type": "dimension",
-          "$description": "Text area focus box shadow blur"
+          "$description": "Vervaging van de box-shadow op focus"
         },
         "box-shadow-spread": {
           "$value": "{dsn.border.width.medium}",
           "$type": "dimension",
-          "$description": "Text area focus box shadow spread (creates thicker border effect)"
+          "$description": "Spreiding van de box-shadow op focus (creëert een dikkere border)"
         },
         "box-shadow-color": {
           "$value": "{dsn.text-area.focus.border-color}",
           "$type": "color",
-          "$description": "Text area focus box shadow color"
+          "$description": "Kleur van de box-shadow op focus"
         },
         "color": {
           "$value": "{dsn.form-control.focus.color}",
           "$type": "color",
-          "$description": "Text area focus text color"
+          "$description": "Tekstkleur van het tekstveld op focus"
         }
       },
       "hover": {
         "box-shadow-x": {
           "$value": "0",
           "$type": "dimension",
-          "$description": "Text area hover box shadow x offset"
+          "$description": "X-verschuiving van de box-shadow op hover"
         },
         "box-shadow-y": {
           "$value": "0",
           "$type": "dimension",
-          "$description": "Text area hover box shadow y offset"
+          "$description": "Y-verschuiving van de box-shadow op hover"
         },
         "box-shadow-blur": {
           "$value": "0",
           "$type": "dimension",
-          "$description": "Text area hover box shadow blur"
+          "$description": "Vervaging van de box-shadow op hover"
         },
         "box-shadow-spread": {
           "$value": "{dsn.border.width.medium}",
           "$type": "dimension",
-          "$description": "Text area hover box shadow spread (creates thicker border effect)"
+          "$description": "Spreiding van de box-shadow op hover (creëert een dikkere border)"
         },
         "box-shadow-color": {
           "$value": "{dsn.text-area.border-color}",
           "$type": "color",
-          "$description": "Text area hover box shadow color"
+          "$description": "Kleur van de box-shadow op hover"
         }
       },
       "placeholder": {
         "color": {
           "$value": "{dsn.form-control.placeholder.color}",
           "$type": "color",
-          "$description": "Text area placeholder color"
+          "$description": "Plaatshouderkleur van het tekstveld"
         }
       },
       "invalid": {
         "background-color": {
           "$value": "{dsn.form-control.invalid.background-color}",
           "$type": "color",
-          "$description": "Text area invalid background"
+          "$description": "Achtergrond van het tekstveld bij ongeldige invoer"
         },
         "border-color": {
           "$value": "{dsn.form-control.invalid.border-color}",
           "$type": "color",
-          "$description": "Text area invalid border"
+          "$description": "Border van het tekstveld bij ongeldige invoer"
         },
         "box-shadow-x": {
           "$value": "0",
           "$type": "dimension",
-          "$description": "Text area invalid box shadow x offset"
+          "$description": "X-verschuiving van de box-shadow bij ongeldige invoer"
         },
         "box-shadow-y": {
           "$value": "0",
           "$type": "dimension",
-          "$description": "Text area invalid box shadow y offset"
+          "$description": "Y-verschuiving van de box-shadow bij ongeldige invoer"
         },
         "box-shadow-blur": {
           "$value": "0",
           "$type": "dimension",
-          "$description": "Text area invalid box shadow blur"
+          "$description": "Vervaging van de box-shadow bij ongeldige invoer"
         },
         "box-shadow-spread": {
           "$value": "{dsn.border.width.medium}",
           "$type": "dimension",
-          "$description": "Text area invalid box shadow spread (creates thicker border effect)"
+          "$description": "Spreiding van de box-shadow bij ongeldige invoer (creëert een dikkere border)"
         },
         "box-shadow-color": {
           "$value": "{dsn.text-area.invalid.border-color}",
           "$type": "color",
-          "$description": "Text area invalid box shadow color"
+          "$description": "Kleur van de box-shadow bij ongeldige invoer"
         },
         "color": {
           "$value": "{dsn.form-control.color}",
           "$type": "color",
-          "$description": "Text area invalid text color"
+          "$description": "Tekstkleur van het tekstveld bij ongeldige invoer"
         }
       },
       "read-only": {
         "background-color": {
           "$value": "{dsn.form-control.read-only.background-color}",
           "$type": "color",
-          "$description": "Text area read-only background"
+          "$description": "Achtergrond van het tekstveld op read-only"
         },
         "border-color": {
           "$value": "{dsn.form-control.read-only.border-color}",
           "$type": "color",
-          "$description": "Text area read-only border"
+          "$description": "Border van het tekstveld op read-only"
         },
         "color": {
           "$value": "{dsn.form-control.read-only.color}",
           "$type": "color",
-          "$description": "Text area read-only text color"
+          "$description": "Tekstkleur van het tekstveld op read-only"
         }
       }
     }

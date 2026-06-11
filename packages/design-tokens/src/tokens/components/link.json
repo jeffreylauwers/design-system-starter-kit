@@ -4,62 +4,62 @@
       "color": {
         "$value": "{dsn.color.action-2.color-default}",
         "$type": "color",
-        "$description": "Link text color"
+        "$description": "Tekstkleur van de link"
       },
       "gap": {
         "$value": "{dsn.space.text.sm}",
         "$type": "dimension",
-        "$description": "Link gap between icon and text"
+        "$description": "Ruimte tussen icoon en tekst van de link"
       },
       "icon-size": {
         "$value": "{dsn.icon.size.md}",
         "$type": "dimension",
-        "$description": "Link icon size"
+        "$description": "Icoongrootte van de link"
       },
       "text-decoration-color": {
         "$value": "{dsn.color.action-2.color-default}",
         "$type": "color",
-        "$description": "Link underline color"
+        "$description": "Kleur van de onderstreping van de link"
       },
       "text-decoration-line": {
         "$value": "underline",
         "$type": "string",
-        "$description": "Link text decoration line"
+        "$description": "Tekstverfraaiing van de link"
       },
       "text-decoration-thickness": {
         "$value": "auto",
         "$type": "string",
-        "$description": "Link underline thickness"
+        "$description": "Dikte van de onderstreping van de link"
       },
       "text-underline-offset": {
         "$value": "4px",
         "$type": "string",
-        "$description": "Link underline offset"
+        "$description": "Onderstrepingsafstand van de link"
       },
       "active": {
         "color": {
           "$value": "{dsn.color.action-2.color-active}",
           "$type": "color",
-          "$description": "Link active text color"
+          "$description": "Tekstkleur van de link op active"
         }
       },
       "disabled": {
         "color": {
           "$value": "{dsn.color.neutral.color-subtle}",
           "$type": "color",
-          "$description": "Link disabled text color"
+          "$description": "Tekstkleur van de link op disabled"
         }
       },
       "hover": {
         "color": {
           "$value": "{dsn.color.action-2.color-hover}",
           "$type": "color",
-          "$description": "Link hover text color"
+          "$description": "Tekstkleur van de link op hover"
         },
         "text-decoration-line": {
           "$value": "none",
           "$type": "string",
-          "$description": "Link hover text decoration"
+          "$description": "Tekstverfraaiing van de link op hover"
         }
       },
       "size": {
@@ -67,51 +67,51 @@
           "font-size": {
             "$value": "{dsn.text.font-size.md}",
             "$type": "dimension",
-            "$description": "Default link font size"
+            "$description": "Font-size van de default link"
           },
           "gap": {
             "$value": "{dsn.space.text.sm}",
             "$type": "dimension",
-            "$description": "Default link gap between icon and text"
+            "$description": "Ruimte tussen icoon en tekst van de default link"
           },
           "icon-size": {
             "$value": "{dsn.icon.size.md}",
             "$type": "dimension",
-            "$description": "Default link icon size"
+            "$description": "Icoongrootte van de default link"
           }
         },
         "large": {
           "font-size": {
             "$value": "{dsn.text.font-size.lg}",
             "$type": "dimension",
-            "$description": "Large link font size"
+            "$description": "Font-size van de large link"
           },
           "gap": {
             "$value": "{dsn.space.text.md}",
             "$type": "dimension",
-            "$description": "Large link gap between icon and text"
+            "$description": "Ruimte tussen icoon en tekst van de large link"
           },
           "icon-size": {
             "$value": "{dsn.icon.size.lg}",
             "$type": "dimension",
-            "$description": "Large link icon size"
+            "$description": "Icoongrootte van de large link"
           }
         },
         "small": {
           "font-size": {
             "$value": "{dsn.text.font-size.sm}",
             "$type": "dimension",
-            "$description": "Small link font size"
+            "$description": "Font-size van de small link"
           },
           "gap": {
             "$value": "{dsn.space.text.sm}",
             "$type": "dimension",
-            "$description": "Small link gap between icon and text"
+            "$description": "Ruimte tussen icoon en tekst van de small link"
           },
           "icon-size": {
             "$value": "{dsn.icon.size.sm}",
             "$type": "dimension",
-            "$description": "Small link icon size"
+            "$description": "Icoongrootte van de small link"
           }
         }
       }

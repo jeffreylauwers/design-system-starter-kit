@@ -4,48 +4,48 @@
       "color": {
         "$value": "{dsn.form-control.placeholder.color}",
         "$type": "color",
-        "$description": "Subtle text color for filename / 'No file chosen' text"
+        "$description": "Subtiele tekstkleur voor de bestandsnaam / 'Geen bestand gekozen'-tekst"
       },
       "column-gap": {
         "$value": "{dsn.space.text.lg}",
         "$type": "dimension",
-        "$description": "Gap between file-selector-button and filename text"
+        "$description": "Ruimte tussen de file-selector-button en de bestandsnaamtekst"
       },
       "font-family": {
         "$value": "{dsn.form-control.font-family}",
         "$type": "fontFamily",
-        "$description": "File input font family"
+        "$description": "Font-familie van het bestandsinvoerveld"
       },
       "font-size": {
         "$value": "{dsn.form-control.font-size}",
         "$type": "fontSize",
-        "$description": "File input font size"
+        "$description": "Font-size van het bestandsinvoerveld"
       },
       "font-weight": {
         "$value": "{dsn.form-control.font-weight}",
         "$type": "fontWeight",
-        "$description": "File input font weight"
+        "$description": "Font-gewicht van het bestandsinvoerveld"
       },
       "line-height": {
         "$value": "{dsn.form-control.line-height}",
         "$type": "lineHeight",
-        "$description": "File input line height"
+        "$description": "Line-height van het bestandsinvoerveld"
       },
       "min-block-size": {
         "$value": "{dsn.pointer-target.min-block-size}",
         "$type": "dimension",
-        "$description": "File input minimum height (WCAG touch target)"
+        "$description": "Minimale hoogte van het bestandsinvoerveld (WCAG aanraakdoel)"
       },
       "min-inline-size": {
         "$value": "{dsn.pointer-target.min-inline-size}",
         "$type": "dimension",
-        "$description": "File input minimum width (WCAG touch target)"
+        "$description": "Minimale breedte van het bestandsinvoerveld (WCAG aanraakdoel)"
       },
       "disabled": {
         "color": {
           "$value": "{dsn.form-control.disabled.color}",
           "$type": "color",
-          "$description": "Muted text color for disabled state"
+          "$description": "Gedempte tekstkleur voor de disabled staat"
         }
       }
     }

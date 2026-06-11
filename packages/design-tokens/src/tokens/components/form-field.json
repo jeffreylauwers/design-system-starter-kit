@@ -4,28 +4,28 @@
       "margin-block-end": {
         "$value": "{dsn.space.none}",
         "$type": "dimension",
-        "$description": "Bottom margin of form field container"
+        "$description": "Onderste margin van de formulierveldcontainer"
       },
       "margin-block-start": {
         "$value": "{dsn.space.none}",
         "$type": "dimension",
-        "$description": "Top margin of form field container"
+        "$description": "Bovenste margin van de formulierveldcontainer"
       },
       "invalid": {
         "border-inline-start-color": {
           "$value": "{dsn.color.negative.border-default}",
           "$type": "color",
-          "$description": "Left border color for invalid form fields"
+          "$description": "Kleur van de linkerborder voor ongeldige formuliervelden"
         },
         "border-inline-start-width": {
           "$value": "{dsn.border.width.medium}",
           "$type": "dimension",
-          "$description": "Left border width for invalid form fields"
+          "$description": "Breedte van de linkerborder voor ongeldige formuliervelden"
         },
         "padding-inline-start": {
           "$value": "{dsn.space.inline.xl}",
           "$type": "dimension",
-          "$description": "Left padding for invalid form fields (to accommodate border)"
+          "$description": "Linker padding voor ongeldige formuliervelden (om de border op te vangen)"
         }
       }
     }

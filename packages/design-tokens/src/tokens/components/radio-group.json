@@ -4,53 +4,53 @@
       "border-width": {
         "$value": "{dsn.border.width.none}",
         "$type": "dimension",
-        "$description": "No border by default for fieldset"
+        "$description": "Standaard geen border op de fieldset"
       },
       "gap": {
         "$value": "{dsn.space.block.sm}",
         "$type": "dimension",
-        "$description": "Space between radio options in the group"
+        "$description": "Ruimte tussen de radio-opties in de groep"
       },
       "margin": {
         "$value": "{dsn.space.none}",
         "$type": "dimension",
-        "$description": "No margin by default for fieldset"
+        "$description": "Standaard geen margin op de fieldset"
       },
       "padding": {
         "$value": "{dsn.space.none}",
         "$type": "dimension",
-        "$description": "No padding by default for fieldset"
+        "$description": "Standaard geen padding op de fieldset"
       },
       "legend": {
         "color": {
           "$value": "{dsn.form-field-label.color}",
           "$type": "color",
-          "$description": "Text color for the legend (reuses form field label)"
+          "$description": "Tekstkleur van de legend (hergebruikt van het formulierveldlabel)"
         },
         "font-family": {
           "$value": "{dsn.form-field-label.font-family}",
           "$type": "fontFamily",
-          "$description": "Font family for the legend (reuses form field label)"
+          "$description": "Font-familie van de legend (hergebruikt van het formulierveldlabel)"
         },
         "font-size": {
           "$value": "{dsn.form-field-label.font-size}",
           "$type": "fontSize",
-          "$description": "Font size for the legend (reuses form field label)"
+          "$description": "Font-size van de legend (hergebruikt van het formulierveldlabel)"
         },
         "font-weight": {
           "$value": "{dsn.form-field-label.font-weight}",
           "$type": "fontWeight",
-          "$description": "Font weight for the legend (reuses form field label)"
+          "$description": "Font-gewicht van de legend (hergebruikt van het formulierveldlabel)"
         },
         "line-height": {
           "$value": "{dsn.form-field-label.line-height}",
           "$type": "lineHeight",
-          "$description": "Line height for the legend (reuses form field label)"
+          "$description": "Line-height van de legend (hergebruikt van het formulierveldlabel)"
         },
         "margin-block-end": {
           "$value": "{dsn.form-field-label.margin-block-end-with-description}",
           "$type": "dimension",
-          "$description": "Space below the legend before the radio options (uses smaller margin like when description follows)"
+          "$description": "Ruimte onder de legend voor de radio-opties (gebruikt de kleinere margin zoals wanneer een beschrijving volgt)"
         }
       }
     }

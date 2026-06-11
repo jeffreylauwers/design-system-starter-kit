@@ -4,78 +4,78 @@
       "column-gap": {
         "$value": "{dsn.space.column.md}",
         "$type": "dimension",
-        "$description": "Gap between breadcrumb items"
+        "$description": "Ruimte tussen breadcrumb-items"
       },
       "font-size": {
         "$value": "{dsn.text.font-size.sm}",
         "$type": "fontSize",
-        "$description": "Breadcrumb font size — sm (consistent met Link size small)"
+        "$description": "Breadcrumb font-size — sm (consistent met Link size small)"
       },
       "font-weight": {
         "$value": "{dsn.text.font-weight.default}",
         "$type": "fontWeight",
-        "$description": "Breadcrumb font weight"
+        "$description": "Breadcrumb font-gewicht"
       },
       "line-height": {
         "$value": "{dsn.text.line-height.sm}",
         "$type": "lineHeight",
-        "$description": "Breadcrumb line height — sm (consistent met Link size small)"
+        "$description": "Breadcrumb line-height — sm (consistent met Link size small)"
       },
       "current": {
         "color": {
           "$value": "{dsn.color.neutral.color-subtle}",
           "$type": "color",
-          "$description": "Current page item color"
+          "$description": "Kleur van het huidige pagina-item"
         }
       },
       "item": {
         "min-block-size": {
           "$value": "{dsn.pointer-target.min-block-size}",
           "$type": "dimension",
-          "$description": "Minimum touch/click target height"
+          "$description": "Minimale aanraak-/klikhoogte"
         },
         "padding-block": {
           "$value": "{dsn.space.block.sm}",
           "$type": "dimension",
-          "$description": "Vertical padding to reach min-block-size"
+          "$description": "Verticale padding om de min-block-size te bereiken"
         },
         "padding-inline": {
           "$value": "{dsn.space.none}",
           "$type": "dimension",
-          "$description": "No horizontal padding on items"
+          "$description": "Geen horizontale padding op items"
         }
       },
       "link": {
         "color": {
           "$value": "{dsn.color.action-2.color-default}",
           "$type": "color",
-          "$description": "Link text color"
+          "$description": "Tekstkleur van de link"
         },
         "column-gap": {
           "$value": "{dsn.space.text.xs}",
           "$type": "dimension",
-          "$description": "Gap between icon and link text"
+          "$description": "Ruimte tussen icoon en linktekst"
         },
         "text-decoration-line": {
           "$value": "underline",
           "$type": "other",
-          "$description": "Links are underlined by default (a11y standaard)"
+          "$description": "Links zijn standaard onderstreept (a11y standaard)"
         },
         "text-underline-offset": {
           "$value": "4px",
           "$type": "dimension",
-          "$description": "Underline offset"
+          "$description": "Onderstrepingsafstand"
         },
         "text-decoration-thickness": {
           "$value": "auto",
           "$type": "other",
-          "$description": "Underline thickness"
+          "$description": "Dikte van de onderstreping"
         },
         "hover": {
           "color": {
             "$value": "{dsn.color.action-2.color-hover}",
             "$type": "color",
-            "$description": "Link hover color"
+            "$description": "Linkkleur op hover"
           },
           "text-decoration-line": {
             "$value": "none",
@@ -87,12 +87,12 @@
           "color": {
             "$value": "{dsn.color.action-2.color-active}",
             "$type": "color",
-            "$description": "Link active color"
+            "$description": "Linkkleur op active"
           },
           "text-decoration-line": {
             "$value": "none",
             "$type": "other",
-            "$description": "No underline on active"
+            "$description": "Geen onderstreping op active"
           }
         }
       },
@@ -100,19 +100,19 @@
         "color": {
           "$value": "{dsn.color.neutral.color-subtle}",
           "$type": "color",
-          "$description": "Separator icon color"
+          "$description": "Kleur van het scheidingsicoon"
         },
         "size": {
           "$value": "{dsn.icon.size.sm}",
           "$type": "dimension",
-          "$description": "Separator icon size — sm (kleiner dan terug-icoon)"
+          "$description": "Grootte van het scheidingsicoon — sm (kleiner dan terug-icoon)"
         }
       },
       "icon": {
         "size": {
           "$value": "{dsn.icon.size.sm}",
           "$type": "dimension",
-          "$description": "Back-icon size — sm (consistent met Link size small)"
+          "$description": "Grootte van het terug-icoon — sm (consistent met Link size small)"
         }
       }
     }

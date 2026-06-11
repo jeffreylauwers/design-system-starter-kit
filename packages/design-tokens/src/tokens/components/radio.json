@@ -16,12 +16,12 @@
       "color": {
         "$value": "{dsn.form-control.border-color}",
         "$type": "color",
-        "$description": "Inner circle color in default state"
+        "$description": "Kleur van de binnenste cirkel in de standaard staat"
       },
       "size": {
         "$value": "calc(var(--dsn-text-font-size-md) * var(--dsn-text-line-height-md))",
         "$type": "dimension",
-        "$description": "Size of the radio button - fluid based on text size and line-height"
+        "$description": "Grootte van de radioknop — vloeiend op basis van tekstgrootte en line-height"
       },
       "active": {
         "background-color": {
@@ -57,7 +57,7 @@
         "color": {
           "$value": "{dsn.color.neutral-inverse.color-default}",
           "$type": "color",
-          "$description": "Inner circle color when checked"
+          "$description": "Kleur van de binnenste cirkel wanneer aangevinkt"
         }
       },
       "disabled": {
@@ -158,7 +158,7 @@
         "color": {
           "$value": "{dsn.form-control.disabled.color}",
           "$type": "color",
-          "$description": "Inner circle color - dark text color for contrast against disabled accent background"
+          "$description": "Kleur van de binnenste cirkel — donkere tekstkleur voor contrast op de disabled accentachtergrond"
         }
       },
       "checked-focus": {
@@ -201,7 +201,7 @@
         "size": {
           "$value": "calc(var(--dsn-radio-size) * 0.33)",
           "$type": "dimension",
-          "$description": "Inner circle size when checked - 33% of radio size"
+          "$description": "Grootte van de binnenste cirkel wanneer aangevinkt — 33% van de radioknopgrootte"
         }
       }
     }

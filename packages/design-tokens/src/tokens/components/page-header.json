@@ -14,7 +14,7 @@
       "border-block-end-color": {
         "$value": "{dsn.color.accent-1.color-default}",
         "$type": "color",
-        "$description": "Kleur van de onderkantrand — merkkleur die de header verankert aan het accent-1 palet"
+        "$description": "Kleur van de onderkantrand"
       },
       "padding-block": {
         "$value": "{dsn.space.block.md}",
@@ -59,7 +59,7 @@
         "background-color": {
           "$value": "{dsn.color.accent-1.bg-default}",
           "$type": "color",
-          "$description": "Navigatiebalk achtergrond — merkkleur accent-1"
+          "$description": "Navigatiebalk achtergrond"
         },
         "padding-inline": {
           "$value": "{dsn.space.inline.xl}",
@@ -78,7 +78,7 @@
         "background-color": {
           "$value": "{dsn.color.accent-1.bg-default}",
           "$type": "color",
-          "$description": "Achtergrondkleur van het zoekpaneel — merkkleur voor branding"
+          "$description": "Achtergrondkleur van het zoekpaneel"
         },
         "padding-block": {
           "$value": "{dsn.space.block.md}",

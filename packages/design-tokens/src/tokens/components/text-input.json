@@ -4,238 +4,238 @@
       "background-color": {
         "$value": "{dsn.form-control.background-color}",
         "$type": "color",
-        "$description": "Text input background color"
+        "$description": "Achtergrondkleur van het tekstinvoerveld"
       },
       "border-color": {
         "$value": "{dsn.form-control.border-color}",
         "$type": "color",
-        "$description": "Text input border color"
+        "$description": "Borderkleur van het tekstinvoerveld"
       },
       "border-radius": {
         "$value": "{dsn.form-control.border-radius}",
         "$type": "dimension",
-        "$description": "Text input border radius"
+        "$description": "Border-radius van het tekstinvoerveld"
       },
       "border-width": {
         "$value": "{dsn.form-control.border-width}",
         "$type": "dimension",
-        "$description": "Text input border width"
+        "$description": "Border-breedte van het tekstinvoerveld"
       },
       "color": {
         "$value": "{dsn.form-control.color}",
         "$type": "color",
-        "$description": "Text input text color"
+        "$description": "Tekstkleur van het tekstinvoerveld"
       },
       "column-gap": {
         "$value": "{dsn.space.text.lg}",
         "$type": "dimension",
-        "$description": "Gap between text and icons (for future icon support)"
+        "$description": "Ruimte tussen tekst en iconen (voor toekomstige icoonondersteuning)"
       },
       "font-family": {
         "$value": "{dsn.form-control.font-family}",
         "$type": "fontFamily",
-        "$description": "Text input font family"
+        "$description": "Font-familie van het tekstinvoerveld"
       },
       "font-size": {
         "$value": "{dsn.form-control.font-size}",
         "$type": "fontSize",
-        "$description": "Text input font size"
+        "$description": "Font-size van het tekstinvoerveld"
       },
       "font-weight": {
         "$value": "{dsn.form-control.font-weight}",
         "$type": "fontWeight",
-        "$description": "Text input font weight"
+        "$description": "Font-gewicht van het tekstinvoerveld"
       },
       "line-height": {
         "$value": "{dsn.form-control.line-height}",
         "$type": "lineHeight",
-        "$description": "Text input line height"
+        "$description": "Line-height van het tekstinvoerveld"
       },
       "min-block-size": {
         "$value": "{dsn.pointer-target.min-block-size}",
         "$type": "dimension",
-        "$description": "Text input minimum height (WCAG touch target)"
+        "$description": "Minimale hoogte van het tekstinvoerveld (WCAG aanraakdoel)"
       },
       "min-inline-size": {
         "$value": "{dsn.pointer-target.min-inline-size}",
         "$type": "dimension",
-        "$description": "Text input minimum width (WCAG touch target)"
+        "$description": "Minimale breedte van het tekstinvoerveld (WCAG aanraakdoel)"
       },
       "outline-offset": {
         "$value": "0px",
         "$type": "dimension",
-        "$description": "Text input outline offset"
+        "$description": "Outline-afstand van het tekstinvoerveld"
       },
       "padding-block-end": {
         "$value": "{dsn.form-control.padding-block-end}",
         "$type": "dimension",
-        "$description": "Text input bottom padding"
+        "$description": "Onderste padding van het tekstinvoerveld"
       },
       "padding-block-start": {
         "$value": "{dsn.form-control.padding-block-start}",
         "$type": "dimension",
-        "$description": "Text input top padding"
+        "$description": "Bovenste padding van het tekstinvoerveld"
       },
       "padding-inline-end": {
         "$value": "{dsn.form-control.padding-inline-end}",
         "$type": "dimension",
-        "$description": "Text input right padding"
+        "$description": "Rechter padding van het tekstinvoerveld"
       },
       "padding-inline-start": {
         "$value": "{dsn.form-control.padding-inline-start}",
         "$type": "dimension",
-        "$description": "Text input left padding"
+        "$description": "Linker padding van het tekstinvoerveld"
       },
       "disabled": {
         "background-color": {
           "$value": "{dsn.form-control.disabled.background-color}",
           "$type": "color",
-          "$description": "Text input disabled background"
+          "$description": "Achtergrond van het tekstinvoerveld op disabled"
         },
         "border-color": {
           "$value": "{dsn.form-control.disabled.border-color}",
           "$type": "color",
-          "$description": "Text input disabled border"
+          "$description": "Border van het tekstinvoerveld op disabled"
         },
         "color": {
           "$value": "{dsn.form-control.disabled.color}",
           "$type": "color",
-          "$description": "Text input disabled text color"
+          "$description": "Tekstkleur van het tekstinvoerveld op disabled"
         }
       },
       "focus": {
         "background-color": {
           "$value": "{dsn.form-control.focus.background-color}",
           "$type": "color",
-          "$description": "Text input focus background"
+          "$description": "Achtergrond van het tekstinvoerveld op focus"
         },
         "border-color": {
           "$value": "{dsn.form-control.focus.border-color}",
           "$type": "color",
-          "$description": "Text input focus border"
+          "$description": "Border van het tekstinvoerveld op focus"
         },
         "box-shadow-x": {
           "$value": "0",
           "$type": "dimension",
-          "$description": "Text input focus box shadow x offset"
+          "$description": "X-verschuiving van de box-shadow op focus"
         },
         "box-shadow-y": {
           "$value": "0",
           "$type": "dimension",
-          "$description": "Text input focus box shadow y offset"
+          "$description": "Y-verschuiving van de box-shadow op focus"
         },
         "box-shadow-blur": {
           "$value": "0",
           "$type": "dimension",
-          "$description": "Text input focus box shadow blur"
+          "$description": "Vervaging van de box-shadow op focus"
         },
         "box-shadow-spread": {
           "$value": "{dsn.border.width.medium}",
           "$type": "dimension",
-          "$description": "Text input focus box shadow spread (creates thicker border effect)"
+          "$description": "Spreiding van de box-shadow op focus (creëert een dikkere border)"
         },
         "box-shadow-color": {
           "$value": "{dsn.text-input.focus.border-color}",
           "$type": "color",
-          "$description": "Text input focus box shadow color"
+          "$description": "Kleur van de box-shadow op focus"
         },
         "color": {
           "$value": "{dsn.form-control.focus.color}",
           "$type": "color",
-          "$description": "Text input focus text color"
+          "$description": "Tekstkleur van het tekstinvoerveld op focus"
         }
       },
       "hover": {
         "box-shadow-x": {
           "$value": "0",
           "$type": "dimension",
-          "$description": "Text input hover box shadow x offset"
+          "$description": "X-verschuiving van de box-shadow op hover"
         },
         "box-shadow-y": {
           "$value": "0",
           "$type": "dimension",
-          "$description": "Text input hover box shadow y offset"
+          "$description": "Y-verschuiving van de box-shadow op hover"
         },
         "box-shadow-blur": {
           "$value": "0",
           "$type": "dimension",
-          "$description": "Text input hover box shadow blur"
+          "$description": "Vervaging van de box-shadow op hover"
         },
         "box-shadow-spread": {
           "$value": "{dsn.border.width.medium}",
           "$type": "dimension",
-          "$description": "Text input hover box shadow spread (creates thicker border effect)"
+          "$description": "Spreiding van de box-shadow op hover (creëert een dikkere border)"
         },
         "box-shadow-color": {
           "$value": "{dsn.text-input.border-color}",
           "$type": "color",
-          "$description": "Text input hover box shadow color"
+          "$description": "Kleur van de box-shadow op hover"
         }
       },
       "placeholder": {
         "color": {
           "$value": "{dsn.form-control.placeholder.color}",
           "$type": "color",
-          "$description": "Text input placeholder color"
+          "$description": "Plaatshouderkleur van het tekstinvoerveld"
         }
       },
       "invalid": {
         "background-color": {
           "$value": "{dsn.form-control.invalid.background-color}",
           "$type": "color",
-          "$description": "Text input invalid background"
+          "$description": "Achtergrond van het tekstinvoerveld bij ongeldige invoer"
         },
         "border-color": {
           "$value": "{dsn.form-control.invalid.border-color}",
           "$type": "color",
-          "$description": "Text input invalid border"
+          "$description": "Border van het tekstinvoerveld bij ongeldige invoer"
         },
         "box-shadow-x": {
           "$value": "0",
           "$type": "dimension",
-          "$description": "Text input invalid box shadow x offset"
+          "$description": "X-verschuiving van de box-shadow bij ongeldige invoer"
         },
         "box-shadow-y": {
           "$value": "0",
           "$type": "dimension",
-          "$description": "Text input invalid box shadow y offset"
+          "$description": "Y-verschuiving van de box-shadow bij ongeldige invoer"
         },
         "box-shadow-blur": {
           "$value": "0",
           "$type": "dimension",
-          "$description": "Text input invalid box shadow blur"
+          "$description": "Vervaging van de box-shadow bij ongeldige invoer"
         },
         "box-shadow-spread": {
           "$value": "{dsn.border.width.medium}",
           "$type": "dimension",
-          "$description": "Text input invalid box shadow spread (creates thicker border effect)"
+          "$description": "Spreiding van de box-shadow bij ongeldige invoer (creëert een dikkere border)"
         },
         "box-shadow-color": {
           "$value": "{dsn.text-input.invalid.border-color}",
           "$type": "color",
-          "$description": "Text input invalid box shadow color"
+          "$description": "Kleur van de box-shadow bij ongeldige invoer"
         },
         "color": {
           "$value": "{dsn.form-control.color}",
           "$type": "color",
-          "$description": "Text input invalid text color"
+          "$description": "Tekstkleur van het tekstinvoerveld bij ongeldige invoer"
         }
       },
       "read-only": {
         "background-color": {
           "$value": "{dsn.form-control.read-only.background-color}",
           "$type": "color",
-          "$description": "Text input read-only background"
+          "$description": "Achtergrond van het tekstinvoerveld op read-only"
         },
         "border-color": {
           "$value": "{dsn.form-control.read-only.border-color}",
           "$type": "color",
-          "$description": "Text input read-only border"
+          "$description": "Border van het tekstinvoerveld op read-only"
         },
         "color": {
           "$value": "{dsn.form-control.read-only.color}",
           "$type": "color",
-          "$description": "Text input read-only text color"
+          "$description": "Tekstkleur van het tekstinvoerveld op read-only"
         }
       }
     }

@@ -41,7 +41,7 @@
           "background-color": {
             "$value": "{dsn.color.action-2.bg-active}",
             "$type": "color",
-            "$description": "MenuLink-specifiek: hover achtergrondkleur voor de actieve pagina — blijft bg-active"
+            "$description": "MenuLink-specifiek: hover achtergrondkleur voor de actieve pagina"
           }
         },
         "active": {
