@@ -11,6 +11,12 @@ Complete documentation voor het Design System Starter Kit.
 
 ### Core Documentation
 
+0. **[Getting Started](./00-getting-started.md)**
+   - Install from npm
+   - CSS setup per framework (Vite, Next.js)
+   - First component example
+   - Theming and dark mode
+
 1. **[Architecture](./01-architecture.md)**
    - Token architecture (3-tier structure)
    - Three-axis configuration model (Theme × Mode × Project Type)
@@ -71,7 +77,7 @@ Complete documentation voor het Design System Starter Kit.
 
 ### New to this Design System?
 
-1. Start with the **[Main README](../README.md)** for installation
+1. Start with **[Getting Started](./00-getting-started.md)** — install to first component in 5 minutes
 2. Read **[Architecture](./01-architecture.md)** to understand the token system
 3. Browse **[Components](./03-components.md)** to see what's available
 4. Check **[Development Workflow](./04-development-workflow.md)** for contribution guidelines
