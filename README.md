@@ -2,6 +2,8 @@
 
 A production-ready, white-label design system starter kit built with design tokens, web components, React components, and comprehensive documentation.
 
+**New here?** Start with the [Getting Started guide](./docs/00-getting-started.md) — it walks you from install to first component in under five minutes. The rest of this file is a reference for contributors and maintainers.
+
 ## Packages
 
 This monorepo contains the following packages:
