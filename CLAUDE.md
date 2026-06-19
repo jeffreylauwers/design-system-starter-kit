@@ -16,8 +16,11 @@ Het bevat de projectregels, architectuurpatronen en navigatiekaart naar de volle
 | Hoe werken CSS-klassen en token-namen?             | `docs/06-css-naming-conventions.md`  |
 | Hoe werkt Storybook?                               | `docs/05-storybook-configuration.md` |
 | Wat is er recent veranderd?                        | `docs/changelog.md`                  |
+| Hoe werken formulierflows en -patronen?            | `docs/07-form-flow-patterns.md`      |
 
 **Voor een nieuw component:** lees altijd `docs/06-css-naming-conventions.md` en `docs/03-components.md` eerst.
+
+**Bij een formulierflow-opdracht (URL, prompt of schets):** lees altijd `docs/07-form-flow-patterns.md` eerst.
 
 ---
 
