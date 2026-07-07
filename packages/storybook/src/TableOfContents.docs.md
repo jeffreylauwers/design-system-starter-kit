@@ -43,15 +43,18 @@ Elk item's `id` moet exact overeenkomen met het `id` van de bijbehorende `Headin
 
 ## Design tokens
 
-| Token                                               | Beschrijving                                            |
-| --------------------------------------------------- | ------------------------------------------------------- |
-| `--dsn-table-of-contents-border-inline-start-width` | Breedte van de linkerborder (framed appearance)         |
-| `--dsn-table-of-contents-border-inline-start-color` | Kleur van de linkerborder (framed appearance), accent-1 |
-| `--dsn-table-of-contents-background-color`          | Achtergrondkleur (framed appearance), accent-1          |
-| `--dsn-table-of-contents-padding-block`             | Verticale padding (framed appearance)                   |
-| `--dsn-table-of-contents-padding-inline-start`      | Horizontale padding aan het begin (framed appearance)   |
-| `--dsn-table-of-contents-padding-inline-end`        | Horizontale padding aan het einde (framed appearance)   |
-| `--dsn-table-of-contents-heading-gap`               | Ruimte tussen de heading en de lijst met ankerlinks     |
+| Token                                                           | Beschrijving                                                                                                              |
+| --------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------- |
+| `--dsn-table-of-contents-border-inline-start-width`             | Breedte van de linkerborder (framed appearance)                                                                           |
+| `--dsn-table-of-contents-border-inline-start-color`             | Kleur van de linkerborder (framed appearance), accent-1                                                                   |
+| `--dsn-table-of-contents-background-color`                      | Achtergrondkleur (framed appearance), accent-1                                                                            |
+| `--dsn-table-of-contents-padding-block`                         | Verticale padding (framed appearance)                                                                                     |
+| `--dsn-table-of-contents-padding-inline-start`                  | Horizontale padding aan het begin (framed appearance)                                                                     |
+| `--dsn-table-of-contents-padding-inline-end`                    | Horizontale padding aan het einde (framed appearance)                                                                     |
+| `--dsn-table-of-contents-heading-gap`                           | Ruimte tussen de heading en de lijst met ankerlinks                                                                       |
+| `--dsn-table-of-contents-plain-list-gap`                        | Plain: ruimte tussen de ankerlinks, ruimer dan de standaard lijst-gap zodat dit in balans is met de Sidebar/Sub-navigatie |
+| `--dsn-table-of-contents-plain-link-text-decoration-line`       | Plain: onderstreping van de ankerlinks in rust (standaard geen onderstreping, omgekeerd t.o.v. de standaard Link)         |
+| `--dsn-table-of-contents-plain-link-hover-text-decoration-line` | Plain: onderstreping van de ankerlinks bij hover (standaard wel onderstreping, omgekeerd t.o.v. de standaard Link)        |
 
 ## Accessibility
 

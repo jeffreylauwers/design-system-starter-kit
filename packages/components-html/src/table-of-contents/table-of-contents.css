@@ -50,4 +50,20 @@
   padding-block: 0;
   padding-inline-start: 0;
   padding-inline-end: 0;
+  /* Ankerlinks: omgekeerd onderstrepingsgedrag t.o.v. de standaard Link —
+     rust zonder onderstreping, hover mét, zodat de kolom rustiger oogt. */
+  --dsn-link-text-decoration-line: var(
+    --dsn-table-of-contents-plain-link-text-decoration-line
+  );
+  --dsn-link-hover-text-decoration-line: var(
+    --dsn-table-of-contents-plain-link-hover-text-decoration-line
+  );
+}
+
+.dsn-table-of-contents--plain .dsn-unordered-list > li {
+  margin-block-end: var(--dsn-table-of-contents-plain-list-gap);
+}
+
+.dsn-table-of-contents--plain .dsn-unordered-list > li:last-child {
+  margin-block-end: 0;
 }
