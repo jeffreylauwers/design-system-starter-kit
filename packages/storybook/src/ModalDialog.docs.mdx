@@ -29,14 +29,18 @@ export const [intro, rest] = docs.split('<!-- VOORBEELD -->');
     <p class="dsn-paragraph">Tekst</p>
   </div>
   <div class="dsn-modal-dialog__footer">
-    <div class="dsn-action-group">
-      <button type="button" class="dsn-button dsn-button--strong dsn-button--size-medium">
-        <span class="dsn-button__label">Bevestigen</span>
-      </button>
-      <button type="button" class="dsn-button dsn-button--default dsn-button--size-medium">
-        <span class="dsn-button__label">Annuleren</span>
-      </button>
-    </div>
+    <ul class="dsn-action-group" aria-label="Acties">
+      <li class="dsn-action-group__item">
+        <button type="button" class="dsn-button dsn-button--strong dsn-button--size-medium">
+          <span class="dsn-button__label">Bevestigen</span>
+        </button>
+      </li>
+      <li class="dsn-action-group__item">
+        <button type="button" class="dsn-button dsn-button--default dsn-button--size-medium">
+          <span class="dsn-button__label">Annuleren</span>
+        </button>
+      </li>
+    </ul>
   </div>
 </dialog>`}
 />

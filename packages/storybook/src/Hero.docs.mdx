@@ -25,14 +25,18 @@ export const [intro, rest] = docs.split('<!-- VOORBEELD -->');
         <p class="dsn-paragraph dsn-paragraph--lead">
           Introductietekst die de kernboodschap samenvat in één of twee zinnen.
         </p>
-        <div class="dsn-action-group">
-          <a href="/start" class="dsn-button dsn-button--strong dsn-button--size-large">
-            <span class="dsn-button__label">Aan de slag</span>
-          </a>
-          <a href="/meer" class="dsn-button dsn-button--subtle dsn-button--size-large">
-            <span class="dsn-button__label">Meer informatie</span>
-          </a>
-        </div>
+        <ul class="dsn-action-group" aria-label="Acties">
+          <li class="dsn-action-group__item">
+            <a href="/start" class="dsn-button dsn-button--strong dsn-button--size-large">
+              <span class="dsn-button__label">Aan de slag</span>
+            </a>
+          </li>
+          <li class="dsn-action-group__item">
+            <a href="/meer" class="dsn-button dsn-button--subtle dsn-button--size-large">
+              <span class="dsn-button__label">Meer informatie</span>
+            </a>
+          </li>
+        </ul>
       </div>
     </div>
   </div>

@@ -6,6 +6,19 @@ All notable changes to this project are documented in this file.
 
 ---
 
+## Version 1.0.5 (July 7, 2026)
+
+### ActionGroup — accessibiliteit
+
+#### Fixed
+
+- **`role="group"` vervangen door `<ul>`/`<li>` + `aria-label`** (issue [#295](https://github.com/jeffreylauwers/design-system-starter-kit/issues/295)): screenreadertests met VoiceOver en NVDA lieten zien dat `role="group"` op een `<div>` inconsistent gedrag gaf — het aantal acties en de naam van de groep werden niet betrouwbaar aangekondigd, en de toegankelijke naam van de eerste knop werd soms overgeslagen. ActionGroup rendert nu als `<ul aria-label="...">` met elke actie in een `<li class="dsn-action-group__item">`.
+  - Nieuwe `aria-label`-prop (React) / attribuut (HTML) met default `"Acties"`, zodat de groep altijd een zinnige toegankelijke naam heeft, ook zonder expliciete keuze. Geef een specifieker label mee waar dat de context verduidelijkt (bijv. `"Formulierknoppen"`, `"Dialoogacties"`).
+  - **Breaking change voor eigen HTML-implementaties**: bestaande markup met `<div class="dsn-action-group" role="group">` moet migreren naar `<ul class="dsn-action-group" aria-label="...">` met elke actie gewrapt in `<li class="dsn-action-group__item">`. Consumenten van het React-component zijn niet geraakt behalve een DOM-structuurwijziging (geen prop-wijziging).
+  - CSS: `.dsn-action-group` reset nu `list-style`, `margin` en `padding`; de eerdere `align-self`-reset voor directe `dsn-link`/`dsn-link-button` children is verwijderd omdat die children niet meer direct in de flex-container zitten.
+
+---
+
 ## Version 1.0.4 (June 10, 2026)
 
 ### Hero — dark mode contrast

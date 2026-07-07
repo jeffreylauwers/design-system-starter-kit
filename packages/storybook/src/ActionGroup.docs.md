@@ -38,6 +38,20 @@ ActionGroup is een lay-outprimitief voor het groeperen van één of meer gerelat
 - Combineer een `Button` met een `Link` voor het GOV.UK-patroon: de primaire actie is de button, de `Link` biedt een zachte uitweg (bijv. "Terug naar overzicht").
 - De `Link` wordt automatisch verticaal gecentreerd naast de button via `align-items: center`.
 
+### Aria-label
+
+- ActionGroup krijgt standaard `aria-label="Acties"` mee, zodat screenreaders altijd een zinnige groepsnaam en het aantal acties aankondigen, ook als je zelf niets instelt.
+- Geef in specifiekere contexten een preciezer label mee, bijvoorbeeld `aria-label="Formulierknoppen"` in een formulier of `aria-label="Dialoogacties"` in een modal.
+
+```tsx
+<ActionGroup aria-label="Formulierknoppen">
+  <Button variant="strong" type="submit">
+    Verstuur
+  </Button>
+  <Button variant="subtle">Annuleren</Button>
+</ActionGroup>
+```
+
 ## Design tokens
 
 | Token                           | Beschrijving                                                   |
@@ -47,6 +61,8 @@ ActionGroup is een lay-outprimitief voor het groeperen van één of meer gerelat
 
 ## Accessibility
 
-- ActionGroup heeft standaard `role="group"`: screenreaders kondigen de groep aan als semantische eenheid.
+- ActionGroup rendert als `<ul aria-label="...">` met elke actie in een eigen `<li>`. Screenreaders kondigen zo het aantal acties én de groepsnaam aan wanneer de groep focus krijgt.
+- Eerder gebruikte ActionGroup `role="group"` op een `<div>`. Uit screenreadertests met VoiceOver en NVDA bleek dat dit inconsistent gedrag gaf: het aantal items en de naam van de groep werden niet betrouwbaar aangekondigd, en soms werd de toegankelijke naam van de eerste knop overgeslagen (zie issue [#295](https://github.com/jeffreylauwers/design-system-starter-kit/issues/295)). Een `<ul>` met `aria-label` is de robuustere ARIA-oplossing.
+- Geef via `aria-label` altijd een groepsnaam mee die past bij de context; zonder eigen keuze valt ActionGroup terug op `"Acties"`.
 - De volgorde van children bepaalt de lees- en tabvolgorde: primaire actie altijd als eerste child.
 - Icon-only Buttons in een ActionGroup hebben hun label verborgen via `dsn-button__label` + `dsn-button--icon-only`: de ActionGroup zelf hoeft hier niets voor te doen.

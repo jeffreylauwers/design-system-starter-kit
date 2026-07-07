@@ -168,24 +168,32 @@ Groepeert gerelateerde acties en verzorgt de lay-out van Buttons en Links. Horiz
 
 ```html
 <!-- Horizontaal (default) -->
-<div class="dsn-action-group" role="group">
-  <button class="dsn-button dsn-button--strong dsn-button--size-default">
-    <span class="dsn-button__label">Opslaan</span>
-  </button>
-  <button class="dsn-button dsn-button--subtle dsn-button--size-default">
-    <span class="dsn-button__label">Annuleren</span>
-  </button>
-</div>
+<ul class="dsn-action-group" aria-label="Acties">
+  <li class="dsn-action-group__item">
+    <button class="dsn-button dsn-button--strong dsn-button--size-default">
+      <span class="dsn-button__label">Opslaan</span>
+    </button>
+  </li>
+  <li class="dsn-action-group__item">
+    <button class="dsn-button dsn-button--subtle dsn-button--size-default">
+      <span class="dsn-button__label">Annuleren</span>
+    </button>
+  </li>
+</ul>
 
 <!-- Verticaal -->
-<div class="dsn-action-group dsn-action-group--vertical" role="group">
-  <button class="dsn-button dsn-button--strong dsn-button--size-default">
-    <span class="dsn-button__label">Primaire actie</span>
-  </button>
-  <button class="dsn-button dsn-button--subtle dsn-button--size-default">
-    <span class="dsn-button__label">Secundaire actie</span>
-  </button>
-</div>
+<ul class="dsn-action-group dsn-action-group--vertical" aria-label="Acties">
+  <li class="dsn-action-group__item">
+    <button class="dsn-button dsn-button--strong dsn-button--size-default">
+      <span class="dsn-button__label">Primaire actie</span>
+    </button>
+  </li>
+  <li class="dsn-action-group__item">
+    <button class="dsn-button dsn-button--subtle dsn-button--size-default">
+      <span class="dsn-button__label">Secundaire actie</span>
+    </button>
+  </li>
+</ul>
 ```
 
 **React:**
@@ -204,13 +212,13 @@ Groepeert gerelateerde acties en verzorgt de lay-out van Buttons en Links. Horiz
 </ActionGroup>
 ```
 
-**Props:** `direction` (`'horizontal'` | `'vertical'`, default `'horizontal'`), `children`.
+**Props:** `direction` (`'horizontal'` | `'vertical'`, default `'horizontal'`), `aria-label` (default `'Acties'`), `children`.
 
 **Location:** `packages/components-{html|react}/src/ActionGroup/`
 
 **Design tokens:** `--dsn-action-group-column-gap` (12px: horizontale ruimte tussen acties), `--dsn-action-group-row-gap` (4px: ruimte tussen gewrapte rijen).
 
-**Verticale uitlijning van Links:** In de horizontale richting worden directe `dsn-link` en `dsn-link-button` children verticaal gecentreerd met naaststaande Buttons via `align-self: center`. Dit overschrijft het `align-self: flex-start` dat Links standaard hebben (om uitrekken in verticale contexten te voorkomen).
+**Accessibility:** ActionGroup rendert als `<ul aria-label="...">` met elke actie in een `<li class="dsn-action-group__item">`, zodat screenreaders het aantal acties en de groepsnaam aankondigen (issue #295). Zonder eigen `aria-label` valt de groep terug op `"Acties"`.
 
 ---
 

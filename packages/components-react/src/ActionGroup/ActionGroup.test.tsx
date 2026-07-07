@@ -18,13 +18,41 @@ describe('ActionGroup', () => {
     expect(screen.getByText('Annuleren')).toBeInTheDocument();
   });
 
-  it('renders as a <div> element', () => {
+  it('renders as a <ul> element', () => {
     const { container } = render(
       <ActionGroup>
         <button>Actie</button>
       </ActionGroup>
     );
-    expect(container.firstChild?.nodeName).toBe('DIV');
+    expect(container.firstChild?.nodeName).toBe('UL');
+  });
+
+  it('wraps each child in a <li class="dsn-action-group__item">', () => {
+    const { container } = render(
+      <ActionGroup>
+        <button>Opslaan</button>
+        <button>Annuleren</button>
+      </ActionGroup>
+    );
+    const items = container.querySelectorAll('li.dsn-action-group__item');
+    expect(items).toHaveLength(2);
+    expect(items[0]).toHaveTextContent('Opslaan');
+    expect(items[1]).toHaveTextContent('Annuleren');
+  });
+
+  it('wraps each child in its own <li> even when passed as a single Fragment', () => {
+    const { container } = render(
+      <ActionGroup>
+        <>
+          <button>Opslaan</button>
+          <button>Annuleren</button>
+        </>
+      </ActionGroup>
+    );
+    const items = container.querySelectorAll('li.dsn-action-group__item');
+    expect(items).toHaveLength(2);
+    expect(items[0]).toHaveTextContent('Opslaan');
+    expect(items[1]).toHaveTextContent('Annuleren');
   });
 
   it('renders with a single child', () => {
@@ -91,15 +119,15 @@ describe('ActionGroup', () => {
   // Ref + HTML attributes
   // ===========================
 
-  it('forwards ref to the div element', () => {
-    const ref = { current: null as HTMLDivElement | null };
+  it('forwards ref to the ul element', () => {
+    const ref = { current: null as HTMLUListElement | null };
     render(
       <ActionGroup ref={ref}>
         <button>Actie</button>
       </ActionGroup>
     );
     expect(ref.current).toBeInstanceOf(HTMLElement);
-    expect(ref.current?.tagName).toBe('DIV');
+    expect(ref.current?.tagName).toBe('UL');
   });
 
   it('spreads additional HTML attributes', () => {
@@ -116,21 +144,24 @@ describe('ActionGroup', () => {
   // Accessibility
   // ===========================
 
-  it('has role="group" by default', () => {
+  it('has a default aria-label of "Acties"', () => {
     const { container } = render(
       <ActionGroup>
         <button>Actie</button>
       </ActionGroup>
     );
-    expect(container.firstChild).toHaveAttribute('role', 'group');
+    expect(container.firstChild).toHaveAttribute('aria-label', 'Acties');
   });
 
-  it('allows role to be overridden', () => {
+  it('allows aria-label to be overridden', () => {
     const { container } = render(
-      <ActionGroup role="toolbar">
+      <ActionGroup aria-label="Formulierknoppen">
         <button>Actie</button>
       </ActionGroup>
     );
-    expect(container.firstChild).toHaveAttribute('role', 'toolbar');
+    expect(container.firstChild).toHaveAttribute(
+      'aria-label',
+      'Formulierknoppen'
+    );
   });
 });
