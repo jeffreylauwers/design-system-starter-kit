@@ -1,0 +1,6 @@
+/**
+ * TableOfContents component styles for React
+ * Re-exports the base TableOfContents styles from components-html
+ */
+
+@import '../../../components-html/src/table-of-contents/table-of-contents.css';

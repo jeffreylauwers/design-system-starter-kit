@@ -1,0 +1,41 @@
+{
+  "dsn": {
+    "table-of-contents": {
+      "border-inline-start-width": {
+        "$value": "{dsn.border.width.medium}",
+        "$type": "dimension",
+        "$description": "Breedte van de linkerborder (framed appearance)"
+      },
+      "border-inline-start-color": {
+        "$value": "{dsn.color.accent-1.border-default}",
+        "$type": "color",
+        "$description": "Kleur van de linkerborder (framed appearance)"
+      },
+      "background-color": {
+        "$value": "{dsn.color.accent-1.bg-default}",
+        "$type": "color",
+        "$description": "Achtergrondkleur (framed appearance)"
+      },
+      "padding-block": {
+        "$value": "{dsn.space.block.xl}",
+        "$type": "dimension",
+        "$description": "Verticale padding (framed appearance)"
+      },
+      "padding-inline-start": {
+        "$value": "{dsn.space.inline.xl}",
+        "$type": "dimension",
+        "$description": "Horizontale padding aan het begin, na de border (framed appearance)"
+      },
+      "padding-inline-end": {
+        "$value": "{dsn.space.inline.xl}",
+        "$type": "dimension",
+        "$description": "Horizontale padding aan het einde (framed appearance)"
+      },
+      "heading-gap": {
+        "$value": "{dsn.space.row.md}",
+        "$type": "dimension",
+        "$description": "Ruimte tussen de heading en de lijst met ankerlinks"
+      }
+    }
+  }
+}

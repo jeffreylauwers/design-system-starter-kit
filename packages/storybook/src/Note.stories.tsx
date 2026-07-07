@@ -3,7 +3,6 @@ import {
   Icon,
   Note,
   Paragraph,
-  Link,
   UnorderedList,
 } from '@dsn-starter-kit/components-react';
 import type { IconName } from '@dsn-starter-kit/components-react/icon-registry.generated';
@@ -218,25 +217,6 @@ export const WithList: Story = {
         <li>Voornaam is verplicht</li>
         <li>E-mailadres is ongeldig</li>
         <li>Telefoonnummer ontbreekt</li>
-      </UnorderedList>
-    </Note>
-  ),
-};
-
-export const AsNav: Story = {
-  name: 'As nav (inhoudsopgave)',
-  render: () => (
-    <Note as="nav" variant="neutral" heading="Op deze pagina" headingLevel={2}>
-      <UnorderedList>
-        <li>
-          <Link href="#sectie-1">Sectie 1: Inleiding</Link>
-        </li>
-        <li>
-          <Link href="#sectie-2">Sectie 2: Aanvraag</Link>
-        </li>
-        <li>
-          <Link href="#sectie-3">Sectie 3: Documenten</Link>
-        </li>
       </UnorderedList>
     </Note>
   ),

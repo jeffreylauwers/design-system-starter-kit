@@ -1,0 +1,53 @@
+/**
+ * Table Of Contents Component
+ * Inhoudsopgave met ankerlinks naar de secties op de huidige pagina.
+ * Alleen H2-secties horen hierin opgenomen te worden.
+ *
+ * Twee appearances:
+ * - Default ("framed"): accent-1 achtergrond + linkerborder, heading als heading-3.
+ *   Bedoeld voor gebruik inline in de content-flow (bijv. onder de lead paragraph).
+ * - `dsn-table-of-contents--plain`: geen kader, heading als heading-5.
+ *   Bedoeld voor gebruik in een losstaande kolom naast de hoofdinhoud.
+ *
+ * Usage:
+ * <!-- Framed (default) -->
+ * <nav class="dsn-table-of-contents" aria-labelledby="toc-heading">
+ *   <h2 class="dsn-heading dsn-heading--heading-3 dsn-table-of-contents__heading" id="toc-heading">Op deze pagina</h2>
+ *   <ul class="dsn-unordered-list">
+ *     <li><a class="dsn-link" href="#sectie-1">Sectie 1</a></li>
+ *   </ul>
+ * </nav>
+ *
+ * <!-- Plain -->
+ * <nav class="dsn-table-of-contents dsn-table-of-contents--plain" aria-labelledby="toc-heading-plain">
+ *   <h2 class="dsn-heading dsn-heading--heading-5 dsn-table-of-contents__heading" id="toc-heading-plain">Op deze pagina</h2>
+ *   <ul class="dsn-unordered-list">
+ *     <li><a class="dsn-link" href="#sectie-1">Sectie 1</a></li>
+ *   </ul>
+ * </nav>
+ */
+
+.dsn-table-of-contents {
+  border-inline-start: var(--dsn-table-of-contents-border-inline-start-width)
+    solid var(--dsn-table-of-contents-border-inline-start-color);
+  background-color: var(--dsn-table-of-contents-background-color);
+  padding-block: var(--dsn-table-of-contents-padding-block);
+  padding-inline-start: var(--dsn-table-of-contents-padding-inline-start);
+  padding-inline-end: var(--dsn-table-of-contents-padding-inline-end);
+}
+
+.dsn-table-of-contents__heading {
+  margin-block-end: var(--dsn-table-of-contents-heading-gap);
+}
+
+/* =============================================================================
+   Plain appearance — geen kader, voor gebruik in een losstaande kolom
+   ============================================================================= */
+
+.dsn-table-of-contents--plain {
+  border-inline-start: none;
+  background-color: transparent;
+  padding-block: 0;
+  padding-inline-start: 0;
+  padding-inline-end: 0;
+}

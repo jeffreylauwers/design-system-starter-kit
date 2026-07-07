@@ -85,10 +85,10 @@ export interface NoteProps extends React.HTMLAttributes<HTMLElement> {
  *   <Paragraph>Meer context.</Paragraph>
  * </Note>
  *
- * // as="nav" — inhoudsopgave
- * <Note as="nav" variant="neutral" heading="Op deze pagina" headingLevel={2}>
+ * // as="nav" — eigenstandige navigatiesectie (niet voor een pagina-inhoudsopgave: gebruik TableOfContents)
+ * <Note as="nav" variant="neutral" heading="Gerelateerde pagina's" headingLevel={2}>
  *   <UnorderedList>
- *     <li><Link href="#sectie-1">Sectie 1</Link></li>
+ *     <li><Link href="/gerelateerd-1">Gerelateerde pagina 1</Link></li>
  *   </UnorderedList>
  * </Note>
  *

@@ -66,3 +66,33 @@
 .dsn-sidebar-layout__sidebar .dsn-menu-link__link[aria-current='page'] {
   background-color: transparent;
 }
+
+/* =============================================================================
+   Sidebar layout — Table of Contents kolom (rechts)
+   De ToC-inhoud wordt twee keer gerenderd: één keer inline (onder H1/lead,
+   zichtbaar tot 80em) en één keer als rechterkolom (zichtbaar vanaf 80em).
+   `display: none` sluit de verborgen kopie uit van de accessibility tree,
+   dus er is nooit dubbele content voor schermlezers.
+   ============================================================================= */
+
+.dsn-sidebar-layout__toc-inline {
+  display: block;
+}
+
+.dsn-sidebar-layout__toc {
+  display: none;
+}
+
+@media (min-width: 80em) {
+  .dsn-sidebar-layout__toc-inline {
+    display: none;
+  }
+
+  .dsn-sidebar-layout__toc {
+    display: block;
+    flex-shrink: 0;
+    inline-size: var(--dsn-sidebar-layout-toc-inline-size, 16rem);
+    padding-inline-start: var(--dsn-space-inline-2xl);
+    padding-block: var(--dsn-space-block-3xl);
+  }
+}
