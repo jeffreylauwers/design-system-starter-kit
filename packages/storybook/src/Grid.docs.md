@@ -112,6 +112,14 @@ Een `GridItem` met `fullBleed` (of `<div class="dsn-full-bleed">`) breekt visuee
 
 Grid en GridItem zijn puur visuele layout utilities. Ze voegen geen ARIA-attributen of semantische HTML toe. Gebruik passende semantische elementen (`<main>`, `<aside>`, `<section>`) als wrapper of als `className`-drager.
 
+### Focusvolgorde en de CSS property `order`
+
+Gebruik de CSS property `order` niet (of met uiterste terughoudendheid) om de visuele volgorde van `GridItem`s te wijzigen. `order` verandert alleen de visuele positie, niet de volgorde in de DOM: de tabvolgorde van focusable elementen (links, buttons, form-velden) blijft de DOM-volgorde volgen. Als die afwijkt van de visuele volgorde, springt de toetsenbordfocus onvoorspelbaar tussen elementen die op het scherm niet op elkaar aansluiten.
+
+- Zorg dat de DOM-volgorde altijd overeenkomt met de gewenste visuele volgorde; los verschillen tussen schermweergaves (mobiel/tablet/desktop) bij voorkeur op met `colStart`/`colEnd` of responsive `colSpan`-varianten in plaats van `order`
+- Verandert de volgorde toch met `order`, controleer dan met het toetsenbord (Tab) of de focusvolgorde nog overeenkomt met de visuele volgorde op elke breakpoint
+- Gerelateerd WCAG-succescriterium: [2.4.3 Focus Order (Level A)](https://www.w3.org/WAI/WCAG22/quickref/#focus-order)
+
 ## Design tokens
 
 | Token                       | Standaard waarde                    | Omschrijving                                                                                                                                                                             |
