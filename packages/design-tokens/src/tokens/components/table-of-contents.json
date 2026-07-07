@@ -37,6 +37,11 @@
         "$description": "Ruimte tussen de heading en de lijst met ankerlinks"
       },
       "plain": {
+        "padding-block": {
+          "$value": "{dsn.space.block.md}",
+          "$type": "dimension",
+          "$description": "Plain-appearance-specifiek: verticale padding zodat de heading en het eerste ankerlink-item uitlijnen met het eerste item van de Sidebar/Sub-navigatie"
+        },
         "list-gap": {
           "$value": "{dsn.space.row.lg}",
           "$type": "dimension",
