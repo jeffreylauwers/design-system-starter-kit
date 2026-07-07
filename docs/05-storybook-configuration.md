@@ -694,7 +694,7 @@ pnpm --filter storybook exec tsc --noEmit 2>&1 | grep "TS2304\|TS6133"
 
 Every story automatically includes accessibility checks via `@storybook/addon-a11y`:
 
-- WCAG 2.1 Level AA violations
+- WCAG 2.2 Level AA violations
 - Color contrast issues
 - Missing ARIA attributes
 - Keyboard navigation problems

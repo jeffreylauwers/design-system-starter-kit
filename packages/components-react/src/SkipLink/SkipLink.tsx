@@ -26,7 +26,7 @@ export interface SkipLinkProps extends React.AnchorHTMLAttributes<HTMLAnchorElem
  * SkipLink — toegankelijkheidskoppeling om herhalende navigatie te omzeilen.
  *
  * Plaatst de link als **eerste focusbaar element** in de DOM, vóór `<header>` en `<nav>`.
- * Voldoet aan WCAG 2.1 succescriterium 2.4.1 (Bypass Blocks, Level A).
+ * Voldoet aan WCAG 2.2 succescriterium 2.4.1 (Bypass Blocks, Level A).
  *
  * @example
  * ```tsx

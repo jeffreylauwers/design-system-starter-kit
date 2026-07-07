@@ -107,7 +107,7 @@ Complete documentation voor het Design System Starter Kit.
 
 - **Scalable** - Built for growth from day one
 - **Themeable** - Full multi-theme and light/dark mode support
-- **Accessible** - WCAG 2.1 Level AA compliant
+- **Accessible** - WCAG 2.2 Level AA compliant
 - **Framework Agnostic** - Tokens work everywhere
 - **Developer Friendly** - Clear naming, good DX
 - **Mobile-First** - Responsive design from smallest screens up

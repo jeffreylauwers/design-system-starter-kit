@@ -390,7 +390,7 @@ Components are designed to compose together:
 
 Accessibility is built-in from the start:
 
-- WCAG 2.1 Level AA compliant
+- WCAG 2.2 Level AA compliant
 - Proper semantic HTML
 - Keyboard navigation support
 - Focus management

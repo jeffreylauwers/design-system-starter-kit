@@ -172,4 +172,4 @@ Screenreadergebruikers kunnen via landmark-navigatie direct naar elk onderdeel s
 
 ### Skip-link (WCAG 2.4.1)
 
-De skip-link is verborgen totdat de gebruiker er met Tab op focust, waarna hij zichtbaar wordt. Bij activeren springt de focus naar `<main id="main-content">`. Dit voldoet aan WCAG 2.1 succescriterium 2.4.1 (Bypass Blocks, Level A).
+De skip-link is verborgen totdat de gebruiker er met Tab op focust, waarna hij zichtbaar wordt. Bij activeren springt de focus naar `<main id="main-content">`. Dit voldoet aan WCAG 2.2 succescriterium 2.4.1 (Bypass Blocks, Level A).

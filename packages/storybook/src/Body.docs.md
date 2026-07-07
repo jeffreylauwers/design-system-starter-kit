@@ -30,7 +30,7 @@ In Storybook is `dsn-body` als global decorator toegepast op alle stories en 'Vo
 
 ## Accessibility
 
-Body heeft geen directe invloed op toegankelijkheid. De tokens die het instelt: met name kleur en achtergrond: zijn afgestemd op een voldoende contrastverhouding volgens WCAG 2.1 AA.
+Body heeft geen directe invloed op toegankelijkheid. De tokens die het instelt: met name kleur en achtergrond: zijn afgestemd op een voldoende contrastverhouding volgens WCAG 2.2 AA.
 
 ## Design tokens
 

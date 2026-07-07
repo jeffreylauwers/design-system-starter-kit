@@ -2962,7 +2962,7 @@ const [isOpen, setIsOpen] = React.useState(false);
 - Standaard verborgen via `clip-path: inset(50%)`: blijft in de accessibility tree (screenreaders kunnen het vinden)
 - Zichtbaar bij `:focus-visible`: gepositioneerd in de hoek van het viewport met focus-stijlen
 - Z-index 600: boven modals (500), drawer (500) en backdrop (400)
-- Voldoet aan WCAG 2.1 succescriterium 2.4.1 (Bypass Blocks, Level A)
+- Voldoet aan WCAG 2.2 succescriterium 2.4.1 (Bypass Blocks, Level A)
 - `React.forwardRef<HTMLAnchorElement>`
 
 **CSS-klassen:**
