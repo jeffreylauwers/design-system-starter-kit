@@ -101,7 +101,7 @@ function App() {
 - **TypeScript Support** - All components are fully typed
 - **JSDoc Documentation** - Comprehensive documentation with usage examples
 - **ForwardRef** - All components support ref forwarding
-- **Accessibility** - WCAG 2.1 Level AA compliant
+- **Accessibility** - WCAG 2.2 Level AA compliant
 - **Composable** - Components are designed to work together
 - **Themeable** - Uses design tokens for easy customization
 

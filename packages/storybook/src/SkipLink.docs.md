@@ -6,7 +6,7 @@ Een toegankelijkheidskoppeling waarmee toetsenbordgebruikers herhalende navigati
 
 De SkipLink is het **eerste focusbare element** op elke pagina. Het is standaard onzichtbaar, maar wordt zichtbaar wanneer de gebruiker er met Tab op focust. Door op Enter te drukken springt de gebruiker direct naar de hoofdinhoud, zonder alle navigatie-elementen (header, menu, breadcrumbs) te hoeven doorlopen.
 
-De component voldoet aan WCAG 2.1 succescriterium **2.4.1 Bypass Blocks (Level A)**: pagina's moeten een mechanisme bieden waarmee blokken die op meerdere pagina's terugkeren overgeslagen kunnen worden.
+De component voldoet aan WCAG 2.2 succescriterium **2.4.1 Bypass Blocks (Level A)**: pagina's moeten een mechanisme bieden waarmee blokken die op meerdere pagina's terugkeren overgeslagen kunnen worden.
 
 <!-- VOORBEELD -->
 
