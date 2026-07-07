@@ -12,14 +12,15 @@ De Note component plaatst extra context of een tip op een opvallende maar niet-u
 
 - Aanvullende context geven bij een formulierveld, een processtap of een sectie.
 - Een tip, best practice of aanbeveling tonen die niet blokkerend is.
-- Een inhoudsopgave ("Op deze pagina") met ankerlinks tonen bovenaan een lange pagina (`as="nav"`).
 - Tangentieel aanvullende informatie naast de hoofdcontent plaatsen (`as="aside"`).
+- Een eigenstandige, benoemde navigatiesectie labelen (`as="nav"`) die geen inhoudsopgave is: gebruik voor een pagina-inhoudsopgave het **TableOfContents** component.
 
 ## Don't use when
 
 - Het bericht urgent is of na een gebruikersactie verschijnt: gebruik een **Alert**.
 - De informatie één zin is zonder visuele nadruk: gebruik een **Paragraph** of **FormFieldDescription**.
 - Je een interactief label wilt: gebruik een **StatusBadge** of **Button**.
+- Je een inhoudsopgave ("Op deze pagina") met ankerlinks naar de secties van de pagina wilt tonen: gebruik het **TableOfContents** component.
 
 ## Best practices
 
@@ -35,12 +36,12 @@ Een Note wordt bewust door een ontwerper of ontwikkelaar geplaatst. De variant k
 
 ### `as` prop
 
-| Waarde            | Wanneer                                                              |
-| ----------------- | -------------------------------------------------------------------- |
-| `'div'` (default) | Inline tip, aanvullende context: de meeste gevallen                  |
-| `'aside'`         | Echt tangentieel aanvullende content in een artikel of lang document |
-| `'nav'`           | Inhoudsopgave met ankerlinks (`"Op deze pagina"`)                    |
-| `'section'`       | Zelfstandige, benoemde inhoudssectie met heading als label           |
+| Waarde            | Wanneer                                                                                                |
+| ----------------- | ------------------------------------------------------------------------------------------------------ |
+| `'div'` (default) | Inline tip, aanvullende context: de meeste gevallen                                                    |
+| `'aside'`         | Echt tangentieel aanvullende content in een artikel of lang document                                   |
+| `'nav'`           | Eigenstandige navigatiesectie; voor een pagina-inhoudsopgave gebruik je **TableOfContents**, niet Note |
+| `'section'`       | Zelfstandige, benoemde inhoudssectie met heading als label                                             |
 
 ### Heading
 

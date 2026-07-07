@@ -256,19 +256,19 @@ describe('Note', () => {
   // Content examples
   // ===========================
 
-  it('renders inhoudsopgave patroon (as="nav")', () => {
+  it('renders eigenstandige navigatiesectie patroon (as="nav")', () => {
     render(
-      <Note as="nav" heading="Op deze pagina" headingLevel={2}>
+      <Note as="nav" heading="Gerelateerde pagina's" headingLevel={2}>
         <ul>
-          <li>Sectie 1</li>
-          <li>Sectie 2</li>
+          <li>Pagina 1</li>
+          <li>Pagina 2</li>
         </ul>
       </Note>
     );
     expect(
-      screen.getByRole('navigation', { name: 'Op deze pagina' })
+      screen.getByRole('navigation', { name: "Gerelateerde pagina's" })
     ).toBeInTheDocument();
-    expect(screen.getByText('Sectie 1')).toBeInTheDocument();
+    expect(screen.getByText('Pagina 1')).toBeInTheDocument();
   });
 
   it('renders aside patroon', () => {

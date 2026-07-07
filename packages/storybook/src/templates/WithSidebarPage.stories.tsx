@@ -19,6 +19,7 @@ import {
   SearchInput,
   SkipLink,
   Stack,
+  TableOfContents,
 } from '@dsn-starter-kit/components-react';
 import {
   logoSlot,
@@ -367,6 +368,63 @@ function MainContent({ pageName }: { pageName: string }) {
 }
 
 // =============================================================================
+// TABLE OF CONTENTS
+// Alleen H2's worden in de Table of Contents opgenomen.
+// =============================================================================
+
+const tocItems = [
+  { id: 'sectie-kenmerken', label: 'Kenmerken' },
+  { id: 'sectie-gebruik', label: 'Gebruik' },
+  { id: 'sectie-toegankelijkheid', label: 'Toegankelijkheid' },
+];
+
+// =============================================================================
+// PAGINA-INHOUD MET H2-SECTIES EN TABLE OF CONTENTS
+// =============================================================================
+
+function MainContentWithToc({ pageName }: { pageName: string }) {
+  return (
+    <Stack space="2xl">
+      <Heading level={1}>{pageName}</Heading>
+      <Paragraph variant="lead">
+        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut enim ad
+        minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip
+        ex ea commodo consequat.
+      </Paragraph>
+      <div className="dsn-sidebar-layout__toc-inline">
+        <TableOfContents appearance="framed" items={tocItems} />
+      </div>
+      <Heading level={2} id="sectie-kenmerken">
+        Kenmerken
+      </Heading>
+      <Paragraph>
+        Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod
+        tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim
+        veniam, quis nostrud exercitation ullamco laboris.
+      </Paragraph>
+      <Heading level={2} id="sectie-gebruik">
+        Gebruik
+      </Heading>
+      <Paragraph>
+        Duis aute irure dolor in reprehenderit in voluptate velit esse cillum
+        dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non
+        proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+      </Paragraph>
+      <Heading level={2} id="sectie-toegankelijkheid">
+        Toegankelijkheid
+      </Heading>
+      <Paragraph>
+        Sed ut perspiciatis unde omnis iste natus error sit voluptatem
+        accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab
+        illo inventore veritatis et quasi architecto beatae vitae dicta sunt
+        explicabo.
+      </Paragraph>
+      <GridContent />
+    </Stack>
+  );
+}
+
+// =============================================================================
 // META
 // =============================================================================
 
@@ -427,6 +485,51 @@ export const Default: Story = {
   ),
 };
 
+export const WithToc: Story = {
+  name: 'With Sidebar + Table of Contents',
+  render: () => (
+    <Body>
+      <SkipLink href="#main-content" />
+      <PageLayout>
+        <PageHeader
+          logoSlot={logoSlot}
+          primaryNavigation={<PrimaryNavigation currentPage="level-1a" />}
+          primaryNavigationLarge={
+            <PrimaryNavigationLarge currentPage="level-1a" />
+          }
+          secondaryNavigation={secondaryNavigation}
+          secondaryNavigationLarge={secondaryNavigationLarge}
+          searchSlot={searchSlot}
+        />
+        <PageBody>
+          <div className="dsn-sidebar-layout">
+            <aside className="dsn-sidebar-layout__sidebar">
+              <SidebarNavigation currentPage="level-1a" />
+            </aside>
+            <main
+              id="main-content"
+              tabIndex={-1}
+              className="dsn-sidebar-layout__main"
+              style={mainStyle}
+            >
+              <MainContentWithToc pageName="Level 1a" />
+            </main>
+            <aside className="dsn-sidebar-layout__toc">
+              <TableOfContents appearance="plain" items={tocItems} />
+            </aside>
+          </div>
+        </PageBody>
+        <PageFooter
+          slot1={footerSlot1}
+          slot2={footerSlot2}
+          slot3={footerSlot3}
+          slot4={footerSlot4}
+        />
+      </PageLayout>
+    </Body>
+  ),
+};
+
 export const FullWidth: Story = {
   name: 'Full Width + Sidebar',
   render: () => (
@@ -458,6 +561,53 @@ export const FullWidth: Story = {
             >
               <GridContent />
             </main>
+          </div>
+        </PageBody>
+        <PageFooter
+          slot1={footerSlot1}
+          slot2={footerSlot2}
+          slot3={footerSlot3}
+          slot4={footerSlot4}
+        />
+      </PageLayout>
+    </Body>
+  ),
+};
+
+export const FullWidthWithToc: Story = {
+  name: 'Full Width + Sidebar + Table of Contents',
+  render: () => (
+    <Body>
+      <SkipLink href="#main-content" />
+      <PageLayout
+        style={{ '--dsn-page-max-inline-size': 'none' } as React.CSSProperties}
+      >
+        <PageHeader
+          logoSlot={logoSlot}
+          primaryNavigation={<PrimaryNavigation currentPage="level-1a" />}
+          primaryNavigationLarge={
+            <PrimaryNavigationLarge currentPage="level-1a" />
+          }
+          secondaryNavigation={secondaryNavigation}
+          secondaryNavigationLarge={secondaryNavigationLarge}
+          searchSlot={searchSlot}
+        />
+        <PageBody>
+          <div className="dsn-sidebar-layout">
+            <aside className="dsn-sidebar-layout__sidebar">
+              <SidebarNavigation currentPage="level-1a" />
+            </aside>
+            <main
+              id="main-content"
+              tabIndex={-1}
+              className="dsn-sidebar-layout__main"
+              style={mainStyle}
+            >
+              <MainContentWithToc pageName="Level 1a" />
+            </main>
+            <aside className="dsn-sidebar-layout__toc">
+              <TableOfContents appearance="plain" items={tocItems} />
+            </aside>
           </div>
         </PageBody>
         <PageFooter

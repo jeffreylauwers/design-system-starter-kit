@@ -41,12 +41,12 @@
  *   ...
  * </aside>
  *
- * <!-- as="nav" — table of contents -->
+ * <!-- as="nav" — standalone navigation section (not a page table of contents: use TableOfContents) -->
  * <nav class="dsn-note" aria-labelledby="note-heading-id">
  *   <span class="dsn-note__icon" aria-hidden="true">
  *     <svg class="dsn-icon" aria-hidden="true"><!-- info-circle --></svg>
  *   </span>
- *   <strong class="dsn-heading dsn-heading--3 dsn-note__heading" id="note-heading-id">Op deze pagina</strong>
+ *   <strong class="dsn-heading dsn-heading--3 dsn-note__heading" id="note-heading-id">Related pages</strong>
  *   <nav class="dsn-note__content">
  *     <ul>...</ul>
  *   </nav>

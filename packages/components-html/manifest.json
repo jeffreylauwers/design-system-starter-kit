@@ -554,6 +554,20 @@
       "primaryProps": []
     },
     {
+      "name": "TableOfContents",
+      "cssBlock": "dsn-table-of-contents",
+      "category": "navigation",
+      "purpose": "In-page table of contents with anchor links to the H2 sections of the current page.",
+      "platforms": ["html-css", "react"],
+      "primaryProps": [
+        {
+          "name": "appearance",
+          "values": ["framed", "plain"],
+          "default": "framed"
+        }
+      ]
+    },
+    {
       "name": "TextInput",
       "cssBlock": "dsn-text-input",
       "category": "form-input",
