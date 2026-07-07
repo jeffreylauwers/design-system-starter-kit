@@ -32,9 +32,31 @@
         "$description": "Horizontale padding aan het einde (framed appearance)"
       },
       "heading-gap": {
-        "$value": "{dsn.space.row.md}",
+        "$value": "{dsn.space.row.xl}",
         "$type": "dimension",
         "$description": "Ruimte tussen de heading en de lijst met ankerlinks"
+      },
+      "plain": {
+        "padding-block": {
+          "$value": "{dsn.space.block.md}",
+          "$type": "dimension",
+          "$description": "Plain-appearance-specifiek: verticale padding zodat de heading en het eerste ankerlink-item uitlijnen met het eerste item van de Sidebar/Sub-navigatie"
+        },
+        "list-gap": {
+          "$value": "{dsn.space.row.lg}",
+          "$type": "dimension",
+          "$description": "Plain-appearance-specifiek: ruimte tussen de ankerlinks, ruimer dan de standaard lijst-gap zodat dit in balans is met de Sidebar/Sub-navigatie"
+        },
+        "link-text-decoration-line": {
+          "$value": "none",
+          "$type": "string",
+          "$description": "Plain-appearance-specifiek: tekstverfraaiing van de ankerlinks in rust — omgekeerd t.o.v. de standaard Link (geen onderstreping)"
+        },
+        "link-hover-text-decoration-line": {
+          "$value": "underline",
+          "$type": "string",
+          "$description": "Plain-appearance-specifiek: tekstverfraaiing van de ankerlinks op hover — omgekeerd t.o.v. de standaard Link (wel onderstreping)"
+        }
       }
     }
   }
