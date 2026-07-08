@@ -1,35 +1,55 @@
 /**
  * ActionGroup Component
  * Groups related actions (Buttons and Links) and manages their layout.
+ * Renders as a <ul> with each action in a <li>, with an aria-label
+ * describing the group — screenreaders announce the item count and the
+ * group's purpose (see issue #295).
  *
  * Usage:
  * <!-- Horizontal (default) — wraps automatically when viewport is too narrow -->
- * <div class="dsn-action-group">
- *   <button class="dsn-button dsn-button--strong dsn-button--size-default">
- *     <span class="dsn-button__label">Opslaan</span>
- *   </button>
- *   <button class="dsn-button dsn-button--subtle dsn-button--size-default">
- *     <span class="dsn-button__label">Annuleren</span>
- *   </button>
- * </div>
+ * <ul class="dsn-action-group" aria-label="Acties">
+ *   <li class="dsn-action-group__item">
+ *     <button class="dsn-button dsn-button--strong dsn-button--size-default">
+ *       <span class="dsn-button__label">Opslaan</span>
+ *     </button>
+ *   </li>
+ *   <li class="dsn-action-group__item">
+ *     <button class="dsn-button dsn-button--subtle dsn-button--size-default">
+ *       <span class="dsn-button__label">Annuleren</span>
+ *     </button>
+ *   </li>
+ * </ul>
  *
  * <!-- Horizontal with Link as soft exit -->
- * <div class="dsn-action-group">
- *   <button class="dsn-button dsn-button--strong dsn-button--size-default">
- *     <span class="dsn-button__label">Volgende stap</span>
- *   </button>
- *   <a class="dsn-link" href="/">Terug naar overzicht</a>
- * </div>
+ * <ul class="dsn-action-group" aria-label="Acties">
+ *   <li class="dsn-action-group__item">
+ *     <button class="dsn-button dsn-button--strong dsn-button--size-default">
+ *       <span class="dsn-button__label">Volgende stap</span>
+ *     </button>
+ *   </li>
+ *   <li class="dsn-action-group__item">
+ *     <a class="dsn-link" href="/">Terug naar overzicht</a>
+ *   </li>
+ * </ul>
  *
  * <!-- Vertical -->
- * <div class="dsn-action-group dsn-action-group--vertical">
- *   <button class="dsn-button dsn-button--strong dsn-button--size-default">
- *     <span class="dsn-button__label">Primaire actie</span>
- *   </button>
- *   <button class="dsn-button dsn-button--subtle dsn-button--size-default">
- *     <span class="dsn-button__label">Secundaire actie</span>
- *   </button>
- * </div>
+ * <ul class="dsn-action-group dsn-action-group--vertical" aria-label="Acties">
+ *   <li class="dsn-action-group__item">
+ *     <button class="dsn-button dsn-button--strong dsn-button--size-default">
+ *       <span class="dsn-button__label">Primaire actie</span>
+ *     </button>
+ *   </li>
+ *   <li class="dsn-action-group__item">
+ *     <button class="dsn-button dsn-button--subtle dsn-button--size-default">
+ *       <span class="dsn-button__label">Secundaire actie</span>
+ *     </button>
+ *   </li>
+ * </ul>
+ *
+ * <!-- Aangepast aria-label -->
+ * <ul class="dsn-action-group" aria-label="Formulierknoppen">
+ *   ...
+ * </ul>
  */
 
 /* ===========================
@@ -40,15 +60,27 @@
   flex-direction: row;
   flex-wrap: wrap;
   align-items: center;
+  list-style: none;
+  margin: 0;
+  padding: 0;
   column-gap: var(--dsn-action-group-column-gap);
   row-gap: var(--dsn-action-group-row-gap);
 }
 
+/* ===========================
+   Item — wraps each Button/Link
+   =========================== */
+.dsn-action-group__item {
+  display: flex;
+  align-items: center;
+}
+
 /* Link en LinkButton hebben align-self: flex-start om uitrekken te voorkomen
-   in verticale contexten — in een horizontale ActionGroup resetten we dit
-   zodat ze verticaal centreren met de Buttons naast hen. */
-.dsn-action-group:not(.dsn-action-group--vertical) > .dsn-link,
-.dsn-action-group:not(.dsn-action-group--vertical) > .dsn-link-button {
+   in verticale contexten — align-self op het element zelf overschrijft de
+   align-items van het omringende dsn-action-group__item, dus resetten we dit
+   hier zodat ze verticaal centreren met de Button ernaast. */
+.dsn-action-group__item > .dsn-link,
+.dsn-action-group__item > .dsn-link-button {
   align-self: center;
 }
 

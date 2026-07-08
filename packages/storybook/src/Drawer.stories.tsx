@@ -39,14 +39,18 @@ const meta: Meta<typeof Drawer> = {
     <p class="dsn-paragraph">${TEKST}</p>
   </div>
   <div class="dsn-drawer__footer">
-    <div class="dsn-action-group">
-      <button type="button" class="dsn-button dsn-button--strong dsn-button--size-medium" onclick="this.closest('dialog').close()">
-        <span class="dsn-button__label">Toepassen</span>
-      </button>
-      <button type="button" class="dsn-button dsn-button--default dsn-button--size-medium" onclick="this.closest('dialog').close()">
-        <span class="dsn-button__label">Annuleren</span>
-      </button>
-    </div>
+    <ul class="dsn-action-group" aria-label="Acties">
+      <li class="dsn-action-group__item">
+        <button type="button" class="dsn-button dsn-button--strong dsn-button--size-medium" onclick="this.closest('dialog').close()">
+          <span class="dsn-button__label">Toepassen</span>
+        </button>
+      </li>
+      <li class="dsn-action-group__item">
+        <button type="button" class="dsn-button dsn-button--default dsn-button--size-medium" onclick="this.closest('dialog').close()">
+          <span class="dsn-button__label">Annuleren</span>
+        </button>
+      </li>
+    </ul>
   </div>
 </dialog>`;
       },

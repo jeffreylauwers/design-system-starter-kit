@@ -17,14 +17,18 @@ export const [intro, rest] = docs.split('<!-- VOORBEELD -->');
 
 <CodeTabs
   of={ActionGroupStories.Default}
-  html={`<div class="dsn-action-group">
-  <button class="dsn-button dsn-button--strong dsn-button--size-default">
-    <span class="dsn-button__label">Opslaan</span>
-  </button>
-  <button class="dsn-button dsn-button--subtle dsn-button--size-default">
-    <span class="dsn-button__label">Annuleren</span>
-  </button>
-</div>`}
+  html={`<ul class="dsn-action-group" aria-label="Acties">
+  <li class="dsn-action-group__item">
+    <button class="dsn-button dsn-button--strong dsn-button--size-default">
+      <span class="dsn-button__label">Opslaan</span>
+    </button>
+  </li>
+  <li class="dsn-action-group__item">
+    <button class="dsn-button dsn-button--subtle dsn-button--size-default">
+      <span class="dsn-button__label">Annuleren</span>
+    </button>
+  </li>
+</ul>`}
 />
 
 <Controls of={ActionGroupStories.Default} />

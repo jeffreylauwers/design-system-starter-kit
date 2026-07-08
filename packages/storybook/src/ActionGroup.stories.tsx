@@ -18,14 +18,19 @@ const meta: Meta<typeof ActionGroup> = {
       htmlTemplate: (args: any) => {
         const modifier =
           args.direction === 'vertical' ? ' dsn-action-group--vertical' : '';
-        return `<div class="dsn-action-group${modifier}" role="group">
-  <button class="dsn-button dsn-button--strong dsn-button--size-default">
-    <span class="dsn-button__label">Opslaan</span>
-  </button>
-  <button class="dsn-button dsn-button--subtle dsn-button--size-default">
-    <span class="dsn-button__label">Annuleren</span>
-  </button>
-</div>`;
+        const ariaLabel = args['aria-label'] || 'Acties';
+        return `<ul class="dsn-action-group${modifier}" aria-label="${ariaLabel}">
+  <li class="dsn-action-group__item">
+    <button class="dsn-button dsn-button--strong dsn-button--size-default">
+      <span class="dsn-button__label">Opslaan</span>
+    </button>
+  </li>
+  <li class="dsn-action-group__item">
+    <button class="dsn-button dsn-button--subtle dsn-button--size-default">
+      <span class="dsn-button__label">Annuleren</span>
+    </button>
+  </li>
+</ul>`;
       },
     },
   },
@@ -34,10 +39,12 @@ const meta: Meta<typeof ActionGroup> = {
       control: { type: 'radio' },
       options: ['horizontal', 'vertical'],
     },
+    'aria-label': { control: 'text' },
     children: { control: false },
   },
   args: {
     direction: 'horizontal',
+    'aria-label': 'Acties',
     children: (
       <>
         <Button variant="strong">Opslaan</Button>
@@ -75,6 +82,13 @@ export const WithLink: Story = {
 export const Vertical: Story = {
   args: {
     direction: 'vertical',
+  },
+};
+
+export const CustomAriaLabel: Story = {
+  name: 'Custom aria-label',
+  args: {
+    'aria-label': 'Formulierknoppen',
   },
 };
 
