@@ -66,3 +66,11 @@ ActionGroup is een lay-outprimitief voor het groeperen van één of meer gerelat
 - Geef via `aria-label` altijd een groepsnaam mee die past bij de context; zonder eigen keuze valt ActionGroup terug op `"Acties"`.
 - De volgorde van children bepaalt de lees- en tabvolgorde: primaire actie altijd als eerste child.
 - Icon-only Buttons in een ActionGroup hebben hun label verborgen via `dsn-button__label` + `dsn-button--icon-only`: de ActionGroup zelf hoeft hier niets voor te doen.
+
+### Focusvolgorde bij verschillende schermweergaves
+
+De tabvolgorde van Buttons en Links in een ActionGroup moet altijd overeenkomen met de visuele volgorde, ongeacht de breedte of weergave van het scherm. ActionGroup gebruikt `flex-wrap` om acties automatisch te laten wrappen bij smalle viewports, maar wijzigt daarbij nooit de DOM-volgorde: de tabvolgorde blijft dus gelijk aan de volgorde van de children, op elke breakpoint.
+
+- Gebruik de CSS property `order` niet op children van ActionGroup: dit ontkoppelt de visuele volgorde van de DOM-volgorde en daarmee ook van de tabvolgorde.
+- Controleer bij een nieuwe of aangepaste ActionGroup met het toetsenbord (Tab) of de focusvolgorde overeenkomt met de visuele volgorde, op elke schermweergave (mobiel/tablet/desktop).
+- Gerelateerd WCAG-succescriterium: [2.4.3 Focus Order (Level A)](https://www.w3.org/WAI/WCAG22/quickref/#focus-order)
