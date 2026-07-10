@@ -1,6 +1,6 @@
 # Storybook Configuration
 
-**Last Updated:** March 15, 2026
+**Last Updated:** July 10, 2026
 
 Documentation for the Storybook setup, runtime theme switching, UI components, and documentation structure.
 
@@ -336,7 +336,9 @@ import { PreviewFrame, CodeTabs } from './components';
 
 ### `htmlTemplate` patroon
 
-Elke story file (behalve wrapper componenten) definieert een `htmlTemplate` functie in `parameters.dsn`. Deze functie genereert de HTML string op basis van de huidige args en wordt door de CodeTabs HTML tab aangeroepen via `transform`.
+Elke story file definieert een `htmlTemplate` functie in `parameters.dsn`. Deze functie genereert de HTML string op basis van de huidige args en wordt door de CodeTabs HTML tab aangeroepen via `transform`.
+
+De template **spiegelt de daadwerkelijke component-render** (elementen, klassen, attributen) en volgt de story-args zodat het codeblok live meebeweegt met de Controls. Zie [DR-2026-04](./decisions/DR-2026-04-htmltemplate-spiegelt-echte-render.md) voor de conventie en de toegestane bewuste afwijkingen (statische id's in plaats van `useId`-waarden, svg-inhoud als comment, didactische `onclick`/`popovertarget`-attributen, story-scaffolding buiten het codeblok).
 
 **Pattern:**
 
@@ -366,14 +368,7 @@ const meta: Meta<typeof Button> = {
 };
 ```
 
-**Uitzonderingen: geen `htmlTemplate`:**
-
-| Component      | Reden                                                             |
-| -------------- | ----------------------------------------------------------------- |
-| CheckboxGroup  | Wrapper component met custom render: toont statische `html` prop  |
-| RadioGroup     | Wrapper component met custom render: toont statische `html` prop  |
-| DateInputGroup | Wrapper component met custom render: toont statische `html` prop  |
-| UnorderedList  | Geen zinvolle Controls beschikbaar om HTML dynamisch te genereren |
+**Geen uitzonderingen meer:** sinds PR #310 hebben alle componenten een `htmlTemplate`, ook wrapper componenten zoals CheckboxGroup, RadioGroup en DateInputGroup. De statische `html` prop van CodeTabs bestaat nog als fallback, maar wordt in de praktijk niet meer gebruikt.
 
 ### TokenControls
 

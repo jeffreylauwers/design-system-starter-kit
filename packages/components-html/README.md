@@ -84,6 +84,7 @@ import '@dsn-starter-kit/components-html/modal-dialog';
 - `./form-field-status` — Form field status styles
 - `./grid` — Grid layout styles
 - `./heading` — Heading styles
+- `./heading-group` — Heading group styles
 - `./hero` — Hero section styles
 - `./icon` — Icon component styles
 - `./image` — Image component styles
@@ -103,6 +104,7 @@ import '@dsn-starter-kit/components-html/modal-dialog';
 - `./page-layout` — Page layout styles
 - `./paragraph` — Paragraph styles
 - `./popover` — Popover component styles
+- `./pre-heading` — Pre-heading styles
 - `./progress-bar` — Progress bar styles
 - `./skip-link` — Skip link styles
 - `./spinner` — Spinner component styles
@@ -110,6 +112,7 @@ import '@dsn-starter-kit/components-html/modal-dialog';
 - `./status-badge` — Status badge styles
 - `./summary-list` — Summary list styles
 - `./table` — Table component styles
+- `./table-of-contents` — Table of contents styles
 - `./text-area` — Text area styles
 - `./text-input` — Text input styles
 - `./unordered-list` — Unordered list styles
@@ -139,7 +142,8 @@ import '@dsn-starter-kit/components-html/modal-dialog';
 | FormFieldLabel        | `dsn-form-field-label`                                           | `./form-field-label`         |
 | FormFieldStatus       | `dsn-form-field-status`, `dsn-form-field-status--{variant}`      | `./form-field-status`        |
 | Grid                  | `dsn-grid`                                                       | `./grid`                     |
-| Heading               | `dsn-heading`, `dsn-heading--level-{level}`                      | `./heading`                  |
+| Heading               | `dsn-heading`, `dsn-heading--heading-{level}`                    | `./heading`                  |
+| HeadingGroup          | `dsn-heading-group`                                              | `./heading-group`            |
 | Hero                  | `dsn-hero`                                                       | `./hero`                     |
 | Icon                  | `dsn-icon`, `dsn-icon--size-{size}`                              | `./icon`                     |
 | Image                 | `dsn-image`                                                      | `./image`                    |
@@ -159,6 +163,7 @@ import '@dsn-starter-kit/components-html/modal-dialog';
 | PageLayout            | `dsn-page-layout`                                                | `./page-layout`              |
 | Paragraph             | `dsn-paragraph`, `dsn-paragraph--size-{size}`                    | `./paragraph`                |
 | Popover               | `dsn-popover`                                                    | `./popover`                  |
+| PreHeading            | `dsn-pre-heading`                                                | `./pre-heading`              |
 | ProgressBar           | `dsn-progress-bar`                                               | `./progress-bar`             |
 | SkipLink              | `dsn-skip-link`                                                  | `./skip-link`                |
 | Spinner               | `dsn-spinner`                                                    | `./spinner`                  |
@@ -166,6 +171,7 @@ import '@dsn-starter-kit/components-html/modal-dialog';
 | StatusBadge           | `dsn-status-badge`, `dsn-status-badge--{variant}`                | `./status-badge`             |
 | SummaryList           | `dsn-summary-list`                                               | `./summary-list`             |
 | Table                 | `dsn-table`                                                      | `./table`                    |
+| TableOfContents       | `dsn-table-of-contents`, `dsn-table-of-contents--plain`          | `./table-of-contents`        |
 | TextArea              | `dsn-text-area`, `dsn-text-area--size-{size}`                    | `./text-area`                |
 | TextInput             | `dsn-text-input`, `dsn-text-input--size-{size}`                  | `./text-input`               |
 | UnorderedList         | `dsn-unordered-list`                                             | `./unordered-list`           |

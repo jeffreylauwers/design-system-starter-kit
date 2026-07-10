@@ -11,6 +11,7 @@ Een decision record documenteert **waarom** iets is zoals het is — niet alleen
 | [DR-2026-01](DR-2026-01-button-label-span-over-aria-label.md)     | `dsn-button__label` span in plaats van `aria-label` op buttons       | Accepted |
 | [DR-2026-02](DR-2026-02-twee-lagenpatroon-html-css-plus-react.md) | HTML/CSS als bron van waarheid, React als wrapper                    | Accepted |
 | [DR-2026-03](DR-2026-03-breakpoints-als-reference-only-tokens.md) | Breakpoints als reference-only tokens, hardcoded in CSS @media rules | Accepted |
+| [DR-2026-04](DR-2026-04-htmltemplate-spiegelt-echte-render.md)    | Storybook `htmlTemplate` spiegelt de echte render en volgt de args   | Accepted |
 
 ## Een nieuw record toevoegen
 
