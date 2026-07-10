@@ -21,12 +21,12 @@ const meta: Meta<typeof ActionGroup> = {
         const ariaLabel = args['aria-label'] || 'Acties';
         return `<ul class="dsn-action-group${modifier}" aria-label="${ariaLabel}">
   <li class="dsn-action-group__item">
-    <button class="dsn-button dsn-button--strong dsn-button--size-default">
+    <button type="button" class="dsn-button dsn-button--strong dsn-button--size-default">
       <span class="dsn-button__label">Opslaan</span>
     </button>
   </li>
   <li class="dsn-action-group__item">
-    <button class="dsn-button dsn-button--subtle dsn-button--size-default">
+    <button type="button" class="dsn-button dsn-button--subtle dsn-button--size-default">
       <span class="dsn-button__label">Annuleren</span>
     </button>
   </li>

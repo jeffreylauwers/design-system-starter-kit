@@ -70,10 +70,7 @@ const meta: Meta<typeof Link> = {
     dsn: {
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
       htmlTemplate: (args: any) => {
-        const cls = [
-          'dsn-link',
-          args.size && args.size !== 'default' && `dsn-link--size-${args.size}`,
-        ]
+        const cls = ['dsn-link', `dsn-link--size-${args.size ?? 'default'}`]
           .filter(Boolean)
           .join(' ');
         const attrParts: string[] = [`class="${cls}"`];

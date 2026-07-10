@@ -24,7 +24,7 @@ const meta: Meta<typeof Drawer> = {
   parameters: {
     dsn: {
       htmlTemplate: () => {
-        return `<button type="button" class="dsn-button dsn-button--default dsn-button--size-medium" onclick="this.nextElementSibling.showModal()">
+        return `<button type="button" class="dsn-button dsn-button--default dsn-button--size-default" onclick="this.nextElementSibling.showModal()">
   <span class="dsn-button__label">Zijpaneel openen</span>
 </button>
 <dialog class="dsn-drawer dsn-drawer--side-right" aria-labelledby="drawer-title">
@@ -41,12 +41,12 @@ const meta: Meta<typeof Drawer> = {
   <div class="dsn-drawer__footer">
     <ul class="dsn-action-group" aria-label="Acties">
       <li class="dsn-action-group__item">
-        <button type="button" class="dsn-button dsn-button--strong dsn-button--size-medium" onclick="this.closest('dialog').close()">
+        <button type="button" class="dsn-button dsn-button--strong dsn-button--size-default" onclick="this.closest('dialog').close()">
           <span class="dsn-button__label">Toepassen</span>
         </button>
       </li>
       <li class="dsn-action-group__item">
-        <button type="button" class="dsn-button dsn-button--default dsn-button--size-medium" onclick="this.closest('dialog').close()">
+        <button type="button" class="dsn-button dsn-button--default dsn-button--size-default" onclick="this.closest('dialog').close()">
           <span class="dsn-button__label">Annuleren</span>
         </button>
       </li>

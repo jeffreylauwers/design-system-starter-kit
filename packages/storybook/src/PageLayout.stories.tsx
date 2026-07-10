@@ -231,10 +231,13 @@ const meta: Meta<typeof PageLayout> = {
         () => `<a href="#main-content" class="dsn-skip-link">Ga direct naar de hoofdinhoud</a>
 <div class="dsn-page-layout">
   <header class="dsn-page-header"><!-- PageHeader --></header>
+  <dialog class="dsn-drawer dsn-drawer--side-left"><!-- menu-drawer (onderdeel van PageHeader) --></dialog>
   <div class="dsn-page-body">
-    <main id="main-content" tabindex="-1">
-      <!-- paginainhoud -->
-    </main>
+    <div class="dsn-page-body__inner">
+      <main id="main-content" tabindex="-1">
+        <!-- paginainhoud -->
+      </main>
+    </div>
   </div>
   <footer class="dsn-page-footer"><!-- PageFooter --></footer>
 </div>`,

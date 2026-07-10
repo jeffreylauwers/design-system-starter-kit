@@ -13,23 +13,41 @@ const meta: Meta<typeof BreadcrumbNavigation> = {
   parameters: {
     docs: { page: DocsPage },
     dsn: {
-      htmlTemplate:
-        () => `<nav aria-label="Broodkruimelpad" class="dsn-breadcrumb-navigation">
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      htmlTemplate: (args: any) => {
+        const compact = args.variant === 'compact';
+        const cls = [
+          'dsn-breadcrumb-navigation',
+          compact && 'dsn-breadcrumb-navigation--compact',
+        ]
+          .filter(Boolean)
+          .join(' ');
+        const ariaLabel = args['aria-label'] ?? 'Broodkruimelpad';
+        const items = [
+          { href: '/home', label: 'Home' },
+          { href: '/supermarkt', label: 'Supermarkt' },
+          { href: '/fruit', label: 'Fruit' },
+          { href: '/appel', label: 'Appel', current: true },
+        ];
+        const itemsHtml = items
+          .map((item, index) => {
+            const isParentOfCurrent = compact && index === items.length - 2;
+            const itemCls = `dsn-breadcrumb-navigation__item${item.current ? ' dsn-breadcrumb-navigation__item--current' : ''}`;
+            const backIcon = isParentOfCurrent
+              ? `\n        <svg class="dsn-icon dsn-breadcrumb-navigation__back-icon" aria-hidden="true"><!-- arrow-left --></svg>`
+              : '';
+            return `    <li class="${itemCls}">
+      <a href="${item.href}" class="dsn-breadcrumb-navigation__link"${item.current ? ' aria-current="page"' : ''}>${backIcon}${backIcon ? `\n        ${item.label}\n      ` : item.label}</a>
+      <svg class="dsn-icon dsn-breadcrumb-navigation__separator" aria-hidden="true"><!-- chevron-right --></svg>
+    </li>`;
+          })
+          .join('\n');
+        return `<nav class="${cls}" aria-label="${ariaLabel}">
   <ol class="dsn-breadcrumb-navigation__list">
-    <li class="dsn-breadcrumb-navigation__item">
-      <a href="/home" class="dsn-breadcrumb-navigation__link">Home</a>
-      <svg class="dsn-icon dsn-breadcrumb-navigation__separator" aria-hidden="true"><!-- chevron-right --></svg>
-    </li>
-    <li class="dsn-breadcrumb-navigation__item">
-      <a href="/supermarkt" class="dsn-breadcrumb-navigation__link">Supermarkt</a>
-      <svg class="dsn-icon dsn-breadcrumb-navigation__separator" aria-hidden="true"><!-- chevron-right --></svg>
-    </li>
-    <li class="dsn-breadcrumb-navigation__item dsn-breadcrumb-navigation__item--current">
-      <a href="/fruit" class="dsn-breadcrumb-navigation__link" aria-current="page">Fruit</a>
-      <svg class="dsn-icon dsn-breadcrumb-navigation__separator" aria-hidden="true"><!-- chevron-right --></svg>
-    </li>
+${itemsHtml}
   </ol>
-</nav>`,
+</nav>`;
+      },
     },
   },
   argTypes: {

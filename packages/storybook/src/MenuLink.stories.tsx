@@ -106,7 +106,7 @@ const meta: Meta<typeof MenuLink> = {
             ? ` dsn-menu-link--level-${args.level}`
             : '';
         const ariaCurrent = args.current ? ' aria-current="page"' : '';
-        return `<ul style="list-style: none; margin: 0; padding: 0;">\n  <li class="dsn-menu-link${level}">\n    <a class="dsn-menu-link__link" href="/pagina"${ariaCurrent}>\n      <span class="dsn-menu-link__label">${args.children ?? 'Dashboard'}</span>\n    </a>\n  </li>\n</ul>`;
+        return `<ul style="list-style: none; margin: 0; padding: 0;">\n  <li class="dsn-menu-link${level}">\n    <a class="dsn-menu-link__link" href="${args.href ?? '/pagina'}"${ariaCurrent}>\n      <span class="dsn-menu-link__label">${args.children ?? 'Dashboard'}</span>\n    </a>\n  </li>\n</ul>`;
       },
     },
   },

@@ -17,6 +17,20 @@ const meta: Meta<typeof RadioGroup> = {
     docs: {
       page: DocsPage,
     },
+    dsn: {
+      htmlTemplate: () => {
+        const option = (value: string) => `  <label class="dsn-radio-option">
+    <div class="dsn-radio">
+      <input type="radio" class="dsn-radio__input" name="demo" value="${value}" />
+      <span class="dsn-radio__control" aria-hidden="true">
+        <span class="dsn-radio__inner-circle"></span>
+      </span>
+    </div>
+    <span class="dsn-option-label">Tekst</span>
+  </label>`;
+        return `<div class="dsn-radio-group">\n${[option('1'), option('2'), option('3')].join('\n')}\n</div>`;
+      },
+    },
   },
 };
 

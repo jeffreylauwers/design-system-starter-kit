@@ -17,6 +17,31 @@ const meta: Meta<typeof UnorderedList> = {
     docs: {
       page: DocsPage,
     },
+    dsn: {
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      htmlTemplate: (args: any) => {
+        // Serialiseer <li> elementen uit args.children (ook binnen fragments)
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        const items: any[] = [];
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        const collect = (n: any) => {
+          if (!n) return;
+          if (Array.isArray(n)) return n.forEach(collect);
+          if (n.type === 'li') items.push(n);
+          else if (n.props?.children) collect(n.props.children);
+        };
+        collect(args.children);
+        const itemsHtml = items.length
+          ? items
+              .map(
+                (li) =>
+                  `  <li>${typeof li.props.children === 'string' ? li.props.children : 'Tekst'}</li>`
+              )
+              .join('\n')
+          : '  <li>Tekst</li>';
+        return `<ul class="dsn-unordered-list">\n${itemsHtml}\n</ul>`;
+      },
+    },
   },
   args: {
     children: (

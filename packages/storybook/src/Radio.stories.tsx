@@ -24,6 +24,7 @@ const meta: Meta<typeof Radio> = {
           args.disabled && 'disabled',
           args.required && 'required',
           args.invalid && 'aria-invalid="true"',
+          args['aria-label'] && `aria-label="${args['aria-label']}"`,
         ]
           .filter(Boolean)
           .join(' ');

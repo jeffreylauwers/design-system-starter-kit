@@ -23,7 +23,7 @@ const meta: Meta<typeof Popover> = {
         return `<div class="dsn-popover-wrapper">
   <button
     type="button"
-    class="dsn-button dsn-button--subtle dsn-button--size-medium"
+    class="dsn-button dsn-button--subtle dsn-button--size-default"
     popovertarget="popover-demo"
     aria-expanded="false"
   >
@@ -36,18 +36,24 @@ const meta: Meta<typeof Popover> = {
     class="dsn-popover dsn-popover--placement-bottom"
     role="dialog"
     aria-modal="false"
+    tabindex="-1"
     aria-label="Acties"
   >
     <div class="dsn-popover__body">
-      <ul class="dsn-menu" role="list">
-        <li>
-          <button type="button" class="dsn-menu-button">
-            <span class="dsn-menu-item__label">Bewerken</span>
+      <ul class="dsn-menu">
+        <li class="dsn-menu-button">
+          <button type="button" class="dsn-menu-button__button">
+            <span class="dsn-menu-button__label">Bewerken</span>
           </button>
         </li>
-        <li>
-          <button type="button" class="dsn-menu-button">
-            <span class="dsn-menu-item__label">Verwijderen</span>
+        <li class="dsn-menu-button">
+          <button type="button" class="dsn-menu-button__button">
+            <span class="dsn-menu-button__label">Dupliceren</span>
+          </button>
+        </li>
+        <li class="dsn-menu-button">
+          <button type="button" class="dsn-menu-button__button">
+            <span class="dsn-menu-button__label">Verwijderen</span>
           </button>
         </li>
       </ul>

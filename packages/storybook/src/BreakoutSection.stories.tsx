@@ -15,8 +15,10 @@ const meta: Meta<typeof BreakoutSection> = {
     docs: { page: DocsPage },
     dsn: {
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      htmlTemplate: (_args: any) =>
-        `<section class="dsn-breakout-section" style="background-color: var(--dsn-color-accent-1-bg-default); padding-block: var(--dsn-space-block-4xl);">\n  <div style="max-inline-size: var(--dsn-page-max-inline-size); margin-inline: auto; padding-inline: var(--dsn-page-body-padding-inline);">\n    <!-- inhoud -->\n  </div>\n</section>`,
+      htmlTemplate: (args: any) => {
+        const as = args.as ?? 'section';
+        return `<${as} class="dsn-breakout-section" style="background-color: var(--dsn-color-accent-1-bg-default); padding-block: var(--dsn-space-block-4xl);">\n  <div style="max-inline-size: var(--dsn-page-max-inline-size); margin-inline: auto; padding-inline: var(--dsn-page-body-padding-inline);">\n    <h2 class="dsn-heading dsn-heading--heading-2">Uitgeslagen sectie</h2>\n    <p class="dsn-paragraph">Deze sectie breekt buiten de beperkte paginabreedte en beslaat de volledige viewportbreedte. De inhoud erin is herbeperkt via een inner wrapper.</p>\n  </div>\n</${as}>`;
+      },
     },
   },
   argTypes: {

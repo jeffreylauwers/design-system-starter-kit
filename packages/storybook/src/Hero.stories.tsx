@@ -20,8 +20,22 @@ const meta: Meta<typeof Hero> = {
     docs: { page: DocsPage },
     dsn: {
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      htmlTemplate: (_args: any) =>
-        `<section class="dsn-hero" aria-labelledby="hero-heading">\n  <div class="dsn-hero__inner">\n    <div class="dsn-hero__content">\n      <div class="dsn-stack dsn-stack--space-lg">\n        <h1 class="dsn-heading dsn-heading--level-1" id="hero-heading">Paginatitel</h1>\n        <p class="dsn-paragraph dsn-paragraph--lead">Introductietekst die de kernboodschap samenvat in één of twee zinnen.</p>\n        <ul class="dsn-action-group" aria-label="Acties">\n          <li class="dsn-action-group__item"><a href="/start" class="dsn-button dsn-button--strong dsn-button--size-large"><span class="dsn-button__label">Aan de slag</span></a></li>\n          <li class="dsn-action-group__item"><a href="/meer" class="dsn-button dsn-button--subtle dsn-button--size-large"><span class="dsn-button__label">Meer informatie</span></a></li>\n        </ul>\n      </div>\n    </div>\n  </div>\n</section>`,
+      htmlTemplate: (args: any) => {
+        const cls = [
+          'dsn-hero',
+          args.variant === 'inverse' && 'dsn-hero--inverse',
+          (args.variant === 'image' || args.variant === 'image-blend') &&
+            'dsn-hero--image',
+          args.variant === 'image-blend' && 'dsn-hero--image-blend',
+          args.align === 'center' && 'dsn-hero--align-center',
+        ]
+          .filter(Boolean)
+          .join(' ');
+        const styleAttr = args.backgroundImage
+          ? ` style="--dsn-hero-bg-image: url('${args.backgroundImage}')"`
+          : '';
+        return `<section class="${cls}" aria-labelledby="hero-heading"${styleAttr}>\n  <div class="dsn-hero__inner">\n    <div class="dsn-hero__content">\n      <div class="dsn-stack dsn-stack--space-lg">\n        <h1 class="dsn-heading dsn-heading--heading-1" id="hero-heading">Paginatitel</h1>\n        <p class="dsn-paragraph dsn-paragraph--lead">Introductietekst die de kernboodschap samenvat in één of twee zinnen.</p>\n        <ul class="dsn-action-group" aria-label="Acties">\n          <li class="dsn-action-group__item"><a href="#" class="dsn-button dsn-button--strong dsn-button--size-large dsn-button-link"><span class="dsn-button__label">Aan de slag</span></a></li>\n          <li class="dsn-action-group__item"><a href="#" class="dsn-button dsn-button--subtle dsn-button--size-large dsn-button-link"><span class="dsn-button__label">Meer informatie</span></a></li>\n        </ul>\n      </div>\n    </div>\n  </div>\n</section>`;
+      },
     },
   },
   argTypes: {

@@ -35,7 +35,7 @@ const meta: Meta<typeof SearchInput> = {
         ]
           .filter(Boolean)
           .join(' ');
-        return `<div class="${wrapperCls}">\n  <!-- search icon (decoratief) -->\n  <input type="search" class="dsn-text-input dsn-search-input"${attrs ? ' ' + attrs : ''} />\n</div>`;
+        return `<div class="${wrapperCls}">\n  <svg class="dsn-icon dsn-search-input__icon" aria-hidden="true"><!-- search --></svg>\n  <input type="search" class="dsn-text-input dsn-search-input"${attrs ? ' ' + attrs : ''} />\n</div>`;
       },
     },
   },

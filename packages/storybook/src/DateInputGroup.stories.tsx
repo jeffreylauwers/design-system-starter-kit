@@ -15,6 +15,33 @@ const meta: Meta<typeof DateInputGroup> = {
     docs: {
       page: DocsPage,
     },
+    dsn: {
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      htmlTemplate: (args: any) => {
+        const inputAttrs = [
+          args.invalid && 'aria-invalid="true"',
+          args.disabled && 'disabled',
+        ]
+          .filter(Boolean)
+          .join(' ');
+        const field = (
+          id: string,
+          label: string,
+          width: string,
+          placeholder: string,
+          min: number,
+          max: number
+        ) => `  <div class="dsn-date-input-group__field">
+    <label class="dsn-date-input-group__label" for="${id}">${label}</label>
+    <input type="text" inputmode="numeric" pattern="[0-9]*" class="dsn-text-input dsn-text-input--width-${width}" id="${id}" value="" placeholder="${placeholder}" min="${min}" max="${max}" autocomplete="off"${inputAttrs ? ' ' + inputAttrs : ''} />
+  </div>`;
+        return `<div class="dsn-date-input-group">
+${field('datum-dag', 'Dag', 'xs', 'DD', 1, 31)}
+${field('datum-maand', 'Maand', 'xs', 'MM', 1, 12)}
+${field('datum-jaar', 'Jaar', 'sm', 'JJJJ', 1, 9999)}
+</div>`;
+      },
+    },
   },
   argTypes: {
     invalid: { control: 'boolean' },

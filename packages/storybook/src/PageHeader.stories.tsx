@@ -571,38 +571,131 @@ const meta: Meta<typeof PageHeader> = {
     dsn: {
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
       htmlTemplate: (_args: any) => {
+        const logo = `<div class="dsn-page-header__logo">
+        <a href="/">
+          <svg class="dsn-logo" aria-hidden="true"><!-- logo --></svg>
+          <span class="dsn-visually-hidden">Starter Kit — terug naar homepage</span>
+        </a>
+      </div>`;
+        const searchBox = `<div class="dsn-search-input-wrapper">
+          <svg class="dsn-icon dsn-search-input__icon" aria-hidden="true"><!-- search --></svg>
+          <input type="search" class="dsn-text-input dsn-search-input" placeholder="Zoeken…" aria-label="Zoekopdracht" />
+        </div>
+        <button type="button" class="dsn-button dsn-button--strong dsn-button--size-default">
+          <span class="dsn-button__label">Zoeken</span>
+        </button>`;
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        const menuItems = (items: any[], indent: string) =>
+          items
+            .map((item) => {
+              const expand = item.subItems
+                ? `
+${indent}  <span class="dsn-menu-link__divider" aria-hidden="true"></span>
+${indent}  <button type="button" class="dsn-button dsn-button--subtle dsn-button--size-small dsn-button--icon-only dsn-menu-link__expand-button" aria-expanded="false">
+${indent}    <svg class="dsn-icon" aria-hidden="true"><!-- chevron-down --></svg>
+${indent}    <span class="dsn-button__label">Uitklappen<span class="dsn-visually-hidden"> voor ${item.label}</span></span>
+${indent}  </button>`
+                : '';
+              return `${indent}<li class="dsn-menu-link">
+${indent}  <a class="dsn-menu-link__link" href="${item.href}"${item.current ? ' aria-current="page"' : ''}>
+${indent}    <span class="dsn-menu-link__label">${item.label}</span>
+${indent}  </a>${expand}
+${indent}</li>`;
+            })
+            .join('\n');
+        const primaryItems = [
+          { href: '/', label: 'Homepage' },
+          { href: '/level-1a', label: 'Level 1a', current: true },
+          { href: '/level-1b', label: 'Level 1b' },
+          { href: '/level-1c', label: 'Level 1c' },
+          { href: '/level-1d', label: 'Level 1d' },
+        ];
+        const drawerItems = [
+          { href: '/level-1a', label: 'Homepage', current: true },
+          { href: '/level-1b', label: 'Level 1b', subItems: true },
+          { href: '/level-1c', label: 'Level 1c' },
+          { href: '/level-1d', label: 'Level 1d' },
+        ];
+        const secondaryItems = [
+          { href: '/english', label: 'English' },
+          { href: '/mijn-omgeving', label: 'Mijn omgeving' },
+        ];
         return `<header class="dsn-page-header">
-  <div class="dsn-page-header__inner">
-    <div class="dsn-page-header__start">
-      <button type="button" class="dsn-button dsn-button--subtle">
-        <svg class="dsn-icon" aria-hidden="true"><!-- menu icon --></svg>
-        <span class="dsn-button__label">Menu</span>
-      </button>
-    </div>
-    <div class="dsn-page-header__logo">
-      <a href="/">
-        <svg class="dsn-logo" aria-hidden="true"><!-- logo --></svg>
-        <span class="dsn-visually-hidden">Naam organisatie — terug naar homepage</span>
-      </a>
-    </div>
-    <div class="dsn-page-header__end">
-      <button type="button" class="dsn-button dsn-button--subtle" aria-expanded="false" aria-controls="search-panel">
-        <svg class="dsn-icon" aria-hidden="true"><!-- search icon --></svg>
-        <span class="dsn-button__label">Zoeken</span>
-      </button>
-    </div>
-  </div>
-  <div class="dsn-page-header__search-panel" id="search-panel" hidden>
-    <div class="dsn-page-header__search-inner">
-      <div class="dsn-search-input-wrapper">
-        <input type="search" class="dsn-text-input dsn-search-input" placeholder="Zoeken…" aria-label="Zoekopdracht" />
+  <!-- Kleine schermen: menu-knop, logo en zoekknop -->
+  <div class="dsn-page-header__small-layout">
+    <div class="dsn-page-header__inner">
+      <div class="dsn-page-header__start">
+        <button type="button" class="dsn-button dsn-button--subtle dsn-button--size-default">
+          <svg class="dsn-icon" aria-hidden="true"><!-- menu --></svg>
+          <span class="dsn-button__label">Menu</span>
+        </button>
       </div>
-      <button type="button" class="dsn-button dsn-button--strong">
-        <span class="dsn-button__label">Zoeken</span>
-      </button>
+      ${logo}
+      <div class="dsn-page-header__end">
+        <button type="button" class="dsn-button dsn-button--subtle dsn-button--size-default" aria-expanded="false" aria-controls="search-panel">
+          <svg class="dsn-icon" aria-hidden="true"><!-- search --></svg>
+          <span class="dsn-button__label">Zoeken</span>
+        </button>
+      </div>
+    </div>
+    <div id="search-panel" class="dsn-page-header__search-panel" hidden>
+      <div class="dsn-page-header__search-inner">
+        ${searchBox}
+      </div>
     </div>
   </div>
-</header>`;
+  <!-- Grote schermen: masthead met logo, service-navigatie en zoekveld + navbar -->
+  <div class="dsn-page-header__large-layout">
+    <div class="dsn-page-header__masthead">
+      <div class="dsn-page-header__masthead-inner">
+        ${logo}
+        <div class="dsn-page-header__secondary-nav">
+          <nav aria-label="Service-navigatie">
+            <ul class="dsn-menu dsn-menu--horizontal">
+${menuItems(secondaryItems, '              ')}
+            </ul>
+          </nav>
+          <div class="dsn-page-header__searchbox">
+            ${searchBox}
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="dsn-page-header__navbar">
+      <div class="dsn-page-header__navbar-inner">
+        <nav aria-label="Hoofd-navigatie">
+          <ul class="dsn-menu dsn-menu--horizontal">
+${menuItems(primaryItems, '            ')}
+          </ul>
+        </nav>
+      </div>
+    </div>
+  </div>
+</header>
+<!-- Drawer met het menu voor kleine schermen -->
+<dialog class="dsn-drawer dsn-drawer--side-left" aria-labelledby="drawer-title">
+  <div class="dsn-drawer__header">
+    <h2 id="drawer-title" class="dsn-drawer-heading">Menu</h2>
+    <button type="button" class="dsn-button dsn-button--subtle dsn-button--size-small dsn-button--icon-only">
+      <svg class="dsn-icon" aria-hidden="true"><!-- x --></svg>
+      <span class="dsn-button__label">Sluiten</span>
+    </button>
+  </div>
+  <div class="dsn-drawer__body">
+    <div class="dsn-stack dsn-stack--space-5xl">
+      <nav aria-label="Hoofd-navigatie">
+        <ul class="dsn-menu">
+${menuItems(drawerItems, '          ')}
+        </ul>
+      </nav>
+      <nav aria-label="Service-navigatie">
+        <ul class="dsn-menu">
+${menuItems(secondaryItems, '          ')}
+        </ul>
+      </nav>
+    </div>
+  </div>
+</dialog>`;
       },
     },
   },
