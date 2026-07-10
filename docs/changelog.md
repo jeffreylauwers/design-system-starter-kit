@@ -6,6 +6,50 @@ All notable changes to this project are documented in this file.
 
 ---
 
+## Version 1.0.6 (July 10, 2026)
+
+### TableOfContents: nieuw component
+
+#### Added
+
+- **TableOfContents** (PR [#305](https://github.com/jeffreylauwers/design-system-starter-kit/pull/305)): inhoudsopgave met ankerlinks naar de H2-secties van een pagina (HTML/CSS + React).
+  - `appearance="framed"` (default): accent-1 achtergrond + linkerborder, heading als `heading-3`, voor gebruik inline in de content-flow
+  - `appearance="plain"`: geen kader, heading als `heading-5`, voor gebruik in een losstaande kolom naast de hoofdinhoud
+  - Vervangt het `Note as="nav"` patroon voor inhoudsopgaven; de docs, stories en tests van `Note` verwijzen nu naar `TableOfContents`
+  - Nieuw token-bestand `tokens/components/table-of-contents.json` (accent-1 gebaseerd)
+- Twee nieuwe Detailpage-templates in `WithSidebarPage.stories.tsx`: **With Sidebar + Table of Contents** en **Full Width + Sidebar + Table of Contents**. De inhoudsopgave wordt twee keer gerenderd (framed inline, plain in de rechterkolom) en per breakpoint (80em) via CSS `display: none` getoond, zonder dubbele content voor schermlezers.
+
+#### Fixed
+
+- **TableOfContents verfijning** (PR [#306](https://github.com/jeffreylauwers/design-system-starter-kit/pull/306)): `heading-gap` token toegevoegd voor de ruimte tussen heading en lijst; Plain-appearance ankerlinks tonen geen onderstreping in rust en wel op hover (omgekeerd t.o.v. de standaard Link), met eigen `plain-*` tokens
+
+### Storybook: codeblokken in lijn met echte component-markup
+
+#### Fixed
+
+- **HTML/CSS-codeblokken kloppen nu met de daadwerkelijke render** (PR [#310](https://github.com/jeffreylauwers/design-system-starter-kit/pull/310)): audit over alle 70 componenten waarbij de `htmlTemplate`-output automatisch is vergeleken met de echte React-render. 28 templates gecorrigeerd, onder andere:
+  - Alert/Note: `<strong>` vervangen door `<h2>`/`<h3>` (volgt de `headingLevel`-prop), heading-klasse `dsn-heading--heading-3`, icoon kreeg `dsn-icon--xl`
+  - Niet-bestaande klassen gecorrigeerd: `dsn-button--size-medium` naar `dsn-button--size-default` (Drawer, ModalDialog, Popover), `dsn-heading--level-1` naar `dsn-heading--heading-1` (Hero)
+  - Ontbrekende markup toegevoegd: `type="button"` (ActionGroup), `dsn-link--size-default` (Link), `dsn-page-body__inner` (PageBody, PageLayout), LinkButton-markup voor de verwijder-knop in File, volledige small/large-layout-structuur in PageHeader
+  - Losse icoon-comments vervangen door echte `<svg class="dsn-icon">` elementen met de icoonnaam als comment
+- **Codeblokken bewegen live mee met Controls**: templates volgen nu de story-args (o.a. Select-opties en lijst-items geserialiseerd uit `children`, Hero-variant, MenuLink-href). Zes componenten zonder `htmlTemplate` kregen er een: CheckboxGroup, DateInputGroup, PreHeading, RadioGroup, SummaryList, UnorderedList
+
+### Documentatie
+
+#### Added
+
+- Accessibility-richtlijn over focusvolgorde bij verschillende schermweergaves in de ActionGroup-docs (issue [#296](https://github.com/jeffreylauwers/design-system-starter-kit/issues/296), PR [#309](https://github.com/jeffreylauwers/design-system-starter-kit/pull/309))
+- Accessibility-richtlijn over focusvolgorde en CSS `order` in de Grid-docs (PR [#307](https://github.com/jeffreylauwers/design-system-starter-kit/pull/307))
+- Formulierpatronen-richtlijnen: `docs/07-form-flow-patterns.md` (PR [#292](https://github.com/jeffreylauwers/design-system-starter-kit/pull/292))
+- Consumer-gerichte getting started gids (PR [#291](https://github.com/jeffreylauwers/design-system-starter-kit/pull/291))
+
+#### Changed
+
+- Alle WCAG-verwijzingen bijgewerkt van 2.1 naar 2.2 (PR [#304](https://github.com/jeffreylauwers/design-system-starter-kit/pull/304))
+- Token descriptions thema-onafhankelijk gemaakt en volledig Nederlands (PR [#290](https://github.com/jeffreylauwers/design-system-starter-kit/pull/290))
+
+---
+
 ## Version 1.0.5 (July 7, 2026)
 
 ### ActionGroup — accessibiliteit

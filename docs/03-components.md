@@ -1,6 +1,6 @@
 # Components
 
-**Last Updated:** May 30, 2026
+**Last Updated:** July 10, 2026
 
 Complete component specifications and guidelines for the Design System Starter Kit.
 
@@ -2200,7 +2200,7 @@ const [isOpen, setIsOpen] = React.useState(false);
 
 ## Navigation Components
 
-**Status:** Complete (HTML/CSS, React): 6 components total
+**Status:** Complete (HTML/CSS, React): 7 components total
 
 ### Menu
 
@@ -2863,6 +2863,105 @@ const [isOpen, setIsOpen] = React.useState(false);
 ```
 
 **Tests:** React (11 tests)
+
+---
+
+### TableOfContents
+
+**Status:** Complete (HTML/CSS, React)
+
+**Location:** `packages/components-{html|react}/src/TableOfContents/`
+
+**Tokens:** `tokens/components/table-of-contents.json`
+
+**Props:** `heading` (default `'Op deze pagina'`), `headingLevel` (default `2`), `appearance` (`'framed'` | `'plain'`, default `'framed'`), `items` (`{ id, label }[]`), `className` + alle native `<nav>` attributen
+
+**Features:**
+
+- Inhoudsopgave met ankerlinks naar de H2-secties op de huidige pagina: alleen H2's horen in `items`
+- `appearance="framed"` (standaard): accent-1 achtergrond + linkerborder, heading als `heading-3`, voor gebruik inline in de content-flow (bijv. onder de lead paragraph)
+- `appearance="plain"`: geen kader, heading als `heading-5`, ankerlinks zonder onderstreping in rust (onderstreping op hover), voor gebruik in een losstaande kolom naast de hoofdinhoud, uitgelijnd met de Sidebar/Sub-navigatie
+- Rendert `<nav aria-labelledby>` gekoppeld aan de heading (auto-gegenereerd id via `useId`)
+- Componeert intern `Heading`, `UnorderedList` en `Link`
+
+**CSS-klassen:**
+
+| Klasse                           | Element   | Beschrijving                          |
+| -------------------------------- | --------- | ------------------------------------- |
+| `dsn-table-of-contents`          | `<nav>`   | Basiscomponent: altijd aanwezig       |
+| `dsn-table-of-contents--plain`   | `<nav>`   | Plain appearance: geen kader          |
+| `dsn-table-of-contents__heading` | `<h2-h6>` | Heading boven de lijst met ankerlinks |
+
+**Design tokens:**
+
+| Token                                                           | Waarde                      | Beschrijving                                                  |
+| --------------------------------------------------------------- | --------------------------- | ------------------------------------------------------------- |
+| `--dsn-table-of-contents-border-inline-start-width`             | `{dsn.border.width.medium}` | Breedte van de linkerborder (framed)                          |
+| `--dsn-table-of-contents-border-inline-start-color`             | accent-1 border             | Kleur van de linkerborder (framed)                            |
+| `--dsn-table-of-contents-background-color`                      | accent-1 bg                 | Achtergrondkleur (framed)                                     |
+| `--dsn-table-of-contents-padding-block`                         | `{dsn.space.block.xl}`      | Verticale padding (framed)                                    |
+| `--dsn-table-of-contents-padding-inline-start`                  | `{dsn.space.inline.xl}`     | Horizontale padding aan het begin, na de border (framed)      |
+| `--dsn-table-of-contents-padding-inline-end`                    | `{dsn.space.inline.xl}`     | Horizontale padding aan het einde (framed)                    |
+| `--dsn-table-of-contents-heading-gap`                           | `{dsn.space.row.xl}`        | Ruimte tussen de heading en de lijst met ankerlinks           |
+| `--dsn-table-of-contents-plain-padding-block`                   | `{dsn.space.block.md}`      | Plain: verticale padding, lijnt uit met Sidebar/Sub-navigatie |
+| `--dsn-table-of-contents-plain-list-gap`                        | `{dsn.space.row.lg}`        | Plain: ruimte tussen de ankerlinks                            |
+| `--dsn-table-of-contents-plain-link-text-decoration-line`       | `none`                      | Plain: ankerlinks zonder onderstreping in rust                |
+| `--dsn-table-of-contents-plain-link-hover-text-decoration-line` | `underline`                 | Plain: onderstreping op hover                                 |
+
+**Usage:**
+
+```html
+<!-- HTML/CSS: framed (default) -->
+<nav class="dsn-table-of-contents" aria-labelledby="toc-heading">
+  <h2
+    class="dsn-heading dsn-heading--heading-3 dsn-table-of-contents__heading"
+    id="toc-heading"
+  >
+    Op deze pagina
+  </h2>
+  <ul class="dsn-unordered-list">
+    <li>
+      <a class="dsn-link dsn-link--size-default" href="#sectie-1">Sectie 1</a>
+    </li>
+    <li>
+      <a class="dsn-link dsn-link--size-default" href="#sectie-2">Sectie 2</a>
+    </li>
+  </ul>
+</nav>
+
+<!-- HTML/CSS: plain -->
+<nav
+  class="dsn-table-of-contents dsn-table-of-contents--plain"
+  aria-labelledby="toc-heading-plain"
+>
+  <h2
+    class="dsn-heading dsn-heading--heading-5 dsn-table-of-contents__heading"
+    id="toc-heading-plain"
+  >
+    Op deze pagina
+  </h2>
+  <ul class="dsn-unordered-list">
+    <li>
+      <a class="dsn-link dsn-link--size-default" href="#sectie-1">Sectie 1</a>
+    </li>
+  </ul>
+</nav>
+```
+
+```tsx
+// React: framed (default): inline in de content-flow
+<TableOfContents
+  items={[
+    { id: 'sectie-1', label: 'Sectie 1' },
+    { id: 'sectie-2', label: 'Sectie 2' },
+  ]}
+/>
+
+// React: plain: in een losstaande kolom naast de hoofdinhoud
+<TableOfContents appearance="plain" items={items} />
+```
+
+**Tests:** React (15 tests)
 
 ---
 
