@@ -24,13 +24,12 @@ const meta: Meta<typeof Checkbox> = {
           args.disabled && 'disabled',
           args.required && 'required',
           args.invalid && 'aria-invalid="true"',
+          args['aria-label'] && `aria-label="${args['aria-label']}"`,
         ]
           .filter(Boolean)
           .join(' ');
-        const iconComment = args.indeterminate
-          ? '<!-- minus icon -->'
-          : '<!-- check icon -->';
-        return `<div class="dsn-checkbox">\n  <input type="checkbox" class="${inputCls}"${inputAttrs ? ' ' + inputAttrs : ''} />\n  <span class="dsn-checkbox__control" aria-hidden="true">\n    ${iconComment}\n  </span>\n</div>`;
+        const iconName = args.indeterminate ? 'minus' : 'check';
+        return `<div class="dsn-checkbox">\n  <input type="checkbox" class="${inputCls}"${inputAttrs ? ' ' + inputAttrs : ''} />\n  <span class="dsn-checkbox__control" aria-hidden="true">\n    <svg class="dsn-icon dsn-checkbox__icon" aria-hidden="true"><!-- ${iconName} --></svg>\n  </span>\n</div>`;
       },
     },
   },

@@ -13,7 +13,7 @@ const meta: Meta<typeof Grid> = {
         const cls = ['dsn-grid', args.contained && 'dsn-grid--contained']
           .filter(Boolean)
           .join(' ');
-        return `<div class="${cls}">\n  <div class="dsn-col-8 dsn-container">Hoofdinhoud</div>\n  <div class="dsn-col-4 dsn-container">Sidebar</div>\n</div>`;
+        return `<div class="${cls}">\n  <div class="dsn-col-8">\n    <div class="dsn-container">dsn-col-8 — Hoofdinhoud</div>\n  </div>\n  <div class="dsn-col-4">\n    <div class="dsn-container">dsn-col-4 — Sidebar</div>\n  </div>\n</div>`;
       },
     },
   },

@@ -44,7 +44,7 @@ const meta: Meta<typeof File> = {
         const meta = metaParts.join(' · ');
 
         const nameTag = hasHref ? 'a' : 'span';
-        const nameClass = `dsn-file__name${isStretchedLink ? ' dsn-file__name--stretched' : ''}`;
+        const nameClass = `dsn-file__name${hasHref ? ' dsn-link' : ''}${isStretchedLink ? ' dsn-file__name--stretched' : ''}`;
         const hrefAttr = hasHref ? ` href="${args.href}"` : '';
         const targetAttr = hasHref
           ? ' target="_blank" rel="noopener noreferrer"'
@@ -75,12 +75,9 @@ const meta: Meta<typeof File> = {
 
         const deleteEl =
           !isLoading && !isUploaded && hasDelete
-            ? `<button type="button" class="dsn-button dsn-button--subtle dsn-button--size-small">
+            ? `<button type="button" class="dsn-link dsn-link-button dsn-link--size-default">
       <svg class="dsn-icon" aria-hidden="true"><!-- trash.svg --></svg>
-      <span class="dsn-button__label">
-        Verwijder
-        <span class="dsn-visually-hidden"> ${fileName}</span>
-      </span>
+      ${args.deleteLabel ?? 'Verwijder'}<span class="dsn-visually-hidden"> ${fileName}</span>
     </button>`
             : '';
 
@@ -95,9 +92,13 @@ const meta: Meta<typeof File> = {
 
         const actionsContent = spinnerEl || checkEl || deleteEl || ctaEl || '';
 
+        const mediaEl = args.previewSrc
+          ? `<img class="dsn-file__preview" src="${args.previewSrc}" alt="" />`
+          : `<svg class="dsn-icon" aria-hidden="true"><!-- ${args.mediaType === 'image' ? 'photo' : 'file-description'}.svg --></svg>`;
+
         return `<div class="${rootClass}">
   <div class="dsn-file__media" aria-hidden="true">
-    <svg class="dsn-icon" aria-hidden="true"><!-- file-description.svg --></svg>
+    ${mediaEl}
   </div>
   <div class="dsn-file__content">
     ${nameEl}

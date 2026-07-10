@@ -22,7 +22,9 @@ const meta: Meta<typeof FormFieldErrorMessage> = {
       htmlTemplate: (args: any) => {
         const showIcon = args.showIcon !== false;
         const idAttr = args.id ? ` id="${args.id}"` : '';
-        const icon = showIcon ? '<!-- exclamation-circle icon -->\n  ' : '';
+        const icon = showIcon
+          ? '<svg class="dsn-icon" aria-hidden="true"><!-- exclamation-circle --></svg>\n  '
+          : '';
         return `<p class="dsn-form-field-error-message"${idAttr}>\n  ${icon}${args.children ?? 'Tekst'}\n</p>`;
       },
     },

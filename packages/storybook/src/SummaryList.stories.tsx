@@ -17,6 +17,31 @@ const meta: Meta<typeof SummaryList> = {
   component: SummaryList,
   parameters: {
     docs: { page: DocsPage },
+    dsn: {
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      htmlTemplate: (args: any) => {
+        const cls = [
+          'dsn-summary-list',
+          args.noBorder && 'dsn-summary-list--no-border',
+        ]
+          .filter(Boolean)
+          .join(' ');
+        const row = (
+          key: string,
+          value: string
+        ) => `  <div class="dsn-summary-list__row">
+    <dt class="dsn-summary-list__key">${key}</dt>
+    <dd class="dsn-summary-list__value">${value}</dd>
+  </div>`;
+        return `<dl class="${cls}">
+${[
+  row('Naam', 'Jeroen van Drouwen'),
+  row('Geboortedatum', '9 december 1984'),
+  row('Adres', 'Laan der Voorbeelden, 1440 VP, Westerhaar-Vriezenveensewijk'),
+].join('\n')}
+</dl>`;
+      },
+    },
   },
   argTypes: {
     noBorder: { control: 'boolean' },

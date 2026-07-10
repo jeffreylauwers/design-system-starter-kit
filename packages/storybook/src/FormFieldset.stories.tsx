@@ -37,8 +37,19 @@ const meta: Meta<typeof FormFieldset> = {
         if (args.description)
           html += `  <p class="dsn-form-field-description">${args.description}</p>\n`;
         if (args.error)
-          html += `  <p class="dsn-form-field-error-message"><!-- exclamation-circle icon -->${args.error}</p>\n`;
-        html += `  <div class="dsn-checkbox-group">\n    <!-- CheckboxOption / RadioOption componenten -->\n  </div>\n`;
+          html += `  <p class="dsn-form-field-error-message"><svg class="dsn-icon" aria-hidden="true"><!-- exclamation-circle --></svg>${args.error}</p>\n`;
+        const option = (
+          value: string
+        ) => `    <label class="dsn-checkbox-option">
+      <div class="dsn-checkbox">
+        <input type="checkbox" class="dsn-checkbox__input" value="${value}" />
+        <span class="dsn-checkbox__control" aria-hidden="true">
+          <svg class="dsn-icon dsn-checkbox__icon" aria-hidden="true"><!-- check --></svg>
+        </span>
+      </div>
+      <span class="dsn-option-label">Tekst</span>
+    </label>`;
+        html += `  <div class="dsn-checkbox-group">\n${[option('1'), option('2'), option('3')].join('\n')}\n  </div>\n`;
         if (args.status) {
           const variantCls =
             args.statusVariant && args.statusVariant !== 'default'

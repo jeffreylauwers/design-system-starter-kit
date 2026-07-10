@@ -14,7 +14,7 @@ const meta: Meta<typeof Stack> = {
         const cls = ['dsn-stack', space !== 'md' && `dsn-stack--space-${space}`]
           .filter(Boolean)
           .join(' ');
-        return `<div class="${cls}">\n  <div class="dsn-container">...</div>\n  <div class="dsn-container">...</div>\n  <div class="dsn-container">...</div>\n</div>`;
+        return `<div class="${cls}">\n  <div class="dsn-container">Inhoud</div>\n  <div class="dsn-container">Inhoud</div>\n  <div class="dsn-container">Inhoud</div>\n</div>`;
       },
     },
   },

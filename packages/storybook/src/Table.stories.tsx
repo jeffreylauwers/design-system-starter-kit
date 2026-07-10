@@ -47,7 +47,7 @@ const meta: Meta<typeof Table> = {
         const scrollable = args.scrollable ?? false;
 
         const tableHtml = `<table class="dsn-table">
-  <caption class="dsn-table__caption">${caption}</caption>
+  <caption id="tabel-caption-id" class="dsn-table__caption">${caption}</caption>
   <thead>
     <tr>
       <th scope="col">Product</th>
@@ -66,12 +66,17 @@ const meta: Meta<typeof Table> = {
       <td class="dsn-table__cell--numeric">€29</td>
       <td class="dsn-table__cell--numeric">84</td>
     </tr>
+    <tr>
+      <td>Toetsenbord</td>
+      <td class="dsn-table__cell--numeric">€79</td>
+      <td class="dsn-table__cell--numeric">34</td>
+    </tr>
   </tbody>
 </table>`;
 
         if (scrollable) {
           return `<div class="dsn-table-wrapper" role="region" aria-labelledby="tabel-caption-id" tabindex="0">
-  ${tableHtml.replace('class="dsn-table__caption"', 'id="tabel-caption-id" class="dsn-table__caption"')}
+  ${tableHtml}
 </div>`;
         }
 

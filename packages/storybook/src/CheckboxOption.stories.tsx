@@ -40,10 +40,8 @@ const meta: Meta<typeof CheckboxOption> = {
         ]
           .filter(Boolean)
           .join(' ');
-        const iconComment = args.indeterminate
-          ? '<!-- minus icon -->'
-          : '<!-- check icon -->';
-        return `<label class="dsn-checkbox-option">\n  <div class="dsn-checkbox">\n    <input type="checkbox" class="${inputCls}"${inputAttrs ? ' ' + inputAttrs : ''} />\n    <span class="dsn-checkbox__control" aria-hidden="true">\n      ${iconComment}\n    </span>\n  </div>\n  <span class="${labelCls}">${args.label ?? 'Tekst'}</span>\n</label>`;
+        const iconName = args.indeterminate ? 'minus' : 'check';
+        return `<label class="dsn-checkbox-option">\n  <div class="dsn-checkbox">\n    <input type="checkbox" class="${inputCls}"${inputAttrs ? ' ' + inputAttrs : ''} />\n    <span class="dsn-checkbox__control" aria-hidden="true">\n      <svg class="dsn-icon dsn-checkbox__icon" aria-hidden="true"><!-- ${iconName} --></svg>\n    </span>\n  </div>\n  <span class="${labelCls}">${args.label ?? 'Tekst'}</span>\n</label>`;
       },
     },
   },

@@ -38,7 +38,13 @@ const meta: Meta<typeof Container> = {
           .filter(Boolean)
           .join(' ');
         const as = args.as ?? 'div';
-        return `<${as} class="${cls}">\n  <p class="dsn-paragraph">Inhoud</p>\n</${as}>`;
+        const text =
+          typeof args.children === 'string'
+            ? args.children
+            : typeof args.children?.props?.children === 'string'
+              ? args.children.props.children
+              : 'Inhoud';
+        return `<${as} class="${cls}">\n  <p class="dsn-paragraph">${text}</p>\n</${as}>`;
       },
     },
   },

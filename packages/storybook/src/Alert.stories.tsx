@@ -89,26 +89,29 @@ const meta: Meta<typeof Alert> = {
           warning: 'alert-triangle',
         };
         const iconName =
-          args.iconStart &&
-          args.iconStart !== 'undefined' &&
-          args.iconStart !== 'null'
-            ? args.iconStart
-            : args.iconStart === 'null'
-              ? null
-              : preferredIcons[variant];
+          args.iconStart && typeof args.iconStart === 'object'
+            ? (args.iconStart.props?.name ?? 'icon')
+            : args.iconStart &&
+                args.iconStart !== 'undefined' &&
+                args.iconStart !== 'null'
+              ? args.iconStart
+              : args.iconStart === 'null'
+                ? null
+                : preferredIcons[variant];
 
         const icon = iconName
-          ? `\n  <span class="dsn-alert__icon" aria-hidden="true">\n    <svg class="dsn-icon" aria-hidden="true"><!-- ${iconName} --></svg>\n  </span>`
+          ? `\n  <span class="dsn-alert__icon" aria-hidden="true">\n    <svg class="dsn-icon dsn-icon--xl" aria-hidden="true"><!-- ${iconName} --></svg>\n  </span>`
           : '';
 
         const heading = args.heading ?? 'Heading';
+        const level = args.headingLevel ?? 2;
         const childrenText =
           typeof args.children === 'string' ? args.children : TEKST;
         const children = args.children
           ? `\n  <div class="dsn-alert__content">\n    <p class="dsn-paragraph">${childrenText}</p>\n  </div>`
           : '';
 
-        return `<div class="${cls}" role="alert">${icon}\n  <strong class="dsn-alert__heading dsn-heading dsn-heading--3">${heading}</strong>${children}\n</div>`;
+        return `<div class="${cls}" role="alert">${icon}\n  <h${level} class="dsn-heading dsn-heading--heading-3 dsn-alert__heading">${heading}</h${level}>${children}\n</div>`;
       },
     },
   },

@@ -13,8 +13,10 @@ const meta: Meta<typeof Body> = {
   parameters: {
     docs: { page: DocsPage },
     dsn: {
+      // In echte HTML pas je dsn-body direct toe op het <body> element;
+      // de React-wrapper rendert een <div class="dsn-body">.
       htmlTemplate: () =>
-        `<body class="dsn-body">\n  <!-- paginainhoud -->\n</body>`,
+        `<body class="dsn-body">\n  <h1 class="dsn-heading dsn-heading--heading-1">Paginatitel</h1>\n  <p class="dsn-paragraph">Dit is een voorbeeldparagraaf.</p>\n</body>`,
     },
   },
   argTypes: {

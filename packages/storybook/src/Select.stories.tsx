@@ -49,9 +49,28 @@ const meta: Meta<typeof Select> = {
           .filter(Boolean)
           .join(' ');
         const icon = !args.disabled
-          ? '\n  <!-- chevron-down icon (decoratief) -->'
+          ? '\n  <svg class="dsn-icon dsn-select__icon" aria-hidden="true"><!-- chevron-down --></svg>'
           : '';
-        return `<div class="${wrapperCls}">\n  <select class="dsn-text-input dsn-select"${inputAttrs ? ' ' + inputAttrs : ''}>\n    <option value="">Kies een optie</option>\n    <option value="1">Optie 1</option>\n    <option value="2">Optie 2</option>\n  </select>${icon}\n</div>`;
+        // Serialiseer <option> elementen uit args.children (ook binnen fragments)
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        const options: any[] = [];
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        const collect = (n: any) => {
+          if (!n) return;
+          if (Array.isArray(n)) return n.forEach(collect);
+          if (n.type === 'option') options.push(n);
+          else if (n.props?.children) collect(n.props.children);
+        };
+        collect(args.children);
+        const optionsHtml = options.length
+          ? options
+              .map(
+                (o) =>
+                  `    <option value="${o.props.value ?? ''}">${o.props.children}</option>`
+              )
+              .join('\n')
+          : '    <option value="">Kies een optie</option>';
+        return `<div class="${wrapperCls}">\n  <select class="dsn-text-input dsn-select"${inputAttrs ? ' ' + inputAttrs : ''}>\n${optionsHtml}\n  </select>${icon}\n</div>`;
       },
     },
   },

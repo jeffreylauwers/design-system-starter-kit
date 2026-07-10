@@ -20,8 +20,46 @@ const meta: Meta<typeof Menu> = {
     docs: { page: DocsPage },
     dsn: {
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      htmlTemplate: (_args: any) => {
-        return `<ul class="dsn-menu">\n  <li class="dsn-menu-link">\n    <a class="dsn-menu-link__link" href="/home">\n      <span class="dsn-menu-link__label">Home</span>\n    </a>\n  </li>\n  <li class="dsn-menu-button">\n    <button type="button" class="dsn-menu-button__button">\n      <span class="dsn-menu-button__label">Uitloggen</span>\n    </button>\n  </li>\n</ul>`;
+      htmlTemplate: (args: any) => {
+        const cls = [
+          'dsn-menu',
+          args.orientation === 'horizontal' && 'dsn-menu--horizontal',
+        ]
+          .filter(Boolean)
+          .join(' ');
+        return `<ul class="${cls}">
+  <li class="dsn-menu-link">
+    <a class="dsn-menu-link__link" href="/home" aria-current="page">
+      <svg class="dsn-icon" aria-hidden="true"><!-- home --></svg>
+      <span class="dsn-menu-link__label">Home</span>
+    </a>
+  </li>
+  <li class="dsn-menu-link">
+    <a class="dsn-menu-link__link" href="/rapporten">
+      <svg class="dsn-icon" aria-hidden="true"><!-- file-description --></svg>
+      <span class="dsn-menu-link__label">Rapporten</span>
+    </a>
+  </li>
+  <li class="dsn-menu-link">
+    <a class="dsn-menu-link__link" href="/inbox">
+      <svg class="dsn-icon" aria-hidden="true"><!-- mail --></svg>
+      <span class="dsn-menu-link__label">Inbox</span>
+      <span class="dsn-number-badge dsn-number-badge--negative" aria-hidden="true">3</span>
+    </a>
+  </li>
+  <li class="dsn-menu-button">
+    <button type="button" class="dsn-menu-button__button">
+      <svg class="dsn-icon" aria-hidden="true"><!-- settings --></svg>
+      <span class="dsn-menu-button__label">Instellingen</span>
+    </button>
+  </li>
+  <li class="dsn-menu-button">
+    <button type="button" class="dsn-menu-button__button">
+      <svg class="dsn-icon" aria-hidden="true"><!-- user --></svg>
+      <span class="dsn-menu-button__label">Uitloggen</span>
+    </button>
+  </li>
+</ul>`;
       },
     },
   },

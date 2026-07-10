@@ -15,6 +15,11 @@ const meta: Meta<typeof PreHeading> = {
     docs: {
       page: DocsPage,
     },
+    dsn: {
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      htmlTemplate: (args: any) =>
+        `<h2 class="dsn-heading dsn-heading--heading-2">\n  <span class="dsn-pre-heading">${typeof args.children === 'string' ? args.children : 'Stap 2 van 4'}</span>\n  Uw gegevens\n</h2>`,
+    },
   },
   args: {
     children: 'Stap 2 van 4',

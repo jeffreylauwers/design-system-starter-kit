@@ -224,9 +224,11 @@ const meta: Meta<typeof PageBody> = {
     layout: 'fullscreen',
     dsn: {
       htmlTemplate: () => `<div class="dsn-page-body">
-  <main id="main-content" tabindex="-1">
-    <!-- pagina-inhoud -->
-  </main>
+  <div class="dsn-page-body__inner">
+    <main id="main-content" tabindex="-1">
+      <!-- pagina-inhoud -->
+    </main>
+  </div>
 </div>`,
     },
   },
