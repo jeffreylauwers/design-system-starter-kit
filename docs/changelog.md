@@ -6,7 +6,13 @@ All notable changes to this project are documented in this file.
 
 ---
 
-## Unreleased
+## Version 2.0.0 (July 12, 2026)
+
+Grote release die alle wijzigingen sinds v1.0.2 bundelt en publiceert naar npm. Bevat één breaking change in de HTML/CSS-laag (ActionGroup-markup). React-consumers zijn niet geraakt, afgezien van een gewijzigde DOM-structuur.
+
+### Breaking changes
+
+- **ActionGroup: `role="group"` vervangen door `<ul>`/`<li>` + `aria-label`** (issue [#295](https://github.com/jeffreylauwers/design-system-starter-kit/issues/295)): bestaande markup met `<div class="dsn-action-group" role="group">` moet migreren naar `<ul class="dsn-action-group" aria-label="...">`, met elke actie gewrapt in `<li class="dsn-action-group__item">`. Nieuwe `aria-label` (React-prop / HTML-attribuut) met default `"Acties"`. Achtergrond en CSS-details staan in de ActionGroup-sectie hieronder.
 
 ### Alert & Note: variant hoorbaar voor screenreaders
 
@@ -17,8 +23,6 @@ All notable changes to this project are documented in this file.
   - Bewust echte verborgen tekst in plaats van `aria-label` op de svg: wordt meevertaald door vertaaltools, werkt in braille en blijft beschikbaar als het icoon wordt onderdrukt via `iconStart={null}`; het icoon blijft decoratief (`aria-hidden`)
   - Let op: geen API-breaking change, maar de voorgelezen output van elke bestaande Alert en niet-neutrale Note verandert (het label komt erbij)
   - Het foutmelding-summary patroon (FormFlowPatterns, `docs/07-form-flow-patterns.md`, FormStepExtendedPage-template) gebruikt `variantLabel=""` omdat de heading "Er is een foutmelding" de variant daar al benoemt
-
-## Version 1.0.6 (July 10, 2026)
 
 ### TableOfContents: nieuw component
 
@@ -60,10 +64,6 @@ All notable changes to this project are documented in this file.
 - Alle WCAG-verwijzingen bijgewerkt van 2.1 naar 2.2 (PR [#304](https://github.com/jeffreylauwers/design-system-starter-kit/pull/304))
 - Token descriptions thema-onafhankelijk gemaakt en volledig Nederlands (PR [#290](https://github.com/jeffreylauwers/design-system-starter-kit/pull/290))
 
----
-
-## Version 1.0.5 (July 7, 2026)
-
 ### ActionGroup — accessibiliteit
 
 #### Fixed
@@ -72,10 +72,6 @@ All notable changes to this project are documented in this file.
   - Nieuwe `aria-label`-prop (React) / attribuut (HTML) met default `"Acties"`, zodat de groep altijd een zinnige toegankelijke naam heeft, ook zonder expliciete keuze. Geef een specifieker label mee waar dat de context verduidelijkt (bijv. `"Formulierknoppen"`, `"Dialoogacties"`).
   - **Breaking change voor eigen HTML-implementaties**: bestaande markup met `<div class="dsn-action-group" role="group">` moet migreren naar `<ul class="dsn-action-group" aria-label="...">` met elke actie gewrapt in `<li class="dsn-action-group__item">`. Consumenten van het React-component zijn niet geraakt behalve een DOM-structuurwijziging (geen prop-wijziging).
   - CSS: `.dsn-action-group` reset nu `list-style`, `margin` en `padding`; de eerdere `align-self`-reset voor directe `dsn-link`/`dsn-link-button` children is verwijderd omdat die children niet meer direct in de flex-container zitten.
-
----
-
-## Version 1.0.4 (June 10, 2026)
 
 ### Hero — dark mode contrast
 
@@ -99,10 +95,6 @@ All notable changes to this project are documented in this file.
 #### Changed
 
 - **Grid `margin` token hernoemd naar `padding-inline`** (PR #286): `dsn.grid.margin` → `dsn.grid.padding-inline`; CSS custom property `--dsn-grid-margin` → `--dsn-grid-padding-inline`. Alle template stories bijgewerkt. De `dsn-full-bleed` klasse gebruikt nu `calc(-1 * var(--dsn-grid-padding-inline))`.
-
----
-
-## Version 1.0.3 (June 4, 2026)
 
 ### Accessibility — Forced Colors Mode
 
