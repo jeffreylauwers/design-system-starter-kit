@@ -1,6 +1,6 @@
 {
   "name": "@dsn-starter-kit/design-tokens",
-  "version": "1.0.2",
+  "version": "2.0.0",
   "description": "Design tokens for the design system",
   "main": "dist/js/tokens.js",
   "types": "dist/js/tokens.d.ts",
