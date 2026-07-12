@@ -146,6 +146,77 @@ describe('Note', () => {
   });
 
   // ===========================
+  // Variant label
+  // ===========================
+
+  it('renders no visually hidden label for neutral variant (default)', () => {
+    render(<Note heading="Heading">Inhoud</Note>);
+    expect(
+      screen.getByRole('heading', { name: 'Heading' })
+    ).toBeInTheDocument();
+    expect(
+      document.querySelector('.dsn-visually-hidden')
+    ).not.toBeInTheDocument();
+  });
+
+  it.each([
+    ['info', 'Informatie: '],
+    ['positive', 'Succes: '],
+    ['negative', 'Foutmelding: '],
+    ['warning', 'Let op: '],
+  ] as const)(
+    'prefixes heading with visually hidden default label for %s variant',
+    (variant, label) => {
+      render(
+        <Note variant={variant} heading="Heading">
+          Inhoud
+        </Note>
+      );
+      expect(
+        screen.getByRole('heading', {
+          name: new RegExp(`^${label.trim()}\\s?Heading$`),
+        })
+      ).toBeInTheDocument();
+      const hidden = document.querySelector(
+        '.dsn-note__heading .dsn-visually-hidden'
+      );
+      expect(hidden).toHaveTextContent(label.trim());
+    }
+  );
+
+  it('renders standalone visually hidden label when no heading', () => {
+    const { container } = render(<Note variant="warning">Inhoud</Note>);
+    const hidden = container.querySelector('.dsn-visually-hidden');
+    expect(hidden).toBeInTheDocument();
+    expect(hidden).toHaveTextContent('Let op:');
+  });
+
+  it('renders custom variantLabel', () => {
+    render(
+      <Note variant="negative" heading="Heading" variantLabel="Error: ">
+        Inhoud
+      </Note>
+    );
+    expect(
+      screen.getByRole('heading', { name: /^Error:\s?Heading$/ })
+    ).toBeInTheDocument();
+  });
+
+  it('renders no visually hidden label when variantLabel=""', () => {
+    render(
+      <Note variant="warning" heading="Waarschuwing" variantLabel="">
+        Inhoud
+      </Note>
+    );
+    expect(
+      screen.getByRole('heading', { name: 'Waarschuwing' })
+    ).toBeInTheDocument();
+    expect(
+      document.querySelector('.dsn-visually-hidden')
+    ).not.toBeInTheDocument();
+  });
+
+  // ===========================
   // Content
   // ===========================
 
@@ -278,7 +349,9 @@ describe('Note', () => {
       </Note>
     );
     expect(
-      screen.getByRole('complementary', { name: 'Achtergrondinformatie' })
+      screen.getByRole('complementary', {
+        name: /^Informatie:\s?Achtergrondinformatie$/,
+      })
     ).toBeInTheDocument();
   });
 });

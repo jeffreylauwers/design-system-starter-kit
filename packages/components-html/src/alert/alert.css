@@ -2,11 +2,19 @@
  * Alert Component
  * Important message that informs the user about the current activity or state.
  *
+ * The icon is decorative (aria-hidden); a visually hidden variant label at the
+ * start of the heading announces the variant to screen reader users. Real text
+ * (not aria-label on the svg) so it gets translated by translation tools,
+ * works in braille and stays available when the icon is omitted.
+ * Default labels: "Informatie: " / "Succes: " / "Foutmelding: " / "Let op: ".
+ *
  * Usage:
  * <!-- Info variant (default), with icon -->
  * <div class="dsn-alert" role="alert">
- *   <svg class="dsn-icon dsn-alert__icon" aria-hidden="true"><!-- info-circle --></svg>
- *   <strong class="dsn-alert__heading">Heading</strong>
+ *   <span class="dsn-alert__icon" aria-hidden="true">
+ *     <svg class="dsn-icon dsn-icon--xl" aria-hidden="true"><!-- info-circle --></svg>
+ *   </span>
+ *   <h2 class="dsn-heading dsn-heading--heading-3 dsn-alert__heading"><span class="dsn-visually-hidden">Informatie: </span>Heading</h2>
  *   <div class="dsn-alert__content">
  *     <p>Body text or any content.</p>
  *   </div>
@@ -14,8 +22,10 @@
  *
  * <!-- Positive variant -->
  * <div class="dsn-alert dsn-alert--positive" role="alert">
- *   <svg class="dsn-icon dsn-alert__icon" aria-hidden="true"><!-- circle-check --></svg>
- *   <strong class="dsn-alert__heading">Gelukt</strong>
+ *   <span class="dsn-alert__icon" aria-hidden="true">
+ *     <svg class="dsn-icon dsn-icon--xl" aria-hidden="true"><!-- circle-check --></svg>
+ *   </span>
+ *   <h2 class="dsn-heading dsn-heading--heading-3 dsn-alert__heading"><span class="dsn-visually-hidden">Succes: </span>Gelukt</h2>
  *   <div class="dsn-alert__content">
  *     <p>Uw aanvraag is succesvol ingediend.</p>
  *   </div>
@@ -23,8 +33,10 @@
  *
  * <!-- Negative variant -->
  * <div class="dsn-alert dsn-alert--negative" role="alert">
- *   <svg class="dsn-icon dsn-alert__icon" aria-hidden="true"><!-- exclamation-circle --></svg>
- *   <strong class="dsn-alert__heading">Er is een fout opgetreden</strong>
+ *   <span class="dsn-alert__icon" aria-hidden="true">
+ *     <svg class="dsn-icon dsn-icon--xl" aria-hidden="true"><!-- exclamation-circle --></svg>
+ *   </span>
+ *   <h2 class="dsn-heading dsn-heading--heading-3 dsn-alert__heading"><span class="dsn-visually-hidden">Foutmelding: </span>Er is een fout opgetreden</h2>
  *   <div class="dsn-alert__content">
  *     <p>Controleer uw gegevens en probeer het opnieuw.</p>
  *   </div>
@@ -32,16 +44,18 @@
  *
  * <!-- Warning variant -->
  * <div class="dsn-alert dsn-alert--warning" role="alert">
- *   <svg class="dsn-icon dsn-alert__icon" aria-hidden="true"><!-- alert-triangle --></svg>
- *   <strong class="dsn-alert__heading">Let op</strong>
+ *   <span class="dsn-alert__icon" aria-hidden="true">
+ *     <svg class="dsn-icon dsn-icon--xl" aria-hidden="true"><!-- alert-triangle --></svg>
+ *   </span>
+ *   <h2 class="dsn-heading dsn-heading--heading-3 dsn-alert__heading"><span class="dsn-visually-hidden">Let op: </span>Uw sessie verloopt binnenkort</h2>
  *   <div class="dsn-alert__content">
- *     <p>Uw sessie verloopt binnenkort.</p>
+ *     <p>Sla uw werk op om gegevensverlies te voorkomen.</p>
  *   </div>
  * </div>
  *
- * <!-- Without icon -->
+ * <!-- Without icon: keep the visually hidden variant label -->
  * <div class="dsn-alert dsn-alert--no-icon" role="alert">
- *   <strong class="dsn-alert__heading">Heading</strong>
+ *   <h2 class="dsn-heading dsn-heading--heading-3 dsn-alert__heading"><span class="dsn-visually-hidden">Informatie: </span>Heading</h2>
  *   <div class="dsn-alert__content">
  *     <p>Body text without an icon.</p>
  *   </div>

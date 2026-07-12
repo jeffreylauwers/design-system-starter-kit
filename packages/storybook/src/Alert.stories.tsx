@@ -103,6 +103,17 @@ const meta: Meta<typeof Alert> = {
           ? `\n  <span class="dsn-alert__icon" aria-hidden="true">\n    <svg class="dsn-icon dsn-icon--xl" aria-hidden="true"><!-- ${iconName} --></svg>\n  </span>`
           : '';
 
+        const variantLabels: Record<string, string> = {
+          info: 'Informatie: ',
+          positive: 'Succes: ',
+          negative: 'Foutmelding: ',
+          warning: 'Let op: ',
+        };
+        const variantLabel = args.variantLabel ?? variantLabels[variant];
+        const srLabel = variantLabel
+          ? `<span class="dsn-visually-hidden">${variantLabel}</span>`
+          : '';
+
         const heading = args.heading ?? 'Heading';
         const level = args.headingLevel ?? 2;
         const childrenText =
@@ -111,7 +122,7 @@ const meta: Meta<typeof Alert> = {
           ? `\n  <div class="dsn-alert__content">\n    <p class="dsn-paragraph">${childrenText}</p>\n  </div>`
           : '';
 
-        return `<div class="${cls}" role="alert">${icon}\n  <h${level} class="dsn-heading dsn-heading--heading-3 dsn-alert__heading">${heading}</h${level}>${children}\n</div>`;
+        return `<div class="${cls}" role="alert">${icon}\n  <h${level} class="dsn-heading dsn-heading--heading-3 dsn-alert__heading">${srLabel}${heading}</h${level}>${children}\n</div>`;
       },
     },
   },
@@ -141,6 +152,11 @@ const meta: Meta<typeof Alert> = {
           {} as Record<string, React.ReactNode>
         ),
       },
+    },
+    variantLabel: {
+      control: 'text',
+      description:
+        'Visueel verborgen tekst vóór de heading die de variant benoemt voor screenreaders. Leeg laten (undefined) = standaardtekst per variant; lege string = geen label.',
     },
     children: { control: false },
   },

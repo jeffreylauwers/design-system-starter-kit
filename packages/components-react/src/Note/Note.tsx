@@ -20,6 +20,14 @@ const PREFERRED_ICONS: Record<NoteVariant, string> = {
   warning: 'alert-triangle',
 };
 
+const VARIANT_LABELS: Record<NoteVariant, string> = {
+  neutral: '',
+  info: 'Informatie: ',
+  positive: 'Succes: ',
+  negative: 'Foutmelding: ',
+  warning: 'Let op: ',
+};
+
 export interface NoteProps extends React.HTMLAttributes<HTMLElement> {
   /**
    * HTML-element — ontkoppelt semantiek van visuele stijl
@@ -51,6 +59,17 @@ export interface NoteProps extends React.HTMLAttributes<HTMLElement> {
    * - `ReactNode` — aangepast icoon
    */
   iconStart?: React.ReactNode;
+
+  /**
+   * Visueel verborgen tekst die de variant benoemt voor screenreadergebruikers
+   * (inclusief scheidingsteken en spatie). Komt vóór de heading, of vóór de
+   * content als er geen heading is.
+   * - `undefined` (default) — standaardtekst per variant:
+   *   `''` (neutral) / `'Informatie: '` / `'Succes: '` / `'Foutmelding: '` / `'Let op: '`
+   * - `''` — geen variant-label (bijv. als de heading de variant al benoemt)
+   * - `string` — eigen tekst, bijv. voor een andere taal
+   */
+  variantLabel?: string;
 
   /**
    * Body-content: tekst, lijst, links, etc.
@@ -96,6 +115,11 @@ export interface NoteProps extends React.HTMLAttributes<HTMLElement> {
  * <Note variant="info" heading="Opmerking" iconStart={null}>
  *   <Paragraph>Zonder icoon.</Paragraph>
  * </Note>
+ *
+ * // Variant-label onderdrukken (heading benoemt de variant al)
+ * <Note variant="warning" heading="Waarschuwing" variantLabel="">
+ *   <Paragraph>Dit heeft gevolgen voor uw aanvraag.</Paragraph>
+ * </Note>
  * ```
  */
 export const Note = React.forwardRef<HTMLElement, NoteProps>(
@@ -107,6 +131,7 @@ export const Note = React.forwardRef<HTMLElement, NoteProps>(
       heading,
       headingLevel = 3,
       iconStart,
+      variantLabel,
       children,
       ...props
     },
@@ -115,6 +140,7 @@ export const Note = React.forwardRef<HTMLElement, NoteProps>(
     const headingId = useId();
     const noIcon = iconStart === null;
     const noHeading = !heading;
+    const resolvedVariantLabel = variantLabel ?? VARIANT_LABELS[variant];
 
     const resolvedIcon =
       iconStart === undefined ? (
@@ -160,8 +186,16 @@ export const Note = React.forwardRef<HTMLElement, NoteProps>(
             className="dsn-note__heading"
             id={isLandmark ? headingId : undefined}
           >
+            {resolvedVariantLabel && (
+              <span className="dsn-visually-hidden">
+                {resolvedVariantLabel}
+              </span>
+            )}
             {heading}
           </Heading>
+        )}
+        {noHeading && resolvedVariantLabel && (
+          <span className="dsn-visually-hidden">{resolvedVariantLabel}</span>
         )}
         {children && <div className="dsn-note__content">{children}</div>}
       </As>

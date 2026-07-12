@@ -330,7 +330,11 @@ function SingleErrorPage() {
                     Vorige stap
                   </Link>
 
-                  <Alert variant="negative" heading="Er is een foutmelding">
+                  <Alert
+                    variant="negative"
+                    heading="Er is een foutmelding"
+                    variantLabel=""
+                  >
                     <Link href="#single-error-email">{EMAIL_ERROR}</Link>
                   </Alert>
 
@@ -549,7 +553,11 @@ function MultipleErrorsPage() {
                     Vorige stap
                   </Link>
 
-                  <Alert variant="negative" heading="Er zijn 3 foutmeldingen">
+                  <Alert
+                    variant="negative"
+                    heading="Er zijn 3 foutmeldingen"
+                    variantLabel=""
+                  >
                     <UnorderedList>
                       <li>
                         <Link href="#multi-error-voornaam">

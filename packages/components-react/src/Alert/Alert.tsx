@@ -13,6 +13,13 @@ const PREFERRED_ICONS: Record<AlertVariant, string> = {
   warning: 'alert-triangle',
 };
 
+const VARIANT_LABELS: Record<AlertVariant, string> = {
+  info: 'Informatie: ',
+  positive: 'Succes: ',
+  negative: 'Foutmelding: ',
+  warning: 'Let op: ',
+};
+
 export interface AlertProps extends React.HTMLAttributes<HTMLDivElement> {
   /**
    * Semantische variant die de signaalkleur bepaalt
@@ -38,6 +45,16 @@ export interface AlertProps extends React.HTMLAttributes<HTMLDivElement> {
    * - `ReactNode` — aangepast icoon
    */
   iconStart?: React.ReactNode;
+
+  /**
+   * Visueel verborgen tekst vóór de heading die de variant benoemt voor
+   * screenreadergebruikers (inclusief scheidingsteken en spatie).
+   * - `undefined` (default) — standaardtekst per variant:
+   *   `'Informatie: '` / `'Succes: '` / `'Foutmelding: '` / `'Let op: '`
+   * - `''` — geen variant-label (bijv. als de heading de variant al benoemt)
+   * - `string` — eigen tekst, bijv. voor een andere taal
+   */
+  variantLabel?: string;
 
   /**
    * Optionele body content (tekst, lijst, links, etc.)
@@ -80,6 +97,11 @@ export interface AlertProps extends React.HTMLAttributes<HTMLDivElement> {
  * <Alert variant="info" heading="Tip" iconStart={<Icon name="star" aria-hidden />}>
  *   Gebruik de zoekfunctie om snel te navigeren.
  * </Alert>
+ *
+ * // Variant-label onderdrukken (heading benoemt de variant al)
+ * <Alert variant="negative" heading="Foutmelding" variantLabel="">
+ *   Controleer uw gegevens.
+ * </Alert>
  * ```
  */
 export const Alert = React.forwardRef<HTMLDivElement, AlertProps>(
@@ -90,12 +112,14 @@ export const Alert = React.forwardRef<HTMLDivElement, AlertProps>(
       heading,
       headingLevel = 2,
       iconStart,
+      variantLabel,
       children,
       ...props
     },
     ref
   ) => {
     const noIcon = iconStart === null;
+    const resolvedVariantLabel = variantLabel ?? VARIANT_LABELS[variant];
 
     const resolvedIcon =
       iconStart === undefined ? (
@@ -127,6 +151,9 @@ export const Alert = React.forwardRef<HTMLDivElement, AlertProps>(
           appearance="heading-3"
           className="dsn-alert__heading"
         >
+          {resolvedVariantLabel && (
+            <span className="dsn-visually-hidden">{resolvedVariantLabel}</span>
+          )}
           {heading}
         </Heading>
         {children && <div className="dsn-alert__content">{children}</div>}
