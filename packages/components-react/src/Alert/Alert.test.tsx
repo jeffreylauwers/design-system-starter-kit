@@ -83,7 +83,10 @@ describe('Alert', () => {
   it('renders heading as h2 by default', () => {
     render(<Alert heading="Standaard heading" />);
     expect(
-      screen.getByRole('heading', { level: 2, name: 'Standaard heading' })
+      screen.getByRole('heading', {
+        level: 2,
+        name: /^Informatie:\s?Standaard heading$/,
+      })
     ).toBeInTheDocument();
   });
 
@@ -92,7 +95,10 @@ describe('Alert', () => {
     (level) => {
       render(<Alert heading="Heading" headingLevel={level} />);
       expect(
-        screen.getByRole('heading', { level, name: 'Heading' })
+        screen.getByRole('heading', {
+          level,
+          name: /^Informatie:\s?Heading$/,
+        })
       ).toBeInTheDocument();
     }
   );
@@ -147,6 +153,50 @@ describe('Alert', () => {
     expect(screen.getByTestId('custom-icon')).toBeInTheDocument();
     const iconSpan = document.querySelector('.dsn-alert__icon');
     expect(iconSpan).toBeInTheDocument();
+  });
+
+  // ===========================
+  // Variant label
+  // ===========================
+
+  it.each([
+    ['info', 'Informatie: '],
+    ['positive', 'Succes: '],
+    ['negative', 'Foutmelding: '],
+    ['warning', 'Let op: '],
+  ] as const)(
+    'prefixes heading with visually hidden default label for %s variant',
+    (variant, label) => {
+      render(<Alert variant={variant} heading="Heading" />);
+      expect(
+        screen.getByRole('heading', {
+          name: new RegExp(`^${label.trim()}\\s?Heading$`),
+        })
+      ).toBeInTheDocument();
+      const hidden = document.querySelector(
+        '.dsn-alert__heading .dsn-visually-hidden'
+      );
+      expect(hidden).toHaveTextContent(label.trim());
+    }
+  );
+
+  it('renders custom variantLabel', () => {
+    render(
+      <Alert variant="negative" heading="Heading" variantLabel="Error: " />
+    );
+    expect(
+      screen.getByRole('heading', { name: /^Error:\s?Heading$/ })
+    ).toBeInTheDocument();
+  });
+
+  it('renders no visually hidden label when variantLabel=""', () => {
+    render(<Alert variant="negative" heading="Foutmelding" variantLabel="" />);
+    expect(
+      screen.getByRole('heading', { name: 'Foutmelding' })
+    ).toBeInTheDocument();
+    expect(
+      document.querySelector('.dsn-visually-hidden')
+    ).not.toBeInTheDocument();
   });
 
   // ===========================
@@ -211,7 +261,9 @@ describe('Alert', () => {
         Uw gegevens zijn opgeslagen.
       </Alert>
     );
-    expect(screen.getByRole('heading', { name: 'Gelukt' })).toBeInTheDocument();
+    expect(
+      screen.getByRole('heading', { name: /^Succes:\s?Gelukt$/ })
+    ).toBeInTheDocument();
     expect(
       screen.getByText('Uw gegevens zijn opgeslagen.')
     ).toBeInTheDocument();

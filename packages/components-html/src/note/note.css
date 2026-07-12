@@ -3,34 +3,42 @@
  * Visually highlighted message for supplementary or important information.
  * Passive counterpart to Alert — no live region, read on navigation only.
  *
+ * The icon is decorative (aria-hidden); the non-neutral variants (info,
+ * positive, negative, warning) carry a visually hidden variant label that
+ * announces the variant to screen reader users: "Informatie: " / "Succes: " /
+ * "Foutmelding: " / "Let op: ". With a heading the label is the first child of
+ * the heading; without a heading it is a standalone span before the content.
+ * Neutral has no label: that variant deliberately carries no semantic signal.
+ *
  * Usage:
- * <!-- Neutral (default), with icon and heading -->
+ * <!-- Neutral (default), with icon and heading — no variant label -->
  * <div class="dsn-note">
  *   <span class="dsn-note__icon" aria-hidden="true">
- *     <svg class="dsn-icon" aria-hidden="true"><!-- info-circle --></svg>
+ *     <svg class="dsn-icon dsn-icon--xl" aria-hidden="true"><!-- info-circle --></svg>
  *   </span>
- *   <strong class="dsn-heading dsn-heading--3 dsn-note__heading">Let op</strong>
+ *   <h3 class="dsn-heading dsn-heading--heading-3 dsn-note__heading">Let op</h3>
  *   <div class="dsn-note__content">
  *     <p>Aanvullende informatie over dit onderwerp.</p>
  *   </div>
  * </div>
  *
- * <!-- Info variant -->
+ * <!-- Info variant, with visually hidden variant label -->
  * <div class="dsn-note dsn-note--info">
  *   <span class="dsn-note__icon" aria-hidden="true">
- *     <svg class="dsn-icon" aria-hidden="true"><!-- info-circle --></svg>
+ *     <svg class="dsn-icon dsn-icon--xl" aria-hidden="true"><!-- info-circle --></svg>
  *   </span>
- *   <strong class="dsn-heading dsn-heading--3 dsn-note__heading">Informatie</strong>
+ *   <h3 class="dsn-heading dsn-heading--heading-3 dsn-note__heading"><span class="dsn-visually-hidden">Informatie: </span>Heading</h3>
  *   <div class="dsn-note__content">
  *     <p>Body content.</p>
  *   </div>
  * </div>
  *
- * <!-- Without heading — icon spans both rows -->
- * <div class="dsn-note dsn-note--no-heading">
+ * <!-- Without heading — icon spans both rows, variant label as standalone span -->
+ * <div class="dsn-note dsn-note--warning dsn-note--no-heading">
  *   <span class="dsn-note__icon" aria-hidden="true">
- *     <svg class="dsn-icon" aria-hidden="true"><!-- info-circle --></svg>
+ *     <svg class="dsn-icon dsn-icon--xl" aria-hidden="true"><!-- alert-triangle --></svg>
  *   </span>
+ *   <span class="dsn-visually-hidden">Let op: </span>
  *   <div class="dsn-note__content">
  *     <p>Aanvullende informatie.</p>
  *   </div>
@@ -44,12 +52,12 @@
  * <!-- as="nav" — standalone navigation section (not a page table of contents: use TableOfContents) -->
  * <nav class="dsn-note" aria-labelledby="note-heading-id">
  *   <span class="dsn-note__icon" aria-hidden="true">
- *     <svg class="dsn-icon" aria-hidden="true"><!-- info-circle --></svg>
+ *     <svg class="dsn-icon dsn-icon--xl" aria-hidden="true"><!-- info-circle --></svg>
  *   </span>
- *   <strong class="dsn-heading dsn-heading--3 dsn-note__heading" id="note-heading-id">Related pages</strong>
- *   <nav class="dsn-note__content">
+ *   <h3 class="dsn-heading dsn-heading--heading-3 dsn-note__heading" id="note-heading-id">Related pages</h3>
+ *   <div class="dsn-note__content">
  *     <ul>...</ul>
- *   </nav>
+ *   </div>
  * </nav>
  */
 

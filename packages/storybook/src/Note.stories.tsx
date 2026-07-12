@@ -105,10 +105,24 @@ const meta: Meta<typeof Note> = {
           ? `\n  <span class="dsn-note__icon" aria-hidden="true">\n    <svg class="dsn-icon dsn-icon--xl" aria-hidden="true"><!-- ${iconName} --></svg>\n  </span>`
           : '';
 
+        const variantLabels: Record<string, string> = {
+          neutral: '',
+          info: 'Informatie: ',
+          positive: 'Succes: ',
+          negative: 'Foutmelding: ',
+          warning: 'Let op: ',
+        };
+        const variantLabel = args.variantLabel ?? variantLabels[variant];
+        const srLabel = variantLabel
+          ? `<span class="dsn-visually-hidden">${variantLabel}</span>`
+          : '';
+
         const level = args.headingLevel ?? 3;
         const heading = args.heading
-          ? `\n  <h${level} class="dsn-heading dsn-heading--heading-3 dsn-note__heading"${args.as && args.as !== 'div' ? ' id="note-heading"' : ''}>${args.heading}</h${level}>`
+          ? `\n  <h${level} class="dsn-heading dsn-heading--heading-3 dsn-note__heading"${args.as && args.as !== 'div' ? ' id="note-heading"' : ''}>${srLabel}${args.heading}</h${level}>`
           : '';
+        const standaloneLabel =
+          !args.heading && srLabel ? `\n  ${srLabel}` : '';
         const childrenText =
           typeof args.children === 'string' ? args.children : TEKST;
         const children = args.children
@@ -118,7 +132,7 @@ const meta: Meta<typeof Note> = {
         const as = args.as ?? 'div';
         const labelledBy =
           as !== 'div' && args.heading ? ' aria-labelledby="note-heading"' : '';
-        return `<${as} class="${cls}"${labelledBy}>${icon}${heading}${children}\n</${as}>`;
+        return `<${as} class="${cls}"${labelledBy}>${icon}${heading}${standaloneLabel}${children}\n</${as}>`;
       },
     },
   },
@@ -152,6 +166,11 @@ const meta: Meta<typeof Note> = {
           {} as Record<string, React.ReactNode>
         ),
       },
+    },
+    variantLabel: {
+      control: 'text',
+      description:
+        'Visueel verborgen tekst die de variant benoemt voor screenreaders. Leeg laten (undefined) = standaardtekst per variant (neutral heeft geen); lege string = geen label.',
     },
     children: { control: false },
   },

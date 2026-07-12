@@ -196,10 +196,12 @@ Bij één of meer fouten na submit:
 4. De tekst in de `Alert` en bij het veld is **identiek**
 5. In de `Alert` zijn de foutmeldingen ankerlinkjes die naar het betreffende veld springen
 
+De heading benoemt de fout al, dus onderdruk het automatische variant-label van de Alert met `variantLabel=""` om een dubbele aankondiging ("Foutmelding: Er is een foutmelding") te voorkomen.
+
 **Eén fout:**
 
 ```tsx
-<Alert variant="negative" heading="Er is een foutmelding">
+<Alert variant="negative" heading="Er is een foutmelding" variantLabel="">
   <Link href="#veld-id">Foutmeldingstekst</Link>
 </Alert>
 ```
@@ -207,7 +209,7 @@ Bij één of meer fouten na submit:
 **Meerdere fouten:**
 
 ```tsx
-<Alert variant="negative" heading="Er zijn 3 foutmeldingen">
+<Alert variant="negative" heading="Er zijn 3 foutmeldingen" variantLabel="">
   <UnorderedList>
     <li>
       <Link href="#veld-id-1">Foutmeldingstekst 1</Link>

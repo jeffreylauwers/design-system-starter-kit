@@ -4,7 +4,7 @@ Visueel uitgelicht bericht voor aanvullende of belangrijke informatie binnen de 
 
 ## Doel
 
-De Note component plaatst extra context of een tip op een opvallende maar niet-urgente manier in de pagina. Het is de passieve tegenhanger van Alert: screenreaders lezen de Note alleen bij navigatie: niet spontaan. Vijf varianten: **neutral**, **info**, **positive**, **negative** en **warning**: geven elk een eigen signaalkleur en linkerborder. Een decoratief icoon versterkt de variant visueel.
+De Note component plaatst extra context of een tip op een opvallende maar niet-urgente manier in de pagina. Het is de passieve tegenhanger van Alert: screenreaders lezen de Note alleen bij navigatie: niet spontaan. Vijf varianten: **neutral**, **info**, **positive**, **negative** en **warning**: geven elk een eigen signaalkleur en linkerborder. Een decoratief icoon versterkt de variant visueel; bij de niet-neutrale varianten maakt een visueel verborgen variant-label de variant ook voor screenreadergebruikers expliciet.
 
 <!-- VOORBEELD -->
 
@@ -48,6 +48,13 @@ Een Note wordt bewust door een ontwerper of ontwikkelaar geplaatst. De variant k
 - De heading is optioneel. Zonder heading overspant het icoon beide rijen.
 - Houd de heading beknopt: één of twee woorden.
 - Pas `headingLevel` aan op de documenthiërarchie (standaard `h3`).
+
+### Variant-label (screenreaders)
+
+- De varianten **info**, **positive**, **negative** en **warning** krijgen automatisch een visueel verborgen tekst: `Informatie: `, `Succes: `, `Foutmelding: ` en `Let op: `. **Neutral** heeft geen label: die variant claimt bewust geen semantisch signaal.
+- Met heading komt het label vóór de heading-tekst; zonder heading staat het als losse `<span class="dsn-visually-hidden">` vóór de content.
+- Benoemt de heading de variant zelf al (bijv. `"Waarschuwing"`)? Onderdruk het label dan met `variantLabel=""` om een dubbele aankondiging te voorkomen.
+- Gebruik `variantLabel` met eigen tekst voor anderstalige interfaces, bijv. `variantLabel="Warning: "`. Neem het scheidingsteken en de spatie op in de waarde.
 
 ### Landmark semantiek
 
@@ -98,6 +105,8 @@ Bij `as="nav"`, `as="aside"` of `as="section"` + een `heading` prop: de Note kop
 ## Accessibility
 
 - Het icoon heeft altijd `aria-hidden="true"`: de heading (of body) is de informatiedrager.
+- Een visueel verborgen variant-label benoemt de niet-neutrale varianten voor screenreadergebruikers (`Informatie: `, `Succes: `, `Foutmelding: `, `Let op: `). Aanpasbaar of te onderdrukken via de `variantLabel` prop. Er is bewust gekozen voor echte (verborgen) tekst in plaats van een `aria-label` op het icoon: tekst wordt wél meevertaald door vertaaltools, werkt in braille-weergave en blijft beschikbaar wanneer het icoon wordt onderdrukt via `iconStart={null}`.
+- Bij landmark-gebruik (`as="nav"` etc.) met heading wordt het variant-label onderdeel van de landmark-naam via `aria-labelledby`.
 - Geen live region: de Note heeft geen `role="alert"` en wordt niet spontaan voorgelezen.
 - Bij `as="nav"`, `as="aside"` of `as="section"` + `heading`: automatisch `aria-labelledby` gekoppeld.
 - Pas `headingLevel` aan op de documenthiërarchie zodat de heading in de juiste nesting valt.

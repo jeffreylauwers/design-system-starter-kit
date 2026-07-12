@@ -4,7 +4,7 @@ Belangrijk bericht dat de gebruiker informeert over de huidige activiteit of toe
 
 ## Doel
 
-De Alert component toont een prominent bericht op de pagina: bij een succesvolle actie, een foutmelding, een waarschuwing of een informatief bericht. Vier varianten: **info**, **positive**, **negative** en **warning**: geven elk een eigen signaalkleur, linkerborder en achtergrond. Een decoratief icoon versterkt de status visueel, maar de heading draagt altijd de betekenis.
+De Alert component toont een prominent bericht op de pagina: bij een succesvolle actie, een foutmelding, een waarschuwing of een informatief bericht. Vier varianten: **info**, **positive**, **negative** en **warning**: geven elk een eigen signaalkleur, linkerborder en achtergrond. Een decoratief icoon versterkt de status visueel; een visueel verborgen variant-label vóór de heading maakt de variant ook voor screenreadergebruikers expliciet.
 
 <!-- VOORBEELD -->
 
@@ -50,6 +50,13 @@ Een Alert communiceert altijd een toestand die het systeem heeft vastgesteld. El
 - Houd de heading beknopt: één zin die de kern van het bericht weergeeft.
 - Pas `headingLevel` aan op de documentstructuur (standaard `h2`).
 
+### Variant-label (screenreaders)
+
+- Elke variant krijgt automatisch een visueel verborgen tekst vóór de heading: **info** → `Informatie: `, **positive** → `Succes: `, **negative** → `Foutmelding: `, **warning** → `Let op: `. Screenreadergebruikers krijgen zo dezelfde signaalinformatie die ziende gebruikers uit kleur en icoon halen.
+- In de HTML/CSS-laag is dit een `<span class="dsn-visually-hidden">Foutmelding: </span>` als eerste kind van de heading.
+- Benoemt de heading de variant zelf al (bijv. `"Foutmelding"`)? Onderdruk het label dan met `variantLabel=""` om een dubbele aankondiging te voorkomen.
+- Gebruik `variantLabel` met eigen tekst voor anderstalige interfaces, bijv. `variantLabel="Error: "`. Neem het scheidingsteken en de spatie op in de waarde.
+
 ### Content
 
 - Body content (`children`) is optioneel. Gebruik het voor aanvullende uitleg, een opsomming van validatiefouten of een link.
@@ -94,6 +101,6 @@ Een Alert communiceert altijd een toestand die het systeem heeft vastgesteld. El
 
 - `role="alert"` maakt de component een assertieve live region: screenreaders lezen het voor zodra het in de DOM verschijnt.
 - Het icoon heeft altijd `aria-hidden="true"`: de heading is de informatiedrager.
-- De heading (`<strong class="dsn-alert__heading">`) geeft semantisch gewicht aan het bericht.
+- Een visueel verborgen variant-label vóór de heading-tekst benoemt de variant voor screenreadergebruikers (`Informatie: `, `Succes: `, `Foutmelding: `, `Let op: `). Aanpasbaar of te onderdrukken via de `variantLabel` prop. Er is bewust gekozen voor echte (verborgen) tekst in plaats van een `aria-label` op het icoon: tekst wordt wél meevertaald door vertaaltools, werkt in braille-weergave en blijft beschikbaar wanneer het icoon wordt onderdrukt via `iconStart={null}`.
 - Pas `headingLevel` aan op de documenthiërarchie zodat de heading in de juiste nesting valt.
 - Alert is niet klikbaar: voor interactieve alertberichten: voeg links of knoppen toe via `children`.

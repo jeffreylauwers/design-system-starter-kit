@@ -1558,7 +1558,7 @@ Brengt consistente verticale ruimte aan tussen directe child-elementen via `flex
 
 **Variants (4 total):** `info` (default), `positive`, `negative`, `warning`
 
-**Props:** `variant`, `heading`, `headingLevel`, `iconStart`, `children`
+**Props:** `variant`, `heading`, `headingLevel`, `iconStart`, `variantLabel`, `children`
 
 **Features:**
 
@@ -1567,6 +1567,7 @@ Brengt consistente verticale ruimte aan tussen directe child-elementen via `flex
 - `grid-template-columns: var(--dsn-icon-size-xl) 1fr`
 - Voorkeurspicoon per variant; overschrijfbaar via `iconStart` (`null` = geen icoon)
 - `heading` verplicht; `headingLevel` default `2` (visueel als `heading-3`)
+- Visueel verborgen variant-label vóór de heading benoemt de variant voor screenreaders: `Informatie: ` / `Succes: ` / `Foutmelding: ` / `Let op: `. Aanpasbaar via `variantLabel` (eigen tekst voor andere talen; `''` onderdrukt het label als de heading de variant al benoemt). Bewust echte verborgen tekst in plaats van `aria-label` op de svg: wordt meevertaald door vertaaltools, werkt in braille en blijft beschikbaar zonder icoon
 - Volledige border rondom (niet alleen inline-start)
 - Body content via `children`: gebruik `<Paragraph>` voor tekst, `<UnorderedList>` voor lijsten
 
@@ -1575,19 +1576,24 @@ Brengt consistente verticale ruimte aan tussen directe child-elementen via `flex
 ```html
 <div class="dsn-alert" role="alert">
   <span class="dsn-alert__icon" aria-hidden="true">
-    <svg class="dsn-icon" aria-hidden="true"><!-- info-circle --></svg>
+    <svg class="dsn-icon dsn-icon--xl" aria-hidden="true">
+      <!-- info-circle -->
+    </svg>
   </span>
-  <h2 class="dsn-alert__heading dsn-heading dsn-heading--3">Heading</h2>
+  <h2 class="dsn-heading dsn-heading--heading-3 dsn-alert__heading">
+    <span class="dsn-visually-hidden">Informatie: </span>Heading
+  </h2>
   <div class="dsn-alert__content">
     <p class="dsn-paragraph">Body content.</p>
   </div>
 </div>
 
 <!-- Varianten: dsn-alert--positive / dsn-alert--negative / dsn-alert--warning -->
-<!-- Geen icoon: dsn-alert--no-icon (klasse op root, span weglaten) -->
+<!-- Variant-label per variant: Informatie: / Succes: / Foutmelding: / Let op: -->
+<!-- Geen icoon: dsn-alert--no-icon (klasse op root, span weglaten; variant-label blijft) -->
 ```
 
-**Tests:** React (15 tests)
+**Tests:** React (38 tests)
 
 ### Note
 
@@ -1599,7 +1605,7 @@ Brengt consistente verticale ruimte aan tussen directe child-elementen via `flex
 
 **Variants (5 total):** `neutral` (default), `info`, `positive`, `negative`, `warning`
 
-**Props:** `as`, `variant`, `heading`, `headingLevel`, `iconStart`, `children`
+**Props:** `as`, `variant`, `heading`, `headingLevel`, `iconStart`, `variantLabel`, `children`
 
 **Features:**
 
@@ -1611,22 +1617,28 @@ Brengt consistente verticale ruimte aan tussen directe child-elementen via `flex
 - `as` prop: `div` (default), `aside`, `nav`, `section`: semantiek losgekoppeld van visuele stijl
 - Automatische `aria-labelledby` via `useId()` voor landmark-elementen met heading
 - `heading` optioneel (Alert: verplicht); `headingLevel` default `3`
+- Visueel verborgen variant-label benoemt de niet-neutrale varianten voor screenreaders (zelfde teksten en `variantLabel` prop als Alert); `neutral` heeft bewust geen label. Met heading komt het label vóór de heading-tekst, zonder heading als losse `<span class="dsn-visually-hidden">` vóór de content
 
 **HTML/CSS:**
 
 ```html
-<div class="dsn-note">
+<div class="dsn-note dsn-note--info">
   <span class="dsn-note__icon" aria-hidden="true">
-    <svg class="dsn-icon" aria-hidden="true"><!-- info-circle --></svg>
+    <svg class="dsn-icon dsn-icon--xl" aria-hidden="true">
+      <!-- info-circle -->
+    </svg>
   </span>
-  <h3 class="dsn-heading dsn-heading--3 dsn-note__heading">Heading</h3>
+  <h3 class="dsn-heading dsn-heading--heading-3 dsn-note__heading">
+    <span class="dsn-visually-hidden">Informatie: </span>Heading
+  </h3>
   <div class="dsn-note__content">
     <p class="dsn-paragraph">Body content.</p>
   </div>
 </div>
 
 <!-- Varianten: dsn-note--info / dsn-note--positive / dsn-note--negative / dsn-note--warning -->
-<!-- Zonder heading: dsn-note--no-heading -->
+<!-- Neutral (default, geen modifier) heeft geen variant-label -->
+<!-- Zonder heading: dsn-note--no-heading; variant-label als losse span vóór de content -->
 <!-- Landmark: <aside>, <nav>, <section> i.p.v. <div> -->
 ```
 
@@ -1651,7 +1663,7 @@ Brengt consistente verticale ruimte aan tussen directe child-elementen via `flex
 </Note>
 ```
 
-**Tests:** React (18 tests)
+**Tests:** React (50 tests)
 
 ### Table
 

@@ -6,6 +6,18 @@ All notable changes to this project are documented in this file.
 
 ---
 
+## Unreleased
+
+### Alert & Note: variant hoorbaar voor screenreaders
+
+#### Changed
+
+- **Visueel verborgen variant-label** (PR [#312](https://github.com/jeffreylauwers/design-system-starter-kit/pull/312), issue [#297](https://github.com/jeffreylauwers/design-system-starter-kit/issues/297)): Alert en Note benoemen de variant nu ook voor screenreadergebruikers via een `<span class="dsn-visually-hidden">` vóór de heading (of als losse span vóór de content bij een Note zonder heading). Defaults per variant: `Informatie: ` / `Succes: ` / `Foutmelding: ` / `Let op: `; Note-variant `neutral` heeft bewust geen label.
+  - Nieuwe prop `variantLabel` op beide componenten: eigen tekst (bijv. andere taal) of `''` om het label te onderdrukken wanneer de heading de variant al benoemt
+  - Bewust echte verborgen tekst in plaats van `aria-label` op de svg: wordt meevertaald door vertaaltools, werkt in braille en blijft beschikbaar als het icoon wordt onderdrukt via `iconStart={null}`; het icoon blijft decoratief (`aria-hidden`)
+  - Let op: geen API-breaking change, maar de voorgelezen output van elke bestaande Alert en niet-neutrale Note verandert (het label komt erbij)
+  - Het foutmelding-summary patroon (FormFlowPatterns, `docs/07-form-flow-patterns.md`, FormStepExtendedPage-template) gebruikt `variantLabel=""` omdat de heading "Er is een foutmelding" de variant daar al benoemt
+
 ## Version 1.0.6 (July 10, 2026)
 
 ### TableOfContents: nieuw component
