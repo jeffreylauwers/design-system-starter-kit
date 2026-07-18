@@ -6,6 +6,12 @@ All notable changes to this project are documented in this file.
 
 ---
 
+## Unreleased
+
+Nog niet gepubliceerde wijzigingen. Schrijf nieuwe changelog-entries hieronder; bij de volgende release wordt deze kop gepromoveerd naar het definitieve versienummer.
+
+---
+
 ## Version 2.0.0 (July 12, 2026)
 
 Grote release die alle wijzigingen sinds v1.0.2 bundelt en publiceert naar npm. Bevat één breaking change in de HTML/CSS-laag (ActionGroup-markup). React-consumers zijn niet geraakt, afgezien van een gewijzigde DOM-structuur.
