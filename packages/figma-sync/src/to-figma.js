@@ -63,15 +63,67 @@ const COUNTER_AXIS_ALIGN = {
 // NODE-CONVERSIE
 // =============================================================================
 
+/**
+ * Telt de tracks in een computed grid-template.
+ * De browser lost `1fr` op naar pixels, dus de tracks komen er als
+ * pixelwaarden uit: `"32px 500px"`.
+ */
+function trackSizes(template) {
+  if (!template || template === 'none') return [];
+  return template
+    .split(/\s+/)
+    .map((track) => Number.parseFloat(track))
+    .filter((track) => Number.isFinite(track));
+}
+
+/**
+ * CSS Grid naar Figma's GRID auto layout.
+ *
+ * Figma kent sinds 2025 een grid-layoutmodus met expliciete plaatsing per kind
+ * (gridColumnAnchorIndex / gridRowAnchorIndex). Dat past op een grid met
+ * expliciete `grid-column` / `grid-row`, zoals Alert.
+ */
+function gridLayoutFrom(styles, warnings, pathLabel) {
+  const columns = trackSizes(styles.gridTemplateColumns);
+  const rows = trackSizes(styles.gridTemplateRows);
+
+  // De browser lost fr-tracks op naar pixels, dus hier is niet meer te zien
+  // welke track flexibel was. De designer moet dat in Figma nazetten.
+  if (columns.length > 1) {
+    warnings.push(
+      `${pathLabel}: grid-tracks komen als vaste pixelmaten binnen; controleer in Figma welke track flexibel moet zijn`
+    );
+  }
+
+  return {
+    layoutMode: 'GRID',
+    gridColumnCount: Math.max(columns.length, 1),
+    gridRowCount: Math.max(rows.length, 1),
+    gridColumnGap: px(styles.columnGap ?? styles.gap),
+    gridRowGap: px(styles.rowGap ?? styles.gap),
+    gridAutoTracks: {
+      columns: columns.map((value) => ({ type: 'FIXED', value })),
+      rows: rows.map((value) => ({ type: 'FIXED', value })),
+    },
+    // De kinderen dragen hun eigen cel, dus Figma moet niet zelf plaatsen.
+    gridItemsPositioning: 'MANUAL',
+    paddingTop: px(styles.paddingTop),
+    paddingRight: px(styles.paddingRight),
+    paddingBottom: px(styles.paddingBottom),
+    paddingLeft: px(styles.paddingLeft),
+    stretchChildren: false,
+    reversed: false,
+  };
+}
+
 /** Bouwt de auto layout-eigenschappen uit de flexbox computed styles. */
 function autoLayoutFrom(styles, warnings, pathLabel) {
+  if (styles.display === 'grid' || styles.display === 'inline-grid') {
+    return gridLayoutFrom(styles, warnings, pathLabel);
+  }
+
   const isFlex = styles.display === 'flex' || styles.display === 'inline-flex';
   if (!isFlex) {
-    if (styles.display === 'grid' || styles.display === 'inline-grid') {
-      warnings.push(
-        `${pathLabel}: display:grid heeft geen auto layout-equivalent, wordt een vaste frame-layout`
-      );
-    }
     return { layoutMode: 'NONE' };
   }
 
@@ -196,6 +248,67 @@ function paintFrom(cssColor) {
 }
 
 /**
+ * Zet de plaatsing van een kind binnen zijn ouder.
+ *
+ * Twee gevallen die niet in de gewone auto layout-stroom passen:
+ * een absoluut gepositioneerd kind (Figma: layoutPositioning ABSOLUTE) en een
+ * kind met een expliciete cel in een grid (Figma: grid anchors).
+ */
+function applyChildPlacement(
+  converted,
+  child,
+  parentLayout,
+  warnings,
+  label,
+  parentContentWidth
+) {
+  const styles = child.styles;
+  if (!styles) return;
+
+  // Een kind dat precies de binnenbreedte van zijn ouder vult is een
+  // blok-element. In Figma hoort dat FILL te zijn: met een vaste breedte
+  // schaalt het niet mee als de ouder groeit.
+  if (
+    parentContentWidth !== undefined &&
+    Math.abs(child.rect.width - parentContentWidth) < 1
+  ) {
+    converted.layoutSizingHorizontal = 'FILL';
+  }
+
+  if (styles.position === 'absolute' || styles.position === 'fixed') {
+    // Een absoluut kind valt buiten de stroom; Figma houdt het op zijn plek
+    // ten opzichte van de ouder in plaats van het mee te laten stromen.
+    converted.layoutPositioning = 'ABSOLUTE';
+    return;
+  }
+
+  if (parentLayout.layoutMode !== 'GRID') return;
+
+  const columnStart = Number.parseInt(styles.gridColumnStart, 10);
+  const rowStart = Number.parseInt(styles.gridRowStart, 10);
+
+  if (!Number.isFinite(columnStart) || !Number.isFinite(rowStart)) {
+    warnings.push(
+      `${label}: geen expliciete grid-cel, Figma plaatst dit kind zelf in leesvolgorde`
+    );
+    return;
+  }
+
+  // CSS-gridlijnen tellen vanaf 1, Figma's anchors vanaf 0.
+  converted.gridColumnAnchorIndex = columnStart - 1;
+  converted.gridRowAnchorIndex = rowStart - 1;
+
+  const columnEnd = Number.parseInt(styles.gridColumnEnd, 10);
+  const rowEnd = Number.parseInt(styles.gridRowEnd, 10);
+  if (Number.isFinite(columnEnd) && columnEnd - columnStart > 1) {
+    converted.gridColumnSpan = columnEnd - columnStart;
+  }
+  if (Number.isFinite(rowEnd) && rowEnd - rowStart > 1) {
+    converted.gridRowSpan = rowEnd - rowStart;
+  }
+}
+
+/**
  * Zet één DOM-node om naar een Figma-node.
  *
  * @param {object} node computed DOM-node
@@ -250,6 +363,14 @@ function convertNode(node, warnings, pathLabel) {
   }
 
   const { stretchChildren, reversed, ...autoLayout } = layout;
+
+  // Binnenbreedte van dit element: de rect min padding en randen.
+  const contentWidth =
+    node.rect.width -
+    px(styles.paddingLeft) -
+    px(styles.paddingRight) -
+    px(styles.borderLeftWidth) -
+    px(styles.borderRightWidth);
   const children = reversed ? [...node.children].reverse() : node.children;
 
   const figmaNode = {
@@ -275,6 +396,14 @@ function convertNode(node, warnings, pathLabel) {
         });
       }
       if (stretchChildren) converted.layoutAlign = 'STRETCH';
+      applyChildPlacement(
+        converted,
+        child,
+        autoLayout,
+        warnings,
+        childLabel,
+        contentWidth
+      );
       return converted;
     }),
   };

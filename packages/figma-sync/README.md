@@ -71,11 +71,34 @@ Figma auto layout past:
 | `padding-*`                        | `padding*`                          |
 | `justify-content` / `align-items`  | `primary` / `counterAxisAlignItems` |
 | `display: inline-flex`             | `layoutSizingHorizontal: HUG`       |
+| `display: grid` + `grid-column`    | `layoutMode: GRID` + grid anchors   |
+| `position: absolute`               | `layoutPositioning: ABSOLUTE`       |
+| kind vult de binnenbreedte         | `layoutSizingHorizontal: FILL`      |
 
 Een element dat alleen tekst bevat en zelf niets tekent, wordt één TEXT-node in
 plaats van een frame met een tekstnode erin. Zonder die stap krijgt elke `<span>`
 een eigen frame en ontstaat de diepe nesting die een Figma-library onwerkbaar
 maakt.
+
+### Wat er wordt overgeslagen
+
+Elementen met de klasse `dsn-visually-hidden` en elementen met `opacity: 0`
+(zoals de native input onder een custom checkbox-control) leveren in Figma
+alleen een onzichtbare node op en worden daarom niet meegenomen.
+
+### Drie valkuilen bij het meten
+
+Deze drie leverden allemaal stilzwijgend verkeerde waarden op en zijn de reden
+dat de extractor eruitziet zoals hij eruitziet:
+
+1. **Transitions.** `getComputedStyle` leest tijdens een transition de
+   tussenwaarde, niet de eindwaarde. Een hover-kleur werd zo halverwege
+   gemeten. De pagina zet daarom `transition` en `animation` op `none`.
+2. **De cursor blijft staan.** Na een hover-variant staat de muis er nog, dus
+   elke volgende variant meet óók als hover. De cursor gaat nu voor elke
+   variant terug naar (0, 0).
+3. **Webfonts.** Zonder `document.fonts.ready` meet de eerste variant met een
+   systeemfont en wijken de breedtes af van de rest.
 
 ## Een component toevoegen
 

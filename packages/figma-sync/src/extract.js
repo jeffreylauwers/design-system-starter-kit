@@ -35,6 +35,17 @@ const CAPTURED_PROPERTIES = [
   'columnGap',
   'alignItems',
   'justifyContent',
+  'alignSelf',
+  'gridTemplateColumns',
+  'gridTemplateRows',
+  'gridColumnStart',
+  'gridColumnEnd',
+  'gridRowStart',
+  'gridRowEnd',
+  'top',
+  'right',
+  'bottom',
+  'left',
   'paddingTop',
   'paddingRight',
   'paddingBottom',
@@ -67,11 +78,18 @@ const CAPTURED_PROPERTIES = [
 ];
 
 /**
+ * Klasse die een element alleen voor screenreaders bedoeld maakt. Zulke
+ * elementen staan buiten beeld geklemd op 1x1px en hebben in Figma geen
+ * tegenhanger; ze zouden alleen maar een onzichtbare 1px-node opleveren.
+ */
+const VISUALLY_HIDDEN_CLASS = 'dsn-visually-hidden';
+
+/**
  * Loopt de DOM af binnen de browser en geeft een boom terug met per element
  * de computed styles en de positie ten opzichte van de root.
  */
 /* c8 ignore start - draait in de browsercontext, niet in Node */
-function domWalker(properties) {
+function domWalker([properties, hiddenClass]) {
   const root = document.querySelector('[data-figma-root]');
   if (!root) throw new Error('geen [data-figma-root] gevonden');
   const origin = root.getBoundingClientRect();
@@ -111,8 +129,12 @@ function domWalker(properties) {
         if (text) node.children.push({ kind: 'text', text });
         continue;
       }
-      if (child.nodeType === Node.ELEMENT_NODE)
-        node.children.push(visit(child));
+      if (child.nodeType !== Node.ELEMENT_NODE) continue;
+      if (child.classList.contains(hiddenClass)) continue;
+      // Volledig doorzichtige elementen (zoals de native input onder een
+      // custom control) leveren in Figma alleen een onzichtbare node op.
+      if (getComputedStyle(child).opacity === '0') continue;
+      node.children.push(visit(child));
     }
 
     return node;
@@ -153,22 +175,48 @@ export async function extractMatrix(matrix) {
            /* Neutrale ondergrond zodat de component zelf de enige bron van
               layout is en er geen body-marges meelekken. */
            *, *::before, *::after { box-sizing: border-box; }
+
+           /* Transitions en animaties uitzetten. getComputedStyle leest
+              tijdens een transition de tussenwaarde, niet de eindwaarde, en
+              dan meten we halverwege een hover-kleur of een icoon dat nog
+              aan het infaden is. */
+           *, *::before, *::after {
+             transition: none !important;
+             animation: none !important;
+           }
            body { margin: 0; padding: 40px; background: #fff; }
          </style>${fontLinks}<style>${stylesheets}</style></head>
-         <body>${matrix.render(combination)}</body></html>`,
+         <body><div style="${matrix.wrapperStyle ?? ''}">${matrix.render(combination)}</div></body></html>`,
         { waitUntil: 'load' }
       );
+
+      // Toestanden die niet in markup uit te drukken zijn (zoals de
+      // indeterminate-property van een checkbox) worden hier gezet.
+      if (matrix.domSetup)
+        await page.evaluate(`(() => { ${matrix.domSetup} })()`);
 
       // Zonder document.fonts.ready meet de eerste variant nog met een
       // fallback-font en wijken de breedtes af van de rest.
       await page.evaluate(() => document.fonts.ready);
 
-      const pseudo = matrix.pseudoStates?.[combination.state];
+      // De cursor blijft tussen varianten staan waar hij stond. Zonder hem
+      // eerst weg te zetten meet elke variant na een hover-variant óók als
+      // hover, want het element staat op dezelfde plek.
+      await page.mouse.move(0, 0);
+
+      // De pseudo-toestand kan op elke as staan, niet per se op een as die
+      // toevallig 'state' heet.
+      const pseudo = Object.values(combination)
+        .map((value) => matrix.pseudoStates?.[value])
+        .find(Boolean);
       if (pseudo === 'hover') {
         await page.hover('[data-figma-root]');
       }
 
-      const tree = await page.evaluate(domWalker, CAPTURED_PROPERTIES);
+      const tree = await page.evaluate(domWalker, [
+        CAPTURED_PROPERTIES,
+        VISUALLY_HIDDEN_CLASS,
+      ]);
       results.push({ variant: combination, tree });
     }
   } finally {
