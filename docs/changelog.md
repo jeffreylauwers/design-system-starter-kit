@@ -10,6 +10,19 @@ All notable changes to this project are documented in this file.
 
 Nog niet gepubliceerde wijzigingen. Schrijf nieuwe changelog-entries hieronder; bij de volgende release wordt deze kop gepromoveerd naar het definitieve versienummer.
 
+### Figma-integratie
+
+#### Added
+
+- **Design tokens en componenten naar Figma** (PR [#319](https://github.com/jeffreylauwers/design-system-starter-kit/pull/319), [DR-2026-05](./decisions/DR-2026-05-figma-genereren-uit-code-via-plugin.md)): de tokens en de HTML/CSS-laag worden nu gegenereerd naar JSON die een eigen Figma-plugin inleest. Code blijft de bron van waarheid; alles wat naar Figma gaat staat als JSON in de repo en is dus reviewbaar in een PR.
+  - Twee nieuwe private packages: `figma-sync` (rendert elke variant headless en leest de computed styles, zodat flexbox 1-op-1 op Figma auto layout mapt) en `figma-plugin` (schrijft naar Figma via de Plugin API, geen token nodig)
+  - `design-tokens` heeft een `build:figma`-script dat `dist/figma/variables.json` schrijft: 1308 variables over drie collections, waarvan 783 als alias zodat de theme-schakelaar in Figma automatisch doorwerkt
+  - Fluid typografie krijgt een mode per viewport (`default-mobile` 375px, `default-desktop` 1440px) in plaats van één vastgeprikte waarde; er wordt mobile-first gemeten zodat component en variable dezelfde waarde geven
+  - Vijf componenten met een variant-matrix: Button, Alert, Card, Checkbox en Radio (54 varianten)
+  - `pnpm test:figma-plugin` draait de import-logica tegen een mock van de Plugin API en dwingt de volgorde-eisen af die in Figma echt fouten geven
+  - Alles wat niet naar een Figma-variable te vertalen is (box shadows, transitions, `ch`-eenheden) staat met reden in `dist/figma/variables-report.json`
+  - De Figma-build staat bewust los van `build:tokens`: de token-CSS is het hoofdproduct en hoort niet om te vallen door een generator die er alleen maar naast draait
+
 ---
 
 ## Version 2.0.0 (July 12, 2026)

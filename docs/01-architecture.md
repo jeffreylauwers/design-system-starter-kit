@@ -53,6 +53,8 @@ design-system-starter-kit/
 │   │   └── src/
 │   │       ├── config/
 │   │       │   ├── build.js     # Multi-config build script
+│   │       │   ├── build-figma.js # Schrijft dist/figma/variables.json
+│   │       │   ├── figma.js     # Token -> Figma variable conversie
 │   │       │   └── config.js    # Configuration matrix
 │   │       └── tokens/
 │   │           ├── themes/
@@ -108,6 +110,15 @@ design-system-starter-kit/
 │   │   └── scripts/
 │   │       └── generate-icons.js # Icon registry generator
 │   ├── components-web/          # @dsn-starter-kit/components-web
+│   ├── figma-sync/              # Genereert Figma node specs uit de HTML/CSS-laag
+│   │   └── src/
+│   │       ├── extract.js       # Headless render, leest computed styles
+│   │       ├── to-figma.js      # Computed DOM -> Figma node spec
+│   │       └── matrices/        # Variant-matrix per component
+│   ├── figma-plugin/            # Schrijft de gegenereerde JSON naar Figma
+│   │   ├── manifest.json        # Plugin-manifest (importeren in Figma Desktop)
+│   │   ├── scripts/             # Mock van de Plugin API + smoke test
+│   │   └── src/
 │   └── storybook/               # Documentation site
 │       ├── .storybook/
 │       │   ├── main.ts          # Storybook config + multilevel-sort
@@ -125,6 +136,7 @@ design-system-starter-kit/
 │   ├── 03-components.md
 │   ├── 04-development-workflow.md
 │   ├── 05-storybook-configuration.md
+│   ├── decisions/               # Decision records (DR-YYYY-NN)
 │   └── changelog.md
 ├── .eslintrc.js                 # ESLint config (ignores *.generated.*)
 ├── tsconfig.json                # Root TypeScript config

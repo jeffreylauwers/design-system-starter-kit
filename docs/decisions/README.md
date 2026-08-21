@@ -12,6 +12,7 @@ Een decision record documenteert **waarom** iets is zoals het is — niet alleen
 | [DR-2026-02](DR-2026-02-twee-lagenpatroon-html-css-plus-react.md) | HTML/CSS als bron van waarheid, React als wrapper                    | Accepted |
 | [DR-2026-03](DR-2026-03-breakpoints-als-reference-only-tokens.md) | Breakpoints als reference-only tokens, hardcoded in CSS @media rules | Accepted |
 | [DR-2026-04](DR-2026-04-htmltemplate-spiegelt-echte-render.md)    | Storybook `htmlTemplate` spiegelt de echte render en volgt de args   | Accepted |
+| [DR-2026-05](DR-2026-05-figma-genereren-uit-code-via-plugin.md)   | Figma-library genereren uit code, geschreven via een eigen plugin    | Accepted |
 
 ## Een nieuw record toevoegen
 

@@ -31,6 +31,12 @@ pnpm build:core        # Core utilities
 pnpm build:components  # All component packages
 pnpm build:storybook   # Storybook static site
 
+pnpm build:figma       # Hele Figma-keten: tokens, variables, componenten, plugin
+pnpm build:figma-variables   # dist/figma/variables.json
+pnpm build:figma-components  # Node specs per component
+pnpm build:figma-plugin      # Plugin-bundle
+pnpm test:figma-plugin       # Smoke test met een mock van de Figma Plugin API
+
 # Watch design tokens for changes
 pnpm --filter @dsn-starter-kit/design-tokens watch
 
