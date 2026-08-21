@@ -51,10 +51,23 @@ staan als `viewportPinned` in het report.
 ## Gebruik
 
 ```bash
-pnpm build:tokens                      # variables.json + report
+pnpm build:figma                       # de hele keten in één keer
+```
+
+Of per stap:
+
+```bash
+pnpm build:tokens                      # de gewone token-build
+pnpm build:figma-variables             # variables.json + report
 pnpm build:figma-components            # alle matrices
 pnpm build:figma-components button     # één component
+pnpm build:figma-plugin                # de plugin-bundle
 ```
+
+De Figma-stappen staan bewust los van `build:tokens`. De token-CSS is het
+hoofdproduct waar Storybook, de componenten en npm-consumenten van afhangen;
+die hoort niet om te vallen door een fout in een generator die er alleen maar
+naast draait. Faalt de Figma-keten, dan faalt alleen de Figma-keten.
 
 ## Hoe de componentgeneratie werkt
 

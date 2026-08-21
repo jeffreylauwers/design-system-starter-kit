@@ -2,7 +2,6 @@ import StyleDictionary from 'style-dictionary';
 import fs from 'fs';
 import path from 'path';
 import { fileURLToPath } from 'url';
-import { buildFigma } from './build-figma.js';
 import {
   themes,
   modes,
@@ -222,7 +221,6 @@ async function main() {
   await appendReducedMotion();
   await buildScopedConfigs();
   await buildHeroImageForceLightConfigs();
-  await buildFigma();
   createBackwardCompatibilityAliases();
   printSummary();
 }

@@ -24,7 +24,7 @@ manifest**, en kies `packages/figma-plugin/manifest.json`.
 1. Genereer de bestanden:
 
 ```bash
-pnpm build:tokens && pnpm build:figma-components
+pnpm build:figma
 ```
 
 2. Start de plugin in een Figma-bestand en sleep er een JSON in:

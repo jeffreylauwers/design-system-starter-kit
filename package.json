@@ -19,6 +19,8 @@
     "build:core": "pnpm --filter @dsn-starter-kit/core build",
     "build:components": "pnpm --filter @dsn-starter-kit/components-html build && pnpm --filter @dsn-starter-kit/components-react build && pnpm --filter @dsn-starter-kit/components-web build",
     "build:storybook": "pnpm --filter @dsn-starter-kit/storybook build",
+    "build:figma": "pnpm build:tokens && pnpm build:figma-variables && pnpm build:figma-components && pnpm build:figma-plugin",
+    "build:figma-variables": "pnpm --filter @dsn-starter-kit/design-tokens build:figma",
     "build:figma-components": "pnpm --filter @dsn-starter-kit/figma-sync build",
     "build:figma-plugin": "pnpm --filter @dsn-starter-kit/figma-plugin build",
     "test:figma-plugin": "pnpm --filter @dsn-starter-kit/figma-plugin test",
