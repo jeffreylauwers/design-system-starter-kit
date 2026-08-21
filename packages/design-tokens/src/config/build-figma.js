@@ -101,6 +101,10 @@ export async function buildFigma() {
         // doeltoken zelf niet naar een variable mapt. Deze variables krijgen een
         // vaste waarde en volgen dus geen theme- of mode-wissel.
         danglingReferences: payload.danglingReferences,
+        // Fluid waarden buiten de typografieschaal. Die zitten in collections
+        // met een andere mode-as en zijn daarom op één viewport vastgeprikt.
+        viewportPinnedCount: payload.viewportPinned.length,
+        viewportPinned: payload.viewportPinned,
       },
       null,
       2
@@ -109,8 +113,10 @@ export async function buildFigma() {
 
   console.log(summarise(payload));
   console.log(
-    `\n   ${payload.skipped.length} tokens overgeslagen (zie dist/figma/variables-report.json)`
+    `\n   ${payload.skipped.length} tokens overgeslagen, ` +
+      `${payload.viewportPinned.length} fluid waarden vastgeprikt op ${payload.meta.viewports.desktop}px`
   );
+  console.log('   (beide verantwoord in dist/figma/variables-report.json)');
   console.log('\n✅ dist/figma/variables.json\n');
 
   return payload;

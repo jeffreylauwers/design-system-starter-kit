@@ -23,11 +23,22 @@
 const ROOT_FONT_SIZE = 16;
 
 /**
- * Referentie-viewport voor het uitrekenen van fluid waarden (clamp met vw).
- * Figma-variables zijn statisch, dus een clamp() moet op één breedte worden
- * vastgeprikt. 1440px is een gangbare desktop-artboardbreedte.
+ * Viewports waarop fluid waarden (clamp met vw) worden uitgerekend.
+ *
+ * Een Figma-variable is statisch, dus een clamp() moet op een breedte worden
+ * vastgeprikt. In plaats van één willekeurige breedte te kiezen krijgt de
+ * typografieschaal een mode per viewport: de designer schakelt het artboard en
+ * de hele schaal volgt. 375px valt onder elke clamp-ondergrens, dus die mode
+ * bevat exact de ontworpen min-waarden.
  */
-const REFERENCE_VIEWPORT = 1440;
+export const VIEWPORTS = { mobile: 375, desktop: 1440 };
+
+/**
+ * Viewport voor waarden buiten de typografieschaal. Die zitten in collections
+ * met een andere mode-as (theme, light/dark) en kunnen er dus geen viewport-as
+ * bij hebben. Wat hierdoor wordt vastgeprikt komt in het report te staan.
+ */
+const DEFAULT_VIEWPORT = VIEWPORTS.desktop;
 
 export const COLLECTIONS = {
   primitives: 'dsn/Primitives',
@@ -68,18 +79,16 @@ function parseColor(input) {
 
 /**
  * Vervangt CSS-eenheden door pixelwaarden zodat de rest een kale som wordt.
- * vw wordt uitgerekend op REFERENCE_VIEWPORT, ch heeft geen betrouwbare
+ * vw wordt uitgerekend op de meegegeven viewport, ch heeft geen betrouwbare
  * conversie (hangt van het lettertype af) en levert daarom null op.
  */
-function unitsToPixels(expression) {
+function unitsToPixels(expression, viewport) {
   if (/[\d.]ch\b/.test(expression)) return null;
   if (/[\d.]e[m]\b/.test(expression)) return null;
 
   return expression
     .replace(/(-?[\d.]+)rem\b/g, (_, n) => String(Number(n) * ROOT_FONT_SIZE))
-    .replace(/(-?[\d.]+)vw\b/g, (_, n) =>
-      String((Number(n) / 100) * REFERENCE_VIEWPORT)
-    )
+    .replace(/(-?[\d.]+)vw\b/g, (_, n) => String((Number(n) / 100) * viewport))
     .replace(/(-?[\d.]+)px\b/g, (_, n) => String(Number(n)));
 }
 
@@ -120,7 +129,7 @@ function splitArguments(input) {
 
 /**
  * Lost clamp() en calc() van binnen naar buiten op tot er een getal overblijft.
- * clamp(min, preferred, max) wordt op REFERENCE_VIEWPORT uitgerekend.
+ * De vw-eenheden zijn op dat moment al door unitsToPixels vervangen.
  */
 function resolveFunctions(expression) {
   // calc() is puur rekenwerk, dus het keyword kan weg: de haakjes die
@@ -186,7 +195,7 @@ function substituteCssVars(expression, pixelsByCssName) {
  * Zet een lengte-achtige tokenwaarde om naar een getal in pixels.
  * Retourneert null als de waarde niet betrouwbaar te herleiden is.
  */
-function toPixels(input, pixelsByCssName) {
+function toPixels(input, pixelsByCssName, viewport = DEFAULT_VIEWPORT) {
   const value = String(input).trim();
 
   if (/^-?[\d.]+$/.test(value)) return Number(value);
@@ -194,7 +203,7 @@ function toPixels(input, pixelsByCssName) {
   const substituted = substituteCssVars(value, pixelsByCssName);
   if (substituted === null) return null;
 
-  const withPixels = unitsToPixels(substituted);
+  const withPixels = unitsToPixels(substituted, viewport);
   if (withPixels === null) return null;
 
   return resolveFunctions(withPixels);
@@ -233,7 +242,7 @@ const DURATION_PATTERN = /^-?[\d.]+m?s$/;
  * @param {Map<string, number>} [pixelsByCssName] Lookup om `var(--dsn-x)`
  *   binnen een tokenwaarde alsnog te kunnen uitrekenen.
  */
-export function mapTokenValue(token, pixelsByCssName) {
+export function mapTokenValue(token, pixelsByCssName, viewport) {
   const type = token.$type ?? token.type;
   const raw = token.$value ?? token.value;
   // Op elk padsegment matchen, niet alleen op de groep: `dsn.backdrop.z-index`
@@ -282,7 +291,7 @@ export function mapTokenValue(token, pixelsByCssName) {
   }
 
   // Alles wat overblijft proberen we als getal te lezen.
-  const pixels = toPixels(raw, pixelsByCssName);
+  const pixels = toPixels(raw, pixelsByCssName, viewport);
   if (pixels === null) {
     return { skip: `waarde "${raw}" is niet naar een getal te herleiden` };
   }
@@ -337,7 +346,7 @@ function collectionForToken(token) {
  * Meerdere passes, omdat een token dat `var(--x)` gebruikt kan verwijzen naar
  * een token dat zelf ook nog opgelost moet worden.
  */
-function buildPixelLookup(tokens) {
+function buildPixelLookup(tokens, viewport) {
   const lookup = new Map();
   const pending = [];
 
@@ -348,7 +357,7 @@ function buildPixelLookup(tokens) {
       pending.push({ cssName, raw });
       continue;
     }
-    const pixels = toPixels(raw);
+    const pixels = toPixels(raw, undefined, viewport);
     if (pixels !== null) lookup.set(cssName, pixels);
   }
 
@@ -356,7 +365,7 @@ function buildPixelLookup(tokens) {
   for (let round = 0; round < 5 && pending.length > 0; round += 1) {
     let resolvedThisRound = 0;
     for (let index = pending.length - 1; index >= 0; index -= 1) {
-      const pixels = toPixels(pending[index].raw, lookup);
+      const pixels = toPixels(pending[index].raw, lookup, viewport);
       if (pixels === null) continue;
       lookup.set(pending[index].cssName, pixels);
       pending.splice(index, 1);
@@ -388,6 +397,11 @@ export async function buildFigmaVariables({
     skipped.push({ token: token.path.join('.'), reason });
   };
 
+  // Fluid waarden buiten de typografieschaal. Die collections hebben een andere
+  // mode-as (theme, light/dark), dus daar kan geen viewport-as bij. Ze worden
+  // op DEFAULT_VIEWPORT vastgeprikt en hier verantwoord.
+  const viewportPinned = [];
+
   // ---------------------------------------------------------------------------
   // 1. Primitives: een mode per theme x light/dark combinatie.
   // ---------------------------------------------------------------------------
@@ -411,6 +425,14 @@ export async function buildFigmaVariables({
           continue;
         }
 
+        if (mapped.fluidSource && modeName === primitiveModes[0]) {
+          viewportPinned.push({
+            variable: name,
+            collection: COLLECTIONS.primitives,
+            source: mapped.fluidSource,
+          });
+        }
+
         if (!primitives.has(name)) {
           primitives.set(name, {
             name,
@@ -429,30 +451,88 @@ export async function buildFigmaVariables({
   // 2. Density: een mode per project-type (typografieschaal en overrides).
   // ---------------------------------------------------------------------------
   const density = new Map();
+  const densityModes = [];
+  const viewportNames = Object.keys(VIEWPORTS);
+
+  // Per project-type x viewport de hele tokenset uitrekenen. We houden alle
+  // waarden bij, niet alleen die van de Density-collection: een token als
+  // dsn.grid.gutter komt in het ene project-type uit een override en in het
+  // andere uit het component-bestand. Zonder de volledige set zou het in de
+  // default-modes geen waarde krijgen.
+  const measured = new Map();
+  const densityNames = new Set();
 
   for (const densityName of densities) {
-    const tokens = await loadTokens(themes[0], modes[0], densityName);
-    const pixels = buildPixelLookup(tokens);
-    for (const token of tokens) {
-      if (collectionForToken(token) !== COLLECTIONS.density) continue;
+    for (const viewportName of viewportNames) {
+      const tokens = await loadTokens(themes[0], modes[0], densityName);
+      const viewport = VIEWPORTS[viewportName];
+      const pixels = buildPixelLookup(tokens, viewport);
+      const values = new Map();
 
-      const mapped = mapTokenValue(token, pixels);
-      const name = toVariableName(token);
-      if (mapped.skip) {
-        if (densityName === densities[0]) noteSkip(token, mapped.skip);
-        continue;
+      for (const token of tokens) {
+        const isDensityToken =
+          collectionForToken(token) === COLLECTIONS.density;
+        const mapped = mapTokenValue(token, pixels, viewport);
+        const name = toVariableName(token);
+
+        if (mapped.skip) {
+          if (
+            isDensityToken &&
+            densityName === densities[0] &&
+            viewportName === viewportNames[0]
+          ) {
+            noteSkip(token, mapped.skip);
+          }
+          continue;
+        }
+
+        if (isDensityToken) densityNames.add(name);
+        values.set(name, { token, mapped });
       }
 
-      if (!density.has(name)) {
-        density.set(name, {
-          name,
-          type: mapped.figmaType,
-          description: token.$description ?? token.comment ?? '',
-          fluidSource: mapped.fluidSource,
-          valuesByMode: {},
-        });
+      measured.set(`${densityName}|${viewportName}`, values);
+    }
+  }
+
+  for (const densityName of densities) {
+    const valuesFor = (viewportName) =>
+      measured.get(`${densityName}|${viewportName}`);
+
+    // Levert elke viewport identieke waarden op? Dan is dit project-type niet
+    // fluid en zou een mode per viewport alleen maar ruis toevoegen.
+    const [first, ...rest] = viewportNames;
+    const isFluid = rest.some((viewportName) =>
+      [...densityNames].some(
+        (name) =>
+          valuesFor(viewportName).get(name)?.mapped.value !==
+          valuesFor(first).get(name)?.mapped.value
+      )
+    );
+
+    const modesForDensity = isFluid
+      ? viewportNames.map((viewportName) => ({
+          mode: `${densityName}-${viewportName}`,
+          viewportName,
+        }))
+      : [{ mode: densityName, viewportName: first }];
+
+    for (const { mode, viewportName } of modesForDensity) {
+      densityModes.push(mode);
+      for (const name of densityNames) {
+        const entry = valuesFor(viewportName).get(name);
+        if (!entry) continue;
+
+        if (!density.has(name)) {
+          density.set(name, {
+            name,
+            type: entry.mapped.figmaType,
+            description: entry.token.$description ?? entry.token.comment ?? '',
+            fluidSource: entry.mapped.fluidSource,
+            valuesByMode: {},
+          });
+        }
+        density.get(name).valuesByMode[mode] = entry.mapped.value;
       }
-      density.get(name).valuesByMode[densityName] = mapped.value;
     }
   }
 
@@ -487,6 +567,7 @@ export async function buildFigmaVariables({
       description: token.$description ?? token.comment ?? '',
       valuesByMode: { default: mapped.value },
       reference: referenceToVariableName(token.original.$value),
+      fluidSource: mapped.fluidSource,
     });
   }
 
@@ -501,11 +582,22 @@ export async function buildFigmaVariables({
 
   const danglingReferences = [];
   for (const variable of components.values()) {
-    const { reference } = variable;
+    const { reference, fluidSource } = variable;
     delete variable.reference;
+    delete variable.fluidSource;
+
+    // Een alias erft de mode van zijn doel en is dus niet vastgeprikt.
+    const collection = reference ? locate(reference) : null;
+    if (fluidSource && !collection) {
+      viewportPinned.push({
+        variable: variable.name,
+        collection: COLLECTIONS.components,
+        source: fluidSource,
+      });
+    }
+
     if (!reference) continue;
 
-    const collection = locate(reference);
     if (!collection) {
       // Het doel is zelf niet naar Figma te mappen (bijvoorbeeld een shadow).
       // De letterlijke waarde blijft dan staan.
@@ -522,7 +614,7 @@ export async function buildFigmaVariables({
     generatedAt: new Date().toISOString(),
     meta: {
       rootFontSize: ROOT_FONT_SIZE,
-      referenceViewport: REFERENCE_VIEWPORT,
+      viewports: VIEWPORTS,
     },
     collections: [
       {
@@ -532,7 +624,7 @@ export async function buildFigmaVariables({
       },
       {
         name: COLLECTIONS.density,
-        modes: densities,
+        modes: densityModes,
         variables: [...density.values()],
       },
       {
@@ -543,5 +635,6 @@ export async function buildFigmaVariables({
     ],
     skipped,
     danglingReferences,
+    viewportPinned,
   };
 }

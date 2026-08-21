@@ -20,6 +20,34 @@ Naast `variables.json` komt `variables-report.json` te staan met alles wat
 níet naar een variable te vertalen was, inclusief reden. Lees dat bestand bij
 elke review: het is de plek waar drift zichtbaar wordt.
 
+## Fluid typografie
+
+Een Figma-variable is statisch, dus een `clamp()` moet op een viewport worden
+vastgeprikt. In plaats van één willekeurige breedte te kiezen krijgt de
+`dsn/Density`-collection een mode per viewport:
+
+| mode                | viewport | `text/font-size/md` |
+| ------------------- | -------- | ------------------- |
+| `default-mobile`    | 375px    | 16px                |
+| `default-desktop`   | 1440px   | 19,4px              |
+| `information-dense` | n.v.t.   | 16px                |
+
+375px valt onder elke clamp-ondergrens, dus die mode bevat exact de ontworpen
+min-waarden. De bovengrens is bewust géén mode: die wordt pas bereikt vanaf
+ongeveer 1733px en komt op geen realistisch artboard voor.
+
+Een project-type dat niet fluid is krijgt automatisch één mode in plaats van
+een mode per viewport, zoals `information-dense` hierboven.
+
+35 component-variables aliassen naar deze collection, dus het schakelen van het
+artboard laat de hele typografie meebewegen zonder dat er iets opnieuw gebonden
+hoeft te worden.
+
+Twaalf fluid waarden staan buiten deze collection (de icon-sizes en vier
+`padding-*-with-icon`-tokens). Die hangen van theme én viewport af en zitten in
+een collection met een andere mode-as, dus ze zijn op 1440px vastgeprikt. Ze
+staan als `viewportPinned` in het report.
+
 ## Gebruik
 
 ```bash
