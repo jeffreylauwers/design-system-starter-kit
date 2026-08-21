@@ -105,6 +105,9 @@ export async function buildFigma() {
         // met een andere mode-as en zijn daarom op één viewport vastgeprikt.
         viewportPinnedCount: payload.viewportPinned.length,
         viewportPinned: payload.viewportPinned,
+        // Variables die niet in elke mode een waarde hadden en daarom zijn
+        // weggelaten; in Figma zouden ze op een standaardwaarde terugvallen.
+        incomplete: payload.incomplete,
       },
       null,
       2
@@ -116,7 +119,12 @@ export async function buildFigma() {
     `\n   ${payload.skipped.length} tokens overgeslagen, ` +
       `${payload.viewportPinned.length} fluid waarden vastgeprikt op ${payload.meta.viewports.desktop}px`
   );
-  console.log('   (beide verantwoord in dist/figma/variables-report.json)');
+  if (payload.incomplete.length) {
+    console.log(
+      `   ${payload.incomplete.length} variables weggelaten: niet in elke mode een waarde`
+    );
+  }
+  console.log('   (alles verantwoord in dist/figma/variables-report.json)');
   console.log('\n✅ dist/figma/variables.json\n');
 
   return payload;

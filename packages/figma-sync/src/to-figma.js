@@ -287,8 +287,11 @@ function applyChildPlacement(
 
   // Een kind dat precies de binnenbreedte van zijn ouder vult is een
   // blok-element. In Figma hoort dat FILL te zijn: met een vaste breedte
-  // schaalt het niet mee als de ouder groeit.
+  // schaalt het niet mee als de ouder groeit. FILL kan alleen binnen een
+  // auto-layout ouder; anders weigert de API het.
   if (
+    parentLayout.layoutMode &&
+    parentLayout.layoutMode !== 'NONE' &&
     parentContentWidth !== undefined &&
     Math.abs(child.rect.width - parentContentWidth) < 1
   ) {
@@ -428,10 +431,13 @@ function convertNode(node, warnings, pathLabel) {
     }),
   };
 
-  // Een inline-flex element hugt zijn inhoud; block-elementen vullen de breedte.
+  // HUG kan Figma alleen op een node met een eigen layoutMode; zonder
+  // auto layout is er niets om naar te huggen en weigert de API het.
+  const hasAutoLayout =
+    autoLayout.layoutMode && autoLayout.layoutMode !== 'NONE';
   figmaNode.layoutSizingHorizontal =
-    styles.display === 'inline-flex' ? 'HUG' : 'FIXED';
-  figmaNode.layoutSizingVertical = 'HUG';
+    hasAutoLayout && styles.display === 'inline-flex' ? 'HUG' : 'FIXED';
+  figmaNode.layoutSizingVertical = hasAutoLayout ? 'HUG' : 'FIXED';
 
   return figmaNode;
 }

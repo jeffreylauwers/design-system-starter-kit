@@ -20,6 +20,8 @@
     "build:components": "pnpm --filter @dsn-starter-kit/components-html build && pnpm --filter @dsn-starter-kit/components-react build && pnpm --filter @dsn-starter-kit/components-web build",
     "build:storybook": "pnpm --filter @dsn-starter-kit/storybook build",
     "build:figma-components": "pnpm --filter @dsn-starter-kit/figma-sync build",
+    "build:figma-plugin": "pnpm --filter @dsn-starter-kit/figma-plugin build",
+    "test:figma-plugin": "pnpm --filter @dsn-starter-kit/figma-plugin test",
     "dev": "pnpm --filter @dsn-starter-kit/storybook dev",
     "storybook": "pnpm --filter @dsn-starter-kit/storybook dev",
     "test": "vitest run",

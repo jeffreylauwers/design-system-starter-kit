@@ -1,0 +1,155 @@
+<style>
+  :root {
+    color-scheme: light dark;
+    font-family:
+      Inter,
+      -apple-system,
+      system-ui,
+      sans-serif;
+    font-size: 12px;
+  }
+  body {
+    margin: 0;
+    padding: 16px;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    height: 100vh;
+    box-sizing: border-box;
+  }
+  h1 {
+    font-size: 13px;
+    margin: 0;
+  }
+  p {
+    margin: 0;
+    opacity: 0.7;
+    line-height: 1.5;
+  }
+  .drop {
+    border: 1px dashed currentColor;
+    border-radius: 6px;
+    padding: 20px 16px;
+    text-align: center;
+    opacity: 0.85;
+    cursor: pointer;
+  }
+  .drop:hover,
+  .drop.over {
+    opacity: 1;
+    background: rgba(128, 128, 128, 0.12);
+  }
+  input[type='file'] {
+    display: none;
+  }
+  #log {
+    flex: 1;
+    overflow-y: auto;
+    border-radius: 6px;
+    background: rgba(128, 128, 128, 0.1);
+    padding: 8px;
+    font-family: ui-monospace, monospace;
+    font-size: 11px;
+    line-height: 1.6;
+    white-space: pre-wrap;
+    word-break: break-word;
+  }
+  .warn {
+    color: #b26a00;
+  }
+  .error {
+    color: #c5372c;
+  }
+  .status {
+    font-weight: 600;
+  }
+</style>
+
+<h1>DSN Sync</h1>
+<p>
+  Kies <code>variables.json</code> uit <code>design-tokens/dist/figma/</code>, of
+  een componentbestand uit <code>figma-sync/dist/</code>. Het formaat wordt
+  automatisch herkend.
+</p>
+
+<label class="drop" id="drop">
+  Sleep een JSON-bestand hierheen of klik om te kiezen
+  <input type="file" id="file" accept="application/json,.json" multiple />
+</label>
+
+<div id="log">Nog niets geïmporteerd.</div>
+
+<script>
+  const logElement = document.getElementById('log');
+  const drop = document.getElementById('drop');
+  const fileInput = document.getElementById('file');
+  let cleared = false;
+
+  function write(message, level) {
+    if (!cleared) {
+      logElement.textContent = '';
+      cleared = true;
+    }
+    const line = document.createElement('div');
+    if (level && level !== 'info') line.className = level;
+    line.textContent = message;
+    logElement.append(line);
+    logElement.scrollTop = logElement.scrollHeight;
+  }
+
+  async function handleFiles(files) {
+    for (const file of files) {
+      let payload;
+      try {
+        payload = JSON.parse(await file.text());
+      } catch (error) {
+        write(`${file.name}: geen geldige JSON (${error.message})`, 'error');
+        continue;
+      }
+
+      // Het schema bepaalt wat er geïmporteerd wordt, niet de bestandsnaam.
+      const kind =
+        payload.$schema === 'dsn-figma-variables/1'
+          ? 'variables'
+          : payload.$schema === 'dsn-figma-components/1'
+            ? 'components'
+            : null;
+
+      if (!kind) {
+        write(
+          `${file.name}: onbekend $schema "${payload.$schema ?? 'ontbreekt'}"`,
+          'error'
+        );
+        continue;
+      }
+
+      write(`> ${file.name}`);
+      parent.postMessage({ pluginMessage: { type: 'import', kind, payload } }, '*');
+    }
+  }
+
+  drop.addEventListener('dragover', (event) => {
+    event.preventDefault();
+    drop.classList.add('over');
+  });
+  drop.addEventListener('dragleave', () => drop.classList.remove('over'));
+  drop.addEventListener('drop', (event) => {
+    event.preventDefault();
+    drop.classList.remove('over');
+    handleFiles(event.dataTransfer.files);
+  });
+  fileInput.addEventListener('change', () => handleFiles(fileInput.files));
+
+  onmessage = (event) => {
+    const message = event.data.pluginMessage;
+    if (!message) return;
+    if (message.type === 'log') write(`  ${message.message}`, message.level);
+    if (message.type === 'done') {
+      const line = document.createElement('div');
+      line.className = 'status' + (message.ok ? '' : ' error');
+      line.textContent = (message.ok ? '✓ ' : '✗ ') + message.summary;
+      logElement.append(line);
+      logElement.scrollTop = logElement.scrollHeight;
+    }
+  };
+</script>

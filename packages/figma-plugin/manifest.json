@@ -1,0 +1,13 @@
+{
+  "name": "DSN Sync",
+  "id": "dsn-starter-kit-sync",
+  "api": "1.0.0",
+  "main": "dist/code.js",
+  "ui": "src/ui.html",
+  "editorType": ["figma"],
+  "documentAccess": "dynamic-page",
+  "networkAccess": {
+    "allowedDomains": ["none"],
+    "reasoning": "De plugin leest alleen bestanden die de gebruiker zelf kiest; er gaat niets het netwerk op."
+  }
+}

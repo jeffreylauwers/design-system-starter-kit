@@ -609,6 +609,45 @@ export async function buildFigmaVariables({
     variable.alias = { collection, name: reference };
   }
 
+  // Een variable die niet in elke mode een waarde heeft is in Figma kapot:
+  // de ontbrekende modes vallen terug op een standaardwaarde. Dat gebeurt bij
+  // een token dat maar in één theme bestaat, of dat in de ene mode wel en in
+  // de andere niet te mappen is (bijvoorbeeld transparent tegenover
+  // color-mix). Zulke variables gaan er alsnog uit, met verantwoording.
+  const incomplete = [];
+  const dropIncomplete = (map, modeNames, collectionName) => {
+    for (const [name, variable] of [...map]) {
+      if (!variable.valuesByMode) continue;
+      const missing = modeNames.filter(
+        (mode) => variable.valuesByMode[mode] === undefined
+      );
+      if (!missing.length) continue;
+      map.delete(name);
+      incomplete.push({ variable: name, collection: collectionName, missing });
+    }
+  };
+
+  dropIncomplete(primitives, primitiveModes, COLLECTIONS.primitives);
+  dropIncomplete(density, densityModes, COLLECTIONS.density);
+
+  // Aliassen die naar een zojuist verwijderde variable wezen kunnen niet meer.
+  for (const [name, variable] of [...components]) {
+    if (!variable.alias) continue;
+    const target =
+      variable.alias.collection === COLLECTIONS.primitives
+        ? primitives
+        : variable.alias.collection === COLLECTIONS.density
+          ? density
+          : components;
+    if (target.has(variable.alias.name)) continue;
+    components.delete(name);
+    incomplete.push({
+      variable: name,
+      collection: COLLECTIONS.components,
+      missing: [`aliasdoel ${variable.alias.name} is vervallen`],
+    });
+  }
+
   return {
     $schema: 'dsn-figma-variables/1',
     generatedAt: new Date().toISOString(),
@@ -636,5 +675,6 @@ export async function buildFigmaVariables({
     skipped,
     danglingReferences,
     viewportPinned,
+    incomplete,
   };
 }
