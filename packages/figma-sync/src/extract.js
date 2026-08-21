@@ -150,8 +150,24 @@ function domWalker([properties, hiddenClass]) {
  * @param {object} matrix Een matrixdefinitie uit src/matrices/
  * @returns {Promise<Array<{variant: object, tree: object}>>}
  */
+/**
+ * Documentstijlen die altijd meegeladen worden.
+ *
+ * body.css zet de basis-font-family. Zonder dit erft elk element dat zelf geen
+ * font-family declareert (een <div>, een <p> zonder eigen token) het
+ * browser-standaardlettertype, en meet de generator Times in plaats van het
+ * lettertype van het design system.
+ */
+const BASE_CSS = ['@dsn-starter-kit/components-html/src/body/body.css'];
+
+/**
+ * body.css hangt aan de klasse `.dsn-body`, niet aan het element. Een consument
+ * zet die klasse zelf op zijn body, dus de meetpagina doet dat ook.
+ */
+const BODY_CLASS = 'dsn-body';
+
 export async function extractMatrix(matrix) {
-  const stylesheets = matrix.css
+  const stylesheets = [...BASE_CSS, ...matrix.css]
     .map(resolveCssPath)
     .map((file) => fs.readFileSync(file, 'utf8'))
     .join('\n');
@@ -186,7 +202,7 @@ export async function extractMatrix(matrix) {
            }
            body { margin: 0; padding: 40px; background: #fff; }
          </style>${fontLinks}<style>${stylesheets}</style></head>
-         <body><div style="${matrix.wrapperStyle ?? ''}">${matrix.render(combination)}</div></body></html>`,
+         <body class="${BODY_CLASS}"><div style="${matrix.wrapperStyle ?? ''}">${matrix.render(combination)}</div></body></html>`,
         { waitUntil: 'load' }
       );
 

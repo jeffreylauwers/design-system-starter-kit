@@ -172,6 +172,49 @@ for (const file of componentFiles) {
     sizingWarnings.length === 0,
     sizingWarnings.length ? sizingWarnings[0].message : ''
   );
+
+  const placementWarnings = fresh.filter((p) =>
+    p.message.includes('plaatsing')
+  );
+  check(
+    'geen mislukte plaatsingen',
+    placementWarnings.length === 0,
+    placementWarnings.length ? placementWarnings[0].message : ''
+  );
+
+  // Iconen erven in de browser currentColor; Figma maakt er zwart van als de
+  // kleur niet expliciet wordt doorgezet.
+  const black = [];
+  const visit = (node, spec) => {
+    if (spec?.type === 'VECTOR' && spec.fills?.length) {
+      const vector = node.children?.[0];
+      const paint = vector?.strokes?.[0] ?? vector?.fills?.[0];
+      const expected = spec.fills[0].color;
+      if (
+        !paint ||
+        paint.color.r !== expected.r ||
+        paint.color.g !== expected.g ||
+        paint.color.b !== expected.b
+      ) {
+        black.push(spec.name ?? 'icon');
+      }
+    }
+    (spec?.children ?? []).forEach((childSpec, index) =>
+      visit(node.children?.[index], childSpec)
+    );
+  };
+  for (const [index, component] of payload.componentSet.components.entries()) {
+    // Het component-wrapperframe zit één niveau boven de gebouwde boom.
+    visit(
+      state.page.children.at(-1)?.children[index]?.children[0],
+      component.node
+    );
+  }
+  check(
+    'iconen dragen de tekstkleur',
+    black.length === 0,
+    black.length ? `${black.length} zwart gebleven` : ''
+  );
 }
 
 console.log(

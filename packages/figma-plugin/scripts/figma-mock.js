@@ -8,6 +8,8 @@
  * 1. `characters` zetten voordat het font geladen is
  * 2. `layoutSizing*` op FILL terwijl de ouder geen auto layout heeft
  * 3. `layoutSizing*` op HUG terwijl de node zelf geen layoutMode heeft
+ * 4. `gridColumnAnchorIndex` en `gridRowAnchorIndex` zijn read-only; plaatsen
+ *    in een grid gaat via setGridChildPosition(rowIndex, columnIndex)
  */
 
 let nextId = 1;
@@ -40,6 +42,34 @@ class Node {
   resize(width, height) {
     this.width = width;
     this.height = height;
+  }
+
+  // Read-only in de echte API: eraan toewijzen geeft "no setter for property".
+  get gridColumnAnchorIndex() {
+    return this._gridColumnAnchorIndex;
+  }
+  set gridColumnAnchorIndex(_value) {
+    throw new Error('no setter for property gridColumnAnchorIndex');
+  }
+  get gridRowAnchorIndex() {
+    return this._gridRowAnchorIndex;
+  }
+  set gridRowAnchorIndex(_value) {
+    throw new Error('no setter for property gridRowAnchorIndex');
+  }
+
+  setGridChildPosition(rowIndex, columnIndex) {
+    if (!this.parent || this.parent.layoutMode !== 'GRID') {
+      throw new Error('setGridChildPosition vereist een GRID-ouder');
+    }
+    if (!Number.isInteger(rowIndex) || !Number.isInteger(columnIndex)) {
+      throw new Error('setGridChildPosition verwacht (rowIndex, columnIndex)');
+    }
+    if (columnIndex >= (this.parent.gridColumnCount ?? 1)) {
+      throw new Error(`kolomindex ${columnIndex} valt buiten het grid`);
+    }
+    this._gridRowAnchorIndex = rowIndex;
+    this._gridColumnAnchorIndex = columnIndex;
   }
 
   remove() {
@@ -200,6 +230,13 @@ export const figma = {
     const node = new Node('FRAME');
     node.isSvg = true;
     node.svg = svg;
+    // De echte API levert vector-kinderen op. Die zijn nodig om te kunnen
+    // controleren of de icoonkleur daadwerkelijk wordt doorgezet: in de
+    // browser erft een icoon `currentColor`, in Figma wordt het zwart.
+    const vector = new Node('VECTOR');
+    vector.fills = [];
+    vector.strokes = [{ type: 'SOLID', color: { r: 0, g: 0, b: 0 } }];
+    node.appendChild(vector);
     return node;
   },
   combineAsVariants(components, parent) {

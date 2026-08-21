@@ -9,6 +9,8 @@
  * extractor overgeslagen: die hebben in Figma geen tegenhanger.
  */
 
+import { TEKST } from '../text.js';
+
 const ICONS = {
   info: `<path d="M12 9h.01M11 12h1v4h1"/><circle cx="12" cy="12" r="9"/>`,
   positive: `<circle cx="12" cy="12" r="9"/><path d="M9 12l2 2 4-4"/>`,
@@ -67,9 +69,9 @@ export default {
 
     return `<div class="${classes}" role="alert" data-figma-root>
       ${iconMarkup}
-      <h2 class="dsn-heading dsn-heading--heading-3 dsn-alert__heading"><span class="dsn-visually-hidden">${LABELS[variant]}</span>Heading</h2>
+      <h2 class="dsn-heading dsn-heading--heading-3 dsn-alert__heading"><span class="dsn-visually-hidden">${LABELS[variant]}</span>${TEKST}</h2>
       <div class="dsn-alert__content">
-        <p class="dsn-paragraph">Body text of andere inhoud.</p>
+        <p class="dsn-paragraph">${TEKST}</p>
       </div>
     </div>`;
   },

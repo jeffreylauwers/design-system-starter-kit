@@ -323,11 +323,29 @@ function applyChildPlacement(
 
   const columnEnd = Number.parseInt(styles.gridColumnEnd, 10);
   const rowEnd = Number.parseInt(styles.gridRowEnd, 10);
-  if (Number.isFinite(columnEnd) && columnEnd - columnStart > 1) {
-    converted.gridColumnSpan = columnEnd - columnStart;
-  }
+  const columnSpan =
+    Number.isFinite(columnEnd) && columnEnd - columnStart > 1
+      ? columnEnd - columnStart
+      : 1;
+  if (columnSpan > 1) converted.gridColumnSpan = columnSpan;
   if (Number.isFinite(rowEnd) && rowEnd - rowStart > 1) {
     converted.gridRowSpan = rowEnd - rowStart;
+  }
+
+  // Een kind in een grid vult zijn *cel*, niet de hele ouder. De vergelijking
+  // met de ouderbreedte hierboven slaat daar dus altijd op mis; hier wordt hij
+  // alsnog tegen de juiste tracks gedaan.
+  const tracks = parentLayout.gridAutoTracks?.columns ?? [];
+  const cellWidth = tracks
+    .slice(columnStart - 1, columnStart - 1 + columnSpan)
+    .reduce(
+      (total, track, index) =>
+        total + track.value + (index > 0 ? parentLayout.gridColumnGap : 0),
+      0
+    );
+
+  if (cellWidth > 0 && Math.abs(child.rect.width - cellWidth) < 1) {
+    converted.layoutSizingHorizontal = 'FILL';
   }
 }
 

@@ -7,6 +7,8 @@
  * variant properties in Figma.
  */
 
+import { TEKST } from '../text.js';
+
 /** Een klein inline-icoon, zodat er geen iconenregistratie nodig is. */
 const CHEVRON = `<svg class="dsn-icon" aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 6l6 6-6 6"/></svg>`;
 
@@ -55,7 +57,7 @@ export default {
     const disabled = state === 'disabled' ? ' disabled' : '';
 
     return `<button type="button" class="${classes}"${disabled} data-figma-root>
-      <span class="dsn-button__label">Knoptekst</span>
+      <span class="dsn-button__label">${TEKST}</span>
       ${CHEVRON}
     </button>`;
   },

@@ -67,6 +67,31 @@ async function loadFonts(fonts, log) {
   return available;
 }
 
+/**
+ * Kleurt een uit SVG opgebouwde node.
+ *
+ * In de browser erven iconen hun kleur van `currentColor`, maar Figma kent dat
+ * begrip niet: createNodeFromSvg maakt er zwart van. De gemeten tekstkleur
+ * wordt daarom over de vectoren heen gezet, en alleen daar waar de SVG
+ * daadwerkelijk een vulling of een lijn had. Zo blijft het verschil tussen een
+ * gevuld en een lijn-icoon intact.
+ */
+function recolorSvg(node, paints) {
+  if (!paints || !paints.length) return;
+
+  const visit = (current) => {
+    if (Array.isArray(current.fills) && current.fills.length) {
+      current.fills = paints;
+    }
+    if (Array.isArray(current.strokes) && current.strokes.length) {
+      current.strokes = paints;
+    }
+    for (const child of current.children ?? []) visit(child);
+  };
+
+  for (const child of node.children ?? []) visit(child);
+}
+
 function applyPaints(target, spec) {
   if (spec.fills) target.fills = spec.fills;
   if (spec.strokes) {
@@ -136,8 +161,12 @@ function applyPlacement(node, spec, log) {
       return;
     }
     if (spec.gridColumnAnchorIndex !== undefined) {
-      node.gridColumnAnchorIndex = spec.gridColumnAnchorIndex;
-      node.gridRowAnchorIndex = spec.gridRowAnchorIndex;
+      // gridColumnAnchorIndex en gridRowAnchorIndex zijn read-only; plaatsing
+      // gaat via deze methode, en die neemt de rij als eerste argument.
+      node.setGridChildPosition(
+        spec.gridRowAnchorIndex,
+        spec.gridColumnAnchorIndex
+      );
       if (spec.gridColumnSpan) node.gridColumnSpan = spec.gridColumnSpan;
       if (spec.gridRowSpan) node.gridRowSpan = spec.gridRowSpan;
     }
@@ -199,6 +228,7 @@ function buildNode(spec, parent, fonts, log) {
     parent.appendChild(node);
     node.name = spec.name ?? 'icon';
     if (spec.width && spec.height) node.resize(spec.width, spec.height);
+    recolorSvg(node, spec.fills);
     applyPlacement(node, spec, log);
     return node;
   }

@@ -10,6 +10,8 @@
  * terechtkomen.
  */
 
+import { TEKST } from '../text.js';
+
 export default {
   component: 'Card',
 
@@ -44,15 +46,15 @@ export default {
     const footerMarkup =
       footer === 'with-footer'
         ? `<div class="dsn-card__footer">
-             <span class="dsn-link">Lees meer</span>
+             <span class="dsn-link">${TEKST}</span>
            </div>`
         : '';
 
     return `<div class="dsn-card" data-figma-root>
       ${headerMarkup}
       <div class="dsn-card__body">
-        <h3 class="dsn-card-heading">Kaarttitel</h3>
-        <p class="dsn-paragraph">Een korte omschrijving van de inhoud van deze kaart.</p>
+        <h3 class="dsn-card-heading">${TEKST}</h3>
+        <p class="dsn-paragraph">${TEKST}</p>
       </div>
       ${footerMarkup}
     </div>`;
