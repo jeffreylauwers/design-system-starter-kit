@@ -29,6 +29,7 @@
   "type": "module",
   "scripts": {
     "build": "node src/config/build.js",
+    "build:figma": "node src/config/build-figma.js",
     "clean": "rm -rf dist",
     "watch": "node --watch-path=src src/config/build.js"
   },

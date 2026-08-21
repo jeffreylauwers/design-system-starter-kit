@@ -33,6 +33,17 @@ module.exports = {
     '@typescript-eslint/no-unused-vars': ['warn', { argsIgnorePattern: '^_' }],
     '@typescript-eslint/no-explicit-any': 'warn',
   },
+  overrides: [
+    {
+      // De Figma-plugin draait in de plugin-sandbox, niet in een browser of in
+      // Node. Die omgeving levert `figma` en `__html__` als globals aan.
+      files: ['packages/figma-plugin/src/**/*.js'],
+      globals: {
+        figma: 'readonly',
+        __html__: 'readonly',
+      },
+    },
+  ],
   ignorePatterns: [
     'dist',
     'build',

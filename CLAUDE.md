@@ -17,6 +17,8 @@ Het bevat de projectregels, architectuurpatronen en navigatiekaart naar de volle
 | Hoe werkt Storybook?                               | `docs/05-storybook-configuration.md` |
 | Wat is er recent veranderd?                        | `docs/changelog.md`                  |
 | Hoe werken formulierflows en -patronen?            | `docs/07-form-flow-patterns.md`      |
+| Hoe komen tokens en componenten in Figma?          | `packages/figma-sync/README.md`      |
+| Waarom is een architectuurkeuze zo gemaakt?        | `docs/decisions/`                    |
 
 **Voor een nieuw component:** lees altijd `docs/06-css-naming-conventions.md` en `docs/03-components.md` eerst.
 
