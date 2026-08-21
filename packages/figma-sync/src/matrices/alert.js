@@ -9,7 +9,7 @@
  * extractor overgeslagen: die hebben in Figma geen tegenhanger.
  */
 
-import { TEKST } from '../text.js';
+import { HEADING, TEKST } from '../text.js';
 
 const ICONS = {
   info: `<path d="M12 9h.01M11 12h1v4h1"/><circle cx="12" cy="12" r="9"/>`,
@@ -46,10 +46,10 @@ export default {
   },
 
   /**
-   * Alert heeft een vaste breedte nodig: hij is een blok-element dat de
-   * beschikbare ruimte vult, dus zonder container meet hij de viewportbreedte.
+   * Mobile-first: een small-viewport ontwerp is 375px breed met 16px padding
+   * links en rechts, dus een blok-component is in de basis 343px.
    */
-  wrapperStyle: 'width: 560px;',
+  wrapperStyle: 'width: 343px;',
 
   render({ variant, icon }) {
     const classes = [
@@ -69,7 +69,7 @@ export default {
 
     return `<div class="${classes}" role="alert" data-figma-root>
       ${iconMarkup}
-      <h2 class="dsn-heading dsn-heading--heading-3 dsn-alert__heading"><span class="dsn-visually-hidden">${LABELS[variant]}</span>${TEKST}</h2>
+      <h2 class="dsn-heading dsn-heading--heading-3 dsn-alert__heading"><span class="dsn-visually-hidden">${LABELS[variant]}</span>${HEADING}</h2>
       <div class="dsn-alert__content">
         <p class="dsn-paragraph">${TEKST}</p>
       </div>

@@ -77,21 +77,49 @@ function trackSizes(template) {
 }
 
 /**
+ * Bepaalt per track of hij vast of flexibel is.
+ *
+ * De browser lost `1fr` op naar pixels voordat wij kunnen meten, dus uit één
+ * meting is `fr` niet van een vaste maat te onderscheiden. Door hetzelfde
+ * component ook in een bredere container te meten wordt het wel zichtbaar:
+ * een track die meegroeit was flexibel, een track die gelijk blijft was vast.
+ */
+function trackSizesFrom(template, wideTemplate, fallbackType = 'FIXED') {
+  const sizes = trackSizes(template);
+  const wide = trackSizes(wideTemplate ?? '');
+
+  return sizes.map((value, index) => {
+    const grew = wide.length === sizes.length && wide[index] - value > 0.5;
+    // Figma's FLEX-waarde komt overeen met de fr-eenheid in CSS.
+    if (grew) return { type: 'FLEX', value: 1 };
+    return fallbackType === 'HUG' ? { type: 'HUG' } : { type: 'FIXED', value };
+  });
+}
+
+/**
  * CSS Grid naar Figma's GRID auto layout.
  *
- * Figma kent sinds 2025 een grid-layoutmodus met expliciete plaatsing per kind
- * (gridColumnAnchorIndex / gridRowAnchorIndex). Dat past op een grid met
- * expliciete `grid-column` / `grid-row`, zoals Alert.
+ * Figma kent sinds 2025 een grid-layoutmodus met expliciete plaatsing per kind.
+ * Dat past op een grid met expliciete `grid-column` / `grid-row`, zoals Alert.
  */
-function gridLayoutFrom(styles, warnings, pathLabel) {
-  const columns = trackSizes(styles.gridTemplateColumns);
-  const rows = trackSizes(styles.gridTemplateRows);
+function gridLayoutFrom(styles, wideStyles, warnings, pathLabel) {
+  const columns = trackSizesFrom(
+    styles.gridTemplateColumns,
+    wideStyles?.gridTemplateColumns
+  );
+  // Rijen in CSS Grid zijn standaard `auto`, dus inhoudsgestuurd. Uit de
+  // computed waarde is dat niet te zien (die is altijd een pixelmaat), maar
+  // een vaste rijhoogte zou betekenen dat het component niet meegroeit als
+  // tekst afbreekt. HUG is daarom de juiste standaard.
+  const rows = trackSizesFrom(
+    styles.gridTemplateRows,
+    wideStyles?.gridTemplateRows,
+    'HUG'
+  );
 
-  // De browser lost fr-tracks op naar pixels, dus hier is niet meer te zien
-  // welke track flexibel was. De designer moet dat in Figma nazetten.
-  if (columns.length > 1) {
+  if (columns.length > 1 && !wideStyles) {
     warnings.push(
-      `${pathLabel}: grid-tracks komen als vaste pixelmaten binnen; controleer in Figma welke track flexibel moet zijn`
+      `${pathLabel}: geen tweede meting beschikbaar, alle grid-tracks zijn vast; controleer in Figma welke flexibel moet zijn`
     );
   }
 
@@ -101,10 +129,10 @@ function gridLayoutFrom(styles, warnings, pathLabel) {
     gridRowCount: Math.max(rows.length, 1),
     gridColumnGap: px(styles.columnGap ?? styles.gap),
     gridRowGap: px(styles.rowGap ?? styles.gap),
-    gridAutoTracks: {
-      columns: columns.map((value) => ({ type: 'FIXED', value })),
-      rows: rows.map((value) => ({ type: 'FIXED', value })),
-    },
+    // Let op de namen: gridAutoTracks is iets anders (automatisch rijen
+    // toevoegen). De maten van de tracks zelf horen hier.
+    gridColumnSizes: columns,
+    gridRowSizes: rows,
     // De kinderen dragen hun eigen cel, dus Figma moet niet zelf plaatsen.
     gridItemsPositioning: 'MANUAL',
     paddingTop: px(styles.paddingTop),
@@ -117,9 +145,9 @@ function gridLayoutFrom(styles, warnings, pathLabel) {
 }
 
 /** Bouwt de auto layout-eigenschappen uit de flexbox computed styles. */
-function autoLayoutFrom(styles, warnings, pathLabel) {
+function autoLayoutFrom(styles, wideStyles, warnings, pathLabel) {
   if (styles.display === 'grid' || styles.display === 'inline-grid') {
-    return gridLayoutFrom(styles, warnings, pathLabel);
+    return gridLayoutFrom(styles, wideStyles, warnings, pathLabel);
   }
 
   const isFlex = styles.display === 'flex' || styles.display === 'inline-flex';
@@ -335,14 +363,23 @@ function applyChildPlacement(
   // Een kind in een grid vult zijn *cel*, niet de hele ouder. De vergelijking
   // met de ouderbreedte hierboven slaat daar dus altijd op mis; hier wordt hij
   // alsnog tegen de juiste tracks gedaan.
-  const tracks = parentLayout.gridAutoTracks?.columns ?? [];
-  const cellWidth = tracks
-    .slice(columnStart - 1, columnStart - 1 + columnSpan)
-    .reduce(
-      (total, track, index) =>
-        total + track.value + (index > 0 ? parentLayout.gridColumnGap : 0),
-      0
-    );
+  const tracks = (parentLayout.gridColumnSizes ?? []).slice(
+    columnStart - 1,
+    columnStart - 1 + columnSpan
+  );
+
+  // Een flexibele track heeft geen pixelmaat om tegen af te zetten: wie daarin
+  // staat groeit per definitie mee.
+  if (tracks.some((track) => track.type === 'FLEX')) {
+    converted.layoutSizingHorizontal = 'FILL';
+    return;
+  }
+
+  const cellWidth = tracks.reduce(
+    (total, track, index) =>
+      total + track.value + (index > 0 ? parentLayout.gridColumnGap : 0),
+    0
+  );
 
   if (cellWidth > 0 && Math.abs(child.rect.width - cellWidth) < 1) {
     converted.layoutSizingHorizontal = 'FILL';
@@ -356,7 +393,7 @@ function applyChildPlacement(
  * @param {string[]} warnings verzamelt alles wat niet exact vertaald kon worden
  * @param {string} pathLabel leesbaar pad voor in de waarschuwing
  */
-function convertNode(node, warnings, pathLabel) {
+function convertNode(node, wideNode, warnings, pathLabel) {
   if (node.kind === 'text') {
     // Een kale tekstnode erft zijn stijl van de ouder; die wordt daar gezet.
     return { type: 'TEXT', characters: node.text };
@@ -375,7 +412,7 @@ function convertNode(node, warnings, pathLabel) {
   }
 
   const { styles } = node;
-  const layout = autoLayoutFrom(styles, warnings, pathLabel);
+  const layout = autoLayoutFrom(styles, wideNode?.styles, warnings, pathLabel);
   const strokes = strokesFrom(styles, warnings, pathLabel);
 
   // Een element dat alleen tekst bevat en zelf niets tekent, wordt in Figma
@@ -405,6 +442,13 @@ function convertNode(node, warnings, pathLabel) {
 
   const { stretchChildren, reversed, ...autoLayout } = layout;
 
+  // Kinderen aan hun tegenhanger in de brede meting koppelen op index; beide
+  // bomen komen uit dezelfde DOM en hebben dus dezelfde volgorde.
+  const paired = (node.children ?? []).map((child, index) => ({
+    child,
+    wide: wideNode?.children?.[index],
+  }));
+
   // Binnenbreedte van dit element: de rect min padding en randen.
   const contentWidth =
     node.rect.width -
@@ -412,7 +456,7 @@ function convertNode(node, warnings, pathLabel) {
     px(styles.paddingRight) -
     px(styles.borderLeftWidth) -
     px(styles.borderRightWidth);
-  const children = reversed ? [...node.children].reverse() : node.children;
+  const children = reversed ? [...paired].reverse() : paired;
 
   const figmaNode = {
     type: 'FRAME',
@@ -427,9 +471,9 @@ function convertNode(node, warnings, pathLabel) {
     ...(strokes ?? {}),
     opacity: Number(styles.opacity) === 1 ? undefined : Number(styles.opacity),
     clipsContent: styles.overflow === 'hidden',
-    children: children.map((child, index) => {
+    children: children.map(({ child, wide }, index) => {
       const childLabel = `${pathLabel} > ${child.classes?.[0] ?? child.kind ?? child.tag ?? index}`;
-      const converted = convertNode(child, warnings, childLabel);
+      const converted = convertNode(child, wide, warnings, childLabel);
       if (converted.type === 'TEXT') {
         // Tekst erft de typografie van het element waarin hij staat.
         Object.assign(converted, textStyleFrom(styles), {
@@ -469,11 +513,16 @@ function convertNode(node, warnings, pathLabel) {
 export function toComponentSet(matrix, extracted) {
   const warnings = [];
 
-  const components = extracted.map(({ variant, tree }) => {
+  const components = extracted.map(({ variant, tree, wideTree }) => {
     const label = Object.entries(variant)
       .map(([axis, value]) => `${axis}=${value}`)
       .join(', ');
-    const node = convertNode(tree, warnings, `${matrix.component}[${label}]`);
+    const node = convertNode(
+      tree,
+      wideTree,
+      warnings,
+      `${matrix.component}[${label}]`
+    );
     return { name: label, variantProperties: variant, node };
   });
 

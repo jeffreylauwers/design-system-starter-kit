@@ -86,6 +86,31 @@ Elementen met de klasse `dsn-visually-hidden` en elementen met `opacity: 0`
 (zoals de native input onder een custom checkbox-control) leveren in Figma
 alleen een onzichtbare node op en worden daarom niet meegenomen.
 
+### Mobile-first meten
+
+De meetviewport is **375px**, en blok-componenten krijgen een wrapper van
+**343px** (375 min 2 x 16px padding). Dat is bewust: het design system wordt
+mobile-first ontworpen, en op 375px lossen alle fluid clamps op hun ondergrens
+op. De gemeten typografie komt daarmee exact overeen met de `default-mobile`
+mode van de `dsn/Density`-collection, dus component en variable zeggen
+hetzelfde. Per matrix te overschrijven met `viewport`.
+
+### CSS Grid
+
+`grid-template-columns: <maat> 1fr` wordt in Figma `FIXED` + `FLEX`, waarbij
+`FLEX` overeenkomt met de `fr`-eenheid. De browser lost `fr` op naar pixels
+voordat wij kunnen meten, dus welke track flexibel was is uit één meting niet
+af te lezen. De extractor rendert een component met een grid daarom een tweede
+keer in een bredere wrapper: een track die meegroeit was flexibel.
+
+Rijen worden `HUG`. CSS-gridrijen zijn standaard `auto`, en een vaste
+rijhoogte zou betekenen dat het component niet meegroeit als tekst afbreekt.
+
+De plaatsing per cel gaat via `setGridChildPosition(rowIndex, columnIndex)`;
+`gridColumnAnchorIndex` is read-only. De trackmaten horen in `gridColumnSizes`
+en `gridRowSizes`, niet in `gridAutoTracks` (dat gaat over automatisch rijen
+toevoegen).
+
 ### Drie valkuilen bij het meten
 
 Deze drie leverden allemaal stilzwijgend verkeerde waarden op en zijn de reden
@@ -99,6 +124,11 @@ dat de extractor eruitziet zoals hij eruitziet:
    variant terug naar (0, 0).
 3. **Webfonts.** Zonder `document.fonts.ready` meet de eerste variant met een
    systeemfont en wijken de breedtes af van de rest.
+
+Plus een vierde die geen meetfout is maar wel dezelfde vorm heeft: `body.css`
+hangt aan de klasse `.dsn-body`, niet aan het element. Zonder die klasse op de
+meetpagina erft alles zonder eigen font-family-token het browserstandaard­
+lettertype, en meet je Times.
 
 ## Een component toevoegen
 

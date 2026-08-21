@@ -130,6 +130,10 @@ function applyAutoLayout(frame, spec) {
     if (spec.gridItemsPositioning) {
       frame.gridItemsPositioning = spec.gridItemsPositioning;
     }
+    // Zonder deze twee blijft Figma bij zijn eigen standaard (alle tracks
+    // FLEX) en worden alle kolommen even breed, ongeacht de CSS.
+    if (spec.gridColumnSizes) frame.gridColumnSizes = spec.gridColumnSizes;
+    if (spec.gridRowSizes) frame.gridRowSizes = spec.gridRowSizes;
   } else {
     if (spec.itemSpacing !== undefined) frame.itemSpacing = spec.itemSpacing;
     if (spec.layoutWrap) frame.layoutWrap = spec.layoutWrap;

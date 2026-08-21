@@ -10,6 +10,8 @@
  * 3. `layoutSizing*` op HUG terwijl de node zelf geen layoutMode heeft
  * 4. `gridColumnAnchorIndex` en `gridRowAnchorIndex` zijn read-only; plaatsen
  *    in een grid gaat via setGridChildPosition(rowIndex, columnIndex)
+ * 5. `gridAutoTracks` gaat over automatisch rijen toevoegen; de maten van de
+ *    tracks horen in `gridColumnSizes` en `gridRowSizes`
  */
 
 let nextId = 1;
@@ -29,6 +31,10 @@ class Node {
     this.y = 0;
     this.layoutMode = 'NONE';
     this.fills = [];
+    // Zoals in Figma: een nieuw grid heeft FLEX-tracks, dus wie ze niet zet
+    // krijgt gelijke kolommen.
+    this.gridColumnSizes = [];
+    this.gridRowSizes = [];
   }
 
   appendChild(child) {
@@ -56,6 +62,18 @@ class Node {
   }
   set gridRowAnchorIndex(_value) {
     throw new Error('no setter for property gridRowAnchorIndex');
+  }
+
+  set gridAutoTracks(value) {
+    if (typeof value === 'object') {
+      throw new Error(
+        "gridAutoTracks verwacht 'NONE' of 'ROWS'; gebruik gridColumnSizes en gridRowSizes voor trackmaten"
+      );
+    }
+    this._gridAutoTracks = value;
+  }
+  get gridAutoTracks() {
+    return this._gridAutoTracks;
   }
 
   setGridChildPosition(rowIndex, columnIndex) {

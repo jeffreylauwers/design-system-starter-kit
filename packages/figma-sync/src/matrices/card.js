@@ -10,7 +10,7 @@
  * terechtkomen.
  */
 
-import { TEKST } from '../text.js';
+import { HEADING, TEKST } from '../text.js';
 
 export default {
   component: 'Card',
@@ -27,8 +27,8 @@ export default {
     '@dsn-starter-kit/components-html/src/card/card.css',
   ],
 
-  // Card vult zijn container, dus zonder vaste breedte meet hij de viewport.
-  wrapperStyle: 'width: 320px;',
+  // Mobile-first: 375px viewport met 16px padding aan weerszijden.
+  wrapperStyle: 'width: 343px;',
 
   axes: {
     header: ['with-header', 'no-header'],
@@ -53,7 +53,7 @@ export default {
     return `<div class="dsn-card" data-figma-root>
       ${headerMarkup}
       <div class="dsn-card__body">
-        <h3 class="dsn-card-heading">${TEKST}</h3>
+        <h3 class="dsn-card-heading">${HEADING}</h3>
         <p class="dsn-paragraph">${TEKST}</p>
       </div>
       ${footerMarkup}

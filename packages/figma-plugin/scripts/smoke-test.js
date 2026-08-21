@@ -215,6 +215,35 @@ for (const file of componentFiles) {
     black.length === 0,
     black.length ? `${black.length} zwart gebleven` : ''
   );
+
+  // Zonder gridColumnSizes houdt Figma zijn eigen standaard aan (alle tracks
+  // FLEX) en worden alle kolommen even breed, ongeacht de CSS.
+  const gridMismatch = [];
+  const checkGrid = (node, spec) => {
+    if (spec?.layoutMode === 'GRID') {
+      const applied = node?.gridColumnSizes ?? [];
+      if (
+        applied.length !== spec.gridColumnSizes.length ||
+        applied.some((track, i) => track.type !== spec.gridColumnSizes[i].type)
+      ) {
+        gridMismatch.push(spec.name ?? 'grid');
+      }
+    }
+    (spec?.children ?? []).forEach((childSpec, index) =>
+      checkGrid(node?.children?.[index], childSpec)
+    );
+  };
+  for (const [index, component] of payload.componentSet.components.entries()) {
+    checkGrid(
+      state.page.children.at(-1)?.children[index]?.children[0],
+      component.node
+    );
+  }
+  check(
+    'grid-tracks toegepast',
+    gridMismatch.length === 0,
+    gridMismatch.length ? `${gridMismatch.length} niet overgenomen` : ''
+  );
 }
 
 console.log(

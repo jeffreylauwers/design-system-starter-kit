@@ -166,6 +166,21 @@ const BASE_CSS = ['@dsn-starter-kit/components-html/src/body/body.css'];
  */
 const BODY_CLASS = 'dsn-body';
 
+/**
+ * Meetviewport. Mobile-first: een small-viewport ontwerp is 375px breed, en
+ * daar lossen de fluid clamps op hun ondergrens op. De gemeten typografie komt
+ * daarmee overeen met de `default-mobile` mode van de Density-collection.
+ */
+const DEFAULT_VIEWPORT = { width: 375, height: 900 };
+
+/**
+ * Extra breedte voor de tweede meting waarmee flexibele grid-tracks worden
+ * herkend. De browser lost `1fr` op naar pixels voordat wij kunnen meten, dus
+ * de enige manier om `fr` van een vaste maat te onderscheiden is kijken welke
+ * track meegroeit als de container breder wordt.
+ */
+const GRID_PROBE_DELTA = 240;
+
 export async function extractMatrix(matrix) {
   const stylesheets = [...BASE_CSS, ...matrix.css]
     .map(resolveCssPath)
@@ -176,64 +191,91 @@ export async function extractMatrix(matrix) {
     .map((href) => `<link rel="stylesheet" href="${href}">`)
     .join('');
 
+  const viewport = matrix.viewport ?? DEFAULT_VIEWPORT;
+
   const browser = await chromium.launch();
-  const page = await browser.newPage({
-    viewport: { width: 1440, height: 900 },
-  });
+  const page = await browser.newPage({ viewport });
 
   const combinations = cartesian(matrix.axes);
   const results = [];
 
+  const documentFor = (combination, wrapperStyle) =>
+    `<!doctype html><html><head><meta charset="utf-8"><style>
+       /* Neutrale ondergrond zodat de component zelf de enige bron van
+          layout is en er geen body-marges meelekken. */
+       *, *::before, *::after { box-sizing: border-box; }
+
+       /* Transitions en animaties uitzetten. getComputedStyle leest tijdens
+          een transition de tussenwaarde, niet de eindwaarde, en dan meten we
+          halverwege een hover-kleur of een icoon dat nog aan het infaden is. */
+       *, *::before, *::after {
+         transition: none !important;
+         animation: none !important;
+       }
+
+       /* Bij de brede tweede meting steekt de wrapper buiten de viewport;
+          zonder dit verschuift een scrollbalk de layout. */
+       body { margin: 0; padding: 40px; background: #fff; overflow: hidden; }
+     </style>${fontLinks}<style>${stylesheets}</style></head>
+     <body class="${BODY_CLASS}"><div style="${wrapperStyle}">${matrix.render(combination)}</div></body></html>`;
+
+  /**
+   * Zet één variant in de pagina en meet hem.
+   * `extraWidth` verbreedt alleen de wrapper, niet de viewport, zodat de
+   * fluid typografie op de meetviewport vastgeprikt blijft.
+   */
+  const render = async (combination, extraWidth) => {
+    const wrapperStyle = extraWidth
+      ? `${matrix.wrapperStyle ?? ''};width:${viewport.width + extraWidth}px`
+      : (matrix.wrapperStyle ?? '');
+
+    await page.setContent(documentFor(combination, wrapperStyle), {
+      waitUntil: 'load',
+    });
+
+    // Toestanden die niet in markup uit te drukken zijn (zoals de
+    // indeterminate-property van een checkbox) worden hier gezet.
+    if (matrix.domSetup) {
+      await page.evaluate(`(() => { ${matrix.domSetup} })()`);
+    }
+
+    // Zonder document.fonts.ready meet de eerste variant nog met een
+    // fallback-font en wijken de breedtes af van de rest.
+    await page.evaluate(() => document.fonts.ready);
+
+    // De cursor blijft tussen varianten staan waar hij stond. Zonder hem eerst
+    // weg te zetten meet elke variant na een hover-variant óók als hover,
+    // want het element staat op dezelfde plek.
+    await page.mouse.move(0, 0);
+
+    // De pseudo-toestand kan op elke as staan, niet per se op een as die
+    // toevallig 'state' heet.
+    const pseudo = Object.values(combination)
+      .map((value) => matrix.pseudoStates?.[value])
+      .find(Boolean);
+    if (pseudo === 'hover') await page.hover('[data-figma-root]');
+
+    return page.evaluate(domWalker, [
+      CAPTURED_PROPERTIES,
+      VISUALLY_HIDDEN_CLASS,
+    ]);
+  };
+
+  const hasGrid = (node) =>
+    Boolean(node.styles?.display?.endsWith('grid')) ||
+    (node.children ?? []).some(hasGrid);
+
   try {
     for (const combination of combinations) {
-      await page.setContent(
-        `<!doctype html><html><head><meta charset="utf-8"><style>
-           /* Neutrale ondergrond zodat de component zelf de enige bron van
-              layout is en er geen body-marges meelekken. */
-           *, *::before, *::after { box-sizing: border-box; }
+      const tree = await render(combination);
 
-           /* Transitions en animaties uitzetten. getComputedStyle leest
-              tijdens een transition de tussenwaarde, niet de eindwaarde, en
-              dan meten we halverwege een hover-kleur of een icoon dat nog
-              aan het infaden is. */
-           *, *::before, *::after {
-             transition: none !important;
-             animation: none !important;
-           }
-           body { margin: 0; padding: 40px; background: #fff; }
-         </style>${fontLinks}<style>${stylesheets}</style></head>
-         <body class="${BODY_CLASS}"><div style="${matrix.wrapperStyle ?? ''}">${matrix.render(combination)}</div></body></html>`,
-        { waitUntil: 'load' }
-      );
+      // De tweede meting kost een extra render, dus alleen doen als er
+      // daadwerkelijk een grid in zit waarvan de tracks te duiden zijn.
+      const wideTree = hasGrid(tree)
+        ? await render(combination, GRID_PROBE_DELTA)
+        : undefined;
 
-      // Toestanden die niet in markup uit te drukken zijn (zoals de
-      // indeterminate-property van een checkbox) worden hier gezet.
-      if (matrix.domSetup)
-        await page.evaluate(`(() => { ${matrix.domSetup} })()`);
-
-      // Zonder document.fonts.ready meet de eerste variant nog met een
-      // fallback-font en wijken de breedtes af van de rest.
-      await page.evaluate(() => document.fonts.ready);
-
-      // De cursor blijft tussen varianten staan waar hij stond. Zonder hem
-      // eerst weg te zetten meet elke variant na een hover-variant óók als
-      // hover, want het element staat op dezelfde plek.
-      await page.mouse.move(0, 0);
-
-      // De pseudo-toestand kan op elke as staan, niet per se op een as die
-      // toevallig 'state' heet.
-      const pseudo = Object.values(combination)
-        .map((value) => matrix.pseudoStates?.[value])
-        .find(Boolean);
-      if (pseudo === 'hover') {
-        await page.hover('[data-figma-root]');
-      }
-
-      const tree = await page.evaluate(domWalker, [
-        CAPTURED_PROPERTIES,
-        VISUALLY_HIDDEN_CLASS,
-      ]);
-      results.push({ variant: combination, tree });
+      results.push({ variant: combination, tree, wideTree });
     }
   } finally {
     await browser.close();

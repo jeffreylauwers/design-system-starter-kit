@@ -9,3 +9,6 @@
 
 export const TEKST = 'Tekst';
 export const WEINIG_TEKST = 'A';
+
+/** Voor koppen (h1 t/m h6). Storybook gebruikt hier ook 'Heading'. */
+export const HEADING = 'Heading';
