@@ -1,0 +1,94 @@
+# @dsn-starter-kit/figma-sync
+
+Genereert Figma-input uit de bestaande bron: de tokens en de HTML/CSS-laag.
+Dit package schrijft **geen** data naar Figma. Het levert twee JSON-bestanden
+die een Figma-plugin inleest.
+
+Waarom die splitsing: op een Figma Professional-plan is de Variables REST API
+niet beschikbaar, dus de Plugin API is het enige schrijfpad. Door de generatie
+in de repo te houden en het schrijven in de plugin, blijft alles wat naar Figma
+gaat reviewbaar in een PR.
+
+## De twee outputs
+
+| Bestand                                   | Wordt gegenereerd door        | Bevat                                    |
+| ----------------------------------------- | ----------------------------- | ---------------------------------------- |
+| `design-tokens/dist/figma/variables.json` | `pnpm build:tokens`           | Variable collections, modes en aliassen  |
+| `figma-sync/dist/{component}.json`        | `pnpm build:figma-components` | Node specs per variant van een component |
+
+Naast `variables.json` komt `variables-report.json` te staan met alles wat
+níet naar een variable te vertalen was, inclusief reden. Lees dat bestand bij
+elke review: het is de plek waar drift zichtbaar wordt.
+
+## Gebruik
+
+```bash
+pnpm build:tokens                      # variables.json + report
+pnpm build:figma-components            # alle matrices
+pnpm build:figma-components button     # één component
+```
+
+## Hoe de componentgeneratie werkt
+
+De CSS parsen om Figma-nodes te bouwen werkt niet: cascade, custom properties,
+`clamp()` en media queries bepalen samen pas de eindwaarde. In plaats daarvan
+rendert `extract.js` elke variant in een echte browser en leest de _computed_
+styles uit. Dat levert meteen de flexbox-informatie op die vrijwel 1-op-1 op
+Figma auto layout past:
+
+| CSS                                | Figma                               |
+| ---------------------------------- | ----------------------------------- |
+| `display: flex` + `flex-direction` | `layoutMode` HORIZONTAL / VERTICAL  |
+| `gap`                              | `itemSpacing`                       |
+| `padding-*`                        | `padding*`                          |
+| `justify-content` / `align-items`  | `primary` / `counterAxisAlignItems` |
+| `display: inline-flex`             | `layoutSizingHorizontal: HUG`       |
+
+Een element dat alleen tekst bevat en zelf niets tekent, wordt één TEXT-node in
+plaats van een frame met een tekstnode erin. Zonder die stap krijgt elke `<span>`
+een eigen frame en ontstaat de diepe nesting die een Figma-library onwerkbaar
+maakt.
+
+## Een component toevoegen
+
+Zet een matrix in `src/matrices/{component}.js`. De assen daarin worden de
+variant properties van de Figma component set. Definieer ze expliciet: stories
+zijn losse voorbeelden, een component set heeft een volledige matrix nodig.
+
+```js
+export default {
+  component: 'Badge',
+  fonts: [
+    'https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;700',
+  ],
+  css: [
+    '@dsn-starter-kit/design-tokens/dist/css/start-light-default.css',
+    '@dsn-starter-kit/components-html/src/badge/badge.css',
+  ],
+  axes: { variant: ['info', 'warning'], size: ['small', 'default'] },
+  pseudoStates: { hover: 'hover' },
+  render: ({ variant, size }) =>
+    `<span class="dsn-badge dsn-badge--${variant} dsn-badge--size-${size}" data-figma-root>Label</span>`,
+};
+```
+
+De `fonts`-lijst is niet optioneel als het component tekst bevat: zonder
+geladen webfont meet de browser met een systeemfont en kloppen de breedtes niet.
+De fontnaam moet ook in Figma beschikbaar zijn.
+
+## Wat hier bewust niet in hoort
+
+- **Layoutcomponenten** (`Grid`, `Container`, `PageBody`, `BreakoutSection`).
+  Dat is layoutgedrag zonder eigen visuele identiteit. Een designer gebruikt
+  daar Figma auto layout voor, een gegenereerd "Stack-component" is een
+  anti-patroon.
+- **Patronen en templates.** Die componeer je in Figma uit de gegenereerde
+  componenten.
+- **Box shadows.** Die horen Figma effect styles te worden, geen variables.
+  Ze staan daarom in het skip-report.
+
+## Wat de generator niet levert
+
+Component properties (boolean voor icon-slots, instance swap, text properties)
+en thumbnails. Die blijven handwerk in Figma. Reken op genereren tot ongeveer
+85% en een polijstslag daarna.

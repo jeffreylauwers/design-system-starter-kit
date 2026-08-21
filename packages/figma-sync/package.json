@@ -1,0 +1,20 @@
+{
+  "name": "@dsn-starter-kit/figma-sync",
+  "version": "2.0.0",
+  "private": true,
+  "description": "Genereert Figma node specs uit de HTML/CSS-laag van het design system",
+  "type": "module",
+  "scripts": {
+    "build": "node src/build-components.js",
+    "clean": "rm -rf dist"
+  },
+  "dependencies": {
+    "@dsn-starter-kit/components-html": "workspace:*",
+    "@dsn-starter-kit/design-tokens": "workspace:*"
+  },
+  "devDependencies": {
+    "playwright": "^1.58.2"
+  },
+  "author": "Jeffrey Lauwers",
+  "license": "MIT"
+}
