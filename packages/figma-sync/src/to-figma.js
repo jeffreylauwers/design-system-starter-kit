@@ -198,12 +198,32 @@ function rgbOf({ r, g, b }) {
   return { r, g, b };
 }
 
-function cornerRadiusFrom(styles) {
+/**
+ * Hoekafronding, met percentages omgerekend naar pixels.
+ *
+ * `border-radius: 50%` komt als "50%" uit getComputedStyle. Zou je dat als 50
+ * doorgeven, dan klopt de waarde alleen zolang Figma hem toevallig klemt op de
+ * helft van de kortste zijde; bij een breder element wordt het een afgeronde
+ * rechthoek in plaats van een pil.
+ */
+function cornerRadiusFrom(styles, rect) {
+  // Figma kent één radius per hoek, CSS twee (horizontaal en verticaal).
+  // Voor een percentage nemen we de kortste zijde, wat voor de ronde controls
+  // in dit systeem (vierkant) exact klopt.
+  const shortestSide = Math.min(rect.width, rect.height);
+  const toPixels = (value) => {
+    const percentage = String(value)
+      .trim()
+      .match(/^([\d.]+)%$/);
+    if (!percentage) return px(value);
+    return (Number(percentage[1]) / 100) * shortestSide;
+  };
+
   const corners = [
-    px(styles.borderTopLeftRadius),
-    px(styles.borderTopRightRadius),
-    px(styles.borderBottomRightRadius),
-    px(styles.borderBottomLeftRadius),
+    toPixels(styles.borderTopLeftRadius),
+    toPixels(styles.borderTopRightRadius),
+    toPixels(styles.borderBottomRightRadius),
+    toPixels(styles.borderBottomLeftRadius),
   ];
   const uniform = corners.every((corner) => corner === corners[0]);
   return uniform
@@ -381,7 +401,7 @@ function convertNode(node, warnings, pathLabel) {
     x: node.rect.x,
     y: node.rect.y,
     ...autoLayout,
-    ...cornerRadiusFrom(styles),
+    ...cornerRadiusFrom(styles, node.rect),
     fills: paintFrom(styles.backgroundColor),
     ...(strokes ?? {}),
     opacity: Number(styles.opacity) === 1 ? undefined : Number(styles.opacity),
