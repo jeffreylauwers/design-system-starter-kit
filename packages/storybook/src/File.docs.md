@@ -50,7 +50,7 @@ De verwijderknop bevat altijd de volledige bestandsnaam als visueel verborgen te
 | `default`  | Bestand is geselecteerd of eerder geüpload. Toont naam als link (indien `href` aanwezig) en verwijderknop.                        |
 | `loading`  | Upload is in uitvoering. Toont naam als tekst (geen link), Spinner in actions.                                                    |
 | `uploaded` | Upload geslaagd. Toont naam als link, check-icoon in actions, `aria-live` aankondiging. Keert na 2 seconden terug naar `default`. |
-| `error`    | Upload mislukt. Toont rode randkleur, foutmelding onder de meta, verwijderknop.                                                   |
+| `error`    | Upload mislukt. Toont rode randkleur, foutmelding onder de meta, verwijderknop, `aria-live` aankondiging.                         |
 
 ### Interactieve variant
 
@@ -148,6 +148,57 @@ Gebruik `FileList` als wrapper wanneer je meerdere `File` componenten toont. De 
 - `dsn-file__media` heeft altijd `aria-hidden="true"`: het icoon en de preview zijn decoratief.
 - `<img class="dsn-file__preview" alt="">` heeft een lege `alt` — de media-container is toch `aria-hidden`.
 - De verwijderknop bevat de bestandsnaam inclusief extensie als visueel verborgen tekst. Gebruik nooit `aria-label`.
-- Elk `File` component bevat een visueel verborgen `<span aria-live="polite" aria-atomic="true">`. Bij de `uploaded` state wordt deze gevuld met de bevestigingstekst; bij terugkeer naar `default` wordt hij leeggemaakt.
+- Elk `File` component bevat een visueel verborgen `<span aria-live="polite" aria-atomic="true">`. Zie het kopje "De aria-live regio" hieronder voor wat daar precies in komt.
 - In de interactieve variant (stretched link) is de bestandsnaam het enige focuspunt. Bij de download-variant heeft de download-link `aria-hidden="true"` en `tabindex="-1"` — de bestandsnaam is het primaire focuspunt.
 - `FileList` rendert `<ul role="list">` met `<li>` wrappers om lijstsemantiek te bewaren bij CSS-resets.
+
+### De aria-live regio
+
+Een upload verandert van status zonder dat de gebruiker iets doet: de statuswissel is puur visueel (spinner, vinkje, rode rand). Screenreadergebruikers krijgen die wissel niet mee. Daarom bevat elk `File` component een altijd aanwezige, visueel verborgen live region die de uitkomst van de upload uitspreekt.
+
+```html
+<span class="dsn-visually-hidden" aria-live="polite" aria-atomic="true"></span>
+```
+
+De regio staat altijd in de DOM, ook als hij leeg is. Dat is een voorwaarde: een live region die pas bij de statuswissel wordt toegevoegd, wordt door de meeste screenreaders genegeerd. Alleen de inhoud verandert.
+
+#### Wat komt er in per state
+
+| State      | Inhoud van de regio                                                                              | Voorbeeld                                            |
+| ---------- | ------------------------------------------------------------------------------------------------ | ---------------------------------------------------- |
+| `default`  | Leeg                                                                                             |                                                      |
+| `loading`  | Leeg                                                                                             |                                                      |
+| `uploaded` | `{fileName} succesvol geüpload`                                                                  | "document.pdf succesvol geüpload"                    |
+| `error`    | `{fileName}: {errorMessage}`, of `{fileName} uploaden mislukt` wanneer er geen `errorMessage` is | "document.pdf: Upload mislukt. Probeer het opnieuw." |
+
+Drie principes achter deze teksten:
+
+1. **Altijd de volledige bestandsnaam, inclusief extensie.** Visueel wordt de extensie afgekapt, maar in een lijst met meerdere bestanden is de naam het enige dat de aankondiging koppelt aan het juiste bestand. "Upload mislukt" alleen is onbruikbaar bij drie tegelijk uploadende bestanden.
+2. **Bij een fout ook de reden.** De zichtbare foutmelding staat in een gewone `<p>` en wordt dus niet automatisch voorgelezen op het moment dat de fout ontstaat. De live region herhaalt hem daarom, zodat de gebruiker meteen weet wat er mis ging en niet eerst terug hoeft te navigeren.
+3. **Geen aankondiging tijdens `loading`.** De Spinner heeft al een visueel verborgen label ("Bezig met uploaden") en het startmoment van een upload is een gebruikersactie: die verrast niemand. Elke tussenstap aankondigen maakt de regio juist onbruikbaar bij meerdere bestanden.
+
+#### Levensduur van de tekst
+
+Bij `uploaded` blijft de tekst 2 seconden staan, waarna het component terugkeert naar `default` en de regio wordt leeggemaakt. Bij `error` blijft de tekst staan zolang de error-state actief is: de fout is niet vanzelf voorbij en de gebruiker moet actie ondernemen. Zodra de status weer `default` of `loading` wordt (bijvoorbeeld na opnieuw proberen), maakt het component de regio leeg.
+
+Gevolg van die keuze: in de error-state staat de foutmelding twee keer in de accessibility tree, één keer zichtbaar en één keer in de live region. Dat is bewust. De aankondiging op het juiste moment weegt zwaarder dan de dubbeling bij lineair doorlezen. Wil je die dubbeling niet, geef dan via `errorLabel` een kortere tekst mee.
+
+#### Teksten overschrijven
+
+| Prop            | State      | Standaardwaarde                                                      |
+| --------------- | ---------- | -------------------------------------------------------------------- |
+| `uploadedLabel` | `uploaded` | `{fileName} succesvol geüpload`                                      |
+| `errorLabel`    | `error`    | `{fileName}: {errorMessage}`, of `{fileName} uploaden mislukt`       |
+| `loadingLabel`  | `loading`  | `Bezig met uploaden` (label van de Spinner, niet van de live region) |
+
+```tsx
+<File
+  fileName="jaarrekening-2024.pdf"
+  fileType="PDF"
+  status="error"
+  errorMessage="Het bestand is groter dan 10 MB."
+  errorLabel="jaarrekening-2024.pdf is te groot en niet geüpload"
+/>
+```
+
+Bij de HTML/CSS-laag regel je dit zelf: schrijf dezelfde tekst in de live region op het moment dat je de status-klasse (`dsn-file--uploaded`, `dsn-file--error`) op de root zet, en maak hem leeg als je die klasse weer verwijdert.

@@ -76,6 +76,13 @@ export interface FileProps extends React.HTMLAttributes<HTMLDivElement> {
    * @default "{fileName} succesvol geüpload"
    */
   uploadedLabel?: string;
+
+  /**
+   * Tekst voor de aria-live regio bij de error state.
+   * Standaard "{fileName}: {errorMessage}", of "{fileName} uploaden mislukt"
+   * wanneer er geen errorMessage is.
+   */
+  errorLabel?: string;
 }
 
 /**
@@ -131,6 +138,7 @@ export const File = React.forwardRef<HTMLDivElement, FileProps>(
       previewSrc,
       loadingLabel = 'Bezig met uploaden',
       uploadedLabel,
+      errorLabel,
       ...props
     },
     ref
@@ -144,21 +152,37 @@ export const File = React.forwardRef<HTMLDivElement, FileProps>(
       setCurrentStatus(status);
     }, [status]);
 
-    // Bij uploaded: vul aria-live regio en keer na 2s terug naar default
+    // Vul de aria-live regio bij een eindstatus van de upload.
+    // De tekst wordt pas ná de eerste render gezet, zodat screenreaders de
+    // wijziging in de regio waarnemen en aankondigen.
     React.useEffect(() => {
-      if (currentStatus !== 'uploaded') return;
+      // Uploaded: kondig succes aan en keer na 2s terug naar default
+      if (currentStatus === 'uploaded') {
+        setLiveText(uploadedLabel ?? `${fileName} succesvol geüpload`);
 
-      const resolvedUploadedLabel =
-        uploadedLabel ?? `${fileName} succesvol geüpload`;
-      setLiveText(resolvedUploadedLabel);
+        const timer = setTimeout(() => {
+          setCurrentStatus('default');
+          setLiveText('');
+        }, 2000);
 
-      const timer = setTimeout(() => {
-        setCurrentStatus('default');
-        setLiveText('');
-      }, 2000);
+        return () => clearTimeout(timer);
+      }
 
-      return () => clearTimeout(timer);
-    }, [currentStatus, fileName, uploadedLabel]);
+      // Error: kondig de mislukking aan, inclusief de reden wanneer bekend.
+      // De tekst blijft staan zolang de error-state actief is.
+      if (currentStatus === 'error') {
+        setLiveText(
+          errorLabel ??
+            (errorMessage
+              ? `${fileName}: ${errorMessage}`
+              : `${fileName} uploaden mislukt`)
+        );
+        return;
+      }
+
+      // Default en loading: geen aankondiging
+      setLiveText('');
+    }, [currentStatus, fileName, uploadedLabel, errorLabel, errorMessage]);
 
     // Bestandsnaam zonder extensie voor visuele weergave
     const fileNameWithoutExt = React.useMemo(() => {

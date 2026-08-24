@@ -1429,13 +1429,14 @@ Brengt consistente verticale ruimte aan tussen directe child-elementen via `flex
 
 **Tokens:** `tokens/components/file.json`
 
-**Props:** `fileName`, `fileType`, `fileSize`, `status`, `errorMessage`, `href`, `onDelete`, `deleteLabel`, `ctaVariant`, `ctaLabel`, `mediaType`, `previewSrc`, `loadingLabel`, `uploadedLabel`
+**Props:** `fileName`, `fileType`, `fileSize`, `status`, `errorMessage`, `href`, `onDelete`, `deleteLabel`, `ctaVariant`, `ctaLabel`, `mediaType`, `previewSrc`, `loadingLabel`, `uploadedLabel`, `errorLabel`
 
 **Features:**
 
 - CSS grid met 3 kolommen: `auto 1fr auto` (media-vlak | content | actions)
 - Vier upload-states: `default`, `loading`, `uploaded`, `error`
 - `uploaded` keert automatisch na 2 seconden terug naar `default` via `setTimeout`; aankondiging via `aria-live="polite"`
+- `error` vult dezelfde `aria-live="polite"` regio met `{fileName}: {errorMessage}` (of `{fileName} uploaden mislukt` zonder `errorMessage`), te overschrijven met `errorLabel`; de tekst blijft staan zolang de error-state actief is. `default` en `loading` laten de regio leeg
 - Interactieve variant (stretched-link techniek) wanneer `href` aanwezig is en `onDelete` ontbreekt — zelfde patroon als Card
 - Hover/active/focus op de gehele component via `:hover` / `:has(.dsn-file__name--stretched:active)` / `:has(.dsn-file__name--stretched:focus-visible)`
 - Bestandsnaam als `<a class="dsn-link">` (gestyled als link, bold) wanneer `href` aanwezig; anders `<span>`
@@ -1485,7 +1486,7 @@ Brengt consistente verticale ruimte aan tussen directe child-elementen via `flex
 >
 ```
 
-**Tests:** React (52 tests)
+**Tests:** React (55 tests)
 
 ### FileList
 

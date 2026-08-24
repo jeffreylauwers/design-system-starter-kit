@@ -92,6 +92,18 @@ const meta: Meta<typeof File> = {
 
         const actionsContent = spinnerEl || checkEl || deleteEl || ctaEl || '';
 
+        // aria-live regio: alleen gevuld bij een eindstatus van de upload
+        let liveText = '';
+        if (isUploaded) {
+          liveText = args.uploadedLabel ?? `${fileName} succesvol geüpload`;
+        } else if (isError) {
+          liveText =
+            args.errorLabel ??
+            (args.errorMessage
+              ? `${fileName}: ${args.errorMessage}`
+              : `${fileName} uploaden mislukt`);
+        }
+
         const mediaEl = args.previewSrc
           ? `<img class="dsn-file__preview" src="${args.previewSrc}" alt="" />`
           : `<svg class="dsn-icon" aria-hidden="true"><!-- ${args.mediaType === 'image' ? 'photo' : 'file-description'}.svg --></svg>`;
@@ -107,7 +119,7 @@ const meta: Meta<typeof File> = {
   <div class="dsn-file__actions">
     ${actionsContent}
   </div>
-  <span class="dsn-visually-hidden" aria-live="polite" aria-atomic="true"></span>
+  <span class="dsn-visually-hidden" aria-live="polite" aria-atomic="true">${liveText}</span>
 </div>`;
       },
     },
