@@ -18,10 +18,11 @@ De FileInput component biedt een consistent gestyled bestandsinvoerveld. De brow
 ## Don't use when
 
 - Je drag-and-drop functionaliteit nodig hebt: dat vereist een aparte component.
-- Je alleen afbeeldingen wilt tonen of previewen: gebruik dan de `File`-component.
+- Je een al gekozen of geüpload bestand wilt tonen: dat is de rol van de `File`-component. In een uploadstap zijn het geen alternatieven maar een paar, zie hieronder.
 
 ## Best practices
 
+- **Koppel `FileInput` altijd aan `File`.** `FileInput` is het kiesmoment; wat er daarna met het bestand gebeurt (uploaden, geslaagd, geweigerd) toont `File`. Zonder die terugkoppeling ziet de gebruiker hooguit de tekst die de browser zelf naast de knop zet, en hoort een screenreadergebruiker niets over de afloop. Zie het patroon **Bestanden uploaden** onder Patronen/Formulieren, en het template **Form step: Upload**.
 - **Labels zijn verplicht.** Koppel altijd een `<label>` via `htmlFor`, of gebruik `FormFieldLabel` binnen een `FormField`-structuur.
 - **Gebruik `accept` voor filtering.** Beperk het bestandstype via `accept=".pdf,.docx"` om fouten te voorkomen. De browser toont alleen de toegestane bestandstypen in de native kiezer.
 - **Valideer altijd server-side.** `accept` is een hint, geen validatie: gebruikers kunnen het omzeilen.

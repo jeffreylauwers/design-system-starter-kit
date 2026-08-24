@@ -58,6 +58,21 @@ Nog niet gepubliceerde wijzigingen. Schrijf nieuwe changelog-entries hieronder; 
   - `icon-gap` gebruikt `{dsn.space.text.md}` (8px), de bestaande conventie voor ruimte tussen icoon en tekst, in plaats van de in het issue voorgestelde `{dsn.space.inline.sm}` (4px)
   - `max-inline-size` toegevoegd voor leesbaarheid, consistent met UnorderedList en OrderedList
 
+### Formulierpatronen: bestanden uploaden
+
+#### Added
+
+- **Nieuw patroon "Bestanden uploaden"** (issue [#335](https://github.com/jeffreylauwers/design-system-starter-kit/issues/335)): `FileInput` en `File` kwamen nergens samen. `FileInput` was gedocumenteerd als kiesmoment, `File` als weergave, maar de flow die ze verbindt stond niet beschreven en was nergens te zien. Het template **Form step: Upload** bevatte alleen een `FileInput`: een bestand kiezen leverde geen zichtbaar resultaat op.
+  - Nieuwe sectie in `docs/07-form-flow-patterns.md` (en de kopie in `packages/storybook/src/FormFlowPatterns.docs.md`) met de rolverdeling tussen `FileInput`, `File` en `FileList`, de vier statussen met wat er per status wordt aangekondigd, en het verwijderen van bestanden
+  - Vastgelegd dat grootte en bestandstype bij het kiezen worden gecontroleerd en niet pas bij submit. Dat is de uitzondering op de regel "valideer bij submit", die geldt voor invoer die de gebruiker nog aan het typen is
+  - Een geweigerd bestand verdwijnt niet uit de lijst maar blijft staan in de error-status, met de reden eronder en een verwijderknop
+
+#### Changed
+
+- **Template Form step: Upload doorloopt nu een echte uploadcyclus** (issue [#335](https://github.com/jeffreylauwers/design-system-starter-kit/issues/335)): gekozen bestanden verschijnen in een `FileList` en gaan per bestand door `loading` naar `uploaded`. De controle op grootte (10 MB) en extensie gebruikt de vaste foutmeldingsteksten uit de formulierpatronen. De pagina start in rust: er loopt niets tot de gebruiker een bestand kiest.
+  - Daarmee is ook de tweede helft van issue [#316](https://github.com/jeffreylauwers/design-system-starter-kit/issues/316) afgerond: de `aria-live` aankondigingen van `File` zijn nu met een screenreader te beluisteren. Een live region kondigt alleen aan bij een wijziging van de inhoud, dus de losse component-stories konden dat per definitie niet
+- **`FileInput.docs.md` verwijst niet langer naar `File` als alternatief** maar als tegenhanger: de twee horen in een uploadstap samen. `File.docs.md` verwijst terug naar het patroon en naar het template als plek om de aankondigingen te beluisteren
+
 ### Figma-integratie
 
 #### Added
