@@ -27,18 +27,30 @@ const meta: Meta<typeof BreadcrumbNavigation> = {
           { href: '/home', label: 'Home' },
           { href: '/supermarkt', label: 'Supermarkt' },
           { href: '/fruit', label: 'Fruit' },
-          { href: '/appel', label: 'Appel', current: true },
+          { label: 'Appel', current: true },
         ];
+        const separator = `      <svg class="dsn-icon dsn-breadcrumb-navigation__separator" aria-hidden="true"><!-- chevron-right --></svg>`;
         const itemsHtml = items
           .map((item, index) => {
             const isParentOfCurrent = compact && index === items.length - 2;
-            const itemCls = `dsn-breadcrumb-navigation__item${item.current ? ' dsn-breadcrumb-navigation__item--current' : ''}`;
+
+            // Het huidige item is geen link: platte tekst met aria-current op de <li>
+            if (item.current) {
+              return `    <li
+      class="dsn-breadcrumb-navigation__item dsn-breadcrumb-navigation__item--current"
+      aria-current="page"
+    >
+      ${item.label}
+${separator}
+    </li>`;
+            }
+
             const backIcon = isParentOfCurrent
               ? `\n        <svg class="dsn-icon dsn-breadcrumb-navigation__back-icon" aria-hidden="true"><!-- arrow-left --></svg>`
               : '';
-            return `    <li class="${itemCls}">
-      <a href="${item.href}" class="dsn-breadcrumb-navigation__link"${item.current ? ' aria-current="page"' : ''}>${backIcon}${backIcon ? `\n        ${item.label}\n      ` : item.label}</a>
-      <svg class="dsn-icon dsn-breadcrumb-navigation__separator" aria-hidden="true"><!-- chevron-right --></svg>
+            return `    <li class="dsn-breadcrumb-navigation__item">
+      <a href="${item.href}" class="dsn-breadcrumb-navigation__link">${backIcon}${backIcon ? `\n        ${item.label}\n      ` : item.label}</a>
+${separator}
     </li>`;
           })
           .join('\n');
@@ -80,9 +92,7 @@ export const Default: Story = {
         Supermarkt
       </BreadcrumbNavigationItem>
       <BreadcrumbNavigationItem href="/fruit">Fruit</BreadcrumbNavigationItem>
-      <BreadcrumbNavigationItem href="/appel" current>
-        Appel
-      </BreadcrumbNavigationItem>
+      <BreadcrumbNavigationItem current>Appel</BreadcrumbNavigationItem>
     </BreadcrumbNavigation>
   ),
 };
@@ -100,9 +110,7 @@ export const Compact: Story = {
         Supermarkt
       </BreadcrumbNavigationItem>
       <BreadcrumbNavigationItem href="/fruit">Fruit</BreadcrumbNavigationItem>
-      <BreadcrumbNavigationItem href="/appel" current>
-        Appel
-      </BreadcrumbNavigationItem>
+      <BreadcrumbNavigationItem current>Appel</BreadcrumbNavigationItem>
     </BreadcrumbNavigation>
   ),
 };
@@ -112,9 +120,7 @@ export const TwoItems: Story = {
   render: (args: BreadcrumbNavigationProps) => (
     <BreadcrumbNavigation {...args}>
       <BreadcrumbNavigationItem href="/home">Home</BreadcrumbNavigationItem>
-      <BreadcrumbNavigationItem href="/appel" current>
-        Appel
-      </BreadcrumbNavigationItem>
+      <BreadcrumbNavigationItem current>Appel</BreadcrumbNavigationItem>
     </BreadcrumbNavigation>
   ),
 };
@@ -137,9 +143,7 @@ export const ManyItems: Story = {
         Subcategorie
       </BreadcrumbNavigationItem>
       <BreadcrumbNavigationItem href="/fruit">Fruit</BreadcrumbNavigationItem>
-      <BreadcrumbNavigationItem href="/appel" current>
-        Appel
-      </BreadcrumbNavigationItem>
+      <BreadcrumbNavigationItem current>Appel</BreadcrumbNavigationItem>
     </BreadcrumbNavigation>
   ),
 };
@@ -160,9 +164,7 @@ export const RTL: Story = {
         <BreadcrumbNavigationItem href="/supermarkt">
           السوبرماركت
         </BreadcrumbNavigationItem>
-        <BreadcrumbNavigationItem href="/fruit" current>
-          الفاكهة
-        </BreadcrumbNavigationItem>
+        <BreadcrumbNavigationItem current>الفاكهة</BreadcrumbNavigationItem>
       </BreadcrumbNavigation>
     </div>
   ),

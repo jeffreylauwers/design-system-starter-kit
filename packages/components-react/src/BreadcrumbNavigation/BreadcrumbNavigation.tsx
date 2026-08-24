@@ -34,14 +34,14 @@ export interface BreadcrumbNavigationProps extends React.HTMLAttributes<HTMLElem
  * <BreadcrumbNavigation aria-label="Broodkruimelpad">
  *   <BreadcrumbNavigationItem href="/home">Home</BreadcrumbNavigationItem>
  *   <BreadcrumbNavigationItem href="/categorie">Categorie</BreadcrumbNavigationItem>
- *   <BreadcrumbNavigationItem href="/product" current>Product</BreadcrumbNavigationItem>
+ *   <BreadcrumbNavigationItem current>Product</BreadcrumbNavigationItem>
  * </BreadcrumbNavigation>
  *
  * // Compact variant
  * <BreadcrumbNavigation aria-label="Broodkruimelpad" variant="compact">
  *   <BreadcrumbNavigationItem href="/home">Home</BreadcrumbNavigationItem>
  *   <BreadcrumbNavigationItem href="/categorie">Categorie</BreadcrumbNavigationItem>
- *   <BreadcrumbNavigationItem href="/product" current>Product</BreadcrumbNavigationItem>
+ *   <BreadcrumbNavigationItem current>Product</BreadcrumbNavigationItem>
  * </BreadcrumbNavigation>
  * ```
  */

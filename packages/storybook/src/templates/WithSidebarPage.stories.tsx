@@ -704,7 +704,7 @@ export const Level2a: Story = {
                 <BreadcrumbNavigationItem href="/level-1a">
                   Level 1a
                 </BreadcrumbNavigationItem>
-                <BreadcrumbNavigationItem href="/level-2a" current>
+                <BreadcrumbNavigationItem current>
                   Level 2a
                 </BreadcrumbNavigationItem>
               </BreadcrumbNavigation>
@@ -760,7 +760,7 @@ export const Level3a: Story = {
                 <BreadcrumbNavigationItem href="/level-2b">
                   Level 2b
                 </BreadcrumbNavigationItem>
-                <BreadcrumbNavigationItem href="/level-3a" current>
+                <BreadcrumbNavigationItem current>
                   Level 3a
                 </BreadcrumbNavigationItem>
               </BreadcrumbNavigation>
@@ -819,7 +819,7 @@ export const Level4a: Story = {
                 <BreadcrumbNavigationItem href="/level-3b">
                   Level 3b
                 </BreadcrumbNavigationItem>
-                <BreadcrumbNavigationItem href="/level-4a" current>
+                <BreadcrumbNavigationItem current>
                   Level 4a
                 </BreadcrumbNavigationItem>
               </BreadcrumbNavigation>

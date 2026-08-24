@@ -10,6 +10,16 @@ All notable changes to this project are documented in this file.
 
 Nog niet gepubliceerde wijzigingen. Schrijf nieuwe changelog-entries hieronder; bij de volgende release wordt deze kop gepromoveerd naar het definitieve versienummer.
 
+### BreadcrumbNavigation
+
+#### Changed
+
+- **Huidige pagina is geen link meer** (issue [#298](https://github.com/jeffreylauwers/design-system-starter-kit/issues/298)): het laatste item van de breadcrumb werd als `<a>` gerenderd en vervolgens met CSS ontdaan van underline en pointer-cursor. Dat is een link die eruitziet als tekst en bij activeren niets doet. Het item rendert nu als platte tekst binnen de `<li>`, en `aria-current="page"` staat op de `<li>` in plaats van op de link. Gerelateerd succescriterium: [WCAG 3.2.4 Consistent Identification](https://www.w3.org/WAI/WCAG22/quickref/#consistent-identification).
+  - Breaking voor de HTML/CSS-laag: wie de markup met de hand schrijft, verplaatst `aria-current="page"` naar de `<li>` en haalt de `<a>` rond de huidige paginatitel weg
+  - React-consumers hoeven niets te doen. `href` is optioneel geworden en wordt genegeerd zodra `current` is gezet, dus bestaande `<BreadcrumbNavigationItem href="/x" current>` blijft compileren en rendert vanzelf de nieuwe markup. Het weglaten van `href` is de nieuwe, schone vorm
+  - De CSS werd hier eenvoudiger van: de ontlink-regel voor `.dsn-breadcrumb-navigation__item--current .dsn-breadcrumb-navigation__link` verviel, en daarmee ook de twee `:not(...)`-guards die hover en active van het huidige item moesten uitsluiten
+  - Het huidige item levert geen tabstop meer op, wat toetsenbordgebruikers een navigatie-actie zonder effect bespaart
+
 ### IconList
 
 #### Added

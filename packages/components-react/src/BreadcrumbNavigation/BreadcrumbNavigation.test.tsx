@@ -10,9 +10,7 @@ const renderBreadcrumb = (props = {}) =>
       <BreadcrumbNavigationItem href="/categorie">
         Categorie
       </BreadcrumbNavigationItem>
-      <BreadcrumbNavigationItem href="/product" current>
-        Product
-      </BreadcrumbNavigationItem>
+      <BreadcrumbNavigationItem current>Product</BreadcrumbNavigationItem>
     </BreadcrumbNavigation>
   );
 
@@ -125,9 +123,7 @@ describe('BreadcrumbNavigation', () => {
     render(
       <BreadcrumbNavigation ref={ref}>
         <BreadcrumbNavigationItem href="/home">Home</BreadcrumbNavigationItem>
-        <BreadcrumbNavigationItem href="/huidig" current>
-          Huidig
-        </BreadcrumbNavigationItem>
+        <BreadcrumbNavigationItem current>Huidig</BreadcrumbNavigationItem>
       </BreadcrumbNavigation>
     );
     expect(ref.current).toBeInstanceOf(HTMLElement);
@@ -149,9 +145,7 @@ describe('BreadcrumbNavigationItem', () => {
     const { container } = render(
       <BreadcrumbNavigation>
         <BreadcrumbNavigationItem href="/home">Home</BreadcrumbNavigationItem>
-        <BreadcrumbNavigationItem href="/huidig" current>
-          Huidig
-        </BreadcrumbNavigationItem>
+        <BreadcrumbNavigationItem current>Huidig</BreadcrumbNavigationItem>
       </BreadcrumbNavigation>
     );
     const items = container.querySelectorAll('li');
@@ -162,9 +156,7 @@ describe('BreadcrumbNavigationItem', () => {
     render(
       <BreadcrumbNavigation>
         <BreadcrumbNavigationItem href="/home">Home</BreadcrumbNavigationItem>
-        <BreadcrumbNavigationItem href="/huidig" current>
-          Huidig
-        </BreadcrumbNavigationItem>
+        <BreadcrumbNavigationItem current>Huidig</BreadcrumbNavigationItem>
       </BreadcrumbNavigation>
     );
     expect(screen.getByText('Home').closest('a')).toHaveAttribute(
@@ -177,9 +169,7 @@ describe('BreadcrumbNavigationItem', () => {
     render(
       <BreadcrumbNavigation>
         <BreadcrumbNavigationItem href="/home">Home</BreadcrumbNavigationItem>
-        <BreadcrumbNavigationItem href="/huidig" current>
-          Huidig
-        </BreadcrumbNavigationItem>
+        <BreadcrumbNavigationItem current>Huidig</BreadcrumbNavigationItem>
       </BreadcrumbNavigation>
     );
     expect(screen.getByText('Home')).toBeInTheDocument();
@@ -193,9 +183,7 @@ describe('BreadcrumbNavigationItem', () => {
     const { container } = render(
       <BreadcrumbNavigation>
         <BreadcrumbNavigationItem href="/home">Home</BreadcrumbNavigationItem>
-        <BreadcrumbNavigationItem href="/huidig" current>
-          Huidig
-        </BreadcrumbNavigationItem>
+        <BreadcrumbNavigationItem current>Huidig</BreadcrumbNavigationItem>
       </BreadcrumbNavigation>
     );
     const items = container.querySelectorAll('li');
@@ -208,9 +196,7 @@ describe('BreadcrumbNavigationItem', () => {
     const { container } = render(
       <BreadcrumbNavigation>
         <BreadcrumbNavigationItem href="/home">Home</BreadcrumbNavigationItem>
-        <BreadcrumbNavigationItem href="/huidig" current>
-          Huidig
-        </BreadcrumbNavigationItem>
+        <BreadcrumbNavigationItem current>Huidig</BreadcrumbNavigationItem>
       </BreadcrumbNavigation>
     );
     const currentItem = container.querySelector(
@@ -223,9 +209,7 @@ describe('BreadcrumbNavigationItem', () => {
     const { container } = render(
       <BreadcrumbNavigation>
         <BreadcrumbNavigationItem href="/home">Home</BreadcrumbNavigationItem>
-        <BreadcrumbNavigationItem href="/huidig" current>
-          Huidig
-        </BreadcrumbNavigationItem>
+        <BreadcrumbNavigationItem current>Huidig</BreadcrumbNavigationItem>
       </BreadcrumbNavigation>
     );
     const links = container.querySelectorAll(
@@ -238,16 +222,14 @@ describe('BreadcrumbNavigationItem', () => {
   // Accessibility
   // ===========================
 
-  it('adds aria-current="page" on current item link', () => {
+  it('adds aria-current="page" on the current <li>', () => {
     render(
       <BreadcrumbNavigation>
         <BreadcrumbNavigationItem href="/home">Home</BreadcrumbNavigationItem>
-        <BreadcrumbNavigationItem href="/huidig" current>
-          Huidig
-        </BreadcrumbNavigationItem>
+        <BreadcrumbNavigationItem current>Huidig</BreadcrumbNavigationItem>
       </BreadcrumbNavigation>
     );
-    expect(screen.getByText('Huidig').closest('a')).toHaveAttribute(
+    expect(screen.getByText('Huidig').closest('li')).toHaveAttribute(
       'aria-current',
       'page'
     );
@@ -257,23 +239,56 @@ describe('BreadcrumbNavigationItem', () => {
     render(
       <BreadcrumbNavigation>
         <BreadcrumbNavigationItem href="/home">Home</BreadcrumbNavigationItem>
-        <BreadcrumbNavigationItem href="/huidig" current>
-          Huidig
-        </BreadcrumbNavigationItem>
+        <BreadcrumbNavigationItem current>Huidig</BreadcrumbNavigationItem>
       </BreadcrumbNavigation>
     );
-    expect(screen.getByText('Home').closest('a')).not.toHaveAttribute(
+    expect(screen.getByText('Home').closest('li')).not.toHaveAttribute(
       'aria-current'
     );
   });
 
-  it('separator icon has aria-hidden', () => {
+  it('does not render the current page as a link', () => {
+    render(
+      <BreadcrumbNavigation>
+        <BreadcrumbNavigationItem href="/home">Home</BreadcrumbNavigationItem>
+        <BreadcrumbNavigationItem current>Huidig</BreadcrumbNavigationItem>
+      </BreadcrumbNavigation>
+    );
+    expect(screen.getByText('Huidig').closest('a')).toBeNull();
+    // Alleen de bovenliggende items zijn nog links
+    expect(screen.getAllByRole('link')).toHaveLength(1);
+  });
+
+  it('ignores href on the current item', () => {
     const { container } = render(
       <BreadcrumbNavigation>
         <BreadcrumbNavigationItem href="/home">Home</BreadcrumbNavigationItem>
         <BreadcrumbNavigationItem href="/huidig" current>
           Huidig
         </BreadcrumbNavigationItem>
+      </BreadcrumbNavigation>
+    );
+    expect(container.querySelector('a[href="/huidig"]')).toBeNull();
+    expect(screen.getAllByRole('link')).toHaveLength(1);
+  });
+
+  it('renders as plain text when href is omitted on a non-current item', () => {
+    render(
+      <BreadcrumbNavigation>
+        <BreadcrumbNavigationItem>Zonder href</BreadcrumbNavigationItem>
+        <BreadcrumbNavigationItem current>Huidig</BreadcrumbNavigationItem>
+      </BreadcrumbNavigation>
+    );
+    // Nooit een <a> zonder href: die is niet focusbaar en heeft geen linkrol
+    expect(screen.getByText('Zonder href').closest('a')).toBeNull();
+    expect(screen.queryAllByRole('link')).toHaveLength(0);
+  });
+
+  it('separator icon has aria-hidden', () => {
+    const { container } = render(
+      <BreadcrumbNavigation>
+        <BreadcrumbNavigationItem href="/home">Home</BreadcrumbNavigationItem>
+        <BreadcrumbNavigationItem current>Huidig</BreadcrumbNavigationItem>
       </BreadcrumbNavigation>
     );
     const separators = container.querySelectorAll(
@@ -295,9 +310,7 @@ describe('BreadcrumbNavigationItem', () => {
         <BreadcrumbNavigationItem href="/categorie">
           Categorie
         </BreadcrumbNavigationItem>
-        <BreadcrumbNavigationItem href="/huidig" current>
-          Huidig
-        </BreadcrumbNavigationItem>
+        <BreadcrumbNavigationItem current>Huidig</BreadcrumbNavigationItem>
       </BreadcrumbNavigation>
     );
     const separators = container.querySelectorAll(
@@ -318,9 +331,7 @@ describe('BreadcrumbNavigationItem', () => {
         <BreadcrumbNavigationItem ref={ref} href="/home">
           Home
         </BreadcrumbNavigationItem>
-        <BreadcrumbNavigationItem href="/huidig" current>
-          Huidig
-        </BreadcrumbNavigationItem>
+        <BreadcrumbNavigationItem current>Huidig</BreadcrumbNavigationItem>
       </BreadcrumbNavigation>
     );
     expect(ref.current).toBeInstanceOf(HTMLElement);
