@@ -120,7 +120,16 @@ Tokens zijn gelaagd: `base.json` (gedeelde primitieven) → component-token JSON
 
 ### 5. TypeScript moet volledig schoon zijn
 
-`pnpm --filter storybook exec tsc --noEmit` geeft **0 fouten en 0 warnings**. Nieuwe code mag geen nieuwe fouten of warnings introduceren.
+Nieuwe code mag geen nieuwe fouten of warnings introduceren. Er zijn **twee** type-checks nodig, want ze dekken verschillende packages:
+
+```bash
+pnpm type-check                                  # core, components-react, components-web
+pnpm --filter storybook exec tsc --noEmit        # storybook (stories en docs)
+```
+
+Beide checks erven dezelfde strenge instellingen uit de root `tsconfig.json` (`strict`, `noImplicitReturns`), maar ze kijken naar andere bestanden. De storybook-tsconfig include't alleen `packages/storybook/src` en `.storybook`, en lost `@dsn-starter-kit/components-react` op via de `types`-entry in de package.json, dus via de gebouwde `dist/*.d.ts`. De Vite-alias naar `../components-react/src` in `.storybook/main.ts` geldt alleen tijdens de build, niet voor `tsc`.
+
+Gevolg: de storybook-check ziet de broncode van componenten nooit. Een groene storybook-check is geen bewijs dat `components-react` compileert. Wie componentcode aanraakt, draait `pnpm type-check`.
 
 ### 6. Navigatie: homepage krijgt altijd een 'Home' item als eerste, met `current`
 
@@ -250,11 +259,17 @@ packages/design-tokens/src/tokens/themes/start/base.json          (indien struct
 
 ### Kwaliteitscontrole voor PR
 
+Draai dit in dezelfde volgorde als CI, zodat een groene lokale run ook een groene CI betekent:
+
 ```bash
-pnpm test                                        # alle tests groen
-pnpm --filter storybook exec tsc --noEmit        # 0 nieuwe TypeScript-fouten
 pnpm lint                                        # 0 lint-fouten
+pnpm format:check                                # prettier
+pnpm type-check                                  # core, components-react, components-web
+pnpm --filter storybook exec tsc --noEmit        # storybook (niet gedekt door type-check)
+pnpm test                                        # alle tests groen
 ```
+
+Bij wijzigingen aan stories, MDX of build-scripts ook `pnpm build`: een kapotte `.docs.mdx` of een ontbrekende entry in de `exports`-map van `components-html` breekt pas daar, niet bij de type-checks.
 
 ---
 
