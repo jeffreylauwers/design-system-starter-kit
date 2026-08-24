@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import type { Meta, StoryObj } from '@storybook/react-vite';
 import { Button, DotBadge, Icon } from '@dsn-starter-kit/components-react';
 import DocsPage from './DotBadge.docs.mdx';
@@ -102,50 +103,71 @@ export const AllVariants: Story = {
   ),
 };
 
-export const WithPulse: Story = {
-  name: 'With pulse',
-  render: () => (
+/**
+ * De pulse loopt 3 × 1500ms = 4500ms en stopt daarna vanzelf, binnen de 5 seconden
+ * van WCAG 2.2.2. De knop remount de dots zodat de animatie opnieuw te zien is.
+ */
+const PulseShowcase = () => {
+  const [run, setRun] = useState(0);
+
+  return (
     <div
       style={{
         display: 'flex',
-        gap: '2rem',
+        flexDirection: 'column',
+        gap: '1.5rem',
+        alignItems: 'flex-start',
         padding: '0.75rem',
-        alignItems: 'center',
       }}
     >
-      {(['negative', 'positive', 'warning', 'info', 'neutral'] as const).map(
-        (variant) => (
-          <div
-            key={variant}
-            style={{
-              display: 'flex',
-              flexDirection: 'column',
-              alignItems: 'center',
-              gap: '0.5rem',
-            }}
-          >
+      <div style={{ display: 'flex', gap: '2rem', alignItems: 'center' }}>
+        {(['negative', 'positive', 'warning', 'info', 'neutral'] as const).map(
+          (variant) => (
             <div
+              key={variant}
               style={{
-                position: 'relative',
-                display: 'inline-block',
-                padding: '0.75rem',
+                display: 'flex',
+                flexDirection: 'column',
+                alignItems: 'center',
+                gap: '0.5rem',
               }}
             >
-              <DotBadge variant={variant} pulse />
+              <div
+                style={{
+                  position: 'relative',
+                  display: 'inline-block',
+                  padding: '0.75rem',
+                }}
+              >
+                <DotBadge key={run} variant={variant} pulse />
+              </div>
+              <span
+                style={{
+                  fontSize: '0.75rem',
+                  color: 'var(--dsn-color-neutral-color-default)',
+                }}
+              >
+                {variant}
+              </span>
             </div>
-            <span
-              style={{
-                fontSize: '0.75rem',
-                color: 'var(--dsn-color-neutral-color-default)',
-              }}
-            >
-              {variant}
-            </span>
-          </div>
-        )
-      )}
+          )
+        )}
+      </div>
+
+      <Button
+        variant="default"
+        size="small"
+        onClick={() => setRun((value) => value + 1)}
+      >
+        Animatie opnieuw afspelen
+      </Button>
     </div>
-  ),
+  );
+};
+
+export const WithPulse: Story = {
+  name: 'With pulse',
+  render: () => <PulseShowcase />,
 };
 
 // =============================================================================

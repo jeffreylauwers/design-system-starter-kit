@@ -68,6 +68,10 @@ DotBadge heeft altijd `aria-hidden="true"`: screenreaders negeren de dot volledi
 
 Gebruik de `pulse`-modifier alleen voor urgente, tijdkritische statuswijzigingen. De animatie respecteert `prefers-reduced-motion: reduce`: bij verminderde bewegingsvoorkeur vervalt de animatie maar blijft de dot zichtbaar.
 
+De pulse loopt drie keer (3 × 1500ms = 4500ms) en stopt daarna vanzelf. Dat is een bewuste keuze: [WCAG 2.2.2 Pauzeren, stoppen, verbergen](https://www.w3.org/WAI/WCAG22/quickref/#pause-stop-hide) vraagt voor beweging die automatisch start en naast andere content staat ofwel een mechanisme om te pauzeren, stoppen of verbergen, ofwel een animatie die binnen 5 seconden vanzelf eindigt. Een stopknop bij een decoratieve stip zou meer in de weg zitten dan helpen, dus eindigt de animatie zichzelf. De dot blijft daarna gewoon staan: de statusinformatie gaat niet verloren, alleen de beweging stopt.
+
+Wil je een andere duur, pas dan `--dsn-dot-badge-pulse-duration` en `--dsn-dot-badge-pulse-iteration-count` samen aan en houd het product van beide onder de 5 seconden.
+
 ```html
 <span
   class="dsn-dot-badge dsn-dot-badge--negative dsn-dot-badge--pulse"
@@ -81,14 +85,15 @@ Bij dynamisch bijwerken van de dot (bijv. nieuwe berichten binnenkomen): voeg `a
 
 ## Design tokens
 
-| Token                               | Beschrijving                                      |
-| ----------------------------------- | ------------------------------------------------- |
-| `--dsn-dot-badge-size`              | Diameter van de dot (8px)                         |
-| `--dsn-dot-badge-color`             | Achtergrondkleur: wordt per variant ingesteld     |
-| `--dsn-dot-badge-inset-block-start` | Verticale offset t.o.v. rechterbovenhoek parent   |
-| `--dsn-dot-badge-inset-inline-end`  | Horizontale offset t.o.v. rechterbovenhoek parent |
-| `--dsn-dot-badge-pulse-duration`    | Duur van de pulse-animatie                        |
-| `--dsn-dot-badge-pulse-easing`      | Easing van de pulse-animatie                      |
+| Token                                   | Beschrijving                                      |
+| --------------------------------------- | ------------------------------------------------- |
+| `--dsn-dot-badge-size`                  | Diameter van de dot (8px)                         |
+| `--dsn-dot-badge-color`                 | Achtergrondkleur: wordt per variant ingesteld     |
+| `--dsn-dot-badge-inset-block-start`     | Verticale offset t.o.v. rechterbovenhoek parent   |
+| `--dsn-dot-badge-inset-inline-end`      | Horizontale offset t.o.v. rechterbovenhoek parent |
+| `--dsn-dot-badge-pulse-duration`        | Duur van één pulse-cyclus (1500ms)                |
+| `--dsn-dot-badge-pulse-iteration-count` | Aantal herhalingen van de pulse (3)               |
+| `--dsn-dot-badge-pulse-easing`          | Easing van de pulse-animatie                      |
 
 ## Accessibility
 
@@ -97,3 +102,5 @@ Bij dynamisch bijwerken van de dot (bijv. nieuwe berichten binnenkomen): voeg `a
 - Gebruik nooit `aria-label` op DotBadge zelf.
 - Bij dynamisch bijwerken: voeg `aria-live="polite"` toe op een hoger niveau.
 - Pulse-animatie respecteert `prefers-reduced-motion: reduce`: animatie vervalt, dot blijft zichtbaar.
+- Pulse-animatie stopt na 4500ms vanzelf, ruim binnen de 5 seconden van [WCAG 2.2.2 Pauzeren, stoppen, verbergen](https://www.w3.org/WAI/WCAG22/quickref/#pause-stop-hide). Er is daarom geen stopknop nodig.
+- Pulse-animatie is uitgeschakeld in forced-colors mode: een opacity-animatie op systeemkleuren is onbetrouwbaar.

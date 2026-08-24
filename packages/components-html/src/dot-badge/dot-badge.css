@@ -62,7 +62,13 @@
   --dsn-dot-badge-color: var(--dsn-color-neutral-inverse-bg-default);
 }
 
-/* Pulse-effect via ::before pseudo-element — geen extra DOM-nodes nodig */
+/* Pulse-effect via ::before pseudo-element — geen extra DOM-nodes nodig.
+   De animatie loopt bewust een eindig aantal keer (3 × 1500ms = 4500ms) en stopt
+   dus binnen 5 seconden: WCAG 2.2.2 Pauzeren, stoppen, verbergen vraagt voor
+   automatisch startende beweging naast andere content ofwel een stopmechanisme,
+   ofwel een animatie die vanzelf binnen 5 seconden eindigt.
+   animation-fill-mode: forwards houdt het laatste keyframe vast (opacity: 0),
+   zodat de ring uitgefadet blijft en de dot zelf zichtbaar achterblijft. */
 .dsn-dot-badge--pulse::before {
   content: '';
   display: block;
@@ -71,7 +77,8 @@
   border-radius: 50%;
   background-color: var(--dsn-dot-badge-color);
   animation: dsn-dot-badge-pulse var(--dsn-dot-badge-pulse-duration)
-    var(--dsn-dot-badge-pulse-easing) infinite;
+    var(--dsn-dot-badge-pulse-easing) var(--dsn-dot-badge-pulse-iteration-count)
+    forwards;
 }
 
 @keyframes dsn-dot-badge-pulse {
