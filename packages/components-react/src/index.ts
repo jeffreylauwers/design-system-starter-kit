@@ -22,6 +22,7 @@ export * from './Paragraph';
 export * from './Link';
 export * from './UnorderedList';
 export * from './OrderedList';
+export * from './IconList';
 
 // Buttons & Icons
 export * from './Button';
