@@ -31,6 +31,21 @@ Nog niet gepubliceerde wijzigingen. Schrijf nieuwe changelog-entries hieronder; 
   - De dot zelf blijft na de animatie gewoon staan: alleen de beweging stopt, de statusinformatie niet
   - De Storybook-story "With pulse" heeft een knop gekregen om de animatie opnieuw af te spelen, omdat een eindige animatie anders niet te beoordelen is in de docs
 
+### File
+
+#### Changed
+
+- **De aria-live regio kondigt nu ook een mislukte upload aan** (issue [#316](https://github.com/jeffreylauwers/design-system-starter-kit/issues/316)): de visueel verborgen `aria-live="polite"` regio werd alleen gevuld bij `status="uploaded"`. Ging een upload mis, dan verscheen de foutmelding uitsluitend visueel, in een gewone `<p>` die niet wordt aangekondigd. Screenreadergebruikers hoorden succes wel en falen niet. Gerelateerd succescriterium: [WCAG 4.1.3 Statusberichten](https://www.w3.org/WAI/WCAG22/quickref/#status-messages).
+  - Bij `status="error"` komt nu `{fileName}: {errorMessage}` in de regio, of `{fileName} uploaden mislukt` wanneer er geen `errorMessage` is meegegeven
+  - Nieuwe prop `errorLabel` om die tekst te overschrijven, in lijn met de bestaande `uploadedLabel`
+  - De aankondiging bevat altijd de volledige bestandsnaam inclusief extensie. In een `FileList` met meerdere uploads is dat het enige dat de melding koppelt aan het juiste bestand
+  - De tekst blijft staan zolang de error-state actief is, anders dan bij `uploaded` (2 seconden). Een fout gaat niet vanzelf over en vraagt actie van de gebruiker. Bij terugkeer naar `default` of `loading` maakt het component de regio leeg
+  - `loading` kondigt bewust niets aan: de Spinner heeft al een visueel verborgen label en het startmoment is een gebruikersactie
+
+#### Documentation
+
+- **De Accessibility-sectie beschrijft nu de volledige inhoud van de aria-live regio** (issue [#316](https://github.com/jeffreylauwers/design-system-starter-kit/issues/316)): nieuw kopje "De aria-live regio" met per state de exacte tekst, de onderbouwing van de woordkeuze, de levensduur van de melding en hoe je de teksten overschrijft. De htmlTemplate in de stories rendert de regio niet langer altijd leeg, maar toont per state dezelfde tekst als de React-laag, zodat de HTML/CSS-consument ziet wat hij zelf moet schrijven.
+
 ### IconList
 
 #### Added

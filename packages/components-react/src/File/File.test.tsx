@@ -283,6 +283,66 @@ describe('File', () => {
       );
       expect(queryByText('Upload mislukt.')).not.toBeInTheDocument();
     });
+
+    it('vult de aria-live regio met bestandsnaam en errorMessage', () => {
+      const { container } = render(
+        <File
+          fileName="document.pdf"
+          status="error"
+          errorMessage="Upload mislukt. Probeer het opnieuw."
+        />
+      );
+      const liveRegion = container.querySelector('[aria-live="polite"]');
+      expect(liveRegion).toHaveTextContent(
+        'document.pdf: Upload mislukt. Probeer het opnieuw.'
+      );
+    });
+
+    it('valt terug op een generieke tekst zonder errorMessage', () => {
+      const { container } = render(
+        <File fileName="document.pdf" status="error" />
+      );
+      const liveRegion = container.querySelector('[aria-live="polite"]');
+      expect(liveRegion).toHaveTextContent('document.pdf uploaden mislukt');
+    });
+
+    it('gebruikt een aangepaste errorLabel', () => {
+      const { container } = render(
+        <File
+          fileName="document.pdf"
+          status="error"
+          errorMessage="Upload mislukt. Probeer het opnieuw."
+          errorLabel="Uploaden van document.pdf is mislukt"
+        />
+      );
+      const liveRegion = container.querySelector('[aria-live="polite"]');
+      expect(liveRegion).toHaveTextContent(
+        'Uploaden van document.pdf is mislukt'
+      );
+    });
+
+    it('maakt de aria-live regio leeg wanneer de status weer default wordt', () => {
+      const { container, rerender } = render(
+        <File
+          fileName="document.pdf"
+          status="error"
+          errorMessage="Upload mislukt."
+        />
+      );
+      const liveRegion = container.querySelector('[aria-live="polite"]');
+      expect(liveRegion).toHaveTextContent('document.pdf: Upload mislukt.');
+
+      rerender(<File fileName="document.pdf" status="default" />);
+      expect(liveRegion).toHaveTextContent('');
+    });
+
+    it('kondigt niets aan bij de loading state', () => {
+      const { container } = render(
+        <File fileName="document.pdf" status="loading" />
+      );
+      const liveRegion = container.querySelector('[aria-live="polite"]');
+      expect(liveRegion).toHaveTextContent('');
+    });
   });
 
   describe('verwijder-knop', () => {
