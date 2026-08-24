@@ -460,7 +460,7 @@ export const Default: Story = {
                   <BreadcrumbNavigationItem href="#">
                     Tekst
                   </BreadcrumbNavigationItem>
-                  <BreadcrumbNavigationItem href="#" current>
+                  <BreadcrumbNavigationItem current>
                     Tekst
                   </BreadcrumbNavigationItem>
                 </BreadcrumbNavigation>

@@ -2327,12 +2327,12 @@ const [isOpen, setIsOpen] = React.useState(false);
 
 **Props: BreadcrumbNavigation:** `aria-label`, `variant`, `children`
 
-**Props: BreadcrumbNavigationItem:** `href`, `current`, `children`
+**Props: BreadcrumbNavigationItem:** `href` (optioneel; weglaten bij `current`), `current`, `children`
 
 **Features:**
 
 - `<nav aria-label>` landmark met `<ol>` voor semantisch geordende hiërarchie
-- `aria-current="page"` automatisch op het huidige pagina-item
+- Huidige pagina is bewust géén link (WCAG 3.2.4): platte tekst met `aria-current="page"` op de `<li>`
 - `default` variant: items wrappen naar de volgende rij bij weinig ruimte (`flex-wrap`)
 - `compact` variant: container query collapst naar enkel het ouder-item met terug-pijl (`← Ouder`) bij smalle container (`max-width: 32rem`)
 - Terug-pijl icoon zit binnen de `<a>`: erft linkkleur en hover-stijl automatisch
@@ -2348,7 +2348,7 @@ const [isOpen, setIsOpen] = React.useState(false);
 | `dsn-breadcrumb-navigation--compact`       | `<nav>` | Activeert container query responsive collapse                                     |
 | `dsn-breadcrumb-navigation__list`          | `<ol>`  | `display: flex; flex-wrap: wrap; align-items: center`                             |
 | `dsn-breadcrumb-navigation__item`          | `<li>`  | `display: flex; align-items: center`                                              |
-| `dsn-breadcrumb-navigation__item--current` | `<li>`  | Huidige pagina; muted color, geen hover                                           |
+| `dsn-breadcrumb-navigation__item--current` | `<li>`  | Huidige pagina; muted color, geen link, draagt `aria-current="page"`              |
 | `dsn-breadcrumb-navigation__link`          | `<a>`   | Link met kleur, underline en hover/active/focus stijlen                           |
 | `dsn-breadcrumb-navigation__separator`     | `<svg>` | Decoratief scheidingsteken (chevron-right); verborgen op laatste item             |
 | `dsn-breadcrumb-navigation__back-icon`     | `<svg>` | Terug-pijl icoon binnen `<a>`; standaard `display: none`; getoond in compact+smal |
@@ -2370,13 +2370,9 @@ const [isOpen, setIsOpen] = React.useState(false);
     </li>
     <li
       class="dsn-breadcrumb-navigation__item dsn-breadcrumb-navigation__item--current"
+      aria-current="page"
     >
-      <a
-        href="/product"
-        class="dsn-breadcrumb-navigation__link"
-        aria-current="page"
-        >Product</a
-      >
+      Product
       <svg
         class="dsn-icon dsn-breadcrumb-navigation__separator"
         aria-hidden="true"
@@ -2392,14 +2388,14 @@ const [isOpen, setIsOpen] = React.useState(false);
 // React: standaard
 <BreadcrumbNavigation aria-label="Broodkruimelpad">
   <BreadcrumbNavigationItem href="/home">Home</BreadcrumbNavigationItem>
-  <BreadcrumbNavigationItem href="/product" current>Product</BreadcrumbNavigationItem>
+  <BreadcrumbNavigationItem current>Product</BreadcrumbNavigationItem>
 </BreadcrumbNavigation>
 
 // React: compact variant
 <BreadcrumbNavigation aria-label="Broodkruimelpad" variant="compact">
   <BreadcrumbNavigationItem href="/home">Home</BreadcrumbNavigationItem>
   <BreadcrumbNavigationItem href="/categorie">Categorie</BreadcrumbNavigationItem>
-  <BreadcrumbNavigationItem href="/product" current>Product</BreadcrumbNavigationItem>
+  <BreadcrumbNavigationItem current>Product</BreadcrumbNavigationItem>
 </BreadcrumbNavigation>
 ```
 

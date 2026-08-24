@@ -19,8 +19,12 @@
  *       </a>
  *       <svg class="dsn-icon dsn-breadcrumb-navigation__separator" aria-hidden="true"><!-- chevron-right --></svg>
  *     </li>
- *     <li class="dsn-breadcrumb-navigation__item dsn-breadcrumb-navigation__item--current">
- *       <a href="/appel" class="dsn-breadcrumb-navigation__link" aria-current="page">Appel</a>
+ * <!-- Huidige pagina: geen link, aria-current op de <li> -->
+ *     <li
+ *       class="dsn-breadcrumb-navigation__item dsn-breadcrumb-navigation__item--current"
+ *       aria-current="page"
+ *     >
+ *       Appel
  *     </li>
  *   </ol>
  * </nav>
@@ -98,17 +102,8 @@
       var(--dsn-transition-easing-default);
 }
 
-/* Current link — muted color, no underline, no hover effect */
-.dsn-breadcrumb-navigation__item--current .dsn-breadcrumb-navigation__link {
-  color: var(--dsn-breadcrumb-navigation-current-color);
-  text-decoration-line: none;
-  cursor: default;
-}
-
 /* Hover */
-.dsn-breadcrumb-navigation__link:hover:not(
-    .dsn-breadcrumb-navigation__item--current .dsn-breadcrumb-navigation__link
-  ) {
+.dsn-breadcrumb-navigation__link:hover {
   color: var(--dsn-breadcrumb-navigation-link-hover-color);
   text-decoration-line: var(
     --dsn-breadcrumb-navigation-link-hover-text-decoration-line
@@ -116,9 +111,7 @@
 }
 
 /* Active */
-.dsn-breadcrumb-navigation__link:active:not(
-    .dsn-breadcrumb-navigation__item--current .dsn-breadcrumb-navigation__link
-  ) {
+.dsn-breadcrumb-navigation__link:active {
   color: var(--dsn-breadcrumb-navigation-link-active-color);
   text-decoration-line: var(
     --dsn-breadcrumb-navigation-link-active-text-decoration-line
