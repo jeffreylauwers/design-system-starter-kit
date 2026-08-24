@@ -1261,7 +1261,8 @@ Brengt consistente verticale ruimte aan tussen directe child-elementen via `flex
 
 - Kleine gekleurde stip die `position: absolute` staat t.o.v. de parent-wrapper
 - Altijd `aria-hidden="true"`: toegankelijke context via `dsn-visually-hidden` in de parent
-- `pulse` modifier voegt herhalend ring-effect toe via `::before` pseudo-element
+- `pulse` modifier voegt een ring-effect toe via `::before` pseudo-element
+- Pulse loopt 3 × 1500ms = 4500ms en stopt dan vanzelf (WCAG 2.2.2: beweging korter dan 5 seconden heeft geen stopmechanisme nodig)
 - Logische properties (`inset-block-start`, `inset-inline-end`) voor RTL-correctheid
 - Pulse-animatie respecteert `prefers-reduced-motion: reduce`
 

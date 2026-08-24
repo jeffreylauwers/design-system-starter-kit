@@ -20,6 +20,17 @@ Nog niet gepubliceerde wijzigingen. Schrijf nieuwe changelog-entries hieronder; 
   - De CSS werd hier eenvoudiger van: de ontlink-regel voor `.dsn-breadcrumb-navigation__item--current .dsn-breadcrumb-navigation__link` verviel, en daarmee ook de twee `:not(...)`-guards die hover en active van het huidige item moesten uitsluiten
   - Het huidige item levert geen tabstop meer op, wat toetsenbordgebruikers een navigatie-actie zonder effect bespaart
 
+### DotBadge
+
+#### Changed
+
+- **Pulse-animatie stopt na 4,5 seconden** (issues [#301](https://github.com/jeffreylauwers/design-system-starter-kit/issues/301) en [#302](https://github.com/jeffreylauwers/design-system-starter-kit/issues/302)): de `pulse`-modifier draaide `infinite` en bleef dus onbeperkt bewegen naast de rest van de pagina. De animatie loopt nu 3 keer (3 × 1500ms = 4500ms) en stopt daarna vanzelf. Gerelateerd succescriterium: [WCAG 2.2.2 Pauzeren, stoppen, verbergen](https://www.w3.org/WAI/WCAG22/quickref/#pause-stop-hide).
+  - 2.2.2 vraagt bij automatisch startende beweging die langer dan 5 seconden duurt om een pauzeer-, stop- of verbergmechanisme. Een stopknop naast een decoratieve stip zou meer in de weg zitten dan helpen, dus is gekozen voor de andere route die het criterium biedt: de animatie eindigt binnen 5 seconden vanzelf
+  - Nieuw token `--dsn-dot-badge-pulse-iteration-count` (`3`). Wie de duur aanpast, past duration en iteration-count samen aan en houdt het product onder de 5 seconden
+  - `animation-fill-mode: forwards` houdt het laatste keyframe vast, zodat de ring uitgefadet blijft in plaats van terug te springen naar een zichtbare cirkel
+  - De dot zelf blijft na de animatie gewoon staan: alleen de beweging stopt, de statusinformatie niet
+  - De Storybook-story "With pulse" heeft een knop gekregen om de animatie opnieuw af te spelen, omdat een eindige animatie anders niet te beoordelen is in de docs
+
 ### IconList
 
 #### Added

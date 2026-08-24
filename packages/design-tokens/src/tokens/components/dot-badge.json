@@ -21,6 +21,11 @@
         "$type": "duration",
         "$description": "Duur van de pulse-animatie — bewust hoger dan transition.duration.slower (500ms): dit is een herhalende ambient animatie, geen UI-transition"
       },
+      "pulse-iteration-count": {
+        "$value": "3",
+        "$type": "number",
+        "$description": "Aantal herhalingen van de pulse-animatie — 3 × 1500ms = 4500ms, bewust onder de 5 seconden van WCAG 2.2.2 Pauzeren, stoppen, verbergen"
+      },
       "pulse-easing": {
         "$value": "{dsn.transition.easing.default}",
         "$description": "Easing van de pulse-animatie"

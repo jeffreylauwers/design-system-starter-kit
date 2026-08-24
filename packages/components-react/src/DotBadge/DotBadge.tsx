@@ -17,7 +17,9 @@ export interface DotBadgeProps extends React.HTMLAttributes<HTMLSpanElement> {
   variant?: DotBadgeVariant;
 
   /**
-   * Voegt een pulserend ring-effect toe om extra aandacht te trekken
+   * Voegt een pulserend ring-effect toe om extra aandacht te trekken.
+   * De pulse loopt 3 keer (4500ms) en stopt dan vanzelf, zodat de beweging
+   * binnen de 5 seconden van WCAG 2.2.2 blijft. De dot zelf blijft staan.
    * @default false
    */
   pulse?: boolean;
