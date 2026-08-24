@@ -177,11 +177,12 @@ export const File = React.forwardRef<HTMLDivElement, FileProps>(
               ? `${fileName}: ${errorMessage}`
               : `${fileName} uploaden mislukt`)
         );
-        return;
+        return undefined;
       }
 
       // Default en loading: geen aankondiging
       setLiveText('');
+      return undefined;
     }, [currentStatus, fileName, uploadedLabel, errorLabel, errorMessage]);
 
     // Bestandsnaam zonder extensie voor visuele weergave
