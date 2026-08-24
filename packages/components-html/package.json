@@ -33,6 +33,7 @@
     "./pre-heading": "./src/pre-heading/pre-heading.css",
     "./hero": "./src/hero/hero.css",
     "./icon": "./src/icon/icon.css",
+    "./icon-list": "./src/icon-list/icon-list.css",
     "./image": "./src/image/image.css",
     "./link": "./src/link/link.css",
     "./link-button": "./src/link-button/link-button.css",

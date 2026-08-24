@@ -255,6 +255,16 @@
       "primaryProps": []
     },
     {
+      "name": "IconList",
+      "cssBlock": "dsn-icon-list",
+      "category": "content",
+      "purpose": "List where an icon replaces the bullet or number as the item marker; renders as ul or ol and takes a per-list icon color.",
+      "platforms": ["html-css", "react"],
+      "primaryProps": [
+        { "name": "as", "values": ["ul", "ol"], "default": "ul" }
+      ]
+    },
+    {
       "name": "Alert",
       "cssBlock": "dsn-alert",
       "category": "display-feedback",

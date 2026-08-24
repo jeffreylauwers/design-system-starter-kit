@@ -822,6 +822,33 @@ Brengt consistente verticale ruimte aan tussen directe child-elementen via `flex
 
 **Tests:** React (8 tests), Web Component (11 tests)
 
+### IconList Component
+
+**Status:** Complete (HTML/CSS, React)
+
+**Location:** `packages/components-{html|react}/src/{icon-list|IconList}/`
+
+**Component Tokens:** `tokens/components/icon-list.json`
+
+**Features:**
+
+- An icon per item replaces the bullet or number; `IconList` + `IconListItem`
+- `as` prop: renders as `<ul>` (default) or `<ol>` when the order carries meaning
+- `iconColor` prop sets `--dsn-icon-list-icon-color` inline, so a whole list can take a semantic color (positive, negative, warning)
+- `role="list"` is always set: `list-style-type: none` makes Safari/VoiceOver drop the list announcement
+- Icons are decorative (`aria-hidden`); the item text carries the full meaning
+- Icon size equals one line height, so it scales with the fluid type scale and stays aligned with the first text line
+
+**Tokens:**
+
+- `font-family`, `font-weight`, `color`, `font-size`, `line-height`
+- `max-inline-size`, `margin-block-end`, `gap`
+- `icon-color`: accent color for the icons, overridable per list
+- `icon-size`: delegates to `{dsn.icon.size.md}` (font-size x line-height)
+- `icon-gap`: space between icon and text
+
+**Tests:** React (20 tests)
+
 ### LinkButton Component
 
 **Status:** Complete (HTML/CSS, React)

@@ -1,0 +1,6 @@
+/**
+ * IconList Component Styles for React
+ * Re-exports the base IconList styles from components-html
+ */
+
+@import '../../../components-html/src/icon-list/icon-list.css';

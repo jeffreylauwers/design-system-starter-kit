@@ -1,0 +1,63 @@
+{
+  "dsn": {
+    "icon-list": {
+      "color": {
+        "$value": "{dsn.color.neutral.color-document}",
+        "$type": "color",
+        "$description": "Icon list text color"
+      },
+      "font-family": {
+        "$value": "{dsn.text.font-family.default}",
+        "$type": "fontFamily",
+        "$description": "Icon list font family"
+      },
+      "font-size": {
+        "$value": "{dsn.text.font-size.md}",
+        "$type": "fontSize",
+        "$description": "Icon list font size"
+      },
+      "font-weight": {
+        "$value": "{dsn.text.font-weight.default}",
+        "$type": "fontWeight",
+        "$description": "Icon list font weight"
+      },
+      "line-height": {
+        "$value": "{dsn.text.line-height.md}",
+        "$type": "lineHeight",
+        "$description": "Icon list line height"
+      },
+      "max-inline-size": {
+        "$value": "{dsn.text.max-inline-size}",
+        "$type": "sizing",
+        "$description": "Icon list max width for readability"
+      },
+      "gap": {
+        "$value": "{dsn.space.row.sm}",
+        "$type": "spacing",
+        "$description": "Space between list items"
+      },
+      "margin-block-end": {
+        "$value": "{dsn.space.row.lg}",
+        "$type": "spacing",
+        "$description": "Icon list bottom margin"
+      },
+      "icon": {
+        "color": {
+          "$value": "{dsn.color.accent-1.color-default}",
+          "$type": "color",
+          "$description": "Default icon color, same as the UnorderedList marker color"
+        },
+        "size": {
+          "$value": "{dsn.icon.size.md}",
+          "$type": "dimension",
+          "$description": "Icon size equal to one line height, scales with the fluid type scale"
+        },
+        "gap": {
+          "$value": "{dsn.space.text.md}",
+          "$type": "spacing",
+          "$description": "Space between icon and text"
+        }
+      }
+    }
+  }
+}

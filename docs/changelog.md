@@ -10,6 +10,18 @@ All notable changes to this project are documented in this file.
 
 Nog niet gepubliceerde wijzigingen. Schrijf nieuwe changelog-entries hieronder; bij de volgende release wordt deze kop gepromoveerd naar het definitieve versienummer.
 
+### IconList
+
+#### Added
+
+- **IconList: lijst met iconen als marker** (issue [#106](https://github.com/jeffreylauwers/design-system-starter-kit/issues/106)): nieuw lijstcomponent waarbij een icoon de bullet of het cijfer vervangt. `IconList` rendert als `<ul>` of, met `as="ol"`, als geordende lijst; `IconListItem` neemt een verplichte `icon`-prop uit de iconenset.
+  - De icoonkleur staat standaard op de accentkleur (gelijk aan de marker-kleur van UnorderedList) en is per lijst te overschrijven via de `iconColor`-prop of, in HTML/CSS, via `--dsn-icon-list-icon-color` als inline custom property
+  - `role="list"` staat altijd op het lijstelement: `list-style-type: none` laat Safari/VoiceOver de lijstaankondiging weglaten, en de expliciete rol herstelt dat zonder iets te veranderen in andere browsers
+  - Iconen zijn decoratief (`aria-hidden="true"`); de tekst van het item draagt de volledige betekenis
+  - `icon-size` delegeert naar `{dsn.icon.size.md}` in plaats van de calc-formule te herhalen, zodat het icoon precies één regelhoogte groot blijft en meeschaalt met de fluid type scale
+  - `icon-gap` gebruikt `{dsn.space.text.md}` (8px), de bestaande conventie voor ruimte tussen icoon en tekst, in plaats van de in het issue voorgestelde `{dsn.space.inline.sm}` (4px)
+  - `max-inline-size` toegevoegd voor leesbaarheid, consistent met UnorderedList en OrderedList
+
 ### Figma-integratie
 
 #### Added
