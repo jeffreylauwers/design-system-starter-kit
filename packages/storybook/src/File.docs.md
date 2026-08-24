@@ -12,7 +12,7 @@ File ondersteunt vier upload-states (`default`, `loading`, `uploaded`, `error`) 
 
 ## Use when
 
-- De gebruiker een bestand heeft geselecteerd of geüpload binnen een formulier, en feedback nodig heeft over de status.
+- De gebruiker een bestand heeft geselecteerd of geüpload binnen een formulier, en feedback nodig heeft over de status. Gebruik `File` dan samen met `FileInput`, zie het patroon **Bestanden uploaden** onder Patronen/Formulieren en het template **Form step: Upload**.
 - Een eerder geüpload bestand getoond wordt op een controlepagina van een meerstappenformulier, met de mogelijkheid het te bekijken of te downloaden.
 - Een downloadbaar bestand aangeboden wordt op een detailpagina.
 
@@ -202,3 +202,7 @@ Gevolg van die keuze: in de error-state staat de foutmelding twee keer in de acc
 ```
 
 Bij de HTML/CSS-laag regel je dit zelf: schrijf dezelfde tekst in de live region op het moment dat je de status-klasse (`dsn-file--uploaded`, `dsn-file--error`) op de root zet, en maak hem leeg als je die klasse weer verwijdert.
+
+#### Zelf beluisteren
+
+Een live region kondigt alleen aan bij een wijziging van de inhoud, dus de stories hierboven spreken niets uit: die starten al in hun eindtoestand. Wil je de aankondigingen met een screenreader horen, gebruik dan het template **Form step: Upload**. Daar doorloopt elk gekozen bestand een echte cyclus, en levert een bestand groter dan 10 MB of met een niet-toegestane extensie de foutaankondiging op.

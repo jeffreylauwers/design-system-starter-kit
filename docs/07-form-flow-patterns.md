@@ -170,6 +170,74 @@ De breedte van een invulveld communiceert de verwachte invoerlengte. Beschikbare
 
 ---
 
+## Bestanden uploaden
+
+Een uploadstap gebruikt altijd twee componenten. `FileInput` is het kiesmoment, `File` is de terugkoppeling daarna. `FileInput` alleen is niet genoeg: een native `<input type="file">` toont hooguit "3 bestanden gekozen" en zegt niets over wat er daarna met die bestanden gebeurt.
+
+| Component   | Rol                                                                        |
+| ----------- | -------------------------------------------------------------------------- |
+| `FileInput` | Het veld waarmee de gebruiker bestanden kiest                              |
+| `File`      | Toont per bestand de naam, het type, de grootte en de status van de upload |
+| `FileList`  | Wrapper zodra er meer dan één bestand kan zijn                             |
+
+### Voorwaarden vooraf tonen
+
+Zet de eisen (maximale grootte, toegestane bestandstypen) in een `FormFieldDescription` boven het veld, gekoppeld via `aria-describedby`. Wie de eisen vooraf leest, loopt minder vaak tegen een afwijzing aan.
+
+```tsx
+<FormFieldDescription as="div" id="bestand-upload-description">
+  <UnorderedList>
+    <li>Het bestand mag maximaal 10 MB zijn.</li>
+    <li>Toegestane bestandstypen: doc, docx, xlsx, pdf, zip, jpg, png, bmp en gif.</li>
+  </UnorderedList>
+</FormFieldDescription>
+<FileInput
+  id="bestand-upload"
+  aria-describedby="bestand-upload-description"
+  multiple
+/>
+```
+
+### De vier statussen
+
+Elk gekozen bestand doorloopt een eigen cyclus, los van de andere bestanden in de lijst.
+
+| Status     | Wanneer                      | Wat de gebruiker ziet         | Wat er wordt aangekondigd           |
+| ---------- | ---------------------------- | ----------------------------- | ----------------------------------- |
+| `loading`  | Upload loopt                 | Spinner                       | Niets                               |
+| `uploaded` | Upload geslaagd              | Vinkje, 2 seconden lang       | "{bestandsnaam} succesvol geüpload" |
+| `default`  | Bestand staat klaar          | Verwijderknop                 | Niets                               |
+| `error`    | Bestand geweigerd of mislukt | Rode rand plus de foutmelding | Bestandsnaam gevolgd door de reden  |
+
+De aankondigingen komen uit de `aria-live` regio die `File` zelf meebrengt. Zie de Accessibility-sectie van de File-documentatie voor de exacte teksten en hoe je ze overschrijft.
+
+### Controleer bij het kiezen, niet pas bij submit
+
+Grootte en bestandstype zijn direct te controleren zodra de gebruiker een bestand kiest. Wacht daar niet mee tot submit: dan is de gebruiker al doorgelopen naar de volgende velden en moet die terug. Dit is de uitzondering op de regel [valideer bij submit](#wanneer-valideren), die geldt voor invoer die de gebruiker nog aan het typen is.
+
+Een geweigerd bestand verdwijnt niet uit de lijst. Het blijft staan als `File` in de error-status, met de reden eronder, en met een verwijderknop. Zo ziet de gebruiker wat er precies is afgewezen.
+
+Gebruik de vaste foutmeldingsteksten uit [Patronen per inputtype](#patronen-per-inputtype), aangevuld met de reden:
+
+```
+Het gekozen bestand is te groot. Het bestand mag maximaal 10 MB zijn.
+Het gekozen bestandstype is niet toegestaan. Kies een doc, docx, xlsx, pdf, zip, jpg, png, bmp of gif.
+```
+
+### Verwijderen
+
+Geef elk bestand een `onDelete`. De verwijderknop van `File` bevat de volledige bestandsnaam als visueel verborgen tekst, zodat "Verwijder" in een lijst van vijf bestanden alsnog eenduidig is.
+
+### Meerdere bestanden
+
+Zet `multiple` op de `FileInput` en verzamel de keuzes in een `FileList`. Leeg na elke keuze de waarde van de input (`event.target.value = ''`), anders kan de gebruiker hetzelfde bestand niet opnieuw kiezen nadat het is verwijderd.
+
+Juist bij meerdere bestanden verdient de bestandsnaam in de aankondiging zijn plek: "Upload mislukt" zonder naam is onbruikbaar zodra er drie uploads tegelijk lopen.
+
+Zie het template **Form step: Upload** in Storybook voor een werkend voorbeeld met alle statussen, de controle op grootte en type, en het verwijderen van bestanden.
+
+---
+
 ## Validatie
 
 ### Wanneer valideren
