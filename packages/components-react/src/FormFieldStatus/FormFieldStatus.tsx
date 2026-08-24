@@ -24,6 +24,15 @@ export interface FormFieldStatusProps extends React.HTMLAttributes<HTMLParagraph
   showIcon?: boolean;
 
   /**
+   * Whether to announce changes to this status via an aria-live region.
+   * Enable this only for status text that changes during interaction, such as
+   * a character counter. A status that never changes should not be a live
+   * region: it would be announced twice.
+   * @default false
+   */
+  live?: boolean;
+
+  /**
    * Status content
    */
   children?: React.ReactNode;
@@ -61,7 +70,14 @@ export const FormFieldStatus = React.forwardRef<
   FormFieldStatusProps
 >(
   (
-    { className, variant = 'default', showIcon = true, children, ...props },
+    {
+      className,
+      variant = 'default',
+      showIcon = true,
+      live = false,
+      children,
+      ...props
+    },
     ref
   ) => {
     const classes = classNames(
@@ -79,7 +95,13 @@ export const FormFieldStatus = React.forwardRef<
     const shouldShowIcon = showIcon && iconName && variant !== 'default';
 
     return (
-      <p ref={ref} className={classes} {...props}>
+      <p
+        ref={ref}
+        className={classes}
+        aria-live={live ? 'polite' : undefined}
+        aria-atomic={live ? true : undefined}
+        {...props}
+      >
         {shouldShowIcon && <Icon name={iconName} aria-hidden="true" />}
         {children}
       </p>

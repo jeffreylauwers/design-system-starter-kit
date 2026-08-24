@@ -32,12 +32,21 @@ const meta: Meta<typeof FormFieldset> = {
         const suffix = args.legendSuffix
           ? `<span class="dsn-form-field-label-suffix">${args.legendSuffix}</span>`
           : '';
-        let html = `<fieldset class="${cls}">\n`;
+        // Bij een groep hangt de koppeling aan het fieldset zelf: er is geen
+        // enkele control om hem aan te hangen.
+        const describedBy = [
+          args.description && 'group-description',
+          args.error && 'group-error',
+          args.status && 'group-status',
+        ]
+          .filter(Boolean)
+          .join(' ');
+        let html = `<fieldset class="${cls}"${describedBy ? ` aria-describedby="${describedBy}"` : ''}>\n`;
         html += `  <legend class="dsn-form-field-label">${args.legend ?? 'Legenda'}${suffix}</legend>\n`;
         if (args.description)
-          html += `  <p class="dsn-form-field-description">${args.description}</p>\n`;
+          html += `  <p class="dsn-form-field-description" id="group-description">${args.description}</p>\n`;
         if (args.error)
-          html += `  <p class="dsn-form-field-error-message"><svg class="dsn-icon" aria-hidden="true"><!-- exclamation-circle --></svg>${args.error}</p>\n`;
+          html += `  <p class="dsn-form-field-error-message" id="group-error"><svg class="dsn-icon" aria-hidden="true"><!-- exclamation-circle --></svg>${args.error}</p>\n`;
         const option = (
           value: string
         ) => `    <label class="dsn-checkbox-option">
@@ -55,7 +64,7 @@ const meta: Meta<typeof FormFieldset> = {
             args.statusVariant && args.statusVariant !== 'default'
               ? ` dsn-form-field-status--${args.statusVariant}`
               : '';
-          html += `  <p class="dsn-form-field-status${variantCls}">${args.status}</p>\n`;
+          html += `  <p class="dsn-form-field-status${variantCls}" id="group-status">${args.status}</p>\n`;
         }
         html += `</fieldset>`;
         return html;
@@ -72,6 +81,7 @@ const meta: Meta<typeof FormFieldset> = {
       control: 'select',
       options: ['default', 'positive', 'warning'],
     },
+    statusLive: { control: 'boolean' },
   },
   args: {
     legend: TEKST,

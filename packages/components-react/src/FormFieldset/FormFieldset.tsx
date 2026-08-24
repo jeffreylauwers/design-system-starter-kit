@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useId } from 'react';
 import { classNames } from '@dsn-starter-kit/core';
 import { FormFieldLegend } from '../FormFieldLegend';
 import { FormFieldDescription } from '../FormFieldDescription';
@@ -39,6 +39,19 @@ export interface FormFieldsetProps {
   statusVariant?: FormFieldStatusVariant;
 
   /**
+   * Announce status changes to screen readers via an aria-live region.
+   * Only enable this for status text that changes during interaction.
+   * @default false
+   */
+  statusLive?: boolean;
+
+  /**
+   * Optional ID for the fieldset. Used as the base for the generated
+   * description/error/status IDs. Generated via useId() when omitted.
+   */
+  id?: string;
+
+  /**
    * Additional CSS class names
    */
   className?: string;
@@ -53,6 +66,9 @@ export interface FormFieldsetProps {
  * Form Fieldset component
  * Container that combines FormFieldLegend, FormFieldDescription, Control, FormFieldErrorMessage, and FormFieldStatus
  * Uses fieldset/legend structure for group controls (CheckboxGroup, RadioGroup, DateInputGroup)
+ *
+ * Description, error and status are linked via aria-describedby on the fieldset
+ * itself: a group has no single control to hang the association on.
  *
  * @example
  * ```tsx
@@ -104,11 +120,26 @@ export const FormFieldset = React.forwardRef<
       error,
       status,
       statusVariant = 'default',
+      statusLive = false,
+      id,
       className,
       children,
     },
     ref
   ) => {
+    const generatedId = useId();
+    const idBase = id ?? generatedId;
+
+    const descriptionId = description ? `${idBase}-description` : undefined;
+    const errorId = error ? `${idBase}-error` : undefined;
+    const statusId = status ? `${idBase}-status` : undefined;
+
+    // Bij een groep controls hangt de koppeling aan het fieldset zelf: er is
+    // geen enkele control om hem aan te hangen. De volgorde volgt de visuele
+    // volgorde, zodat een screenreader dezelfde route loopt als het oog.
+    const describedBy =
+      [descriptionId, errorId, statusId].filter(Boolean).join(' ') || undefined;
+
     const containerClasses = classNames(
       'dsn-form-field',
       {
@@ -118,19 +149,34 @@ export const FormFieldset = React.forwardRef<
     );
 
     return (
-      <fieldset ref={ref} className={containerClasses}>
+      <fieldset
+        ref={ref}
+        id={id}
+        className={containerClasses}
+        aria-describedby={describedBy}
+      >
         <FormFieldLegend suffix={legendSuffix}>{legend}</FormFieldLegend>
 
         {description && (
-          <FormFieldDescription>{description}</FormFieldDescription>
+          <FormFieldDescription id={descriptionId}>
+            {description}
+          </FormFieldDescription>
         )}
 
-        {error && <FormFieldErrorMessage>{error}</FormFieldErrorMessage>}
+        {error && (
+          <FormFieldErrorMessage id={errorId}>{error}</FormFieldErrorMessage>
+        )}
 
         {children}
 
         {status && (
-          <FormFieldStatus variant={statusVariant}>{status}</FormFieldStatus>
+          <FormFieldStatus
+            id={statusId}
+            variant={statusVariant}
+            live={statusLive}
+          >
+            {status}
+          </FormFieldStatus>
         )}
       </fieldset>
     );

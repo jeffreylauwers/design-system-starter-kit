@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest';
-import { render } from '@testing-library/react';
+import { render, screen } from '@testing-library/react';
 import { ProgressBar } from './ProgressBar';
 
 describe('ProgressBar', () => {
@@ -161,5 +161,28 @@ describe('ProgressBar', () => {
     expect(
       container.querySelector('.dsn-progress-bar__percentage')
     ).toBeInTheDocument();
+  });
+
+  it('links the description to the progress element via aria-describedby', () => {
+    const { container } = render(
+      <ProgressBar
+        label="Upload"
+        value={35}
+        id="upload"
+        description="Bestand wordt geupload, even geduld..."
+      />
+    );
+    const progress = container.querySelector('progress');
+    expect(progress).toHaveAttribute('aria-describedby', 'upload-description');
+    expect(
+      screen.getByText('Bestand wordt geupload, even geduld...')
+    ).toHaveAttribute('id', 'upload-description');
+  });
+
+  it('sets no aria-describedby when there is no description', () => {
+    const { container } = render(<ProgressBar label="Upload" value={35} />);
+    expect(container.querySelector('progress')).not.toHaveAttribute(
+      'aria-describedby'
+    );
   });
 });

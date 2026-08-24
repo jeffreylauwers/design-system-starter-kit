@@ -15,14 +15,17 @@ const meta: Meta<typeof ProgressBar> = {
         const percentage = Math.round((value / max) * 100);
         const label = args.label ?? 'Bestand uploaden';
         const description = args.description
-          ? `\n  <p class="dsn-paragraph dsn-progress-bar__description">${args.description}</p>`
+          ? `\n  <p class="dsn-paragraph dsn-progress-bar__description" id="pb-example-description">${args.description}</p>`
+          : '';
+        const describedBy = args.description
+          ? ' aria-describedby="pb-example-description"'
           : '';
         return `<div class="dsn-progress-bar">
   <label class="dsn-visually-hidden" for="pb-example">${label}</label>
   <div class="dsn-progress-bar__header">
     <p class="dsn-paragraph dsn-progress-bar__percentage" aria-hidden="true">${percentage}%</p>
   </div>
-  <progress id="pb-example" class="dsn-progress-bar__bar" value="${value}" max="${max}">${percentage}%</progress>${description}
+  <progress id="pb-example" class="dsn-progress-bar__bar" value="${value}" max="${max}"${describedBy}>${percentage}%</progress>${description}
 </div>`;
       },
     },

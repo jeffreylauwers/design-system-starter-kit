@@ -4,7 +4,7 @@ Container component dat label, description, error message, form control en statu
 
 ## Doel
 
-De FormField component is een complete form field container die alle onderdelen samenbrengt: FormFieldLabel (met optionele suffix), FormFieldDescription, FormFieldErrorMessage, de form control zelf, en FormFieldStatus. Het zorgt voor correcte volgorde, spacing en koppeling via aria-attributen. De component gebruikt een `<div>` wrapper met `<label>` element en is uitsluitend bedoeld voor enkelvoudige inputs. Voor groep controls (CheckboxGroup, RadioGroup) gebruik je [FormFieldset](/docs/components-formfieldset--docs). FormField handelt automatisch ID's af voor aria-describedby koppelingen.
+De FormField component is een complete form field container die alle onderdelen samenbrengt: FormFieldLabel (met optionele suffix), FormFieldDescription, FormFieldErrorMessage, de form control zelf, en FormFieldStatus. Het zorgt voor correcte volgorde, spacing en koppeling via aria-attributen. De component gebruikt een `<div>` wrapper met `<label>` element en is uitsluitend bedoeld voor enkelvoudige inputs. Voor groep controls (CheckboxGroup, RadioGroup) gebruik je [FormFieldset](/docs/components-formfieldset--docs). FormField genereert de ID's voor description, error en status en zet `aria-describedby` op de control, zodat een screenreader die teksten meeneemt.
 
 > **Codevoorbeeld met context**: De HTML/CSS tab toont een `EmailInput` als representatief child. `FormField` is een wrapper: het form control dat je als child meegeeft bepaalt de daadwerkelijke invoer.
 
@@ -14,7 +14,7 @@ De FormField component is een complete form field container die alle onderdelen 
 
 - Je een complete form field nodig hebt met label en control.
 - Je een consistente form field structuur wilt in je formulieren.
-- Je automatische aria-describedby koppelingen wilt voor accessibility.
+- Je wilt dat description, error en status automatisch via `aria-describedby` aan de control gekoppeld worden.
 
 ## Don't use when
 
@@ -47,6 +47,7 @@ Wanneer er een `error` prop aanwezig is, krijgt het hele FormField een dikke rod
 - **error** - Voor validatie fouten, toon alleen na interactie
 - **status** - Voor realtime feedback (character count, password strength)
 - **statusVariant** - 'default' (subtle), 'positive' (success), 'warning' (caution)
+- **statusLive** - Alleen aanzetten wanneer de statustekst tijdens interactie verandert (character counter). Een statische status als live region wordt dubbel voorgelezen.
 
 ### Timing
 
@@ -79,12 +80,14 @@ Plus de tokens van de sub-componenten:
 
 ## Accessibility
 
-- **htmlFor prop** - Koppelt label aan control via ID
-- **Automatische IDs** - FormField genereert IDs voor description/error/status
-- **aria-describedby** - Form controls krijgen automatisch aria-describedby met description/error/status IDs
+- **htmlFor prop** - Koppelt label aan control via ID. Geef altijd hetzelfde ID mee aan de control zelf.
+- **Automatische IDs** - FormField genereert `{htmlFor}-description`, `{htmlFor}-error` en `{htmlFor}-status` voor de teksten die je meegeeft. Zonder `htmlFor` vallen de ID's terug op `useId()`: de koppeling werkt dan nog steeds, maar het label niet meer.
+- **aria-describedby** - FormField zet `aria-describedby` op de control, in de volgorde description → error → status. Dat is dezelfde volgorde als de teksten visueel staan, zodat oog en screenreader dezelfde route lopen. Een `aria-describedby` die je zelf op de control zet blijft behouden en wordt achteraan toegevoegd.
+- **Enkel element als child** - De koppeling gebeurt door het child-element te klonen. Geef daarom één element mee dat zijn props doorgeeft aan het DOM-element. Bij een fragment of meerdere children kun je `aria-describedby` niet automatisch gezet worden en moet je het zelf zetten.
 - **Logische volgorde** - Screenreaders lezen: label → description → error → control → status
 - **Invalid state** - Zet `invalid` prop op de control zelf, niet op FormField
 - **Required** - Gebruik labelSuffix + aria-required op de control
+- **Dynamische status** - Gebruik `statusLive` voor status die verandert tijdens interactie, zoals een character counter. Zonder die prop hoort een screenreadergebruiker de wijziging niet.
 
 ## Voorbeelden
 
@@ -102,7 +105,41 @@ Plus de tokens van de sub-componenten:
   description="Minimaal 8 tekens"
   error="Te kort"
   status="5 van 8 tekens"
+  statusLive
 >
   <TextInput id="password" type="password" invalid />
 </FormField>
+```
+
+De gerenderde HTML van dat laatste voorbeeld:
+
+```html
+<div class="dsn-form-field dsn-form-field--invalid">
+  <label class="dsn-form-field-label" for="password">
+    Wachtwoord
+    <span class="dsn-form-field-label-suffix">(verplicht)</span>
+  </label>
+  <p class="dsn-form-field-description" id="password-description">
+    Minimaal 8 tekens
+  </p>
+  <p class="dsn-form-field-error-message" id="password-error">
+    <svg class="dsn-icon" aria-hidden="true"><!-- exclamation-circle --></svg>
+    Te kort
+  </p>
+  <input
+    type="password"
+    class="dsn-text-input"
+    id="password"
+    aria-invalid="true"
+    aria-describedby="password-description password-error password-status"
+  />
+  <p
+    class="dsn-form-field-status"
+    id="password-status"
+    aria-live="polite"
+    aria-atomic="true"
+  >
+    5 van 8 tekens
+  </p>
+</div>
 ```

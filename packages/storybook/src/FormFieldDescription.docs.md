@@ -26,7 +26,7 @@ De FormFieldDescription component toont aanvullende informatie of instructies vo
 
 - **Houd het kort.** Descriptions moeten bondig zijn (1-2 zinnen meestal).
 - **Wees specifiek.** Geef concrete voorbeelden of requirements ("Minimaal 8 tekens" in plaats van "Kies een sterk wachtwoord").
-- **Gebruik aria-describedby.** Geef de description een `id` en koppel het aan de form control.
+- **Gebruik aria-describedby.** Geef de description een `id` en koppel het aan de form control. Binnen [FormField](/docs/components-formfield--docs) of [FormFieldset](/docs/components-formfieldset--docs) gebeurt dat automatisch: die genereren het ID en zetten `aria-describedby`.
 - **Gebruik `as="div"` voor lijsten.** Als de description een `UnorderedList` of andere block-level elementen bevat, render dan als `<div>` — een `<ul>` is geen geldig kind van een `<p>`.
 - **Niet voor errors.** Gebruik FormFieldErrorMessage voor validatie feedback.
 - **Niet voor status.** Gebruik FormFieldStatus voor success/info/warning feedback.
@@ -46,7 +46,7 @@ De FormFieldDescription component toont aanvullende informatie of instructies vo
 ## Accessibility
 
 - Gebruik `id` attribuut op de description.
-- Koppel de description aan de form control met `aria-describedby`.
+- Koppel de description aan de form control met `aria-describedby`. Gebruik je FormField of FormFieldset, dan is dat al geregeld.
 - Screenreaders lezen de description voor na het label.
 - Descriptions moeten altijd zichtbaar zijn (niet verbergen achter tooltips).
 - Zorg dat kleurcontrast voldoende is (subtiele kleur maar nog leesbaar).

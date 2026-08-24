@@ -1,3 +1,4 @@
+import React from 'react';
 import type { Meta, StoryObj } from '@storybook/react-vite';
 import {
   FormField,
@@ -27,23 +28,32 @@ const meta: Meta<typeof FormField> = {
         const cls = ['dsn-form-field', args.error && 'dsn-form-field--invalid']
           .filter(Boolean)
           .join(' ');
-        const forAttr = args.htmlFor ? ` for="${args.htmlFor}"` : '';
+        const id = args.htmlFor || 'field';
         const suffix = args.labelSuffix
           ? `<span class="dsn-form-field-label-suffix">${args.labelSuffix}</span>`
           : '';
+        // De extra teksten krijgen een id en worden via aria-describedby aan de
+        // control gekoppeld, in dezelfde volgorde als ze visueel staan.
+        const describedBy = [
+          args.description && `${id}-description`,
+          args.error && `${id}-error`,
+          args.status && `${id}-status`,
+        ]
+          .filter(Boolean)
+          .join(' ');
         let html = `<div class="${cls}">\n`;
-        html += `  <label class="dsn-form-field-label"${forAttr}>${args.label ?? 'Label'}${suffix}</label>\n`;
+        html += `  <label class="dsn-form-field-label" for="${id}">${args.label ?? 'Label'}${suffix}</label>\n`;
         if (args.description)
-          html += `  <p class="dsn-form-field-description">${args.description}</p>\n`;
+          html += `  <p class="dsn-form-field-description" id="${id}-description">${args.description}</p>\n`;
         if (args.error)
-          html += `  <p class="dsn-form-field-error-message"><!-- exclamation-circle icon -->${args.error}</p>\n`;
-        html += `  <input type="text" class="dsn-text-input"${args.htmlFor ? ` id="${args.htmlFor}"` : ''} />\n`;
+          html += `  <p class="dsn-form-field-error-message" id="${id}-error"><!-- exclamation-circle icon -->${args.error}</p>\n`;
+        html += `  <input\n    type="text"\n    class="dsn-text-input"\n    id="${id}"${args.error ? '\n    aria-invalid="true"' : ''}${describedBy ? `\n    aria-describedby="${describedBy}"` : ''}\n  />\n`;
         if (args.status) {
           const variantCls =
             args.statusVariant && args.statusVariant !== 'default'
               ? ` dsn-form-field-status--${args.statusVariant}`
               : '';
-          html += `  <p class="dsn-form-field-status${variantCls}">${args.status}</p>\n`;
+          html += `  <p class="dsn-form-field-status${variantCls}" id="${id}-status">${args.status}</p>\n`;
         }
         html += `</div>`;
         return html;
@@ -61,6 +71,7 @@ const meta: Meta<typeof FormField> = {
       control: 'select',
       options: ['default', 'positive', 'warning'],
     },
+    statusLive: { control: 'boolean' },
   },
   args: {
     label: TEKST,
@@ -180,6 +191,46 @@ export const AllStates: Story = {
       </div>
     </div>
   ),
+};
+
+// =============================================================================
+// LIVE STATUS
+// =============================================================================
+
+export const LiveStatus: Story = {
+  name: 'Live status',
+  parameters: {
+    docs: {
+      description: {
+        story:
+          'Een status die tijdens het typen verandert, hoort een live region te zijn. Zet daarvoor `statusLive`. Laat het uit bij een status die niet verandert: die wordt dan dubbel voorgelezen.',
+      },
+    },
+  },
+  render: () => {
+    const MAX = 50;
+    const CharacterCounter = () => {
+      const [waarde, setWaarde] = React.useState('');
+      return (
+        <FormField
+          label={TEKST}
+          htmlFor="live-status"
+          description={TEKST}
+          status={`${waarde.length} van ${MAX} tekens gebruikt`}
+          statusLive
+        >
+          <TextArea
+            id="live-status"
+            rows={3}
+            maxLength={MAX}
+            value={waarde}
+            onChange={(event) => setWaarde(event.target.value)}
+          />
+        </FormField>
+      );
+    };
+    return <CharacterCounter />;
+  },
 };
 
 // =============================================================================

@@ -118,4 +118,136 @@ describe('FormField', () => {
       container.querySelector('.dsn-form-field--invalid')
     ).toBeInTheDocument();
   });
+
+  // ===========================================================================
+  // ARIA-DESCRIBEDBY KOPPELING (issue #317)
+  // ===========================================================================
+
+  it('links the description to the control via aria-describedby', () => {
+    render(
+      <FormField label="Test" htmlFor="test" description="Help text">
+        <TextInput id="test" />
+      </FormField>
+    );
+    const input = screen.getByRole('textbox');
+    expect(input).toHaveAttribute('aria-describedby', 'test-description');
+    expect(input).toHaveAccessibleDescription('Help text');
+  });
+
+  it('links the error message to the control via aria-describedby', () => {
+    render(
+      <FormField label="Test" htmlFor="test" error="Error message">
+        <TextInput id="test" invalid />
+      </FormField>
+    );
+    const input = screen.getByRole('textbox');
+    expect(input).toHaveAttribute('aria-describedby', 'test-error');
+    expect(input).toHaveAccessibleDescription('Error message');
+  });
+
+  it('links the status message to the control via aria-describedby', () => {
+    render(
+      <FormField label="Test" htmlFor="test" status="Status message">
+        <TextInput id="test" />
+      </FormField>
+    );
+    const input = screen.getByRole('textbox');
+    expect(input).toHaveAttribute('aria-describedby', 'test-status');
+    expect(input).toHaveAccessibleDescription('Status message');
+  });
+
+  it('links description, error and status in visual order', () => {
+    render(
+      <FormField
+        label="Test"
+        htmlFor="test"
+        description="Help text"
+        error="Error message"
+        status="Status message"
+      >
+        <TextInput id="test" invalid />
+      </FormField>
+    );
+    expect(screen.getByRole('textbox')).toHaveAttribute(
+      'aria-describedby',
+      'test-description test-error test-status'
+    );
+  });
+
+  it('sets no aria-describedby when there is no extra text', () => {
+    render(
+      <FormField label="Test" htmlFor="test">
+        <TextInput id="test" />
+      </FormField>
+    );
+    expect(screen.getByRole('textbox')).not.toHaveAttribute('aria-describedby');
+  });
+
+  it('preserves an aria-describedby the consumer set on the control', () => {
+    render(
+      <>
+        <FormField label="Test" htmlFor="test" description="Help text">
+          <TextInput id="test" aria-describedby="extern" />
+        </FormField>
+        <p id="extern">Externe uitleg</p>
+      </>
+    );
+    const input = screen.getByRole('textbox');
+    expect(input).toHaveAttribute(
+      'aria-describedby',
+      'test-description extern'
+    );
+    expect(input).toHaveAccessibleDescription('Help text Externe uitleg');
+  });
+
+  it('still links the description when htmlFor is omitted', () => {
+    render(
+      <FormField label="Test" description="Help text">
+        <TextInput />
+      </FormField>
+    );
+    const input = screen.getByRole('textbox');
+    const describedBy = input.getAttribute('aria-describedby');
+    expect(describedBy).toBeTruthy();
+    expect(document.getElementById(describedBy as string)).toHaveTextContent(
+      'Help text'
+    );
+  });
+
+  it('does not make the status a live region by default', () => {
+    render(
+      <FormField label="Test" htmlFor="test" status="Status message">
+        <TextInput id="test" />
+      </FormField>
+    );
+    expect(screen.getByText('Status message')).not.toHaveAttribute('aria-live');
+  });
+
+  it('makes the status a live region when statusLive is set', () => {
+    render(
+      <FormField label="Test" htmlFor="test" status="1 van 500" statusLive>
+        <TextInput id="test" />
+      </FormField>
+    );
+    expect(screen.getByText('1 van 500')).toHaveAttribute(
+      'aria-live',
+      'polite'
+    );
+  });
+
+  it('renders without crashing when children is not a single element', () => {
+    render(
+      <FormField label="Test" htmlFor="test" description="Help text">
+        <>
+          <TextInput id="test" />
+          <TextInput id="test-2" />
+        </>
+      </FormField>
+    );
+    expect(screen.getAllByRole('textbox')).toHaveLength(2);
+    expect(screen.getByText('Help text')).toHaveAttribute(
+      'id',
+      'test-description'
+    );
+  });
 });
