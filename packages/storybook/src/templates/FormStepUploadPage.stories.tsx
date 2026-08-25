@@ -276,7 +276,7 @@ function UploadPage() {
                   </Link>
 
                   <h2 className="dsn-heading dsn-heading--heading-2">
-                    Bestand toevoegen
+                    Bestanden toevoegen
                   </h2>
 
                   <form noValidate>
@@ -290,7 +290,8 @@ function UploadPage() {
                         gewone pagina-inhoud houdt de lijst zijn lijstsemantiek.
                       */}
                       <UnorderedList>
-                        <li>Het bestand mag maximaal 10 MB zijn.</li>
+                        <li>U kunt meerdere bestanden tegelijk toevoegen.</li>
+                        <li>Samen maximaal 10 MB.</li>
                         <li>
                           Toegestane bestandstypen: doc, docx, xlsx, pdf, zip,
                           jpg, png, bmp en gif.
@@ -308,7 +309,7 @@ function UploadPage() {
                           className="dsn-visually-hidden"
                           htmlFor="bestand-upload"
                         >
-                          Bestand toevoegen
+                          Bestanden toevoegen
                         </label>
                         <FileInput
                           id="bestand-upload"

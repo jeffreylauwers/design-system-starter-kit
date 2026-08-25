@@ -59,16 +59,17 @@ Draait een hele formulierstap om het uploaden, dan mag de opsomming een echte li
 
 ```html
 <ul class="dsn-unordered-list">
-  <li>Het bestand mag maximaal 10 MB zijn.</li>
+  <li>U kunt meerdere bestanden tegelijk toevoegen.</li>
+  <li>Samen maximaal 10 MB.</li>
   <li>
     Toegestane bestandstypen: doc, docx, xlsx, pdf, zip, jpg, png, bmp en gif.
   </li>
 </ul>
 <div class="dsn-form-field">
-  <label class="dsn-form-field-label" for="bestand-upload">
-    Bestand toevoegen
+  <label class="dsn-form-field-label" for="bestanden-upload">
+    Bestanden toevoegen
   </label>
-  <input type="file" class="dsn-file-input" id="bestand-upload" multiple />
+  <input type="file" class="dsn-file-input" id="bestanden-upload" multiple />
 </div>
 ```
 
