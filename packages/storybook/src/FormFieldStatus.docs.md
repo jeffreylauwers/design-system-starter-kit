@@ -62,7 +62,8 @@ De FormFieldStatus component toont status informatie onder een form control. Het
 
 - **Icon default aan:** Voor positive/warning, laat icoon zichtbaar (default `showIcon={true}`)
 - **Positionering:** Status komt onder de input, ErrorMessage komt boven de input
-- **aria-describedby:** Geef status een `id` en koppel aan form control indien nuttig
+- **aria-describedby:** Geef status een `id` en koppel aan de form control. Binnen [FormField](/docs/components-formfield--docs) of [FormFieldset](/docs/components-formfieldset--docs) gebeurt dat automatisch
+- **live:** Zet `live` aan wanneer de statustekst verandert tijdens interactie (character counter, wachtwoordsterkte). De status wordt dan een `aria-live="polite"`-regio. Laat het uit bij statische tekst: die wordt anders dubbel voorgelezen
 - **Combineer slim:** Default status (counter) + positive/warning feedback kan samen
 
 ## Design tokens
@@ -84,7 +85,8 @@ De FormFieldStatus component toont status informatie onder een form control. Het
 
 - Default variant heeft subtiele kleur maar nog voldoende contrast.
 - Positive en warning varianten hebben duidelijke kleuren voor zichtbaarheid.
-- Gebruik `id` attribuut en koppel met `aria-describedby` indien de status essentiële info bevat.
+- Gebruik `id` attribuut en koppel met `aria-describedby` indien de status essentiële info bevat. Binnen FormField en FormFieldset wordt dat automatisch gedaan.
 - Icons hebben `aria-hidden="true"` omdat de tekst zelf voldoende context geeft.
 - Kleur alleen is niet voldoende: de icons helpen bij kleurenblindheid.
-- Bij character limits, update aria-live regions voor screenreader feedback.
+- Bij een veranderende status (character counter, wachtwoordsterkte) zet je `live`. De component rendert dan `aria-live="polite"` en `aria-atomic="true"`, zodat een screenreader de nieuwe tekst als geheel aankondigt. Via FormField en FormFieldset regel je dit met `statusLive`.
+- Zet `live` niet aan bij een status die niet verandert: die wordt dan zowel via `aria-describedby` als via de live region voorgelezen.

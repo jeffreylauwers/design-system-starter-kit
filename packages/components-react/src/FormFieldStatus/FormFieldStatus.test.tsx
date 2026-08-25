@@ -57,4 +57,18 @@ describe('FormFieldStatus', () => {
     render(<FormFieldStatus>Voldoet aan alle eisen</FormFieldStatus>);
     expect(screen.getByText('Voldoet aan alle eisen')).toBeInTheDocument();
   });
+
+  it('is not a live region by default', () => {
+    render(<FormFieldStatus>Tekst</FormFieldStatus>);
+    const status = screen.getByText('Tekst');
+    expect(status).not.toHaveAttribute('aria-live');
+    expect(status).not.toHaveAttribute('aria-atomic');
+  });
+
+  it('becomes a polite live region when live is set', () => {
+    render(<FormFieldStatus live>Tekst</FormFieldStatus>);
+    const status = screen.getByText('Tekst');
+    expect(status).toHaveAttribute('aria-live', 'polite');
+    expect(status).toHaveAttribute('aria-atomic', 'true');
+  });
 });

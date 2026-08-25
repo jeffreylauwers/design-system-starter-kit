@@ -35,9 +35,12 @@ const meta: Meta<typeof FormFieldStatus> = {
               ? 'alert-triangle'
               : null;
         const idAttr = args.id ? ` id="${args.id}"` : '';
+        const liveAttrs = args.live
+          ? ' aria-live="polite" aria-atomic="true"'
+          : '';
         const icon =
           showIcon && iconName ? `<!-- ${iconName} icon -->\n  ` : '';
-        return `<p class="${cls}"${idAttr}>\n  ${icon}${args.children ?? 'Tekst'}\n</p>`;
+        return `<p class="${cls}"${idAttr}${liveAttrs}>\n  ${icon}${args.children ?? 'Tekst'}\n</p>`;
       },
     },
   },
@@ -47,6 +50,7 @@ const meta: Meta<typeof FormFieldStatus> = {
       options: ['default', 'positive', 'warning'],
     },
     showIcon: { control: 'boolean' },
+    live: { control: 'boolean' },
     id: { control: 'text' },
   },
   args: {
@@ -80,6 +84,19 @@ export const Warning: Story = {
 export const WithoutIcon: Story = {
   name: 'Without icon',
   args: { showIcon: false, children: TEKST },
+};
+
+export const LiveRegion: Story = {
+  name: 'Live region',
+  args: { live: true, children: TEKST },
+  parameters: {
+    docs: {
+      description: {
+        story:
+          'Met `live` wordt de status een `aria-live="polite"`-regio: een screenreader kondigt elke wijziging aan. Gebruik dit alleen voor status die tijdens interactie verandert, zoals een character counter. Een status die niet verandert, wordt zo dubbel voorgelezen.',
+      },
+    },
+  },
 };
 
 // =============================================================================

@@ -87,6 +87,7 @@ Toon een beschrijving wanneer de balk 100% bereikt:
 
 - Het native `<progress>`-element heeft impliciete `role="progressbar"`, `aria-valuenow`, `aria-valuemin` (0) en `aria-valuemax`.
 - Een `<label>` is gekoppeld via `for`/`id` — robuuster dan `aria-label`.
+- De `description` krijgt een `id` en is via `aria-describedby` aan het `<progress>`-element gekoppeld, zodat een screenreadergebruiker de toelichting hoort en niet alleen het percentage.
 - De percentage-tekst heeft `aria-hidden="true"`: screenreaders lezen de native voortgangswaarde al voor via `<progress>`.
 - De fallback-tekst binnen `<progress>` (bijv. `35%`) dient als tekstalternatief voor browsers zonder HTML5-ondersteuning.
 - Bij dynamische `value`-wijzigingen kondigt de screenreader de nieuwe waarde aan via de ingebouwde live-regiofunctionaliteit van `role="progressbar"`.

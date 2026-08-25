@@ -78,6 +78,7 @@ export const ProgressBar = React.forwardRef<HTMLDivElement, ProgressBarProps>(
   ) => {
     const generatedId = useId();
     const progressId = id ?? generatedId;
+    const descriptionId = description ? `${progressId}-description` : undefined;
     const percentage = Math.round((value / max) * 100);
 
     return (
@@ -104,11 +105,15 @@ export const ProgressBar = React.forwardRef<HTMLDivElement, ProgressBarProps>(
           className="dsn-progress-bar__bar"
           value={value}
           max={max}
+          aria-describedby={descriptionId}
         >
           {percentage}%
         </progress>
         {description && (
-          <p className="dsn-paragraph dsn-progress-bar__description">
+          <p
+            id={descriptionId}
+            className="dsn-paragraph dsn-progress-bar__description"
+          >
             {description}
           </p>
         )}

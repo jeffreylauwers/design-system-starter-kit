@@ -4,7 +4,7 @@ Container component voor groep controls die fieldset/legend gebruikt voor semant
 
 ## Doel
 
-De FormFieldset component is de fieldset/legend variant van FormField. Het combineert FormFieldLegend, FormFieldDescription, FormFieldErrorMessage, groep controls (CheckboxGroup, RadioGroup, DateInputGroup), en FormFieldStatus. Gebruikt `<fieldset>` en `<legend>` elementen voor correcte semantiek bij groep controls. De legend hergebruikt FormFieldLabel CSS classes voor consistente styling. Net als FormField krijgt het een dikke rode linker border bij invalid state. FormFieldset is specifiek voor groepen - gebruik FormField voor individuele controls.
+De FormFieldset component is de fieldset/legend variant van FormField. Het combineert FormFieldLegend, FormFieldDescription, FormFieldErrorMessage, groep controls (CheckboxGroup, RadioGroup, DateInputGroup), en FormFieldStatus. Gebruikt `<fieldset>` en `<legend>` elementen voor correcte semantiek bij groep controls. De legend hergebruikt FormFieldLabel CSS classes voor consistente styling. Net als FormField krijgt het een dikke rode linker border bij invalid state. Description, error en status worden via `aria-describedby` op het `<fieldset>` zelf gekoppeld: een groep heeft geen enkele control om die koppeling aan te hangen. FormFieldset is specifiek voor groepen - gebruik FormField voor individuele controls.
 
 > **Codevoorbeeld met context**: De HTML/CSS tab toont een `CheckboxGroup` met `CheckboxOption` componenten als representatieve children. `FormFieldset` is een wrapper voor groep controls: de children vormen de daadwerkelijke invoergroep.
 
@@ -47,6 +47,8 @@ Wanneer er een `error` prop aanwezig is, krijgt het hele FormFieldset een dikke 
 - **error** - Voor validatie fouten, toon alleen na interactie
 - **status** - Voor realtime feedback
 - **statusVariant** - 'default' (subtle), 'positive' (success), 'warning' (caution)
+- **statusLive** - Alleen aanzetten wanneer de statustekst tijdens interactie verandert. Een statische status als live region wordt dubbel voorgelezen.
+- **id** - Optioneel. Wordt de basis voor de gegenereerde ID's van description, error en status. Zonder `id` valt dit terug op `useId()`.
 
 ### Timing
 
@@ -83,6 +85,7 @@ Plus de tokens van de sub-componenten:
 
 - **fieldset/legend** - Semantisch correct voor groep controls
 - **legend element** - Wordt door screenreaders aangekondigd als groepslabel
+- **aria-describedby op het fieldset** - FormFieldset genereert ID's voor description, error en status en zet `aria-describedby` op het `<fieldset>`, in de volgorde description → error → status. Bij een groep is dat de juiste plek: er is geen enkele control om de koppeling aan te hangen, en de beschrijving geldt voor de hele groep.
 - **Groepering** - Screenreaders kondigen aan: "groep: [legend], [aantal opties]"
 - **Navigatie** - Tab key navigeert tussen opties in de groep
 - **Radio groups** - Pijltjestoetsen navigeren binnen de groep
@@ -107,10 +110,37 @@ Plus de tokens van de sub-componenten:
   description="Kies hoe je bestelling wilt ontvangen"
   error="Selecteer een optie"
   status="Gratis vanaf €50"
+  id="verzendmethode"
 >
   <RadioGroup>
     <RadioOption name="shipping" label="Standaard" value="standard" />
     <RadioOption name="shipping" label="Express" value="express" />
   </RadioGroup>
 </FormFieldset>
+```
+
+De gerenderde HTML van dat laatste voorbeeld:
+
+```html
+<fieldset
+  class="dsn-form-field dsn-form-field--invalid"
+  id="verzendmethode"
+  aria-describedby="verzendmethode-description verzendmethode-error verzendmethode-status"
+>
+  <legend class="dsn-form-field-label">
+    Verzendmethode
+    <span class="dsn-form-field-label-suffix">(verplicht)</span>
+  </legend>
+  <p class="dsn-form-field-description" id="verzendmethode-description">
+    Kies hoe je bestelling wilt ontvangen
+  </p>
+  <p class="dsn-form-field-error-message" id="verzendmethode-error">
+    <svg class="dsn-icon" aria-hidden="true"><!-- exclamation-circle --></svg>
+    Selecteer een optie
+  </p>
+  <div class="dsn-radio-group"><!-- RadioOptions --></div>
+  <p class="dsn-form-field-status" id="verzendmethode-status">
+    Gratis vanaf €50
+  </p>
+</fieldset>
 ```

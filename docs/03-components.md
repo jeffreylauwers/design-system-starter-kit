@@ -1393,7 +1393,7 @@ Brengt consistente verticale ruimte aan tussen directe child-elementen via `flex
 - Natief `<progress>`-element met impliciete `role="progressbar"`, `aria-valuenow`, `aria-valuemin` en `aria-valuemax`
 - `<label>` gekoppeld via `for`/`id`: robuuster dan `aria-label`
 - Percentage automatisch berekend: `Math.round((value / max) * 100)`, boven de balk getoond met `aria-hidden="true"`
-- Optionele `description` onder de balk
+- Optionele `description` onder de balk, gekoppeld aan het `<progress>`-element via `aria-describedby`
 - Cross-browser CSS: `::-webkit-progress-bar/value` (Chrome/Safari) + `::-moz-progress-bar` (Firefox)
 - Pill-vorm via `border-radius: round`, fill-animatie met `prefers-reduced-motion` support
 - `useId()` voor automatisch gegenereerd ID als geen `id` prop meegegeven
@@ -3360,25 +3360,25 @@ const [isOpen, setIsOpen] = React.useState(false);
 
 **Tokens:** `tokens/components/form-field.json`
 
-**Features:** div/label container for single-value inputs (TextInput, EmailInput, Select, etc.). Combines Label, Description, Control, Error, and Status with automatic aria-describedby linking.
+**Features:** div/label container for single-value inputs (TextInput, EmailInput, Select, etc.). Combines Label, Description, Control, Error, and Status. Generates IDs for description/error/status and sets `aria-describedby` on the control by cloning the child element (existing values are preserved). Order: description, error, status.
 
 **Invalid state:** Red left border via `form-field.invalid` tokens
 
-**Props:** `label`, `htmlFor`, `labelSuffix`, `description`, `error`, `status`, `children`
+**Props:** `label`, `htmlFor`, `labelSuffix`, `description`, `error`, `status`, `statusVariant`, `statusLive`, `children`
 
-**Tests:** React (11 tests)
+**Tests:** React (21 tests)
 
 #### FormFieldset
 
 **Tokens:** `tokens/components/form-fieldset.json`
 
-**Features:** fieldset/legend container for group controls (CheckboxGroup, RadioGroup, DateInputGroup). Combines FormFieldLegend, FormFieldDescription, FormFieldErrorMessage, and the group control.
+**Features:** fieldset/legend container for group controls (CheckboxGroup, RadioGroup, DateInputGroup). Combines FormFieldLegend, FormFieldDescription, FormFieldErrorMessage, and the group control. Generates IDs for description/error/status and sets `aria-describedby` on the `<fieldset>` itself: a group has no single control to hang the association on.
 
 **Invalid state:** Red left border when `error` prop is set (same as FormField)
 
-**Props:** `legend`, `hideLegend`, `description`, `error`, `status`, `children`
+**Props:** `legend`, `legendSuffix`, `description`, `error`, `status`, `statusVariant`, `statusLive`, `id`, `children`
 
-**Tests:** React (9 tests)
+**Tests:** React (12 tests)
 
 #### FormFieldLabel
 
@@ -3394,31 +3394,31 @@ const [isOpen, setIsOpen] = React.useState(false);
 
 **Tokens:** `tokens/components/form-field-description.json`
 
-**Features:** Help text for form fields
+**Features:** Help text for form fields. Needs an `id` plus `aria-describedby` on the control; FormField and FormFieldset do this for you.
 
-**Props:** `id`, `children`
+**Props:** `as`, `id`, `children`
 
-**Tests:** React (7 tests)
+**Tests:** React (9 tests)
 
 #### FormFieldErrorMessage
 
 **Tokens:** `tokens/components/form-field-error-message.json`
 
-**Features:** Validation error messages
+**Features:** Validation error messages. Needs an `id` plus `aria-describedby` on the control; FormField and FormFieldset do this for you.
 
-**Props:** `id`, `children`
+**Props:** `id`, `showIcon`, `children`
 
-**Tests:** React (7 tests)
+**Tests:** React (11 tests)
 
 #### FormFieldStatus
 
 **Tokens:** `tokens/components/form-field-status.json`
 
-**Features:** Status messages (e.g., character count)
+**Features:** Status messages (e.g., character count). With `live` the message becomes an `aria-live="polite"` region, for status that changes during interaction.
 
-**Props:** `id`, `children`
+**Props:** `id`, `variant`, `showIcon`, `live`, `children`
 
-**Tests:** React (7 tests)
+**Tests:** React (11 tests)
 
 ### Shared Form Control Tokens
 

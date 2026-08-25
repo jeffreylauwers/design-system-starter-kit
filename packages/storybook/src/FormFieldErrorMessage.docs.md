@@ -38,7 +38,7 @@ De FormFieldErrorMessage component toont validatie foutmeldingen bij form fields
 ### Technisch
 
 - **Icon standaard aan.** Laat het icoon zichtbaar tenzij er een goede reden is (meestal wel).
-- **Gebruik ID + aria-describedby.** Geef de error message een `id` en koppel het aan de form control.
+- **Gebruik ID + aria-describedby.** Geef de error message een `id` en koppel het aan de form control. Binnen [FormField](/docs/components-formfield--docs) of [FormFieldset](/docs/components-formfieldset--docs) gebeurt dat automatisch.
 - **aria-invalid="true".** Zet dit attribuut op de form control zelf.
 - **Meerdere errors.** Gebruik meerdere FormFieldErrorMessage componenten voor verschillende fouten.
 
@@ -58,7 +58,7 @@ De FormFieldErrorMessage component toont validatie foutmeldingen bij form fields
 ## Accessibility
 
 - Gebruik `id` attribuut op de error message.
-- Koppel de error message aan de form control met `aria-describedby`.
+- Koppel de error message aan de form control met `aria-describedby`. Gebruik je FormField of FormFieldset, dan is dat al geregeld.
 - Zet `aria-invalid="true"` op de form control zelf (niet op de error message).
 - Screenreaders kondigen errors aan wanneer de gebruiker naar het veld navigeert.
 - Het icoon heeft `aria-hidden="true"` omdat de tekst zelf al voldoende context geeft.

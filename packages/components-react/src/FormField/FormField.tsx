@@ -1,9 +1,10 @@
-import React from 'react';
+import React, { useId } from 'react';
 import { classNames } from '@dsn-starter-kit/core';
 import { FormFieldLabel } from '../FormFieldLabel';
 import { FormFieldDescription } from '../FormFieldDescription';
 import { FormFieldErrorMessage } from '../FormFieldErrorMessage';
 import { FormFieldStatus, FormFieldStatusVariant } from '../FormFieldStatus';
+import { describeControl } from '../utils/describeControl';
 import './FormField.css';
 
 export interface FormFieldProps {
@@ -13,7 +14,9 @@ export interface FormFieldProps {
   label: string;
 
   /**
-   * The ID of the form control (used for htmlFor/aria-describedby)
+   * The ID of the form control. Used for the label's htmlFor and as the base
+   * for the generated description/error/status IDs. When omitted, the IDs are
+   * generated via useId(), but the label is no longer explicitly linked.
    */
   htmlFor?: string;
 
@@ -44,6 +47,14 @@ export interface FormFieldProps {
   statusVariant?: FormFieldStatusVariant;
 
   /**
+   * Announce status changes to screen readers via an aria-live region.
+   * Only enable this for status text that changes during interaction,
+   * such as a character counter.
+   * @default false
+   */
+  statusLive?: boolean;
+
+  /**
    * Additional CSS class names
    */
   className?: string;
@@ -58,6 +69,11 @@ export interface FormFieldProps {
  * Form Field component
  * Container that combines FormFieldLabel, FormFieldDescription, Control, FormFieldErrorMessage, and FormFieldStatus
  * Uses div/label structure (for fieldset/legend use FormFieldset component)
+ *
+ * Description, error and status are linked to the control via aria-describedby.
+ * FormField clones the child element to add the attribute, so the child must be
+ * a single element that forwards props to its DOM node. An aria-describedby the
+ * consumer already set on the control is preserved.
  *
  * @example
  * ```tsx
@@ -75,11 +91,12 @@ export interface FormFieldProps {
  *   <PasswordInput id="password" invalid />
  * </FormField>
  *
- * // With status (character counter)
+ * // With status (character counter): statusLive announces each change
  * <FormField
  *   label="Bio"
  *   htmlFor="bio"
  *   status="280 van 500 karakters gebruikt"
+ *   statusLive
  * >
  *   <TextArea id="bio" rows={4} />
  * </FormField>
@@ -105,15 +122,26 @@ export const FormField = React.forwardRef<HTMLDivElement, FormFieldProps>(
       error,
       status,
       statusVariant = 'default',
+      statusLive = false,
       className,
       children,
     },
     ref
   ) => {
-    const descriptionId =
-      htmlFor && description ? `${htmlFor}-description` : undefined;
-    const errorId = htmlFor && error ? `${htmlFor}-error` : undefined;
-    const statusId = htmlFor && status ? `${htmlFor}-status` : undefined;
+    const generatedId = useId();
+    const idBase = htmlFor ?? generatedId;
+
+    const descriptionId = description ? `${idBase}-description` : undefined;
+    const errorId = error ? `${idBase}-error` : undefined;
+    const statusId = status ? `${idBase}-status` : undefined;
+
+    // Koppel de extra teksten aan de control zelf. De volgorde volgt de
+    // visuele volgorde, zodat een screenreader dezelfde route loopt als het oog.
+    const control = describeControl(children, [
+      descriptionId,
+      errorId,
+      statusId,
+    ]);
 
     const containerClasses = classNames(
       'dsn-form-field',
@@ -139,10 +167,14 @@ export const FormField = React.forwardRef<HTMLDivElement, FormFieldProps>(
           <FormFieldErrorMessage id={errorId}>{error}</FormFieldErrorMessage>
         )}
 
-        {children}
+        {control}
 
         {status && (
-          <FormFieldStatus id={statusId} variant={statusVariant}>
+          <FormFieldStatus
+            id={statusId}
+            variant={statusVariant}
+            live={statusLive}
+          >
             {status}
           </FormFieldStatus>
         )}

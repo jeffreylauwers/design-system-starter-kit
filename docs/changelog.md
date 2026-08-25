@@ -46,6 +46,42 @@ Nog niet gepubliceerde wijzigingen. Schrijf nieuwe changelog-entries hieronder; 
 
 - **De Accessibility-sectie beschrijft nu de volledige inhoud van de aria-live regio** (issue [#316](https://github.com/jeffreylauwers/design-system-starter-kit/issues/316)): nieuw kopje "De aria-live regio" met per state de exacte tekst, de onderbouwing van de woordkeuze, de levensduur van de melding en hoe je de teksten overschrijft. De htmlTemplate in de stories rendert de regio niet langer altijd leeg, maar toont per state dezelfde tekst als de React-laag, zodat de HTML/CSS-consument ziet wat hij zelf moet schrijven.
 
+### FormField, FormFieldset, FormFieldStatus & ProgressBar
+
+#### Fixed
+
+- **Description, error en status zijn nu gekoppeld via `aria-describedby`** (issue [#317](https://github.com/jeffreylauwers/design-system-starter-kit/issues/317)): `FormField` genereerde de ID's `{htmlFor}-description`, `{htmlFor}-error` en `{htmlFor}-status`, zette ze op de teksten, en gebruikte ze vervolgens nergens. De control kreeg geen `aria-describedby`, dus een screenreadergebruiker kreeg de hulptekst en de foutmelding niet te horen bij het veld. `FormFieldset` was er slechter aan toe: daar werden de ID's niet eens gegenereerd. Gerelateerde succescriteria: [WCAG 1.3.1 Info en relaties](https://www.w3.org/WAI/WCAG22/quickref/#info-and-relationships) en [WCAG 3.3.2 Labels of instructies](https://www.w3.org/WAI/WCAG22/quickref/#labels-or-instructions).
+  - `FormField` kloont het child-element en zet `aria-describedby` in de volgorde description, error, status. Dat is dezelfde volgorde als de teksten visueel staan, zodat oog en screenreader dezelfde route lopen
+  - Een `aria-describedby` die de consument zelf op de control heeft gezet blijft behouden en wordt achteraan toegevoegd; dubbele ID's worden verwijderd
+  - Geef één element als child mee dat zijn props doorgeeft aan het DOM-element. Bij een fragment of meerdere children blijft de control ongewijzigd en zet je het attribuut zelf. Alle inputcomponenten in dit systeem spreiden `...props` door, dus die werken zonder aanpassing
+  - `FormField` werkt nu ook zonder `htmlFor`: de ID's vallen dan terug op `useId()`. De koppeling van de tekst werkt dan wel, die van het label niet, dus `htmlFor` blijft de aanbevolen route
+  - `FormFieldset` genereert de ID's en zet `aria-describedby` op het `<fieldset>` zelf. Bij een groep is dat de juiste plek: er is geen enkele control om de koppeling aan te hangen, en de beschrijving geldt voor de hele groep. Nieuwe optionele `id`-prop als basis voor de gegenereerde ID's
+  - `ProgressBar` had dezelfde fout: de `description` stond als losse `<p>` zonder ID onder de balk. Die krijgt nu een ID en is via `aria-describedby` aan het `<progress>`-element gekoppeld
+  - Geen breaking change: bestaande React-code blijft werken en krijgt de koppeling er vanzelf bij. Voor de HTML/CSS-laag wél iets te doen: wie de markup met de hand schrijft, zet nu zelf de ID's op description, error en status en het `aria-describedby` op de control
+
+#### Added
+
+- **`live`-prop op `FormFieldStatus`, `statusLive` op `FormField` en `FormFieldset`** (issue [#317](https://github.com/jeffreylauwers/design-system-starter-kit/issues/317)): een status die tijdens interactie verandert, zoals een character counter, werd nergens aangekondigd. `aria-describedby` alleen is daarvoor niet genoeg: dat wordt voorgelezen bij het betreden van het veld, niet bij elke wijziging. Gerelateerd succescriterium: [WCAG 4.1.3 Statusberichten](https://www.w3.org/WAI/WCAG22/quickref/#status-messages).
+  - Met `live` rendert `FormFieldStatus` `aria-live="polite"` en `aria-atomic="true"`, zodat de nieuwe tekst als geheel wordt aangekondigd in plaats van alleen het gewijzigde stuk
+  - Bewust opt-in en standaard uit: een status die niet verandert zou als live region zowel via `aria-describedby` als via de live region worden voorgelezen
+  - Nieuwe story "Live status" bij FormField met een werkende character counter, en "Live region" bij FormFieldStatus
+
+#### Documentation
+
+- **De onterechte belofte over automatische koppeling is gecorrigeerd** (issue [#317](https://github.com/jeffreylauwers/design-system-starter-kit/issues/317)): op vijf plekken stond dat FormField de koppeling al automatisch regelde, terwijl dat niet gebeurde. Dat is de reden dat de fout lang onopgemerkt bleef: wie de docs las, had geen aanleiding om het na te meten.
+  - Gecorrigeerd in `FormField.docs.md` (drie plekken), `DateInputGroup.docs.md` en `docs/03-components.md`
+  - `FormField.docs.md` en `FormFieldset.docs.md` tonen nu de gerenderde HTML van het volledige voorbeeld, inclusief de ID's en het `aria-describedby`, zodat de belofte controleerbaar is in plaats van beweerd
+  - De `htmlTemplate` van FormField, FormFieldset, FormFieldStatus en ProgressBar rendert de ID's en `aria-describedby`. De HTML/CSS-tab liet tot nu toe markup zien die de consument letterlijk overnam, inclusief de fout
+  - De props- en testtellingen van FormField, FormFieldset, FormFieldDescription, FormFieldErrorMessage en FormFieldStatus in `docs/03-components.md` klopten niet meer en zijn bijgewerkt. Bij FormFieldset stond een niet-bestaande prop `hideLegend` en ontbrak `legendSuffix`
+
+#### Testing
+
+- **Tests dekken nu de hele koppelketen** (issue [#317](https://github.com/jeffreylauwers/design-system-starter-kit/issues/317)): de bestaande test controleerde alleen dát de description een ID kreeg, nooit dat er iets naar verwijst. Precies de helft van de keten, en de helft waar de fout niet in zat.
+  - `FormField` heeft er 10 tests bij, waaronder de volgorde van de ID's, het behouden van een eigen `aria-describedby`, de fallback zonder `htmlFor` en het geval waarin het child geen enkel element is
+  - `FormFieldset` had helemaal geen testbestand, terwijl `docs/03-components.md` "React (9 tests)" claimde. Nieuw bestand met 12 tests
+  - Nieuwe tests bij `FormFieldStatus` (live region) en `ProgressBar` (koppeling van de description)
+  - De assertions gebruiken `toHaveAccessibleDescription`, dat de `aria-describedby`-keten daadwerkelijk oplost. Een test die alleen het attribuut vergelijkt, zou een verwijzing naar een niet-bestaand ID goedkeuren
+
 ### IconList
 
 #### Added

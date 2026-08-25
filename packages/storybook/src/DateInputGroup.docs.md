@@ -35,7 +35,7 @@ Gebruik `FormFieldset` als wrapper voor een volledig formulierveld met legend, b
 - Elk veld heeft een zichtbaar label ("Dag", "Maand", "Jaar") gekoppeld via `htmlFor`
 - De `id` prop genereert automatisch `{id}-dag`, `{id}-maand` en `{id}-jaar` als input-id's
 - De `invalid` prop zet `aria-invalid="true"` op alle drie de inputs
-- De foutmelding van `FormFieldset` is via `aria-describedby` automatisch gekoppeld aan de fieldset
+- `FormFieldset` genereert een ID voor de foutmelding en koppelt die via `aria-describedby` aan het `<fieldset>`, zodat een screenreader hem meeneemt bij de hele groep
 - De `legend` verbindt de drie velden semantisch voor screenreaders via het `<fieldset>` element
 
 ## States
