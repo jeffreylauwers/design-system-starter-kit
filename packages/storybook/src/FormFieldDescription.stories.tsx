@@ -69,9 +69,9 @@ export const LongText: Story = {
  * Voorbeeld van een description met een lijst, alleen zichtbaar op de docs-pagina.
  *
  * Deze story staat bewust niet in de zijbalk (`tags: ['!dev']`): een lijst in een
- * description wordt door screenreaders niet als lijst voorgelezen en VoiceOver in
- * Safari slaat de inhoud over. Het voorbeeld hoort daarom alleen thuis naast de
- * uitleg op de docs-pagina, niet als losse story om uit over te nemen.
+ * description wordt niet als lijst aangekondigd bij het veld, en VoiceOver in
+ * Safari laat hem daar helemaal weg. Het voorbeeld hoort daarom alleen thuis naast
+ * de uitleg op de docs-pagina, niet als losse story om uit over te nemen.
  */
 export const WithList: Story = {
   name: 'With list',

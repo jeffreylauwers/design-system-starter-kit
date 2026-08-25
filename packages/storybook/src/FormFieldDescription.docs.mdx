@@ -25,9 +25,9 @@ export const [intro, rest] = docs.split('<!-- VOORBEELD -->');
 ## Voorbeeld met een lijst
 
 Een lijst mag in een description, maar een screenreader kondigt hem niet als lijst
-aan en VoiceOver in Safari slaat de inhoud over. Gebruik `as="div"` (een `<ul>` mag
-niet binnen een `<p>` staan), schrijf elk item als een volledige zin en zorg dat
-dezelfde informatie ook elders op de pagina staat.
+aan: de aankondiging bij het veld wordt platgeslagen tot één tekst, en VoiceOver in
+Safari laat de lijst daarin weg. Gebruik `as="div"` (een `<ul>` mag niet binnen een
+`<p>` staan) en schrijf elk item als een volledige zin.
 
 <PreviewFrame>
   <Story of={FormFieldDescriptionStories.WithList} />

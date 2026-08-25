@@ -80,7 +80,7 @@ De knop (`::file-selector-button`) gebruikt de `--dsn-button-default-*`, `--dsn-
 - Altijd een `<label>` koppelen via `htmlFor` of wrap in `FormField`.
 - De `invalid` prop zet `aria-invalid="true"` — visuele feedback voor invalid state wordt door `FormField` afgehandeld.
 - Gebruik `aria-describedby` om foutmeldingen of hints (zoals de toegestane bestandstypen) te koppelen.
-- Een lijst in een description wordt platgeslagen tot gewone tekst: er klinkt geen "lijst met 3 items" en VoiceOver in Safari slaat de inhoud over. Schrijf de items daarom als volledige zinnen en zorg dat de eisen ook in de foutmelding staan.
+- Een lijst in een description wordt platgeslagen tot gewone tekst in de aankondiging bij het veld: er klinkt geen "lijst met 3 items" en VoiceOver in Safari laat de lijst daar helemaal weg. De lijst zelf blijft wel leesbaar als gewone pagina-inhoud. Schrijf de items daarom als volledige zinnen en zorg dat de eisen ook in de foutmelding staan.
 - De knop is toetsenbord-bedienbaar: `Tab` focust het veld, `Enter` of `Space` opent de native bestandskiezer.
 - Screenreaders lezen de bestandsnaam voor zodra de gebruiker een bestand heeft geselecteerd.
 - Minimum touch target grootte van 24x24px conform WCAG 2.5.5.

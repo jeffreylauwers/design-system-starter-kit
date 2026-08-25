@@ -198,7 +198,7 @@ Zet de eisen (maximale grootte, toegestane bestandstypen) in een `FormFieldDescr
 />
 ```
 
-`as="div"` is nodig omdat een `<ul>` niet binnen een `<p>` mag staan. Een screenreader kondigt deze lijst niet als lijst aan: de inhoud van een `aria-describedby`-koppeling wordt platgeslagen tot één tekst, en VoiceOver in Safari slaat de lijst zelfs over. Schrijf elk item daarom als een volledige zin, en herhaal de eis in de foutmelding zodra een bestand wordt geweigerd, zodat de informatie ook langs die weg beschikbaar is. Zet nooit een link in een description: die is vanuit de aankondiging niet te bereiken en wordt niet als link voorgelezen.
+`as="div"` is nodig omdat een `<ul>` niet binnen een `<p>` mag staan. De lijst blijft gewone zichtbare inhoud, dus wie de pagina van boven naar beneden leest komt hem daar tegen. Wat wegvalt is de aankondiging bij het veld: de inhoud van een `aria-describedby`-koppeling wordt platgeslagen tot één tekst, en VoiceOver in Safari laat de lijst daarin helemaal weg. Dat raakt vooral wie met Tab direct naar het veld springt. Schrijf elk item daarom als een volledige zin, en herhaal de eis in de foutmelding zodra een bestand wordt geweigerd. Zet nooit een link in een description: die is vanuit de aankondiging niet te bereiken en wordt niet als link voorgelezen.
 
 ### De vier statussen
 

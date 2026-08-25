@@ -29,9 +29,8 @@ export interface FormFieldDescriptionProps extends React.HTMLAttributes<HTMLElem
  * into a single string, so list structure and links lose their meaning: a list is
  * not announced as a list (VoiceOver in Safari skips it altogether) and a link
  * inside a description cannot be reached or activated. Keep links outside the
- * description. A list is allowed when each item is a full sentence and the same
- * information is available elsewhere on the page; use `as="div"` for it, because a
- * `<ul>` is not valid inside a `<p>`.
+ * description. A list is allowed when each item is a full sentence; use `as="div"`
+ * for it, because a `<ul>` is not valid inside a `<p>`.
  *
  * @example
  * ```tsx
