@@ -27,12 +27,12 @@ De FileInput component biedt een consistent gestyled bestandsinvoerveld. De brow
 - **Gebruik `accept` voor filtering.** Beperk het bestandstype via `accept=".pdf,.docx"` om fouten te voorkomen. De browser toont alleen de toegestane bestandstypen in de native kiezer.
 - **Valideer altijd server-side.** `accept` is een hint, geen validatie: gebruikers kunnen het omzeilen.
 - **Gebruik `multiple` bewust.** Schakel meerdere bestanden in als het formulier dit daadwerkelijk ondersteunt.
-- **Bestandsvereisten als lijst.** Als je meerdere bestandsvereisten wilt communiceren (typen, grootte), zet die dan in een [FormFieldDescription](/docs/components-formfielddescription--docs) met `as="div"` en een `id`, met daarin een `UnorderedList`, en koppel die via `aria-describedby`. `as="div"` is nodig omdat een `<ul>` niet binnen een `<p>` mag staan. Houd er rekening mee dat een screenreader deze lijst niet als lijst voorleest en dat VoiceOver in Safari de inhoud overslaat: schrijf elk item als een volledige zin en herhaal de eis in de foutmelding zodra een bestand wordt geweigerd.
+- **Bestandsvereisten als lopende tekst.** Zet de eisen (grootte, toegestane typen) in een [FormFieldDescription](/docs/components-formfielddescription--docs) met een `id` en koppel die via `aria-describedby`. Gebruik lopende tekst, geen lijst: VoiceOver in Safari leest een lijst in een description helemaal niet voor. Zijn het er te veel voor een leesbare zin, zet de opsomming dan als gewone `UnorderedList` boven het hele form field, buiten de `aria-describedby`-koppeling. Daar houdt de lijst zijn lijstsemantiek. Het template **Form step: Upload** laat die vorm zien.
 - **Invalid state.** Visuele feedback bij een validatiefout wordt afgehandeld op het niveau van `FormField` (rode linkerborder), niet op de FileInput zelf. De `invalid` prop zet enkel `aria-invalid="true"` voor screenreaders.
 
 ## In form field context
 
-Combineer FileInput met `FormFieldLabel` en een `FormFieldDescription` met `as="div"` voor de bestandsvereisten. Geef de description een `id` en verwijs ernaar via `aria-describedby`:
+Combineer FileInput met `FormFieldLabel` en een `FormFieldDescription` voor de bestandsvereisten. Geef de description een `id` en verwijs ernaar via `aria-describedby`:
 
 ```html
 <div class="dsn-form-field">
@@ -40,22 +40,36 @@ Combineer FileInput met `FormFieldLabel` en een `FormFieldDescription` met `as="
     Bestand toevoegen
     <span class="dsn-form-field-label-suffix">(niet verplicht)</span>
   </label>
-  <div class="dsn-form-field-description" id="bestand-upload-description">
-    <ul class="dsn-unordered-list">
-      <li>U kunt meerdere bestanden tegelijk toevoegen.</li>
-      <li>U mag maximaal 10 MB aan bestanden toevoegen.</li>
-      <li>
-        Toegestane bestandstypen: doc, docx, xlsx, pdf, zip, jpg, png, bmp en
-        gif.
-      </li>
-    </ul>
-  </div>
+  <p class="dsn-form-field-description" id="bestand-upload-description">
+    U kunt meerdere bestanden tegelijk toevoegen, samen maximaal 10 MB.
+    Toegestane bestandstypen: doc, docx, xlsx, pdf, zip, jpg, png, bmp en gif.
+  </p>
   <input
     type="file"
     class="dsn-file-input"
     id="bestand-upload"
     aria-describedby="bestand-upload-description"
+    multiple
   />
+</div>
+```
+
+Wil je de eisen als opsomming tonen, zet de lijst dan boven het hele form field en laat hem buiten de `aria-describedby`-koppeling. Een lijst binnen een description wordt door VoiceOver in Safari niet voorgelezen; als gewone pagina-inhoud wel:
+
+```html
+<p class="dsn-paragraph">Voor de bestanden die u toevoegt geldt:</p>
+<ul class="dsn-unordered-list">
+  <li>U kunt meerdere bestanden tegelijk toevoegen.</li>
+  <li>U mag maximaal 10 MB aan bestanden toevoegen.</li>
+  <li>
+    Toegestane bestandstypen: doc, docx, xlsx, pdf, zip, jpg, png, bmp en gif.
+  </li>
+</ul>
+<div class="dsn-form-field">
+  <label class="dsn-form-field-label" for="bestand-upload">
+    Bestand toevoegen
+  </label>
+  <input type="file" class="dsn-file-input" id="bestand-upload" multiple />
 </div>
 ```
 
@@ -80,7 +94,8 @@ De knop (`::file-selector-button`) gebruikt de `--dsn-button-default-*`, `--dsn-
 - Altijd een `<label>` koppelen via `htmlFor` of wrap in `FormField`.
 - De `invalid` prop zet `aria-invalid="true"` — visuele feedback voor invalid state wordt door `FormField` afgehandeld.
 - Gebruik `aria-describedby` om foutmeldingen of hints (zoals de toegestane bestandstypen) te koppelen.
-- Een lijst in een description wordt platgeslagen tot gewone tekst in de aankondiging bij het veld: er klinkt geen "lijst met 3 items" en VoiceOver in Safari laat de lijst daar helemaal weg. De lijst zelf blijft wel leesbaar als gewone pagina-inhoud. Schrijf de items daarom als volledige zinnen en zorg dat de eisen ook in de foutmelding staan.
+- Zet de bestandsvereisten als lopende tekst in de description. VoiceOver in Safari leest een lijst binnen een description helemaal niet voor, waardoor de eisen voor die gebruikers ontbreken. Een lijst boven het form field, buiten de `aria-describedby`-koppeling, wordt wel voorgelezen.
+- Herhaal de eis in de foutmelding zodra een bestand wordt geweigerd, zodat de gebruiker op dat moment weet waarom.
 - De knop is toetsenbord-bedienbaar: `Tab` focust het veld, `Enter` of `Space` opent de native bestandskiezer.
 - Screenreaders lezen de bestandsnaam voor zodra de gebruiker een bestand heeft geselecteerd.
 - Minimum touch target grootte van 24x24px conform WCAG 2.5.5.

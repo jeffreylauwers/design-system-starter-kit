@@ -3,7 +3,6 @@ import {
   FileInput,
   FormFieldDescription,
   FormFieldLabel,
-  UnorderedList,
 } from '@dsn-starter-kit/components-react';
 import DocsPage from './FileInput.docs.mdx';
 
@@ -152,14 +151,9 @@ export const InFormFieldSingle: Story = {
       <FormFieldLabel htmlFor="bestand-upload" suffix="(niet verplicht)">
         Bestand toevoegen
       </FormFieldLabel>
-      <FormFieldDescription as="div" id="bestand-upload-description">
-        <UnorderedList>
-          <li>Het bestand mag maximaal 10 MB zijn.</li>
-          <li>
-            Toegestane bestandstypen: doc, docx, xlsx, pdf, zip, jpg, png, bmp
-            en gif.
-          </li>
-        </UnorderedList>
+      <FormFieldDescription id="bestand-upload-description">
+        Het bestand mag maximaal 10 MB zijn. Toegestane bestandstypen: doc,
+        docx, xlsx, pdf, zip, jpg, png, bmp en gif.
       </FormFieldDescription>
       <FileInput
         id="bestand-upload"
@@ -176,15 +170,10 @@ export const InFormFieldMultiple: Story = {
       <FormFieldLabel htmlFor="bestanden-upload" suffix="(niet verplicht)">
         Bestanden toevoegen
       </FormFieldLabel>
-      <FormFieldDescription as="div" id="bestanden-upload-description">
-        <UnorderedList>
-          <li>U kunt meerdere bestanden tegelijk toevoegen.</li>
-          <li>U mag maximaal 10 MB aan bestanden toevoegen.</li>
-          <li>
-            Toegestane bestandstypen: doc, docx, xlsx, pdf, zip, jpg, png, bmp
-            en gif.
-          </li>
-        </UnorderedList>
+      <FormFieldDescription id="bestanden-upload-description">
+        U kunt meerdere bestanden tegelijk toevoegen, samen maximaal 10 MB.
+        Toegestane bestandstypen: doc, docx, xlsx, pdf, zip, jpg, png, bmp en
+        gif.
       </FormFieldDescription>
       <FileInput
         id="bestanden-upload"

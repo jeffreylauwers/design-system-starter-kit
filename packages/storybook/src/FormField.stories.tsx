@@ -103,7 +103,12 @@ export const Default: Story = {
 // =============================================================================
 
 export const WithDescription: Story = {
+  args: {
+    description: 'Tekst',
+  },
+
   name: 'With description',
+
   render: (args) => (
     <FormField {...args} label={TEKST} htmlFor="input-desc" description={TEKST}>
       <TextInput id="input-desc" />

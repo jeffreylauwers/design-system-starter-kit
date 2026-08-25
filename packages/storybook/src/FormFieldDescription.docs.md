@@ -6,7 +6,7 @@ Optionele help tekst die onder het label en boven de form control wordt getoond.
 
 De FormFieldDescription component toont aanvullende informatie of instructies voor een form field. Het heeft een subtiele tekstkleur om het te onderscheiden van het label en gebruikt standaard een `<p>` element. De description komt altijd tussen het label en de form control. Voor accessibility moet de description gekoppeld worden aan de form control via `aria-describedby`.
 
-Schrijf een description bij voorkeur als lopende tekst. Een screenreader leest de inhoud van een `aria-describedby`-koppeling voor als één platte tekst: lijststructuur en links verliezen daarbij hun betekenis. Een lijst mag wel (gebruik dan `as="div"`, want een `<ul>` mag niet binnen een `<p>` staan), maar houd er in je tekst rekening mee dat hij niet als lijst wordt voorgelezen.
+Schrijf een description als lopende tekst. Een screenreader leest de inhoud van een `aria-describedby`-koppeling voor als één platte tekst: lijststructuur en links verliezen daarbij hun betekenis. VoiceOver in Safari leest een lijst in een description zelfs helemaal niet voor, dus die informatie bereikt die gebruikers niet. Heb je een opsomming nodig, zet die dan als gewone inhoud boven het form field.
 
 <!-- VOORBEELD -->
 
@@ -21,7 +21,7 @@ Schrijf een description bij voorkeur als lopende tekst. Een screenreader leest d
 
 - Je een foutmelding wilt tonen: gebruik [FormFieldErrorMessage](/docs/components-formfielderrormessage--docs).
 - Je status feedback wilt geven: gebruik [FormFieldStatus](/docs/components-formfieldstatus--docs).
-- Je een link wilt aanbieden: zet die buiten de description, zie [Best practices](#best-practices).
+- Je een opsomming of een link wilt aanbieden: zet die buiten de description, zie [Best practices](#best-practices).
 - De informatie essentieel is: voeg het toe aan het label zelf.
 - Je een label nodig hebt: gebruik [FormFieldLabel](/docs/components-formfieldlabel--docs).
 
@@ -30,8 +30,8 @@ Schrijf een description bij voorkeur als lopende tekst. Een screenreader leest d
 - **Houd het kort.** Descriptions moeten bondig zijn (1-2 zinnen meestal).
 - **Wees specifiek.** Geef concrete voorbeelden of requirements ("Minimaal 8 tekens" in plaats van "Kies een sterk wachtwoord").
 - **Gebruik aria-describedby.** Geef de description een `id` en koppel het aan de form control. Binnen [FormField](/docs/components-formfield--docs) of [FormFieldset](/docs/components-formfieldset--docs) gebeurt dat automatisch: die genereren het ID en zetten `aria-describedby`.
-- **Bij voorkeur alleen tekst.** Een screenreader leest de inhoud van `aria-describedby` voor als één platte tekst. Opmaak, lijststructuur en links gaan daarbij verloren. Lopende tekst komt daarom het betrouwbaarst over.
-- **Een lijst mag, maar wordt niet als lijst voorgelezen.** Wil je toch een lijst, gebruik dan `as="div"`: een `<ul>` mag niet binnen een `<p>` staan. De lijst blijft gewone zichtbare inhoud tussen label en control, dus wie de pagina van boven naar beneden leest komt hem daar tegen. Wat wegvalt is de aankondiging bij het veld zelf: die wordt platgeslagen tot één tekst, en VoiceOver in Safari laat de lijst daarin weg. Schrijf elk lijstitem daarom als een volledige zin die ook klopt als de items achter elkaar worden voorgelezen, zonder "lijst met 3 items" ervoor.
+- **Alleen tekst.** Een screenreader leest de inhoud van `aria-describedby` voor als één platte tekst. Opmaak, lijststructuur en links gaan daarbij verloren. Lopende tekst is de enige vorm die betrouwbaar overkomt.
+- **Geen lijst in een description.** VoiceOver in Safari leest een lijst in een description helemaal niet voor: de items ontbreken volledig in wat de gebruiker hoort. Andere screenreaders lezen de items wel, maar zonder lijstsemantiek. Heb je een opsomming nodig, zet die dan als gewone inhoud boven het form field, buiten de `aria-describedby`-koppeling. Daar houdt de `<ul>` zijn lijstsemantiek en wordt hij wel voorgelezen.
 - **Geen links in een description.** Een link in een description wordt niet als link voorgelezen en is vanuit de aankondiging niet te activeren: hooguit hoort de gebruiker de linktekst als gewone tekst. Zet de link buiten de description, bijvoorbeeld in de tekst boven het formulier of als los element onder de form control.
 - **Niet voor errors.** Gebruik FormFieldErrorMessage voor validatie feedback.
 - **Niet voor status.** Gebruik FormFieldStatus voor success/info/warning feedback.
@@ -55,6 +55,6 @@ Schrijf een description bij voorkeur als lopende tekst. Een screenreader leest d
 - Screenreaders lezen de description voor na het label.
 - De inhoud van een `aria-describedby`-koppeling wordt platgeslagen tot één tekst. Lijsten, koppen en links verliezen daarbij hun rol: er klinkt geen "lijst met 3 items" en een link is niet als link te herkennen of te activeren.
 - Gebruik geen links in een description. Zet ze buiten de description, zodat ze in de tabvolgorde staan en wel als link worden aangekondigd.
-- Gebruik je toch een lijst, schrijf dan volledige zinnen. De lijst zelf blijft leesbaar als gewone pagina-inhoud; het is de aankondiging bij het veld waarin VoiceOver in Safari hem weglaat. Dat raakt vooral wie met Tab direct naar het veld springt. Herhaal een eis die de invoer kan afkeuren daarom in de foutmelding, waar hij pas verschijnt zodra hij ertoe doet.
+- Zet geen lijst in een description. VoiceOver in Safari leest die helemaal niet voor, waardoor de informatie voor die gebruikers ontbreekt. Een `<ul>` boven het form field, buiten de `aria-describedby`-koppeling, wordt wel als lijst voorgelezen.
 - Descriptions moeten altijd zichtbaar zijn (niet verbergen achter tooltips).
 - Zorg dat kleurcontrast voldoende is (subtiele kleur maar nog leesbaar).

@@ -43,7 +43,6 @@ import {
   TextArea,
   TextInput,
   TimeInput,
-  UnorderedList,
 } from '@dsn-starter-kit/components-react';
 import {
   logoSlot,
@@ -284,17 +283,10 @@ function AllTypesPage() {
                         <FormFieldLabel htmlFor="file-input">
                           Bestand toevoegen
                         </FormFieldLabel>
-                        <FormFieldDescription
-                          as="div"
-                          id="file-input-description"
-                        >
-                          <UnorderedList>
-                            <li>Het bestand mag maximaal 10 MB zijn.</li>
-                            <li>
-                              Toegestane bestandstypen: doc, docx, xlsx, pdf,
-                              zip, jpg, png, bmp en gif.
-                            </li>
-                          </UnorderedList>
+                        <FormFieldDescription id="file-input-description">
+                          Het bestand mag maximaal 10 MB zijn. Toegestane
+                          bestandstypen: doc, docx, xlsx, pdf, zip, jpg, png,
+                          bmp en gif.
                         </FormFieldDescription>
                         <FileInput
                           id="file-input"

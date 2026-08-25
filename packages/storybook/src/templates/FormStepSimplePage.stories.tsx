@@ -28,7 +28,6 @@ import {
   SkipLink,
   Stack,
   TextInput,
-  UnorderedList,
 } from '@dsn-starter-kit/components-react';
 import {
   logoSlot,
@@ -248,17 +247,10 @@ function SimpleDetailsWithUploadPage() {
                         >
                           Bestand uploaden
                         </FormFieldLabel>
-                        <FormFieldDescription
-                          as="div"
-                          id="bestand-upload-description"
-                        >
-                          <UnorderedList>
-                            <li>Het bestand mag maximaal 10 MB zijn.</li>
-                            <li>
-                              Toegestane bestandstypen: doc, docx, xlsx, pdf,
-                              zip, jpg, png, bmp en gif.
-                            </li>
-                          </UnorderedList>
+                        <FormFieldDescription id="bestand-upload-description">
+                          Het bestand mag maximaal 10 MB zijn. Toegestane
+                          bestandstypen: doc, docx, xlsx, pdf, zip, jpg, png,
+                          bmp en gif.
                         </FormFieldDescription>
                         <FileInput
                           id="bestand-upload"

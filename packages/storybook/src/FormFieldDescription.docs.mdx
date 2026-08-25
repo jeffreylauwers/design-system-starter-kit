@@ -22,29 +22,4 @@ export const [intro, rest] = docs.split('<!-- VOORBEELD -->');
 
 <Controls of={FormFieldDescriptionStories.Default} />
 
-## Voorbeeld met een lijst
-
-Een lijst mag in een description, maar een screenreader kondigt hem niet als lijst
-aan: de aankondiging bij het veld wordt platgeslagen tot één tekst, en VoiceOver in
-Safari laat de lijst daarin weg. Gebruik `as="div"` (een `<ul>` mag niet binnen een
-`<p>` staan) en schrijf elk item als een volledige zin.
-
-<PreviewFrame>
-  <Story of={FormFieldDescriptionStories.WithList} />
-</PreviewFrame>
-
-<CodeTabs
-  of={FormFieldDescriptionStories.WithList}
-  html={`<div class="dsn-form-field">
-  <label class="dsn-form-field-label" for="bestand-upload">Bestand toevoegen</label>
-  <div class="dsn-form-field-description" id="bestand-upload-description">
-    <ul class="dsn-unordered-list">
-      <li>Het bestand mag maximaal 10 MB zijn.</li>
-      <li>Toegestane bestandstypen: doc, docx, xlsx, pdf, zip, jpg, png, bmp en gif.</li>
-    </ul>
-  </div>
-  <input type="file" class="dsn-file-input" id="bestand-upload" aria-describedby="bestand-upload-description" multiple />
-</div>`}
-/>
-
 <Markdown>{rest}</Markdown>

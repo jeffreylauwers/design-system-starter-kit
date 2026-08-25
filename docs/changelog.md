@@ -84,21 +84,24 @@ Nog niet gepubliceerde wijzigingen. Schrijf nieuwe changelog-entries hieronder; 
 
 ### FormFieldDescription
 
-#### Documentation
-
-- **Lijsten en links in een description: wat een screenreader er wel en niet van maakt** (issue [#318](https://github.com/jeffreylauwers/design-system-starter-kit/issues/318)): de inhoud van een `aria-describedby`-koppeling wordt platgeslagen tot één tekst. Lijststructuur en links verliezen daarbij hun rol, en VoiceOver in Safari laat een lijst helemaal weg uit de aankondiging bij het veld. Dat stond nergens beschreven, terwijl de docs een lijst juist als vanzelfsprekende optie presenteerden. Gerelateerd succescriterium: [WCAG 1.3.1 Info en relaties](https://www.w3.org/WAI/WCAG22/quickref/#info-and-relationships). Zie ook de NL Design System richtlijn [Gebruik alleen tekst in descriptions](https://nldesignsystem.nl/richtlijnen/formulieren/descriptions/inhoud/).
-  - Een lijst blijft toegestaan, maar `FormFieldDescription.docs.md` legt nu uit wat er precies misgaat en wat je er in je tekst voor moet doen. De lijst blijft gewone zichtbare inhoud tussen label en control, dus wie de pagina van boven naar beneden leest komt hem daar tegen; het is de aankondiging bij het veld waarin VoiceOver in Safari hem weglaat. Schrijf elk item daarom als volledige zin, zodat het ook klopt als de items achter elkaar worden voorgelezen zonder "lijst met 3 items" ervoor
-  - Nieuw advies om geen links in een description te zetten. Een link binnen een description wordt niet als link aangekondigd en is vanuit de aankondiging niet te activeren: de gebruiker hoort hooguit de linktekst. Zet de link buiten de description
-  - De story **With list** staat niet meer los in de zijbalk (`tags: ['!dev']`). Het voorbeeld is verhuisd naar de sectie "Voorbeeld met een lijst" op de docs-pagina, waar het naast de waarschuwing staat in plaats van als los kopieerbaar patroon
-  - Het voorbeeld gebruikt dezelfde markup als de FileInput-stories en het template **Form step: Upload**: label, `FormFieldDescription as="div"` met een `UnorderedList`, en `aria-describedby` naar de description
-
 #### Changed
 
-- **Eén markup voor bestandsvereisten bij een upload** (issue [#318](https://github.com/jeffreylauwers/design-system-starter-kit/issues/318)): de repo had twee varianten naast elkaar. `FileInput.docs.md` en de twee FileInput-stories hingen de `id` aan een losse `UnorderedList`, de formulierpatronen en de templates aan een `FormFieldDescription` met `as="div"`. Alles gebruikt nu de tweede vorm.
-  - Toegankelijk maakt het geen verschil (de accessible description wordt in beide gevallen platgeslagen), maar de `id` hoort op de description en niet op een `<ul>`, en zo werkt de CSS-regel `.dsn-form-field-label:has(+ .dsn-form-field-description)` die de ruimte tussen label en description verkleint
-  - Het argument in `FileInput.docs.md` om `FormFieldDescription` te vermijden ("een `<ul>` mag niet binnen een `<p>`") verviel toen `as="div"` bestond, maar de tekst was blijven staan
-  - `FormStepSimplePage` zette een `<ul>` binnen een `<p>`: die `FormFieldDescription` mist `as="div"` niet meer
+- **Geen lijsten en geen links meer in een description** (issue [#318](https://github.com/jeffreylauwers/design-system-starter-kit/issues/318)): de inhoud van een `aria-describedby`-koppeling wordt platgeslagen tot één tekst. Getest met VoiceOver in Safari blijkt een lijst binnen een description helemaal niet te worden voorgelezen: de items ontbreken volledig in wat de gebruiker hoort. De docs presenteerden een lijst juist als vanzelfsprekende optie, met een eigen story en voorbeelden in stories en templates. Gerelateerd succescriterium: [WCAG 1.3.1 Info en relaties](https://www.w3.org/WAI/WCAG22/quickref/#info-and-relationships).
+  - Een description bevat vanaf nu alleen lopende tekst. Heb je een opsomming nodig, zet die dan als gewone `UnorderedList` boven het hele form field, buiten de `aria-describedby`-koppeling. Daar houdt de lijst zijn lijstsemantiek en wordt hij wel voorgelezen
+  - Ook nieuw: geen links in een description. Een link daarin wordt niet als link aangekondigd en is vanuit de aankondiging niet te activeren, dus de gebruiker hoort hooguit de linktekst. Zet de link buiten de description
+  - De story **With list** is verwijderd, en er staat geen lijstvoorbeeld meer op de docs-pagina van FormFieldDescription. De uitleg staat er wel: in Doel, Best practices en Accessibility, zodat duidelijk is waarom
+  - De twee stories **Within Form Field: Single file** en **Within Form Field: Multiple files** van `FileInput` gebruiken nu lopende tekst in plaats van een lijst. Hetzelfde geldt voor de templates **Form step: Simple** en **Form step: All types**
+  - Het template **Form step: Upload** laat de andere vorm zien: de bestandsvereisten staan als `UnorderedList` boven het form field, buiten de `aria-describedby`-koppeling, met een korte inleidende zin erboven
+  - `FileInput.docs.md` toont beide vormen in de sectie "In form field context": lopende tekst in de description, en de lijst boven het form field wanneer het er te veel zijn voor een leesbare zin
+  - `as="div"` blijft bestaan voor block-level inhoud, maar wordt niet langer aanbevolen als route om een lijst in een description te krijgen
   - Het HTML-voorbeeld in `FileInput.docs.md` gebruikte `dsn-form-field-label__suffix`; de CSS-klasse heet `dsn-form-field-label-suffix`
+  - De letterlijke `<ul>` en `<p>` in de JSDoc van de `as`-prop werden door de Storybook ArgsTable als echte HTML gerenderd, wat een `validateDOMNesting`-waarschuwing gaf. Die staan nu in backticks
+
+### FormField
+
+#### Documentation
+
+- **Notitie boven het codevoorbeeld noemde het verkeerde component**: er stond dat de HTML/CSS tab een `EmailInput` toont, terwijl zowel de story als de gegenereerde HTML een `TextInput` gebruiken. De notitie noemt nu `TextInput` en spreekt over "de tabs", want beide tabs tonen hetzelfde child. De ongebruikte statische `html`-fallback in `FormField.docs.mdx` (die nog een `input type="email"` bevatte) is meegetrokken
 
 ### IconList
 

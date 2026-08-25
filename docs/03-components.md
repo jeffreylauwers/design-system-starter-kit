@@ -3394,7 +3394,7 @@ const [isOpen, setIsOpen] = React.useState(false);
 
 **Tokens:** `tokens/components/form-field-description.json`
 
-**Features:** Help text for form fields. Needs an `id` plus `aria-describedby` on the control; FormField and FormFieldset do this for you. Prefer running text: the referenced content is flattened into one string for the announcement on focus, so a list is not announced as a list (VoiceOver in Safari drops it there entirely) and a link cannot be reached or activated. The list itself stays readable as ordinary page content. Use `as="div"` when a list is unavoidable.
+**Features:** Help text for form fields. Needs an `id` plus `aria-describedby` on the control; FormField and FormFieldset do this for you. Running text only: the referenced content is flattened into one string, so a list loses its semantics and a link cannot be reached or activated. VoiceOver in Safari does not read a list inside a description at all. Put a list above the form field instead, outside the `aria-describedby` reference, where it keeps its list semantics.
 
 **Props:** `as`, `id`, `children`
 

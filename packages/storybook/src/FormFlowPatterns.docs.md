@@ -182,14 +182,14 @@ Een uploadstap gebruikt altijd twee componenten. `FileInput` is het kiesmoment, 
 
 ### Voorwaarden vooraf tonen
 
-Zet de eisen (maximale grootte, toegestane bestandstypen) in een `FormFieldDescription` boven het veld, gekoppeld via `aria-describedby`. Wie de eisen vooraf leest, loopt minder vaak tegen een afwijzing aan.
+Zet de eisen (maximale grootte, toegestane bestandstypen) boven het veld. Wie de eisen vooraf leest, loopt minder vaak tegen een afwijzing aan.
+
+Zijn het één of twee eisen, dan passen ze als lopende tekst in een `FormFieldDescription`, gekoppeld via `aria-describedby`:
 
 ```tsx
-<FormFieldDescription as="div" id="bestand-upload-description">
-  <UnorderedList>
-    <li>Het bestand mag maximaal 10 MB zijn.</li>
-    <li>Toegestane bestandstypen: doc, docx, xlsx, pdf, zip, jpg, png, bmp en gif.</li>
-  </UnorderedList>
+<FormFieldDescription id="bestand-upload-description">
+  Het bestand mag maximaal 10 MB zijn. Toegestane bestandstypen: doc, docx,
+  xlsx, pdf, zip, jpg, png, bmp en gif.
 </FormFieldDescription>
 <FileInput
   id="bestand-upload"
@@ -198,7 +198,22 @@ Zet de eisen (maximale grootte, toegestane bestandstypen) in een `FormFieldDescr
 />
 ```
 
-`as="div"` is nodig omdat een `<ul>` niet binnen een `<p>` mag staan. De lijst blijft gewone zichtbare inhoud, dus wie de pagina van boven naar beneden leest komt hem daar tegen. Wat wegvalt is de aankondiging bij het veld: de inhoud van een `aria-describedby`-koppeling wordt platgeslagen tot één tekst, en VoiceOver in Safari laat de lijst daarin helemaal weg. Dat raakt vooral wie met Tab direct naar het veld springt. Schrijf elk item daarom als een volledige zin, en herhaal de eis in de foutmelding zodra een bestand wordt geweigerd. Zet nooit een link in een description: die is vanuit de aankondiging niet te bereiken en wordt niet als link voorgelezen.
+Zijn het er te veel voor een leesbare zin, zet de opsomming dan als gewone `UnorderedList` boven het hele form field, buiten de `aria-describedby`-koppeling:
+
+```tsx
+<Paragraph>Voor de bestanden die u toevoegt geldt:</Paragraph>
+<UnorderedList>
+  <li>Het bestand mag maximaal 10 MB zijn.</li>
+  <li>Toegestane bestandstypen: doc, docx, xlsx, pdf, zip, jpg, png, bmp en gif.</li>
+</UnorderedList>
+
+<div className="dsn-form-field">
+  <FormFieldLabel htmlFor="bestand-upload">Bestand toevoegen</FormFieldLabel>
+  <FileInput id="bestand-upload" multiple />
+</div>
+```
+
+Zet de lijst nooit binnen de `FormFieldDescription` zelf. De inhoud van een `aria-describedby`-koppeling wordt platgeslagen tot één tekst, en VoiceOver in Safari leest een lijst daarbinnen helemaal niet voor: de eisen ontbreken dan volledig voor die gebruikers. Als gewone pagina-inhoud houdt de `<ul>` zijn lijstsemantiek en wordt hij wel voorgelezen. Herhaal de eis daarnaast in de foutmelding zodra een bestand wordt geweigerd. Zet ook nooit een link in een description: die is vanuit de aankondiging niet te bereiken en wordt niet als link voorgelezen.
 
 ### De vier statussen
 

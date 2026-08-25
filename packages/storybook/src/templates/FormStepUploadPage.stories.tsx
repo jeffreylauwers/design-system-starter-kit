@@ -9,7 +9,6 @@ import {
   FileInput,
   FileList,
   FormField,
-  FormFieldDescription,
   FormFieldLabel,
   Grid,
   GridItem,
@@ -283,49 +282,56 @@ function UploadPage() {
 
                   <form noValidate>
                     <Stack space="3xl">
-                      <div className="dsn-form-field">
-                        <FormFieldLabel htmlFor="bestand-upload">
-                          Bestand toevoegen
-                        </FormFieldLabel>
-                        <FormFieldDescription
-                          as="div"
-                          id="bestand-upload-description"
-                        >
-                          <UnorderedList>
-                            <li>Het bestand mag maximaal 10 MB zijn.</li>
-                            <li>
-                              Toegestane bestandstypen: doc, docx, xlsx, pdf,
-                              zip, jpg, png, bmp en gif.
-                            </li>
-                          </UnorderedList>
-                        </FormFieldDescription>
-                        <FileInput
-                          id="bestand-upload"
-                          aria-describedby="bestand-upload-description"
-                          onChange={handleBestandskeuze}
-                          multiple
-                          required
-                        />
+                      {/*
+                        De bestandsvereisten staan bewust boven het form field
+                        en niet in een FormFieldDescription: VoiceOver in Safari
+                        leest een lijst binnen een aria-describedby-koppeling
+                        helemaal niet voor. Als gewone pagina-inhoud houdt de
+                        lijst zijn lijstsemantiek en wordt hij wel voorgelezen.
+                      */}
+                      <div>
+                        <Paragraph>
+                          Voor de bestanden die u toevoegt geldt:
+                        </Paragraph>
+                        <UnorderedList>
+                          <li>Het bestand mag maximaal 10 MB zijn.</li>
+                          <li>
+                            Toegestane bestandstypen: doc, docx, xlsx, pdf, zip,
+                            jpg, png, bmp en gif.
+                          </li>
+                        </UnorderedList>
 
-                        {bestanden.length > 0 && (
-                          <FileList
-                            style={{
-                              marginBlockStart: 'var(--dsn-space-block-lg)',
-                            }}
-                          >
-                            {bestanden.map((bestand) => (
-                              <File
-                                key={bestand.id}
-                                fileName={bestand.naam}
-                                fileType={bestand.type}
-                                fileSize={bestand.grootte}
-                                status={bestand.status}
-                                errorMessage={bestand.foutmelding}
-                                onDelete={() => verwijder(bestand.id)}
-                              />
-                            ))}
-                          </FileList>
-                        )}
+                        <div className="dsn-form-field">
+                          <FormFieldLabel htmlFor="bestand-upload">
+                            Bestand toevoegen
+                          </FormFieldLabel>
+                          <FileInput
+                            id="bestand-upload"
+                            onChange={handleBestandskeuze}
+                            multiple
+                            required
+                          />
+
+                          {bestanden.length > 0 && (
+                            <FileList
+                              style={{
+                                marginBlockStart: 'var(--dsn-space-block-lg)',
+                              }}
+                            >
+                              {bestanden.map((bestand) => (
+                                <File
+                                  key={bestand.id}
+                                  fileName={bestand.naam}
+                                  fileType={bestand.type}
+                                  fileSize={bestand.grootte}
+                                  status={bestand.status}
+                                  errorMessage={bestand.foutmelding}
+                                  onDelete={() => verwijder(bestand.id)}
+                                />
+                              ))}
+                            </FileList>
+                          )}
+                        </div>
                       </div>
 
                       <ActionGroup
