@@ -203,7 +203,7 @@ Draait de hele stap om het uploaden, dan mag de opsomming een echte lijst zijn. 
 ```tsx
 <UnorderedList>
   <li>U kunt meerdere bestanden tegelijk toevoegen.</li>
-  <li>Samen maximaal 10 MB.</li>
+  <li>Elk bestand mag maximaal 10 MB zijn.</li>
   <li>Toegestane bestandstypen: doc, docx, xlsx, pdf, zip, jpg, png, bmp en gif.</li>
 </UnorderedList>
 

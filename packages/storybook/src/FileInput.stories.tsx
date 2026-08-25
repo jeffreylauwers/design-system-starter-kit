@@ -171,9 +171,9 @@ export const InFormFieldMultiple: Story = {
         Bestanden toevoegen
       </FormFieldLabel>
       <FormFieldDescription id="bestanden-upload-description">
-        U kunt meerdere bestanden tegelijk toevoegen. <br /> Samen maximaal 10
-        MB. <br /> Toegestane bestandstypen: doc, docx, xlsx, pdf, zip, jpg,
-        png, bmp en gif.
+        U kunt meerdere bestanden tegelijk toevoegen. <br /> Elk bestand mag
+        maximaal 10 MB zijn. <br /> Toegestane bestandstypen: doc, docx, xlsx,
+        pdf, zip, jpg, png, bmp en gif.
       </FormFieldDescription>
       <FileInput
         id="bestanden-upload"
