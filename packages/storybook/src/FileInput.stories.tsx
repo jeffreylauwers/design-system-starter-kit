@@ -1,6 +1,7 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
 import {
   FileInput,
+  FormFieldDescription,
   FormFieldLabel,
   UnorderedList,
 } from '@dsn-starter-kit/components-react';
@@ -151,13 +152,15 @@ export const InFormFieldSingle: Story = {
       <FormFieldLabel htmlFor="bestand-upload" suffix="(niet verplicht)">
         Bestand toevoegen
       </FormFieldLabel>
-      <UnorderedList id="bestand-upload-description">
-        <li>Het bestand mag maximaal 10 MB zijn.</li>
-        <li>
-          Toegestane bestandstypen: doc, docx, xlsx, pdf, zip, jpg, png, bmp en
-          gif.
-        </li>
-      </UnorderedList>
+      <FormFieldDescription as="div" id="bestand-upload-description">
+        <UnorderedList>
+          <li>Het bestand mag maximaal 10 MB zijn.</li>
+          <li>
+            Toegestane bestandstypen: doc, docx, xlsx, pdf, zip, jpg, png, bmp
+            en gif.
+          </li>
+        </UnorderedList>
+      </FormFieldDescription>
       <FileInput
         id="bestand-upload"
         aria-describedby="bestand-upload-description"
@@ -173,14 +176,16 @@ export const InFormFieldMultiple: Story = {
       <FormFieldLabel htmlFor="bestanden-upload" suffix="(niet verplicht)">
         Bestanden toevoegen
       </FormFieldLabel>
-      <UnorderedList id="bestanden-upload-description">
-        <li>U kunt meerdere bestanden tegelijk toevoegen.</li>
-        <li>U mag maximaal 10 MB aan bestanden toevoegen.</li>
-        <li>
-          Toegestane bestandstypen: doc, docx, xlsx, pdf, zip, jpg, png, bmp en
-          gif.
-        </li>
-      </UnorderedList>
+      <FormFieldDescription as="div" id="bestanden-upload-description">
+        <UnorderedList>
+          <li>U kunt meerdere bestanden tegelijk toevoegen.</li>
+          <li>U mag maximaal 10 MB aan bestanden toevoegen.</li>
+          <li>
+            Toegestane bestandstypen: doc, docx, xlsx, pdf, zip, jpg, png, bmp
+            en gif.
+          </li>
+        </UnorderedList>
+      </FormFieldDescription>
       <FileInput
         id="bestanden-upload"
         aria-describedby="bestanden-upload-description"

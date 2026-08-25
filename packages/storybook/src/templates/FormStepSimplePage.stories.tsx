@@ -248,7 +248,10 @@ function SimpleDetailsWithUploadPage() {
                         >
                           Bestand uploaden
                         </FormFieldLabel>
-                        <FormFieldDescription id="bestand-upload-description">
+                        <FormFieldDescription
+                          as="div"
+                          id="bestand-upload-description"
+                        >
                           <UnorderedList>
                             <li>Het bestand mag maximaal 10 MB zijn.</li>
                             <li>

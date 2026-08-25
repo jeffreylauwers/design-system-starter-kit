@@ -198,6 +198,8 @@ Zet de eisen (maximale grootte, toegestane bestandstypen) in een `FormFieldDescr
 />
 ```
 
+`as="div"` is nodig omdat een `<ul>` niet binnen een `<p>` mag staan. Een screenreader kondigt deze lijst niet als lijst aan: de inhoud van een `aria-describedby`-koppeling wordt platgeslagen tot één tekst, en VoiceOver in Safari slaat de lijst zelfs over. Schrijf elk item daarom als een volledige zin, en herhaal de eis in de foutmelding zodra een bestand wordt geweigerd, zodat de informatie ook langs die weg beschikbaar is. Zet nooit een link in een description: die is vanuit de aankondiging niet te bereiken en wordt niet als link voorgelezen.
+
 ### De vier statussen
 
 Elk gekozen bestand doorloopt een eigen cyclus, los van de andere bestanden in de lijst.

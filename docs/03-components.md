@@ -3394,7 +3394,7 @@ const [isOpen, setIsOpen] = React.useState(false);
 
 **Tokens:** `tokens/components/form-field-description.json`
 
-**Features:** Help text for form fields. Needs an `id` plus `aria-describedby` on the control; FormField and FormFieldset do this for you.
+**Features:** Help text for form fields. Needs an `id` plus `aria-describedby` on the control; FormField and FormFieldset do this for you. Prefer running text: the referenced content is flattened into one string, so a list is not announced as a list (VoiceOver in Safari skips it) and a link cannot be reached or activated. Use `as="div"` when a list is unavoidable.
 
 **Props:** `as`, `id`, `children`
 

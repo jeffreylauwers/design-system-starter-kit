@@ -1,6 +1,8 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
 import {
+  FileInput,
   FormFieldDescription,
+  FormFieldLabel,
   UnorderedList,
 } from '@dsn-starter-kit/components-react';
 import DocsPage from './FormFieldDescription.docs.mdx';
@@ -60,20 +62,54 @@ export const LongText: Story = {
 };
 
 // =============================================================================
-// MET LIJST
+// MET LIJST (alleen op de docs-pagina)
 // =============================================================================
 
+/**
+ * Voorbeeld van een description met een lijst, alleen zichtbaar op de docs-pagina.
+ *
+ * Deze story staat bewust niet in de zijbalk (`tags: ['!dev']`): een lijst in een
+ * description wordt door screenreaders niet als lijst voorgelezen en VoiceOver in
+ * Safari slaat de inhoud over. Het voorbeeld hoort daarom alleen thuis naast de
+ * uitleg op de docs-pagina, niet als losse story om uit over te nemen.
+ */
 export const WithList: Story = {
   name: 'With list',
+  tags: ['!dev'],
+  parameters: {
+    dsn: {
+      htmlTemplate: () => `<div class="dsn-form-field">
+  <label class="dsn-form-field-label" for="bestand-upload">Bestand toevoegen</label>
+  <div class="dsn-form-field-description" id="bestand-upload-description">
+    <ul class="dsn-unordered-list">
+      <li>Het bestand mag maximaal 10 MB zijn.</li>
+      <li>Toegestane bestandstypen: doc, docx, xlsx, pdf, zip, jpg, png, bmp en gif.</li>
+    </ul>
+  </div>
+  <input type="file" class="dsn-file-input" id="bestand-upload" aria-describedby="bestand-upload-description" multiple />
+</div>`,
+    },
+  },
   render: () => (
-    <FormFieldDescription as="div" id="upload-desc">
-      Toegestane bestandstypen:
-      <UnorderedList>
-        <li>PDF (max. 5 MB per bestand)</li>
-        <li>Word-documenten (.docx)</li>
-        <li>Afbeeldingen (.jpg, .png)</li>
-      </UnorderedList>
-    </FormFieldDescription>
+    <div className="dsn-form-field">
+      <FormFieldLabel htmlFor="bestand-upload">
+        Bestand toevoegen
+      </FormFieldLabel>
+      <FormFieldDescription as="div" id="bestand-upload-description">
+        <UnorderedList>
+          <li>Het bestand mag maximaal 10 MB zijn.</li>
+          <li>
+            Toegestane bestandstypen: doc, docx, xlsx, pdf, zip, jpg, png, bmp
+            en gif.
+          </li>
+        </UnorderedList>
+      </FormFieldDescription>
+      <FileInput
+        id="bestand-upload"
+        aria-describedby="bestand-upload-description"
+        multiple
+      />
+    </div>
   ),
 };
 
