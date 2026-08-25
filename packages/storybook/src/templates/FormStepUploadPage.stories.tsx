@@ -9,7 +9,6 @@ import {
   FileInput,
   FileList,
   FormField,
-  FormFieldLabel,
   Grid,
   GridItem,
   Heading,
@@ -299,9 +298,18 @@ function UploadPage() {
                       </UnorderedList>
 
                       <div className="dsn-form-field">
-                        <FormFieldLabel htmlFor="bestand-upload">
+                        {/*
+                          Het label is visueel verborgen omdat de <h2> erboven
+                          dezelfde tekst draagt: die kop is op deze stap het
+                          zichtbare label. Screenreaders krijgen het label wel,
+                          via de for/id-koppeling.
+                        */}
+                        <label
+                          className="dsn-visually-hidden"
+                          htmlFor="bestand-upload"
+                        >
                           Bestand toevoegen
-                        </FormFieldLabel>
+                        </label>
                         <FileInput
                           id="bestand-upload"
                           onChange={handleBestandskeuze}
