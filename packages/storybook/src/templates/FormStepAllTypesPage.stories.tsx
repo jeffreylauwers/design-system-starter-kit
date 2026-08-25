@@ -284,7 +284,7 @@ function AllTypesPage() {
                           Bestand toevoegen
                         </FormFieldLabel>
                         <FormFieldDescription id="file-input-description">
-                          Het bestand mag maximaal 10 MB zijn. Toegestane
+                          Het bestand mag maximaal 10 MB zijn. <br /> Toegestane
                           bestandstypen: doc, docx, xlsx, pdf, zip, jpg, png,
                           bmp en gif.
                         </FormFieldDescription>

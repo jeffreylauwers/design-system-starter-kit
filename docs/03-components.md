@@ -3394,7 +3394,7 @@ const [isOpen, setIsOpen] = React.useState(false);
 
 **Tokens:** `tokens/components/form-field-description.json`
 
-**Features:** Help text for form fields. Needs an `id` plus `aria-describedby` on the control; FormField and FormFieldset do this for you. Running text only: the referenced content is flattened into one string, so a list loses its semantics and a link cannot be reached or activated. VoiceOver in Safari does not read a list inside a description at all. Put a list above the form field instead, outside the `aria-describedby` reference, where it keeps its list semantics.
+**Features:** Help text for form fields. Needs an `id` plus `aria-describedby` on the control; FormField and FormFieldset do this for you. Text only: the referenced content is flattened into one string, so a list loses its semantics and a link cannot be reached or activated. VoiceOver in Safari does not read a list inside a description at all. Use `<br>` (with a space on both sides) to put several requirements on their own lines, or move a real list above the form field, outside the `aria-describedby` reference.
 
 **Props:** `as`, `id`, `children`
 

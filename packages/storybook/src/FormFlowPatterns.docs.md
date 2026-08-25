@@ -184,12 +184,12 @@ Een uploadstap gebruikt altijd twee componenten. `FileInput` is het kiesmoment, 
 
 Zet de eisen (maximale grootte, toegestane bestandstypen) boven het veld. Wie de eisen vooraf leest, loopt minder vaak tegen een afwijzing aan.
 
-Zijn het één of twee eisen, dan passen ze als lopende tekst in een `FormFieldDescription`, gekoppeld via `aria-describedby`:
+Staat de upload tussen andere velden, dan horen de eisen in een `FormFieldDescription`, gekoppeld via `aria-describedby`. Zet elke eis op een eigen regel met een `<br>`, met een spatie vóór en ná die `<br>`:
 
 ```tsx
 <FormFieldDescription id="bestand-upload-description">
-  Het bestand mag maximaal 10 MB zijn. Toegestane bestandstypen: doc, docx,
-  xlsx, pdf, zip, jpg, png, bmp en gif.
+  Het bestand mag maximaal 10 MB zijn. <br /> Toegestane bestandstypen: doc,
+  docx, xlsx, pdf, zip, jpg, png, bmp en gif.
 </FormFieldDescription>
 <FileInput
   id="bestand-upload"
@@ -198,10 +198,9 @@ Zijn het één of twee eisen, dan passen ze als lopende tekst in een `FormFieldD
 />
 ```
 
-Zijn het er te veel voor een leesbare zin, zet de opsomming dan als gewone `UnorderedList` boven het hele form field, buiten de `aria-describedby`-koppeling:
+Draait de hele stap om het uploaden, dan mag de opsomming een echte lijst zijn. Zet die boven het hele form field en houd hem buiten de `aria-describedby`-koppeling:
 
 ```tsx
-<Paragraph>Voor de bestanden die u toevoegt geldt:</Paragraph>
 <UnorderedList>
   <li>Het bestand mag maximaal 10 MB zijn.</li>
   <li>Toegestane bestandstypen: doc, docx, xlsx, pdf, zip, jpg, png, bmp en gif.</li>
@@ -213,7 +212,7 @@ Zijn het er te veel voor een leesbare zin, zet de opsomming dan als gewone `Unor
 </div>
 ```
 
-Zet de lijst nooit binnen de `FormFieldDescription` zelf. De inhoud van een `aria-describedby`-koppeling wordt platgeslagen tot één tekst, en VoiceOver in Safari leest een lijst daarbinnen helemaal niet voor: de eisen ontbreken dan volledig voor die gebruikers. Als gewone pagina-inhoud houdt de `<ul>` zijn lijstsemantiek en wordt hij wel voorgelezen. Herhaal de eis daarnaast in de foutmelding zodra een bestand wordt geweigerd. Zet ook nooit een link in een description: die is vanuit de aankondiging niet te bereiken en wordt niet als link voorgelezen.
+Zet de lijst nooit binnen de `FormFieldDescription` zelf. De inhoud van een `aria-describedby`-koppeling wordt platgeslagen tot één tekst, en VoiceOver in Safari leest een lijst daarbinnen helemaal niet voor: de eisen ontbreken dan volledig voor die gebruikers. Een `<br>` is wel veilig, want de description blijft dan één `<p>` met alleen tekst. Herhaal de eis daarnaast in de foutmelding zodra een bestand wordt geweigerd. Zet ook nooit een link in een description: die is vanuit de aankondiging niet te bereiken en wordt niet als link voorgelezen.
 
 ### De vier statussen
 
