@@ -9,8 +9,6 @@ import {
   FileInput,
   FileList,
   FormField,
-  FormFieldDescription,
-  FormFieldLabel,
   Grid,
   GridItem,
   Heading,
@@ -278,30 +276,43 @@ function UploadPage() {
                   </Link>
 
                   <h2 className="dsn-heading dsn-heading--heading-2">
-                    Bestand toevoegen
+                    Bestanden toevoegen
                   </h2>
 
                   <form noValidate>
                     <Stack space="3xl">
+                      {/*
+                        Deze stap gaat alleen over het uploaden, dus de
+                        bestandsvereisten staan als echte lijst boven het form
+                        field en niet in een FormFieldDescription: VoiceOver in
+                        Safari leest een lijst binnen een
+                        aria-describedby-koppeling helemaal niet voor. Als
+                        gewone pagina-inhoud houdt de lijst zijn lijstsemantiek.
+                      */}
+                      <UnorderedList>
+                        <li>U kunt meerdere bestanden tegelijk toevoegen.</li>
+                        <li>Elk bestand mag maximaal 10 MB zijn.</li>
+                        <li>
+                          Toegestane bestandstypen: doc, docx, xlsx, pdf, zip,
+                          jpg, png, bmp en gif.
+                        </li>
+                      </UnorderedList>
+
                       <div className="dsn-form-field">
-                        <FormFieldLabel htmlFor="bestand-upload">
-                          Bestand toevoegen
-                        </FormFieldLabel>
-                        <FormFieldDescription
-                          as="div"
-                          id="bestand-upload-description"
+                        {/*
+                          Het label is visueel verborgen omdat de <h2> erboven
+                          dezelfde tekst draagt: die kop is op deze stap het
+                          zichtbare label. Screenreaders krijgen het label wel,
+                          via de for/id-koppeling.
+                        */}
+                        <label
+                          className="dsn-visually-hidden"
+                          htmlFor="bestand-upload"
                         >
-                          <UnorderedList>
-                            <li>Het bestand mag maximaal 10 MB zijn.</li>
-                            <li>
-                              Toegestane bestandstypen: doc, docx, xlsx, pdf,
-                              zip, jpg, png, bmp en gif.
-                            </li>
-                          </UnorderedList>
-                        </FormFieldDescription>
+                          Bestanden toevoegen
+                        </label>
                         <FileInput
                           id="bestand-upload"
-                          aria-describedby="bestand-upload-description"
                           onChange={handleBestandskeuze}
                           multiple
                           required

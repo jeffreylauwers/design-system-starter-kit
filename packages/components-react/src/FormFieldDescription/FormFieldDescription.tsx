@@ -4,8 +4,9 @@ import './FormFieldDescription.css';
 
 export interface FormFieldDescriptionProps extends React.HTMLAttributes<HTMLElement> {
   /**
-   * HTML element to render — use 'div' when the description contains block-level
-   * content such as a list (a <ul> cannot be nested inside a <p>)
+   * HTML element to render: use 'div' when the description contains block-level
+   * content, which a `<p>` cannot hold. Note that block-level content in a
+   * description is discouraged, see the component docs.
    * @default 'p'
    */
   as?: 'p' | 'div';
@@ -24,7 +25,14 @@ export interface FormFieldDescriptionProps extends React.HTMLAttributes<HTMLElem
 /**
  * Form Field Description component
  * Optional help text displayed below the label and above the form control.
- * Use `as="div"` when the description contains block-level content like a list.
+ *
+ * Use text only. The content of an `aria-describedby` reference is flattened into a
+ * single string, so list structure and links lose their meaning. VoiceOver in Safari
+ * does not read a list inside a description at all, and a link inside a description
+ * cannot be reached or activated. To make several requirements scannable, put them on
+ * their own lines with a `<br>` and a space on both sides of it: the description then
+ * stays a single `<p>` holding only text. A real list belongs above the form field,
+ * outside the `aria-describedby` reference, where it keeps its list semantics.
  *
  * @example
  * ```tsx
@@ -38,13 +46,9 @@ export interface FormFieldDescriptionProps extends React.HTMLAttributes<HTMLElem
  *   We gebruiken uw e-mailadres alleen voor accountgerelateerde berichten.
  * </FormFieldDescription>
  *
- * // With a list (requires as="div" to avoid invalid HTML)
- * <FormFieldDescription as="div" id="upload-description">
- *   Toegestane bestandstypen:
- *   <UnorderedList>
- *     <li>PDF (max. 5 MB)</li>
- *     <li>Word-documenten (.docx)</li>
- *   </UnorderedList>
+ * // Several requirements: one line each via <br>, never a list
+ * <FormFieldDescription id="upload-description">
+ *   Het bestand mag maximaal 5 MB zijn. <br /> Toegestane bestandstypen: pdf en docx.
  * </FormFieldDescription>
  * ```
  */

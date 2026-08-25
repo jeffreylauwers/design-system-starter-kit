@@ -1,8 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
-import {
-  FormFieldDescription,
-  UnorderedList,
-} from '@dsn-starter-kit/components-react';
+import { FormFieldDescription } from '@dsn-starter-kit/components-react';
 import DocsPage from './FormFieldDescription.docs.mdx';
 import {
   TEKST,
@@ -57,24 +54,6 @@ export const ShortText: Story = {
 export const LongText: Story = {
   name: 'Long text',
   args: { children: VEEL_TEKST },
-};
-
-// =============================================================================
-// MET LIJST
-// =============================================================================
-
-export const WithList: Story = {
-  name: 'With list',
-  render: () => (
-    <FormFieldDescription as="div" id="upload-desc">
-      Toegestane bestandstypen:
-      <UnorderedList>
-        <li>PDF (max. 5 MB per bestand)</li>
-        <li>Word-documenten (.docx)</li>
-        <li>Afbeeldingen (.jpg, .png)</li>
-      </UnorderedList>
-    </FormFieldDescription>
-  ),
 };
 
 // =============================================================================

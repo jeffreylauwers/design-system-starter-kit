@@ -182,14 +182,14 @@ Een uploadstap gebruikt altijd twee componenten. `FileInput` is het kiesmoment, 
 
 ### Voorwaarden vooraf tonen
 
-Zet de eisen (maximale grootte, toegestane bestandstypen) in een `FormFieldDescription` boven het veld, gekoppeld via `aria-describedby`. Wie de eisen vooraf leest, loopt minder vaak tegen een afwijzing aan.
+Zet de eisen (maximale grootte, toegestane bestandstypen) boven het veld. Wie de eisen vooraf leest, loopt minder vaak tegen een afwijzing aan.
+
+Staat de upload tussen andere velden, dan horen de eisen in een `FormFieldDescription`, gekoppeld via `aria-describedby`. Zet elke eis op een eigen regel met een `<br>`, met een spatie vóór en ná die `<br>`:
 
 ```tsx
-<FormFieldDescription as="div" id="bestand-upload-description">
-  <UnorderedList>
-    <li>Het bestand mag maximaal 10 MB zijn.</li>
-    <li>Toegestane bestandstypen: doc, docx, xlsx, pdf, zip, jpg, png, bmp en gif.</li>
-  </UnorderedList>
+<FormFieldDescription id="bestand-upload-description">
+  Het bestand mag maximaal 10 MB zijn. <br /> Toegestane bestandstypen: doc,
+  docx, xlsx, pdf, zip, jpg, png, bmp en gif.
 </FormFieldDescription>
 <FileInput
   id="bestand-upload"
@@ -197,6 +197,23 @@ Zet de eisen (maximale grootte, toegestane bestandstypen) in een `FormFieldDescr
   multiple
 />
 ```
+
+Draait de hele stap om het uploaden, dan mag de opsomming een echte lijst zijn. Zet die boven het hele form field en houd hem buiten de `aria-describedby`-koppeling:
+
+```tsx
+<UnorderedList>
+  <li>U kunt meerdere bestanden tegelijk toevoegen.</li>
+  <li>Elk bestand mag maximaal 10 MB zijn.</li>
+  <li>Toegestane bestandstypen: doc, docx, xlsx, pdf, zip, jpg, png, bmp en gif.</li>
+</UnorderedList>
+
+<div className="dsn-form-field">
+  <FormFieldLabel htmlFor="bestanden-upload">Bestanden toevoegen</FormFieldLabel>
+  <FileInput id="bestanden-upload" multiple />
+</div>
+```
+
+Zet de lijst nooit binnen de `FormFieldDescription` zelf. De inhoud van een `aria-describedby`-koppeling wordt platgeslagen tot één tekst, en VoiceOver in Safari leest een lijst daarbinnen helemaal niet voor: de eisen ontbreken dan volledig voor die gebruikers. Een `<br>` is wel veilig, want de description blijft dan één `<p>` met alleen tekst. Herhaal de eis daarnaast in de foutmelding zodra een bestand wordt geweigerd. Zet ook nooit een link in een description: die is vanuit de aankondiging niet te bereiken en wordt niet als link voorgelezen.
 
 ### De vier statussen
 

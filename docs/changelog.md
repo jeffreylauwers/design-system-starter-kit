@@ -82,6 +82,33 @@ Nog niet gepubliceerde wijzigingen. Schrijf nieuwe changelog-entries hieronder; 
   - Nieuwe tests bij `FormFieldStatus` (live region) en `ProgressBar` (koppeling van de description)
   - De assertions gebruiken `toHaveAccessibleDescription`, dat de `aria-describedby`-keten daadwerkelijk oplost. Een test die alleen het attribuut vergelijkt, zou een verwijzing naar een niet-bestaand ID goedkeuren
 
+### FormFieldDescription
+
+#### Changed
+
+- **Geen lijsten en geen links meer in een description** (issue [#318](https://github.com/jeffreylauwers/design-system-starter-kit/issues/318)): de inhoud van een `aria-describedby`-koppeling wordt platgeslagen tot één tekst. Getest met VoiceOver in Safari blijkt een lijst binnen een description helemaal niet te worden voorgelezen: de items ontbreken volledig in wat de gebruiker hoort. De docs presenteerden een lijst juist als vanzelfsprekende optie, met een eigen story en voorbeelden in stories en templates. Gerelateerd succescriterium: [WCAG 1.3.1 Info en relaties](https://www.w3.org/WAI/WCAG22/quickref/#info-and-relationships).
+  - Een description bevat vanaf nu alleen tekstknopen, eventueel opgedeeld met een `<br>`. Meerdere eisen krijgen zo elk een eigen regel en blijven scanbaar, terwijl de description één `<p>` met alleen tekst blijft en er dus niets uit de aankondiging valt. Voorwaarde: een spatie vóór én ná de `<br>`, anders plakken het einde van de ene regel en het begin van de volgende aan elkaar in de platgeslagen string. Elke regel is een volledige zin, zodat de tekst ook klopt als de regelovergangen wegvallen
+  - De `<br>` doet hier presentatiewerk, iets wat je normaal aan CSS overlaat. Dat is een bewuste afweging: elke vorm die de regels wél als losse items markeert (een `<ul>`, geneste blokken) is precies wat wegvalt
+  - Beide bevindingen zijn met VoiceOver in Safari getest, niet afgeleid uit de specificatie: de lijst die wegvalt, en de `<br>`-variant die wel goed wordt voorgelezen
+  - Draait een formulierstap volledig om de eisen, dan mag de opsomming een echte `UnorderedList` zijn. Die staat dan boven het hele form field, buiten de `aria-describedby`-koppeling, waar hij zijn lijstsemantiek houdt
+  - Ook nieuw: geen links in een description. Een link daarin wordt niet als link aangekondigd en is vanuit de aankondiging niet te activeren, dus de gebruiker hoort hooguit de linktekst. Zet de link buiten de description
+  - De story **With list** is verwijderd, en er staat geen lijstvoorbeeld meer op de docs-pagina van FormFieldDescription. De uitleg staat er wel: in Doel, Best practices en Accessibility, zodat duidelijk is waarom
+  - De twee stories **Within Form Field: Single file** en **Within Form Field: Multiple files** van `FileInput` zetten de eisen nu met een `<br>` op eigen regels. Hetzelfde geldt voor de templates **Form step: Simple details: With upload** en **Form step: All form types**
+  - Het template **Form step: Upload** laat de andere vorm zien: die stap gaat alleen over uploaden, dus daar staan de bestandsvereisten als `UnorderedList` boven het form field, buiten de `aria-describedby`-koppeling. De lijst en het form field zijn losse Stack-kinderen, zonder extra wrapper
+  - Dat template zet nu volledig in op meerdere bestanden: kop en verborgen label zijn "Bestanden toevoegen" en de lijst noemt drie eisen. De voorbeelden in `FileInput.docs.md` en de formulierpatronen zijn daarop gelijkgetrokken
+  - De groottelimiet staat overal als "Elk bestand mag maximaal 10 MB zijn." De validatie in het template toetst per bestand, en de vaste foutmeldingstekst uit de formulierpatronen ("Het gekozen bestand is te groot. Het bestand mag maximaal 10 MB zijn.") gaat ook over één bestand. Een gezamenlijke limiet zou dus zowel de code als die foutmelding tegenspreken
+  - Op diezelfde stap is het label visueel verborgen (`dsn-visually-hidden`), omdat de `<h2>` erboven dezelfde tekst draagt en die kop daar het zichtbare label is. Screenreaders krijgen het label via de `for`/`id`-koppeling. Let op bij hergebruik: verandert de kop, verander dan ook het verborgen label, anders lopen ze ongemerkt uit elkaar
+  - `FileInput.docs.md` toont beide vormen in de sectie "In form field context"
+  - `as="div"` blijft bestaan voor block-level inhoud, maar wordt niet langer aanbevolen als route om een lijst in een description te krijgen
+  - Het HTML-voorbeeld in `FileInput.docs.md` gebruikte `dsn-form-field-label__suffix`; de CSS-klasse heet `dsn-form-field-label-suffix`
+  - De letterlijke `<ul>` en `<p>` in de JSDoc van de `as`-prop werden door de Storybook ArgsTable als echte HTML gerenderd, wat een `validateDOMNesting`-waarschuwing gaf. Die staan nu in backticks
+
+### FormField
+
+#### Documentation
+
+- **Notitie boven het codevoorbeeld noemde het verkeerde component**: er stond dat de HTML/CSS tab een `EmailInput` toont, terwijl zowel de story als de gegenereerde HTML een `TextInput` gebruiken. De notitie noemt nu `TextInput` en spreekt over "de tabs", want beide tabs tonen hetzelfde child. De ongebruikte statische `html`-fallback in `FormField.docs.mdx` (die nog een `input type="email"` bevatte) is meegetrokken
+
 ### IconList
 
 #### Added
