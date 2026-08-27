@@ -188,12 +188,9 @@ type Story = StoryObj<typeof PageFooter>;
 // STORIES
 // =============================================================================
 
-export const Default: Story = {
-  name: 'Default',
-};
+export const Default: Story = {};
 
 export const Inverse: Story = {
-  name: 'Inverse',
   args: {
     colorScheme: 'inverse',
   },

@@ -247,7 +247,6 @@ type Story = StoryObj<typeof PageBody>;
 // =============================================================================
 
 export const Default: Story = {
-  name: 'Default',
   render: () => (
     <>
       <SkipLink href="#main-content" />

@@ -434,7 +434,6 @@ export const LongText: Story = {
 // =============================================================================
 
 export const RTL: Story = {
-  name: 'RTL',
   render: (args) => (
     <div dir="rtl" style={{ overflowX: 'clip' }}>
       <div

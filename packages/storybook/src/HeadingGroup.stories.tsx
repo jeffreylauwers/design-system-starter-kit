@@ -60,7 +60,6 @@ export const Default: Story = {};
 // =============================================================================
 
 export const WithStep: Story = {
-  name: 'With Step',
   render: () => (
     <HeadingGroup
       level={2}
@@ -76,7 +75,6 @@ export const WithStep: Story = {
 };
 
 export const WithCategory: Story = {
-  name: 'With Category',
   render: () => (
     <HeadingGroup level={2} preHeading="Diensten">
       We helpen u groeien
@@ -85,7 +83,6 @@ export const WithCategory: Story = {
 };
 
 export const Level1: Story = {
-  name: 'Level 1',
   render: () => (
     <HeadingGroup level={1} preHeading="Meerstappenformulier">
       Uw aanvraag
@@ -94,7 +91,6 @@ export const Level1: Story = {
 };
 
 export const DifferentAppearance: Story = {
-  name: 'Different Appearance',
   render: () => (
     <HeadingGroup level={1} appearance="heading-2" preHeading="Stap 1 van 4">
       Persoonlijke gegevens
@@ -107,7 +103,6 @@ export const DifferentAppearance: Story = {
 // =============================================================================
 
 export const AllLevels: Story = {
-  name: 'All Levels',
   render: () => (
     <div style={{ display: 'flex', flexDirection: 'column', gap: '2rem' }}>
       <HeadingGroup level={1} preHeading="Stap 1 van 4">
@@ -131,7 +126,6 @@ export const AllLevels: Story = {
 // =============================================================================
 
 export const LongText: Story = {
-  name: 'Long Text',
   render: () => (
     <HeadingGroup level={2} preHeading={VEEL_TEKST}>
       {VEEL_TEKST}
@@ -144,7 +138,6 @@ export const LongText: Story = {
 // =============================================================================
 
 export const RTL: Story = {
-  name: 'RTL',
   decorators: [rtlDecorator],
   render: () => (
     <div style={{ display: 'flex', flexDirection: 'column', gap: '2rem' }}>

@@ -162,7 +162,6 @@ export const Disabled: Story = {
 // =============================================================================
 
 export const RTL: Story = {
-  name: 'RTL',
   decorators: [rtlDecorator],
   render: (args) => <WithValueStory {...args} />,
 };

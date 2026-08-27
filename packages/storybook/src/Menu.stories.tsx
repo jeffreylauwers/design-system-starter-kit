@@ -119,7 +119,6 @@ export const Default: Story = {
 // =============================================================================
 
 export const Vertical: Story = {
-  name: 'Vertical',
   render: (args: React.ComponentProps<typeof Menu>) => (
     <Menu {...args} orientation="vertical">
       <MenuLink href="/home" current>
@@ -133,7 +132,6 @@ export const Vertical: Story = {
 };
 
 export const Horizontal: Story = {
-  name: 'Horizontal',
   render: (args: React.ComponentProps<typeof Menu>) => (
     <nav aria-label="Paginanavigatie">
       <Menu {...args} orientation="horizontal">

@@ -122,7 +122,6 @@ export const HighCount: Story = {
 // =============================================================================
 
 export const InButton: Story = {
-  name: 'In Button',
   render: () => (
     <div
       style={{

@@ -205,7 +205,6 @@ export const AllStates: Story = {
 // =============================================================================
 
 export const RTL: Story = {
-  name: 'RTL',
   decorators: [rtlDecorator],
   args: { defaultValue: '٤٢' },
 };

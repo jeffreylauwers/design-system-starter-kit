@@ -80,7 +80,6 @@ export const Default: Story = {};
 // =============================================================================
 
 export const Plain: Story = {
-  name: 'Plain',
   args: {
     appearance: 'plain',
   },
@@ -128,7 +127,6 @@ export const LongText: Story = {
 // =============================================================================
 
 export const RTL: Story = {
-  name: 'RTL',
   decorators: [rtlDecorator],
   render: () => (
     <div dir="rtl" lang="ar">

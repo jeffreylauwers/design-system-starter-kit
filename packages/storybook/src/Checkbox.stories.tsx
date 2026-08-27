@@ -185,7 +185,6 @@ export const AllStates: Story = {
 // =============================================================================
 
 export const RTL: Story = {
-  name: 'RTL',
   decorators: [rtlDecorator],
   render: () => (
     <div style={{ display: 'flex', gap: '1.5rem', alignItems: 'center' }}>

@@ -47,7 +47,6 @@ export const Default: Story = {
 // =============================================================================
 
 export const InsideHeading1: Story = {
-  name: 'Inside Heading 1',
   render: () => (
     <Heading level={1}>
       <PreHeading>Meerstappenformulier</PreHeading>
@@ -57,7 +56,6 @@ export const InsideHeading1: Story = {
 };
 
 export const WithCategory: Story = {
-  name: 'With Category',
   render: () => (
     <Heading level={2}>
       <PreHeading>Diensten</PreHeading>
@@ -67,7 +65,6 @@ export const WithCategory: Story = {
 };
 
 export const WithVisuallyHiddenColon: Story = {
-  name: 'With Visually Hidden Colon',
   render: () => (
     <Heading level={2}>
       <PreHeading>
@@ -83,7 +80,6 @@ export const WithVisuallyHiddenColon: Story = {
 // =============================================================================
 
 export const AllHeadingLevels: Story = {
-  name: 'All Heading Levels',
   render: () => (
     <div style={{ display: 'flex', flexDirection: 'column', gap: '2rem' }}>
       <Heading level={1}>
@@ -119,7 +115,6 @@ export const AllHeadingLevels: Story = {
 // =============================================================================
 
 export const ShortText: Story = {
-  name: 'Short Text',
   render: () => (
     <Heading level={2}>
       <PreHeading>{WEINIG_TEKST}</PreHeading>
@@ -129,7 +124,6 @@ export const ShortText: Story = {
 };
 
 export const LongText: Story = {
-  name: 'Long Text',
   render: () => (
     <Heading level={2}>
       <PreHeading>{VEEL_TEKST}</PreHeading>
@@ -143,7 +137,6 @@ export const LongText: Story = {
 // =============================================================================
 
 export const RTL: Story = {
-  name: 'RTL',
   decorators: [rtlDecorator],
   render: () => (
     <div style={{ display: 'flex', flexDirection: 'column', gap: '2rem' }}>

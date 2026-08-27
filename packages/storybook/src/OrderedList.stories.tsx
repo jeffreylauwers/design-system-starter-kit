@@ -87,7 +87,6 @@ export const StartFrom: Story = {
 };
 
 export const Nested: Story = {
-  name: 'Nested',
   render: () => (
     <OrderedList>
       <li>
@@ -173,7 +172,6 @@ export const LongText: Story = {
 // =============================================================================
 
 export const RTL: Story = {
-  name: 'RTL',
   decorators: [rtlDecorator],
   render: () => (
     <OrderedList>

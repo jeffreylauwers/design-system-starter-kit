@@ -151,7 +151,6 @@ export const AllStates: Story = {
 // =============================================================================
 
 export const RTL: Story = {
-  name: 'RTL',
   decorators: [rtlDecorator],
   args: { defaultValue: '2026-03-15' },
 };

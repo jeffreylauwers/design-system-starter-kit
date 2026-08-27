@@ -764,7 +764,6 @@ export const AllTogether: Story = {
 // =============================================================================
 
 export const RTL: Story = {
-  name: 'RTL',
   decorators: [rtlDecorator],
   render: () => (
     <Table caption="جدول المنتجات">

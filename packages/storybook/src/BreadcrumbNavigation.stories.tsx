@@ -84,7 +84,6 @@ type Story = StoryObj<typeof BreadcrumbNavigation>;
 // =============================================================================
 
 export const Default: Story = {
-  name: 'Default',
   render: (args: BreadcrumbNavigationProps) => (
     <BreadcrumbNavigation {...args}>
       <BreadcrumbNavigationItem href="/home">Home</BreadcrumbNavigationItem>
@@ -102,7 +101,6 @@ export const Default: Story = {
 // =============================================================================
 
 export const Compact: Story = {
-  name: 'Compact',
   render: (args: BreadcrumbNavigationProps) => (
     <BreadcrumbNavigation {...args} variant="compact">
       <BreadcrumbNavigationItem href="/home">Home</BreadcrumbNavigationItem>
@@ -153,7 +151,6 @@ export const ManyItems: Story = {
 // =============================================================================
 
 export const RTL: Story = {
-  name: 'RTL',
   decorators: [rtlDecorator],
   render: (args: BreadcrumbNavigationProps) => (
     <div dir="rtl" lang="ar">

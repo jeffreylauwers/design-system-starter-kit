@@ -291,19 +291,38 @@ Bekijk `packages/storybook/src/Button.docs.md` als referentie voor toon en opmaa
 
 ## Storybook stories: naamgeving en canonieke teksten
 
-### Story namen: altijd Engels
+### Story namen: altijd Engels, en geen redundante `name`
 
-Story `name` waarden zijn altijd Engelstalig. Gebruik de Engelse variant van bekende patronen:
+Storybook leidt de naam in de sidebar af uit de **export-naam**: `WithImagePreview` wordt "With Image Preview". De Engelse eis geldt dus op de export-naam:
 
-| Patroon             | ✅ Correct             | ❌ Niet doen               |
-| ------------------- | ---------------------- | -------------------------- |
-| Overzicht           | `'All States'`         | `'Alle states'`            |
-| Lange tekst         | `'Long Text'`          | `'Lange tekst'`            |
-| Korte tekst         | `'Short Text'`         | `'Korte tekst'`            |
-| Met iets            | `'With Image Preview'` | `'Met afbeeldingspreview'` |
-| Interactief variant | `'Interactive'`        | `'Interactief'`            |
-| RTL                 | `'RTL'`                | —                          |
-| Bestandslijst       | `'File List'`          | `'Bestandslijst'`          |
+| Patroon             | ✅ Correct                      | ❌ Niet doen                         |
+| ------------------- | ------------------------------- | ------------------------------------ |
+| Overzicht           | `export const AllStates`        | `export const AlleStates`            |
+| Lange tekst         | `export const LongText`         | `export const LangeTekst`            |
+| Korte tekst         | `export const ShortText`        | `export const KorteTekst`            |
+| Met iets            | `export const WithImagePreview` | `export const MetAfbeeldingspreview` |
+| Interactief variant | `export const Interactive`      | `export const Interactief`           |
+| RTL                 | `export const RTL`              | `export const Rtl`                   |
+| Bestandslijst       | `export const FileList`         | `export const Bestandslijst`         |
+
+Voeg een expliciete `name` **alleen** toe wanneer die afwijkt van de afgeleide naam, bijvoorbeeld bij sentence case of leestekens die niet uit een export-naam te halen zijn. Een `name` die gelijk is aan de afgeleide naam is redundant, en de eslint-regel `storybook/no-redundant-story-name` klaagt erover.
+
+```tsx
+// ✅ Geen name nodig: Storybook maakt hier zelf 'RTL' van
+export const RTL: Story = {
+  decorators: [rtlDecorator],
+};
+
+// ✅ name wijkt af van de afgeleide naam ('With List Validation')
+export const WithListValidation: Story = {
+  name: 'With list (validation)',
+};
+
+// ❌ Redundant: dit is precies wat Storybook zelf al afleidt
+export const LongText: Story = {
+  name: 'Long Text',
+};
+```
 
 ### Canonieke teksten uit `story-helpers.tsx`
 
