@@ -174,20 +174,38 @@ export default preview;
 
 **Purpose:** Handles dynamic token loading in the preview iframe
 
+Dit script is de **enige bron van waarheid** voor het pad naar de token-CSS en
+voor het injecteren van de stylesheet. `preview.ts` (de decorator) en
+`TokenControls.tsx` laden zelf geen CSS; zij roepen de loader aan via
+`window.__DSN_TOKENS__`, getypeerd in `packages/storybook/src/token-loader.ts`.
+
 **Key features:**
 
 - Fetch-based CSS loading (no `<link>` tags)
+- Basispad afgeleid van `document.baseURI`, niet absoluut (zie hieronder)
 - `:root:root` selector for higher specificity
 - MutationObserver to keep styles at end of `<head>`
 - URL parameter parsing for toolbar state
+- Publieke API op `window.__DSN_TOKENS__` voor de rest van Storybook
+
+**Waarom geen absoluut pad?** Lokaal draait Storybook op base `/`, op GitHub
+Pages op `/design-system-starter-kit/` (`STORYBOOK_BASE_PATH` in het
+`build:gh-pages` script, doorgegeven als Vite `base` in `main.ts`). Een absoluut
+pad als `/design-tokens/dist/css` negeert die base en levert op Pages 404's op,
+terwijl het lokaal toevallig klopt. `preview-head.html` is platte HTML/JS en
+kent geen Vite-variabelen, dus het pad wordt met `new URL(..., document.baseURI)`
+afgeleid van de URL van de iframe.
 
 ```html
 <script>
   (function () {
-    const CONFIG_BASE_URL = '/design-tokens/dist/css';
+    // Lokaal: http://localhost:6006/design-tokens/dist/css/
+    // GitHub Pages: https://<user>.github.io/design-system-starter-kit/design-tokens/dist/css/
+    const CONFIG_BASE_URL = new URL('design-tokens/dist/css/', document.baseURI)
+      .href;
 
     function loadTokenConfig(configName) {
-      fetch(`${CONFIG_BASE_URL}/${configName}.css`)
+      return fetch(`${CONFIG_BASE_URL}${configName}.css`)
         .then((r) => r.text())
         .then((cssText) => {
           // Remove existing dynamic styles
@@ -220,8 +238,36 @@ export default preview;
         // Parse globals from URL and load config...
       }
     }, 100);
+
+    // Publieke API: preview.ts en TokenControls.tsx gebruiken deze,
+    // zodat het pad en de injectie op één plek staan.
+    window.__DSN_TOKENS__ = {
+      configUrl,
+      load: loadTokenConfig,
+      applyBodyClasses,
+      getCurrentConfigName: () => currentConfigName,
+    };
   })();
 </script>
+```
+
+### token-loader.ts
+
+**Location:** `packages/storybook/src/token-loader.ts`
+
+**Purpose:** Getypeerde toegang tot `window.__DSN_TOKENS__` vanuit TypeScript.
+
+Omdat `preview-head.html` als klassiek inline-script in de head van de iframe
+draait, staat de loader er al voordat de Storybook-bundel begint. `preview.ts`
+en `TokenControls.tsx` importeren `getTokenLoader()` en hoeven zo zelf niets te
+weten over het pad, de fetch of de `:root:root`-wrapper.
+
+```ts
+const loader = getTokenLoader();
+if (loader) {
+  void loader.load(toConfigName(theme, mode, projectType));
+  loader.applyBodyClasses(theme, mode, projectType);
+}
 ```
 
 ### preview-body.css
@@ -267,7 +313,7 @@ body {
 1. User clicks "Dark Mode" in toolbar
 2. URL changes to `?globals=mode:dark`
 3. Script detects change
-4. Script fetches `/design-tokens/dist/css/start-dark-default.css`
+4. Script fetches `<base>/design-tokens/dist/css/start-dark-default.css`
 5. Script injects with `:root:root` selector
 6. All `--dsn-*` variables update
 7. Components re-render with new colors
