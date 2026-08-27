@@ -2,12 +2,32 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Comic+Neue:ital,wght@0,300;0,400;0,700;1,300;1,400;1,700&display=swap" rel="stylesheet">
 <script>
-  // Dynamic token loading script for Storybook
-  // This runs in the preview iframe and handles theme/mode/density switching
+  // Dynamische token-loader voor de Storybook preview-iframe.
+  //
+  // Dit script is de ENIGE plek die token-CSS ophaalt en injecteert. Het draait
+  // als klassiek inline-script en dus vóór de (module) Storybook-bundel, zodat
+  // de tokens er al zijn bij de eerste render. preview.ts en TokenControls.tsx
+  // praten er via window.__DSN_TOKENS__ mee (zie src/token-loader.ts), zodat
+  // het pad naar de token-CSS maar op één plek staat.
+  //
+  // Het pad wordt afgeleid van document.baseURI en is bewust NIET absoluut:
+  // lokaal draait Storybook op base '/', op GitHub Pages op
+  // '/design-system-starter-kit/' (STORYBOOK_BASE_PATH in build:gh-pages).
+  // Een absoluut pad negeert die base en levert daar 404's op.
   (function() {
-    const CONFIG_BASE_URL = '/design-tokens/dist/css';
+    const CONFIG_BASE_URL = new URL(
+      'design-tokens/dist/css/',
+      document.baseURI
+    ).href;
+
     let currentConfigName = null;
     let styleElement = null;
+    let pendingConfigName = null;
+    let pendingPromise = null;
+
+    function configUrl(configName) {
+      return CONFIG_BASE_URL + configName + '.css';
+    }
 
     function getGlobalsFromUrl() {
       const url = new URL(window.location.href);
@@ -29,11 +49,19 @@
     }
 
     function loadTokenConfig(configName, forceReload = false) {
-      if (currentConfigName === configName && !forceReload) return;
+      if (!forceReload) {
+        if (currentConfigName === configName) return Promise.resolve();
+        // Preview-decorator en URL-poller kunnen dezelfde config tegelijk
+        // aanvragen; hergebruik dan de lopende fetch.
+        if (pendingConfigName === configName && pendingPromise) {
+          return pendingPromise;
+        }
+      }
 
-      const url = `${CONFIG_BASE_URL}/${configName}.css`;
+      const url = configUrl(configName);
 
-      fetch(url)
+      pendingConfigName = configName;
+      pendingPromise = fetch(url)
         .then(response => {
           if (!response.ok) throw new Error('Failed to load: ' + url);
           return response.text();
@@ -59,23 +87,43 @@
             detail: { configName }
           }));
         })
-        .catch(err => console.error('Token config load error:', err));
+        .catch(err => console.error('Token config load error:', err))
+        .finally(() => {
+          if (pendingConfigName === configName) {
+            pendingConfigName = null;
+            pendingPromise = null;
+          }
+        });
+
+      return pendingPromise;
+    }
+
+    // Zet de theme-klassen op <body>. Bestaande klassen (o.a. Storybook's eigen
+    // sb-* klassen en dsn-body) blijven staan.
+    function applyBodyClasses(theme, mode, projectType) {
+      if (!document.body) return;
+
+      const densityClass = projectType === 'information-dense' ? 'dense' : 'default';
+      const existingClasses = document.body.className.split(' ').filter(c =>
+        c && !c.startsWith('dsn-theme-') && !c.startsWith('dsn-mode-') && !c.startsWith('dsn-density-')
+      );
+      document.body.className = [...existingClasses, `dsn-theme-${theme}`, `dsn-mode-${mode}`, `dsn-density-${densityClass}`].join(' ');
     }
 
     function updateTokens() {
       const { theme, mode, projectType } = getGlobalsFromUrl();
-      const configName = `${theme}-${mode}-${projectType}`;
-      loadTokenConfig(configName);
-
-      // Update body classes when body is available
-      if (document.body) {
-        const densityClass = projectType === 'information-dense' ? 'dense' : 'default';
-        const existingClasses = document.body.className.split(' ').filter(c =>
-          !c.startsWith('dsn-theme-') && !c.startsWith('dsn-mode-') && !c.startsWith('dsn-density-')
-        );
-        document.body.className = [...existingClasses, `dsn-theme-${theme}`, `dsn-mode-${mode}`, `dsn-density-${densityClass}`].join(' ');
-      }
+      loadTokenConfig(`${theme}-${mode}-${projectType}`);
+      applyBodyClasses(theme, mode, projectType);
     }
+
+    // Publieke API voor preview.ts en TokenControls.tsx.
+    // Getypeerd in src/token-loader.ts.
+    window.__DSN_TOKENS__ = {
+      configUrl,
+      load: loadTokenConfig,
+      applyBodyClasses,
+      getCurrentConfigName: () => currentConfigName
+    };
 
     // Ensure our style stays at the end of head (highest priority)
     function ensureStylePriority() {

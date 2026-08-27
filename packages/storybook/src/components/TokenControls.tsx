@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from 'react';
 
+import { fromConfigName, getTokenLoader, toConfigName } from '../token-loader';
+
 interface TokenControlsProps {
   onRefresh?: () => void;
 }
@@ -11,18 +13,13 @@ export function TokenControls({ onRefresh }: TokenControlsProps) {
 
   // Load current values on mount
   useEffect(() => {
-    if (typeof window === 'undefined') return;
+    const currentConfig = getTokenLoader()?.getCurrentConfigName();
+    if (!currentConfig) return;
 
-    const currentConfig = document
-      .querySelector('[data-dsn-tokens]')
-      ?.getAttribute('data-dsn-tokens');
-
-    if (currentConfig) {
-      const [t, m, p] = currentConfig.split('-');
-      setTheme(t || 'start');
-      setMode(m || 'light');
-      setProjectType(p || 'default');
-    }
+    const current = fromConfigName(currentConfig);
+    setTheme(current.theme);
+    setMode(current.mode);
+    setProjectType(current.projectType);
   }, []);
 
   const applyTokens = (
@@ -30,40 +27,23 @@ export function TokenControls({ onRefresh }: TokenControlsProps) {
     newMode: string,
     newProjectType: string
   ) => {
-    if (typeof window === 'undefined') return;
+    // Het laden en injecteren gebeurt in de loader uit preview-head.html; die
+    // dispatcht ook zelf 'storybook-globals-updated' voor de TokenTables.
+    const loader = getTokenLoader();
+    if (!loader) return;
 
-    // Remove old token stylesheet
-    const oldLink = document.querySelector('[data-dsn-theme-css]');
-    if (oldLink) {
-      oldLink.remove();
-    }
+    void loader
+      .load(toConfigName(newTheme, newMode, newProjectType))
+      .then(() => {
+        loader.applyBodyClasses(newTheme, newMode, newProjectType);
 
-    // Create new token config
-    const config = `${newTheme}-${newMode}-${newProjectType}`;
-
-    // Add new stylesheet
-    const link = document.createElement('link');
-    link.rel = 'stylesheet';
-    link.href = `./design-tokens/dist/css/${config}.css`;
-    link.setAttribute('data-dsn-theme-css', config);
-    link.setAttribute('data-dsn-tokens', config);
-    document.head.appendChild(link);
-
-    // Wait for stylesheet to load, then trigger refresh
-    link.addEventListener('load', () => {
-      if (onRefresh) {
-        // Use multiple delays to catch all updates
-        setTimeout(onRefresh, 50);
-        setTimeout(onRefresh, 150);
-        setTimeout(onRefresh, 300);
-      }
-
-      // Dispatch custom event for TokenTable to listen to
-      window.dispatchEvent(new CustomEvent('storybook-globals-updated'));
-    });
-
-    // Update data attribute
-    document.body.setAttribute('data-dsn-tokens', config);
+        if (onRefresh) {
+          // Use multiple delays to catch all updates
+          setTimeout(onRefresh, 50);
+          setTimeout(onRefresh, 150);
+          setTimeout(onRefresh, 300);
+        }
+      });
   };
 
   const handleThemeChange = (e: React.ChangeEvent<HTMLSelectElement>) => {

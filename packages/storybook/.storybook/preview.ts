@@ -1,70 +1,15 @@
 import type { Preview } from '@storybook/react-vite';
+import { getTokenLoader, toConfigName } from '../src/token-loader';
 
 // NOTE: We do NOT import the token CSS statically here anymore.
-// The tokens are loaded dynamically by the decorator and preview-head.html
-// to support runtime theme/mode/density switching.
+// De tokens worden dynamisch geladen door de loader in preview-head.html,
+// zodat theme/mode/density tijdens runtime kunnen wisselen. Die loader kent
+// als enige het pad naar de token-CSS; de decorator hieronder vertelt hem
+// alleen welke configuratie de toolbar-globals vragen.
 
 // Core styles (layout, resets, etc. - NOT tokens)
 import '../../core/dist/core.css';
 import './preview-body.css';
-
-// =============================================================================
-// TOKEN CONFIGURATION LOADER
-// =============================================================================
-
-// Map of all available configurations
-// We'll dynamically fetch and apply these when globals change
-// Use relative path to support both local and GitHub Pages deployment
-const CONFIG_BASE_URL = './design-tokens/dist/css';
-
-/**
- * Loads a CSS configuration file and applies it to the document.
- * This overwrites the :root CSS variables with the new values.
- */
-async function loadTokenConfig(configName: string): Promise<void> {
-  const url = `${CONFIG_BASE_URL}/${configName}.css`;
-
-  try {
-    const response = await fetch(url);
-    if (!response.ok) {
-      console.error(`Failed to load token config: ${url}`);
-      return;
-    }
-
-    const cssText = await response.text();
-
-    // Remove any existing dynamic style element
-    const existingStyle = document.querySelector('[data-dsn-tokens]');
-    if (existingStyle) {
-      existingStyle.remove();
-    }
-
-    // Create and inject new style element
-    const style = document.createElement('style');
-    style.setAttribute('data-dsn-tokens', configName);
-    style.textContent = cssText;
-    document.head.appendChild(style);
-
-    // Dispatch event for components that need to react
-    window.dispatchEvent(
-      new CustomEvent('storybook-globals-updated', {
-        detail: { configName },
-      })
-    );
-  } catch (error) {
-    console.error('Error loading token config:', error);
-  }
-}
-
-// =============================================================================
-// GLOBAL TYPES (Storybook Toolbar)
-// =============================================================================
-
-// Preload default tokens immediately when Storybook loads
-// This ensures tokens are available even on docs-only pages (like Introduction)
-if (typeof window !== 'undefined') {
-  loadTokenConfig('start-light-default');
-}
 
 const preview: Preview = {
   parameters: {
@@ -141,23 +86,16 @@ const preview: Preview = {
       const theme = context.globals.theme || 'start';
       const mode = context.globals.mode || 'light';
       const projectType = context.globals.projectType || 'default';
-      const configName = `${theme}-${mode}-${projectType}`;
 
-      // Load the appropriate token configuration
-      if (typeof window !== 'undefined') {
-        // Check if we need to load a new config
-        const currentConfig = document
-          .querySelector('[data-dsn-tokens]')
-          ?.getAttribute('data-dsn-tokens');
+      const loader = getTokenLoader();
+      if (loader) {
+        // De loader dedupliceert zelf; opnieuw dezelfde config vragen is gratis.
+        void loader.load(toConfigName(theme, mode, projectType));
+        loader.applyBodyClasses(theme, mode, projectType);
 
-        if (currentConfig !== configName) {
-          loadTokenConfig(configName);
-        }
-
-        // Update body classes for any CSS scoping
-        const densityClass =
-          projectType === 'information-dense' ? 'dense' : 'default';
-        document.body.className = `dsn-body dsn-theme-${theme} dsn-mode-${mode} dsn-density-${densityClass}`;
+        // Stories renderen op een body die zich als dsn-body gedraagt.
+        // Docs-pagina's bewust niet: die houden de Storybook-typografie.
+        document.body.classList.add('dsn-body');
       }
 
       return Story();
