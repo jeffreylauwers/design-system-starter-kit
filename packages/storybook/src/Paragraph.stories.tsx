@@ -113,7 +113,6 @@ export const LongTextAllVariants: Story = {
 // =============================================================================
 
 export const RTL: Story = {
-  name: 'RTL',
   decorators: [rtlDecorator],
   args: { children: TEKST_AR },
 };

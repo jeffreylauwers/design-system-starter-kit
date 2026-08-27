@@ -800,7 +800,6 @@ function PageContent() {
 // =============================================================================
 
 export const Compact: Story = {
-  name: 'Compact',
   args: {
     layout: 'compact',
     primaryNavigation: <PrimaryNavigationCompact />,

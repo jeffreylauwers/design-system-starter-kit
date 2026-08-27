@@ -68,7 +68,6 @@ export const Default: Story = {};
 // =============================================================================
 
 export const WithLink: Story = {
-  name: 'With Link',
   args: {
     children: (
       <>
@@ -93,7 +92,6 @@ export const CustomAriaLabel: Story = {
 };
 
 export const Wrapping: Story = {
-  name: 'Wrapping',
   render: () => (
     <div style={{ maxWidth: '280px' }}>
       <ActionGroup>
@@ -162,7 +160,6 @@ export const WithLinkButton: Story = {
 // =============================================================================
 
 export const RTL: Story = {
-  name: 'RTL',
   decorators: [rtlDecorator],
   render: () => (
     <ActionGroup>

@@ -250,7 +250,6 @@ export const LongText: Story = {
 // =============================================================================
 
 export const RTL: Story = {
-  name: 'RTL',
   decorators: [rtlDecorator],
   render: (args) => (
     <FormFieldset {...args} legend={TEKST_AR} description={TEKST_AR}>

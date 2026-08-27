@@ -68,7 +68,6 @@ export const Default: Story = {};
 // =============================================================================
 
 export const Nested: Story = {
-  name: 'Nested',
   render: () => (
     <UnorderedList>
       <li>
@@ -122,7 +121,6 @@ export const LongText: Story = {
 // =============================================================================
 
 export const RTL: Story = {
-  name: 'RTL',
   decorators: [rtlDecorator],
   render: () => (
     <UnorderedList>

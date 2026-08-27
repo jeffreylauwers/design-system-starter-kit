@@ -126,7 +126,6 @@ export const Default: Story = {
 // =============================================================================
 
 export const WithHeader: Story = {
-  name: 'With Header',
   render: () => {
     function Demo() {
       const triggerRef = React.useRef<HTMLButtonElement>(null);
@@ -278,7 +277,6 @@ export const PlacementStart: Story = {
 // =============================================================================
 
 export const AllPlacements: Story = {
-  name: 'All Placements',
   render: () => (
     <div
       style={{

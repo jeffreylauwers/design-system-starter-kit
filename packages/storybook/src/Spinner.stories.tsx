@@ -54,7 +54,6 @@ export const Default: Story = {};
 // =============================================================================
 
 export const Large: Story = {
-  name: 'Large',
   args: {
     size: 'large',
     label: 'Pagina wordt geladen',

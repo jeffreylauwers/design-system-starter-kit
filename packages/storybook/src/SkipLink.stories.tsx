@@ -152,7 +152,6 @@ export const MultipleSkipLinks: Story = {
 // =============================================================================
 
 export const RTL: Story = {
-  name: 'RTL',
   decorators: [rtlDecorator],
   args: { children: 'انتقل مباشرة إلى المحتوى الرئيسي' },
 };

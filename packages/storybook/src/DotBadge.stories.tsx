@@ -175,7 +175,6 @@ export const WithPulse: Story = {
 // =============================================================================
 
 export const WithButton: Story = {
-  name: 'With Button',
   render: () => (
     <div
       style={{

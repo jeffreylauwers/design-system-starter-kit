@@ -227,7 +227,6 @@ export const AllStates: Story = {
 // =============================================================================
 
 export const RTL: Story = {
-  name: 'RTL',
   decorators: [rtlDecorator],
   render: () => (
     <ul style={{ listStyle: 'none', margin: 0, padding: 0 }}>

@@ -279,7 +279,6 @@ export const ShortText: Story = {
 // =============================================================================
 
 export const RTL: Story = {
-  name: 'RTL',
   decorators: [rtlDecorator],
   render: () => (
     <div dir="rtl" lang="ar">

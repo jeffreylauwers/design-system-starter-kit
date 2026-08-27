@@ -168,14 +168,12 @@ export const Default: Story = {
 // =============================================================================
 
 export const Loading: Story = {
-  name: 'Loading',
   args: {
     status: 'loading',
   },
 };
 
 export const Uploaded: Story = {
-  name: 'Uploaded',
   args: {
     href: HREF,
     status: 'uploaded',
@@ -184,7 +182,6 @@ export const Uploaded: Story = {
 };
 
 export const Error: Story = {
-  name: 'Error',
   args: {
     status: 'error',
     errorMessage: 'Upload mislukt. Probeer het opnieuw.',
@@ -193,7 +190,6 @@ export const Error: Story = {
 };
 
 export const WithImagePreview: Story = {
-  name: 'With Image Preview',
   args: {
     fileName: 'foto.jpg',
     fileType: 'JPG',
@@ -213,7 +209,6 @@ export const InteractiveView: Story = {
 };
 
 export const InteractiveDownload: Story = {
-  name: 'Interactive Download',
   args: {
     href: HREF,
     ctaVariant: 'download',
@@ -295,7 +290,6 @@ export const AllStates: Story = {
 // =============================================================================
 
 export const ShortFileName: Story = {
-  name: 'Short File Name',
   args: {
     fileName: 'a.pdf',
     fileType: 'PDF',
@@ -306,7 +300,6 @@ export const ShortFileName: Story = {
 };
 
 export const LongFileName: Story = {
-  name: 'Long File Name',
   args: {
     fileName: `${VEEL_TEKST}.pdf`,
     fileType: 'PDF',
@@ -321,7 +314,6 @@ export const LongFileName: Story = {
 // =============================================================================
 
 export const RTL: Story = {
-  name: 'RTL',
   decorators: [rtlDecorator],
   render: () => (
     <div style={{ maxWidth: '560px' }}>

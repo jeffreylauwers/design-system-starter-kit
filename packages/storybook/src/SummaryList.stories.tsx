@@ -85,7 +85,6 @@ export const Default: Story = {
 // =============================================================================
 
 export const WithActions: Story = {
-  name: 'With Actions',
   render: () => (
     <SummaryList>
       <SummaryListRow>
@@ -122,7 +121,6 @@ export const WithActions: Story = {
 };
 
 export const WithMultipleActions: Story = {
-  name: 'With Multiple Actions',
   render: () => (
     <SummaryList>
       <SummaryListRow>
@@ -168,7 +166,6 @@ export const WithMultipleActions: Story = {
 };
 
 export const MixedRows: Story = {
-  name: 'Mixed Rows',
   render: () => (
     <SummaryList>
       <SummaryListRow>
@@ -202,7 +199,6 @@ export const MixedRows: Story = {
 };
 
 export const NoBorder: Story = {
-  name: 'No Border',
   render: () => (
     <SummaryList noBorder>
       <SummaryListRow>
@@ -226,7 +222,6 @@ export const NoBorder: Story = {
 // =============================================================================
 
 export const AllVariants: Story = {
-  name: 'All Variants',
   render: () => (
     <div style={{ display: 'flex', flexDirection: 'column', gap: '3rem' }}>
       <div>
@@ -290,7 +285,6 @@ export const AllVariants: Story = {
 // =============================================================================
 
 export const ShortText: Story = {
-  name: 'Short Text',
   render: () => (
     <SummaryList>
       <SummaryListRow>
@@ -306,7 +300,6 @@ export const ShortText: Story = {
 };
 
 export const LongText: Story = {
-  name: 'Long Text',
   render: () => (
     <SummaryList>
       <SummaryListRow>
