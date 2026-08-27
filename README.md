@@ -162,7 +162,7 @@ Token categories:
 - **Shadows** - 3 elevation levels
 - **Focus States** - Accessible focus indicators
 - **Form Controls** - Border, spacing, typography, and color tokens for form elements (7 states)
-- **Form Components** - 19 complete form components with 26 token files
+- **Form Components** - 26 form components, covered by 22 token files (EmailInput, NumberInput, TelephoneInput, FormFieldset and FormFieldLegend define none of their own and reuse the shared `form-control` tokens)
 
 All tokens (~1380 per configuration) are built with [Style Dictionary](https://amzn.github.io/style-dictionary/) and exported as:
 
