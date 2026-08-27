@@ -146,6 +146,7 @@ import '@dsn-starter-kit/components-html/modal-dialog';
 | HeadingGroup          | `dsn-heading-group`                                              | `./heading-group`            |
 | Hero                  | `dsn-hero`                                                       | `./hero`                     |
 | Icon                  | `dsn-icon`, `dsn-icon--size-{size}`                              | `./icon`                     |
+| IconList              | `dsn-icon-list`, `dsn-icon-list__item`, `dsn-icon-list__icon`    | `./icon-list`                |
 | Image                 | `dsn-image`                                                      | `./image`                    |
 | Link                  | `dsn-link`, `dsn-link--external`                                 | `./link`                     |
 | LinkButton            | `dsn-link`                                                       | `./link-button`              |
