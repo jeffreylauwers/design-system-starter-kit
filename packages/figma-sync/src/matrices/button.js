@@ -10,11 +10,22 @@
 import { TEKST } from '../text.js';
 
 /**
- * Een klein inline-icoon, zodat er geen iconenregistratie nodig is.
- * `data-icon` wordt de naam van de laag in Figma; zonder dat heet elk icoon
- * daar "icon".
+ * De twee icoonslots.
+ *
+ * `data-icon` wordt de naam van de laag in Figma en wijst de plugin naar het
+ * icooncomponent waar deze laag een instance van wordt. `data-figma-slot` is
+ * waar de component properties aan hangen.
+ *
+ * Beide slots worden altijd gerenderd, ook al staan ze in Figma standaard uit.
+ * Een Figma-property kan alleen een laag aan- of uitzetten die er is; een
+ * variant die het slot niet rendert zou de property de helft van de tijd niets
+ * laten doen.
  */
-const CHEVRON = `<svg class="dsn-icon" data-icon="chevron-right" aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 6l6 6-6 6"/></svg>`;
+const icon = (name, slot, path) =>
+  `<svg class="dsn-icon" data-icon="${name}" data-figma-slot="${slot}" aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="${path}"/></svg>`;
+
+const ICON_START = icon('chevron-left', 'icon-start', 'M15 6l-6 6 6 6');
+const ICON_END = icon('chevron-right', 'icon-end', 'M9 6l6 6-6 6');
 
 export default {
   component: 'Button',
@@ -67,6 +78,46 @@ export default {
    */
   pseudoStates: { hover: 'hover' },
 
+  /**
+   * De component properties van de set, in de volgorde waarin Figma ze toont.
+   *
+   * `slot` verwijst naar een `data-figma-slot` in de markup hieronder. De
+   * namen volgen de React-props: `iconStart` en `iconEnd` zíjn in code het
+   * icoon, dus dat zijn hier de instance swaps. De boolean die ze aan- en
+   * uitzet krijgt daarom `show`-ervoor; twee properties kunnen in Figma niet
+   * dezelfde naam dragen.
+   *
+   * Bewust nog niet hier: `iconOnly`, `loading` en `fullWidth`. Dat zijn
+   * losse booleans met eigen tokens en eigen vragen, zie issue #323.
+   */
+  componentProperties: [
+    { name: 'label', type: 'TEXT', slot: 'label' },
+    {
+      name: 'showIconStart',
+      type: 'BOOLEAN',
+      slot: 'icon-start',
+      default: false,
+    },
+    {
+      name: 'iconStart',
+      type: 'INSTANCE_SWAP',
+      slot: 'icon-start',
+      default: 'chevron-left',
+    },
+    {
+      name: 'showIconEnd',
+      type: 'BOOLEAN',
+      slot: 'icon-end',
+      default: false,
+    },
+    {
+      name: 'iconEnd',
+      type: 'INSTANCE_SWAP',
+      slot: 'icon-end',
+      default: 'chevron-right',
+    },
+  ],
+
   /** Bouwt de markup voor één cel van de matrix. */
   render({ variant, size, state }) {
     const classes = [
@@ -77,8 +128,9 @@ export default {
     const disabled = state === 'disabled' ? ' disabled' : '';
 
     return `<button type="button" class="${classes}"${disabled} data-figma-root>
-      <span class="dsn-button__label">${TEKST}</span>
-      ${CHEVRON}
+      ${ICON_START}
+      <span class="dsn-button__label" data-figma-slot="label">${TEKST}</span>
+      ${ICON_END}
     </button>`;
   },
 };

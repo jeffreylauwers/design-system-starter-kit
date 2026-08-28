@@ -28,6 +28,16 @@ const CELL = 72;
 /**
  * De pagina waar de iconset op staat.
  *
+ * Ook nodig bij een componentimport, die de iconen als instances plaatst en
+ * dus zonder icons.json in de hand moet weten waar ze staan. De generator zet
+ * dezelfde naam in de payload; `importIconSet` meldt het als die twee uit
+ * elkaar lopen.
+ */
+export const ICON_PAGE = 'dsn/Icons';
+
+/**
+ * De pagina waar de iconset op staat.
+ *
  * `figma.root.children` is pas te lezen na loadAllPagesAsync in een bestand met
  * dynamic page loading; zonder die aanroep gooit Figma daar sinds 2024 een
  * fout op.
@@ -86,6 +96,36 @@ function fillWithSvg(component, icon, context) {
 }
 
 /**
+ * De icooncomponenten in dit bestand, op naam.
+ *
+ * Dit is het koppelstuk tussen de twee imports: een icoon in een component set
+ * wordt een instance van het component dat hier staat, en dat is wat een
+ * instance swap property nodig heeft om iets te kunnen verwisselen.
+ *
+ * Ontbreekt de pagina, dan komt er een lege index terug. De componentimport
+ * valt dan terug op een ingebakken SVG en meldt dat; weigeren zou betekenen
+ * dat je zonder iconset helemaal geen componenten meer kunt importeren.
+ *
+ * @returns {Promise<Map<string, ComponentNode>>}
+ */
+export async function loadIconIndex(pageName = ICON_PAGE) {
+  if (typeof figma.loadAllPagesAsync === 'function') {
+    await figma.loadAllPagesAsync();
+  }
+
+  const page = figma.root.children.find(
+    (candidate) => candidate.type === 'PAGE' && candidate.name === pageName
+  );
+  if (!page) return new Map();
+
+  return new Map(
+    page.children
+      .filter((node) => node.type === 'COMPONENT')
+      .map((node) => [node.name, node])
+  );
+}
+
+/**
  * Importeert de iconset.
  *
  * @param {object} payload de inhoud van figma-sync/dist/icons.json
@@ -99,6 +139,12 @@ export async function importIconSet(payload, log) {
   }
 
   const spec = payload.iconSet;
+
+  if (spec.page !== ICON_PAGE) {
+    log.warn(
+      `De generator zet de iconen op "${spec.page}", de componentimport zoekt ze op "${ICON_PAGE}". Instance swap properties vinden ze daar niet.`
+    );
+  }
 
   // Dezelfde afweging als bij de componenten: een iconset op een vaste kleur
   // volgt de theme-schakelaar niet, en dat is de helft van wat een iconset in

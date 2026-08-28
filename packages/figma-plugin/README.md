@@ -116,6 +116,57 @@ Een icoon dat uit de assets-map verdwijnt blijft in Figma staan, met een
 melding in de log. Automatisch verwijderen zou elke instance ervan detachen, en
 dat is een beslissing van een mens.
 
+## Component properties
+
+De generator declareert per component welke lagen een component property worden
+(`componentSet.componentProperties` in de spec, met een `slot` die naar een
+`data-figma-slot` in de markup wijst). De plugin legt ze na
+`combineAsVariants` op de **set**, niet op de losse varianten, en koppelt in
+elke variant de bijbehorende laag:
+
+| Type            | Veld op de laag | Vereist                      |
+| --------------- | --------------- | ---------------------------- |
+| `TEXT`          | `characters`    | een tekstnode                |
+| `BOOLEAN`       | `visible`       | niets                        |
+| `INSTANCE_SWAP` | `mainComponent` | een **instance**, geen frame |
+
+Button levert daarmee `label`, `showIconStart` / `iconStart` en `showIconEnd` /
+`iconEnd`. De twee icoonslots staan standaard uit; de lagen worden vóór de
+koppeling op die stand gezet, want een laag die niet overeenkomt met de
+standaardwaarde laat de set iets anders zien dan de property zegt.
+
+### Iconen worden instances
+
+Een instance swap verwisselt het `mainComponent` van een instance, dus de
+icoonlagen moeten instances zijn. De plugin zoekt per icoonnaam een component op
+de pagina `dsn/Icons` en plaatst daar een instance van; staat het icoon er niet,
+dan valt hij terug op de ingebakken SVG en meldt dat één keer per icoonnaam.
+
+Dat geldt voor élk icoon in élke component set, niet alleen voor de slots. Een
+Button had zo 81 losse kopieën van dezelfde chevron; nu volgen ze allemaal het
+icooncomponent.
+
+De gemeten kleur blijft er als override overheen liggen, zoals een designer die
+met de hand zou leggen: een icoon in een `strong` Button is wit, niet de
+neutrale tekstkleur van het icooncomponent.
+
+### Alles wat niet lukt is een fout, geen stilte
+
+Een property die niet gelegd kan worden gaat als `error` de log in, met de
+reden: slot ontbreekt in zoveel varianten, laag is geen instance, icoon staat
+niet op `dsn/Icons`, of Figma weigerde de property zelf. Stil overslaan zou
+precies het handwerk opleveren dat na elke import opnieuw gedaan moet worden,
+en dat is aan een set die er verder goed uitziet niet te zien.
+
+### Eén onzekerheid: de waarde van een instance swap
+
+De Plugin API accepteert als standaardwaarde van een `INSTANCE_SWAP` een
+verwijzing naar een component, maar of dat de `key` of de node-id moet zijn
+verschilt per API-versie en per publicatiestatus van het component. De plugin
+probeert daarom eerst de `key` en dan de id, en meldt het als geen van beide
+wordt geaccepteerd. De mock kan dit niet beslissen: dit is het ene punt dat
+alleen in Figma zelf te bevestigen is.
+
 ## Idempotent
 
 Bestaande collections, modes, variables en icooncomponenten worden hergebruikt
@@ -143,6 +194,9 @@ af die in Figma echt fouten geven:
 4. `setBoundVariable` op een veld dat niet bindbaar is, of met een variable van
    het verkeerde type (een kleur is geen padding)
 5. padding en `itemSpacing` binden op een frame zonder auto layout
+6. een component property koppelen aan een veld dat de node niet heeft
+   (`mainComponent` op iets anders dan een instance), of aan een property die
+   niet op de omvattende set staat
 
 Voor de bindingen controleert de test niet alleen het aantal maar leest hij per
 veld de naam van de variable terug uit de gebouwde boom. Anders zou een import
@@ -162,5 +216,7 @@ Figma laadt.
   dit wél, zie hierboven.
 - **Effect styles.** Box shadows staan in het skip-report en moeten nog
   Figma-effectstijlen worden.
-- **Component properties.** Boolean-slots voor iconen, instance swap en text
-  properties blijven handwerk.
+- **Booleans die tokens veranderen.** `iconOnly`, `loading` en `fullWidth` bij
+  Button hebben eigen tokens en horen daarom op een variant-as, niet op een
+  property; zie de README van `figma-sync`.
+- **Thumbnails.** De thumbnail van een component set blijft handwerk.

@@ -168,6 +168,53 @@ check(
 );
 
 // =============================================================================
+// Volgorde: componenten zonder iconset
+// =============================================================================
+
+// Een instance swap property verwisselt het mainComponent van een instance.
+// Zonder iconset zijn de icoonlagen ingebakken SVG's en is er niets te
+// verwisselen. Dat moet gemeld worden, niet stil overgeslagen: stil overslaan
+// is precies het handwerk dat na elke import opnieuw gedaan moet worden.
+console.log('\n=== import zonder iconset ===');
+const buttonSpec = read('packages/figma-sync/dist/button.json');
+const declared = buttonSpec.componentSet.componentProperties ?? [];
+check(
+  'button.json declareert component properties',
+  declared.length > 0,
+  declared.map((property) => property.name).join(', ')
+);
+
+const beforeIconless = problems.length;
+const iconless = await importComponentSet(buttonSpec, log);
+const iconlessProblems = problems.slice(beforeIconless);
+
+check(
+  'de ingebakken iconen worden gemeld',
+  iconlessProblems.some(
+    (problem) => problem.level === 'warn' && /icons\.json/.test(problem.message)
+  ),
+  'waarschuwing over icons.json'
+);
+check(
+  'instance swap properties worden gerapporteerd als niet gelegd',
+  declared
+    .filter((property) => property.type === 'INSTANCE_SWAP')
+    .every((property) =>
+      iconlessProblems.some(
+        (problem) =>
+          problem.level === 'error' && problem.message.includes(property.name)
+      )
+    ),
+  'fout per instance swap'
+);
+check(
+  'de properties die wél kunnen worden gewoon gelegd',
+  iconless.properties.includes('label') &&
+    iconless.properties.includes('showIconStart'),
+  iconless.properties.join(', ')
+);
+
+// =============================================================================
 // Iconen
 // =============================================================================
 
@@ -498,6 +545,120 @@ for (const file of componentFiles) {
     payload.componentSet.name.startsWith('dsn-'),
     payload.componentSet.name
   );
+
+  // ---------------------------------------------------------------------------
+  // Component properties
+  // ---------------------------------------------------------------------------
+
+  const set = state.page.children.at(-1);
+  const definitions = set.componentPropertyDefinitions ?? {};
+  const declaredHere = payload.componentSet.componentProperties ?? [];
+
+  if (declaredHere.length) {
+    const byName = new Map(
+      Object.entries(definitions).map(([propertyId, definition]) => [
+        definition.name,
+        { propertyId, ...definition },
+      ])
+    );
+
+    const wrongType = declaredHere.filter(
+      (property) => byName.get(property.name)?.type !== property.type
+    );
+    check(
+      'alle gedeclareerde properties staan op de set',
+      wrongType.length === 0,
+      wrongType.length
+        ? wrongType.map((property) => property.name).join(', ')
+        : declaredHere.map((property) => property.name).join(', ')
+    );
+
+    // Een property op de set die in een variant geen laag heeft doet daar de
+    // helft van de tijd niets, en dat zie je aan de set niet.
+    const FIELD = {
+      TEXT: 'characters',
+      BOOLEAN: 'visible',
+      INSTANCE_SWAP: 'mainComponent',
+    };
+    const unlinked = [];
+    for (const property of declaredHere) {
+      const definition = byName.get(property.name);
+      if (!definition) continue;
+      const linked = set.children.filter((variant) => {
+        const find = (node) =>
+          node.componentPropertyReferences?.[FIELD[property.type]] ===
+          definition.propertyId
+            ? node
+            : node.children.map(find).find(Boolean);
+        return find(variant);
+      });
+      if (linked.length !== set.children.length) {
+        unlinked.push(
+          `${property.name} in ${set.children.length - linked.length} varianten`
+        );
+      }
+    }
+    check(
+      'elke property hangt in elke variant aan een laag',
+      unlinked.length === 0,
+      unlinked.join(', ')
+    );
+
+    // Een instance swap kan alleen op een instance. Was het icoon ingebakken,
+    // dan is er niets te verwisselen.
+    const swaps = declaredHere.filter(
+      (property) => property.type === 'INSTANCE_SWAP'
+    );
+    if (swaps.length) {
+      const notInstances = [];
+      for (const variant of set.children) {
+        const walk = (node) => {
+          if (
+            node.componentPropertyReferences?.mainComponent &&
+            node.type !== 'INSTANCE'
+          ) {
+            notInstances.push(node.name);
+          }
+          node.children.forEach(walk);
+        };
+        walk(variant);
+      }
+      check(
+        'de icoonlagen zijn instances van het icooncomponent',
+        notInstances.length === 0,
+        notInstances.length ? `${notInstances.length} ingebakken` : ''
+      );
+    }
+
+    // De standaardstand van een boolean moet ook op de laag staan, anders toont
+    // de set iets anders dan de property zegt.
+    const booleans = declaredHere.filter(
+      (property) => property.type === 'BOOLEAN'
+    );
+    const wrongDefault = [];
+    for (const property of booleans) {
+      const definition = byName.get(property.name);
+      if (!definition) continue;
+      for (const variant of set.children) {
+        const walk = (node) => {
+          if (
+            node.componentPropertyReferences?.visible ===
+              definition.propertyId &&
+            node.visible !== definition.defaultValue
+          ) {
+            wrongDefault.push(`${property.name} in ${variant.name}`);
+          }
+          node.children.forEach(walk);
+        };
+        walk(variant);
+      }
+    }
+    check(
+      'de lagen staan op de standaardstand van hun boolean',
+      wrongDefault.length === 0,
+      wrongDefault.length ? wrongDefault[0] : ''
+    );
+  }
 
   // Een laag die "icon" heet dwingt een designer het bestand open te trekken om
   // te zien wélk icoon het is.

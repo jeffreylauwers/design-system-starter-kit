@@ -303,6 +303,77 @@ De `fonts`-lijst is niet optioneel als het component tekst bevat: zonder
 geladen webfont meet de browser met een systeemfont en kloppen de breedtes niet.
 De fontnaam moet ook in Figma beschikbaar zijn.
 
+## Component properties
+
+Naast de assen kan een matrix component properties declareren: de text-, boolean-
+en instance-swap-knoppen die een designer in het rechterpaneel van Figma ziet.
+
+```js
+componentProperties: [
+  { name: 'label', type: 'TEXT', slot: 'label' },
+  { name: 'showIconEnd', type: 'BOOLEAN', slot: 'icon-end', default: false },
+  {
+    name: 'iconEnd',
+    type: 'INSTANCE_SWAP',
+    slot: 'icon-end',
+    default: 'chevron-right',
+  },
+],
+```
+
+`slot` verwijst naar een `data-figma-slot` in de gerenderde markup:
+
+```html
+<span class="dsn-button__label" data-figma-slot="label">Tekst</span>
+```
+
+Die markering staat er omdat de plugin de laag anders op klassenaam zou moeten
+raden, en dan komt een property stilletjes aan de verkeerde laag te hangen zodra
+de CSS-klasse verandert.
+
+Twee dingen die daaruit volgen:
+
+- **Een slot moet in élke variant gerenderd worden**, ook als de property hem
+  standaard uitzet. Figma definieert properties op de component set, en een
+  variant zonder de laag levert een property op die daar niets doet. De
+  generator controleert dit en zet een waarschuwing in de build in plaats van
+  een halve property te leveren.
+- **Een instance swap heeft de iconset nodig.** De property verwisselt het
+  `mainComponent` van een instance, en een uit SVG opgebouwd frame heeft er
+  geen. De plugin maakt van een icoon een instance zodra het op de pagina
+  `dsn/Icons` staat; anders bakt hij het in en meldt dat de property niet
+  gelegd kon worden.
+
+### Wat wordt een as en wat wordt een property?
+
+Beide kunnen dezelfde eigenschap uitdrukken, dus de keuze is niet vanzelf
+duidelijk. De regel:
+
+| Kies                   | Wanneer                                                  | Voorbeeld                  |
+| ---------------------- | -------------------------------------------------------- | -------------------------- |
+| **Variant-as**         | de waarde verandert gemeten tokens: kleur, padding, maat | `variant`, `size`, `state` |
+| **Component property** | de waarde verandert alleen of, en welke, laag er staat   | `label`, `iconStart`       |
+
+De reden is de meting. Elke variant wordt in de browser gemeten en aan zijn
+tokens gebonden. Een as levert per waarde een eigen meting op en dus de juiste
+padding en kleuren. Een property zet alleen een laag aan of uit binnen een
+bestaande meting; verandert die stand ook de tokens, dan blijft de padding van
+de andere stand staan en klopt het component niet meer.
+
+Daarom is `iconOnly` bij Button géén property: `dsn-button--icon-only` heeft
+eigen `padding-inline`-tokens, dus als boolean zou de knop de padding van de
+tekstvariant houden. Als as zou hij de set verdrievoudigen. Zolang geen van
+beide bevalt is niets doen het eerlijkste antwoord; zie issue
+[#323](https://github.com/jeffreylauwers/design-system-starter-kit/issues/323).
+
+### Naamgeving
+
+De namen volgen de React-props, zodat een designer en een developer hetzelfde
+woord gebruiken. Dat levert één afwijking op: `iconStart` en `iconEnd` _zijn_ in
+code het icoon, dus dat zijn hier de instance swaps. De boolean die ze aan- en
+uitzet krijgt `show` ervoor (`showIconStart`), omdat twee properties in Figma
+niet dezelfde naam kunnen dragen.
+
 ## Wat hier bewust niet in hoort
 
 - **Layoutcomponenten** (`Grid`, `Container`, `PageBody`, `BreakoutSection`).
@@ -316,6 +387,5 @@ De fontnaam moet ook in Figma beschikbaar zijn.
 
 ## Wat de generator niet levert
 
-Component properties (boolean voor icon-slots, instance swap, text properties)
-en thumbnails. Die blijven handwerk in Figma. Reken op genereren tot ongeveer
-85% en een polijstslag daarna.
+Thumbnails, en de booleans die gemeten tokens veranderen (`iconOnly`, `loading`,
+`fullWidth` bij Button). Die blijven handwerk in Figma.

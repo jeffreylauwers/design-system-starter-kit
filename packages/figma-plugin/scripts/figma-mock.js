@@ -76,6 +76,16 @@ const AUTO_LAYOUT_FIELDS = new Set([
 let nextId = 1;
 const id = (prefix) => `${prefix}:${nextId++}`;
 
+/** Velden waar een component property aan gekoppeld kan worden. */
+const FIELD_FOR_PROPERTY_TYPE = {
+  TEXT: 'characters',
+  BOOLEAN: 'visible',
+  INSTANCE_SWAP: 'mainComponent',
+};
+const COMPONENT_PROPERTY_FIELDS = new Set(
+  Object.values(FIELD_FOR_PROPERTY_TYPE)
+);
+
 const loadedFonts = new Set();
 
 class Node {
@@ -181,6 +191,100 @@ class Node {
     }
   }
 
+  /**
+   * Figma weigert een reference naar een property die niet op de omvattende
+   * component set staat, en naar een veld dat deze node niet heeft: een
+   * `mainComponent` bestaat alleen op een instance, `characters` alleen op
+   * tekst.
+   */
+  set componentPropertyReferences(value) {
+    for (const [field, propertyId] of Object.entries(value ?? {})) {
+      if (!COMPONENT_PROPERTY_FIELDS.has(field)) {
+        throw new Error(`onbekend veld voor een component property: ${field}`);
+      }
+      if (field === 'mainComponent' && this.type !== 'INSTANCE') {
+        throw new Error(
+          `mainComponent bestaat alleen op een instance, niet op een ${this.type}`
+        );
+      }
+      if (field === 'characters' && this.type !== 'TEXT') {
+        throw new Error(
+          `characters bestaat alleen op een tekstnode, niet op een ${this.type}`
+        );
+      }
+
+      let ancestor = this.parent;
+      while (ancestor && ancestor.type !== 'COMPONENT_SET') {
+        ancestor = ancestor.parent;
+      }
+      if (!ancestor) {
+        throw new Error(
+          `${field}: deze laag hangt niet in een component set, dus er is geen property om naar te wijzen`
+        );
+      }
+      if (!ancestor.componentPropertyDefinitions?.[propertyId]) {
+        throw new Error(`property ${propertyId} bestaat niet op de set`);
+      }
+      const expected =
+        FIELD_FOR_PROPERTY_TYPE[
+          ancestor.componentPropertyDefinitions[propertyId].type
+        ];
+      if (expected !== field) {
+        throw new Error(
+          `${propertyId} is een ${ancestor.componentPropertyDefinitions[propertyId].type}-property en hoort aan ${expected}, niet aan ${field}`
+        );
+      }
+    }
+    this._componentPropertyReferences = value;
+  }
+  get componentPropertyReferences() {
+    return this._componentPropertyReferences;
+  }
+
+  /**
+   * Properties horen op een component of een component set. De naam moet uniek
+   * zijn, en het type van de standaardwaarde moet bij het propertytype passen.
+   */
+  addComponentProperty(name, type, defaultValue, options) {
+    if (this.type !== 'COMPONENT_SET' && this.type !== 'COMPONENT') {
+      throw new Error(`addComponentProperty bestaat niet op een ${this.type}`);
+    }
+    if (!FIELD_FOR_PROPERTY_TYPE[type]) {
+      throw new Error(`onbekend propertytype ${type}`);
+    }
+
+    this.componentPropertyDefinitions = this.componentPropertyDefinitions ?? {};
+    const taken = Object.values(this.componentPropertyDefinitions).some(
+      (definition) => definition.name === name
+    );
+    if (taken) throw new Error(`property ${name} bestaat al op deze set`);
+
+    const expected = { TEXT: 'string', BOOLEAN: 'boolean' }[type];
+    if (expected && typeof defaultValue !== expected) {
+      throw new Error(
+        `${type} verwacht een ${expected} als standaardwaarde, kreeg ${typeof defaultValue}`
+      );
+    }
+    if (type === 'INSTANCE_SWAP') {
+      // De echte API accepteert hier een verwijzing naar een component; wat
+      // de plugin aanlevert moet in elk geval een niet-lege string zijn.
+      if (typeof defaultValue !== 'string' || !defaultValue) {
+        throw new Error(
+          'INSTANCE_SWAP verwacht een verwijzing naar een component als standaardwaarde'
+        );
+      }
+    }
+
+    const propertyId = `${name}#${id('PROP')}`;
+    this.componentPropertyDefinitions[propertyId] = {
+      name,
+      type,
+      defaultValue,
+      preferredValues: options?.preferredValues,
+    };
+    return propertyId;
+  }
+
   setBoundVariable(field, variable) {
     const expected = BINDABLE_FIELDS[field];
     if (!expected) {
@@ -227,6 +331,42 @@ class Node {
       throw new Error(`${axis}=FILL vereist een auto-layout ouder`);
     }
   }
+}
+
+/**
+ * Een component heeft een `key` (de verwijzing die een instance swap gebruikt)
+ * en kan instances maken. Een instance is een eigen node met een kopie van de
+ * lagen van het component; overrides op die lagen zijn wat de plugin gebruikt
+ * om een icoon de tekstkleur te geven.
+ */
+class ComponentNode extends Node {
+  constructor() {
+    super('COMPONENT');
+    this.key = id('KEY');
+  }
+
+  createInstance() {
+    const instance = new Node('INSTANCE');
+    instance.mainComponent = this;
+    instance.width = this.width;
+    instance.height = this.height;
+    for (const child of this.children) instance.appendChild(cloneNode(child));
+    return instance;
+  }
+}
+
+/** Diepe kopie van een laag, genoeg om overrides op te kunnen leggen. */
+function cloneNode(node) {
+  const copy = new Node(node.type);
+  copy.name = node.name;
+  copy.width = node.width;
+  copy.height = node.height;
+  copy.x = node.x;
+  copy.y = node.y;
+  copy.fills = node.fills ? node.fills.map((paint) => ({ ...paint })) : [];
+  if (node.strokes) copy.strokes = node.strokes.map((paint) => ({ ...paint }));
+  for (const child of node.children) copy.appendChild(cloneNode(child));
+  return copy;
 }
 
 class TextNode extends Node {
@@ -372,7 +512,7 @@ export const figma = {
     return new TextNode();
   },
   createComponent() {
-    return new Node('COMPONENT');
+    return new ComponentNode();
   },
   createPage() {
     const page = new Node('PAGE');

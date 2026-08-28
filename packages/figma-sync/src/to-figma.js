@@ -423,6 +423,21 @@ function applyChildPlacement(
  * @param {object} [bindings] variable-index en report, zie bindings.js
  */
 function convertNode(node, wideNode, warnings, pathLabel, bindings) {
+  const converted = convertElement(
+    node,
+    wideNode,
+    warnings,
+    pathLabel,
+    bindings
+  );
+  // `data-figma-slot` uit de matrix: hier hangt straks een component property
+  // aan. Het reist als `componentSlot` mee tot in de plugin, die de laag erop
+  // terugvindt in plaats van hem op klassenaam te moeten raden.
+  if (node.slot) converted.componentSlot = node.slot;
+  return converted;
+}
+
+function convertElement(node, wideNode, warnings, pathLabel, bindings) {
   if (node.kind === 'text') {
     // Een kale tekstnode erft zijn stijl van de ouder; die wordt daar gezet.
     return { type: 'TEXT', characters: node.text };
@@ -562,6 +577,49 @@ function bindVariables(spec, tokens, bindings) {
 }
 
 /**
+ * Verzamelt de slots die daadwerkelijk in de gebouwde boom zitten.
+ *
+ * Een gedeclareerde property die nergens landt is de stille mislukking die dit
+ * onderdeel juist moet uitsluiten, dus dat wordt hier al zichtbaar in plaats
+ * van pas in Figma.
+ */
+function collectSlots(node, into = new Set()) {
+  if (node.componentSlot) into.add(node.componentSlot);
+  for (const child of node.children ?? []) collectSlots(child, into);
+  return into;
+}
+
+/**
+ * Controleert de gedeclareerde component properties tegen de gebouwde boom.
+ *
+ * Een property moet in **elke** variant een laag hebben. Figma definieert de
+ * properties op de component set, en een variant zonder de bijbehorende laag
+ * levert daar een property op die de helft van de tijd niets doet.
+ */
+function checkComponentProperties(declared, components, warnings) {
+  if (!declared?.length) return [];
+
+  const perVariant = components.map((component) => ({
+    name: component.name,
+    slots: collectSlots(component.node),
+  }));
+
+  return declared.filter((property) => {
+    const missing = perVariant.filter(
+      (variant) => !variant.slots.has(property.slot)
+    );
+    if (!missing.length) return true;
+
+    warnings.push(
+      missing.length === perVariant.length
+        ? `component property "${property.name}" wijst naar slot "${property.slot}", en geen enkele variant rendert data-figma-slot="${property.slot}"`
+        : `component property "${property.name}" mist slot "${property.slot}" in ${missing.length} van de ${perVariant.length} varianten (o.a. ${missing[0].name}); een property op de set moet in elke variant een laag hebben`
+    );
+    return false;
+  });
+}
+
+/**
  * Bouwt een complete Figma component set uit de geëxtraheerde varianten.
  *
  * @param {object} matrix de matrixdefinitie
@@ -605,6 +663,11 @@ export function toComponentSet(matrix, extracted, variableIndex) {
         ? components[0].node.name
         : matrix.component,
       variantAxes: matrix.axes,
+      componentProperties: checkComponentProperties(
+        matrix.componentProperties,
+        components,
+        warnings
+      ),
       components,
     },
     // Ontdubbeld: dezelfde waarschuwing komt per variant terug.
