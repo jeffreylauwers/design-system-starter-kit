@@ -19,7 +19,6 @@ import {
   paintsForVector,
   requireCollections,
 } from './bindings.js';
-import { recolorVectors } from './svg.js';
 
 /** Hoeveel iconen naast elkaar, en hoeveel ruimte eromheen. */
 const COLUMNS = 10;
@@ -58,12 +57,66 @@ async function findOrCreatePage(name) {
 }
 
 /**
- * Zet de vectoren uit de SVG rechtstreeks in `component`.
+ * Zet de strepen van een lijn-icoon om naar vlakken.
  *
- * `createNodeFromSvg` levert een frame met de vectoren erin. Dat frame gaat er
- * hier weer af: het zou een lege laag tussen het component en zijn vectoren
- * opleveren, en dat is precies de nesting die een Figma-library onwerkbaar
- * maakt.
+ * Zonder deze stap is de kleur van een icoon soms een `stroke` en soms een
+ * `fill`, afhankelijk van of Tabler het icoon als lijn of als vlak tekende. Een
+ * instance swap wisselt dan tussen twee lagen die hun kleur uit een ander veld
+ * halen, en de override die op `fills` stond komt op het nieuwe icoon nergens
+ * terecht. Na het omzetten heeft élk icoon precies één `fills`.
+ *
+ * `outlineStroke()` levert een nieuwe node op naast het origineel en laat dat
+ * origineel staan; die gaat er hier af, tenzij hij zelf ook een vulling had.
+ */
+function outlineStrokes(nodes, icon, log) {
+  const drawn = [];
+
+  for (const node of nodes) {
+    const hasStroke = Array.isArray(node.strokes) && node.strokes.length;
+    if (!hasStroke) {
+      drawn.push(node);
+      continue;
+    }
+
+    let outlined = null;
+    try {
+      outlined = node.outlineStroke();
+    } catch (error) {
+      log.warn(
+        `${icon.name}: een lijn kon niet naar een vlak omgezet worden (${error.message}); het icoon houdt een stroke`
+      );
+    }
+
+    if (!outlined) {
+      drawn.push(node);
+      continue;
+    }
+
+    if (Array.isArray(node.fills) && node.fills.length) {
+      node.strokes = [];
+      drawn.push(node);
+    } else {
+      node.remove();
+    }
+    drawn.push(outlined);
+  }
+
+  return drawn;
+}
+
+/**
+ * Vult `component` met precies één laagpad: `Group > Shape`.
+ *
+ * Dit is de kern van een bruikbare iconset. Een instance swap wisselt het
+ * `mainComponent` van een instance, maar de kleuroverrides die daarop liggen
+ * worden door Figma op **laagpad** teruggezocht. Verschilt de laagstructuur per
+ * icoon, dan landt de override na een swap op een andere laag dan bedoeld, of
+ * op geen enkele: dan houdt het glyph de standaardkleur van het icooncomponent
+ * en krijgt een andere laag de kleur die voor het glyph bedoeld was.
+ *
+ * Eén vorm voor alle 51 iconen maakt dat probleem onmogelijk. Dezelfde vorm
+ * die met de hand ook wordt aangehouden, zodat een swap tussen een gegenereerd
+ * en een handgemaakt icoon net zo goed werkt.
  *
  * De posities worden vóór het verhangen onthouden en erna teruggezet. Figma
  * behoudt bij `appendChild` de absolute positie, dus een component dat al
@@ -83,16 +136,39 @@ function fillWithSvg(component, icon, context) {
     component.appendChild(child);
     child.x = x;
     child.y = y;
-    // Zonder dit blijft een vector op zijn plek als een designer de instance
-    // vergroot, en dan groeit alleen het kader mee.
-    child.constraints = { horizontal: 'SCALE', vertical: 'SCALE' };
   }
   source.remove();
 
-  recolorVectors(
+  const drawn = outlineStrokes(
     placed.map(({ child }) => child),
-    paintsForVector(icon, context)
+    icon,
+    context.log
   );
+
+  if (!drawn.length) {
+    context.log.warn(`${icon.name}: de SVG leverde geen tekenbare laag op`);
+    return;
+  }
+
+  const shape = figma.flatten(drawn, component);
+  shape.name = 'Shape';
+  // Na het platslaan is de kleur altijd een vulling; de binding hoort daar dan
+  // ook op, en niet meer op een stroke die er niet meer is.
+  shape.fills = paintsForVector(icon, context);
+  shape.strokes = [];
+
+  const group = figma.group([shape], component);
+  group.name = 'Group';
+
+  // Zonder dit blijft de vorm op zijn plek als een designer de instance
+  // vergroot, en groeit alleen het kader mee.
+  try {
+    shape.constraints = { horizontal: 'SCALE', vertical: 'SCALE' };
+  } catch (error) {
+    context.log.warn(
+      `${icon.name}: constraints niet toegestaan (${error.message}); het icoon schaalt niet mee`
+    );
+  }
 }
 
 /**

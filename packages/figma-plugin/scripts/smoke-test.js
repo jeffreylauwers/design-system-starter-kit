@@ -39,6 +39,25 @@ function read(relative) {
   return JSON.parse(fs.readFileSync(path.join(monorepoRoot, relative), 'utf8'));
 }
 
+/**
+ * De paint die de kleur van een icoon draagt.
+ *
+ * Niet `children[0]`: een icoon uit de iconset is een instance met `Group >
+ * Shape` erin, terwijl een ingebakken icoon een frame met losse vectoren is.
+ * De eerste laag mét een paint is in beide gevallen de laag die de kleur
+ * bepaalt.
+ */
+function iconPaint(node) {
+  if (!node) return undefined;
+  const paint = node.fills?.[0] ?? node.strokes?.[0];
+  if (paint) return paint;
+  for (const child of node.children ?? []) {
+    const found = iconPaint(child);
+    if (found) return found;
+  }
+  return undefined;
+}
+
 const componentFiles = fs
   .readdirSync(path.join(monorepoRoot, 'packages/figma-sync/dist'))
   .filter((file) => file.endsWith('.json'))
@@ -281,6 +300,53 @@ check(
   wrapped.length ? `${wrapped.length} iconen` : ''
 );
 
+// Dit is de controle die de swap-bug had gevangen. Figma zoekt de overrides op
+// een instance terug via het **laagpad**. Verschilt dat pad per icoon, dan
+// landt de kleuroverride na een swap op een andere laag dan bedoeld: het glyph
+// houdt de standaardkleur en een andere laag krijgt de kleur die voor het glyph
+// bedoeld was. Dat is precies wat er gebeurde toen het aantal vectorlagen per
+// icoon varieerde van 1 tot 4.
+const shapes = [];
+for (const component of iconsPage?.children ?? []) {
+  const path = [];
+  let node = component;
+  while (node.children.length) {
+    node = node.children[0];
+    path.push(`${node.type}:${node.name}`);
+  }
+  const layers = (function count(current) {
+    return current.children.reduce((total, child) => total + count(child), 1);
+  })(component);
+  shapes.push({ name: component.name, path: path.join(' > '), layers });
+}
+const wrongShape = shapes.filter(
+  (icon) => icon.path !== 'GROUP:Group > VECTOR:Shape' || icon.layers !== 3
+);
+check(
+  'elk icoon heeft dezelfde laagstructuur (Group > Shape)',
+  wrongShape.length === 0,
+  wrongShape.length
+    ? `${wrongShape.length}x afwijkend, o.a. ${wrongShape[0].name}: ${wrongShape[0].path} (${wrongShape[0].layers} lagen)`
+    : `${shapes.length} iconen`
+);
+
+// Een lijn-icoon en een vlak-icoon moeten hun kleur uit hetzelfde veld halen,
+// anders komt een override op `fills` bij het ene icoon wel en bij het andere
+// niet terecht.
+const withStrokes = (iconsPage?.children ?? []).filter((component) => {
+  const walk = (node) =>
+    (Array.isArray(node.strokes) && node.strokes.length) ||
+    node.children.some(walk);
+  return walk(component);
+});
+check(
+  'geen enkel icoon draagt zijn kleur nog op een stroke',
+  withStrokes.length === 0,
+  withStrokes.length
+    ? `${withStrokes.length}x, o.a. ${withStrokes[0].name}`
+    : 'alles is een vulling'
+);
+
 // Een icoon dat niet aan een variable hangt blijft zwart als het bestand naar
 // dark schakelt.
 check(
@@ -379,8 +445,7 @@ for (const file of componentFiles) {
   const black = [];
   const visit = (node, spec) => {
     if (spec?.type === 'VECTOR' && spec.fills?.length) {
-      const vector = node.children?.[0];
-      const paint = vector?.strokes?.[0] ?? vector?.fills?.[0];
+      const paint = iconPaint(node);
       const expected = spec.fills[0].color;
       if (
         !paint ||
@@ -461,11 +526,8 @@ for (const file of componentFiles) {
       const alias =
         field === 'fills' || field === 'strokes'
           ? // Bij een icoon zit de kleur op de vectoren, niet op het frame.
-            (spec.type === 'VECTOR'
-              ? (node?.children?.[0]?.strokes?.[0] ??
-                node?.children?.[0]?.fills?.[0])
-              : node?.[field]?.[0]
-            )?.boundVariables?.color
+            (spec.type === 'VECTOR' ? iconPaint(node) : node?.[field]?.[0])
+              ?.boundVariables?.color
           : node?.boundVariables?.[field];
 
       const variable = alias && byId.get(alias.id);

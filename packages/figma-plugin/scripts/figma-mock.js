@@ -165,6 +165,27 @@ class Node {
     }
   }
 
+  /**
+   * Zet de stroke om naar een vulling. De echte API levert een nieuwe node op
+   * náást het origineel, in dezelfde ouder, en laat het origineel staan.
+   * Zonder stroke is er niets om om te zetten en komt er null terug.
+   */
+  outlineStroke() {
+    if (!Array.isArray(this.strokes) || !this.strokes.length) return null;
+    if (!this.parent) {
+      throw new Error('outlineStroke vereist een node in het document');
+    }
+    const outlined = new Node('VECTOR');
+    outlined.name = this.name;
+    outlined.width = this.width;
+    outlined.height = this.height;
+    outlined.x = this.x;
+    outlined.y = this.y;
+    outlined.fills = this.strokes.map((paint) => ({ ...paint }));
+    this.parent.appendChild(outlined);
+    return outlined;
+  }
+
   // minWidth en maxWidth bestaan in Figma alleen op een auto-layout frame of
   // een direct kind daarvan; eraan toewijzen geeft anders een fout.
   set minWidth(value) {
@@ -538,6 +559,42 @@ export const figma = {
     node.appendChild(vector);
     return node;
   },
+  /**
+   * Slaat een aantal lagen plat tot één vector. De echte API eist dat de
+   * lagen in het document staan, en levert een nieuwe node in `parent`.
+   */
+  flatten(nodes, parent) {
+    if (!nodes.length) throw new Error('flatten verwacht minstens één node');
+    if (nodes.some((node) => !node.parent)) {
+      throw new Error('flatten vereist nodes die in het document staan');
+    }
+
+    const flattened = new Node('VECTOR');
+    flattened.name = nodes[0].name;
+    flattened.x = Math.min(...nodes.map((node) => node.x));
+    flattened.y = Math.min(...nodes.map((node) => node.y));
+    flattened.width = Math.max(...nodes.map((node) => node.width));
+    flattened.height = Math.max(...nodes.map((node) => node.height));
+    // Het resultaat neemt de stijl van de onderste laag over.
+    const source = nodes.find(
+      (node) => Array.isArray(node.fills) && node.fills.length
+    );
+    flattened.fills = source ? source.fills.map((paint) => ({ ...paint })) : [];
+
+    for (const node of nodes) node.remove();
+    (parent ?? nodes[0].parent).appendChild(flattened);
+    return flattened;
+  },
+
+  /** Groepeert lagen die dezelfde ouder hebben. */
+  group(nodes, parent) {
+    if (!nodes.length) throw new Error('group verwacht minstens één node');
+    const groupNode = new Node('GROUP');
+    parent.appendChild(groupNode);
+    for (const node of nodes) groupNode.appendChild(node);
+    return groupNode;
+  },
+
   combineAsVariants(components, parent) {
     const set = new Node('COMPONENT_SET');
     parent.appendChild(set);

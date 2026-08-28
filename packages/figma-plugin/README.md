@@ -94,6 +94,42 @@ component set met een `icon`-as: een instance swap property kiest uit
 componenten, en een set van 51 varianten levert in die keuzelijst één regel op
 waarna je alsnog via de variant-dropdown moet zoeken.
 
+### Eén vorm voor alle 51: `Group > Shape`
+
+Elk icooncomponent heeft precies dezelfde laagstructuur:
+
+```
+chevron-right            (component, 24 x 24)
+└── Group
+    └── Shape            (één vector, kleur op fills)
+```
+
+Dat is geen cosmetiek maar de voorwaarde voor een werkende instance swap. Figma
+zoekt de overrides op een instance terug via het **laagpad**. Verschilt dat pad
+per icoon, dan landt de kleuroverride na een swap op een andere laag dan
+bedoeld: het glyph houdt de standaardkleur van het icooncomponent en een andere
+laag krijgt de kleur die voor het glyph bedoeld was. Zichtbaar als een donker
+icoon met een wit kadertje eromheen.
+
+Drie stappen brengen elk icoon in die vorm:
+
+1. **De 24x24-hulppath eruit.** Tabler levert in 31 van de 51 bestanden een
+   `<path stroke="none" d="M0 0h24v24H0z" fill="none"/>` mee die niets tekent
+   en alleen de afmeting vastzet. In Figma is dat wél een extra vectorlaag. De
+   maat komt uit de expliciete `width`/`height`, dus hij kan weg. Dat gebeurt in
+   de generator, zodat het in de JSON-diff te zien is.
+2. **`outlineStroke()`.** Zonder deze stap zit de kleur bij een lijn-icoon op
+   `strokes` en bij een vlak-icoon op `fills`. Een swap tussen die twee laat de
+   override op `fills` nergens landen. Na het omzetten heeft élk icoon één
+   `fills` en geen enkele stroke meer.
+3. **`figma.flatten()` naar één `Shape`, in een `Group`.** Eén override-doel per
+   icoon, en dezelfde vorm die met de hand ook wordt aangehouden, zodat een swap
+   tussen een gegenereerd en een handgemaakt icoon net zo goed werkt.
+
+Het gevolg van stap 2 is dat de lijndikte meeschaalt in plaats van vast te
+blijven wanneer een instance kleiner wordt. Voor een icoon is dat het gewenste
+gedrag: een chevron van 21px hoort dunnere lijnen te hebben dan een van 24px.
+
 Twee dingen die anders gaan dan bij een component set:
 
 - **Het component wordt bijgewerkt, niet vervangen.** `createNodeFromSvg`
@@ -108,9 +144,8 @@ Twee dingen die anders gaan dan bij een component set:
 De iconen krijgen de neutrale tekstkleur, gebonden aan
 `dsn/Primitives → color/neutral/color-default`, zodat ze de theme-schakelaar
 volgen. Een instance mag die kleur overschrijven; dat is het Figma-equivalent
-van `currentColor`. Alleen de vullingen en lijnen die de SVG daadwerkelijk had
-worden gekleurd, zodat het verschil tussen een gevuld en een lijn-icoon intact
-blijft.
+van `currentColor`. Het verschil tussen een gevuld en een lijn-icoon zit na het
+omzetten naar vlakken in de vórm, niet meer in het veld waar de kleur op staat.
 
 Een icoon dat uit de assets-map verdwijnt blijft in Figma staan, met een
 melding in de log. Automatisch verwijderen zou elke instance ervan detachen, en

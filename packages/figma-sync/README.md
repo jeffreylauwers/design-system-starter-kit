@@ -259,6 +259,14 @@ De generator leest `components-html/assets/icons/*.svg`, normaliseert de
 schrijft één spec per icoon. Een nieuw icoon in die map komt er zonder verdere
 stap bij, precies zoals bij `icon-registry.generated.ts`.
 
+De 24x24-hulppath die Tabler in 31 van de 51 bestanden meelevert
+(`<path stroke="none" d="M0 0h24v24H0z" fill="none"/>`) gaat eruit. Hij tekent
+niets en zet alleen de afmeting vast, maar in Figma is het wél een extra
+vectorlaag, en dan verschilt het aantal lagen per icoon. Dat is precies wat een
+instance swap laat mislukken; zie
+[de README van figma-plugin](../figma-plugin/README.md) voor waarom de
+laagstructuur van elk icoon gelijk moet zijn.
+
 De namen komen uit de bestandsnamen, net als in die registry, en worden er
 daarna **tegenaan gehouden**: staat er iets in de een en niet in de ander, dan
 komt dat als waarschuwing in de build. Anders zou een instance swap straks een
