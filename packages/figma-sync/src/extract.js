@@ -120,6 +120,10 @@ function domWalker([properties, hiddenClass]) {
       // Welk token elke gemeten eigenschap leverde; de basis voor de
       // variable-bindingen in Figma.
       tokens: window.__dsnReadTokenSources(element),
+      // De laag waar straks een component property aan hangt. De matrix zet
+      // dit attribuut; zonder markering in de markup zou de plugin de laag op
+      // klassenaam moeten raden, en dat breekt zodra de markup verandert.
+      slot: element.dataset.figmaSlot || null,
       children: [],
     };
 

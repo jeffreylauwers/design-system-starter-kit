@@ -21,6 +21,7 @@ import {
   requireCollections,
 } from './bindings.js';
 import { recolorVectors } from './svg.js';
+import { ICON_PAGE, loadIconIndex } from './icons.js';
 
 /** Figma verwacht een style-naam, geen numeriek gewicht. */
 const WEIGHT_TO_STYLE = {
@@ -203,6 +204,45 @@ function applySizing(node, spec, log) {
 }
 
 /**
+ * Het icoon als instance van het icooncomponent, of anders ingebakken.
+ *
+ * Een instance is het verschil tussen een icoon dat meebeweegt met de iconset
+ * en 81 losse kopieën. Het is bovendien de harde eis van een instance swap
+ * property: die verwisselt het `mainComponent` van een instance, en een uit SVG
+ * opgebouwd frame heeft er geen.
+ *
+ * Staat het icoon niet in de index, dan valt dit terug op de ingebakken SVG.
+ * Dat levert hetzelfde plaatje op; alleen het wisselen en het meebewegen
+ * vervallen. De melding gaat één keer per icoonnaam de log in, niet 81 keer.
+ */
+function buildIcon(spec, parent, context) {
+  const component = context.icons.get(spec.name);
+
+  if (component) {
+    const instance = component.createInstance();
+    parent.appendChild(instance);
+    instance.name = spec.name;
+    if (spec.width && spec.height) instance.resize(spec.width, spec.height);
+    return instance;
+  }
+
+  if (spec.name && !context.inlinedIcons.has(spec.name)) {
+    context.inlinedIcons.add(spec.name);
+    context.log.warn(
+      `Icoon "${spec.name}" staat niet op de pagina ${ICON_PAGE} en is ingebakken. Importeer eerst icons.json; anders is dit icoon niet te wisselen en volgt het geen iconwijziging.`
+    );
+  }
+
+  // createNodeFromSvg levert een frame met de vectoren erin: één node die het
+  // icoon voorstelt.
+  const node = figma.createNodeFromSvg(spec.svg);
+  parent.appendChild(node);
+  node.name = spec.name ?? 'icon';
+  if (spec.width && spec.height) node.resize(spec.width, spec.height);
+  return node;
+}
+
+/**
  * Bouwt één node uit de spec en hangt hem aan `parent`.
  *
  * @param {object} spec node spec uit de generator
@@ -236,20 +276,19 @@ function buildNode(spec, parent, context) {
     applyBindings(text, spec, context);
     applyPlacement(text, spec, log);
     applySizing(text, spec, log);
+    registerSlot(text, spec, context);
     return text;
   }
 
   if (spec.type === 'VECTOR') {
-    // createNodeFromSvg levert een frame met de vectoren erin. Dat is precies
-    // wat we willen: één node die het icoon voorstelt.
-    const node = figma.createNodeFromSvg(spec.svg);
-    parent.appendChild(node);
-    node.name = spec.name ?? 'icon';
-    if (spec.width && spec.height) node.resize(spec.width, spec.height);
+    const node = buildIcon(spec, parent, context);
     // De kleur zit op de vectoren binnenin, niet op het frame eromheen, dus de
-    // binding moet mee in de paints die recolorSvg doorzet.
+    // binding moet mee in de paints die eroverheen worden gezet. Bij een
+    // instance is dat een override op de geneste lagen, precies zoals een
+    // designer die met de hand zou leggen.
     recolorVectors(node.children ?? [], paintsForVector(spec, context));
     applyPlacement(node, spec, log);
+    registerSlot(node, spec, context);
     return node;
   }
 
@@ -259,7 +298,19 @@ function buildNode(spec, parent, context) {
 
   applyPlacement(frame, spec, log);
   applySizing(frame, spec, log);
+  registerSlot(frame, spec, context);
   return frame;
+}
+
+/**
+ * Onthoudt welke gebouwde laag bij welk `data-figma-slot` uit de matrix hoort.
+ *
+ * De koppeling loopt via de spec en niet via de laagnaam: een naam is niet
+ * uniek en verandert zodra de CSS-klasse verandert, en dan zou een property
+ * stilletjes aan de verkeerde laag komen te hangen.
+ */
+function registerSlot(node, spec, context) {
+  if (spec.componentSlot) context.slots.set(spec.componentSlot, node);
 }
 
 /**
@@ -289,6 +340,153 @@ function applyFrame(frame, spec, context) {
   for (const child of spec.children ?? []) buildNode(child, frame, context);
 }
 
+// =============================================================================
+// COMPONENT PROPERTIES
+// =============================================================================
+
+/** Het veld dat elk propertytype op een laag aanstuurt. */
+const FIELD_FOR_TYPE = {
+  TEXT: 'characters',
+  BOOLEAN: 'visible',
+  INSTANCE_SWAP: 'mainComponent',
+};
+
+/**
+ * De standaardwaarde die Figma bij dit propertytype verwacht.
+ *
+ * INSTANCE_SWAP is het lastige geval: de generator noemt een icoon bij naam,
+ * en Figma wil een verwijzing naar het component. De Plugin API accepteert
+ * daar historisch zowel de `key` als de node-id, afhankelijk van versie en van
+ * of het component gepubliceerd is. Beide worden daarom geprobeerd, en welke
+ * het werd staat in de log; stil de verkeerde kiezen zou een property
+ * opleveren die pas in Figma zelf blijkt te weigeren.
+ */
+function defaultValuesFor(property, targets, context) {
+  if (property.type === 'TEXT') {
+    return [property.default ?? targets[0].characters ?? ''];
+  }
+  if (property.type === 'BOOLEAN') {
+    return [property.default ?? true];
+  }
+
+  const component = context.icons.get(property.default);
+  if (!component) return null;
+  return [component.key, component.id].filter(Boolean);
+}
+
+/**
+ * De iconen die de swap-lijst als eerste toont. Zonder dit moet een designer
+ * elk icoon uit het hele bestand bij elkaar zoeken.
+ */
+function preferredIcons(context) {
+  const values = [...context.icons.values()]
+    .filter((component) => component.key)
+    .map((component) => ({ type: 'COMPONENT', key: component.key }));
+  return values.length ? { preferredValues: values } : undefined;
+}
+
+/**
+ * Legt de gedeclareerde component properties op de set en koppelt de lagen.
+ *
+ * Alles wat hier niet lukt gaat als fout de log in. Een property die stil
+ * wegvalt is precies het handwerk dat na elke import opnieuw gedaan moet
+ * worden, en dat is niet te zien aan een set die er verder goed uitziet.
+ */
+function applyComponentProperties(set, properties, variants, context) {
+  const { log } = context;
+  const applied = [];
+
+  for (const property of properties ?? []) {
+    const targets = variants.map((variant) => variant.slots.get(property.slot));
+    const missing = targets.filter((target) => !target).length;
+    if (missing) {
+      log.error(
+        `Property "${property.name}": slot "${property.slot}" ontbreekt in ${missing} van de ${variants.length} varianten; niet gelegd`
+      );
+      continue;
+    }
+
+    if (property.type === 'INSTANCE_SWAP') {
+      const notInstances = targets.filter(
+        (target) => target.type !== 'INSTANCE'
+      ).length;
+      if (notInstances) {
+        log.error(
+          `Property "${property.name}" kan niet gelegd worden: de laag in slot "${property.slot}" is in ${notInstances} varianten geen instance maar een ingebakken SVG. Importeer eerst icons.json.`
+        );
+        continue;
+      }
+    }
+
+    const defaults = defaultValuesFor(property, targets, context);
+    if (!defaults) {
+      log.error(
+        `Property "${property.name}": icoon "${property.default}" staat niet op de pagina ${ICON_PAGE}; niet gelegd`
+      );
+      continue;
+    }
+
+    const options =
+      property.type === 'INSTANCE_SWAP' ? preferredIcons(context) : undefined;
+
+    let id;
+    let lastError;
+    for (const value of defaults) {
+      try {
+        id = set.addComponentProperty(
+          property.name,
+          property.type,
+          value,
+          options
+        );
+        break;
+      } catch (error) {
+        lastError = error;
+      }
+    }
+
+    if (!id) {
+      log.error(
+        `Property "${property.name}" (${property.type}) kon niet aangemaakt worden: ${lastError?.message ?? 'onbekende fout'}`
+      );
+      continue;
+    }
+
+    // De lagen op de standaardstand zetten vóór de koppeling: daarna bepaalt
+    // de property de waarde, en een laag die daar niet mee overeenkomt laat de
+    // set iets anders zien dan de property zegt.
+    const field = FIELD_FOR_TYPE[property.type];
+    let failed = 0;
+    for (const target of targets) {
+      try {
+        if (property.type === 'BOOLEAN') target.visible = defaults[0];
+        target.componentPropertyReferences = {
+          ...target.componentPropertyReferences,
+          [field]: id,
+        };
+      } catch (error) {
+        failed += 1;
+        lastError = error;
+      }
+    }
+
+    if (failed) {
+      log.error(
+        `Property "${property.name}" is aangemaakt maar niet gekoppeld aan ${failed} van de ${targets.length} lagen: ${lastError.message}`
+      );
+      continue;
+    }
+
+    applied.push(property.name);
+  }
+
+  if (applied.length) {
+    log.info(`Component properties gelegd: ${applied.join(', ')}`);
+  }
+
+  return applied;
+}
+
 /**
  * Importeert een volledige component set.
  *
@@ -313,17 +511,35 @@ export async function importComponentSet(payload, log) {
   const variables = await loadVariableIndex();
   requireCollections(payload.bindings?.collections ?? [], variables);
 
+  // De icooncomponenten uit een eerdere icons.json-import. Ontbreken ze, dan
+  // worden de iconen ingebakken en meldt buildIcon dat.
+  const icons = await loadIconIndex();
+
   const stats = createStats();
-  const context = { fonts: loaded, log, variables, stats };
+  const context = {
+    fonts: loaded,
+    log,
+    variables,
+    stats,
+    icons,
+    inlinedIcons: new Set(),
+    // Per variant opnieuw gevuld; zie de bouwlus hieronder.
+    slots: new Map(),
+  };
 
   const page = figma.currentPage;
   const components = [];
   let cursorX = 0;
   let rowHeight = 0;
 
+  const variantSlots = [];
+
   for (const [index, component] of spec.components.entries()) {
     const wrapper = figma.createComponent();
     page.appendChild(wrapper);
+
+    // Elke variant heeft zijn eigen lagen, dus ook zijn eigen slots.
+    context.slots = new Map();
 
     // Het root-element wórdt het component. Een extra frame eromheen zou een
     // lege laag met dezelfde auto layout toevoegen, en dat is precies de
@@ -351,6 +567,7 @@ export async function importComponentSet(payload, log) {
     cursorX += wrapper.width + 40;
     rowHeight = Math.max(rowHeight, wrapper.height);
     components.push(wrapper);
+    variantSlots.push({ component: wrapper, slots: context.slots });
 
     if ((index + 1) % 6 === 0) {
       cursorX = 0;
@@ -380,6 +597,15 @@ export async function importComponentSet(payload, log) {
   log.info(`${spec.name}: ${components.length} varianten gecombineerd`);
   reportBindings(payload, stats, log);
 
+  // Na combineAsVariants: component properties horen op de set, niet op de
+  // losse varianten.
+  const properties = applyComponentProperties(
+    set,
+    spec.componentProperties,
+    variantSlots,
+    context
+  );
+
   if (payload.warnings && payload.warnings.length) {
     for (const warning of payload.warnings) log.warn(warning);
   }
@@ -392,6 +618,7 @@ export async function importComponentSet(payload, log) {
     variants: components.length,
     combined: true,
     bindings: { ...stats, missing: [...stats.missing] },
+    properties,
   };
 }
 

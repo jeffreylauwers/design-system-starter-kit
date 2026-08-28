@@ -39,6 +39,25 @@ function read(relative) {
   return JSON.parse(fs.readFileSync(path.join(monorepoRoot, relative), 'utf8'));
 }
 
+/**
+ * De paint die de kleur van een icoon draagt.
+ *
+ * Niet `children[0]`: een icoon uit de iconset is een instance met `Group >
+ * Shape` erin, terwijl een ingebakken icoon een frame met losse vectoren is.
+ * De eerste laag mét een paint is in beide gevallen de laag die de kleur
+ * bepaalt.
+ */
+function iconPaint(node) {
+  if (!node) return undefined;
+  const paint = node.fills?.[0] ?? node.strokes?.[0];
+  if (paint) return paint;
+  for (const child of node.children ?? []) {
+    const found = iconPaint(child);
+    if (found) return found;
+  }
+  return undefined;
+}
+
 const componentFiles = fs
   .readdirSync(path.join(monorepoRoot, 'packages/figma-sync/dist'))
   .filter((file) => file.endsWith('.json'))
@@ -168,6 +187,53 @@ check(
 );
 
 // =============================================================================
+// Volgorde: componenten zonder iconset
+// =============================================================================
+
+// Een instance swap property verwisselt het mainComponent van een instance.
+// Zonder iconset zijn de icoonlagen ingebakken SVG's en is er niets te
+// verwisselen. Dat moet gemeld worden, niet stil overgeslagen: stil overslaan
+// is precies het handwerk dat na elke import opnieuw gedaan moet worden.
+console.log('\n=== import zonder iconset ===');
+const buttonSpec = read('packages/figma-sync/dist/button.json');
+const declared = buttonSpec.componentSet.componentProperties ?? [];
+check(
+  'button.json declareert component properties',
+  declared.length > 0,
+  declared.map((property) => property.name).join(', ')
+);
+
+const beforeIconless = problems.length;
+const iconless = await importComponentSet(buttonSpec, log);
+const iconlessProblems = problems.slice(beforeIconless);
+
+check(
+  'de ingebakken iconen worden gemeld',
+  iconlessProblems.some(
+    (problem) => problem.level === 'warn' && /icons\.json/.test(problem.message)
+  ),
+  'waarschuwing over icons.json'
+);
+check(
+  'instance swap properties worden gerapporteerd als niet gelegd',
+  declared
+    .filter((property) => property.type === 'INSTANCE_SWAP')
+    .every((property) =>
+      iconlessProblems.some(
+        (problem) =>
+          problem.level === 'error' && problem.message.includes(property.name)
+      )
+    ),
+  'fout per instance swap'
+);
+check(
+  'de properties die wél kunnen worden gewoon gelegd',
+  iconless.properties.includes('label') &&
+    iconless.properties.includes('showIconStart'),
+  iconless.properties.join(', ')
+);
+
+// =============================================================================
 // Iconen
 // =============================================================================
 
@@ -232,6 +298,67 @@ check(
   'geen wrapperframe rond de vectoren',
   wrapped.length === 0,
   wrapped.length ? `${wrapped.length} iconen` : ''
+);
+
+// Bouwrommel. `createNodeFromSvg` zet zijn frame op de huidige pagina en
+// `outlineStroke()` kan dat ook doen; blijft daar iets van staan, dan is dat
+// een half opgebouwd icoon dat op de pagina is achtergebleven.
+const leftovers = (iconsPage?.children ?? []).filter(
+  (node) => node.type !== 'COMPONENT'
+);
+check(
+  'geen losse lagen op de iconpagina',
+  leftovers.length === 0,
+  leftovers.length
+    ? `${leftovers.length}x, o.a. ${leftovers[0].type} "${leftovers[0].name}"`
+    : ''
+);
+
+// Dit is de controle die de swap-bug had gevangen. Figma zoekt de overrides op
+// een instance terug via het **laagpad**. Verschilt dat pad per icoon, dan
+// landt de kleuroverride na een swap op een andere laag dan bedoeld: het glyph
+// houdt de standaardkleur en een andere laag krijgt de kleur die voor het glyph
+// bedoeld was. Dat is precies wat er gebeurde toen het aantal vectorlagen per
+// icoon varieerde van 1 tot 4.
+const shapes = [];
+for (const component of iconsPage?.children ?? []) {
+  const path = [];
+  let node = component;
+  while (node.children.length) {
+    node = node.children[0];
+    path.push(`${node.type}:${node.name}`);
+  }
+  const layers = (function count(current) {
+    return current.children.reduce((total, child) => total + count(child), 1);
+  })(component);
+  shapes.push({ name: component.name, path: path.join(' > '), layers });
+}
+const wrongShape = shapes.filter(
+  (icon) => icon.path !== 'GROUP:Group > VECTOR:Shape' || icon.layers !== 3
+);
+check(
+  'elk icoon heeft dezelfde laagstructuur (Group > Shape)',
+  wrongShape.length === 0,
+  wrongShape.length
+    ? `${wrongShape.length}x afwijkend, o.a. ${wrongShape[0].name}: ${wrongShape[0].path} (${wrongShape[0].layers} lagen)`
+    : `${shapes.length} iconen`
+);
+
+// Een lijn-icoon en een vlak-icoon moeten hun kleur uit hetzelfde veld halen,
+// anders komt een override op `fills` bij het ene icoon wel en bij het andere
+// niet terecht.
+const withStrokes = (iconsPage?.children ?? []).filter((component) => {
+  const walk = (node) =>
+    (Array.isArray(node.strokes) && node.strokes.length) ||
+    node.children.some(walk);
+  return walk(component);
+});
+check(
+  'geen enkel icoon draagt zijn kleur nog op een stroke',
+  withStrokes.length === 0,
+  withStrokes.length
+    ? `${withStrokes.length}x, o.a. ${withStrokes[0].name}`
+    : 'alles is een vulling'
 );
 
 // Een icoon dat niet aan een variable hangt blijft zwart als het bestand naar
@@ -332,8 +459,7 @@ for (const file of componentFiles) {
   const black = [];
   const visit = (node, spec) => {
     if (spec?.type === 'VECTOR' && spec.fills?.length) {
-      const vector = node.children?.[0];
-      const paint = vector?.strokes?.[0] ?? vector?.fills?.[0];
+      const paint = iconPaint(node);
       const expected = spec.fills[0].color;
       if (
         !paint ||
@@ -414,11 +540,8 @@ for (const file of componentFiles) {
       const alias =
         field === 'fills' || field === 'strokes'
           ? // Bij een icoon zit de kleur op de vectoren, niet op het frame.
-            (spec.type === 'VECTOR'
-              ? (node?.children?.[0]?.strokes?.[0] ??
-                node?.children?.[0]?.fills?.[0])
-              : node?.[field]?.[0]
-            )?.boundVariables?.color
+            (spec.type === 'VECTOR' ? iconPaint(node) : node?.[field]?.[0])
+              ?.boundVariables?.color
           : node?.boundVariables?.[field];
 
       const variable = alias && byId.get(alias.id);
@@ -498,6 +621,120 @@ for (const file of componentFiles) {
     payload.componentSet.name.startsWith('dsn-'),
     payload.componentSet.name
   );
+
+  // ---------------------------------------------------------------------------
+  // Component properties
+  // ---------------------------------------------------------------------------
+
+  const set = state.page.children.at(-1);
+  const definitions = set.componentPropertyDefinitions ?? {};
+  const declaredHere = payload.componentSet.componentProperties ?? [];
+
+  if (declaredHere.length) {
+    const byName = new Map(
+      Object.entries(definitions).map(([propertyId, definition]) => [
+        definition.name,
+        { propertyId, ...definition },
+      ])
+    );
+
+    const wrongType = declaredHere.filter(
+      (property) => byName.get(property.name)?.type !== property.type
+    );
+    check(
+      'alle gedeclareerde properties staan op de set',
+      wrongType.length === 0,
+      wrongType.length
+        ? wrongType.map((property) => property.name).join(', ')
+        : declaredHere.map((property) => property.name).join(', ')
+    );
+
+    // Een property op de set die in een variant geen laag heeft doet daar de
+    // helft van de tijd niets, en dat zie je aan de set niet.
+    const FIELD = {
+      TEXT: 'characters',
+      BOOLEAN: 'visible',
+      INSTANCE_SWAP: 'mainComponent',
+    };
+    const unlinked = [];
+    for (const property of declaredHere) {
+      const definition = byName.get(property.name);
+      if (!definition) continue;
+      const linked = set.children.filter((variant) => {
+        const find = (node) =>
+          node.componentPropertyReferences?.[FIELD[property.type]] ===
+          definition.propertyId
+            ? node
+            : node.children.map(find).find(Boolean);
+        return find(variant);
+      });
+      if (linked.length !== set.children.length) {
+        unlinked.push(
+          `${property.name} in ${set.children.length - linked.length} varianten`
+        );
+      }
+    }
+    check(
+      'elke property hangt in elke variant aan een laag',
+      unlinked.length === 0,
+      unlinked.join(', ')
+    );
+
+    // Een instance swap kan alleen op een instance. Was het icoon ingebakken,
+    // dan is er niets te verwisselen.
+    const swaps = declaredHere.filter(
+      (property) => property.type === 'INSTANCE_SWAP'
+    );
+    if (swaps.length) {
+      const notInstances = [];
+      for (const variant of set.children) {
+        const walk = (node) => {
+          if (
+            node.componentPropertyReferences?.mainComponent &&
+            node.type !== 'INSTANCE'
+          ) {
+            notInstances.push(node.name);
+          }
+          node.children.forEach(walk);
+        };
+        walk(variant);
+      }
+      check(
+        'de icoonlagen zijn instances van het icooncomponent',
+        notInstances.length === 0,
+        notInstances.length ? `${notInstances.length} ingebakken` : ''
+      );
+    }
+
+    // De standaardstand van een boolean moet ook op de laag staan, anders toont
+    // de set iets anders dan de property zegt.
+    const booleans = declaredHere.filter(
+      (property) => property.type === 'BOOLEAN'
+    );
+    const wrongDefault = [];
+    for (const property of booleans) {
+      const definition = byName.get(property.name);
+      if (!definition) continue;
+      for (const variant of set.children) {
+        const walk = (node) => {
+          if (
+            node.componentPropertyReferences?.visible ===
+              definition.propertyId &&
+            node.visible !== definition.defaultValue
+          ) {
+            wrongDefault.push(`${property.name} in ${variant.name}`);
+          }
+          node.children.forEach(walk);
+        };
+        walk(variant);
+      }
+    }
+    check(
+      'de lagen staan op de standaardstand van hun boolean',
+      wrongDefault.length === 0,
+      wrongDefault.length ? wrongDefault[0] : ''
+    );
+  }
 
   // Een laag die "icon" heet dwingt een designer het bestand open te trekken om
   // te zien wélk icoon het is.

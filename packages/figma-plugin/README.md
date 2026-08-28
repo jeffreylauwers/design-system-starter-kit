@@ -94,6 +94,46 @@ component set met een `icon`-as: een instance swap property kiest uit
 componenten, en een set van 51 varianten levert in die keuzelijst één regel op
 waarna je alsnog via de variant-dropdown moet zoeken.
 
+### Eén vorm voor alle 51: `Group > Shape`
+
+Elk icooncomponent heeft precies dezelfde laagstructuur:
+
+```
+chevron-right            (component, 24 x 24)
+└── Group
+    └── Shape            (één vector, kleur op fills)
+```
+
+Dat is geen cosmetiek maar de voorwaarde voor een werkende instance swap. Figma
+zoekt de overrides op een instance terug via het **laagpad**. Verschilt dat pad
+per icoon, dan landt de kleuroverride na een swap op een andere laag dan
+bedoeld: het glyph houdt de standaardkleur van het icooncomponent en een andere
+laag krijgt de kleur die voor het glyph bedoeld was. Zichtbaar als een donker
+icoon met een wit kadertje eromheen.
+
+Drie stappen brengen elk icoon in die vorm:
+
+1. **De 24x24-hulppath eruit.** Tabler levert in 31 van de 51 bestanden een
+   `<path stroke="none" d="M0 0h24v24H0z" fill="none"/>` mee die niets tekent
+   en alleen de afmeting vastzet. In Figma is dat wél een extra vectorlaag. De
+   maat komt uit de expliciete `width`/`height`, dus hij kan weg. Dat gebeurt in
+   de generator, zodat het in de JSON-diff te zien is.
+2. **`outlineStroke()`.** Zonder deze stap zit de kleur bij een lijn-icoon op
+   `strokes` en bij een vlak-icoon op `fills`. Een swap tussen die twee laat de
+   override op `fills` nergens landen. Na het omzetten heeft élk icoon één
+   `fills` en geen enkele stroke meer.
+3. **`figma.flatten()` naar één `Shape`, in een `Group`.** Eén override-doel per
+   icoon, en dezelfde vorm die met de hand ook wordt aangehouden, zodat een swap
+   tussen een gegenereerd en een handgemaakt icoon net zo goed werkt.
+
+Het bouwen gebeurt volledig binnen het frame dat `createNodeFromSvg` oplevert;
+pas de afgeronde `Group` verhuist naar het component. Zo wisselt er één node van
+ouder in plaats van alle losse vectoren.
+
+Het gevolg van stap 2 is dat de lijndikte meeschaalt in plaats van vast te
+blijven wanneer een instance kleiner wordt. Voor een icoon is dat het gewenste
+gedrag: een chevron van 21px hoort dunnere lijnen te hebben dan een van 24px.
+
 Twee dingen die anders gaan dan bij een component set:
 
 - **Het component wordt bijgewerkt, niet vervangen.** `createNodeFromSvg`
@@ -101,20 +141,76 @@ Twee dingen die anders gaan dan bij een component set:
   gehangen en het frame gaat weg. De node-id blijft daarmee gelijk, en dat is
   precies wat elke geplaatste instance nodig heeft om eraan te blijven hangen.
   Een nieuw component met dezelfde naam is voor Figma een ánder component.
-- **De pagina wordt niet geopend.** Een component-import zet zijn set op
-  `figma.currentPage`; je hier naartoe slepen zou betekenen dat een Button die
-  je daarna importeert tussen de iconen belandt.
+- **De pagina wordt tijdelijk geopend en daarna teruggezet.** Dat moet wel:
+  `createNodeFromSvg` zet zijn frame op de **huidige** pagina, en
+  `outlineStroke()` blijkt zijn resultaat daar ook neer te kunnen zetten.
+  Bouwen terwijl een andere pagina open staat geeft `flatten` en `group` dus
+  nodes en ouder op verschillende pagina's, en Figma weigert dat met
+  _"Grouped nodes must be in the same page as the parent"_. De pagina die de
+  designer openhad gaat er na afloop weer overheen, want een component-import
+  zet zijn set op `figma.currentPage`; zou de iconpagina open blijven staan,
+  dan belandde een Button tussen de iconen.
 
 De iconen krijgen de neutrale tekstkleur, gebonden aan
 `dsn/Primitives → color/neutral/color-default`, zodat ze de theme-schakelaar
 volgen. Een instance mag die kleur overschrijven; dat is het Figma-equivalent
-van `currentColor`. Alleen de vullingen en lijnen die de SVG daadwerkelijk had
-worden gekleurd, zodat het verschil tussen een gevuld en een lijn-icoon intact
-blijft.
+van `currentColor`. Het verschil tussen een gevuld en een lijn-icoon zit na het
+omzetten naar vlakken in de vórm, niet meer in het veld waar de kleur op staat.
 
 Een icoon dat uit de assets-map verdwijnt blijft in Figma staan, met een
 melding in de log. Automatisch verwijderen zou elke instance ervan detachen, en
 dat is een beslissing van een mens.
+
+## Component properties
+
+De generator declareert per component welke lagen een component property worden
+(`componentSet.componentProperties` in de spec, met een `slot` die naar een
+`data-figma-slot` in de markup wijst). De plugin legt ze na
+`combineAsVariants` op de **set**, niet op de losse varianten, en koppelt in
+elke variant de bijbehorende laag:
+
+| Type            | Veld op de laag | Vereist                      |
+| --------------- | --------------- | ---------------------------- |
+| `TEXT`          | `characters`    | een tekstnode                |
+| `BOOLEAN`       | `visible`       | niets                        |
+| `INSTANCE_SWAP` | `mainComponent` | een **instance**, geen frame |
+
+Button levert daarmee `label`, `showIconStart` / `iconStart` en `showIconEnd` /
+`iconEnd`. De twee icoonslots staan standaard uit; de lagen worden vóór de
+koppeling op die stand gezet, want een laag die niet overeenkomt met de
+standaardwaarde laat de set iets anders zien dan de property zegt.
+
+### Iconen worden instances
+
+Een instance swap verwisselt het `mainComponent` van een instance, dus de
+icoonlagen moeten instances zijn. De plugin zoekt per icoonnaam een component op
+de pagina `dsn/Icons` en plaatst daar een instance van; staat het icoon er niet,
+dan valt hij terug op de ingebakken SVG en meldt dat één keer per icoonnaam.
+
+Dat geldt voor élk icoon in élke component set, niet alleen voor de slots. Een
+Button had zo 81 losse kopieën van dezelfde chevron; nu volgen ze allemaal het
+icooncomponent.
+
+De gemeten kleur blijft er als override overheen liggen, zoals een designer die
+met de hand zou leggen: een icoon in een `strong` Button is wit, niet de
+neutrale tekstkleur van het icooncomponent.
+
+### Alles wat niet lukt is een fout, geen stilte
+
+Een property die niet gelegd kan worden gaat als `error` de log in, met de
+reden: slot ontbreekt in zoveel varianten, laag is geen instance, icoon staat
+niet op `dsn/Icons`, of Figma weigerde de property zelf. Stil overslaan zou
+precies het handwerk opleveren dat na elke import opnieuw gedaan moet worden,
+en dat is aan een set die er verder goed uitziet niet te zien.
+
+### Eén onzekerheid: de waarde van een instance swap
+
+De Plugin API accepteert als standaardwaarde van een `INSTANCE_SWAP` een
+verwijzing naar een component, maar of dat de `key` of de node-id moet zijn
+verschilt per API-versie en per publicatiestatus van het component. De plugin
+probeert daarom eerst de `key` en dan de id, en meldt het als geen van beide
+wordt geaccepteerd. De mock kan dit niet beslissen: dit is het ene punt dat
+alleen in Figma zelf te bevestigen is.
 
 ## Idempotent
 
@@ -143,6 +239,12 @@ af die in Figma echt fouten geven:
 4. `setBoundVariable` op een veld dat niet bindbaar is, of met een variable van
    het verkeerde type (een kleur is geen padding)
 5. padding en `itemSpacing` binden op een frame zonder auto layout
+6. `createNodeFromSvg` en `outlineStroke()` zetten hun resultaat op de huidige
+   pagina, en `flatten` en `group` weigeren nodes die op een andere pagina staan
+   dan hun ouder
+7. een component property koppelen aan een veld dat de node niet heeft
+   (`mainComponent` op iets anders dan een instance), of aan een property die
+   niet op de omvattende set staat
 
 Voor de bindingen controleert de test niet alleen het aantal maar leest hij per
 veld de naam van de variable terug uit de gebouwde boom. Anders zou een import
@@ -162,5 +264,7 @@ Figma laadt.
   dit wél, zie hierboven.
 - **Effect styles.** Box shadows staan in het skip-report en moeten nog
   Figma-effectstijlen worden.
-- **Component properties.** Boolean-slots voor iconen, instance swap en text
-  properties blijven handwerk.
+- **Booleans die tokens veranderen.** `iconOnly`, `loading` en `fullWidth` bij
+  Button hebben eigen tokens en horen daarom op een variant-as, niet op een
+  property; zie de README van `figma-sync`.
+- **Thumbnails.** De thumbnail van een component set blijft handwerk.

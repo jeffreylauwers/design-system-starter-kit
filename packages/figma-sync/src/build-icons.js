@@ -71,6 +71,18 @@ function registryNames() {
 }
 
 /**
+ * De 24x24-hulppath die Tabler in 31 van de 51 bestanden meelevert.
+ *
+ * Hij tekent niets (`fill="none"` en `stroke="none"`) en dient alleen om de
+ * afmeting vast te zetten. In Figma levert hij wel een extra vectorlaag op, en
+ * dat is precies wat een instance swap laat mislukken: het aantal lagen
+ * verschilt dan per icoon, en Figma legt de kleuroverride op de verkeerde laag.
+ * De maat komt hier uit de expliciete `width`/`height`, dus de path kan weg.
+ */
+const BOUNDING_PATH =
+  /<path\s+stroke="none"\s+d="M0 0h24v24H0z"\s+fill="none"\s*\/>/g;
+
+/**
  * Maakt de SVG klaar voor `figma.createNodeFromSvg`.
  *
  * - `class` eruit: de Tabler-klassen zeggen in Figma niets en worden anders
@@ -99,6 +111,7 @@ function normalizeSvg(source) {
   return source
     .replace(opening[0], tag)
     .replace(/\s*\n\s*/g, '')
+    .replace(BOUNDING_PATH, '')
     .trim();
 }
 

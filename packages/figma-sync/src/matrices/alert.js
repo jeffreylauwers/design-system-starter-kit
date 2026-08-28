@@ -22,7 +22,7 @@ const ICONS = {
 const ICON_NAMES = {
   info: 'info-circle',
   positive: 'circle-check',
-  negative: 'alert-circle',
+  negative: 'exclamation-circle',
   warning: 'alert-triangle',
 };
 

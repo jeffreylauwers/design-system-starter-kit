@@ -73,8 +73,38 @@ const AUTO_LAYOUT_FIELDS = new Set([
   'maxHeight',
 ]);
 
+/** De pagina waar een node op staat, of undefined als hij los hangt. */
+function pageOf(node) {
+  let current = node;
+  while (current && current.type !== 'PAGE') current = current.parent;
+  return current;
+}
+
+/**
+ * Figma weigert lagen te groeperen of plat te slaan die op een andere pagina
+ * staan dan de ouder: "Grouped nodes must be in the same page as the parent".
+ * createNodeFromSvg zet zijn frame op de huidige pagina, dus dat gebeurt zodra
+ * er op een andere pagina gebouwd wordt.
+ */
+function assertSamePage(nodes, parent) {
+  const target = pageOf(parent);
+  if (nodes.some((node) => pageOf(node) !== target)) {
+    throw new Error('Grouped nodes must be in the same page as the parent');
+  }
+}
+
 let nextId = 1;
 const id = (prefix) => `${prefix}:${nextId++}`;
+
+/** Velden waar een component property aan gekoppeld kan worden. */
+const FIELD_FOR_PROPERTY_TYPE = {
+  TEXT: 'characters',
+  BOOLEAN: 'visible',
+  INSTANCE_SWAP: 'mainComponent',
+};
+const COMPONENT_PROPERTY_FIELDS = new Set(
+  Object.values(FIELD_FOR_PROPERTY_TYPE)
+);
 
 const loadedFonts = new Set();
 
@@ -155,6 +185,33 @@ class Node {
     }
   }
 
+  /**
+   * Zet de stroke om naar een vulling; het origineel blijft staan. Zonder
+   * stroke is er niets om om te zetten en komt er null terug.
+   *
+   * De nieuwe node landt hier op de **huidige pagina**, niet in de ouder van
+   * het origineel. Dat is wat Figma in de praktijk doet, en de reden dat een
+   * import die op een andere pagina bouwt afbreekt met "Grouped nodes must be
+   * in the same page as the parent". De documentatie is er niet eenduidig
+   * over, dus de mock kiest de ongunstige uitleg: wie daartegen bestand is, is
+   * tegen beide bestand.
+   */
+  outlineStroke() {
+    if (!Array.isArray(this.strokes) || !this.strokes.length) return null;
+    if (!this.parent) {
+      throw new Error('outlineStroke vereist een node in het document');
+    }
+    const outlined = new Node('VECTOR');
+    outlined.name = this.name;
+    outlined.width = this.width;
+    outlined.height = this.height;
+    outlined.x = this.x;
+    outlined.y = this.y;
+    outlined.fills = this.strokes.map((paint) => ({ ...paint }));
+    figma.currentPage.appendChild(outlined);
+    return outlined;
+  }
+
   // minWidth en maxWidth bestaan in Figma alleen op een auto-layout frame of
   // een direct kind daarvan; eraan toewijzen geeft anders een fout.
   set minWidth(value) {
@@ -179,6 +236,100 @@ class Node {
     if (!inAutoLayout) {
       throw new Error(`${field} vereist auto layout`);
     }
+  }
+
+  /**
+   * Figma weigert een reference naar een property die niet op de omvattende
+   * component set staat, en naar een veld dat deze node niet heeft: een
+   * `mainComponent` bestaat alleen op een instance, `characters` alleen op
+   * tekst.
+   */
+  set componentPropertyReferences(value) {
+    for (const [field, propertyId] of Object.entries(value ?? {})) {
+      if (!COMPONENT_PROPERTY_FIELDS.has(field)) {
+        throw new Error(`onbekend veld voor een component property: ${field}`);
+      }
+      if (field === 'mainComponent' && this.type !== 'INSTANCE') {
+        throw new Error(
+          `mainComponent bestaat alleen op een instance, niet op een ${this.type}`
+        );
+      }
+      if (field === 'characters' && this.type !== 'TEXT') {
+        throw new Error(
+          `characters bestaat alleen op een tekstnode, niet op een ${this.type}`
+        );
+      }
+
+      let ancestor = this.parent;
+      while (ancestor && ancestor.type !== 'COMPONENT_SET') {
+        ancestor = ancestor.parent;
+      }
+      if (!ancestor) {
+        throw new Error(
+          `${field}: deze laag hangt niet in een component set, dus er is geen property om naar te wijzen`
+        );
+      }
+      if (!ancestor.componentPropertyDefinitions?.[propertyId]) {
+        throw new Error(`property ${propertyId} bestaat niet op de set`);
+      }
+      const expected =
+        FIELD_FOR_PROPERTY_TYPE[
+          ancestor.componentPropertyDefinitions[propertyId].type
+        ];
+      if (expected !== field) {
+        throw new Error(
+          `${propertyId} is een ${ancestor.componentPropertyDefinitions[propertyId].type}-property en hoort aan ${expected}, niet aan ${field}`
+        );
+      }
+    }
+    this._componentPropertyReferences = value;
+  }
+  get componentPropertyReferences() {
+    return this._componentPropertyReferences;
+  }
+
+  /**
+   * Properties horen op een component of een component set. De naam moet uniek
+   * zijn, en het type van de standaardwaarde moet bij het propertytype passen.
+   */
+  addComponentProperty(name, type, defaultValue, options) {
+    if (this.type !== 'COMPONENT_SET' && this.type !== 'COMPONENT') {
+      throw new Error(`addComponentProperty bestaat niet op een ${this.type}`);
+    }
+    if (!FIELD_FOR_PROPERTY_TYPE[type]) {
+      throw new Error(`onbekend propertytype ${type}`);
+    }
+
+    this.componentPropertyDefinitions = this.componentPropertyDefinitions ?? {};
+    const taken = Object.values(this.componentPropertyDefinitions).some(
+      (definition) => definition.name === name
+    );
+    if (taken) throw new Error(`property ${name} bestaat al op deze set`);
+
+    const expected = { TEXT: 'string', BOOLEAN: 'boolean' }[type];
+    if (expected && typeof defaultValue !== expected) {
+      throw new Error(
+        `${type} verwacht een ${expected} als standaardwaarde, kreeg ${typeof defaultValue}`
+      );
+    }
+    if (type === 'INSTANCE_SWAP') {
+      // De echte API accepteert hier een verwijzing naar een component; wat
+      // de plugin aanlevert moet in elk geval een niet-lege string zijn.
+      if (typeof defaultValue !== 'string' || !defaultValue) {
+        throw new Error(
+          'INSTANCE_SWAP verwacht een verwijzing naar een component als standaardwaarde'
+        );
+      }
+    }
+
+    const propertyId = `${name}#${id('PROP')}`;
+    this.componentPropertyDefinitions[propertyId] = {
+      name,
+      type,
+      defaultValue,
+      preferredValues: options?.preferredValues,
+    };
+    return propertyId;
   }
 
   setBoundVariable(field, variable) {
@@ -227,6 +378,42 @@ class Node {
       throw new Error(`${axis}=FILL vereist een auto-layout ouder`);
     }
   }
+}
+
+/**
+ * Een component heeft een `key` (de verwijzing die een instance swap gebruikt)
+ * en kan instances maken. Een instance is een eigen node met een kopie van de
+ * lagen van het component; overrides op die lagen zijn wat de plugin gebruikt
+ * om een icoon de tekstkleur te geven.
+ */
+class ComponentNode extends Node {
+  constructor() {
+    super('COMPONENT');
+    this.key = id('KEY');
+  }
+
+  createInstance() {
+    const instance = new Node('INSTANCE');
+    instance.mainComponent = this;
+    instance.width = this.width;
+    instance.height = this.height;
+    for (const child of this.children) instance.appendChild(cloneNode(child));
+    return instance;
+  }
+}
+
+/** Diepe kopie van een laag, genoeg om overrides op te kunnen leggen. */
+function cloneNode(node) {
+  const copy = new Node(node.type);
+  copy.name = node.name;
+  copy.width = node.width;
+  copy.height = node.height;
+  copy.x = node.x;
+  copy.y = node.y;
+  copy.fills = node.fills ? node.fills.map((paint) => ({ ...paint })) : [];
+  if (node.strokes) copy.strokes = node.strokes.map((paint) => ({ ...paint }));
+  for (const child of node.children) copy.appendChild(cloneNode(child));
+  return copy;
 }
 
 class TextNode extends Node {
@@ -372,7 +559,7 @@ export const figma = {
     return new TextNode();
   },
   createComponent() {
-    return new Node('COMPONENT');
+    return new ComponentNode();
   },
   createPage() {
     const page = new Node('PAGE');
@@ -389,6 +576,9 @@ export const figma = {
     const node = new Node('FRAME');
     node.isSvg = true;
     node.svg = svg;
+    // Zoals in Figma: het frame wordt op de huidige pagina gezet, niet los
+    // opgeleverd. Zonder dit blijft een cross-page fout hier onzichtbaar.
+    figma.currentPage.appendChild(node);
     // De echte API levert vector-kinderen op. Die zijn nodig om te kunnen
     // controleren of de icoonkleur daadwerkelijk wordt doorgezet: in de
     // browser erft een icoon `currentColor`, in Figma wordt het zwart.
@@ -398,6 +588,44 @@ export const figma = {
     node.appendChild(vector);
     return node;
   },
+  /**
+   * Slaat een aantal lagen plat tot één vector. De echte API eist dat de
+   * lagen in het document staan, en levert een nieuwe node in `parent`.
+   */
+  flatten(nodes, parent) {
+    if (!nodes.length) throw new Error('flatten verwacht minstens één node');
+    if (nodes.some((node) => !node.parent)) {
+      throw new Error('flatten vereist nodes die in het document staan');
+    }
+    assertSamePage(nodes, parent ?? nodes[0].parent);
+
+    const flattened = new Node('VECTOR');
+    flattened.name = nodes[0].name;
+    flattened.x = Math.min(...nodes.map((node) => node.x));
+    flattened.y = Math.min(...nodes.map((node) => node.y));
+    flattened.width = Math.max(...nodes.map((node) => node.width));
+    flattened.height = Math.max(...nodes.map((node) => node.height));
+    // Het resultaat neemt de stijl van de onderste laag over.
+    const source = nodes.find(
+      (node) => Array.isArray(node.fills) && node.fills.length
+    );
+    flattened.fills = source ? source.fills.map((paint) => ({ ...paint })) : [];
+
+    for (const node of nodes) node.remove();
+    (parent ?? nodes[0].parent).appendChild(flattened);
+    return flattened;
+  },
+
+  /** Groepeert lagen die dezelfde ouder hebben. */
+  group(nodes, parent) {
+    if (!nodes.length) throw new Error('group verwacht minstens één node');
+    assertSamePage(nodes, parent);
+    const groupNode = new Node('GROUP');
+    parent.appendChild(groupNode);
+    for (const node of nodes) groupNode.appendChild(node);
+    return groupNode;
+  },
+
   combineAsVariants(components, parent) {
     const set = new Node('COMPONENT_SET');
     parent.appendChild(set);
