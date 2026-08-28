@@ -293,14 +293,22 @@ class VariableCollection {
   }
 }
 
+const rootPage = new Node('PAGE');
+rootPage.name = 'Page 1';
+
+const root = new Node('DOCUMENT');
+root.appendChild(rootPage);
+
 const state = {
   collections: [],
   variables: [],
-  page: new Node('PAGE'),
+  page: rootPage,
+  root,
 };
 
 export const figma = {
-  currentPage: state.page,
+  root,
+  currentPage: rootPage,
   viewport: { scrollAndZoomIntoView() {} },
   ui: { postMessage() {} },
   showUI() {},
@@ -365,6 +373,17 @@ export const figma = {
   },
   createComponent() {
     return new Node('COMPONENT');
+  },
+  createPage() {
+    const page = new Node('PAGE');
+    root.appendChild(page);
+    return page;
+  },
+  async loadAllPagesAsync() {},
+  async setCurrentPageAsync(page) {
+    if (page.type !== 'PAGE')
+      throw new Error('setCurrentPageAsync verwacht een pagina');
+    figma.currentPage = page;
   },
   createNodeFromSvg(svg) {
     const node = new Node('FRAME');

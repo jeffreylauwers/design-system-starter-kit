@@ -68,13 +68,13 @@
 <h1>DSN Sync</h1>
 <p>
   Kies <code>variables.json</code> uit <code>design-tokens/dist/figma/</code>,
-  of een componentbestand uit <code>figma-sync/dist/</code>. Het formaat wordt
-  automatisch herkend.
+  of <code>icons.json</code> en een componentbestand uit
+  <code>figma-sync/dist/</code>. Het formaat wordt automatisch herkend.
 </p>
 <p>
-  <strong>Variables eerst.</strong> De lagen van een component worden aan
-  variables gebonden, dus die moeten al in dit bestand staan. Anders wordt de
-  component-import geweigerd.
+  <strong>Variables eerst.</strong> De lagen worden aan variables gebonden, dus
+  die moeten al in dit bestand staan. Anders wordt de import geweigerd. Sleep
+  je alles in één keer, dan zet de plugin de volgorde zelf goed.
 </p>
 
 <label class="drop" id="drop">
@@ -85,6 +85,16 @@
 <div id="log">Nog niets geïmporteerd.</div>
 
 <script>
+  // Het schema bepaalt wat er geïmporteerd wordt, niet de bestandsnaam.
+  // De volgorde is die van de afhankelijkheden: componenten binden aan
+  // variables, en hun iconen zijn instances van de iconset.
+  const KINDS = {
+    'dsn-figma-variables/1': 'variables',
+    'dsn-figma-icons/1': 'icons',
+    'dsn-figma-components/1': 'components',
+  };
+  const ORDER = ['variables', 'icons', 'components'];
+
   const logElement = document.getElementById('log');
   const drop = document.getElementById('drop');
   const fileInput = document.getElementById('file');
@@ -103,6 +113,8 @@
   }
 
   async function handleFiles(files) {
+    const jobs = [];
+
     for (const file of files) {
       let payload;
       try {
@@ -112,14 +124,7 @@
         continue;
       }
 
-      // Het schema bepaalt wat er geïmporteerd wordt, niet de bestandsnaam.
-      const kind =
-        payload.$schema === 'dsn-figma-variables/1'
-          ? 'variables'
-          : payload.$schema === 'dsn-figma-components/1'
-            ? 'components'
-            : null;
-
+      const kind = KINDS[payload.$schema] ?? null;
       if (!kind) {
         write(
           `${file.name}: onbekend $schema "${payload.$schema ?? 'ontbreekt'}"`,
@@ -128,9 +133,23 @@
         continue;
       }
 
-      write(`> ${file.name}`);
+      jobs.push({ name: file.name, kind, payload });
+    }
+
+    // Een selectie in de bestandskiezer komt op alfabetische volgorde binnen,
+    // en dan zou button.json vóór variables.json gaan en geweigerd worden.
+    jobs.sort((a, b) => ORDER.indexOf(a.kind) - ORDER.indexOf(b.kind));
+
+    for (const job of jobs) {
+      write(`> ${job.name}`);
       parent.postMessage(
-        { pluginMessage: { type: 'import', kind, payload } },
+        {
+          pluginMessage: {
+            type: 'import',
+            kind: job.kind,
+            payload: job.payload,
+          },
+        },
         '*'
       );
     }
