@@ -17,6 +17,7 @@ globalThis.figma = figma;
 
 const { importVariables } = await import('../src/variables.js');
 const { importComponentSet } = await import('../src/components.js');
+const { importIconSet } = await import('../src/icons.js');
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const monorepoRoot = path.resolve(__dirname, '..', '..', '..');
@@ -40,7 +41,9 @@ function read(relative) {
 
 const componentFiles = fs
   .readdirSync(path.join(monorepoRoot, 'packages/figma-sync/dist'))
-  .filter((file) => file.endsWith('.json'));
+  .filter((file) => file.endsWith('.json'))
+  // icons.json heeft een eigen schema en een eigen sectie hieronder.
+  .filter((file) => file !== 'icons.json');
 
 // =============================================================================
 // Volgorde: componenten zonder variables
@@ -60,6 +63,14 @@ try {
   refused = /variables\.json/.test(error.message);
 }
 check('componenten importeren zonder variables wordt geweigerd', refused);
+
+let iconsRefused = false;
+try {
+  await importIconSet(read('packages/figma-sync/dist/icons.json'), log);
+} catch (error) {
+  iconsRefused = /variables\.json/.test(error.message);
+}
+check('iconen importeren zonder variables wordt geweigerd', iconsRefused);
 
 // =============================================================================
 // Variables
@@ -154,6 +165,117 @@ check(
   'tweede import dupliceert niets',
   state.variables.length === beforeRerun,
   `${state.variables.length} variables`
+);
+
+// =============================================================================
+// Iconen
+// =============================================================================
+
+// Vóór de componenten: straks zijn de iconen in een Button instances van deze
+// componenten, en dan moeten ze er al staan.
+console.log('\n=== icons.json ===');
+const iconsPayload = read('packages/figma-sync/dist/icons.json');
+const icons = await importIconSet(iconsPayload, log);
+
+const iconsPage = state.root.children.find(
+  (page) => page.name === iconsPayload.iconSet.page
+);
+check(
+  'eigen pagina aangemaakt',
+  Boolean(iconsPage),
+  iconsPage ? iconsPage.name : 'ontbreekt'
+);
+check(
+  'alle iconen als component',
+  iconsPage &&
+    iconsPage.children.filter((node) => node.type === 'COMPONENT').length ===
+      iconsPayload.iconSet.icons.length,
+  `${iconsPage?.children.length ?? 0}/${iconsPayload.iconSet.icons.length}`
+);
+
+// De component-import zet zijn set op figma.currentPage. Zou de iconimport de
+// pagina omzetten, dan belandde een Button tussen de iconen.
+check(
+  'de iconimport laat de open pagina met rust',
+  figma.currentPage === state.page,
+  figma.currentPage.name
+);
+
+// De namen zijn het koppelstuk tussen code en Figma: een instance swap wijst
+// straks een icoon aan op naam.
+const registrySource = fs.readFileSync(
+  path.join(
+    monorepoRoot,
+    'packages/components-react/src/Icon/icon-registry.generated.ts'
+  ),
+  'utf8'
+);
+const registryNames = [
+  ...registrySource
+    .match(/export type IconName =([\s\S]*?);/)[1]
+    .matchAll(/'([^']+)'/g),
+].map((match) => match[1]);
+const figmaNames = (iconsPage?.children ?? []).map((node) => node.name);
+check(
+  'namen komen overeen met icon-registry.generated.ts',
+  registryNames.length === figmaNames.length &&
+    registryNames.every((name) => figmaNames.includes(name)),
+  `${figmaNames.length} in Figma, ${registryNames.length} in de registry`
+);
+
+// Zonder wrapper: createNodeFromSvg levert een frame op, en dat frame hoort er
+// niet tussen te blijven staan.
+const wrapped = (iconsPage?.children ?? []).filter((component) =>
+  component.children.some((child) => child.isSvg)
+);
+check(
+  'geen wrapperframe rond de vectoren',
+  wrapped.length === 0,
+  wrapped.length ? `${wrapped.length} iconen` : ''
+);
+
+// Een icoon dat niet aan een variable hangt blijft zwart als het bestand naar
+// dark schakelt.
+check(
+  'iconen aan een kleur-variable gebonden',
+  icons.bindings.bound === iconsPayload.iconSet.icons.length,
+  `${icons.bindings.bound}/${iconsPayload.iconSet.icons.length}`
+);
+check(
+  'geen ontbrekende variables',
+  icons.bindings.missing.length === 0,
+  icons.bindings.missing.join(', ')
+);
+
+// Idempotent, en strenger dan bij de variables: de node-id moet gelijk blijven.
+// Een nieuw component met dezelfde naam is voor Figma een ander component, en
+// dan raakt elke geplaatste instance los.
+const idsBefore = new Map(
+  (iconsPage?.children ?? []).map((node) => [node.name, node.id])
+);
+const moved = iconsPage.children[0];
+moved.x = 999;
+
+const again = await importIconSet(iconsPayload, log);
+check(
+  'tweede import dupliceert niets',
+  iconsPage.children.length === iconsPayload.iconSet.icons.length,
+  `${iconsPage.children.length} componenten`
+);
+check(
+  'tweede import werkt bij in plaats van te vervangen',
+  again.updated === iconsPayload.iconSet.icons.length && again.created === 0,
+  `${again.updated} bijgewerkt, ${again.created} nieuw`
+);
+check(
+  'instances blijven aan hetzelfde component hangen',
+  iconsPage.children.every((node) => idsBefore.get(node.name) === node.id),
+  'node-ids ongewijzigd'
+);
+check(
+  'een verplaatst icoon wordt niet teruggeduwd',
+  moved.x === 999,
+  `x=${moved.x}`
 );
 
 // =============================================================================

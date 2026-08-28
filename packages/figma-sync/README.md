@@ -9,11 +9,12 @@ niet beschikbaar, dus de Plugin API is het enige schrijfpad. Door de generatie
 in de repo te houden en het schrijven in de plugin, blijft alles wat naar Figma
 gaat reviewbaar in een PR.
 
-## De twee outputs
+## De drie outputs
 
 | Bestand                                   | Wordt gegenereerd door        | Bevat                                    |
 | ----------------------------------------- | ----------------------------- | ---------------------------------------- |
 | `design-tokens/dist/figma/variables.json` | `pnpm build:tokens`           | Variable collections, modes en aliassen  |
+| `figma-sync/dist/icons.json`              | `pnpm build:figma-icons`      | Eén node spec per SVG uit de assets-map  |
 | `figma-sync/dist/{component}.json`        | `pnpm build:figma-components` | Node specs per variant van een component |
 
 Naast `variables.json` komt `variables-report.json` te staan met alles wat
@@ -59,6 +60,7 @@ Of per stap:
 ```bash
 pnpm build:tokens                      # de gewone token-build
 pnpm build:figma-variables             # variables.json + report
+pnpm build:figma-icons                 # icons.json uit de assets-map
 pnpm build:figma-components            # alle matrices
 pnpm build:figma-components button     # één component
 pnpm build:figma-plugin                # de plugin-bundle
@@ -221,10 +223,10 @@ icoon het is:
 <svg class="dsn-icon" data-icon="chevron-right" aria-hidden="true" …></svg>
 ```
 
-Het icoon blijft wel een frame met de vectoren erin: dat is wat
-`createNodeFromSvg` oplevert, en het platslaan tot één vector zou de
-lijndikte van onze stroke-iconen niet meeschalen. Eén laag per icoon vraagt om
-echte icooncomponenten met instances.
+Het icoon blijft in een component set wel een frame met de vectoren erin: dat
+is wat `createNodeFromSvg` oplevert, en het platslaan tot één vector zou de
+lijndikte van onze stroke-iconen niet meeschalen. In de iconset gaat dat frame
+er wél af, omdat het component daar zelf het icoon is.
 
 ### Drie valkuilen bij het meten
 
@@ -244,6 +246,35 @@ Plus een vierde die geen meetfout is maar wel dezelfde vorm heeft: `body.css`
 hangt aan de klasse `.dsn-body`, niet aan het element. Zonder die klasse op de
 meetpagina erft alles zonder eigen font-family-token het browserstandaard­
 lettertype, en meet je Times.
+
+## Hoe de icongeneratie werkt
+
+`build-icons.js` is een ander type generator dan `build-components.js`. Daar
+wordt in een browser gemeten omdat de eindwaarde pas uit de cascade volgt; hier
+is de bron een SVG-bestand met een vaste `viewBox`. Er valt niets te meten, dus
+er wordt niet gemeten.
+
+De generator leest `components-html/assets/icons/*.svg`, normaliseert de
+`<svg>`-tag (Tabler-klassen eruit, `width` en `height` expliciet op 24) en
+schrijft één spec per icoon. Een nieuw icoon in die map komt er zonder verdere
+stap bij, precies zoals bij `icon-registry.generated.ts`.
+
+De namen komen uit de bestandsnamen, net als in die registry, en worden er
+daarna **tegenaan gehouden**: staat er iets in de een en niet in de ander, dan
+komt dat als waarschuwing in de build. Anders zou een instance swap straks een
+icoon aanwijzen dat in Figma anders heet dan in de code.
+
+### Kleur: een gekozen standaard, geen gemeten binding
+
+De vectoren krijgen `dsn/Primitives → color/neutral/color-default`. Dat is
+bewust géén afgeleide van een meting: een losstaand icooncomponent heeft geen
+tekstouder om zijn kleur van te erven, dus er is niets om tegen af te zetten.
+De verificatie uit [DR-2026-06](../../docs/decisions/DR-2026-06-figma-bindingen-meten-plus-cssom.md)
+geldt hier dus niet; dit is de standaardkleur waar een instance overheen mag
+schrijven, zoals `currentColor` in de browser.
+
+Wat de plugin er verder mee doet (idempotentie, laagstructuur, de pagina
+`dsn/Icons`) staat in [de README van figma-plugin](../figma-plugin/README.md).
 
 ## Een component toevoegen
 

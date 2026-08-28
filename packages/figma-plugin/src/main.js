@@ -8,6 +8,7 @@
 
 import { importVariables } from './variables.js';
 import { importComponentSet } from './components.js';
+import { importIconSet } from './icons.js';
 
 figma.showUI(__html__, { width: 420, height: 520 });
 
@@ -26,20 +27,25 @@ function createLog() {
   };
 }
 
+async function runImport(message, log) {
+  if (message.kind === 'variables') {
+    const result = await importVariables(message.payload, log);
+    return `${result.aliasCount} aliassen gelegd`;
+  }
+  if (message.kind === 'icons') {
+    const result = await importIconSet(message.payload, log);
+    return `${result.created} iconen toegevoegd, ${result.updated} bijgewerkt`;
+  }
+  const result = await importComponentSet(message.payload, log);
+  return `${result.variants} varianten, ${result.bindings.bound} bindingen`;
+}
+
 async function handleImport(message) {
   const log = createLog();
   const started = Date.now();
 
   try {
-    let summary;
-
-    if (message.kind === 'variables') {
-      const result = await importVariables(message.payload, log);
-      summary = `${result.aliasCount} aliassen gelegd`;
-    } else {
-      const result = await importComponentSet(message.payload, log);
-      summary = `${result.variants} varianten, ${result.bindings.bound} bindingen`;
-    }
+    const summary = await runImport(message, log);
 
     const seconds = ((Date.now() - started) / 1000).toFixed(1);
     const errors = log.entries.filter(
@@ -57,8 +63,20 @@ async function handleImport(message) {
   }
 }
 
+/**
+ * Meerdere bestanden tegelijk laten vallen levert meerdere berichten op. Die
+ * moeten op volgorde blijven: componenten binden aan variables die er al
+ * moeten zijn, en straks aan iconen die er al moeten staan. Zonder deze wachtrij
+ * lopen de imports door elkaar heen en hangt het van de bestandsgrootte af of
+ * de volgorde klopt.
+ */
+let queue = Promise.resolve();
+
 figma.ui.onmessage = (message) => {
-  if (message.type === 'import') return handleImport(message);
+  if (message.type === 'import') {
+    queue = queue.then(() => handleImport(message));
+    return queue;
+  }
   if (message.type === 'close') return figma.closePlugin();
   return undefined;
 };

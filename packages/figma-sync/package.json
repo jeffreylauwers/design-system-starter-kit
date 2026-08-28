@@ -6,6 +6,7 @@
   "type": "module",
   "scripts": {
     "build": "node src/build-components.js",
+    "build:icons": "node src/build-icons.js",
     "clean": "rm -rf dist"
   },
   "dependencies": {
