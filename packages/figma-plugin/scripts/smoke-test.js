@@ -346,6 +346,31 @@ for (const file of componentFiles) {
     doubleWrapped.length ? `${doubleWrapped.length} varianten` : ''
   );
 
+  // Een HUG-frame rekent zijn maat opnieuw uit, dus een min-maat die niet
+  // aankomt verdwijnt geruisloos: de button wordt dan lager dan zijn aanraakdoel.
+  const missingMinimums = [];
+  const checkMinimums = (node, spec) => {
+    for (const field of ['minWidth', 'minHeight']) {
+      if (spec?.[field] === undefined) continue;
+      if (node?.[field] !== spec[field]) {
+        missingMinimums.push(`${spec.name}.${field}=${spec[field]}`);
+      }
+    }
+    (spec?.children ?? []).forEach((childSpec, index) =>
+      checkMinimums(node?.children?.[index], childSpec)
+    );
+  };
+  payload.componentSet.components.forEach((component, index) =>
+    checkMinimums(built(index), component.node)
+  );
+  check(
+    'minimum-maten toegepast',
+    missingMinimums.length === 0,
+    missingMinimums.length
+      ? `${missingMinimums.length}x, o.a. ${missingMinimums[0]}`
+      : ''
+  );
+
   check(
     'de component set heet naar de CSS-klasse',
     payload.componentSet.name.startsWith('dsn-'),

@@ -273,6 +273,26 @@ function applyAutoLayout(frame, spec) {
   }
 }
 
+/**
+ * Minimum-maten uit de CSS.
+ *
+ * Een HUG-frame rekent zijn maat opnieuw uit content plus padding, dus zonder
+ * deze zou een `min-block-size` uit de CSS in Figma verdwijnen en zou de button
+ * onder zijn aanraakdoel uitkomen.
+ */
+function applyMinimumSizes(frame, spec, log) {
+  for (const field of ['minWidth', 'minHeight']) {
+    if (spec[field] === undefined) continue;
+    try {
+      frame[field] = spec[field];
+    } catch (error) {
+      log.warn(
+        `${spec.name ?? spec.type}: ${field} niet toegestaan: ${error.message}`
+      );
+    }
+  }
+}
+
 /** Plaatsing van een kind binnen zijn ouder: absoluut of in een gridcel. */
 function applyPlacement(node, spec, log) {
   try {
@@ -392,8 +412,9 @@ function applyFrame(frame, spec, context) {
   if (spec.width && spec.height) frame.resize(spec.width, spec.height);
 
   applyAutoLayout(frame, spec);
-  // Na applyAutoLayout: padding en itemSpacing bestaan pas als het frame een
-  // layoutMode heeft.
+  // Na applyAutoLayout: padding, itemSpacing en de minimum-maten bestaan pas
+  // als het frame een layoutMode heeft.
+  applyMinimumSizes(frame, spec, context.log);
   applyBindings(frame, spec, context);
 
   for (const child of spec.children ?? []) buildNode(child, frame, context);

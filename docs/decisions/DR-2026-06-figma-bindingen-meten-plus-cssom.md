@@ -93,7 +93,7 @@ Bijbehorende deelbesluiten:
 | `figma-sync/src/bindings.js`       | Kiest het Figma-veld, verifieert de waarde, houdt het report bij         |
 | `figma-plugin/src/components.js`   | Legt de bindingen, weigert bij ontbrekende variables                     |
 
-Omvang bij invoering: 1499 bindingen over vijf componenten en 108 varianten, met 7 eigenschappen die een vaste waarde houden en verantwoord worden in het report.
+Omvang bij invoering: 1661 bindingen over vijf componenten en 108 varianten, met 7 eigenschappen die een vaste waarde houden en verantwoord worden in het report.
 
 ---
 

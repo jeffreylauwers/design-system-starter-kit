@@ -52,6 +52,8 @@ const CAPTURED_PROPERTIES = [
   'paddingRight',
   'paddingBottom',
   'paddingLeft',
+  'minWidth',
+  'minHeight',
   'backgroundColor',
   'borderTopWidth',
   'borderRightWidth',

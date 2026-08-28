@@ -57,6 +57,8 @@ const FRAME_FIELDS = [
     property: 'border-bottom-left-radius',
     kind: 'number',
   },
+  { field: 'minWidth', property: 'min-width', kind: 'number' },
+  { field: 'minHeight', property: 'min-height', kind: 'number' },
   { field: 'paddingTop', property: 'padding-top', kind: 'number' },
   { field: 'paddingRight', property: 'padding-right', kind: 'number' },
   { field: 'paddingBottom', property: 'padding-bottom', kind: 'number' },
@@ -91,15 +93,17 @@ function measuredValue(spec, field) {
 
 /**
  * Velden die in Figma alleen bestaan bij auto layout. Op een frame zonder
- * layoutMode is er domweg geen padding om aan te binden, ook al staat er in de
- * CSS wel een token.
+ * layoutMode is er domweg geen padding of minimum-maat om aan te binden, ook al
+ * staat er in de CSS wel een token.
  */
 function unavailableReason(spec, field) {
   const needsAutoLayout =
-    field.startsWith('padding') || field === 'itemSpacing';
+    field.startsWith('padding') ||
+    field.startsWith('min') ||
+    field === 'itemSpacing';
   if (!needsAutoLayout) return null;
   if (spec.layoutMode && spec.layoutMode !== 'NONE') return null;
-  return 'de node heeft geen auto layout, dus Figma kent hier geen padding';
+  return `de node heeft geen auto layout, dus Figma kent hier geen ${field}`;
 }
 
 /**

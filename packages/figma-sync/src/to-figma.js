@@ -223,6 +223,32 @@ function strokesFrom(styles, warnings, pathLabel) {
   };
 }
 
+/**
+ * Minimum-maten uit de CSS.
+ *
+ * Zonder deze wordt een `min-block-size` stil weggegooid: het frame is in Figma
+ * HUG, dus die rekent de hoogte opnieuw uit content plus padding en komt lager
+ * uit dan de browser. Bij Button scheelt dat het verschil tussen 42px en het
+ * aanraakdoel van 48px uit WCAG 2.5.5.
+ *
+ * Alleen een pixelmaat telt: `auto` is de standaard voor een flex-item, en een
+ * percentage is in Figma layoutgedrag en geen maat.
+ */
+function minimumSizesFrom(styles, layout) {
+  // In Figma bestaan minWidth en minHeight alleen op een auto-layout frame.
+  if (!layout.layoutMode || layout.layoutMode === 'NONE') return {};
+
+  const pixels = (value) =>
+    /^-?[\d.]+px$/.test(String(value).trim()) && px(value) > 0
+      ? px(value)
+      : undefined;
+
+  return {
+    minWidth: pixels(styles.minWidth),
+    minHeight: pixels(styles.minHeight),
+  };
+}
+
 /** Figma scheidt kleur en alpha: opacity zit op de paint, niet in de kleur. */
 function rgbOf({ r, g, b }) {
   return { r, g, b };
@@ -474,6 +500,7 @@ function convertNode(node, wideNode, warnings, pathLabel, bindings) {
     x: node.rect.x,
     y: node.rect.y,
     ...autoLayout,
+    ...minimumSizesFrom(styles, autoLayout),
     ...cornerRadiusFrom(styles, node.rect),
     fills: paintFrom(styles.backgroundColor),
     ...(strokes ?? {}),

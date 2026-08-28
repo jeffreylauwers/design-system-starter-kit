@@ -14,7 +14,8 @@
  *    tracks horen in `gridColumnSizes` en `gridRowSizes`
  * 6. `setBoundVariable` accepteert alleen bestaande velden, en het type van de
  *    variable moet bij het veld passen (een kleur is geen padding)
- * 7. padding en itemSpacing bestaan alleen op een frame met auto layout
+ * 7. padding, itemSpacing en de minimum-maten bestaan alleen op een frame met
+ *    auto layout
  */
 
 /**
@@ -66,6 +67,10 @@ const AUTO_LAYOUT_FIELDS = new Set([
   'paddingRight',
   'paddingBottom',
   'paddingLeft',
+  'minWidth',
+  'maxWidth',
+  'minHeight',
+  'maxHeight',
 ]);
 
 let nextId = 1;
@@ -147,6 +152,32 @@ class Node {
   remove() {
     if (this.parent) {
       this.parent.children = this.parent.children.filter((c) => c !== this);
+    }
+  }
+
+  // minWidth en maxWidth bestaan in Figma alleen op een auto-layout frame of
+  // een direct kind daarvan; eraan toewijzen geeft anders een fout.
+  set minWidth(value) {
+    this.#assertAutoLayoutField('minWidth');
+    this._minWidth = value;
+  }
+  get minWidth() {
+    return this._minWidth;
+  }
+  set minHeight(value) {
+    this.#assertAutoLayoutField('minHeight');
+    this._minHeight = value;
+  }
+  get minHeight() {
+    return this._minHeight;
+  }
+
+  #assertAutoLayoutField(field) {
+    const inAutoLayout =
+      this.layoutMode !== 'NONE' ||
+      (this.parent && this.parent.layoutMode !== 'NONE');
+    if (!inAutoLayout) {
+      throw new Error(`${field} vereist auto layout`);
     }
   }
 

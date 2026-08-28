@@ -77,16 +77,17 @@ rendert `extract.js` elke variant in een echte browser en leest de _computed_
 styles uit. Dat levert meteen de flexbox-informatie op die vrijwel 1-op-1 op
 Figma auto layout past:
 
-| CSS                                | Figma                               |
-| ---------------------------------- | ----------------------------------- |
-| `display: flex` + `flex-direction` | `layoutMode` HORIZONTAL / VERTICAL  |
-| `gap`                              | `itemSpacing`                       |
-| `padding-*`                        | `padding*`                          |
-| `justify-content` / `align-items`  | `primary` / `counterAxisAlignItems` |
-| `display: inline-flex`             | `layoutSizingHorizontal: HUG`       |
-| `display: grid` + `grid-column`    | `layoutMode: GRID` + grid anchors   |
-| `position: absolute`               | `layoutPositioning: ABSOLUTE`       |
-| kind vult de binnenbreedte         | `layoutSizingHorizontal: FILL`      |
+| CSS                                  | Figma                               |
+| ------------------------------------ | ----------------------------------- |
+| `display: flex` + `flex-direction`   | `layoutMode` HORIZONTAL / VERTICAL  |
+| `gap`                                | `itemSpacing`                       |
+| `padding-*`                          | `padding*`                          |
+| `justify-content` / `align-items`    | `primary` / `counterAxisAlignItems` |
+| `display: inline-flex`               | `layoutSizingHorizontal: HUG`       |
+| `display: grid` + `grid-column`      | `layoutMode: GRID` + grid anchors   |
+| `position: absolute`                 | `layoutPositioning: ABSOLUTE`       |
+| `min-block-size` / `min-inline-size` | `minHeight` / `minWidth`            |
+| kind vult de binnenbreedte           | `layoutSizingHorizontal: FILL`      |
 
 Een element dat alleen tekst bevat en zelf niets tekent, wordt één TEXT-node in
 plaats van een frame met een tekstnode erin. Zonder die stap krijgt elke `<span>`
@@ -183,6 +184,17 @@ De vier terugkerende redenen:
 Een kleur die alleen in de _gemeten_ mode transparant is wordt wél gebonden: in
 een andere mode is hij zichtbaar, en zonder binding zou het component daar leeg
 blijven. De plugin maakt de paint dan aan.
+
+#### Minimum-maten zijn niet optioneel
+
+Een frame in Figma staat op HUG en rekent zijn maat dus opnieuw uit content plus
+padding. De gemeten hoogte wordt daarbij weggegooid. Bij Button betekende dat
+42px in plaats van de 48px die `min-block-size` in de browser afdwingt, en
+daarmee een aanraakdoel onder [WCAG 2.5.5](https://www.w3.org/WAI/WCAG22/quickref/#target-size-minimum).
+
+`minWidth` en `minHeight` gaan daarom expliciet mee in de spec, en worden net als
+de rest aan hun token gebonden. Ze bestaan in Figma alleen op een auto-layout
+frame; op een frame zonder layoutMode komen ze in het report.
 
 ### Laagstructuur
 

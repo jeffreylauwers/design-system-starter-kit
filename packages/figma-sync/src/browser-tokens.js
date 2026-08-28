@@ -40,6 +40,8 @@ export const TRACKED_PROPERTIES = [
   'padding-left',
   'row-gap',
   'column-gap',
+  'min-width',
+  'min-height',
   'font-size',
 ];
 
@@ -336,6 +338,14 @@ export function createTokenReader(trackedProperties) {
       const side = sides[borderLogicalSide[1]];
       if (!borderLogicalSide[2]) return expandBorder([side], value);
       return [[`border-${side}${borderLogicalSide[2]}`, value]];
+    }
+
+    // -- min-size -------------------------------------------------------------
+    const minLogical = name.match(/^min-(block|inline)-size$/);
+    if (minLogical) {
+      // Binnen writing-mode horizontal-tb is block de hoogte en inline de
+      // breedte; de richting (ltr/rtl) doet er voor een maat niet toe.
+      return [[minLogical[1] === 'block' ? 'min-height' : 'min-width', value]];
     }
 
     // -- gap ------------------------------------------------------------------
