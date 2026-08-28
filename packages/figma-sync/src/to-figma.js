@@ -7,6 +7,8 @@
  * laten meeschalen in plaats van een dood, absoluut gepositioneerd blok.
  */
 
+import { bindingsFor, createBindingReport } from './bindings.js';
+
 // =============================================================================
 // WAARDE-CONVERSIE
 // =============================================================================
@@ -392,15 +394,16 @@ function applyChildPlacement(
  * @param {object} node computed DOM-node
  * @param {string[]} warnings verzamelt alles wat niet exact vertaald kon worden
  * @param {string} pathLabel leesbaar pad voor in de waarschuwing
+ * @param {object} [bindings] variable-index en report, zie bindings.js
  */
-function convertNode(node, wideNode, warnings, pathLabel) {
+function convertNode(node, wideNode, warnings, pathLabel, bindings) {
   if (node.kind === 'text') {
     // Een kale tekstnode erft zijn stijl van de ouder; die wordt daar gezet.
     return { type: 'TEXT', characters: node.text };
   }
 
   if (node.kind === 'vector') {
-    return {
+    const vector = {
       type: 'VECTOR',
       name: 'icon',
       width: node.rect.width,
@@ -409,6 +412,8 @@ function convertNode(node, wideNode, warnings, pathLabel) {
       svg: node.svg,
       fills: paintFrom(node.styles.color),
     };
+    vector.boundVariables = bindVariables(vector, node.tokens, bindings);
+    return vector;
   }
 
   const { styles } = node;
@@ -426,6 +431,9 @@ function convertNode(node, wideNode, warnings, pathLabel) {
     px(styles.borderTopLeftRadius) === 0;
 
   if (onlyChildIsText && drawsNothing) {
+    // Bewust zonder bindingen: de ouder overschrijft de tekststijl zo meteen
+    // met de zijne, en dan zou een hier gelegde binding een andere waarde
+    // aanwijzen dan er in de spec staat. De ouder legt ze.
     return {
       type: 'TEXT',
       name: node.classes[0] ?? node.children[0].text.slice(0, 24),
@@ -473,12 +481,24 @@ function convertNode(node, wideNode, warnings, pathLabel) {
     clipsContent: styles.overflow === 'hidden',
     children: children.map(({ child, wide }, index) => {
       const childLabel = `${pathLabel} > ${child.classes?.[0] ?? child.kind ?? child.tag ?? index}`;
-      const converted = convertNode(child, wide, warnings, childLabel);
+      const converted = convertNode(
+        child,
+        wide,
+        warnings,
+        childLabel,
+        bindings
+      );
       if (converted.type === 'TEXT') {
-        // Tekst erft de typografie van het element waarin hij staat.
+        // Tekst erft de typografie van het element waarin hij staat, dus ook
+        // de tokens daarvan. Zo wijzen spec en binding dezelfde waarde aan.
         Object.assign(converted, textStyleFrom(styles), {
           name: converted.characters.slice(0, 24),
         });
+        converted.boundVariables = bindVariables(
+          converted,
+          node.tokens,
+          bindings
+        );
       }
       if (stretchChildren) converted.layoutAlign = 'STRETCH';
       applyChildPlacement(
@@ -501,7 +521,17 @@ function convertNode(node, wideNode, warnings, pathLabel) {
     hasAutoLayout && styles.display === 'inline-flex' ? 'HUG' : 'FIXED';
   figmaNode.layoutSizingVertical = hasAutoLayout ? 'HUG' : 'FIXED';
 
+  // Als laatste: de bindingen worden geverifieerd tegen de waarden die
+  // hierboven in de spec terecht zijn gekomen.
+  figmaNode.boundVariables = bindVariables(figmaNode, node.tokens, bindings);
+
   return figmaNode;
+}
+
+/** Wikkel zodat convertNode niets van de vorm van het bindings-object hoeft te weten. */
+function bindVariables(spec, tokens, bindings) {
+  if (!bindings) return undefined;
+  return bindingsFor(spec, tokens, bindings.index, bindings.report);
 }
 
 /**
@@ -509,9 +539,13 @@ function convertNode(node, wideNode, warnings, pathLabel) {
  *
  * @param {object} matrix de matrixdefinitie
  * @param {Array<{variant: object, tree: object}>} extracted
+ * @param {object} [variableIndex] uit variable-index.js. Ontbreekt hij, dan
+ *   worden er geen variables gebonden en houdt alles zijn vaste waarde.
  */
-export function toComponentSet(matrix, extracted) {
+export function toComponentSet(matrix, extracted, variableIndex) {
   const warnings = [];
+  const report = createBindingReport();
+  const bindings = variableIndex ? { index: variableIndex, report } : undefined;
 
   const components = extracted.map(({ variant, tree, wideTree }) => {
     const label = Object.entries(variant)
@@ -521,8 +555,14 @@ export function toComponentSet(matrix, extracted) {
       tree,
       wideTree,
       warnings,
-      `${matrix.component}[${label}]`
+      `${matrix.component}[${label}]`,
+      bindings
     );
+    // Een component dat in zijn geheel tot tekst inklapt heeft geen ouder die
+    // de binding voor hem kan leggen.
+    if (node.type === 'TEXT') {
+      node.boundVariables = bindVariables(node, tree.tokens, bindings);
+    }
     return { name: label, variantProperties: variant, node };
   });
 
@@ -536,5 +576,7 @@ export function toComponentSet(matrix, extracted) {
     },
     // Ontdubbeld: dezelfde waarschuwing komt per variant terug.
     warnings: [...new Set(warnings)],
+    // Wat er aan variables gebonden is, en wat een vaste waarde hield.
+    bindings: { ...report.summary(), modes: variableIndex?.modes },
   };
 }

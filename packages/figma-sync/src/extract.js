@@ -12,6 +12,8 @@ import path from 'path';
 import { fileURLToPath } from 'url';
 import { chromium } from 'playwright';
 
+import { createTokenReader, TRACKED_PROPERTIES } from './browser-tokens.js';
+
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const monorepoRoot = path.resolve(__dirname, '..', '..', '..');
 
@@ -113,6 +115,9 @@ function domWalker([properties, hiddenClass]) {
         height: Math.round(rect.height * 100) / 100,
       },
       styles: readStyles(element),
+      // Welk token elke gemeten eigenschap leverde; de basis voor de
+      // variable-bindingen in Figma.
+      tokens: window.__dsnReadTokenSources(element),
       children: [],
     };
 
@@ -196,6 +201,11 @@ export async function extractMatrix(matrix) {
   const browser = await chromium.launch();
   const page = await browser.newPage({ viewport });
 
+  // De tokenlezer gaat als tekst de pagina in. Hij wordt per variant opnieuw
+  // geïnstalleerd: `setContent` vervangt de stylesheets, en de lezer bouwt
+  // daar bij het eerste gebruik een cascade-index van.
+  const installTokenReader = `window.__dsnReadTokenSources = (${createTokenReader.toString()})(${JSON.stringify(TRACKED_PROPERTIES)});`;
+
   const combinations = cartesian(matrix.axes);
   const results = [];
 
@@ -254,6 +264,8 @@ export async function extractMatrix(matrix) {
       .map((value) => matrix.pseudoStates?.[value])
       .find(Boolean);
     if (pseudo === 'hover') await page.hover('[data-figma-root]');
+
+    await page.evaluate(installTokenReader);
 
     return page.evaluate(domWalker, [
       CAPTURED_PROPERTIES,

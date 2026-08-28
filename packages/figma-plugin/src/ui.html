@@ -67,9 +67,14 @@
 
 <h1>DSN Sync</h1>
 <p>
-  Kies <code>variables.json</code> uit <code>design-tokens/dist/figma/</code>, of
-  een componentbestand uit <code>figma-sync/dist/</code>. Het formaat wordt
+  Kies <code>variables.json</code> uit <code>design-tokens/dist/figma/</code>,
+  of een componentbestand uit <code>figma-sync/dist/</code>. Het formaat wordt
   automatisch herkend.
+</p>
+<p>
+  <strong>Variables eerst.</strong> De lagen van een component worden aan
+  variables gebonden, dus die moeten al in dit bestand staan. Anders wordt de
+  component-import geweigerd.
 </p>
 
 <label class="drop" id="drop">
@@ -124,7 +129,10 @@
       }
 
       write(`> ${file.name}`);
-      parent.postMessage({ pluginMessage: { type: 'import', kind, payload } }, '*');
+      parent.postMessage(
+        { pluginMessage: { type: 'import', kind, payload } },
+        '*'
+      );
     }
   }
 

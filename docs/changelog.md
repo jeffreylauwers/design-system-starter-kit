@@ -149,6 +149,16 @@ Nog niet gepubliceerde wijzigingen. Schrijf nieuwe changelog-entries hieronder; 
   - Alles wat niet naar een Figma-variable te vertalen is (box shadows, transitions, `ch`-eenheden) staat met reden in `dist/figma/variables-report.json`
   - De Figma-build staat bewust los van `build:tokens`: de token-CSS is het hoofdproduct en hoort niet om te vallen door een generator die er alleen maar naast draait
 
+#### Changed
+
+- **Componentlagen volgen de theme-schakelaar** (issue [#321](https://github.com/jeffreylauwers/design-system-starter-kit/issues/321), [DR-2026-06](./decisions/DR-2026-06-figma-bindingen-meten-plus-cssom.md)): de variables en de component sets stonden los van elkaar. Een gegenereerde Button had een fill van `#1b59a4` in plaats van een verwijzing naar `dsn/Components → button/strong/background-color`, dus schakelen naar `start-dark` veranderde er niets aan. De lagen worden nu aan variables gebonden: 683 bindingen over de vijf componenten.
+  - Gebonden velden: `fills`, `strokes`, `strokeWeight`, de vier hoekradii, de vier paddings, `itemSpacing` en `fontSize`
+  - De naam van het token komt uit de authored CSS (de generator speelt de cascade na en leest de `var()`-keten van de winnende declaratie), de waarde blijft gemeten. Het token moet die gemeten waarde reproduceren voordat er gebonden wordt, dus een misrekening in de specificiteit kan wel een binding missen maar geen verkeerde binding leggen
+  - Wat een vaste waarde houdt staat per component in `dist/{component}.json` onder `bindings.unbound`, met reden en aantal: `border-radius: 50%` bij Radio, tokens die geen Figma-variable zijn, kleuren die in elke mode transparant zijn, en padding op een frame zonder auto layout
+  - Een kleur die alleen in de gemeten mode transparant is wordt wél gebonden; de plugin maakt de paint dan aan, zodat het component in een andere mode niet leeg blijft
+  - De plugin weigert een component-import in een bestand zonder de benodigde variable-collections. Doorgaan zou een set opleveren die er goed uitziet maar de theme-schakelaar niet volgt, en dat zie je aan een laag niet
+  - De smoke test leest per veld de naam van de variable terug uit de gebouwde boom, niet alleen het aantal; de mock weigert nu ook een binding op een onbekend veld, met het verkeerde variable-type, of padding op een frame zonder auto layout
+
 ### Storybook
 
 #### Fixed

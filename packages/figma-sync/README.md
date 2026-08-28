@@ -124,6 +124,66 @@ De plaatsing per cel gaat via `setGridChildPosition(rowIndex, columnIndex)`;
 en `gridRowSizes`, niet in `gridAutoTracks` (dat gaat over automatisch rijen
 toevoegen).
 
+### Bindingen aan variables
+
+De gemeten waarde alleen levert een dood component op: een fill van `#1b59a4`
+verandert niet als je in Figma naar `start-dark` schakelt. Daarom draagt elke
+node ook de _naam_ van het token dat de waarde leverde, zodat de plugin de laag
+aan de variable kan binden in plaats van aan een getal.
+
+Die naam staat alleen in de authored CSS, dus daar wordt hij gelezen: de
+extractor speelt in de browser de cascade na, bepaalt welke declaratie wint
+voor bijvoorbeeld `background-color`, en haalt daar de `var()`-keten uit.
+
+```
+.dsn-button--strong:hover:not(:disabled) {
+  background-color: var(--dsn-button-strong-hover-background-color);
+}
+                        │
+                        ▼
+dsn/Components → button/strong/hover/background-color
+```
+
+Dat is nadrukkelijk geen CSS-parsing als vervanging van meten. De waarde blijft
+gemeten; de CSSOM levert er alleen een herkomst bij. En die herkomst wordt
+**geverifieerd**: het token moet in `variables.json` dezelfde waarde opleveren
+als er gemeten is, in dezelfde theme-, mode- en viewportstand. Zo niet, dan
+wordt er niet gebonden. Een fout in de cascade-nabootsing kan daardoor wel een
+binding missen, maar geen verkeerde binding leggen. Zie
+[DR-2026-06](../../docs/decisions/DR-2026-06-figma-bindingen-meten-plus-cssom.md).
+
+Wat er gebonden wordt:
+
+| Figma-veld                                 | Uit                                                      |
+| ------------------------------------------ | -------------------------------------------------------- |
+| `fills`                                    | `background-color`, of `color` bij tekst en iconen       |
+| `strokes`                                  | `border-*-color`                                         |
+| `strokeWeight`                             | `border-*-width`                                         |
+| `topLeftRadius` en de drie andere hoeken   | `border-*-radius`                                        |
+| `paddingTop` / `Right` / `Bottom` / `Left` | `padding-*`                                              |
+| `itemSpacing`                              | `row-gap` of `column-gap`, naar de as van de auto layout |
+| `fontSize`                                 | `font-size`                                              |
+
+#### Wat een vaste waarde houdt
+
+Elke `dist/{component}.json` heeft een `bindings`-blok met wat er gebonden is en
+wat niet, met reden en aantal. De build print hetzelfde. Lees dat na elke
+wijziging aan component-CSS: een eigenschap die van gebonden naar vast schuift
+is een regressie, ook als de build groen is.
+
+De vier terugkerende redenen:
+
+| Reden                                     | Voorbeeld                                                                 |
+| ----------------------------------------- | ------------------------------------------------------------------------- |
+| de waarde komt niet uit één token         | `border-radius: 50%` bij Radio, of een `calc()` die twee tokens optelt    |
+| het token bestaat niet als Figma-variable | box shadows en transitions; die staan in het skip-report van de variables |
+| het token is in elke mode transparant     | `button/subtle/background-color`; een lege paint in Figma helpt niemand   |
+| de node heeft geen auto layout            | Figma kent geen padding op een frame zonder layoutMode                    |
+
+Een kleur die alleen in de _gemeten_ mode transparant is wordt wél gebonden: in
+een andere mode is hij zichtbaar, en zonder binding zou het component daar leeg
+blijven. De plugin maakt de paint dan aan.
+
 ### Drie valkuilen bij het meten
 
 Deze drie leverden allemaal stilzwijgend verkeerde waarden op en zijn de reden

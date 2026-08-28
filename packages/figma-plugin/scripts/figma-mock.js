@@ -12,7 +12,61 @@
  *    in een grid gaat via setGridChildPosition(rowIndex, columnIndex)
  * 5. `gridAutoTracks` gaat over automatisch rijen toevoegen; de maten van de
  *    tracks horen in `gridColumnSizes` en `gridRowSizes`
+ * 6. `setBoundVariable` accepteert alleen bestaande velden, en het type van de
+ *    variable moet bij het veld passen (een kleur is geen padding)
+ * 7. padding en itemSpacing bestaan alleen op een frame met auto layout
  */
+
+/**
+ * Velden die Figma aan een variable laat binden, met het variable-type dat
+ * erbij hoort. Alles wat hier niet in staat geeft in Figma
+ * "cannot bind variable to field".
+ */
+const BINDABLE_FIELDS = {
+  width: 'FLOAT',
+  height: 'FLOAT',
+  minWidth: 'FLOAT',
+  maxWidth: 'FLOAT',
+  minHeight: 'FLOAT',
+  maxHeight: 'FLOAT',
+  itemSpacing: 'FLOAT',
+  counterAxisSpacing: 'FLOAT',
+  paddingTop: 'FLOAT',
+  paddingRight: 'FLOAT',
+  paddingBottom: 'FLOAT',
+  paddingLeft: 'FLOAT',
+  topLeftRadius: 'FLOAT',
+  topRightRadius: 'FLOAT',
+  bottomRightRadius: 'FLOAT',
+  bottomLeftRadius: 'FLOAT',
+  strokeWeight: 'FLOAT',
+  strokeTopWeight: 'FLOAT',
+  strokeRightWeight: 'FLOAT',
+  strokeBottomWeight: 'FLOAT',
+  strokeLeftWeight: 'FLOAT',
+  opacity: 'FLOAT',
+  fontSize: 'FLOAT',
+  letterSpacing: 'FLOAT',
+  lineHeight: 'FLOAT',
+  paragraphSpacing: 'FLOAT',
+  paragraphIndent: 'FLOAT',
+  fontWeight: 'FLOAT',
+  visible: 'BOOLEAN',
+  characters: 'STRING',
+  fontFamily: 'STRING',
+  fontStyle: 'STRING',
+  textDecoration: 'STRING',
+};
+
+/** Velden die pas bestaan zodra de node auto layout heeft. */
+const AUTO_LAYOUT_FIELDS = new Set([
+  'itemSpacing',
+  'counterAxisSpacing',
+  'paddingTop',
+  'paddingRight',
+  'paddingBottom',
+  'paddingLeft',
+]);
 
 let nextId = 1;
 const id = (prefix) => `${prefix}:${nextId++}`;
@@ -94,6 +148,25 @@ class Node {
     if (this.parent) {
       this.parent.children = this.parent.children.filter((c) => c !== this);
     }
+  }
+
+  setBoundVariable(field, variable) {
+    const expected = BINDABLE_FIELDS[field];
+    if (!expected) {
+      throw new Error(`cannot bind variable to field ${field}`);
+    }
+    if (variable.resolvedType !== expected) {
+      throw new Error(
+        `${field} verwacht een ${expected}-variable, kreeg ${variable.resolvedType}`
+      );
+    }
+    if (AUTO_LAYOUT_FIELDS.has(field) && this.layoutMode === 'NONE') {
+      throw new Error(`${field} bestaat niet zonder auto layout`);
+    }
+    this.boundVariables = {
+      ...this.boundVariables,
+      [field]: { type: 'VARIABLE_ALIAS', id: variable.id },
+    };
   }
 
   set layoutSizingHorizontal(value) {
@@ -221,6 +294,24 @@ export const figma = {
     },
     createVariableAlias(variable) {
       return { type: 'VARIABLE_ALIAS', id: variable.id };
+    },
+    setBoundVariableForPaint(paint, field, variable) {
+      if (field !== 'color') {
+        throw new Error(`een paint kent geen veld ${field}`);
+      }
+      if (variable.resolvedType !== 'COLOR') {
+        throw new Error(
+          `een paint verwacht een COLOR-variable, kreeg ${variable.resolvedType}`
+        );
+      }
+      // Paints zijn immutable in de Plugin API: er komt een nieuwe uit.
+      return {
+        ...paint,
+        boundVariables: {
+          ...paint.boundVariables,
+          color: { type: 'VARIABLE_ALIAS', id: variable.id },
+        },
+      };
     },
   },
 

@@ -38,6 +38,29 @@ function read(relative) {
   return JSON.parse(fs.readFileSync(path.join(monorepoRoot, relative), 'utf8'));
 }
 
+const componentFiles = fs
+  .readdirSync(path.join(monorepoRoot, 'packages/figma-sync/dist'))
+  .filter((file) => file.endsWith('.json'));
+
+// =============================================================================
+// Volgorde: componenten zonder variables
+// =============================================================================
+
+// Dit moet vóór de variables-import, want daarna bestaan ze wel. Een component
+// set die op vaste waarden binnenkomt ziet er goed uit maar volgt de
+// theme-schakelaar niet; dat stil laten gebeuren is erger dan weigeren.
+console.log('\n=== import zonder variables ===');
+let refused = false;
+try {
+  await importComponentSet(
+    read(`packages/figma-sync/dist/${componentFiles[0]}`),
+    log
+  );
+} catch (error) {
+  refused = /variables\.json/.test(error.message);
+}
+check('componenten importeren zonder variables wordt geweigerd', refused);
+
 // =============================================================================
 // Variables
 // =============================================================================
@@ -136,10 +159,6 @@ check(
 // =============================================================================
 // Componenten
 // =============================================================================
-
-const componentFiles = fs
-  .readdirSync(path.join(monorepoRoot, 'packages/figma-sync/dist'))
-  .filter((file) => file.endsWith('.json'));
 
 for (const file of componentFiles) {
   console.log(`\n=== ${file} ===`);
@@ -244,7 +263,126 @@ for (const file of componentFiles) {
     gridMismatch.length === 0,
     gridMismatch.length ? `${gridMismatch.length} niet overgenomen` : ''
   );
+
+  // ---------------------------------------------------------------------------
+  // Variable-bindingen
+  // ---------------------------------------------------------------------------
+
+  check(
+    'alle verwachte bindingen gelegd',
+    imported.bindings.bound === payload.bindings.bound,
+    `${imported.bindings.bound}/${payload.bindings.bound}`
+  );
+  check(
+    'geen mislukte bindingen',
+    imported.bindings.failed === 0,
+    `${imported.bindings.failed}`
+  );
+  check(
+    'alle aangewezen variables bestaan',
+    imported.bindings.missing.length === 0,
+    imported.bindings.missing.join(', ')
+  );
+
+  // Het aantal alleen zegt niets over de vraag of de juiste variable op het
+  // juiste veld terecht is gekomen. Daarom de spec en de gebouwde boom naast
+  // elkaar aflopen en per veld de naam van de variable teruglezen.
+  const wrongBindings = [];
+  const checkBindings = (node, spec) => {
+    for (const [field, reference] of Object.entries(
+      spec?.boundVariables ?? {}
+    )) {
+      const alias =
+        field === 'fills' || field === 'strokes'
+          ? // Bij een icoon zit de kleur op de vectoren, niet op het frame.
+            (spec.type === 'VECTOR'
+              ? (node?.children?.[0]?.strokes?.[0] ??
+                node?.children?.[0]?.fills?.[0])
+              : node?.[field]?.[0]
+            )?.boundVariables?.color
+          : node?.boundVariables?.[field];
+
+      const variable = alias && byId.get(alias.id);
+      if (!variable || variable.name !== reference.name) {
+        wrongBindings.push(
+          `${spec.name ?? spec.type}.${field} -> ${variable ? variable.name : 'niets'} (verwacht ${reference.name})`
+        );
+      }
+    }
+    (spec?.children ?? []).forEach((childSpec, index) =>
+      checkBindings(node?.children?.[index], childSpec)
+    );
+  };
+  for (const [index, component] of payload.componentSet.components.entries()) {
+    checkBindings(
+      state.page.children.at(-1)?.children[index]?.children[0],
+      component.node
+    );
+  }
+  check(
+    'bindingen wijzen naar de juiste variable',
+    wrongBindings.length === 0,
+    wrongBindings.length
+      ? `${wrongBindings.length}x, o.a. ${wrongBindings[0]}`
+      : ''
+  );
+
+  // Zonder dit zou een spec zonder enkele binding hierboven groen zijn.
+  check(
+    'er is daadwerkelijk gebonden',
+    imported.bindings.bound > 0,
+    `${imported.bindings.bound} lagen`
+  );
 }
+
+// =============================================================================
+// Volgt een gebonden laag de theme-schakelaar?
+// =============================================================================
+
+// Dit is de hele reden dat er gebonden wordt. Zonder deze controle zou een
+// import die netjes alles aan variables hangt die toevallig in elke mode
+// dezelfde waarde hebben er net zo goed uitzien.
+console.log('\n=== theme-schakelaar ===');
+
+const collectionOf = (variable) =>
+  state.collections.find((c) => c.id === variable.variableCollectionId);
+
+/** Lost een variable op in een mode, door de aliasketen heen. */
+const resolveInMode = (variable, modeName, depth = 0) => {
+  if (!variable || depth > 10) return undefined;
+  const collection = collectionOf(variable);
+  // Een collection met één mode (dsn/Components) kent `start-light` niet; de
+  // alias die daaruit vertrekt lost verderop wel per mode op.
+  const mode =
+    collection.modes.find((m) => m.name === modeName) ?? collection.modes[0];
+  const value = variable.valuesByMode[mode.modeId];
+  if (value && value.type === 'VARIABLE_ALIAS') {
+    return resolveInMode(byId.get(value.id), modeName, depth + 1);
+  }
+  return value;
+};
+
+const buttonPayload = read('packages/figma-sync/dist/button.json');
+const withFill = buttonPayload.componentSet.components.find(
+  (component) => component.node.boundVariables?.fills
+);
+const fillReference = withFill?.node.boundVariables.fills;
+const fillVariable = state.variables.find(
+  (variable) =>
+    variable.name === fillReference?.name &&
+    collectionOf(variable).name === fillReference.collection
+);
+
+const inLight = resolveInMode(fillVariable, 'start-light');
+const inDark = resolveInMode(fillVariable, 'start-dark');
+const channels = (color) =>
+  color ? ['r', 'g', 'b'].map((c) => color[c].toFixed(2)).join('/') : 'niets';
+
+check(
+  'de achtergrond van een gebonden Button verschilt per mode',
+  Boolean(inLight) && JSON.stringify(inLight) !== JSON.stringify(inDark),
+  `${fillReference?.name}: light ${channels(inLight)} vs dark ${channels(inDark)}`
+);
 
 console.log(
   `\n${process.exitCode ? '✗ smoke test gefaald' : '✓ smoke test geslaagd'}\n`
