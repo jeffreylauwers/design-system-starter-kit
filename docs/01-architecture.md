@@ -114,6 +114,9 @@ design-system-starter-kit/
 │   │   └── src/
 │   │       ├── extract.js       # Headless render, leest computed styles
 │   │       ├── to-figma.js      # Computed DOM -> Figma node spec
+│   │       ├── browser-tokens.js # Cascade nabootsen: welk token leverde de waarde
+│   │       ├── variable-index.js # CSS custom property -> Figma variable
+│   │       ├── bindings.js      # Figma-veld kiezen, waarde verifiëren, report
 │   │       └── matrices/        # Variant-matrix per component
 │   ├── figma-plugin/            # Schrijft de gegenereerde JSON naar Figma
 │   │   ├── manifest.json        # Plugin-manifest (importeren in Figma Desktop)

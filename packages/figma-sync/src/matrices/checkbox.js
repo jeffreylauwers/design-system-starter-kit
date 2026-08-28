@@ -49,13 +49,14 @@ export default {
     const checked = state === 'checked' ? ' checked' : '';
     const disabled = interaction === 'disabled' ? ' disabled' : '';
     const icon = state === 'indeterminate' ? ICONS.minus : ICONS.check;
+    const iconName = state === 'indeterminate' ? 'minus' : 'check';
     const indeterminate =
       state === 'indeterminate' ? ' data-indeterminate' : '';
 
     return `<div class="dsn-checkbox" data-figma-root>
       <input type="checkbox" class="dsn-checkbox__input"${checked}${disabled}${indeterminate}>
       <span class="dsn-checkbox__control" aria-hidden="true">
-        <svg class="dsn-icon dsn-checkbox__icon" aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3">${icon}</svg>
+        <svg class="dsn-icon dsn-checkbox__icon" data-icon="${iconName}" aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3">${icon}</svg>
       </span>
     </div>`;
   },

@@ -9,8 +9,12 @@
 
 import { TEKST } from '../text.js';
 
-/** Een klein inline-icoon, zodat er geen iconenregistratie nodig is. */
-const CHEVRON = `<svg class="dsn-icon" aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 6l6 6-6 6"/></svg>`;
+/**
+ * Een klein inline-icoon, zodat er geen iconenregistratie nodig is.
+ * `data-icon` wordt de naam van de laag in Figma; zonder dat heet elk icoon
+ * daar "icon".
+ */
+const CHEVRON = `<svg class="dsn-icon" data-icon="chevron-right" aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 6l6 6-6 6"/></svg>`;
 
 export default {
   component: 'Button',
@@ -35,8 +39,24 @@ export default {
    * De assen van de component set. Elke combinatie wordt één variant.
    * `state` bevat alleen toestanden die Figma als aparte variant kan tonen.
    */
+  /**
+   * De volgorde volgt de `ButtonVariant`-union in `Button.tsx`, niet de
+   * volgorde in de CSS: Figma toont de waarden in de volgorde waarin ze
+   * binnenkomen, en zo staan de drie sentimenten van dezelfde nadruk bij
+   * elkaar. Een designer kiest immers eerst nadruk en dan sentiment.
+   */
   axes: {
-    variant: ['strong', 'default', 'subtle'],
+    variant: [
+      'strong',
+      'strong-negative',
+      'strong-positive',
+      'default',
+      'default-negative',
+      'default-positive',
+      'subtle',
+      'subtle-negative',
+      'subtle-positive',
+    ],
     size: ['small', 'default', 'large'],
     state: ['default', 'hover', 'disabled'],
   },

@@ -38,7 +38,7 @@ async function handleImport(message) {
       summary = `${result.aliasCount} aliassen gelegd`;
     } else {
       const result = await importComponentSet(message.payload, log);
-      summary = `${result.variants} varianten`;
+      summary = `${result.variants} varianten, ${result.bindings.bound} bindingen`;
     }
 
     const seconds = ((Date.now() - started) / 1000).toFixed(1);

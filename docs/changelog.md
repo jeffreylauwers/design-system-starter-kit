@@ -149,6 +149,28 @@ Nog niet gepubliceerde wijzigingen. Schrijf nieuwe changelog-entries hieronder; 
   - Alles wat niet naar een Figma-variable te vertalen is (box shadows, transitions, `ch`-eenheden) staat met reden in `dist/figma/variables-report.json`
   - De Figma-build staat bewust los van `build:tokens`: de token-CSS is het hoofdproduct en hoort niet om te vallen door een generator die er alleen maar naast draait
 
+#### Changed
+
+- **Componentlagen volgen de theme-schakelaar** (issue [#321](https://github.com/jeffreylauwers/design-system-starter-kit/issues/321), [DR-2026-06](./decisions/DR-2026-06-figma-bindingen-meten-plus-cssom.md)): de variables en de component sets stonden los van elkaar. Een gegenereerde Button had een fill van `#1b59a4` in plaats van een verwijzing naar `dsn/Components → button/strong/background-color`, dus schakelen naar `start-dark` veranderde er niets aan. De lagen worden nu aan variables gebonden: 1661 bindingen over de vijf componenten.
+  - Gebonden velden: `fills`, `strokes`, `strokeWeight`, de vier hoekradii, de vier paddings, `itemSpacing`, `minWidth`, `minHeight` en `fontSize`
+  - De naam van het token komt uit de authored CSS (de generator speelt de cascade na en leest de `var()`-keten van de winnende declaratie), de waarde blijft gemeten. Het token moet die gemeten waarde reproduceren voordat er gebonden wordt, dus een misrekening in de specificiteit kan wel een binding missen maar geen verkeerde binding leggen
+  - Wat een vaste waarde houdt staat per component in `dist/{component}.json` onder `bindings.unbound`, met reden en aantal: `border-radius: 50%` bij Radio, tokens die geen Figma-variable zijn, kleuren die in elke mode transparant zijn, en padding op een frame zonder auto layout
+  - Ook een transparante kleur wordt gebonden. `dsn.color.transparent` is een token als elk ander: de laag toont in Figma welk token de achtergrond stuurt in plaats van een lege Fill. Voor strokes gebeurt dat niet, want een frame zonder rand heeft wel een standaard `strokeWeight` en zou dus een lijn krijgen die de CSS niet heeft
+  - Het root-element wordt niet meer in een frame gezet maar **is** het component. Dat scheelt een lege wrapperlaag per variant, en de eigenschappen en bindingen komen op de component-node zelf
+  - De component set heet naar de CSS-klasse van de root (`dsn-button`) in plaats van naar de matrixnaam (`Button`); dat is de naam waarop een designer in de code zoekt
+  - Iconen krijgen hun naam uit een nieuw `data-icon`-attribuut op de `<svg>` in de matrix, dus `chevron-right` en `alert-triangle` in plaats van `icon`
+
+- **`min-block-size` en `min-inline-size` komen mee naar Figma** (issue [#321](https://github.com/jeffreylauwers/design-system-starter-kit/issues/321)): een frame staat in Figma op HUG en rekent zijn maat opnieuw uit content plus padding, waarbij de gemeten hoogte wordt weggegooid. Een Button van de standaardgrootte werd daardoor 42px in plaats van de 48px die de CSS afdwingt, en zakte dus onder het aanraakdoel van [WCAG 2.5.5](https://www.w3.org/WAI/WCAG22/quickref/#target-size-minimum).
+  - `minWidth` en `minHeight` staan nu in de node spec en worden aan hun token gebonden, dus `button/min-block-size` en de override `button/size/small/min-block-size` (40px) werken allebei door
+  - Ze bestaan in Figma alleen op een auto-layout frame; elders komen ze in het bindingsreport in plaats van stil te verdwijnen
+
+- **Button-matrix compleet: alle negen varianten** (issue [#321](https://github.com/jeffreylauwers/design-system-starter-kit/issues/321)): de matrix dekte alleen `strong`, `default` en `subtle`, terwijl de `ButtonVariant`-union er negen kent. De zes sentiment-varianten (`strong-negative`, `strong-positive`, `default-negative`, `default-positive`, `subtle-negative`, `subtle-positive`) ontbraken dus in Figma. De set gaat van 27 naar 81 varianten.
+  - De volgorde in de as volgt de union in `Button.tsx`, niet die in de CSS: zo staan de drie sentimenten van dezelfde nadruk bij elkaar in de Figma-dropdown
+  - Alle negen hebben complete tokens voor default, hover en active, dus alle 1215 bindingen op Button landen
+  - Nog niet in de matrix: `loading`, `fullWidth` en `iconOnly`, en de toestanden `active` en `focus-visible`. Die eerste drie zijn booleans die de set zouden verdubbelen en horen thuis als component property (issue [#323](https://github.com/jeffreylauwers/design-system-starter-kit/issues/323))
+  - De plugin weigert een component-import in een bestand zonder de benodigde variable-collections. Doorgaan zou een set opleveren die er goed uitziet maar de theme-schakelaar niet volgt, en dat zie je aan een laag niet
+  - De smoke test leest per veld de naam van de variable terug uit de gebouwde boom, niet alleen het aantal; de mock weigert nu ook een binding op een onbekend veld, met het verkeerde variable-type, of padding op een frame zonder auto layout
+
 ### Storybook
 
 #### Fixed

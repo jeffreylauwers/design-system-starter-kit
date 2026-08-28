@@ -29,7 +29,7 @@ Een designer bouwt de componenten in Figma; alleen de variables worden gegeneree
 ### Optie 2: Componenten genereren door de CSS te parsen
 
 **Voordeel:** Geen browser nodig.
-**Nadeel:** Werkt niet. Cascade, custom properties, `clamp()` en media queries bepalen samen pas de eindwaarde; die is uit de CSS-bron niet af te leiden.
+**Nadeel:** Werkt niet. Cascade, custom properties, `clamp()` en media queries bepalen samen pas de eindwaarde; die is uit de CSS-bron niet af te leiden. ([DR-2026-06](DR-2026-06-figma-bindingen-meten-plus-cssom.md) nuanceert dit later: voor de _naam_ van een token wordt de CSS wél gelezen, alleen niet voor de waarde.)
 
 ### Optie 3: Componenten genereren uit de _computed_ DOM, schrijven via een plugin (gekozen)
 
@@ -115,6 +115,7 @@ Geen.
 
 - [DR-2026-02](DR-2026-02-twee-lagenpatroon-html-css-plus-react.md): de HTML/CSS-laag is de bron waaruit de generator meet
 - [DR-2026-03](DR-2026-03-breakpoints-als-reference-only-tokens.md): breakpoints zijn reference-only en worden daarom niet naar Figma-variables gemapt
+- [DR-2026-06](DR-2026-06-figma-bindingen-meten-plus-cssom.md): hoe de gegenereerde componenten alsnog aan de variables gekoppeld worden, zodat ze de theme-schakelaar volgen
 
 ---
 

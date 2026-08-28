@@ -8,6 +8,9 @@
  *
  * Vandaar: node maken, aan de ouder hangen, stijl zetten, layoutMode zetten,
  * kinderen bouwen, en pas als laatste de eigen sizing.
+ *
+ * De bindingen aan variables komen daar nog achteraan: een `paddingTop` valt
+ * pas te binden als de node auto layout heeft, en een paint pas als hij er is.
  */
 
 /** Figma verwacht een style-naam, geen numeriek gewicht. */
@@ -92,6 +95,121 @@ function recolorSvg(node, paints) {
   for (const child of node.children ?? []) visit(child);
 }
 
+// =============================================================================
+// VARIABLE-BINDINGEN
+// =============================================================================
+
+/**
+ * Een kleur die in de gemeten mode transparant is levert geen paint op, maar
+ * kan in een andere mode wel zichtbaar zijn. Zonder paint is er niets om aan
+ * te binden, dus die maken we alsnog; de variable bepaalt daarna kleur én
+ * alpha.
+ */
+const PLACEHOLDER_PAINT = {
+  type: 'SOLID',
+  color: { r: 0, g: 0, b: 0 },
+  opacity: 0,
+};
+
+/**
+ * De variables in dit bestand, op collection + naam.
+ * De generator wijst met die twee namen aan, want een variable-naam is alleen
+ * binnen zijn eigen collection uniek.
+ *
+ * @returns {Promise<{byName: Map<string, Variable>, collections: Set<string>}>}
+ */
+async function loadVariableIndex() {
+  const collections = await figma.variables.getLocalVariableCollectionsAsync();
+  const nameById = new Map(
+    collections.map((collection) => [collection.id, collection.name])
+  );
+
+  const byName = new Map();
+  for (const variable of await figma.variables.getLocalVariablesAsync()) {
+    const collection = nameById.get(variable.variableCollectionId);
+    byName.set(`${collection}|${variable.name}`, variable);
+  }
+
+  return { byName, collections: new Set(nameById.values()) };
+}
+
+/** Zoekt de variable die de generator heeft aangewezen. */
+function variableFor(reference, context) {
+  const variable = context.variables.byName.get(
+    `${reference.collection}|${reference.name}`
+  );
+  if (!variable) {
+    context.stats.missing.add(`${reference.collection} / ${reference.name}`);
+    return null;
+  }
+  return variable;
+}
+
+/**
+ * Paints zijn immutable: binden levert een nieuwe paint op, en die moet als
+ * nieuwe lijst terug op de node.
+ */
+function paintsBoundTo(paints, variable) {
+  const rest = paints && paints.length ? paints.slice(1) : [];
+  const base = paints && paints.length ? paints[0] : PLACEHOLDER_PAINT;
+  return [
+    figma.variables.setBoundVariableForPaint(base, 'color', variable),
+    ...rest,
+  ];
+}
+
+/**
+ * Bindt de velden die de generator heeft aangewezen.
+ *
+ * `fills` en `strokes` zijn geen node-velden in de Plugin API maar paints; die
+ * krijgen hun eigen route. De rest gaat via `setBoundVariable`.
+ */
+function applyBindings(node, spec, context) {
+  for (const [field, reference] of Object.entries(spec.boundVariables ?? {})) {
+    const variable = variableFor(reference, context);
+    if (!variable) continue;
+
+    try {
+      if (field === 'fills' || field === 'strokes') {
+        node[field] = paintsBoundTo(node[field], variable);
+      } else {
+        node.setBoundVariable(field, variable);
+      }
+      context.stats.bound += 1;
+    } catch (error) {
+      context.stats.failed += 1;
+      context.log.warn(
+        `${spec.name ?? spec.type}: ${field} kon niet aan ${reference.name} gebonden worden: ${error.message}`
+      );
+    }
+  }
+}
+
+/**
+ * De paints voor een icoon, met de tekstkleur-variable eraan gebonden.
+ * Een icoon is in Figma een frame met vectoren erin; de kleur hoort op die
+ * vectoren, dus de binding gaat niet via het frame maar via de paints zelf.
+ */
+function vectorPaints(spec, context) {
+  const reference = spec.boundVariables?.fills;
+  if (!reference) return spec.fills;
+
+  const variable = variableFor(reference, context);
+  if (!variable) return spec.fills;
+
+  try {
+    const paints = paintsBoundTo(spec.fills, variable);
+    context.stats.bound += 1;
+    return paints;
+  } catch (error) {
+    context.stats.failed += 1;
+    context.log.warn(
+      `${spec.name ?? 'icon'}: kleur kon niet aan ${reference.name} gebonden worden: ${error.message}`
+    );
+    return spec.fills;
+  }
+}
+
 function applyPaints(target, spec) {
   if (spec.fills) target.fills = spec.fills;
   if (spec.strokes) {
@@ -155,6 +273,26 @@ function applyAutoLayout(frame, spec) {
   }
 }
 
+/**
+ * Minimum-maten uit de CSS.
+ *
+ * Een HUG-frame rekent zijn maat opnieuw uit content plus padding, dus zonder
+ * deze zou een `min-block-size` uit de CSS in Figma verdwijnen en zou de button
+ * onder zijn aanraakdoel uitkomen.
+ */
+function applyMinimumSizes(frame, spec, log) {
+  for (const field of ['minWidth', 'minHeight']) {
+    if (spec[field] === undefined) continue;
+    try {
+      frame[field] = spec[field];
+    } catch (error) {
+      log.warn(
+        `${spec.name ?? spec.type}: ${field} niet toegestaan: ${error.message}`
+      );
+    }
+  }
+}
+
 /** Plaatsing van een kind binnen zijn ouder: absoluut of in een gridcel. */
 function applyPlacement(node, spec, log) {
   try {
@@ -197,9 +335,15 @@ function applySizing(node, spec, log) {
 
 /**
  * Bouwt één node uit de spec en hangt hem aan `parent`.
+ *
+ * @param {object} spec node spec uit de generator
+ * @param {BaseNode} parent
+ * @param {object} context `{ fonts, log, variables, stats }`
  * @returns {SceneNode}
  */
-function buildNode(spec, parent, fonts, log) {
+function buildNode(spec, parent, context) {
+  const { fonts, log } = context;
+
   if (spec.type === 'TEXT') {
     const text = figma.createText();
     parent.appendChild(text);
@@ -220,6 +364,7 @@ function buildNode(spec, parent, fonts, log) {
     if (spec.fills) text.fills = spec.fills;
     text.name = spec.name ?? spec.characters ?? 'Text';
 
+    applyBindings(text, spec, context);
     applyPlacement(text, spec, log);
     applySizing(text, spec, log);
     return text;
@@ -232,13 +377,29 @@ function buildNode(spec, parent, fonts, log) {
     parent.appendChild(node);
     node.name = spec.name ?? 'icon';
     if (spec.width && spec.height) node.resize(spec.width, spec.height);
-    recolorSvg(node, spec.fills);
+    // De kleur zit op de vectoren binnenin, niet op het frame eromheen, dus de
+    // binding moet mee in de paints die recolorSvg doorzet.
+    recolorSvg(node, vectorPaints(spec, context));
     applyPlacement(node, spec, log);
     return node;
   }
 
   const frame = figma.createFrame();
   parent.appendChild(frame);
+  applyFrame(frame, spec, context);
+
+  applyPlacement(frame, spec, log);
+  applySizing(frame, spec, log);
+  return frame;
+}
+
+/**
+ * Zet een frame-spec op een bestaande node en bouwt zijn kinderen.
+ *
+ * Staat los van `buildNode` omdat het root-element van een component geen eigen
+ * frame krijgt: het *is* het component. Zie `importComponentSet`.
+ */
+function applyFrame(frame, spec, context) {
   frame.name = spec.name ?? 'Frame';
 
   // Een nieuw frame heeft een witte vulling; die overschrijven we altijd,
@@ -251,11 +412,12 @@ function buildNode(spec, parent, fonts, log) {
   if (spec.width && spec.height) frame.resize(spec.width, spec.height);
 
   applyAutoLayout(frame, spec);
-  for (const child of spec.children ?? []) buildNode(child, frame, fonts, log);
+  // Na applyAutoLayout: padding, itemSpacing en de minimum-maten bestaan pas
+  // als het frame een layoutMode heeft.
+  applyMinimumSizes(frame, spec, context.log);
+  applyBindings(frame, spec, context);
 
-  applyPlacement(frame, spec, log);
-  applySizing(frame, spec, log);
-  return frame;
+  for (const child of spec.children ?? []) buildNode(child, frame, context);
 }
 
 /**
@@ -278,6 +440,24 @@ export async function importComponentSet(payload, log) {
   for (const component of spec.components) collectFonts(component.node, fonts);
   const loaded = await loadFonts(fonts, log);
 
+  // De variables moeten er zijn vóórdat er lagen aan gebonden worden. Zijn ze
+  // er niet, dan levert doorgaan een component set op die er goed uitziet maar
+  // de theme-schakelaar niet volgt: precies het probleem dat deze import moet
+  // oplossen. Dan liever weigeren dan stil een halfbakken library neerzetten.
+  const variables = await loadVariableIndex();
+  const required = payload.bindings?.collections ?? [];
+  if (
+    required.length &&
+    !required.some((name) => variables.collections.has(name))
+  ) {
+    throw new Error(
+      `Dit bestand heeft nog geen ${required.join(' / ')}. Importeer eerst design-tokens/dist/figma/variables.json; anders krijgen de componenten vaste waarden en volgen ze de theme-schakelaar niet.`
+    );
+  }
+
+  const stats = { bound: 0, failed: 0, missing: new Set() };
+  const context = { fonts: loaded, log, variables, stats };
+
   const page = figma.currentPage;
   const components = [];
   let cursorX = 0;
@@ -286,14 +466,26 @@ export async function importComponentSet(payload, log) {
   for (const [index, component] of spec.components.entries()) {
     const wrapper = figma.createComponent();
     page.appendChild(wrapper);
-    // De naam bepaalt de variant properties zodra combineAsVariants draait.
-    wrapper.name = component.name;
-    wrapper.layoutMode = 'HORIZONTAL';
-    wrapper.primaryAxisSizingMode = 'AUTO';
-    wrapper.counterAxisSizingMode = 'AUTO';
-    wrapper.fills = [];
 
-    buildNode(component.node, wrapper, loaded, log);
+    // Het root-element wórdt het component. Een extra frame eromheen zou een
+    // lege laag met dezelfde auto layout toevoegen, en dat is precies de
+    // nesting die een Figma-library onwerkbaar maakt.
+    if (component.node.type === 'FRAME') {
+      applyFrame(wrapper, component.node, context);
+      applySizing(wrapper, component.node, log);
+    } else {
+      // Een component dat in zijn geheel tot tekst of een vector inklapt kan
+      // zichzelf niet zijn; die krijgt wel een frame om zich heen.
+      wrapper.layoutMode = 'HORIZONTAL';
+      wrapper.primaryAxisSizingMode = 'AUTO';
+      wrapper.counterAxisSizingMode = 'AUTO';
+      wrapper.fills = [];
+      buildNode(component.node, wrapper, context);
+    }
+
+    // Na applyFrame, die de naam van het root-element zet. Deze naam bepaalt de
+    // variant properties zodra combineAsVariants draait.
+    wrapper.name = component.name;
 
     // Varianten naast elkaar leggen; combineAsVariants ordent daarna zelf.
     wrapper.x = cursorX;
@@ -319,10 +511,16 @@ export async function importComponentSet(payload, log) {
     log.error(
       `Component set "${spec.name}" kon niet gecombineerd worden: ${error.message}. De losse varianten staan wel op de pagina.`
     );
-    return { name: spec.name, variants: components.length, combined: false };
+    return {
+      name: spec.name,
+      variants: components.length,
+      combined: false,
+      bindings: reportBindings(payload, stats, log),
+    };
   }
 
   log.info(`${spec.name}: ${components.length} varianten gecombineerd`);
+  reportBindings(payload, stats, log);
 
   if (payload.warnings && payload.warnings.length) {
     for (const warning of payload.warnings) log.warn(warning);
@@ -331,5 +529,30 @@ export async function importComponentSet(payload, log) {
   figma.currentPage.selection = [set];
   figma.viewport.scrollAndZoomIntoView([set]);
 
-  return { name: spec.name, variants: components.length, combined: true };
+  return {
+    name: spec.name,
+    variants: components.length,
+    combined: true,
+    bindings: { ...stats, missing: [...stats.missing] },
+  };
+}
+
+/**
+ * Meldt hoeveel lagen aan een variable hangen, en wat er niet gelukt is.
+ * Een ontbrekende variable is geen fout maar wel iets om te zien: die laag
+ * houdt een vaste waarde en volgt de theme-schakelaar niet.
+ */
+function reportBindings(payload, stats, log) {
+  const expected = payload.bindings?.bound;
+  log.info(
+    `${stats.bound} lagen aan een variable gebonden${expected !== undefined ? ` van de ${expected} verwachte` : ''}`
+  );
+
+  for (const name of stats.missing) {
+    log.warn(
+      `Variable ${name} bestaat niet in dit bestand; vaste waarde blijft staan`
+    );
+  }
+
+  return { ...stats, missing: [...stats.missing] };
 }

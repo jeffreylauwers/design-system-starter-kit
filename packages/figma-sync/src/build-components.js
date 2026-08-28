@@ -11,6 +11,12 @@ import { fileURLToPath } from 'url';
 
 import { extractMatrix } from './extract.js';
 import { toComponentSet } from './to-figma.js';
+import {
+  createVariableIndex,
+  loadVariablesPayload,
+  modesForMatrix,
+  VARIABLES_FILE,
+} from './variable-index.js';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const outputDir = path.join(__dirname, '..', 'dist');
@@ -44,10 +50,27 @@ async function main() {
   fs.mkdirSync(outputDir, { recursive: true });
   console.log('🧩 Building Figma component specs...\n');
 
+  // De variables bepalen wat er te binden valt. Ontbreken ze, dan draait de
+  // build gewoon door met vaste waarden; de componenten volgen dan alleen de
+  // theme-schakelaar in Figma nog niet.
+  const variablesPayload = loadVariablesPayload();
+  if (!variablesPayload) {
+    console.warn(
+      `   ⚠️  ${VARIABLES_FILE} ontbreekt; er worden geen variables gebonden.\n      Draai eerst: pnpm build:figma-variables\n`
+    );
+  }
+
   for (const { key, matrix } of matrices) {
     const started = Date.now();
+    const variableIndex = variablesPayload
+      ? createVariableIndex(
+          variablesPayload,
+          modesForMatrix(matrix, variablesPayload.collections)
+        )
+      : undefined;
+
     const extracted = await extractMatrix(matrix);
-    const spec = toComponentSet(matrix, extracted);
+    const spec = toComponentSet(matrix, extracted, variableIndex);
 
     const destination = path.join(outputDir, `${key}.json`);
     fs.writeFileSync(destination, `${JSON.stringify(spec, null, 2)}\n`);
@@ -56,6 +79,21 @@ async function main() {
     console.log(
       `   ${matrix.component.padEnd(12)} ${String(extracted.length).padStart(3)} varianten  ${seconds}s  -> dist/${key}.json`
     );
+
+    const { bound, unbound } = spec.bindings;
+    console.log(
+      `   ${' '.repeat(12)} ${String(bound).padStart(3)} bindingen${unbound.length ? `, ${unbound.length} eigenschappen zonder token` : ''}`
+    );
+
+    if (unbound.length) {
+      console.log('\n   🔗 Niet gebonden (houden hun vaste waarde):');
+      for (const miss of unbound) {
+        console.log(
+          `      ${miss.property.padEnd(26)} ${miss.reason}${miss.detail ? ` (${miss.detail})` : ''}  [${miss.nodes}x]`
+        );
+      }
+      console.log();
+    }
 
     if (spec.warnings.length) {
       console.log(`\n   ⚠️  ${spec.warnings.length} aandachtspunten:`);
