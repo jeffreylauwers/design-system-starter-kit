@@ -39,8 +39,24 @@ export default {
    * De assen van de component set. Elke combinatie wordt één variant.
    * `state` bevat alleen toestanden die Figma als aparte variant kan tonen.
    */
+  /**
+   * De volgorde volgt de `ButtonVariant`-union in `Button.tsx`, niet de
+   * volgorde in de CSS: Figma toont de waarden in de volgorde waarin ze
+   * binnenkomen, en zo staan de drie sentimenten van dezelfde nadruk bij
+   * elkaar. Een designer kiest immers eerst nadruk en dan sentiment.
+   */
   axes: {
-    variant: ['strong', 'default', 'subtle'],
+    variant: [
+      'strong',
+      'strong-negative',
+      'strong-positive',
+      'default',
+      'default-negative',
+      'default-positive',
+      'subtle',
+      'subtle-negative',
+      'subtle-positive',
+    ],
     size: ['small', 'default', 'large'],
     state: ['default', 'hover', 'disabled'],
   },
