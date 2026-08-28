@@ -300,6 +300,20 @@ check(
   wrapped.length ? `${wrapped.length} iconen` : ''
 );
 
+// Bouwrommel. `createNodeFromSvg` zet zijn frame op de huidige pagina en
+// `outlineStroke()` kan dat ook doen; blijft daar iets van staan, dan is dat
+// een half opgebouwd icoon dat op de pagina is achtergebleven.
+const leftovers = (iconsPage?.children ?? []).filter(
+  (node) => node.type !== 'COMPONENT'
+);
+check(
+  'geen losse lagen op de iconpagina',
+  leftovers.length === 0,
+  leftovers.length
+    ? `${leftovers.length}x, o.a. ${leftovers[0].type} "${leftovers[0].name}"`
+    : ''
+);
+
 // Dit is de controle die de swap-bug had gevangen. Figma zoekt de overrides op
 // een instance terug via het **laagpad**. Verschilt dat pad per icoon, dan
 // landt de kleuroverride na een swap op een andere laag dan bedoeld: het glyph

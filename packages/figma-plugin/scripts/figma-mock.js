@@ -73,6 +73,26 @@ const AUTO_LAYOUT_FIELDS = new Set([
   'maxHeight',
 ]);
 
+/** De pagina waar een node op staat, of undefined als hij los hangt. */
+function pageOf(node) {
+  let current = node;
+  while (current && current.type !== 'PAGE') current = current.parent;
+  return current;
+}
+
+/**
+ * Figma weigert lagen te groeperen of plat te slaan die op een andere pagina
+ * staan dan de ouder: "Grouped nodes must be in the same page as the parent".
+ * createNodeFromSvg zet zijn frame op de huidige pagina, dus dat gebeurt zodra
+ * er op een andere pagina gebouwd wordt.
+ */
+function assertSamePage(nodes, parent) {
+  const target = pageOf(parent);
+  if (nodes.some((node) => pageOf(node) !== target)) {
+    throw new Error('Grouped nodes must be in the same page as the parent');
+  }
+}
+
 let nextId = 1;
 const id = (prefix) => `${prefix}:${nextId++}`;
 
@@ -166,9 +186,15 @@ class Node {
   }
 
   /**
-   * Zet de stroke om naar een vulling. De echte API levert een nieuwe node op
-   * náást het origineel, in dezelfde ouder, en laat het origineel staan.
-   * Zonder stroke is er niets om om te zetten en komt er null terug.
+   * Zet de stroke om naar een vulling; het origineel blijft staan. Zonder
+   * stroke is er niets om om te zetten en komt er null terug.
+   *
+   * De nieuwe node landt hier op de **huidige pagina**, niet in de ouder van
+   * het origineel. Dat is wat Figma in de praktijk doet, en de reden dat een
+   * import die op een andere pagina bouwt afbreekt met "Grouped nodes must be
+   * in the same page as the parent". De documentatie is er niet eenduidig
+   * over, dus de mock kiest de ongunstige uitleg: wie daartegen bestand is, is
+   * tegen beide bestand.
    */
   outlineStroke() {
     if (!Array.isArray(this.strokes) || !this.strokes.length) return null;
@@ -182,7 +208,7 @@ class Node {
     outlined.x = this.x;
     outlined.y = this.y;
     outlined.fills = this.strokes.map((paint) => ({ ...paint }));
-    this.parent.appendChild(outlined);
+    figma.currentPage.appendChild(outlined);
     return outlined;
   }
 
@@ -550,6 +576,9 @@ export const figma = {
     const node = new Node('FRAME');
     node.isSvg = true;
     node.svg = svg;
+    // Zoals in Figma: het frame wordt op de huidige pagina gezet, niet los
+    // opgeleverd. Zonder dit blijft een cross-page fout hier onzichtbaar.
+    figma.currentPage.appendChild(node);
     // De echte API levert vector-kinderen op. Die zijn nodig om te kunnen
     // controleren of de icoonkleur daadwerkelijk wordt doorgezet: in de
     // browser erft een icoon `currentColor`, in Figma wordt het zwart.
@@ -568,6 +597,7 @@ export const figma = {
     if (nodes.some((node) => !node.parent)) {
       throw new Error('flatten vereist nodes die in het document staan');
     }
+    assertSamePage(nodes, parent ?? nodes[0].parent);
 
     const flattened = new Node('VECTOR');
     flattened.name = nodes[0].name;
@@ -589,6 +619,7 @@ export const figma = {
   /** Groepeert lagen die dezelfde ouder hebben. */
   group(nodes, parent) {
     if (!nodes.length) throw new Error('group verwacht minstens één node');
+    assertSamePage(nodes, parent);
     const groupNode = new Node('GROUP');
     parent.appendChild(groupNode);
     for (const node of nodes) groupNode.appendChild(node);

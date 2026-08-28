@@ -126,6 +126,10 @@ Drie stappen brengen elk icoon in die vorm:
    icoon, en dezelfde vorm die met de hand ook wordt aangehouden, zodat een swap
    tussen een gegenereerd en een handgemaakt icoon net zo goed werkt.
 
+Het bouwen gebeurt volledig binnen het frame dat `createNodeFromSvg` oplevert;
+pas de afgeronde `Group` verhuist naar het component. Zo wisselt er één node van
+ouder in plaats van alle losse vectoren.
+
 Het gevolg van stap 2 is dat de lijndikte meeschaalt in plaats van vast te
 blijven wanneer een instance kleiner wordt. Voor een icoon is dat het gewenste
 gedrag: een chevron van 21px hoort dunnere lijnen te hebben dan een van 24px.
@@ -137,9 +141,15 @@ Twee dingen die anders gaan dan bij een component set:
   gehangen en het frame gaat weg. De node-id blijft daarmee gelijk, en dat is
   precies wat elke geplaatste instance nodig heeft om eraan te blijven hangen.
   Een nieuw component met dezelfde naam is voor Figma een ánder component.
-- **De pagina wordt niet geopend.** Een component-import zet zijn set op
-  `figma.currentPage`; je hier naartoe slepen zou betekenen dat een Button die
-  je daarna importeert tussen de iconen belandt.
+- **De pagina wordt tijdelijk geopend en daarna teruggezet.** Dat moet wel:
+  `createNodeFromSvg` zet zijn frame op de **huidige** pagina, en
+  `outlineStroke()` blijkt zijn resultaat daar ook neer te kunnen zetten.
+  Bouwen terwijl een andere pagina open staat geeft `flatten` en `group` dus
+  nodes en ouder op verschillende pagina's, en Figma weigert dat met
+  _"Grouped nodes must be in the same page as the parent"_. De pagina die de
+  designer openhad gaat er na afloop weer overheen, want een component-import
+  zet zijn set op `figma.currentPage`; zou de iconpagina open blijven staan,
+  dan belandde een Button tussen de iconen.
 
 De iconen krijgen de neutrale tekstkleur, gebonden aan
 `dsn/Primitives → color/neutral/color-default`, zodat ze de theme-schakelaar
@@ -229,7 +239,10 @@ af die in Figma echt fouten geven:
 4. `setBoundVariable` op een veld dat niet bindbaar is, of met een variable van
    het verkeerde type (een kleur is geen padding)
 5. padding en `itemSpacing` binden op een frame zonder auto layout
-6. een component property koppelen aan een veld dat de node niet heeft
+6. `createNodeFromSvg` en `outlineStroke()` zetten hun resultaat op de huidige
+   pagina, en `flatten` en `group` weigeren nodes die op een andere pagina staan
+   dan hun ouder
+7. een component property koppelen aan een veld dat de node niet heeft
    (`mainComponent` op iets anders dan een instance), of aan een property die
    niet op de omvattende set staat
 

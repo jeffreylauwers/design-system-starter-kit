@@ -176,6 +176,8 @@ Nog niet gepubliceerde wijzigingen. Schrijf nieuwe changelog-entries hieronder; 
   - Daarna `figma.flatten()` naar één laag `Shape`, in een `Group`. Eén override-doel per icoon, en dezelfde vorm die met de hand ook wordt aangehouden, zodat een swap tussen een gegenereerd en een handgemaakt icoon net zo goed werkt
   - Gevolg van het omzetten naar vlakken: de lijndikte schaalt mee in plaats van vast te blijven als een instance kleiner wordt. Voor een icoon is dat het gewenste gedrag, een chevron van 21px hoort dunnere lijnen te hebben dan een van 24px
   - De smoke test controleert nu de laagstructuur van alle 51 iconen en dat geen enkel icoon zijn kleur nog op een stroke draagt. Dat is de controle die deze bug had gevangen
+  - De iconpagina wordt tijdens het bouwen geopend en daarna weer teruggezet. `createNodeFromSvg` zet zijn frame op de **huidige** pagina en `outlineStroke()` blijkt zijn resultaat daar ook neer te kunnen zetten; bouwen terwijl een andere pagina open staat gaf `flatten` en `group` nodes en ouder op verschillende pagina's, en Figma weigert dat met "Grouped nodes must be in the same page as the parent"
+  - De mock modelleert die twee plaatsingen nu expliciet, zodat een cross-page fout in de smoke test valt in plaats van pas in Figma. Nieuwe controle: geen losse lagen op de iconpagina
 
 #### Fixed
 

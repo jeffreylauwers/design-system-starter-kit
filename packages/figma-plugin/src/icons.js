@@ -57,6 +57,20 @@ async function findOrCreatePage(name) {
 }
 
 /**
+ * Opent een pagina. In een bestand met dynamic page loading is het synchrone
+ * `figma.currentPage =` niet meer toegestaan; setCurrentPageAsync is de route
+ * die het wel is.
+ */
+async function openPage(page) {
+  if (figma.currentPage === page) return;
+  if (typeof figma.setCurrentPageAsync === 'function') {
+    await figma.setCurrentPageAsync(page);
+  } else {
+    figma.currentPage = page;
+  }
+}
+
+/**
  * Zet de strepen van een lijn-icoon om naar vlakken.
  *
  * Zonder deze stap is de kleur van een icoon soms een `stroke` en soms een
@@ -65,10 +79,13 @@ async function findOrCreatePage(name) {
  * halen, en de override die op `fills` stond komt op het nieuwe icoon nergens
  * terecht. Na het omzetten heeft élk icoon precies één `fills`.
  *
- * `outlineStroke()` levert een nieuwe node op naast het origineel en laat dat
- * origineel staan; die gaat er hier af, tenzij hij zelf ook een vulling had.
+ * `outlineStroke()` levert een nieuwe node op en laat het origineel staan. Wáár
+ * die nieuwe node landt ligt niet vast: in de praktijk blijkt dat de huidige
+ * pagina te kunnen zijn in plaats van de ouder van het origineel. Hij wordt
+ * daarom expliciet in `parent` gezet. Figma houdt bij het verhangen de absolute
+ * positie aan, dus de vorm blijft staan waar hij stond.
  */
-function outlineStrokes(nodes, icon, log) {
+function outlineStrokes(nodes, parent, icon, log) {
   const drawn = [];
 
   for (const node of nodes) {
@@ -91,6 +108,8 @@ function outlineStrokes(nodes, icon, log) {
       drawn.push(node);
       continue;
     }
+
+    if (outlined.parent !== parent) parent.appendChild(outlined);
 
     if (Array.isArray(node.fills) && node.fills.length) {
       node.strokes = [];
@@ -118,47 +137,41 @@ function outlineStrokes(nodes, icon, log) {
  * die met de hand ook wordt aangehouden, zodat een swap tussen een gegenereerd
  * en een handgemaakt icoon net zo goed werkt.
  *
- * De posities worden vóór het verhangen onthouden en erna teruggezet. Figma
- * behoudt bij `appendChild` de absolute positie, dus een component dat al
- * ergens op de pagina staat zou zijn vectoren anders buiten beeld krijgen.
+ * Het bouwen gebeurt volledig binnen het frame dat `createNodeFromSvg`
+ * oplevert; pas de afgeronde `Group` verhuist naar het component. Zo hoeft er
+ * maar één node een ouder te wisselen in plaats van alle losse vectoren, en
+ * hebben `flatten` en `group` altijd nodes en ouder bij elkaar.
  */
 function fillWithSvg(component, icon, context) {
   for (const child of [...component.children]) child.remove();
 
   const source = figma.createNodeFromSvg(icon.svg);
-  const placed = [...source.children].map((child) => ({
-    child,
-    x: child.x,
-    y: child.y,
-  }));
-
-  for (const { child, x, y } of placed) {
-    component.appendChild(child);
-    child.x = x;
-    child.y = y;
-  }
-  source.remove();
-
-  const drawn = outlineStrokes(
-    placed.map(({ child }) => child),
-    icon,
-    context.log
-  );
+  const drawn = outlineStrokes([...source.children], source, icon, context.log);
 
   if (!drawn.length) {
     context.log.warn(`${icon.name}: de SVG leverde geen tekenbare laag op`);
+    source.remove();
     return;
   }
 
-  const shape = figma.flatten(drawn, component);
+  const shape = figma.flatten(drawn, source);
   shape.name = 'Shape';
   // Na het platslaan is de kleur altijd een vulling; de binding hoort daar dan
   // ook op, en niet meer op een stroke die er niet meer is.
   shape.fills = paintsForVector(icon, context);
   shape.strokes = [];
 
-  const group = figma.group([shape], component);
+  const group = figma.group([shape], source);
   group.name = 'Group';
+
+  // Figma houdt bij het verhangen de absolute positie aan, en `source` staat
+  // ergens anders dan het component. De offset binnen het 24x24-kader wordt
+  // daarom onthouden en teruggezet.
+  const { x, y } = group;
+  component.appendChild(group);
+  group.x = x;
+  group.y = y;
+  source.remove();
 
   // Zonder dit blijft de vorm op zijn plek als een designer de instance
   // vergroot, en groeit alleen het kader mee.
@@ -241,29 +254,44 @@ export async function importIconSet(payload, log) {
   let created = 0;
   let updated = 0;
 
-  for (const [index, icon] of spec.icons.entries()) {
-    const known = existing.get(icon.name);
-    const component = known ?? figma.createComponent();
+  // `createNodeFromSvg` zet zijn frame op de **huidige** pagina, en
+  // `outlineStroke()` blijkt zijn resultaat daar ook neer te kunnen zetten.
+  // Bouwen terwijl een andere pagina open staat betekent dus dat `flatten` en
+  // `group` nodes en ouder op verschillende pagina's krijgen, en Figma weigert
+  // dat: "Grouped nodes must be in the same page as the parent". Door de
+  // iconpagina te openen gebeurt alles op één pagina. De pagina die de designer
+  // openhad gaat er daarna weer overheen, want een component-import zet zijn
+  // set op `figma.currentPage`.
+  const previousPage = figma.currentPage;
+  await openPage(page);
 
-    if (known) {
-      updated += 1;
-    } else {
-      page.appendChild(component);
-      component.name = icon.name;
-      // Alleen bij een nieuw icoon: een bestaand icoon is misschien door een
-      // designer verplaatst, en dat terugduwen is geen bijwerken maar
-      // opruimen achter iemand aan.
-      component.x = (index % COLUMNS) * CELL;
-      component.y = Math.floor(index / COLUMNS) * CELL;
-      created += 1;
+  try {
+    for (const [index, icon] of spec.icons.entries()) {
+      const known = existing.get(icon.name);
+      const component = known ?? figma.createComponent();
+
+      if (known) {
+        updated += 1;
+      } else {
+        page.appendChild(component);
+        component.name = icon.name;
+        // Alleen bij een nieuw icoon: een bestaand icoon is misschien door een
+        // designer verplaatst, en dat terugduwen is geen bijwerken maar
+        // opruimen achter iemand aan.
+        component.x = (index % COLUMNS) * CELL;
+        component.y = Math.floor(index / COLUMNS) * CELL;
+        created += 1;
+      }
+
+      component.resize(icon.width, icon.height);
+      // Een icoon heeft geen achtergrond; zonder dit krijgt elk component het
+      // witte vlak dat Figma standaard aanmaakt.
+      component.fills = [];
+      component.clipsContent = false;
+      fillWithSvg(component, icon, context);
     }
-
-    component.resize(icon.width, icon.height);
-    // Een icoon heeft geen achtergrond; zonder dit krijgt elk component het
-    // witte vlak dat Figma standaard aanmaakt.
-    component.fills = [];
-    component.clipsContent = false;
-    fillWithSvg(component, icon, context);
+  } finally {
+    await openPage(previousPage);
   }
 
   // Iconen die uit de assets-map verdwenen zijn blijven staan. Ze automatisch
