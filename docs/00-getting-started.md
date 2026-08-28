@@ -169,7 +169,7 @@ Available Web Components: `Button`, `Heading`, `Icon`, `Link`, `OrderedList`, `P
 
 ## Where to go next
 
-- **[Live Storybook](https://jeffreylauwers.github.io/design-system-starter-kit/)** — browse all 71 components with interactive examples and usage guidelines
+- **[Live Storybook](https://jeffreylauwers.github.io/design-system-starter-kit/)** — browse all 75 components with interactive examples and usage guidelines
 - **[Design Tokens Reference](./02-design-tokens-reference.md)** — all token values, scales, and how to use them in your own CSS
 - **[Components Reference](./03-components.md)** — component API specifications
 - **[Contributing](../CONTRIBUTING.md)** — how to add or change components

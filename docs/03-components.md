@@ -1056,7 +1056,7 @@ Brengt consistente verticale ruimte aan tussen directe child-elementen via `flex
 
 ## Display & Feedback Components
 
-**Status:** Complete (HTML/CSS, React): 16 components total
+**Status:** Complete (HTML/CSS, React): 17 components total
 
 ### Backdrop
 
@@ -3473,15 +3473,15 @@ defineButton('my-custom-button');
 
 ## Component Statistics
 
-**Total Components:** 71
+**Total Components:** 75
 
 **Implementations:**
 
-- **HTML/CSS:** 71 components
-- **React:** 71 components (1549 tests total, 75 test suites)
+- **HTML/CSS:** 75 components
+- **React:** 75 components (1661 tests total, 80 test suites)
 - **Web Component:** 7 components (Button, Heading, Icon, Link, OrderedList, Paragraph, UnorderedList)
 
-**Test Coverage:** 1549 tests across 75 test suites
+**Test Coverage:** 1661 tests across 80 test suites
 
 ---
 

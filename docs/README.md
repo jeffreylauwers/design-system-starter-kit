@@ -95,11 +95,11 @@ Complete documentation voor het Design System Starter Kit.
 
 ## 📊 System Statistics
 
-- **Tokens per configuration:** ~1100 (400 semantic + 700 component)
+- **Tokens per configuration:** ~1380
 - **Configurations:** 8 (2 themes × 2 modes × 2 project types)
-- **Components:** 71 (HTML/CSS + React)
-- **Tests:** 1549 across 75 test suites
-- **Storybook stories:** 130+
+- **Components:** 75 (HTML/CSS + React)
+- **Tests:** 1661 across 80 test suites
+- **Storybook stories:** 637 across 88 component pages
 
 ---
 

@@ -15,6 +15,12 @@ This monorepo contains the following packages:
 - **[@dsn-starter-kit/components-web](./packages/components-web)** - Web Components (vanilla TypeScript)
 - **[@dsn-starter-kit/storybook](./packages/storybook)** - Documentation and component showcase
 
+Internal packages (not published to npm):
+
+- **[@dsn-starter-kit/figma-sync](./packages/figma-sync)** - Generates Figma node specs from the HTML/CSS layer
+- **[@dsn-starter-kit/figma-plugin](./packages/figma-plugin)** - Figma plugin that writes the generated variables and component specs into Figma
+- **[@dsn-starter-kit/color-palette-generator](./packages/color-palette-generator)** - Interactive OKLCH color palette generator for white-label themes
+
 ## Quick Start
 
 ### Option A: Install from npm (recommended for consumers)
@@ -77,13 +83,16 @@ pnpm build:core        # Core utilities
 pnpm build:components  # All component packages
 pnpm build:storybook   # Storybook static site
 
+# Build the Figma chain (tokens, variables, component specs, plugin)
+pnpm build:figma
+
 # Watch design tokens for changes
 pnpm --filter @dsn-starter-kit/design-tokens watch
 
 # Start Storybook in development mode
 pnpm dev
 
-# Run tests (1593 tests across 78 test suites)
+# Run tests (1661 tests across 80 test suites)
 pnpm test
 
 # Run tests in watch mode
@@ -153,9 +162,9 @@ Token categories:
 - **Shadows** - 3 elevation levels
 - **Focus States** - Accessible focus indicators
 - **Form Controls** - Border, spacing, typography, and color tokens for form elements (7 states)
-- **Form Components** - 19 complete form components with 26 token files
+- **Form Components** - 26 form components, covered by 22 token files (EmailInput, NumberInput, TelephoneInput, FormFieldset and FormFieldLegend define none of their own and reuse the shared `form-control` tokens)
 
-All tokens (~1050 per configuration) are built with [Style Dictionary](https://amzn.github.io/style-dictionary/) and exported as:
+All tokens (~1380 per configuration) are built with [Style Dictionary](https://amzn.github.io/style-dictionary/) and exported as:
 
 - CSS Custom Properties
 - SCSS Variables
@@ -200,7 +209,7 @@ All components are fully typed with TypeScript and include comprehensive JSDoc d
 | **PageLayout**      | Yes      | Yes   | No            |
 | **Stack**           | Yes      | Yes   | No            |
 
-**Content Components (12)**
+**Content Components (13)**
 
 | Component         | HTML/CSS | React | Web Component |
 | ----------------- | -------- | ----- | ------------- |
@@ -209,6 +218,7 @@ All components are fully typed with TypeScript and include comprehensive JSDoc d
 | **Heading**       | Yes      | Yes   | Yes           |
 | **HeadingGroup**  | Yes      | Yes   | No            |
 | **Icon**          | Yes      | Yes   | Yes           |
+| **IconList**      | Yes      | Yes   | No            |
 | **Image**         | Yes      | Yes   | No            |
 | **Link**          | Yes      | Yes   | Yes           |
 | **LinkButton**    | Yes      | Yes   | No            |
@@ -437,7 +447,7 @@ Comprehensive documentation is available in the `/docs` folder:
 
 - **Pre-commit hooks** via Husky + lint-staged (ESLint + Prettier)
 - **Type checking** across all packages (`pnpm type-check`)
-- **1593 tests** covering React components, Web Components, and utilities
+- **1661 tests** covering React components, Web Components, and utilities
 - **CI/CD** via GitHub Actions (lint, type-check, test, build)
 
 ## Tech Stack

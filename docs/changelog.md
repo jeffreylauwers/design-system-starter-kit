@@ -149,6 +149,29 @@ Nog niet gepubliceerde wijzigingen. Schrijf nieuwe changelog-entries hieronder; 
   - Alles wat niet naar een Figma-variable te vertalen is (box shadows, transitions, `ch`-eenheden) staat met reden in `dist/figma/variables-report.json`
   - De Figma-build staat bewust los van `build:tokens`: de token-CSS is het hoofdproduct en hoort niet om te vallen door een generator die er alleen maar naast draait
 
+### Storybook
+
+#### Fixed
+
+- **Token-CSS wordt geladen vanaf het juiste basispad** (PR [#343](https://github.com/jeffreylauwers/design-system-starter-kit/pull/343)): het script in `preview-head.html` gebruikte het absolute pad `/design-tokens/dist/css`. Dat negeert de Vite `base`, die op GitHub Pages op `/design-system-starter-kit/` staat. Op de gedeployde Storybook gaf elke fetch daardoor een 404 met "Token config load error", en volgden docs-only pagina's zoals Introduction de theme-, mode- en density-keuze niet meer: de body kreeg wel `dsn-mode-dark`, maar de tokens bleven op `start-light-default` staan. Lokaal viel het niet op, omdat `base` daar `/` is en het absolute pad toevallig klopte.
+  - Het pad wordt nu afgeleid met `new URL(..., document.baseURI)`, zodat het zowel op `/` als op een subpad klopt. `preview-head.html` is platte HTML/JS en kent geen Vite-variabelen, dus dit is de aangewezen route
+  - Hetzelfde pad stond op drie plekken met elk een eigen laadimplementatie (`preview-head.html`, `preview.ts` en `TokenControls.tsx`). Alleen de eerste was fout, maar ze konden verder uit elkaar lopen. De loader in `preview-head.html` is nu de enige bron van waarheid en biedt een API op `window.__DSN_TOKENS__`, getypeerd in `packages/storybook/src/token-loader.ts`
+  - Bijvangst: `TokenControls` las de huidige configuratie met `split('-')` en maakte van `information-dense` de waarde `information`, waardoor de density-select leeg bleef. `fromConfigName()` lost dat op
+
+#### Changed
+
+- **96 redundante story `name`-annotaties verwijderd** (PR [#344](https://github.com/jeffreylauwers/design-system-starter-kit/pull/344)): de eslint-regel `storybook/no-redundant-story-name` gaf 96 warnings, verdeeld over 60 story-bestanden. Storybook leidt de naam in de sidebar zelf af uit de export-naam, dus `export const RTL` met `name: 'RTL'` leverde twee keer dezelfde naam op. `pnpm lint` gaat hiermee van 96 warnings naar 0.
+  - De 347 namen die wel afwijken van de afgeleide naam zijn ongemoeid gelaten
+  - Geverifieerd tegen de gebouwde storybook-index: alle 96 stories dragen daarin nog exact dezelfde naam, dus de sidebar en de Chromatic-snapshotnamen veranderen niet
+  - `CLAUDE.md` is meegenomen: de eis "story namen altijd Engels" gold op de `name`-waarde en geldt nu op de export-naam, met de instructie om `name` alleen te gebruiken wanneer die afwijkt van de afgeleide naam
+
+### CI
+
+#### Changed
+
+- **GitHub Actions bijgewerkt naar Node 24-compatibele versies** (issue [#314](https://github.com/jeffreylauwers/design-system-starter-kit/issues/314), PR [#340](https://github.com/jeffreylauwers/design-system-starter-kit/pull/340)): de acties in `ci.yml`, `deploy-storybook.yml` en `publish.yml` draaiden op runtimes die GitHub uitfaseert.
+- **`chromaui/action` van v11 naar v18** (PR [#342](https://github.com/jeffreylauwers/design-system-starter-kit/pull/342)).
+
 ---
 
 ## Version 2.0.0 (July 12, 2026)

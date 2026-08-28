@@ -43,7 +43,7 @@ pnpm --filter @dsn-starter-kit/design-tokens watch
 # Start Storybook in development mode
 pnpm dev
 
-# Run tests (1549 tests across 75 test suites)
+# Run tests (1661 tests across 80 test suites)
 pnpm test
 
 # Run tests in watch mode
@@ -548,7 +548,7 @@ In Windows High Contrast mode / forced-colors mode worden `background-color`, `c
 
 ### Test Coverage
 
-- **Total tests:** 1549 across 75 test suites
+- **Total tests:** 1661 across 80 test suites
 - **Frameworks:** Vitest + React Testing Library
 - **Coverage areas:** React components, Web Components, utilities
 
