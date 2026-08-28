@@ -78,7 +78,7 @@ Bijbehorende deelbesluiten:
 
 `variables.json` blijft wel de lijst: alleen tokens die het tot een variable geschopt hebben mogen gebonden worden. Wat daar is afgevallen (box shadows, transitions) houdt een vaste waarde.
 
-**Een kleur die in de gemeten mode transparant is, wordt tóch gebonden** zolang hij niet in élke mode transparant is. Anders zou een achtergrond die alleen in dark mode bestaat in Figma leeg blijven. De plugin maakt de paint dan aan; de variable bepaalt daarna kleur én alpha.
+**Een transparante kleur wordt net zo goed gebonden.** `dsn.color.transparent` is een token als elk ander; een laag die in Figma `button/subtle/background-color` toont laat zien wélk token de achtergrond stuurt, terwijl een weggelaten Fill die relatie onzichtbaar maakt. De plugin maakt de paint dan aan en de variable bepaalt kleur én alpha. Voor strokes gaat dat bewust niet op: een frame zonder rand heeft in Figma wel een standaard `strokeWeight`, dus een aangemaakte stroke zou een lijn tekenen die de CSS niet heeft.
 
 **De plugin weigert componenten te importeren in een bestand zonder de benodigde variables.** Doorgaan zou een component set opleveren die er goed uitziet maar de theme-schakelaar niet volgt: precies het probleem dat deze import moet oplossen, en niet iets wat je aan een laag ziet.
 

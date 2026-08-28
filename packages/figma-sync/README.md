@@ -184,6 +184,36 @@ Een kleur die alleen in de _gemeten_ mode transparant is wordt wél gebonden: in
 een andere mode is hij zichtbaar, en zonder binding zou het component daar leeg
 blijven. De plugin maakt de paint dan aan.
 
+### Laagstructuur
+
+Het root-element van een matrix wordt in Figma niet in een frame gezet maar
+**wórdt** het component. Een wrapper eromheen zou een lege laag met dezelfde
+auto layout opleveren, en dat is precies de nesting die een Figma-library
+onwerkbaar maakt.
+
+```
+dsn-button                         (component set)
+└── variant=strong, size=small…    (component: fills, padding, radius, gap)
+    ├── Tekst                      (text)
+    └── chevron-right              (icoon)
+```
+
+De component set heet naar de **CSS-klasse van de root** (`dsn-button`), niet
+naar de matrixnaam. Dat is de naam waarop een designer in de code zoekt.
+
+Een icoon krijgt zijn naam uit `data-icon` op de `<svg>`. Zonder dat heet elke
+icoonlaag "icon" en moet een designer het bestand opentrekken om te zien welk
+icoon het is:
+
+```html
+<svg class="dsn-icon" data-icon="chevron-right" aria-hidden="true" …></svg>
+```
+
+Het icoon blijft wel een frame met de vectoren erin: dat is wat
+`createNodeFromSvg` oplevert, en het platslaan tot één vector zou de
+lijndikte van onze stroke-iconen niet meeschalen. Eén laag per icoon vraagt om
+echte icooncomponenten met instances.
+
 ### Drie valkuilen bij het meten
 
 Deze drie leverden allemaal stilzwijgend verkeerde waarden op en zijn de reden

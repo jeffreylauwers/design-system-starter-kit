@@ -119,21 +119,6 @@ export function createVariableIndex(payload, modes) {
     return mode in values ? values[mode] : undefined;
   };
 
-  /**
-   * Is deze kleur in élke mode volledig doorzichtig?
-   *
-   * Een kleur die alleen in de gemeten mode transparant is hoort wél gebonden
-   * te worden: in een andere mode is hij zichtbaar, en zonder binding zou het
-   * component daar leeg blijven. Is hij overal transparant, dan levert een
-   * binding alleen een lege paint in Figma op.
-   */
-  const transparentInEveryMode = (entry) => {
-    const source = sourceOf(entry);
-    const values = Object.values(source?.valuesByMode ?? {});
-    if (!values.length) return false;
-    return values.every((value) => value && value.a === 0);
-  };
-
   return {
     modes,
     ambiguous: [...ambiguous],
@@ -147,8 +132,6 @@ export function createVariableIndex(payload, modes) {
         name: entry.name,
         type: entry.type,
         value: valueOf(entry),
-        transparentInEveryMode:
-          entry.type === 'COLOR' && transparentInEveryMode(entry),
       };
     },
   };

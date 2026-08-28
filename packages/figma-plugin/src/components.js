@@ -366,6 +366,20 @@ function buildNode(spec, parent, context) {
 
   const frame = figma.createFrame();
   parent.appendChild(frame);
+  applyFrame(frame, spec, context);
+
+  applyPlacement(frame, spec, log);
+  applySizing(frame, spec, log);
+  return frame;
+}
+
+/**
+ * Zet een frame-spec op een bestaande node en bouwt zijn kinderen.
+ *
+ * Staat los van `buildNode` omdat het root-element van een component geen eigen
+ * frame krijgt: het *is* het component. Zie `importComponentSet`.
+ */
+function applyFrame(frame, spec, context) {
   frame.name = spec.name ?? 'Frame';
 
   // Een nieuw frame heeft een witte vulling; die overschrijven we altijd,
@@ -383,10 +397,6 @@ function buildNode(spec, parent, context) {
   applyBindings(frame, spec, context);
 
   for (const child of spec.children ?? []) buildNode(child, frame, context);
-
-  applyPlacement(frame, spec, log);
-  applySizing(frame, spec, log);
-  return frame;
 }
 
 /**
@@ -435,14 +445,26 @@ export async function importComponentSet(payload, log) {
   for (const [index, component] of spec.components.entries()) {
     const wrapper = figma.createComponent();
     page.appendChild(wrapper);
-    // De naam bepaalt de variant properties zodra combineAsVariants draait.
-    wrapper.name = component.name;
-    wrapper.layoutMode = 'HORIZONTAL';
-    wrapper.primaryAxisSizingMode = 'AUTO';
-    wrapper.counterAxisSizingMode = 'AUTO';
-    wrapper.fills = [];
 
-    buildNode(component.node, wrapper, context);
+    // Het root-element wórdt het component. Een extra frame eromheen zou een
+    // lege laag met dezelfde auto layout toevoegen, en dat is precies de
+    // nesting die een Figma-library onwerkbaar maakt.
+    if (component.node.type === 'FRAME') {
+      applyFrame(wrapper, component.node, context);
+      applySizing(wrapper, component.node, log);
+    } else {
+      // Een component dat in zijn geheel tot tekst of een vector inklapt kan
+      // zichzelf niet zijn; die krijgt wel een frame om zich heen.
+      wrapper.layoutMode = 'HORIZONTAL';
+      wrapper.primaryAxisSizingMode = 'AUTO';
+      wrapper.counterAxisSizingMode = 'AUTO';
+      wrapper.fills = [];
+      buildNode(component.node, wrapper, context);
+    }
+
+    // Na applyFrame, die de naam van het root-element zet. Deze naam bepaalt de
+    // variant properties zodra combineAsVariants draait.
+    wrapper.name = component.name;
 
     // Varianten naast elkaar leggen; combineAsVariants ordent daarna zelf.
     wrapper.x = cursorX;

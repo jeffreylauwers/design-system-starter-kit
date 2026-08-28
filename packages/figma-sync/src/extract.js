@@ -125,6 +125,9 @@ function domWalker([properties, hiddenClass]) {
     if (node.tag === 'svg') {
       node.kind = 'vector';
       node.svg = element.outerHTML;
+      // Zonder naam heet elke icoonlaag in Figma "icon" en is een designer de
+      // rest van het bestand aan het opentrekken om te zien wélk icoon het is.
+      node.iconName = element.dataset.icon || null;
       return node;
     }
 

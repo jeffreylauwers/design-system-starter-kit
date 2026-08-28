@@ -18,6 +18,14 @@ const ICONS = {
   warning: `<path d="M12 4l9 16H3z"/><path d="M12 10v4M12 17h.01"/>`,
 };
 
+/** Wordt de naam van de icoonlaag in Figma. */
+const ICON_NAMES = {
+  info: 'info-circle',
+  positive: 'circle-check',
+  negative: 'alert-circle',
+  warning: 'alert-triangle',
+};
+
 const LABELS = {
   info: 'Informatie: ',
   positive: 'Succes: ',
@@ -63,7 +71,7 @@ export default {
     const iconMarkup =
       icon === 'with-icon'
         ? `<span class="dsn-alert__icon" aria-hidden="true">
-             <svg class="dsn-icon dsn-icon--xl" aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">${ICONS[variant]}</svg>
+             <svg class="dsn-icon dsn-icon--xl" data-icon="${ICON_NAMES[variant]}" aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">${ICONS[variant]}</svg>
            </span>`
         : '';
 

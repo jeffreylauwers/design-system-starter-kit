@@ -155,7 +155,10 @@ Nog niet gepubliceerde wijzigingen. Schrijf nieuwe changelog-entries hieronder; 
   - Gebonden velden: `fills`, `strokes`, `strokeWeight`, de vier hoekradii, de vier paddings, `itemSpacing` en `fontSize`
   - De naam van het token komt uit de authored CSS (de generator speelt de cascade na en leest de `var()`-keten van de winnende declaratie), de waarde blijft gemeten. Het token moet die gemeten waarde reproduceren voordat er gebonden wordt, dus een misrekening in de specificiteit kan wel een binding missen maar geen verkeerde binding leggen
   - Wat een vaste waarde houdt staat per component in `dist/{component}.json` onder `bindings.unbound`, met reden en aantal: `border-radius: 50%` bij Radio, tokens die geen Figma-variable zijn, kleuren die in elke mode transparant zijn, en padding op een frame zonder auto layout
-  - Een kleur die alleen in de gemeten mode transparant is wordt wél gebonden; de plugin maakt de paint dan aan, zodat het component in een andere mode niet leeg blijft
+  - Ook een transparante kleur wordt gebonden. `dsn.color.transparent` is een token als elk ander: de laag toont in Figma welk token de achtergrond stuurt in plaats van een lege Fill. Voor strokes gebeurt dat niet, want een frame zonder rand heeft wel een standaard `strokeWeight` en zou dus een lijn krijgen die de CSS niet heeft
+  - Het root-element wordt niet meer in een frame gezet maar **is** het component. Dat scheelt een lege wrapperlaag per variant, en de eigenschappen en bindingen komen op de component-node zelf
+  - De component set heet naar de CSS-klasse van de root (`dsn-button`) in plaats van naar de matrixnaam (`Button`); dat is de naam waarop een designer in de code zoekt
+  - Iconen krijgen hun naam uit een nieuw `data-icon`-attribuut op de `<svg>` in de matrix, dus `chevron-right` en `alert-triangle` in plaats van `icon`
   - De plugin weigert een component-import in een bestand zonder de benodigde variable-collections. Doorgaan zou een set opleveren die er goed uitziet maar de theme-schakelaar niet volgt, en dat zie je aan een laag niet
   - De smoke test leest per veld de naam van de variable terug uit de gebouwde boom, niet alleen het aantal; de mock weigert nu ook een binding op een onbekend veld, met het verkeerde variable-type, of padding op een frame zonder auto layout
 

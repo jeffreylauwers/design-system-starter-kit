@@ -173,6 +173,10 @@ for (const file of componentFiles) {
   );
   check('component set gecombineerd', imported.combined === true);
 
+  // Het root-element is het component zelf, dus de gebouwde boom begint bij de
+  // component-node en niet bij een frame daarbinnen.
+  const built = (index) => state.page.children.at(-1)?.children[index];
+
   const fresh = problems
     .slice(before)
     .filter((p) => !payload.warnings.includes(p.message));
@@ -223,11 +227,7 @@ for (const file of componentFiles) {
     );
   };
   for (const [index, component] of payload.componentSet.components.entries()) {
-    // Het component-wrapperframe zit één niveau boven de gebouwde boom.
-    visit(
-      state.page.children.at(-1)?.children[index]?.children[0],
-      component.node
-    );
+    visit(built(index), component.node);
   }
   check(
     'iconen dragen de tekstkleur',
@@ -253,10 +253,7 @@ for (const file of componentFiles) {
     );
   };
   for (const [index, component] of payload.componentSet.components.entries()) {
-    checkGrid(
-      state.page.children.at(-1)?.children[index]?.children[0],
-      component.node
-    );
+    checkGrid(built(index), component.node);
   }
   check(
     'grid-tracks toegepast',
@@ -314,10 +311,7 @@ for (const file of componentFiles) {
     );
   };
   for (const [index, component] of payload.componentSet.components.entries()) {
-    checkBindings(
-      state.page.children.at(-1)?.children[index]?.children[0],
-      component.node
-    );
+    checkBindings(built(index), component.node);
   }
   check(
     'bindingen wijzen naar de juiste variable',
@@ -332,6 +326,47 @@ for (const file of componentFiles) {
     'er is daadwerkelijk gebonden',
     imported.bindings.bound > 0,
     `${imported.bindings.bound} lagen`
+  );
+
+  // ---------------------------------------------------------------------------
+  // Laagstructuur
+  // ---------------------------------------------------------------------------
+
+  // Het root-element hoort het component zélf te zijn. Een frame ertussen levert
+  // een lege laag met dezelfde auto layout op, en dus onnodige nesting.
+  const doubleWrapped = payload.componentSet.components.filter(
+    (component, index) =>
+      component.node.type === 'FRAME' &&
+      built(index)?.children.length === 1 &&
+      built(index)?.children[0].name === component.node.name
+  );
+  check(
+    'geen extra wrapperframe rond de root',
+    doubleWrapped.length === 0,
+    doubleWrapped.length ? `${doubleWrapped.length} varianten` : ''
+  );
+
+  check(
+    'de component set heet naar de CSS-klasse',
+    payload.componentSet.name.startsWith('dsn-'),
+    payload.componentSet.name
+  );
+
+  // Een laag die "icon" heet dwingt een designer het bestand open te trekken om
+  // te zien wélk icoon het is.
+  const unnamedIcons = [];
+  const findIcons = (spec) => {
+    if (spec?.type === 'VECTOR' && spec.name === 'icon')
+      unnamedIcons.push(spec);
+    (spec?.children ?? []).forEach(findIcons);
+  };
+  payload.componentSet.components.forEach((component) =>
+    findIcons(component.node)
+  );
+  check(
+    'iconen dragen hun eigen naam',
+    unnamedIcons.length === 0,
+    unnamedIcons.length ? `${unnamedIcons.length} zonder data-icon` : ''
   );
 }
 

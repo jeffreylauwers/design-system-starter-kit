@@ -25,7 +25,16 @@ const CHANNEL_TOLERANCE = 0.005;
  * De plugin herkent ze aan de naam.
  */
 const FRAME_FIELDS = [
-  { field: 'fills', property: 'background-color', kind: 'paint' },
+  // `materialise` betekent: bestaat de paint niet, laat de plugin hem dan
+  // aanmaken. Voor een fill kan dat, want een transparante fill tekent niets.
+  // Voor een stroke niet: een frame zonder rand heeft in Figma wel een
+  // standaard strokeWeight, dus daar zou een lijn ontstaan die de CSS niet heeft.
+  {
+    field: 'fills',
+    property: 'background-color',
+    kind: 'paint',
+    materialise: true,
+  },
   { field: 'strokes', property: 'border-top-color', kind: 'paint' },
   { field: 'strokeWeight', property: 'border-top-width', kind: 'number' },
   {
@@ -55,11 +64,13 @@ const FRAME_FIELDS = [
 ];
 
 const TEXT_FIELDS = [
-  { field: 'fills', property: 'color', kind: 'paint' },
+  { field: 'fills', property: 'color', kind: 'paint', materialise: true },
   { field: 'fontSize', property: 'font-size', kind: 'number' },
 ];
 
-const VECTOR_FIELDS = [{ field: 'fills', property: 'color', kind: 'paint' }];
+const VECTOR_FIELDS = [
+  { field: 'fills', property: 'color', kind: 'paint', materialise: true },
+];
 
 /** De gemeten waarde die bij een veld hoort, uit de al opgebouwde node spec. */
 function measuredValue(spec, field) {
@@ -99,7 +110,7 @@ function unavailableReason(spec, field) {
  * valt hier dus om in plaats van als stille verkeerde binding in Figma te
  * belanden.
  */
-function matchesMeasurement(kind, variable, measured) {
+function matchesMeasurement({ kind, materialise }, variable, measured) {
   if (variable.value === undefined)
     return 'de waarde van het token is onbekend';
 
@@ -108,14 +119,14 @@ function matchesMeasurement(kind, variable, measured) {
       return `het token is ${variable.type}, geen kleur`;
     }
     // Een volledig transparante gemeten kleur levert geen paint op. Dat wil
-    // niet zeggen dat er niets te binden valt: in een andere mode kan dezelfde
-    // variable wél een zichtbare kleur zijn. De plugin maakt de paint dan aan.
+    // niet zeggen dat er niets te binden valt: het token blijft de bron van de
+    // kleur, en in een andere mode kan dezelfde variable zichtbaar zijn. De
+    // plugin maakt de paint dan aan, zodat de laag in Figma laat zien wélk
+    // token hem stuurt in plaats van een lege Fill te tonen.
     if (!measured) {
+      if (!materialise) return 'er is geen paint om aan te binden';
       if ((variable.value?.a ?? 1) !== 0) {
         return 'de gemeten kleur is transparant, de waarde van het token niet';
-      }
-      if (variable.transparentInEveryMode) {
-        return 'het token is in elke mode transparant';
       }
       return null;
     }
@@ -182,7 +193,8 @@ export function bindingsFor(spec, sources, index, report) {
 
   const bound = {};
 
-  const consider = ({ field, property, kind }) => {
+  const consider = (entry) => {
+    const { field, property } = entry;
     const source = sources[property];
     if (!source) return;
 
@@ -208,7 +220,7 @@ export function bindingsFor(spec, sources, index, report) {
     }
 
     const mismatch = matchesMeasurement(
-      kind,
+      entry,
       variable,
       measuredValue(spec, field)
     );

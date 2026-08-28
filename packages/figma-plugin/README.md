@@ -66,9 +66,22 @@ Twee dingen die daarbij afwijken van wat je zou verwachten:
   vectoren. De binding gaat daarom mee in de paints die over de SVG heen worden
   gezet, niet via het frame.
 
-Een kleur die in de gemeten mode transparant is heeft geen paint om aan te
-binden. Is diezelfde variable in een andere mode wél zichtbaar, dan maakt de
-plugin de paint alsnog aan; de variable bepaalt daarna kleur én alpha.
+Een transparante kleur (`dsn.color.transparent`) heeft geen gemeten paint om
+aan te binden. De plugin maakt die dan aan, zodat de laag laat zien wélk token
+de kleur stuurt in plaats van een lege Fill te tonen. De variable bepaalt
+daarna kleur én alpha. Voor strokes gebeurt dat niet: een frame zonder rand
+heeft wel een standaard `strokeWeight`, dus daar zou een lijn ontstaan.
+
+## Laagstructuur
+
+Het root-element van de spec wordt niet in een frame gezet maar **is** het
+component; alle eigenschappen (fills, auto layout, padding, radius) en hun
+bindingen komen op de component-node zelf. Een wrapper zou een lege laag met
+dezelfde auto layout toevoegen.
+
+De naam van de component-node blijft de variantlabel, want daar leidt
+`combineAsVariants` de variant properties uit af. De naam van de _set_ komt uit
+de spec en volgt de CSS-klasse: `dsn-button`.
 
 ## Idempotent
 

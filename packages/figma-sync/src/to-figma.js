@@ -405,7 +405,7 @@ function convertNode(node, wideNode, warnings, pathLabel, bindings) {
   if (node.kind === 'vector') {
     const vector = {
       type: 'VECTOR',
-      name: 'icon',
+      name: node.iconName ?? 'icon',
       width: node.rect.width,
       height: node.rect.height,
       // De plugin importeert dit met figma.createNodeFromSvg().
@@ -570,7 +570,13 @@ export function toComponentSet(matrix, extracted, variableIndex) {
     $schema: 'dsn-figma-components/1',
     generatedAt: new Date().toISOString(),
     componentSet: {
-      name: matrix.component,
+      // De naam die een designer in Figma terugvindt is de CSS-klasse, niet de
+      // matrixnaam: `dsn-button` is waar hij in de code op zoekt. Klapt de root
+      // om welke reden dan ook niet naar een `dsn-`-element, dan blijft de
+      // matrixnaam over.
+      name: components[0]?.node.name?.startsWith('dsn-')
+        ? components[0].node.name
+        : matrix.component,
       variantAxes: matrix.axes,
       components,
     },
