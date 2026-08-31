@@ -77,7 +77,6 @@ import '@dsn-starter-kit/components-html/modal-dialog';
 - `./drawer` — Drawer component styles
 - `./file` — File component styles
 - `./file-input` — File input styles
-- `./form-field` — Form field container styles
 - `./form-field-description` — Form field description styles
 - `./form-field-error-message` — Form field error message styles
 - `./form-field-label` — Form field label styles
@@ -136,7 +135,6 @@ import '@dsn-starter-kit/components-html/modal-dialog';
 | Drawer                | `dsn-drawer`                                                     | `./drawer`                   |
 | File                  | `dsn-file`                                                       | `./file`                     |
 | FileInput             | `dsn-file-input`                                                 | `./file-input`               |
-| FormField             | `dsn-form-field`                                                 | `./form-field`               |
 | FormFieldDescription  | `dsn-form-field-description`                                     | `./form-field-description`   |
 | FormFieldErrorMessage | `dsn-form-field-error-message`                                   | `./form-field-error-message` |
 | FormFieldLabel        | `dsn-form-field-label`                                           | `./form-field-label`         |

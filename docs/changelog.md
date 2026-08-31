@@ -10,6 +10,15 @@ All notable changes to this project are documented in this file.
 
 Nog niet gepubliceerde wijzigingen. Schrijf nieuwe changelog-entries hieronder; bij de volgende release wordt deze kop gepromoveerd naar het definitieve versienummer.
 
+### components-html
+
+#### Fixed
+
+- **De `./form-field` export wees naar een bestand dat nooit heeft bestaan** (zie issue [#320](https://github.com/jeffreylauwers/design-system-starter-kit/issues/320)): de `exports`-map bevatte `"./form-field": "./src/form-field/form-field.css"`, maar die map staat er sinds de initiële commit niet. `@dsn-starter-kit/components-html/form-field` faalde daardoor met `MODULE_NOT_FOUND` op een pad binnen het package, wat leest als een kapotte installatie in plaats van een component die deze laag niet heeft. De entry is verwijderd, samen met de twee regels in de README die hem noemden.
+  - De `dsn-form-field`-CSS zit in `components-react`, en `manifest.json` legt dat ook zo vast: `FormField` heeft `"platforms": ["react"]`. De `exports`-map sprak het manifest dus tegen
+  - Na deze wijziging komen manifest en `exports`-map exact overeen: van de 73 componenten in het manifest heeft elk component met `html-css` in zijn platforms een export, en geen enkel component zonder. Vóór de wijziging was `FormField` de enige mismatch
+  - Dit lost issue #320 niet op: de vraag óf de 19 formuliercontrols een HTML/CSS-laag moeten krijgen staat nog open. Het haalt alleen de tegenstrijdigheid weg die er nu al zichtbaar naar buiten lekte
+
 ### Packaging
 
 #### Fixed

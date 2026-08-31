@@ -3492,8 +3492,11 @@ Deviation — these define their CSS inside `components-react` instead of in the
 HTML/CSS layer, which means the HTML/CSS layer does not ship them: Checkbox,
 CheckboxGroup, CheckboxOption, DateInput, DateInputGroup, FormField, FormFieldset,
 OptionLabel, Radio, RadioGroup, RadioOption, SearchInput, Select and TimeInput.
-For `FormField` this is visible from the outside: `components-html` exports
-`./form-field`, but the file it points at does not exist.
+None of them are exported from `components-html`, which matches `manifest.json`:
+each of these is registered with `"platforms": ["react"]`.
+
+Whether these 14 should get an HTML/CSS layer is tracked in
+[#320](https://github.com/jeffreylauwers/design-system-starter-kit/issues/320).
 
 **Test Coverage:** 1665 tests across 80 test suites
 

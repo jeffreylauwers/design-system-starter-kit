@@ -23,7 +23,6 @@
     "./drawer": "./src/drawer/drawer.css",
     "./file": "./src/file/file.css",
     "./file-input": "./src/file-input/file-input.css",
-    "./form-field": "./src/form-field/form-field.css",
     "./form-field-description": "./src/form-field-description/form-field-description.css",
     "./form-field-error-message": "./src/form-field-error-message/form-field-error-message.css",
     "./form-field-label": "./src/form-field-label/form-field-label.css",
