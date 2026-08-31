@@ -208,6 +208,25 @@ you import export paths individually. `./select`, `./search-input`, `./date-inpu
 and `./time-input` need `./text-input`, and `./form-fieldset` needs `./form-field`.
 Importing `dist/components.css` gives you everything in the right order.
 
+## Component manifest
+
+`manifest.json` is a machine-readable index of every component: its BEM block,
+category, purpose, which platform implementations exist, and its most important
+props. It needs no build step, so tooling and AI agents can read it directly.
+
+```ts
+import manifest from '@dsn-starter-kit/components-html/manifest';
+
+const formControls = manifest.components.filter(
+  (component) => component.category === 'form-input'
+);
+```
+
+TypeScript types are in `manifest.d.ts`; `manifest-schema.json` describes the same
+structure as JSON Schema, for editors and for the validation step in the build. It
+is available as `@dsn-starter-kit/components-html/manifest-schema` if you want to
+validate your own additions against it.
+
 ## Assets
 
 SVG icons are available in `assets/icons/` for use as inline SVGs:
@@ -224,6 +243,14 @@ assets/icons/
 
 ```bash
 pnpm --filter @dsn-starter-kit/components-html build
+```
+
+The build validates `manifest.json` against `manifest-schema.json` before it
+concatenates any CSS, so an invalid category, an unknown platform or a misspelled
+field fails the build instead of shipping. Run that check on its own with:
+
+```bash
+pnpm --filter @dsn-starter-kit/components-html validate:manifest
 ```
 
 ## License

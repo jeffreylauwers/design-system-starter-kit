@@ -43,7 +43,7 @@ pnpm --filter @dsn-starter-kit/design-tokens watch
 # Start Storybook in development mode
 pnpm dev
 
-# Run tests (1665 tests across 80 test suites)
+# Run tests (1678 tests across 81 test suites)
 pnpm test
 
 # Run tests in watch mode
@@ -81,7 +81,7 @@ pnpm build
   2. pnpm build:core        # Core utilities and CSS
   ↓
   3. pnpm build:components  # HTML, React, and Web Components
-     ├─ components-html (CSS concatenation)
+     ├─ components-html (manifest validation + CSS concatenation)
      ├─ components-react (Icon generation + tsdown)
      └─ components-web (Shadow DOM CSS generation + tsdown)
   ↓
@@ -90,6 +90,8 @@ pnpm build
 
 **Key Features:**
 
+- `components-html` validates `manifest.json` against `manifest-schema.json` before
+  concatenating any CSS, so a typo in the manifest fails the build
 - Icon registry is automatically generated before React component compilation
 - CSS from `components-html` is referenced by `components-react`
 - Dependencies are built before dependents (tokens → core → components)
@@ -591,7 +593,7 @@ In Windows High Contrast mode / forced-colors mode worden `background-color`, `c
 
 ### Test Coverage
 
-- **Total tests:** 1665 across 80 test suites
+- **Total tests:** 1678 across 81 test suites
 - **Frameworks:** Vitest + React Testing Library
 - **Coverage areas:** React components, Web Components, utilities
 

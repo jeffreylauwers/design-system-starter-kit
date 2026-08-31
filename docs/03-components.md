@@ -3494,7 +3494,7 @@ A component that overrides another one on equal specificity declares that with a
 the component it overrides. See
 [DR-2026-08](./decisions/DR-2026-08-formuliercontrols-krijgen-een-html-css-laag.md).
 
-**Test Coverage:** 1665 tests across 80 test suites
+**Test Coverage:** 1678 tests across 81 test suites
 
 ---
 

@@ -144,7 +144,7 @@ npm install @dsn-starter-kit/components-html @dsn-starter-kit/core
 
 A machine-readable index of all components and their CSS classes is available at:
 
-```bash
+```ts
 import manifest from '@dsn-starter-kit/components-html/manifest';
 ```
 

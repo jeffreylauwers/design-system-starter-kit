@@ -56,7 +56,13 @@ Complete documentation voor het Design System Starter Kit.
    - TokenTable component
    - Documentation structure
 
-7. **[Changelog](./changelog.md)**
+7. **[Form Flow Patterns](./07-form-flow-patterns.md)**
+   - Enkelvoudig vs meerstappenformulier, en de flow-structuur
+   - De juiste formuliercontrole kiezen, en bestanden uploaden
+   - Validatie en foutmeldingsteksten
+   - Review- en bevestigingspagina
+
+8. **[Changelog](./changelog.md)**
    - Version history
    - Feature additions
    - Breaking changes
@@ -88,6 +94,7 @@ Complete documentation voor het Design System Starter Kit.
 - **Component specs?** → [Components](./03-components.md)
 - **Token values?** → [Design Tokens Reference](./02-design-tokens-reference.md)
 - **CSS- en tokennamen?** → [CSS & Token Naming Conventions](./06-css-naming-conventions.md)
+- **Een formulierflow bouwen?** → [Form Flow Patterns](./07-form-flow-patterns.md)
 - **Storybook setup?** → [Storybook Configuration](./05-storybook-configuration.md)
 - **Recent changes?** → [Changelog](./changelog.md)
 
@@ -98,7 +105,7 @@ Complete documentation voor het Design System Starter Kit.
 - **Tokens per configuration:** ~1380
 - **Configurations:** 8 (2 themes × 2 modes × 2 project types)
 - **Components:** 73 React components; all of them styled by `components-html` (68 CSS files)
-- **Tests:** 1665 across 80 test suites
+- **Tests:** 1678 across 81 test suites
 - **Storybook stories:** 601 across 72 component pages
 
 ---

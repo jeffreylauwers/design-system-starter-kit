@@ -61,7 +61,7 @@ function App() {
 
 ## Componenten overzicht
 
-**55 componenten totaal**: alle beschikbaar als HTML/CSS én React.
+**73 componenten totaal**: alle beschikbaar als HTML/CSS én React.
 
 ### Layout Components (6)
 
@@ -76,7 +76,7 @@ function App() {
 
 - **Hero**: Prominente introductiesectie direct onder de PageHeader: volledige viewportbreedte, vier achtergrondvarianten (default, inverse, image, image-blend) en uitlijningsopties
 
-### Content Components (10)
+### Content Components (12)
 
 - **Button**: Knoppen met varianten (`strong`, `default`, `subtle`), groottes en laadstatus
 - **ButtonLink**: Semantisch een `<a>`, visueel gestyled als een Button: voor navigatieacties met hoge attentiewaarde
@@ -90,7 +90,7 @@ function App() {
 - **Lists**: OrderedList en UnorderedList
 - **IconList**: Lijst waarbij een icoon de bullet of het cijfer vervangt (`IconList` en `IconListItem`), als `ul` of `ol`, met per lijst instelbare icoonkleur
 
-### Display & Feedback Components (13)
+### Display & Feedback Components (17)
 
 - **Backdrop**: Vaste, volledig-scherm overlay die de achtergrondinhoud verhult achter een Modal Dialog of Drawer: puur decoratief (`aria-hidden="true"`)
 - **DotBadge**: Kleine gekleurde stip bij een Button of Link die zonder label de aandacht trekt bij een statuswijziging (met optioneel pulse-effect)
@@ -103,6 +103,7 @@ function App() {
 - **Image**: Performante, toegankelijke wrapper rond het native `<img>` element met ingebakken lazy loading, vaste beeldverhoudingen en LCP-prioriteit
 - **Card**: Configureerbare container voor gestructureerde content (afbeelding, heading, beschrijving, actie) met stretched-link techniek en CardGroup voor gelijke hoogte
 - **ModalDialog**: Modaal dialoogvenster voor korte, gefocuste acties (bevestigen, kleine keuze): blokkeert achtergrond via native `<dialog>` met focus-trap
+- **Drawer**: Zijpaneel dat vanuit links of rechts de viewport inschuift voor subtaken en contextuele inhoud: modaal of non-modaal, op basis van het native `<dialog>` element
 - **Spinner**: Cirkelvormige laadindicator voor onbepaalde wachttijden, met `role="status"` en altijd een toegankelijk label
 - **ProgressBar**: Horizontale voortgangsbalk voor bepaalde wachttijden, met native `<progress>`, visueel percentage en optionele beschrijving
 - **File**: Toont bestandsmeta (naam, type, grootte) met contextafhankelijke acties: vier upload-states, afbeeldingspreview en interactieve variant voor controle- en detailpagina's (`FileList` voor meerdere bestanden)
@@ -129,11 +130,11 @@ function App() {
 - **PageLayout**: Structurele full-page wrapper die `PageHeader`, `PageBody` en `PageFooter` verticaal stapelt met `min-block-size: 100dvh`
 - **TableOfContents**: Inhoudsopgave met ankerlinks naar de H2-secties van de huidige pagina: framed appearance (accent-1 kader) voor inline gebruik, plain appearance voor een losstaande kolom
 
-### Form Components (25)
+### Form Components (26)
 
 - **Inputs**: TextInput, FileInput, TextArea, EmailInput, PasswordInput, NumberInput, TelephoneInput, SearchInput, TimeInput, DateInput, Select
 - **DateInputGroup**: Drie aparte dag/maand/jaar velden: toegankelijker dan native date picker
-- **Options**: Checkbox, Radio, CheckboxOption, RadioOption, CheckboxGroup, RadioGroup
+- **Options**: Checkbox, Radio, OptionLabel, CheckboxOption, RadioOption, CheckboxGroup, RadioGroup
 - **Form Fields**: FormFieldLabel, FormFieldLegend, FormFieldDescription, FormFieldErrorMessage, FormFieldStatus
 - **Form Containers**: FormField (enkelvoudige inputs) en FormFieldset (groepen met legend)
 
@@ -193,4 +194,4 @@ MIT License: zie LICENSE bestand voor details.
 
 ---
 
-**Versie:** 5.39.0 | **Laatste update:** 24 augustus 2026 | **Auteur:** Jeffrey Lauwers
+**Versie:** 3.1.0 | **Laatste update:** 31 augustus 2026 | **Auteur:** Jeffrey Lauwers
