@@ -26,12 +26,19 @@ import {
 ```
 
 Per-component subpaths are not exported; import everything from the package root.
+The ESM build ships one module per component and the package declares
+`"sideEffects": false`, so your bundler drops what you do not use. Measured with
+Vite 6, minified: React on its own is 194.47 kB, React plus a single `Heading` is
+195.02 kB, and React plus every export is 263.24 kB.
 
-Note that the package does not currently tree-shake. It declares no `sideEffects`
-field, so bundlers keep the whole bundle regardless of what you import. Measured with
-Vite 6 against 3.0.0, minified: React on its own is 194 kB, React plus a single
-`Button` is 262 kB, and React plus every export is 263 kB. Importing one component
-therefore costs about the same as importing all 73.
+A component costs what it actually pulls in. `Button` adds 19.6 kB rather than
+`Heading`'s 0.55 kB because it imports `Icon`, and `Icon` carries the full icon
+registry.
+
+The CommonJS build is a single bundled file and does not tree-shake. That is
+deliberate: in unbundled mode tsdown leaves a `require()` behind per component
+pointing at the stripped CSS module, which does not exist. ESM consumers get the
+smaller bundle; CommonJS consumers are no worse off than before.
 
 ### Example
 

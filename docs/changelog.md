@@ -10,11 +10,28 @@ All notable changes to this project are documented in this file.
 
 Nog niet gepubliceerde wijzigingen. Schrijf nieuwe changelog-entries hieronder; bij de volgende release wordt deze kop gepromoveerd naar het definitieve versienummer.
 
+### Packaging
+
+#### Fixed
+
+- **Tree-shaking werkte niet: één component importeren kostte evenveel als alle 73**: `components-react` declareerde geen `sideEffects`, en tsdown leverde de ESM-output als één gebundelde module. Bundlers konden daardoor niets weglaten. De ESM-build draait nu in `unbundle`-modus (één module per component) en alle vier de gebundelde packages declareren `"sideEffects": false`. Gemeten met Vite 6, geminificeerd:
+
+  | Import               | Voor      | Na        |
+  | -------------------- | --------- | --------- |
+  | Alleen React         | 194,47 kB | 194,47 kB |
+  | React + `Heading`    | 261,7 kB  | 195,02 kB |
+  | React + `Button`     | 261,7 kB  | 214,05 kB |
+  | React + alle exports | 263,24 kB | 263,24 kB |
+  - `Heading` kost nu 0,55 kB in plaats van 68 kB. `Button` kost meer omdat het `Icon` importeert, en `Icon` de volledige iconenregistry meeneemt
+  - Het aantal unieke `dsn-`klassen in een Button-only bundle daalde van 153 naar 8
+  - **CommonJS blijft gebundeld.** In `unbundle`-modus laat tsdown per component een `require("./Button.cjs")` staan naar de weggestripte CSS-module, een bestand dat niet bestaat: 69 kapotte requires. De ESM-output heeft dat probleem niet. ESM en CJS worden daarom apart gebouwd; CJS-consumenten missen alleen het tree-shaking-voordeel
+  - `sideEffects: false` klopt ook voor `components-web`: dat package registreert custom elements bewust niet op module-niveau, maar via `defineButton()` en verwanten
+
 ### Documentatie
 
 #### Fixed
 
-- **De belofte van tree-shaking klopte nergens**: zowel `Icon.docs.md` als de README van `components-react` stelden dat alleen wat je importeert in je bundle komt. Gemeten met Vite 6 tegen 3.0.0, geminificeerd: React alleen is 194 kB, React plus één `Button` is 262 kB, en React plus élke export is 263 kB. Eén component importeren kost dus vrijwel evenveel als alle 73. De oorzaak is dat het package geen `sideEffects`-veld declareert, waardoor bundlers de hele bundel moeten aanhouden. Beide plekken noemen nu het gemeten gedrag
+- **De belofte van tree-shaking klopte niet in 3.0.0**: zowel `Icon.docs.md` als de README van `components-react` stelden dat alleen wat je importeert in je bundle komt, terwijl één component importeren vrijwel evenveel kostte als alle 73. Beide teksten zijn herschreven; de oorzaak zelf is opgelost in de Packaging-sectie hierboven
 - **`components-react/README.md` documenteerde een importpad dat niet bestaat**: `import { Button } from '@dsn-starter-kit/components-react/Button'` stond er als "also supported", maar er is geen per-component subpath in de `exports`-map. Het pad faalt met `ERR_PACKAGE_PATH_NOT_EXPORTED`
 - **De componenttellingen liepen uiteen**: README, `docs/README.md` en `docs/03-components.md` noemden 75 componenten en 1661 tests. Geteld: 73 React-componenten en 1665 tests. `docs/03-components.md` stelde daarbij dat de HTML/CSS-laag óók 75 componenten heeft, terwijl `components-html` er 54 bevat. Dat verschil is nu uitgelegd in plaats van weggepoetst: 5 componenten delegeren bewust naar een ander component, 14 definiëren hun CSS in `components-react` in plaats van in de HTML/CSS-laag
 - **Verouderde Storybook-statistieken**: 637 stories over 88 pagina's was 601 stories over 72 pagina's
