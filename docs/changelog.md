@@ -10,6 +10,33 @@ All notable changes to this project are documented in this file.
 
 Nog niet gepubliceerde wijzigingen. Schrijf nieuwe changelog-entries hieronder; bij de volgende release wordt deze kop gepromoveerd naar het definitieve versienummer.
 
+---
+
+## Version 3.1.0 (August 31, 2026)
+
+Opruimrelease op 3.0.0. Die release maakte het npm-package bruikbaar buiten de monorepo; deze maakt hem ook zuinig, en haalt twee onjuistheden weg die bij het nalopen van de publicatie aan het licht kwamen.
+
+Geen breaking changes. Bestaande code blijft werken zonder aanpassingen.
+
+### Het belangrijkste: tree-shaking werkt nu
+
+In 3.0.0 kostte één component importeren vrijwel evenveel als alle 73. Dat is opgelost. Gemeten met Vite 6, geminificeerd:
+
+| Import               | 3.0.0     | 3.1.0         |
+| -------------------- | --------- | ------------- |
+| Alleen React         | 194,47 kB | 194,47 kB     |
+| React + `Heading`    | 261,70 kB | **195,02 kB** |
+| React + `Button`     | 261,70 kB | **214,05 kB** |
+| React + alle exports | 263,24 kB | 263,24 kB     |
+
+Wie het hele design system gebruikt merkt niets. Wie een handvol componenten gebruikt, bespaart tot 68 kB. Dit geldt voor ESM-consumenten; de CommonJS-bundel is ongewijzigd en niet groter dan voorheen.
+
+### Eén verwijderd exportpad
+
+`@dsn-starter-kit/components-html/form-field` bestaat niet meer. Dat pad wees sinds de initiële commit naar een bestand dat er niet is en faalde altijd met `MODULE_NOT_FOUND`, dus er kan geen werkende code op leunen. Het is daarom geen breaking change, maar wel het vermelden waard: staat het toevallig toch in je code, dan faalt het nu met `ERR_PACKAGE_PATH_NOT_EXPORTED` in plaats van met een ontbrekend bestand.
+
+De `dsn-form-field`-CSS zit in `components-react` en komt mee via `@dsn-starter-kit/components-react/css`.
+
 ### components-html
 
 #### Fixed
