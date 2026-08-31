@@ -119,11 +119,17 @@ packages/design-tokens/src/tokens/themes/start/colors-dark.json   # always updat
 Run these commands and fix any failures before opening a PR:
 
 ```bash
-pnpm test                                    # all tests green
-pnpm --filter storybook exec tsc --noEmit    # 0 TypeScript errors
-pnpm lint                                    # 0 lint errors
-pnpm format:check                            # code is formatted
+pnpm lint            # 0 lint errors
+pnpm format:check    # code is formatted
+pnpm build           # required: generates source files the type-check needs
+pnpm type-check      # 0 TypeScript errors, all packages including Storybook
+pnpm test            # all tests green
 ```
+
+This is the same order as CI (`.github/workflows/ci.yml`), so a green local run
+means a green CI run. `pnpm build` is not optional: `components-web` imports
+generated files that the build produces and that are gitignored, so on a fresh
+clone `pnpm type-check` fails without it.
 
 Then check:
 

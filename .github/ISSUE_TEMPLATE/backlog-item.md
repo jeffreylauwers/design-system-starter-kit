@@ -38,7 +38,7 @@ Als [gebruiker/ontwikkelaar] wil ik [wat] zodat [waarom].
 ### Kwaliteitscontrole
 
 - [ ] Tests groen: `pnpm test`
-- [ ] TypeScript schoon: `pnpm --filter storybook exec tsc --noEmit`
+- [ ] TypeScript schoon: `pnpm build && pnpm type-check`
 - [ ] Lint schoon: `pnpm lint`
 
 ### Documentatie
