@@ -5,8 +5,13 @@
  * independent of framework. The HTML/CSS layer is the source of truth; React and
  * Web Components are wrappers on top.
  *
- * Import the manifest at runtime:
+ * Import the manifest at runtime, and its types from the same path:
  *   import manifest from '@dsn-starter-kit/components-html/manifest';
+ *   import type { Platform } from '@dsn-starter-kit/components-html/manifest';
+ *
+ * The "./manifest" entry in the exports map points its "types" condition at this
+ * file and its "default" condition at manifest.json, so TypeScript reads the
+ * declarations below while bundlers and Node load the JSON.
  *
  * Or read it with any JSON-capable tool: it requires no build step.
  *
@@ -70,3 +75,15 @@ export interface Manifest {
   description: string;
   components: ComponentEntry[];
 }
+
+/**
+ * The parsed contents of manifest.json.
+ *
+ * This declaration is what makes `./manifest` usable from TypeScript: the
+ * exports map points the `types` condition at this file, so the default import
+ * is typed as `Manifest` instead of the wide types TypeScript would infer from
+ * the JSON literal (`string[]` instead of `Platform[]`, and so on).
+ */
+declare const manifest: Manifest;
+
+export default manifest;

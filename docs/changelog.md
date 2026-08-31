@@ -10,6 +10,16 @@ All notable changes to this project are documented in this file.
 
 Nog niet gepubliceerde wijzigingen. Schrijf nieuwe changelog-entries hieronder; bij de volgende release wordt deze kop gepromoveerd naar het definitieve versienummer.
 
+### components-html: de manifest-types zijn nu importeerbaar
+
+`manifest.d.ts` werd sinds 3.2.0 meegepubliceerd, maar niemand kon erbij. De `exports`-map had `"./manifest": "./manifest.json"` zonder `types`-conditie, dus TypeScript resolveerde `@dsn-starter-kit/components-html/manifest` naar het JSON-bestand en leidde de types af uit het literal. `import type { Platform } from '@dsn-starter-kit/components-html/manifest'` faalde met TS2305, en `component.platforms` was `string[]` in plaats van `Platform[]`.
+
+De entry is nu conditioneel: `{ "types": "./manifest.d.ts", "default": "./manifest.json" }`. TypeScript leest de declaraties, bundlers en Node laden onveranderd de JSON.
+
+Alleen een `types`-conditie was niet genoeg. `manifest.d.ts` exporteerde uitsluitend interfaces, dus zodra TypeScript dat bestand als types gebruikte brak `import manifest from '.../manifest'` op een ontbrekende default export. Het bestand declareert nu ook `const manifest: Manifest` als default export, naast de bestaande `Platform`, `Category`, `Manifest`, `ComponentEntry` en `PropDefinition`.
+
+Geverifieerd tegen een `npm pack`-tarball in een schoon consumer-project, onder zowel `moduleResolution: "nodenext"` als `"bundler"`: de default-import en de type-imports compileren, en Node laadt de JSON zowel via `import` als via `require`.
+
 ---
 
 ## Version 3.2.0 (August 31, 2026)

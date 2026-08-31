@@ -216,16 +216,35 @@ props. It needs no build step, so tooling and AI agents can read it directly.
 
 ```ts
 import manifest from '@dsn-starter-kit/components-html/manifest';
+import type {
+  Category,
+  ComponentEntry,
+  Platform,
+} from '@dsn-starter-kit/components-html/manifest';
 
-const formControls = manifest.components.filter(
+const formControls: ComponentEntry[] = manifest.components.filter(
   (component) => component.category === 'form-input'
 );
+
+function componentsFor(platform: Platform): string[] {
+  return manifest.components
+    .filter((component) => component.platforms.includes(platform))
+    .map((component) => component.name);
+}
+
+const categories: Category[] = ['form-input', 'form-option', 'form-field'];
 ```
 
-TypeScript types are in `manifest.d.ts`; `manifest-schema.json` describes the same
-structure as JSON Schema, for editors and for the validation step in the build. It
-is available as `@dsn-starter-kit/components-html/manifest-schema` if you want to
-validate your own additions against it.
+The default export is typed as `Manifest`, so `component.category` and
+`component.platforms` are the narrow union types `Category` and `Platform` rather
+than plain `string`. The types live in `manifest.d.ts` and are exported from the
+same `./manifest` path: `Manifest`, `ComponentEntry`, `PropDefinition`, `Category`
+and `Platform`. Both `moduleResolution: "nodenext"` and `"bundler"` resolve them.
+
+`manifest-schema.json` describes the same structure as JSON Schema, for editors and
+for the validation step in the build. It is available as
+`@dsn-starter-kit/components-html/manifest-schema` if you want to validate your own
+additions against it.
 
 ## Assets
 
