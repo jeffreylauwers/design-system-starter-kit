@@ -10,6 +10,14 @@ All notable changes to this project are documented in this file.
 
 Nog niet gepubliceerde wijzigingen. Schrijf nieuwe changelog-entries hieronder; bij de volgende release wordt deze kop gepromoveerd naar het definitieve versienummer.
 
+### Storybook: geen HTML/CSS-tab meer bij 14 formuliercontrols
+
+De docs-pagina's van `Checkbox`, `CheckboxGroup`, `CheckboxOption`, `DateInput`, `DateInputGroup`, `FormField`, `FormFieldset`, `OptionLabel`, `Radio`, `RadioGroup`, `RadioOption`, `SearchInput`, `Select` en `TimeInput` toonden een HTML/CSS-codeblok met markup die nergens gestyled is: klassen als `dsn-checkbox` en `dsn-select` bestaan alleen in `components-react`, niet in `components-html`. Wie die markup kopieerde kreeg een ongestyled resultaat. Die tab is nu weg; deze pagina's tonen alleen nog het React-codeblok.
+
+`EmailInput`, `PasswordInput`, `NumberInput` en `TelephoneInput` houden hun tab: zij renderen `dsn-text-input`, en die CSS staat wél in `components-html`.
+
+Alleen documentatie: er is geen component-CSS of component-API gewijzigd.
+
 ---
 
 ## Version 3.1.0 (August 31, 2026)

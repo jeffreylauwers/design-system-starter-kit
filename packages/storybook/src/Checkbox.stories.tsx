@@ -10,28 +10,6 @@ const meta: Meta<typeof Checkbox> = {
     docs: {
       page: DocsPage,
     },
-    dsn: {
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      htmlTemplate: (args: any) => {
-        const inputCls = [
-          'dsn-checkbox__input',
-          args.invalid && 'dsn-checkbox__input--invalid',
-        ]
-          .filter(Boolean)
-          .join(' ');
-        const inputAttrs = [
-          args.checked && 'checked',
-          args.disabled && 'disabled',
-          args.required && 'required',
-          args.invalid && 'aria-invalid="true"',
-          args['aria-label'] && `aria-label="${args['aria-label']}"`,
-        ]
-          .filter(Boolean)
-          .join(' ');
-        const iconName = args.indeterminate ? 'minus' : 'check';
-        return `<div class="dsn-checkbox">\n  <input type="checkbox" class="${inputCls}"${inputAttrs ? ' ' + inputAttrs : ''} />\n  <span class="dsn-checkbox__control" aria-hidden="true">\n    <svg class="dsn-icon dsn-checkbox__icon" aria-hidden="true"><!-- ${iconName} --></svg>\n  </span>\n</div>`;
-      },
-    },
   },
   argTypes: {
     checked: { control: 'boolean' },

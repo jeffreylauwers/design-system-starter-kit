@@ -24,26 +24,6 @@ export const [intro, rest] = docs.split('<!-- VOORBEELD -->');
 });
 
 <DateInputGroup id="datum" value={value} onChange={setValue} />`}
-  html={`<div class="dsn-date-input-group">
-  <div class="dsn-date-input-group__field">
-    <label class="dsn-date-input-group__label" for="geboortedatum-dag">Dag</label>
-    <input type="text" inputmode="numeric" pattern="[0-9]*"
-      class="dsn-text-input dsn-text-input--width-xs"
-      id="geboortedatum-dag" placeholder="DD" autocomplete="off" />
-  </div>
-  <div class="dsn-date-input-group__field">
-    <label class="dsn-date-input-group__label" for="geboortedatum-maand">Maand</label>
-    <input type="text" inputmode="numeric" pattern="[0-9]*"
-      class="dsn-text-input dsn-text-input--width-xs"
-      id="geboortedatum-maand" placeholder="MM" autocomplete="off" />
-  </div>
-  <div class="dsn-date-input-group__field">
-    <label class="dsn-date-input-group__label" for="geboortedatum-jaar">Jaar</label>
-    <input type="text" inputmode="numeric" pattern="[0-9]*"
-      class="dsn-text-input dsn-text-input--width-sm"
-      id="geboortedatum-jaar" placeholder="JJJJ" autocomplete="off" />
-  </div>
-</div>`}
 />
 
 <Controls of={DateInputGroupStories.Default} />

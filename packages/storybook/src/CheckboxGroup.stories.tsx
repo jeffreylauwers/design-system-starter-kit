@@ -20,20 +20,6 @@ const meta: Meta<typeof CheckboxGroup> = {
     docs: {
       page: DocsPage,
     },
-    dsn: {
-      htmlTemplate: () => {
-        const option = (value: string) => `  <label class="dsn-checkbox-option">
-    <div class="dsn-checkbox">
-      <input type="checkbox" class="dsn-checkbox__input" value="${value}" />
-      <span class="dsn-checkbox__control" aria-hidden="true">
-        <svg class="dsn-icon dsn-checkbox__icon" aria-hidden="true"><!-- check --></svg>
-      </span>
-    </div>
-    <span class="dsn-option-label">Tekst</span>
-  </label>`;
-        return `<div class="dsn-checkbox-group">\n${[option('1'), option('2'), option('3')].join('\n')}\n</div>`;
-      },
-    },
   },
 };
 

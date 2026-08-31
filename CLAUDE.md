@@ -26,9 +26,9 @@ Het bevat de projectregels, architectuurpatronen en navigatiekaart naar de volle
 
 ---
 
-## Twee-lagen implementatiepatroon: ALTIJD
+## Twee-lagen implementatiepatroon: standaard
 
-Elk component in dit design system heeft **altijd twee lagen**. Geen uitzonderingen.
+Elk component in dit design system heeft **standaard twee lagen**.
 
 | Laag         | Wat                                       | Voorbeeld                                     |
 | ------------ | ----------------------------------------- | --------------------------------------------- |
@@ -38,7 +38,35 @@ Elk component in dit design system heeft **altijd twee lagen**. Geen uitzonderin
 - De CSS-klassen zijn de bron van waarheid
 - React is gemak bovenop de HTML/CSS-laag
 - Bij elk nieuw component: **beide** lagen uitwerken en documenteren
-- Storybook-docs tonen altijd zowel de HTML/CSS-variant als de React-variant
+- Storybook-docs tonen zowel de HTML/CSS-variant als de React-variant
+
+### De enige uitzondering: 19 React-only formuliercontrols
+
+`DR-2026-02` legt vast dat 19 formuliercontrols alleen een React-laag hebben, omdat
+JS-gedrag daar de HTML-laag domineert. Het `platforms`-veld in
+`packages/components-html/manifest.json` is hiervoor de bron van waarheid:
+`["react"]` betekent React-only, `["html-css", "react"]` betekent beide lagen.
+
+Het gaat om: `EmailInput`, `PasswordInput`, `NumberInput`, `TelephoneInput`,
+`SearchInput`, `TimeInput`, `DateInput`, `Select`, `DateInputGroup`, `Checkbox`,
+`Radio`, `OptionLabel`, `CheckboxOption`, `RadioOption`, `CheckboxGroup`,
+`RadioGroup`, `FormFieldLegend`, `FormField` en `FormFieldset`.
+
+Gevolg voor Storybook: de HTML/CSS-tab verschijnt alleen als de voorbeeldmarkup
+daadwerkelijk door CSS in `components-html` wordt gestyled. Dat splitst de 19:
+
+| Groep                                                          | Tab                                                               | Waarom                                                                                                             |
+| -------------------------------------------------------------- | ----------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------ |
+| 14 controls met eigen CSS in `components-react`                | **Geen tab.** Geen `htmlTemplate`, geen `html`-prop op `CodeTabs` | Klassen als `dsn-checkbox` en `dsn-select` bestaan niet in `components-html`; gekopieerde markup blijft ongestyled |
+| `EmailInput`, `PasswordInput`, `NumberInput`, `TelephoneInput` | **Wel tab**                                                       | Ze renderen `dsn-text-input`, en die CSS staat wél in `components-html` en is geëxporteerd als `./text-input`      |
+| `FormFieldLegend`                                              | Niet van toepassing                                               | Heeft geen docs-pagina                                                                                             |
+
+De toets is dus niet "is het React-only?" maar "bestaat de CSS in `components-html`?".
+Zie `DR-2026-04`.
+
+Deze uitzondering geldt alleen voor de bestaande 19. Een **nieuw** component krijgt
+altijd beide lagen; wil je daarvan afwijken, dan hoort daar een besluit in
+`docs/decisions/` bij.
 
 ---
 

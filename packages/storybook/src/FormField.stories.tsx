@@ -22,43 +22,6 @@ const meta: Meta<typeof FormField> = {
     docs: {
       page: DocsPage,
     },
-    dsn: {
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      htmlTemplate: (args: any) => {
-        const cls = ['dsn-form-field', args.error && 'dsn-form-field--invalid']
-          .filter(Boolean)
-          .join(' ');
-        const id = args.htmlFor || 'field';
-        const suffix = args.labelSuffix
-          ? `<span class="dsn-form-field-label-suffix">${args.labelSuffix}</span>`
-          : '';
-        // De extra teksten krijgen een id en worden via aria-describedby aan de
-        // control gekoppeld, in dezelfde volgorde als ze visueel staan.
-        const describedBy = [
-          args.description && `${id}-description`,
-          args.error && `${id}-error`,
-          args.status && `${id}-status`,
-        ]
-          .filter(Boolean)
-          .join(' ');
-        let html = `<div class="${cls}">\n`;
-        html += `  <label class="dsn-form-field-label" for="${id}">${args.label ?? 'Label'}${suffix}</label>\n`;
-        if (args.description)
-          html += `  <p class="dsn-form-field-description" id="${id}-description">${args.description}</p>\n`;
-        if (args.error)
-          html += `  <p class="dsn-form-field-error-message" id="${id}-error"><!-- exclamation-circle icon -->${args.error}</p>\n`;
-        html += `  <input\n    type="text"\n    class="dsn-text-input"\n    id="${id}"${args.error ? '\n    aria-invalid="true"' : ''}${describedBy ? `\n    aria-describedby="${describedBy}"` : ''}\n  />\n`;
-        if (args.status) {
-          const variantCls =
-            args.statusVariant && args.statusVariant !== 'default'
-              ? ` dsn-form-field-status--${args.statusVariant}`
-              : '';
-          html += `  <p class="dsn-form-field-status${variantCls}" id="${id}-status">${args.status}</p>\n`;
-        }
-        html += `</div>`;
-        return html;
-      },
-    },
   },
   argTypes: {
     label: { control: 'text' },

@@ -17,18 +17,6 @@ const meta: Meta<typeof OptionLabel> = {
     docs: {
       page: DocsPage,
     },
-    dsn: {
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      htmlTemplate: (args: any) => {
-        const cls = [
-          'dsn-option-label',
-          args.disabled && 'dsn-option-label--disabled',
-        ]
-          .filter(Boolean)
-          .join(' ');
-        return `<span class="${cls}">${args.children ?? 'Tekst'}</span>`;
-      },
-    },
   },
   argTypes: {
     disabled: { control: 'boolean' },

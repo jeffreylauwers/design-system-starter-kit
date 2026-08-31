@@ -10,24 +10,6 @@ const meta: Meta<typeof DateInput> = {
     docs: {
       page: DocsPage,
     },
-    dsn: {
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      htmlTemplate: (args: any) => {
-        const attrs = [
-          args.disabled && 'disabled',
-          args.readOnly && 'readonly',
-          args.required && 'required',
-          args.invalid && 'aria-invalid="true"',
-        ]
-          .filter(Boolean)
-          .join(' ');
-        const button =
-          !args.disabled && !args.readOnly
-            ? '\n  <button type="button" class="dsn-button dsn-button--subtle dsn-button--size-small dsn-button--icon-only dsn-date-input__button">\n    <svg class="dsn-icon" aria-hidden="true"><!-- icon --></svg>\n    <span class="dsn-button__label">Datumkiezer openen</span>\n  </button>'
-            : '';
-        return `<div class="dsn-date-input-wrapper">\n  <input type="date" class="dsn-text-input dsn-date-input"${attrs ? ' ' + attrs : ''} />${button}\n</div>`;
-      },
-    },
   },
   argTypes: {
     disabled: { control: 'boolean' },

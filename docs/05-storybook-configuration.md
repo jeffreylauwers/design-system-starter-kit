@@ -414,7 +414,9 @@ const meta: Meta<typeof Button> = {
 };
 ```
 
-**Geen uitzonderingen meer:** sinds PR #310 hebben alle componenten een `htmlTemplate`, ook wrapper componenten zoals CheckboxGroup, RadioGroup en DateInputGroup. De statische `html` prop van CodeTabs bestaat nog als fallback, maar wordt in de praktijk niet meer gebruikt.
+**Eén uitzondering:** sinds PR #310 heeft elk component met een HTML/CSS-laag een `htmlTemplate`. De 14 formuliercontrols die hun CSS in `components-react` definiëren hebben er bewust géén, en hun `CodeTabs` krijgt geen `html`-prop, waardoor de HTML/CSS-tab helemaal wegvalt. Zie DR-2026-02 en DR-2026-04, en de uitzonderingstabel in `CLAUDE.md`.
+
+De statische `html` prop van CodeTabs is daarmee optioneel geworden: aanwezig betekent "toon de tab", afwezig betekent "dit component heeft geen HTML/CSS-laag".
 
 ### TokenControls
 

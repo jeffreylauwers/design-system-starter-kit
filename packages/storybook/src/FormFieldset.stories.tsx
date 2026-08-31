@@ -23,53 +23,6 @@ const meta: Meta<typeof FormFieldset> = {
     docs: {
       page: DocsPage,
     },
-    dsn: {
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      htmlTemplate: (args: any) => {
-        const cls = ['dsn-form-field', args.error && 'dsn-form-field--invalid']
-          .filter(Boolean)
-          .join(' ');
-        const suffix = args.legendSuffix
-          ? `<span class="dsn-form-field-label-suffix">${args.legendSuffix}</span>`
-          : '';
-        // Bij een groep hangt de koppeling aan het fieldset zelf: er is geen
-        // enkele control om hem aan te hangen.
-        const describedBy = [
-          args.description && 'group-description',
-          args.error && 'group-error',
-          args.status && 'group-status',
-        ]
-          .filter(Boolean)
-          .join(' ');
-        let html = `<fieldset class="${cls}"${describedBy ? ` aria-describedby="${describedBy}"` : ''}>\n`;
-        html += `  <legend class="dsn-form-field-label">${args.legend ?? 'Legenda'}${suffix}</legend>\n`;
-        if (args.description)
-          html += `  <p class="dsn-form-field-description" id="group-description">${args.description}</p>\n`;
-        if (args.error)
-          html += `  <p class="dsn-form-field-error-message" id="group-error"><svg class="dsn-icon" aria-hidden="true"><!-- exclamation-circle --></svg>${args.error}</p>\n`;
-        const option = (
-          value: string
-        ) => `    <label class="dsn-checkbox-option">
-      <div class="dsn-checkbox">
-        <input type="checkbox" class="dsn-checkbox__input" value="${value}" />
-        <span class="dsn-checkbox__control" aria-hidden="true">
-          <svg class="dsn-icon dsn-checkbox__icon" aria-hidden="true"><!-- check --></svg>
-        </span>
-      </div>
-      <span class="dsn-option-label">Tekst</span>
-    </label>`;
-        html += `  <div class="dsn-checkbox-group">\n${[option('1'), option('2'), option('3')].join('\n')}\n  </div>\n`;
-        if (args.status) {
-          const variantCls =
-            args.statusVariant && args.statusVariant !== 'default'
-              ? ` dsn-form-field-status--${args.statusVariant}`
-              : '';
-          html += `  <p class="dsn-form-field-status${variantCls}" id="group-status">${args.status}</p>\n`;
-        }
-        html += `</fieldset>`;
-        return html;
-      },
-    },
   },
   argTypes: {
     legend: { control: 'text' },

@@ -24,8 +24,12 @@ interface CodeTabsProps {
    * Fallback HTML/CSS markup shown in the HTML/CSS tab when the story does not define
    * `parameters.dsn.htmlTemplate`. When a template is defined, the tab renders
    * dynamic HTML derived from the current story args (updates with Controls).
+   *
+   * Omit this prop for React-only components. Components without `html-css` in their
+   * `manifest.json` platforms have no HTML/CSS layer, so the tab is hidden entirely
+   * rather than showing markup that renders unstyled. See DR-2026-02 and DR-2026-04.
    */
-  html: string;
+  html?: string;
 }
 
 type Tab = 'react' | 'html';
@@ -35,12 +39,19 @@ type Tab = 'react' | 'html';
  * - React tab (default): shows live story code via `Source of={story}`, updates with Controls
  * - HTML/CSS tab: shows dynamic HTML via `transform` using `parameters.dsn.htmlTemplate`,
  *   falls back to the static `html` prop when no htmlTemplate is defined on the story
+ * - React-only components (no `html` prop) get no tab bar at all, only the React block
  *
  * Syntax highlighting via Storybook's built-in Source block from @storybook/blocks.
  * The tab bar uses design token CSS variables so it responds to dark mode.
  */
 export function CodeTabs({ of: storyRef, react, html }: CodeTabsProps) {
-  const [activeTab, setActiveTab] = useState<Tab>('react');
+  const [selectedTab, setSelectedTab] = useState<Tab>('react');
+
+  // React-only components pass no `html`, and their stories define no htmlTemplate.
+  // Showing an HTML/CSS tab for them would document markup that does not exist in
+  // components-html and renders unstyled when copied.
+  const showHtmlTab = html !== undefined;
+  const activeTab: Tab = showHtmlTab ? selectedTab : 'react';
 
   const tabBarStyle: React.CSSProperties = {
     display: 'flex',
@@ -68,32 +79,35 @@ export function CodeTabs({ of: storyRef, react, html }: CodeTabsProps) {
 
   const codeWrapperStyle: React.CSSProperties = {
     border: '1px solid var(--dsn-color-neutral-border-subtle, #C4C4C4)',
-    borderTop: 'none',
-    borderRadius: '0 0 4px 4px',
+    // Without a tab bar there is nothing to draw the top edge, so the block closes itself.
+    borderTop: showHtmlTab ? 'none' : undefined,
+    borderRadius: showHtmlTab ? '0 0 4px 4px' : '4px',
     overflow: 'hidden',
     marginBottom: '24px',
   };
 
   return (
     <div className="dsn-code-tabs">
-      <div style={tabBarStyle}>
-        <button
-          type="button"
-          style={tabButtonStyle(activeTab === 'react')}
-          onClick={() => setActiveTab('react')}
-          aria-pressed={activeTab === 'react'}
-        >
-          React
-        </button>
-        <button
-          type="button"
-          style={tabButtonStyle(activeTab === 'html')}
-          onClick={() => setActiveTab('html')}
-          aria-pressed={activeTab === 'html'}
-        >
-          HTML/CSS
-        </button>
-      </div>
+      {showHtmlTab && (
+        <div style={tabBarStyle}>
+          <button
+            type="button"
+            style={tabButtonStyle(activeTab === 'react')}
+            onClick={() => setSelectedTab('react')}
+            aria-pressed={activeTab === 'react'}
+          >
+            React
+          </button>
+          <button
+            type="button"
+            style={tabButtonStyle(activeTab === 'html')}
+            onClick={() => setSelectedTab('html')}
+            aria-pressed={activeTab === 'html'}
+          >
+            HTML/CSS
+          </button>
+        </div>
+      )}
       <div style={codeWrapperStyle}>
         {activeTab === 'react' ? (
           // When a static `react` prop is provided (e.g. for wrapper components with useState),

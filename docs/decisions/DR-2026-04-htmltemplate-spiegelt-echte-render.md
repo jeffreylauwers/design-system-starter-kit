@@ -35,7 +35,7 @@ De HTML/CSS-tab zou de daadwerkelijke DOM van de preview kunnen serialiseren.
 
 ## Beslissing
 
-**Elke `htmlTemplate` spiegelt de daadwerkelijke component-render en volgt de story-args. Elk component met een docs-pagina heeft een `htmlTemplate` (geen statische fallback).**
+**Elke `htmlTemplate` spiegelt de daadwerkelijke component-render en volgt de story-args. Elk component met een docs-pagina én een HTML/CSS-laag heeft een `htmlTemplate` (geen statische fallback). Zie het amendement hieronder voor componenten zonder HTML/CSS-laag.**
 
 De toegestane, bewuste afwijkingen van de letterlijke render zijn:
 
@@ -45,6 +45,18 @@ De toegestane, bewuste afwijkingen van de letterlijke render zijn:
 4. **Story-scaffolding blijft buiten het codeblok**: wrappers, paddings en gesimuleerde paginacontext uit de Default story horen niet in het voorbeeld; alleen de component-markup zelf.
 
 Verificatie gebeurt door de `htmlTemplate`-output te vergelijken met `renderToStaticMarkup` van de component met dezelfde args (zoals uitgevoerd in PR #310, waar 28 afwijkende templates zijn gecorrigeerd en 6 ontbrekende zijn toegevoegd).
+
+---
+
+## Amendement (augustus 2026): geen tab zonder HTML/CSS-laag
+
+Het oorspronkelijke besluit ging ervan uit dat elk component een HTML/CSS-laag heeft. Dat klopt niet: DR-2026-02 legt 19 React-only formuliercontrols vast. Voor 14 daarvan verwees de `htmlTemplate` naar klassen (`dsn-checkbox`, `dsn-radio`, `dsn-select`, `dsn-option-label` en verwanten) die nergens in `components-html` gedefinieerd zijn. De HTML/CSS-tab documenteerde daardoor markup die ongestyled rendert zodra iemand hem kopieert (issue #320).
+
+**Aanvulling op het besluit:** een component krijgt alleen een `htmlTemplate` en een HTML/CSS-tab wanneer de voorbeeldmarkup daadwerkelijk door CSS in `components-html` wordt gestyled. Ontbreekt die CSS, dan vervalt de `htmlTemplate` én de `html`-prop op `CodeTabs`, en toont de docs-pagina alleen het React-codeblok zonder tabbalk.
+
+De toets is "bestaat de CSS in `components-html`?", niet "staat er `react` in het manifest?". Dat onderscheid doet ertoe: `EmailInput`, `PasswordInput`, `NumberInput` en `TelephoneInput` zijn React-only, maar renderen `dsn-text-input`, waarvan de CSS wél in `components-html` staat. Hun tab blijft dus bestaan en blijft correct.
+
+Als de 14 controls alsnog een HTML/CSS-laag krijgen, vervalt dit amendement voor die componenten en horen hun templates terug te komen.
 
 ---
 
@@ -84,7 +96,8 @@ Niet van toepassing: dit is een initieel besluit over de codeblok-conventie.
 
 ## Gerelateerde records
 
-- DR-2026-02 (twee-lagenpatroon): de HTML/CSS-tab documenteert de HTML/CSS-laag; deze conventie houdt die documentatie betrouwbaar
+- DR-2026-02 (twee-lagenpatroon): de HTML/CSS-tab documenteert de HTML/CSS-laag; deze conventie houdt die documentatie betrouwbaar. De 19 React-only componenten uit dat besluit zijn de aanleiding voor het amendement hierboven
+- Issue [#320](https://github.com/jeffreylauwers/design-system-starter-kit/issues/320): de misleidende HTML/CSS-tab bij React-only formuliercontrols
 - Zie ook: PR [#310](https://github.com/jeffreylauwers/design-system-starter-kit/pull/310)
 
 ---
