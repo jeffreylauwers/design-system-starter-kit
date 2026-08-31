@@ -1,0 +1,30 @@
+/**
+ * DateInputGroup Component Styles
+ * Three inputs (dag, maand, jaar) in a horizontal flex row — GOV.UK date input pattern.
+ * Each field has a label above its input.
+ */
+
+/* Outer wrapper — flex row with gap between the three fields */
+.dsn-date-input-group {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  gap: var(--dsn-date-input-group-gap);
+  align-items: flex-end;
+}
+
+/* Each field — label + input stacked vertically */
+.dsn-date-input-group__field {
+  display: flex;
+  flex-direction: column;
+  gap: var(--dsn-date-input-group-label-gap);
+}
+
+/* Field label — uses form field label styling tokens */
+.dsn-date-input-group__label {
+  font-family: var(--dsn-form-field-label-font-family);
+  font-size: var(--dsn-form-field-label-font-size);
+  font-weight: var(--dsn-form-field-label-font-weight);
+  line-height: var(--dsn-form-field-label-line-height);
+  color: var(--dsn-form-field-label-color);
+}

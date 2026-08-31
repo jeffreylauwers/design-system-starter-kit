@@ -1,0 +1,16 @@
+/**
+ * FormField Component Styles
+ * Container component that combines FormFieldLabel, FormFieldDescription,
+ * FormFieldErrorMessage, FormFieldStatus, and form controls
+ */
+
+.dsn-form-field {
+  display: block;
+}
+
+/* Invalid state - thick red left border when error message is present */
+.dsn-form-field--invalid {
+  border-inline-start: var(--dsn-form-field-invalid-border-inline-start-width)
+    solid var(--dsn-form-field-invalid-border-inline-start-color);
+  padding-inline-start: var(--dsn-form-field-invalid-padding-inline-start);
+}

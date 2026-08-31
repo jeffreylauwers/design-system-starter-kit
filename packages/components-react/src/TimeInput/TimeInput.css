@@ -1,37 +1,6 @@
 /**
- * TimeInput Component Styles
- * Fixed-width wrapper positions the Button (subtle, small, icon-only) at inline-end inside the input.
- * The input uses dsn-text-input base styles with extra padding-inline-end
- * to prevent typed text from overlapping the button.
- * Button hover/focus/color states come from the Button component itself.
+ * TimeInput Component Styles for React
+ * Re-exports the base TimeInput styles from components-html
  */
 
-/* Wrapper — fixed sm width, positions clock button absolutely inside the input */
-.dsn-time-input-wrapper {
-  position: relative;
-  display: block;
-  inline-size: 100%;
-  max-inline-size: var(--dsn-form-control-width-sm);
-}
-
-/* Clock button — centered vertically, positioned at inline-end with reduced margin */
-.dsn-time-input__button {
-  position: absolute;
-  inset-block-start: 50%;
-  inset-inline-end: var(--dsn-time-input-button-inset-inline-end);
-  transform: translateY(-50%);
-}
-
-/* Input — extra padding-inline-end to make room for the clock button */
-/* Hide the native browser clock/time picker indicator */
-.dsn-time-input {
-  padding-inline-end: var(--dsn-time-input-padding-inline-end-with-icon);
-}
-
-.dsn-time-input::-webkit-calendar-picker-indicator {
-  display: none;
-}
-
-.dsn-time-input::-webkit-inner-spin-button {
-  display: none;
-}
+@import '../../../components-html/src/time-input/time-input.css';

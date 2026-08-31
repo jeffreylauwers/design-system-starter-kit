@@ -1,0 +1,18 @@
+/**
+ * OptionLabel Component Styles
+ * Label for checkbox and radio options
+ */
+
+.dsn-option-label {
+  font-family: var(--dsn-option-label-font-family);
+  font-size: var(--dsn-option-label-font-size);
+  font-weight: var(--dsn-option-label-font-weight);
+  line-height: var(--dsn-option-label-line-height);
+  color: var(--dsn-option-label-color);
+  cursor: inherit;
+  user-select: none;
+}
+
+.dsn-option-label--disabled {
+  color: var(--dsn-option-label-disabled-color);
+}

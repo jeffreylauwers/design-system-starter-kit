@@ -3478,25 +3478,21 @@ defineButton('my-custom-button');
 **Implementations:**
 
 - **React:** 73 components, in `packages/components-react/src/`
-- **HTML/CSS:** 54 components, in `packages/components-html/src/`
+- **HTML/CSS:** 68 CSS files, in `packages/components-html/src/`, covering all 73 components
 - **Web Component:** 7 components (Button, Heading, Icon, Link, OrderedList, Paragraph, UnorderedList)
 
-The gap between 73 and 54 is deliberate for 5 of them, and a known deviation for the
-other 14.
+Every component has an HTML/CSS layer: `manifest.json` registers all 73 with
+`"platforms": ["html-css", "react"]`.
 
-Deliberate — these render another component's markup and define no CSS of their own:
-EmailInput, NumberInput, PasswordInput and TelephoneInput render `dsn-text-input`;
-FormFieldLegend leans on the shared `form-control` tokens.
+Five of them need no CSS file of their own, because they render another
+component's block: EmailInput, NumberInput, PasswordInput and TelephoneInput
+render `dsn-text-input`, and FormFieldLegend renders `dsn-form-field-label`.
+That is what makes 68 files enough for 73 components.
 
-Deviation — these define their CSS inside `components-react` instead of in the
-HTML/CSS layer, which means the HTML/CSS layer does not ship them: Checkbox,
-CheckboxGroup, CheckboxOption, DateInput, DateInputGroup, FormField, FormFieldset,
-OptionLabel, Radio, RadioGroup, RadioOption, SearchInput, Select and TimeInput.
-None of them are exported from `components-html`, which matches `manifest.json`:
-each of these is registered with `"platforms": ["react"]`.
-
-Whether these 14 should get an HTML/CSS layer is tracked in
-[#320](https://github.com/jeffreylauwers/design-system-starter-kit/issues/320).
+A component that overrides another one on equal specificity declares that with a
+`@dsn-depends-on: <component>` comment in its CSS, so the build emits it after
+the component it overrides. See
+[DR-2026-08](./decisions/DR-2026-08-formuliercontrols-krijgen-een-html-css-laag.md).
 
 **Test Coverage:** 1665 tests across 80 test suites
 

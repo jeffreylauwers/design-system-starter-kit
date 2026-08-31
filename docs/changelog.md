@@ -10,6 +10,24 @@ All notable changes to this project are documented in this file.
 
 Nog niet gepubliceerde wijzigingen. Schrijf nieuwe changelog-entries hieronder; bij de volgende release wordt deze kop gepromoveerd naar het definitieve versienummer.
 
+### Formuliercontrols hebben nu ook een HTML/CSS-laag
+
+Veertien formuliercontrols hadden hun CSS in `components-react` staan in plaats van in `components-html`. De HTML/CSS-laag miste ze dus, terwijl Storybook wel een HTML/CSS-codeblok toonde: wie die markup kopieerde kreeg een ongestyled resultaat. Die CSS is verplaatst.
+
+Nieuw beschikbaar als exportpad van `@dsn-starter-kit/components-html`: `./checkbox`, `./checkbox-group`, `./checkbox-option`, `./date-input`, `./date-input-group`, `./form-field`, `./form-fieldset`, `./option-label`, `./radio`, `./radio-group`, `./radio-option`, `./search-input`, `./select` en `./time-input`. Ze zitten ook in `dist/components.css`, dus wie het hele bestand laadt hoeft niets te wijzigen.
+
+Geen breaking changes. Dezelfde klassen, dezelfde markup, dezelfde React-API. `components-react` importeert de CSS nu uit `components-html`, precies zoals de andere componenten dat al deden, en levert hem onveranderd mee in `dist/index.css`.
+
+`manifest.json` staat hiermee op `["html-css", "react"]` voor alle 73 componenten. De uitzondering "19 componenten zijn React-only" bestaat niet meer. Zie [DR-2026-08](./decisions/DR-2026-08-formuliercontrols-krijgen-een-html-css-laag.md) voor de afweging.
+
+### components-html: volgorde in dist/components.css
+
+`dist/components.css` plakte de component-CSS alfabetisch aan elkaar. Dat gaat mis zodra een component een ander component op gelijke specificiteit overrided: `.dsn-select` en `.dsn-search-input` doen dat met `.dsn-text-input`, en alfabetisch kwamen ze er juist vóór. Een component declareert zo'n afhankelijkheid nu met een `@dsn-depends-on: <component>` comment in zijn CSS, en het build-script sorteert daarop.
+
+Datzelfde script zet package-`@import`s (de hero-tokens) nu bovenaan het bestand. Ze stonden middenin, waar `@import` niet geldig is.
+
+`FormFieldLegend` importeert zijn CSS nu expliciet uit `form-field-label.css`. Het component rendert `dsn-form-field-label`, maar leunde erop dat een ander component die CSS wel zou meenemen.
+
 ---
 
 ## Version 3.1.0 (August 31, 2026)

@@ -66,7 +66,7 @@ const classes = classNames(
 **Nadeel:**
 
 - Contributors moeten twee bestanden bijhouden per component (CSS + TSX).
-- Sommige form-componenten (Checkbox, Radio, Select) hebben geen HTML/CSS-tegenpartij in `components-html` omdat hun JS-gedrag (show/hide, custom styling) niet zinvol is zonder React. Dit creëert een lichte asymmetrie in het systeem.
+- Sommige form-componenten (Checkbox, Radio, Select) hebben geen HTML/CSS-tegenpartij in `components-html` omdat hun JS-gedrag (show/hide, custom styling) niet zinvol is zonder React. Dit creëert een lichte asymmetrie in het systeem. **Achterhaald sinds DR-2026-08:** deze componenten hebben alsnog een HTML/CSS-laag gekregen.
 
 ---
 
@@ -82,13 +82,13 @@ De trade-off die we accepteren: twee bestanden per component in plaats van één
 
 ## Impact
 
-| Dimension                          | Meting                                                                               |
-| ---------------------------------- | ------------------------------------------------------------------------------------ |
-| Componenten met beide lagen        | 50 (alle componenten in `components-html`)                                           |
-| Componenten React-only             | 19 (form-opties en gespecialiseerde inputs waarbij JS-gedrag de HTML-laag domineert) |
-| Componenten met Web Component laag | 7 (button, heading, icon, link, ordered-list, paragraph, unordered-list)             |
-| Manifest-registratie               | `packages/components-html/manifest.json` — platforms-veld per component              |
-| Breaking changes                   | Nee — architectuurkeuze bij aanvang van het project                                  |
+| Dimension                          | Meting                                                                   |
+| ---------------------------------- | ------------------------------------------------------------------------ |
+| Componenten met beide lagen        | 73 (alle componenten; was 50 tot DR-2026-08)                             |
+| Componenten React-only             | 0 (waren er 19 tot DR-2026-08)                                           |
+| Componenten met Web Component laag | 7 (button, heading, icon, link, ordered-list, paragraph, unordered-list) |
+| Manifest-registratie               | `packages/components-html/manifest.json` — platforms-veld per component  |
+| Breaking changes                   | Nee — architectuurkeuze bij aanvang van het project                      |
 
 ---
 
@@ -104,7 +104,7 @@ De trade-off die we accepteren: twee bestanden per component in plaats van één
 **Wat moeilijker wordt:**
 
 - Nieuwe contributors moeten begrijpen dat ze bij een bug in de visuele uitvoer de CSS moeten aanpassen, niet de TSX.
-- De asymmetrie bij form-componenten (geen HTML/CSS counterpart voor Checkbox etc.) is verwarrend als je het patroon niet kent. Dit staat gedocumenteerd in `manifest.json` via het `platforms`-veld.
+- De asymmetrie bij form-componenten (geen HTML/CSS counterpart voor Checkbox etc.) is verwarrend als je het patroon niet kent. Dit staat gedocumenteerd in `manifest.json` via het `platforms`-veld. **Opgeheven in DR-2026-08:** alle componenten staan nu op `["html-css", "react"]`.
 
 **Nieuwe verplichting voor contributors:**
 Bij elk nieuw component moeten beide lagen worden uitgewerkt. Een PR met alleen een React-component of alleen een CSS-bestand is incompleet. Dit staat als vaste checklist in `new-component-issue.md`.
@@ -113,7 +113,7 @@ Bij elk nieuw component moeten beide lagen worden uitgewerkt. Een PR met alleen 
 
 ## Supersedes / superseded by
 
-Niet van toepassing — dit is een initieel besluit.
+De uitzondering voor formuliercontrols is vervangen door DR-2026-08. Het twee-lagenpatroon zelf blijft ongewijzigd van kracht.
 
 ---
 
@@ -121,6 +121,7 @@ Niet van toepassing — dit is een initieel besluit.
 
 - DR-2026-01 (button label) — de twee-lagenstructuur is de reden waarom de label-span in HTML bestaat, niet als React-prop
 - DR-2026-03 (breakpoints) — dezelfde reden dat breakpoints als CSS-waarden leven, niet als React-props
+- DR-2026-08 (formuliercontrols) — heft de uitzondering op die hier was genoteerd
 - Zie ook: CLAUDE.md §"Twee-lagen implementatiepatroon: ALTIJD"
 
 ---

@@ -1,0 +1,17 @@
+/**
+ * CheckboxOption Component Styles
+ * Checkbox with label - combines Checkbox and OptionLabel
+ */
+
+.dsn-checkbox-option {
+  display: inline-flex;
+  align-items: flex-start;
+  gap: var(--dsn-checkbox-option-gap);
+  padding-block: var(--dsn-checkbox-option-padding-block);
+  cursor: pointer;
+  width: fit-content;
+}
+
+.dsn-checkbox-option:has(input:disabled) {
+  cursor: not-allowed;
+}

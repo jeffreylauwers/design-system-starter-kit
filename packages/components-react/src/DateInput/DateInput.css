@@ -1,37 +1,6 @@
 /**
- * DateInput Component Styles
- * Fixed-width wrapper positions the Button (subtle, small, icon-only) at inline-end inside the input.
- * The input uses dsn-text-input base styles with extra padding-inline-end
- * to prevent typed text from overlapping the button.
- * Button hover/focus/color states come from the Button component itself.
+ * DateInput Component Styles for React
+ * Re-exports the base DateInput styles from components-html
  */
 
-/* Wrapper — fixed md width (20ch), positions calendar button absolutely inside the input */
-.dsn-date-input-wrapper {
-  position: relative;
-  display: block;
-  inline-size: 100%;
-  max-inline-size: var(--dsn-form-control-width-md);
-}
-
-/* Calendar button — centered vertically, positioned at inline-end with reduced margin */
-.dsn-date-input__button {
-  position: absolute;
-  inset-block-start: 50%;
-  inset-inline-end: var(--dsn-date-input-button-inset-inline-end);
-  transform: translateY(-50%);
-}
-
-/* Input — extra padding-inline-end to make room for the calendar button */
-/* Hide the native browser calendar/date picker indicator */
-.dsn-date-input {
-  padding-inline-end: var(--dsn-date-input-padding-inline-end-with-icon);
-}
-
-.dsn-date-input::-webkit-calendar-picker-indicator {
-  display: none;
-}
-
-.dsn-date-input::-webkit-inner-spin-button {
-  display: none;
-}
+@import '../../../components-html/src/date-input/date-input.css';
