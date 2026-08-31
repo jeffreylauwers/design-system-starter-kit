@@ -36,6 +36,7 @@
     "./css/scoped/wireframe-hero-image-light": "./dist/css/scoped/wireframe-light-hero-image.css",
     "./package.json": "./package.json"
   },
+  "sideEffects": false,
   "files": [
     "dist"
   ],
