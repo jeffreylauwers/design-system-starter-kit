@@ -1,6 +1,10 @@
+import { readFileSync } from 'node:fs';
+import { join } from 'node:path';
+import { createRef } from 'react';
 import { describe, it, expect, vi } from 'vitest';
 import { render } from '@testing-library/react';
 import { Icon } from './Icon';
+import { iconMap } from './icon-registry.generated';
 
 describe('Icon', () => {
   it('renders an SVG element', () => {
@@ -64,5 +68,41 @@ describe('Icon', () => {
 
     rerender(<Icon name="star" />);
     expect(container.querySelector('svg')).toBeInTheDocument();
+  });
+
+  it('renders the icon paths inline', () => {
+    const { container } = render(<Icon name="check" />);
+    expect(container.querySelectorAll('path').length).toBeGreaterThan(0);
+  });
+
+  it('forwards a ref to the svg element', () => {
+    const ref = createRef<SVGSVGElement>();
+    const { container } = render(<Icon name="check" ref={ref} />);
+    expect(ref.current).toBe(container.querySelector('svg'));
+  });
+});
+
+describe('icon registry', () => {
+  it('renders every icon in the registry', () => {
+    const names = Object.keys(iconMap) as Array<keyof typeof iconMap>;
+    expect(names.length).toBeGreaterThan(0);
+
+    for (const name of names) {
+      const { container, unmount } = render(<Icon name={name} />);
+      expect(container.querySelector('svg')).toBeInTheDocument();
+      unmount();
+    }
+  });
+
+  // De registry moet zelfstandig zijn: geen imports van .svg-bestanden en geen
+  // svgr-suffix. Zulke imports wijzen buiten het gepubliceerde package en breken
+  // de build van consumers. Zie Icon/README.md.
+  it('has no external asset imports', () => {
+    const source = readFileSync(
+      join(__dirname, 'icon-registry.generated.ts'),
+      'utf-8'
+    );
+    const imports = source.match(/^import .*$/gm) ?? [];
+    expect(imports).toEqual(["import React from 'react';"]);
   });
 });

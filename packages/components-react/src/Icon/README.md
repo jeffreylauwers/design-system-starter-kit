@@ -205,25 +205,32 @@ To add more icons from Tabler Icons:
    pnpm --filter @dsn-starter-kit/components-react generate:icons
    ```
 
-The generator script scans the icons directory and automatically updates `icon-registry.generated.ts` with the correct imports, `IconName` type, and `iconMap`. No manual code changes needed.
+The generator script scans the icons directory and automatically updates `icon-registry.generated.ts` with een React-component per icoon, de `IconName` type en de `iconMap`. No manual code changes needed.
+
+## Inline SVG: waarom geen `.svg`-imports
+
+De SVG-inhoud staat **inline** in `icon-registry.generated.ts`, als `React.createElement`-aanroepen.
+Er wordt dus geen `.svg`-bestand geïmporteerd.
+
+Dat is een bewuste keuze. Een import als
+`import EditIcon from '../../../components-html/assets/icons/edit.svg?react'`
+werkt alleen binnen deze monorepo, met `vite-plugin-svgr` geconfigureerd:
+
+- het pad wijst buiten het gepubliceerde package, dus consumers krijgen `Module not found`
+- de `?react`-suffix vereist dat élke consumer svgr installeert en configureert
+
+Inline SVG maakt `dist/` zelfstandig en bundler-onafhankelijk: Vite, webpack, Next.js,
+Rspack en Node werken zonder extra loader-configuratie.
 
 ## Bundle Size
 
-With tree-shaking, only icons you import are included:
+De hele set van 51 iconen zit in `iconMap`, en `iconMap` wordt als geheel geraadpleegd
+via `Icon`. De volledige set komt dus in de bundle van de consumer terecht, ongeveer
+19 KB aan SVG-padgegevens (ruwweg 5-6 KB gzipped). Tree-shaking per icoon is niet
+mogelijk zolang `Icon` de naam pas op runtime opzoekt.
 
-```tsx
-// Only check.svg and plus.svg are in your bundle
-<Icon name="check" />
-<Icon name="plus" />
-```
-
-**Estimated sizes:**
-
-- Per icon: ~200-500 bytes (minified + gzipped)
-- Icon component: ~1-2 KB
-- Total for 5 icons: ~3-4 KB
-
-Compare to sprite sheet: All 20 icons = ~8-10 KB (even if you only use 2)
+Wie alleen een handvol iconen nodig heeft, kan de losse SVG's uit
+`@dsn-starter-kit/components-html/assets/icons/` gebruiken in plaats van `Icon`.
 
 ## Design Tokens Used
 
@@ -238,7 +245,7 @@ Compare to sprite sheet: All 20 icons = ~8-10 KB (even if you only use 2)
 ## Browser Support
 
 - Modern browsers (Chrome, Firefox, Safari, Edge)
-- Requires Vite or Webpack with SVG loader for React
+- Geen SVG-loader nodig: de iconen zijn inline React-componenten
 - CSS uses CSS custom properties (IE11 not supported)
 
 ## Files Structure
@@ -251,7 +258,7 @@ packages/
 │           ├── check.svg
 │           ├── x.svg
 │           ├── chevron-down.svg
-│           └── ... (20 icons total)
+│           └── ... (51 icons total)
 └── components-react/
     ├── scripts/
     │   └── generate-icons.js    # Icon registry generator

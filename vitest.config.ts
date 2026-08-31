@@ -1,9 +1,7 @@
 import { defineConfig } from 'vitest/config';
-import svgr from 'vite-plugin-svgr';
 import path from 'path';
 
 export default defineConfig({
-  plugins: [svgr()],
   resolve: {
     alias: {
       '@dsn/components-react': path.resolve(

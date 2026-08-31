@@ -1,7 +1,6 @@
 // This file has been automatically migrated to valid ESM format by Storybook.
 import { fileURLToPath } from 'node:url';
 import type { StorybookConfig } from '@storybook/react-vite';
-import svgr from 'vite-plugin-svgr';
 import { mergeConfig } from 'vite';
 import path, { dirname } from 'path';
 import { configureSort } from 'storybook-multilevel-sort';
@@ -47,7 +46,6 @@ const config: StorybookConfig = {
   ],
   async viteFinal(config) {
     return mergeConfig(config, {
-      plugins: [svgr()],
       resolve: {
         alias: {
           '@dsn-starter-kit/components-react': path.resolve(
