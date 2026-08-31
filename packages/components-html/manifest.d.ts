@@ -6,9 +6,13 @@
  * Web Components are wrappers on top.
  *
  * Import the manifest at runtime:
- *   import manifest from '@dsn-starter-kit/components-html/manifest.json';
+ *   import manifest from '@dsn-starter-kit/components-html/manifest';
  *
- * Or read it with any JSON-capable tool — it requires no build step.
+ * Or read it with any JSON-capable tool: it requires no build step.
+ *
+ * manifest-schema.json describes the same structure as JSON Schema, for editors
+ * and for the validation step in the build. Keep both in sync when the shape of
+ * the manifest changes.
  */
 
 export type Platform = 'html-css' | 'react' | 'web-components';
@@ -30,12 +34,12 @@ export interface PropDefinition {
   name: string;
   /** Allowed string or number values for enum-style props. */
   values?: (string | number)[];
-  /** TypeScript primitive type for non-enum props. */
-  type?: 'string' | 'boolean' | 'number';
+  /** Type for non-enum props. */
+  type?: 'string' | 'boolean' | 'number' | 'ReactNode';
   /** Default value. Null means the prop is optional with no default behaviour. */
   default?: string | number | boolean | null;
   /** Whether the prop is required. Omitting means optional. */
-  required?: true;
+  required?: boolean;
 }
 
 export interface ComponentEntry {

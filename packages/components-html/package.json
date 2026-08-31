@@ -7,6 +7,7 @@
   "exports": {
     ".": "./dist/components.css",
     "./manifest": "./manifest.json",
+    "./manifest-schema": "./manifest-schema.json",
     "./assets/*": "./assets/*",
     "./action-group": "./src/action-group/action-group.css",
     "./alert": "./src/alert/alert.css",
@@ -81,10 +82,14 @@
   "files": [
     "dist",
     "src",
-    "assets"
+    "assets",
+    "manifest.json",
+    "manifest.d.ts",
+    "manifest-schema.json"
   ],
   "scripts": {
-    "build": "node scripts/build.js",
+    "build": "node scripts/validate-manifest.js && node scripts/build.js",
+    "validate:manifest": "node scripts/validate-manifest.js",
     "clean": "rm -rf dist"
   },
   "keywords": [

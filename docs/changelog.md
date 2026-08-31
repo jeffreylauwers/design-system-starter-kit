@@ -10,6 +10,18 @@ All notable changes to this project are documented in this file.
 
 Nog niet gepubliceerde wijzigingen. Schrijf nieuwe changelog-entries hieronder; bij de volgende release wordt deze kop gepromoveerd naar het definitieve versienummer.
 
+### manifest.json heeft een JSON Schema, en wordt nu meegepubliceerd
+
+`manifest.json` verwees in zijn `$schema`-regel naar `./manifest-schema.json`, maar dat bestand bestond niet. Editors en tooling vonden dus niets, en niets controleerde de structuur. Sinds alle 73 componenten hun `platforms`-veld uit dit bestand halen, is een typefout daarin een stille bug in plaats van een build-fout.
+
+`manifest-schema.json` legt de structuur nu vast: de toegestane categorieën en platforms, het PascalCase-patroon voor `name`, het `dsn-`-patroon voor `cssBlock`, en welke velden per component en per prop verplicht zijn. Onbekende velden zijn niet toegestaan, zodat `platform` in plaats van `platforms` opvalt.
+
+De build van `components-html` valideert het manifest voortaan vóór het de CSS bouwt (`scripts/validate-manifest.js`). De validator leest het schema zelf, dus schema en controle kunnen niet uit elkaar lopen; hij meldt alle overtredingen tegelijk, met het pad erbij.
+
+Daarnaast: `manifest.json` en `manifest.d.ts` stonden niet in de `files`-lijst van `package.json` en werden dus niet meegepubliceerd, terwijl de `exports`-map wel een `./manifest`-pad aanbood. Dat pad was voor consumers dood. `manifest.json`, `manifest.d.ts` en `manifest-schema.json` zitten nu in `files`, en het schema is bereikbaar als `./manifest-schema`.
+
+`manifest.d.ts` liep op twee punten achter op de data: `type` kan ook `'ReactNode'` zijn (`HeadingGroup.preHeading`, `PreHeading.children`) en `required` kan ook `false` zijn (`HeadingGroup.preHeading`). Beide zijn nu verruimd, in lijn met het schema.
+
 ### Formuliercontrols hebben nu ook een HTML/CSS-laag
 
 Veertien formuliercontrols hadden hun CSS in `components-react` staan in plaats van in `components-html`. De HTML/CSS-laag miste ze dus, terwijl Storybook wel een HTML/CSS-codeblok toonde: wie die markup kopieerde kreeg een ongestyled resultaat. Die CSS is verplaatst.

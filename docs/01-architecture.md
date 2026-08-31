@@ -105,7 +105,8 @@ design-system-starter-kit/
 │   ├── core/                    # @dsn-starter-kit/core
 │   ├── components-html/         # @dsn-starter-kit/components-html
 │   │   ├── manifest.json        # Framework-agnostic component manifest (AI + tooling)
-│   │   └── manifest.d.ts        # TypeScript types for manifest.json
+│   │   ├── manifest.d.ts        # TypeScript types for manifest.json
+│   │   └── manifest-schema.json # JSON Schema for manifest.json (editors + build validation)
 │   ├── components-react/        # @dsn-starter-kit/components-react
 │   │   └── scripts/
 │   │       └── generate-icons.js # Icon registry generator
