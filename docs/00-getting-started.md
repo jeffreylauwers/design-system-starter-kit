@@ -156,7 +156,7 @@ npm install @dsn-starter-kit/components-web @dsn-starter-kit/core
 ```html
 <script
   type="module"
-  src="node_modules/@dsn-starter-kit/components-web/dist/index.js"
+  src="node_modules/@dsn-starter-kit/components-web/dist/index.mjs"
 ></script>
 
 <dsn-button variant="strong">Get started</dsn-button>
@@ -164,6 +164,32 @@ npm install @dsn-starter-kit/components-web @dsn-starter-kit/core
 ```
 
 Available Web Components: `Button`, `Heading`, `Icon`, `Link`, `OrderedList`, `Paragraph`, `UnorderedList`.
+
+---
+
+## 7. Module formats and server-side rendering
+
+`@dsn-starter-kit/components-react`, `@dsn-starter-kit/core` and
+`@dsn-starter-kit/design-tokens` ship both ESM and CommonJS builds, with matching
+type declarations per format. Your bundler or Node picks the right one through the
+`exports` field, so all of these work:
+
+```js
+import { Button } from '@dsn-starter-kit/components-react'; // ESM
+const { Button } = require('@dsn-starter-kit/components-react'); // CommonJS
+```
+
+The JavaScript contains no CSS imports. That is what makes the packages loadable
+by Node itself, so server-side rendering works without a bundler:
+
+```js
+// werkt in kaal Node, zonder build-stap
+import { renderToString } from 'react-dom/server';
+import { Button } from '@dsn-starter-kit/components-react';
+```
+
+The trade-off: styles never arrive on their own. Import the CSS once in your entry
+point, as described in step 2.
 
 ---
 

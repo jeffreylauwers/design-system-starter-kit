@@ -62,7 +62,8 @@
     "./table-of-contents": "./src/table-of-contents/table-of-contents.css",
     "./text-area": "./src/text-area/text-area.css",
     "./text-input": "./src/text-input/text-input.css",
-    "./unordered-list": "./src/unordered-list/unordered-list.css"
+    "./unordered-list": "./src/unordered-list/unordered-list.css",
+    "./package.json": "./package.json"
   },
   "files": [
     "dist",

@@ -2,27 +2,35 @@
   "name": "@dsn-starter-kit/core",
   "version": "2.0.0",
   "description": "Core styles and utilities for the design system",
-  "main": "dist/index.js",
-  "types": "dist/index.d.ts",
+  "type": "module",
+  "main": "dist/index.cjs",
+  "module": "dist/index.mjs",
+  "types": "dist/index.d.mts",
   "style": "dist/core.css",
   "exports": {
     ".": {
-      "types": "./dist/index.d.ts",
-      "import": "./dist/index.js",
-      "default": "./dist/index.js"
+      "import": {
+        "types": "./dist/index.d.mts",
+        "default": "./dist/index.mjs"
+      },
+      "require": {
+        "types": "./dist/index.d.cts",
+        "default": "./dist/index.cjs"
+      }
     },
-    "./css": "./dist/core.css"
+    "./css": "./dist/core.css",
+    "./package.json": "./package.json"
   },
   "files": [
     "dist"
   ],
   "scripts": {
-    "build": "npm run build:css && npm run build:js",
+    "build": "npm run build:js && npm run build:css",
     "build:css": "mkdir -p dist && cat src/styles/reset.css src/styles/utilities.css > dist/core.css",
-    "build:js": "tsc",
+    "build:js": "tsdown",
     "clean": "rm -rf dist",
     "type-check": "tsc --noEmit",
-    "watch": "tsc --watch"
+    "watch": "tsdown --watch"
   },
   "keywords": [
     "design-system",
@@ -39,6 +47,7 @@
     "@dsn-starter-kit/design-tokens": "workspace:*"
   },
   "devDependencies": {
-    "typescript": "^5.3.3"
+    "typescript": "^5.3.3",
+    "tsdown": "^0.22.14"
   }
 }

@@ -133,6 +133,45 @@ Nog niet gepubliceerde wijzigingen. Schrijf nieuwe changelog-entries hieronder; 
   - De generator faalt nu hard op SVG-markup die hij niet kan verwerken (geneste elementen, `<title>`, tekst), zodat een afwijkend icoon opvalt tijdens de build in plaats van stil verkeerd te renderen
   - Nieuwe tests bewaken dit: alle 51 iconen worden gerenderd, `ref` wordt gecontroleerd, en de registry mag geen andere import bevatten dan `react`
 
+### Packaging: tsdown voor de publieke packages
+
+#### Breaking changes
+
+- **De JavaScript importeert geen CSS meer**: `@dsn-starter-kit/components-react` bevatte per component een `import './Button.css'`. Dat is precies wat het package onlaadbaar maakte voor Node, en dus voor server-side rendering. De CSS zit nu volledig in `dist/index.css` en de JS is er vrij van. Importeer de stijlen zelf, één keer in je entry point:
+
+  ```tsx
+  import '@dsn-starter-kit/core/css';
+  import '@dsn-starter-kit/components-react/css';
+  ```
+
+  Dit is de opzet die `docs/00-getting-started.md` altijd al voorschreef, dus wie de documentatie volgde hoeft niets te doen. Wie leunde op de impliciete CSS-import per component, voegt de twee regels hierboven toe.
+
+- **`@dsn-starter-kit/components-react/icon-registry.generated` bestaat niet meer**: die subpath stelde een intern gegenereerd bestand beschikbaar. `IconName` komt uit de hoofdingang:
+
+  ```tsx
+  // voorheen
+  import type { IconName } from '@dsn-starter-kit/components-react/icon-registry.generated';
+  // nu
+  import type { IconName } from '@dsn-starter-kit/components-react';
+  ```
+
+- **Bestandsnamen in `dist` zijn gewijzigd**: `dist/index.js` is `dist/index.mjs` (ESM) en `dist/index.cjs` (CommonJS) geworden. Wie via de package-naam importeert merkt hier niets van; wie een pad in `dist/` hardcodeerde, past dat aan. Dat geldt ook voor het `<script>`-voorbeeld van de Web Components, dat nu naar `dist/index.mjs` wijst.
+
+#### Fixed
+
+- **De packages waren niet laadbaar door Node**: `tsc` produceerde ESM-syntaxis, maar zonder `"type": "module"` en met directory-imports (`export * from './ActionGroup'`). Node weigerde het package daardoor in beide richtingen: `import` faalde op `Directory import ... is not supported resolving ES modules`, en `require` op dezelfde fout. Alleen bundlers konden ermee overweg. Server-side rendering, Jest en elk `require()` liepen vast.
+
+  `core`, `components-react`, `components-web` en `design-tokens` worden nu gebouwd met [tsdown](https://tsdown.dev/) en leveren ESM plus CommonJS, met per formaat een eigen `.d.mts`/`.d.cts`. Geverifieerd tegen `npm pack`-tarballs: `import` en `require` werken allebei, en `renderToString` uit `react-dom/server` rendert de componenten in kaal Node zonder build-stap.
+
+- **De types van `@dsn-starter-kit/design-tokens` beschreven een module die niet bestond**: de gegenereerde `tokens.d.ts` beloofde 1379 benoemde exports (`DsnTextFontFamilyDefault` en verwanten), terwijl `tokens.js` uitsluitend een geneste default export had. `import { DsnTextFontFamilyDefault } from '@dsn-starter-kit/design-tokens'` kwam dus door de type-check en was `undefined` op runtime, en `import tokens from '...'` werkte op runtime maar niet in TypeScript. Elke TypeScript-consument liep tegen één van de twee aan.
+
+  De JS-output levert nu beide vormen echt: de geneste default export blijft ongewijzigd, en de benoemde constanten zijn toegevoegd. De `.d.ts` beschrijft voortaan allebei, inclusief een `DesignTokenGroup`-type voor de geneste structuur. Dit is additief: bestaand werkend gebruik verandert niet
+
+#### Changed
+
+- **`vite-plugin-svgr` is niet langer nodig**, en `scripts/build-css.js` in `components-react` is verdwenen: tsdown lost de `@import`-ketens naar `components-html` zelf op via Lightning CSS. De gebundelde CSS is gecontroleerd tegen de bron: alle 476 class-selectors en alle vendor-prefixes zijn aanwezig. Het enige dat verdween is een lege regel (`.dsn-menu-link__label` had een body met alleen een comment)
+- **`"./package.json"` toegevoegd aan de exports** van alle publieke packages, zodat tooling het manifest kan uitlezen
+
 ### components-html
 
 #### Fixed

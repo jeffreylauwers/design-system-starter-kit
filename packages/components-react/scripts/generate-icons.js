@@ -17,8 +17,11 @@
  * To add a new icon: drop the SVG into components-html/assets/icons/ and re-run this script.
  */
 
-const fs = require('fs');
-const path = require('path');
+import fs from 'node:fs';
+import path from 'node:path';
+import { fileURLToPath } from 'node:url';
+
+const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
 const iconsDir = path.resolve(__dirname, '../../components-html/assets/icons');
 const outputPath = path.resolve(

@@ -2,25 +2,32 @@
   "name": "@dsn-starter-kit/components-web",
   "version": "2.0.0",
   "description": "Web Components for the design system",
-  "main": "dist/index.js",
-  "module": "dist/index.js",
-  "types": "dist/index.d.ts",
+  "type": "module",
+  "main": "dist/index.cjs",
+  "module": "dist/index.mjs",
+  "types": "dist/index.d.mts",
   "exports": {
     ".": {
-      "types": "./dist/index.d.ts",
-      "import": "./dist/index.js",
-      "default": "./dist/index.js"
-    }
+      "import": {
+        "types": "./dist/index.d.mts",
+        "default": "./dist/index.mjs"
+      },
+      "require": {
+        "types": "./dist/index.d.cts",
+        "default": "./dist/index.cjs"
+      }
+    },
+    "./package.json": "./package.json"
   },
   "files": [
     "dist",
     "src"
   ],
   "scripts": {
-    "build": "node scripts/build-css.js && tsc",
+    "build": "node scripts/build-css.js && tsdown",
     "clean": "rm -rf dist",
     "type-check": "tsc --noEmit",
-    "watch": "tsc --watch"
+    "watch": "tsdown --watch"
   },
   "keywords": [
     "design-system",
@@ -37,6 +44,7 @@
     "@dsn-starter-kit/design-tokens": "workspace:*"
   },
   "devDependencies": {
-    "typescript": "^5.3.3"
+    "typescript": "^5.3.3",
+    "tsdown": "^0.22.14"
   }
 }

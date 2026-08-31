@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
 import { Button, Icon } from '@dsn-starter-kit/components-react';
-import type { IconName } from '@dsn-starter-kit/components-react/icon-registry.generated';
+import type { IconName } from '@dsn-starter-kit/components-react';
 import {
   TEKST,
   WEINIG_TEKST,
