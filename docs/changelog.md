@@ -133,6 +133,14 @@ Nog niet gepubliceerde wijzigingen. Schrijf nieuwe changelog-entries hieronder; 
   - De generator faalt nu hard op SVG-markup die hij niet kan verwerken (geneste elementen, `<title>`, tekst), zodat een afwijkend icoon opvalt tijdens de build in plaats van stil verkeerd te renderen
   - Nieuwe tests bewaken dit: alle 51 iconen worden gerenderd, `ref` wordt gecontroleerd, en de registry mag geen andere import bevatten dan `react`
 
+### components-html
+
+#### Fixed
+
+- **De meegeleverde assets waren niet bereikbaar via de `exports`-map**: `assets/` staat in `files` en wordt dus meegepubliceerd, maar er was geen `exports`-entry voor. Node en moderne bundlers weigerden `@dsn-starter-kit/components-html/assets/icons/edit.svg` daarom met `ERR_PACKAGE_PATH_NOT_EXPORTED`. Toegevoegd: `"./assets/*": "./assets/*"`
+
+### Icon
+
 #### Documentation
 
 - **`Icon/README.md` beloofde tree-shaking die er niet is**: `Icon` zoekt de naam op runtime op in `iconMap`, dus de volledige set van 51 iconen komt hoe dan ook in de bundle van de consumer (circa 19 KB aan padgegevens, ruwweg 5-6 KB gzipped). De README noemt nu het werkelijke gedrag, plus het alternatief voor wie maar een handvol iconen nodig heeft: de losse SVG's uit `@dsn-starter-kit/components-html/assets/icons/`
