@@ -10,6 +10,16 @@ All notable changes to this project are documented in this file.
 
 Nog niet gepubliceerde wijzigingen. Schrijf nieuwe changelog-entries hieronder; bij de volgende release wordt deze kop gepromoveerd naar het definitieve versienummer.
 
+### CI controleert nu ook de types van Storybook
+
+`packages/storybook` had geen `type-check`-script. De root-`type-check` is `pnpm -r type-check`, en `pnpm -r` slaat packages zonder dat script stilzwijgend over. Gevolg: de 95 TypeScript-bestanden in `packages/storybook/src` (alle stories en docs) werden door geen enkele CI-stap gecontroleerd.
+
+Aangetoond door een bewuste typefout in een story te zetten: `pnpm lint`, `pnpm format:check`, `pnpm build` en `pnpm type-check` waren allemaal groen. De Storybook-build draait Vite, en die transpileert zonder te type-checken.
+
+`packages/storybook/package.json` heeft nu `"type-check": "tsc --noEmit"`. Daarmee pikt de bestaande CI-stap hem vanzelf op; `.github/workflows/ci.yml` is ongewijzigd. Dezelfde typefout laat `pnpm type-check` nu falen.
+
+De checklists in `CLAUDE.md`, `CONTRIBUTING.md` en de issue-templates noemden `pnpm --filter storybook exec tsc --noEmit` als dé TypeScript-controle, waardoor `components-react`, `core` en `components-web` er juist buiten vielen. Ze verwijzen nu allemaal naar `pnpm type-check`, dat alles dekt.
+
 ### components-html: de manifest-types zijn nu importeerbaar
 
 `manifest.d.ts` werd sinds 3.2.0 meegepubliceerd, maar niemand kon erbij. De `exports`-map had `"./manifest": "./manifest.json"` zonder `types`-conditie, dus TypeScript resolveerde `@dsn-starter-kit/components-html/manifest` naar het JSON-bestand en leidde de types af uit het literal. `import type { Platform } from '@dsn-starter-kit/components-html/manifest'` faalde met TS2305, en `component.platforms` was `string[]` in plaats van `Platform[]`.

@@ -120,16 +120,19 @@ Tokens zijn gelaagd: `base.json` (gedeelde primitieven) → component-token JSON
 
 ### 5. TypeScript moet volledig schoon zijn
 
-Nieuwe code mag geen nieuwe fouten of warnings introduceren. Er zijn **twee** type-checks nodig, want ze dekken verschillende packages:
+Nieuwe code mag geen nieuwe fouten of warnings introduceren. Eén commando dekt alles:
 
 ```bash
-pnpm type-check                                  # core, components-react, components-web
-pnpm --filter storybook exec tsc --noEmit        # storybook (stories en docs)
+pnpm type-check    # core, components-react, components-web, color-palette-generator, storybook
 ```
 
-Beide checks erven dezelfde strenge instellingen uit de root `tsconfig.json` (`strict`, `noImplicitReturns`), maar ze kijken naar andere bestanden. De storybook-tsconfig include't alleen `packages/storybook/src` en `.storybook`, en lost `@dsn-starter-kit/components-react` op via de `types`-entry in de package.json, dus via de gebouwde `dist/*.d.ts`. De Vite-alias naar `../components-react/src` in `.storybook/main.ts` geldt alleen tijdens de build, niet voor `tsc`.
+Dit is `pnpm -r type-check`: elk package met een `type-check`-script draait zijn eigen `tsc --noEmit`. Draai altijd eerst `pnpm build`, zie "Kwaliteitscontrole voor PR".
 
-Gevolg: de storybook-check ziet de broncode van componenten nooit. Een groene storybook-check is geen bewijs dat `components-react` compileert. Wie componentcode aanraakt, draait `pnpm type-check`.
+**Bij een nieuw package met TypeScript-bronbestanden: geef het een `type-check`-script.** `pnpm -r` slaat packages zonder dat script stilzwijgend over, zonder waarschuwing. Zo bleef `packages/storybook` lange tijd volledig ongecontroleerd in CI.
+
+Onder dat ene commando zitten wel verschillende tsconfigs, en dat verschil blijft belangrijk. Alle checks erven dezelfde strenge instellingen uit de root `tsconfig.json` (`strict`, `noImplicitReturns`), maar ze kijken naar andere bestanden. De storybook-tsconfig include't alleen `packages/storybook/src` en `.storybook`, en lost `@dsn-starter-kit/components-react` op via de `types`-entry in de package.json, dus via de gebouwde `dist/*.d.ts`. De Vite-alias naar `../components-react/src` in `.storybook/main.ts` geldt alleen tijdens de build, niet voor `tsc`.
+
+Gevolg: de storybook-check ziet de broncode van componenten nooit, hij controleert de stories tegen de gebouwde `dist`. Bouw dus opnieuw voordat je hem vertrouwt na een wijziging in componentcode.
 
 ### 6. Navigatie: homepage krijgt altijd een 'Home' item als eerste, met `current`
 
@@ -265,9 +268,8 @@ Draai dit in dezelfde volgorde als CI, zodat een groene lokale run ook een groen
 pnpm lint                                        # 0 lint-fouten
 pnpm format:check                                # prettier
 pnpm build                                       # vereist: genereert bronbestanden voor type-check
-pnpm type-check                                  # core, components-react, components-web
+pnpm type-check                                  # alle packages, inclusief storybook
 pnpm test                                        # alle tests groen
-pnpm --filter storybook exec tsc --noEmit        # extra: staat als enige niet in CI
 ```
 
 **`pnpm build` staat vóór `pnpm type-check` en is niet optioneel.** `components-web` importeert acht `*.generated.ts`-bestanden die `scripts/build-css.js` tijdens de build aanmaakt, en die staan in `.gitignore`. Op een verse checkout faalt `pnpm type-check` zonder voorafgaande build met tien fouten, waarvan negen `TS2307` (`Cannot find module './button-styles.generated'`). Die hebben niets met je wijziging te maken.

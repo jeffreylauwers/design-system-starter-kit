@@ -220,7 +220,7 @@ Het [ComponentName] component wordt gebruikt voor:
 ### Kwaliteitscontrole
 
 - [ ] Tests groen: `pnpm test`
-- [ ] TypeScript schoon: `pnpm --filter storybook exec tsc --noEmit`
+- [ ] TypeScript schoon: `pnpm build && pnpm type-check`
 - [ ] Lint schoon: `pnpm lint`
 
 ### Documentatie
