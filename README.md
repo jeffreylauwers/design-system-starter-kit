@@ -92,7 +92,7 @@ pnpm --filter @dsn-starter-kit/design-tokens watch
 # Start Storybook in development mode
 pnpm dev
 
-# Run tests (1661 tests across 80 test suites)
+# Run tests (1665 tests across 80 test suites)
 pnpm test
 
 # Run tests in watch mode
@@ -127,6 +127,8 @@ The build system ensures packages are built in the correct dependency order:
 4. **Storybook** (`@dsn-starter-kit/storybook`) - Generates static documentation site
 
 Icon generation is automatically included in the React components build step.
+
+The publishable JavaScript packages (`core`, `components-react`, `components-web`, `design-tokens`) are bundled with [tsdown](https://tsdown.dev/). Each ships both ESM (`dist/index.mjs`) and CommonJS (`dist/index.cjs`), with type declarations per format, so `import` and `require` both work. The JavaScript contains no CSS imports, which is what keeps the packages loadable by Node itself for server-side rendering.
 
 ### Working with Packages
 
@@ -447,12 +449,13 @@ Comprehensive documentation is available in the `/docs` folder:
 
 - **Pre-commit hooks** via Husky + lint-staged (ESLint + Prettier)
 - **Type checking** across all packages (`pnpm type-check`)
-- **1661 tests** covering React components, Web Components, and utilities
+- **1665 tests** covering React components, Web Components, and utilities
 - **CI/CD** via GitHub Actions (lint, type-check, test, build)
 
 ## Tech Stack
 
-- **Build Tool:** Vite
+- **Library Bundler:** tsdown (rolldown + oxc) — ESM + CommonJS output for the published packages
+- **App Build Tool:** Vite (Storybook, color palette generator)
 - **Token Processor:** Style Dictionary 4.4.0 (DTCG format)
 - **Web Components:** Vanilla TypeScript (Shadow DOM)
 - **React:** 18+

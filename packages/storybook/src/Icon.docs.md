@@ -4,7 +4,7 @@ Een visueel symbool afkomstig van Tabler Icons, gebruikt om acties, objecten, of
 
 ## Doel
 
-De Icon component biedt een consistente, toegankelijke manier om iconen te gebruiken binnen de interface. Iconen worden automatisch gekoppeld aan typografische groottes (sm, md, lg, xl, 2xl, 3xl, 4xl) en schalen mee met de interface. De component ondersteunt tree-shaking, zodat alleen de iconen die je daadwerkelijk gebruikt in je bundle terechtkomen. De Icon garandeert correcte toegankelijkheid door automatisch `aria-hidden` toe te voegen voor decoratieve iconen of `role="img"` voor standalone iconen.
+De Icon component biedt een consistente, toegankelijke manier om iconen te gebruiken binnen de interface. Iconen worden automatisch gekoppeld aan typografische groottes (sm, md, lg, xl, 2xl, 3xl, 4xl) en schalen mee met de interface. De iconen staan als inline SVG in het package, dus er is geen SVG-loader of svgr-configuratie nodig om ze te gebruiken. De Icon garandeert correcte toegankelijkheid door automatisch `aria-hidden` toe te voegen voor decoratieve iconen of `role="img"` voor standalone iconen.
 
 <!-- VOORBEELD -->
 

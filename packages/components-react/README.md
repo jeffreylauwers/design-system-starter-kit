@@ -23,10 +23,15 @@ import {
   FormField,
   Icon,
 } from '@dsn-starter-kit/components-react';
-
-// Also supported: Import individually
-import { Button } from '@dsn-starter-kit/components-react/Button';
 ```
+
+Per-component subpaths are not exported; import everything from the package root.
+
+Note that the package does not currently tree-shake. It declares no `sideEffects`
+field, so bundlers keep the whole bundle regardless of what you import. Measured with
+Vite 6 against 3.0.0, minified: React on its own is 194 kB, React plus a single
+`Button` is 262 kB, and React plus every export is 263 kB. Importing one component
+therefore costs about the same as importing all 73.
 
 ### Example
 
@@ -167,7 +172,23 @@ pnpm watch
 
 ## CSS
 
-CSS styles are imported from `@dsn-starter-kit/components-html` for each component. The CSS is not bundled with the JavaScript - you need to import it separately in your application.
+The JavaScript contains no CSS imports. That is what makes this package loadable by
+Node itself, and therefore usable in server-side rendering. The flip side is that the
+styles never arrive on their own — import them once in your application entry point:
+
+```tsx
+import '@dsn-starter-kit/core/css'; // tokens + reset, first
+import '@dsn-starter-kit/components-react/css'; // all component styles
+```
+
+`dist/index.css` holds every component style, with the `@import` chains to
+`@dsn-starter-kit/components-html` already resolved.
+
+## Module formats
+
+The package ships both ESM (`dist/index.mjs`) and CommonJS (`dist/index.cjs`), each
+with its own type declarations. Your bundler or Node picks the right one through the
+`exports` field, so `import` and `require` both work.
 
 ## Dependencies
 
