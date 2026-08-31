@@ -37,20 +37,61 @@ StyleDictionary.registerFormat({
   },
 });
 
+// Token-naam naar PascalCase constante: dsn-text-font-family-default -> DsnTextFontFamilyDefault
+function toConstantName(tokenName) {
+  return tokenName
+    .split('-')
+    .map((part) => part.charAt(0).toUpperCase() + part.slice(1))
+    .join('');
+}
+
+// JavaScript-output: de geneste default export van javascript/esm, plus een platte
+// benoemde constante per token.
+//
+// De .d.ts beloofde altijd al die benoemde exports, maar javascript/esm levert
+// alleen een default export. Wie `import { DsnTextFontFamilyDefault } from
+// '@dsn-starter-kit/design-tokens'` schreef, kwam door de type-check en kreeg
+// op runtime `undefined`. Beide vormen bestaan nu echt.
+StyleDictionary.registerFormat({
+  name: 'javascript/esm-with-named',
+  format: async function (args) {
+    const nested = await StyleDictionary.hooks.formats['javascript/esm'](args);
+    const named = args.dictionary.allTokens.map((token) => {
+      const value = token.$value ?? token.value;
+      return `export const ${toConstantName(token.name)} = ${JSON.stringify(String(value))};`;
+    });
+    return `${nested.trimEnd()}\n\n${named.join('\n')}\n`;
+  },
+});
+
 // Custom format for TypeScript declarations
-// Generates typed exports matching the javascript/esm output
+// Beschrijft beide exportvormen van javascript/esm-with-named
 StyleDictionary.registerFormat({
   name: 'typescript/declarations',
   format: function ({ dictionary }) {
     const lines = dictionary.allTokens.map((token) => {
-      const name = token.name
-        .split('-')
-        .map((part) => part.charAt(0).toUpperCase() + part.slice(1))
-        .join('');
       const comment = token.description ? ` // ${token.description}` : '';
-      return `export declare const ${name}: string;${comment}`;
+      return `export declare const ${toConstantName(token.name)}: string;${comment}`;
     });
-    return lines.join('\n') + '\n';
+    // De default export is de geneste Style Dictionary-structuur, met per token
+    // een object dat naast $value ook $description en filePath draagt.
+    const defaultExport = [
+      '',
+      'export interface DesignToken {',
+      '  $value: string;',
+      '  $description?: string;',
+      '  filePath?: string;',
+      '  [key: string]: unknown;',
+      '}',
+      '',
+      'export type DesignTokenGroup = {',
+      '  [key: string]: DesignToken | DesignTokenGroup;',
+      '};',
+      '',
+      'declare const tokens: DesignTokenGroup;',
+      'export default tokens;',
+    ];
+    return [...lines, ...defaultExport].join('\n') + '\n';
   },
 });
 
@@ -118,7 +159,7 @@ function createFullConfig(theme, mode, projectType) {
         files: [
           {
             destination: `${configName}.js`,
-            format: 'javascript/esm',
+            format: 'javascript/esm-with-named',
           },
           {
             destination: `${configName}.d.ts`,

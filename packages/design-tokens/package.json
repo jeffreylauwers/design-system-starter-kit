@@ -2,18 +2,30 @@
   "name": "@dsn-starter-kit/design-tokens",
   "version": "2.0.0",
   "description": "Design tokens for the design system",
-  "main": "dist/js/tokens.js",
+  "type": "module",
+  "main": "dist/js/tokens.cjs",
+  "module": "dist/js/tokens.js",
   "types": "dist/js/tokens.d.ts",
   "exports": {
     ".": {
-      "types": "./dist/js/tokens.d.ts",
-      "import": "./dist/js/tokens.js",
-      "default": "./dist/js/tokens.js"
+      "import": {
+        "types": "./dist/js/tokens.d.ts",
+        "default": "./dist/js/tokens.js"
+      },
+      "require": {
+        "types": "./dist/js/tokens.d.cts",
+        "default": "./dist/js/tokens.cjs"
+      }
     },
     "./dark": {
-      "types": "./dist/js/tokens-dark.d.ts",
-      "import": "./dist/js/tokens-dark.js",
-      "default": "./dist/js/tokens-dark.js"
+      "import": {
+        "types": "./dist/js/tokens-dark.d.ts",
+        "default": "./dist/js/tokens-dark.js"
+      },
+      "require": {
+        "types": "./dist/js/tokens-dark.d.cts",
+        "default": "./dist/js/tokens-dark.cjs"
+      }
     },
     "./css": "./dist/css/variables.css",
     "./css/dark": "./dist/css/variables-dark.css",
@@ -21,14 +33,14 @@
     "./scss": "./dist/scss/_variables.scss",
     "./scss/dark": "./dist/scss/_variables-dark.scss",
     "./css/scoped/start-hero-image-light": "./dist/css/scoped/start-light-hero-image.css",
-    "./css/scoped/wireframe-hero-image-light": "./dist/css/scoped/wireframe-light-hero-image.css"
+    "./css/scoped/wireframe-hero-image-light": "./dist/css/scoped/wireframe-light-hero-image.css",
+    "./package.json": "./package.json"
   },
   "files": [
     "dist"
   ],
-  "type": "module",
   "scripts": {
-    "build": "node src/config/build.js",
+    "build": "node src/config/build.js && tsdown",
     "build:figma": "node src/config/build-figma.js",
     "clean": "rm -rf dist",
     "watch": "node --watch-path=src src/config/build.js"
@@ -44,6 +56,7 @@
     "access": "public"
   },
   "devDependencies": {
-    "style-dictionary": "^4.0.0"
+    "style-dictionary": "^4.0.0",
+    "tsdown": "^0.22.14"
   }
 }

@@ -5,7 +5,7 @@ import {
   MenuLink,
   NumberBadge,
 } from '@dsn-starter-kit/components-react';
-import type { IconName } from '@dsn-starter-kit/components-react/icon-registry.generated';
+import type { IconName } from '@dsn-starter-kit/components-react';
 import DocsPage from './MenuLink.docs.mdx';
 import {
   TEKST,

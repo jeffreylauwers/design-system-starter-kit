@@ -1,7 +1,7 @@
 import React from 'react';
 import type { Meta, StoryObj } from '@storybook/react-vite';
 import { LinkButton, Icon } from '@dsn-starter-kit/components-react';
-import type { IconName } from '@dsn-starter-kit/components-react/icon-registry.generated';
+import type { IconName } from '@dsn-starter-kit/components-react';
 import DocsPage from './LinkButton.docs.mdx';
 import {
   TEKST,
