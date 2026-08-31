@@ -1,0 +1,124 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/jeffreylauwers/design-system-starter-kit/blob/main/packages/components-html/manifest-schema.json",
+  "title": "Design System Starter Kit component manifest",
+  "description": "Schema for manifest.json: the framework-agnostic register of every design system component. Keep this schema in sync with manifest.d.ts, which describes the same structure for TypeScript consumers.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["version", "description", "components"],
+  "properties": {
+    "$schema": {
+      "type": "string",
+      "description": "Relative path to this schema, so editors pick up completion and validation."
+    },
+    "version": {
+      "type": "string",
+      "description": "Schema version of the manifest structure. Independent of the package version.",
+      "pattern": "^\\d+\\.\\d+\\.\\d+$"
+    },
+    "description": {
+      "type": "string",
+      "minLength": 1,
+      "description": "Explains what the manifest is and how to read it."
+    },
+    "components": {
+      "type": "array",
+      "description": "Every component in the design system, in no guaranteed order.",
+      "minItems": 1,
+      "items": { "$ref": "#/$defs/component" }
+    }
+  },
+  "$defs": {
+    "component": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "name",
+        "cssBlock",
+        "category",
+        "purpose",
+        "platforms",
+        "primaryProps"
+      ],
+      "properties": {
+        "name": {
+          "type": "string",
+          "description": "PascalCase component name, matching the React export and the Storybook title.",
+          "pattern": "^[A-Z][A-Za-z0-9]*$"
+        },
+        "cssBlock": {
+          "type": "string",
+          "description": "Primary BEM block class. Components that share a block (ButtonLink reuses dsn-button) repeat it here; their distinction is semantic, not visual.",
+          "pattern": "^dsn-[a-z0-9]+(-[a-z0-9]+)*$"
+        },
+        "category": {
+          "description": "Functional category, used for grouping and filtering.",
+          "enum": [
+            "accessibility",
+            "branding",
+            "content",
+            "display-feedback",
+            "form-field",
+            "form-input",
+            "form-option",
+            "layout",
+            "navigation",
+            "section"
+          ]
+        },
+        "purpose": {
+          "type": "string",
+          "description": "One-sentence English description of what the component does.",
+          "minLength": 1
+        },
+        "platforms": {
+          "type": "array",
+          "description": "Which platform implementations exist for this component.",
+          "minItems": 1,
+          "uniqueItems": true,
+          "items": {
+            "enum": ["html-css", "react", "web-components"]
+          }
+        },
+        "primaryProps": {
+          "type": "array",
+          "description": "The most important props an implementer needs. Not exhaustive: the component's .docs.md holds the full table. An empty array means the component has no notable props.",
+          "items": { "$ref": "#/$defs/prop" }
+        }
+      }
+    },
+    "prop": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["name"],
+      "properties": {
+        "name": {
+          "type": "string",
+          "description": "Prop name as used in React (camelCase) or HTML (modifier suffix).",
+          "minLength": 1
+        },
+        "type": {
+          "description": "Type for props that are not enum-style. Use values instead for a fixed set of options.",
+          "enum": ["string", "boolean", "number", "ReactNode"]
+        },
+        "values": {
+          "type": "array",
+          "description": "Allowed values for enum-style props.",
+          "minItems": 1,
+          "uniqueItems": true,
+          "items": {
+            "type": ["string", "number"]
+          }
+        },
+        "default": {
+          "type": ["string", "number", "boolean", "null"],
+          "description": "Default value. Null means the prop is optional and has no default behaviour."
+        },
+        "required": {
+          "type": "boolean",
+          "description": "Whether the prop must be provided. Omitting it means optional."
+        }
+      }
+    }
+  }
+}
