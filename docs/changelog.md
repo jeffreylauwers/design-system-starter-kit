@@ -10,6 +10,48 @@ All notable changes to this project are documented in this file.
 
 Nog niet gepubliceerde wijzigingen. Schrijf nieuwe changelog-entries hieronder; bij de volgende release wordt deze kop gepromoveerd naar het definitieve versienummer.
 
+---
+
+## Version 3.0.0 (August 31, 2026)
+
+Grote release die alle wijzigingen sinds v2.0.0 bundelt en publiceert naar npm. Het zwaartepunt ligt bij de publicatie zelf: het npm-package was in de vorige release feitelijk onbruikbaar buiten deze monorepo, en dat is nu opgelost. Daarnaast een reeks toegankelijkheidscorrecties en de eerste Figma-integratie.
+
+### Upgraden van 2.x naar 3.0.0
+
+Vier breaking changes, waarvan er twee alleen de HTML/CSS-laag raken. Voor React-consumers zijn het er dus twee: de CSS-import en de verplaatste `IconName`-import.
+
+#### 1. Importeer de CSS zelf (React)
+
+De JavaScript bevat geen CSS-imports meer. Dat is precies wat het package laadbaar maakt voor Node, en dus voor server-side rendering. Voeg deze twee regels toe aan je entry point, in deze volgorde:
+
+```tsx
+import '@dsn-starter-kit/core/css';
+import '@dsn-starter-kit/components-react/css';
+```
+
+Dit is de opzet die `docs/00-getting-started.md` altijd al voorschreef. Wie de documentatie volgde, hoeft niets te doen.
+
+#### 2. `IconName` komt uit de hoofdingang (React)
+
+```tsx
+// voorheen
+import type { IconName } from '@dsn-starter-kit/components-react/icon-registry.generated';
+// nu
+import type { IconName } from '@dsn-starter-kit/components-react';
+```
+
+Die subpath stelde een intern gegenereerd bestand beschikbaar en bestaat niet meer. Wie een pad in `dist/` hardcodeerde, past dat ook aan: `dist/index.js` heet nu `dist/index.mjs` (ESM) en `dist/index.cjs` (CommonJS).
+
+#### 3. BreadcrumbNavigation: de huidige pagina is geen link meer (HTML/CSS)
+
+Verplaats `aria-current="page"` naar de `<li>` en haal de `<a>` rond de huidige paginatitel weg. React-consumers hoeven niets te doen.
+
+#### 4. FormField: koppel description, error en status zelf (HTML/CSS)
+
+Wie de formuliermarkup met de hand schrijft, zet nu zelf de ID's op description, error en status, en het `aria-describedby` op de control. In React gebeurt dit automatisch.
+
+Daarnaast een wijziging die geen code breekt maar wel je inhoud kan raken: een `FormFieldDescription` mag geen lijst en geen link meer bevatten. Beide vallen weg uit wat een screenreader voorleest. Zie de FormFieldDescription-sectie hieronder voor de alternatieven.
+
 ### BreadcrumbNavigation
 
 #### Changed
@@ -82,6 +124,10 @@ Nog niet gepubliceerde wijzigingen. Schrijf nieuwe changelog-entries hieronder; 
   - Nieuwe tests bij `FormFieldStatus` (live region) en `ProgressBar` (koppeling van de description)
   - De assertions gebruiken `toHaveAccessibleDescription`, dat de `aria-describedby`-keten daadwerkelijk oplost. Een test die alleen het attribuut vergelijkt, zou een verwijzing naar een niet-bestaand ID goedkeuren
 
+#### Documentation
+
+- **Notitie boven het codevoorbeeld noemde het verkeerde component**: er stond dat de HTML/CSS tab een `EmailInput` toont, terwijl zowel de story als de gegenereerde HTML een `TextInput` gebruiken. De notitie noemt nu `TextInput` en spreekt over "de tabs", want beide tabs tonen hetzelfde child. De ongebruikte statische `html`-fallback in `FormField.docs.mdx` (die nog een `input type="email"` bevatte) is meegetrokken
+
 ### FormFieldDescription
 
 #### Changed
@@ -102,12 +148,6 @@ Nog niet gepubliceerde wijzigingen. Schrijf nieuwe changelog-entries hieronder; 
   - `as="div"` blijft bestaan voor block-level inhoud, maar wordt niet langer aanbevolen als route om een lijst in een description te krijgen
   - Het HTML-voorbeeld in `FileInput.docs.md` gebruikte `dsn-form-field-label__suffix`; de CSS-klasse heet `dsn-form-field-label-suffix`
   - De letterlijke `<ul>` en `<p>` in de JSDoc van de `as`-prop werden door de Storybook ArgsTable als echte HTML gerenderd, wat een `validateDOMNesting`-waarschuwing gaf. Die staan nu in backticks
-
-### FormField
-
-#### Documentation
-
-- **Notitie boven het codevoorbeeld noemde het verkeerde component**: er stond dat de HTML/CSS tab een `EmailInput` toont, terwijl zowel de story als de gegenereerde HTML een `TextInput` gebruiken. De notitie noemt nu `TextInput` en spreekt over "de tabs", want beide tabs tonen hetzelfde child. De ongebruikte statische `html`-fallback in `FormField.docs.mdx` (die nog een `input type="email"` bevatte) is meegetrokken
 
 ### IconList
 
@@ -132,6 +172,10 @@ Nog niet gepubliceerde wijzigingen. Schrijf nieuwe changelog-entries hieronder; 
   - `vite-plugin-svgr` en `src/svg.d.ts` zijn verwijderd; niets in de repo importeerde nog een `.svg`-bestand
   - De generator faalt nu hard op SVG-markup die hij niet kan verwerken (geneste elementen, `<title>`, tekst), zodat een afwijkend icoon opvalt tijdens de build in plaats van stil verkeerd te renderen
   - Nieuwe tests bewaken dit: alle 51 iconen worden gerenderd, `ref` wordt gecontroleerd, en de registry mag geen andere import bevatten dan `react`
+
+#### Documentation
+
+- **`Icon/README.md` beloofde tree-shaking die er niet is**: `Icon` zoekt de naam op runtime op in `iconMap`, dus de volledige set van 51 iconen komt hoe dan ook in de bundle van de consumer (circa 19 KB aan padgegevens, ruwweg 5-6 KB gzipped). De README noemt nu het werkelijke gedrag, plus het alternatief voor wie maar een handvol iconen nodig heeft: de losse SVG's uit `@dsn-starter-kit/components-html/assets/icons/`
 
 ### Packaging: tsdown voor de publieke packages
 
@@ -177,12 +221,6 @@ Nog niet gepubliceerde wijzigingen. Schrijf nieuwe changelog-entries hieronder; 
 #### Fixed
 
 - **De meegeleverde assets waren niet bereikbaar via de `exports`-map**: `assets/` staat in `files` en wordt dus meegepubliceerd, maar er was geen `exports`-entry voor. Node en moderne bundlers weigerden `@dsn-starter-kit/components-html/assets/icons/edit.svg` daarom met `ERR_PACKAGE_PATH_NOT_EXPORTED`. Toegevoegd: `"./assets/*": "./assets/*"`
-
-### Icon
-
-#### Documentation
-
-- **`Icon/README.md` beloofde tree-shaking die er niet is**: `Icon` zoekt de naam op runtime op in `iconMap`, dus de volledige set van 51 iconen komt hoe dan ook in de bundle van de consumer (circa 19 KB aan padgegevens, ruwweg 5-6 KB gzipped). De README noemt nu het werkelijke gedrag, plus het alternatief voor wie maar een handvol iconen nodig heeft: de losse SVG's uit `@dsn-starter-kit/components-html/assets/icons/`
 
 ### Formulierpatronen: bestanden uploaden
 

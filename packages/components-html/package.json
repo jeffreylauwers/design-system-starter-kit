@@ -1,6 +1,6 @@
 {
   "name": "@dsn-starter-kit/components-html",
-  "version": "2.0.0",
+  "version": "3.0.0",
   "description": "Pure HTML/CSS components for the design system",
   "style": "dist/components.css",
   "main": "dist/components.css",

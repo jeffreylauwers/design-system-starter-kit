@@ -1,6 +1,6 @@
 {
   "name": "@dsn-starter-kit/figma-sync",
-  "version": "2.0.0",
+  "version": "3.0.0",
   "private": true,
   "description": "Genereert Figma node specs uit de HTML/CSS-laag van het design system",
   "type": "module",
