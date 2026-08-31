@@ -121,6 +121,22 @@ Nog niet gepubliceerde wijzigingen. Schrijf nieuwe changelog-entries hieronder; 
   - `icon-gap` gebruikt `{dsn.space.text.md}` (8px), de bestaande conventie voor ruimte tussen icoon en tekst, in plaats van de in het issue voorgestelde `{dsn.space.inline.sm}` (4px)
   - `max-inline-size` toegevoegd voor leesbaarheid, consistent met UnorderedList en OrderedList
 
+### Icon
+
+#### Fixed
+
+- **Het npm-package verwees naar SVG-bestanden die niet meegepubliceerd worden**: `icon-registry.generated.ts` importeerde elk icoon als `../../../components-html/assets/icons/{naam}.svg?react`. Dat pad wijst buiten het gepubliceerde package, en de `?react`-suffix vereist `vite-plugin-svgr`. Consumers die `@dsn-starter-kit/components-react` installeerden liepen daardoor bij het bouwen vast op `Module not found: Can't resolve '../../../components-html/assets/icons/x.svg'`. De generator zet de SVG-inhoud nu inline in de registry, als `React.createElement`-aanroepen.
+  - `dist/` bevat geen enkele verwijzing meer naar een extern bestand: de enige import in de registry is `react`
+  - Consumers hebben geen svgr of SVG-loader meer nodig. Geverifieerd met een schone Vite-build tegen `npm pack`-tarballs
+  - De gerenderde markup is ongewijzigd: dezelfde root-attributen en paden, `ref` wordt nog steeds doorgegeven, en de Tabler-`class` blijft weg zodat `Icon` zelf de `dsn-icon`-klassen zet
+  - `vite-plugin-svgr` en `src/svg.d.ts` zijn verwijderd; niets in de repo importeerde nog een `.svg`-bestand
+  - De generator faalt nu hard op SVG-markup die hij niet kan verwerken (geneste elementen, `<title>`, tekst), zodat een afwijkend icoon opvalt tijdens de build in plaats van stil verkeerd te renderen
+  - Nieuwe tests bewaken dit: alle 51 iconen worden gerenderd, `ref` wordt gecontroleerd, en de registry mag geen andere import bevatten dan `react`
+
+#### Documentation
+
+- **`Icon/README.md` beloofde tree-shaking die er niet is**: `Icon` zoekt de naam op runtime op in `iconMap`, dus de volledige set van 51 iconen komt hoe dan ook in de bundle van de consumer (circa 19 KB aan padgegevens, ruwweg 5-6 KB gzipped). De README noemt nu het werkelijke gedrag, plus het alternatief voor wie maar een handvol iconen nodig heeft: de losse SVG's uit `@dsn-starter-kit/components-html/assets/icons/`
+
 ### Formulierpatronen: bestanden uploaden
 
 #### Added
