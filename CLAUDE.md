@@ -264,12 +264,17 @@ Draai dit in dezelfde volgorde als CI, zodat een groene lokale run ook een groen
 ```bash
 pnpm lint                                        # 0 lint-fouten
 pnpm format:check                                # prettier
+pnpm build                                       # vereist: genereert bronbestanden voor type-check
 pnpm type-check                                  # core, components-react, components-web
-pnpm --filter storybook exec tsc --noEmit        # storybook (niet gedekt door type-check)
 pnpm test                                        # alle tests groen
+pnpm --filter storybook exec tsc --noEmit        # extra: staat als enige niet in CI
 ```
 
-Bij wijzigingen aan stories, MDX of build-scripts ook `pnpm build`: een kapotte `.docs.mdx` of een ontbrekende entry in de `exports`-map van `components-html` breekt pas daar, niet bij de type-checks.
+**`pnpm build` staat vóór `pnpm type-check` en is niet optioneel.** `components-web` importeert acht `*.generated.ts`-bestanden die `scripts/build-css.js` tijdens de build aanmaakt, en die staan in `.gitignore`. Op een verse checkout faalt `pnpm type-check` zonder voorafgaande build met tien fouten, waarvan negen `TS2307` (`Cannot find module './button-styles.generated'`). Die hebben niets met je wijziging te maken.
+
+Repareer ze dus niet met een stub-`.d.ts`, een `@ts-ignore` of een lossere tsconfig: draai de build. Zo'n "fix" maskeert vanaf dat moment ook échte typefouten.
+
+Een build vangt daarnaast dingen die geen enkele type-check ziet: een kapotte `.docs.mdx` of een ontbrekende entry in de `exports`-map van `components-html` breekt pas daar.
 
 ---
 
