@@ -6,7 +6,10 @@
   "main": "dist/components.css",
   "exports": {
     ".": "./dist/components.css",
-    "./manifest": "./manifest.json",
+    "./manifest": {
+      "types": "./manifest.d.ts",
+      "default": "./manifest.json"
+    },
     "./manifest-schema": "./manifest-schema.json",
     "./assets/*": "./assets/*",
     "./action-group": "./src/action-group/action-group.css",
