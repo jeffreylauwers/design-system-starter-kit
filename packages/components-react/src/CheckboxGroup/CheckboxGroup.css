@@ -1,10 +1,6 @@
 /**
- * CheckboxGroup Component Styles
- * Container for multiple CheckboxOption components
+ * CheckboxGroup Component Styles for React
+ * Re-exports the base CheckboxGroup styles from components-html
  */
 
-.dsn-checkbox-group {
-  display: flex;
-  flex-direction: column;
-  gap: var(--dsn-checkbox-group-gap);
-}
+@import '../../../components-html/src/checkbox-group/checkbox-group.css';

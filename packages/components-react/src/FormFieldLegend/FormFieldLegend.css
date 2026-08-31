@@ -1,7 +1,7 @@
 /**
- * FormFieldLegend Component Styles
- * Re-uses FormFieldLabel styles for consistent appearance
- * The legend element uses the same .dsn-form-field-label class
+ * FormFieldLegend Component Styles for React
+ * Re-exports the base FormFieldLabel styles from components-html: the legend
+ * element uses the same .dsn-form-field-label class
  */
 
-/* FormFieldLegend uses the FormFieldLabel CSS classes, no additional styles needed */
+@import '../../../components-html/src/form-field-label/form-field-label.css';

@@ -97,7 +97,7 @@ Complete documentation voor het Design System Starter Kit.
 
 - **Tokens per configuration:** ~1380
 - **Configurations:** 8 (2 themes × 2 modes × 2 project types)
-- **Components:** 73 React components; 54 of them have their CSS in `components-html`
+- **Components:** 73 React components; all of them styled by `components-html` (68 CSS files)
 - **Tests:** 1665 across 80 test suites
 - **Storybook stories:** 601 across 72 component pages
 

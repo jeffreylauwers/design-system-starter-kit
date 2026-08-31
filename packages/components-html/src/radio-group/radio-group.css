@@ -1,0 +1,10 @@
+/**
+ * RadioGroup Component Styles
+ * Container for multiple RadioOption components
+ */
+
+.dsn-radio-group {
+  display: flex;
+  flex-direction: column;
+  gap: var(--dsn-radio-group-gap);
+}

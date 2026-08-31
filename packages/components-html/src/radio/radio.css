@@ -1,0 +1,205 @@
+/**
+ * Radio Component Styles
+ * Custom radio button with inner circle indicator
+ */
+
+.dsn-radio {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: var(--dsn-radio-size);
+  height: var(--dsn-radio-size);
+  flex-shrink: 0;
+}
+
+/* Native radio input (visually hidden but accessible) */
+.dsn-radio__input {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  opacity: 0;
+  cursor: pointer;
+}
+
+.dsn-radio__input:disabled {
+  cursor: not-allowed;
+}
+
+/* Custom visual control */
+.dsn-radio__control {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: var(--dsn-radio-border-width) solid var(--dsn-radio-border-color);
+  border-radius: 50%;
+  background-color: var(--dsn-radio-background-color);
+  transition:
+    border-color 0.2s ease,
+    background-color 0.2s ease;
+  pointer-events: none;
+}
+
+/* Inner circle indicator */
+.dsn-radio__inner-circle {
+  width: var(--dsn-radio-icon-size);
+  height: var(--dsn-radio-icon-size);
+  border-radius: 50%;
+  background-color: transparent;
+  opacity: 0;
+  transform: scale(0.5);
+  transition:
+    opacity 0.2s ease,
+    transform 0.2s ease,
+    background-color 0.2s ease;
+}
+
+/* ========================================================================
+   STATES
+   ======================================================================== */
+
+/* Hover state */
+.dsn-radio__input:not(:disabled):hover + .dsn-radio__control {
+  border-width: var(--dsn-radio-hover-border-width);
+  border-color: var(--dsn-radio-hover-border-color);
+  background-color: var(--dsn-radio-hover-background-color);
+}
+
+/* Active state */
+.dsn-radio__input:not(:disabled):active + .dsn-radio__control {
+  border-width: var(--dsn-radio-active-border-width);
+  border-color: var(--dsn-radio-active-border-color);
+  background-color: var(--dsn-radio-active-background-color);
+}
+
+/* Focus state */
+.dsn-radio__input:focus-visible + .dsn-radio__control {
+  outline: var(--dsn-focus-outline-width) var(--dsn-focus-outline-style)
+    var(--dsn-focus-outline-color);
+  outline-offset: var(--dsn-focus-outline-offset);
+  border-width: var(--dsn-radio-focus-border-width);
+  border-color: var(--dsn-radio-focus-border-color);
+  background-color: var(--dsn-radio-focus-background-color);
+}
+
+/* Checked state */
+.dsn-radio__input:checked + .dsn-radio__control {
+  border-width: var(--dsn-radio-checked-border-width);
+  border-color: var(--dsn-radio-checked-border-color);
+  background-color: var(--dsn-radio-checked-background-color);
+}
+
+.dsn-radio__input:checked + .dsn-radio__control .dsn-radio__inner-circle {
+  background-color: var(--dsn-radio-checked-color);
+  opacity: 1;
+  transform: scale(1);
+}
+
+/* Checked + Hover */
+.dsn-radio__input:checked:not(:disabled):hover + .dsn-radio__control {
+  border-width: var(--dsn-radio-checked-hover-border-width);
+  border-color: var(--dsn-radio-checked-hover-border-color);
+  background-color: var(--dsn-radio-checked-hover-background-color);
+}
+
+.dsn-radio__input:checked:not(:disabled):hover
+  + .dsn-radio__control
+  .dsn-radio__inner-circle {
+  background-color: var(--dsn-radio-checked-hover-color);
+}
+
+/* Checked + Active */
+.dsn-radio__input:checked:not(:disabled):active + .dsn-radio__control {
+  border-width: var(--dsn-radio-checked-active-border-width);
+  border-color: var(--dsn-radio-checked-active-border-color);
+  background-color: var(--dsn-radio-checked-active-background-color);
+}
+
+.dsn-radio__input:checked:not(:disabled):active
+  + .dsn-radio__control
+  .dsn-radio__inner-circle {
+  background-color: var(--dsn-radio-checked-active-color);
+}
+
+/* Checked + Focus */
+.dsn-radio__input:checked:focus-visible + .dsn-radio__control {
+  border-width: var(--dsn-radio-checked-focus-border-width);
+  border-color: var(--dsn-radio-checked-focus-border-color);
+  background-color: var(--dsn-radio-checked-focus-background-color);
+}
+
+.dsn-radio__input:checked:focus-visible
+  + .dsn-radio__control
+  .dsn-radio__inner-circle {
+  background-color: var(--dsn-radio-checked-focus-color);
+}
+
+/* Disabled state */
+.dsn-radio__input:disabled + .dsn-radio__control {
+  border-color: var(--dsn-radio-disabled-border-color);
+  background-color: var(--dsn-radio-disabled-background-color);
+}
+
+/* Checked + Disabled */
+.dsn-radio__input:checked:disabled + .dsn-radio__control {
+  border-color: var(--dsn-radio-checked-disabled-border-color);
+  background-color: var(--dsn-radio-checked-disabled-background-color);
+}
+
+.dsn-radio__input:checked:disabled
+  + .dsn-radio__control
+  .dsn-radio__inner-circle {
+  background-color: var(--dsn-radio-checked-disabled-color);
+  opacity: 1;
+  transform: scale(1);
+}
+
+/* Forced colors (High Contrast mode)
+   background-color wordt genegeerd — inner circle verdwijnt tegen de control achtergrond.
+   Highlight/HighlightText zijn de system colors voor geselecteerde form controls. */
+@media (forced-colors: active) {
+  .dsn-radio__control {
+    forced-color-adjust: none;
+    border-color: ButtonText;
+    background-color: Field;
+  }
+
+  .dsn-radio__input:checked + .dsn-radio__control {
+    border-color: Highlight;
+    background-color: Highlight;
+  }
+
+  .dsn-radio__input:checked + .dsn-radio__control .dsn-radio__inner-circle {
+    background-color: HighlightText;
+  }
+
+  .dsn-radio__input:checked:disabled + .dsn-radio__control {
+    border-color: GrayText;
+    background-color: GrayText;
+  }
+
+  .dsn-radio__input:checked:disabled
+    + .dsn-radio__control
+    .dsn-radio__inner-circle {
+    background-color: Field;
+  }
+
+  .dsn-radio__input:disabled + .dsn-radio__control {
+    border-color: GrayText;
+    background-color: Field;
+  }
+}
+
+/* Invalid state */
+.dsn-radio__input--invalid + .dsn-radio__control {
+  border-width: var(--dsn-radio-invalid-border-width);
+  border-color: var(--dsn-radio-invalid-border-color);
+  background-color: var(--dsn-radio-invalid-background-color);
+}
+
+.dsn-radio__input--invalid:focus-visible + .dsn-radio__control {
+  outline-color: var(--dsn-radio-invalid-border-color);
+}

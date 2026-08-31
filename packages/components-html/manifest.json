@@ -621,7 +621,7 @@
       "cssBlock": "dsn-text-input",
       "category": "form-input",
       "purpose": "Email address input with type=\"email\" browser validation; extends TextInput styles.",
-      "platforms": ["react"],
+      "platforms": ["html-css", "react"],
       "primaryProps": [
         { "name": "disabled", "type": "boolean", "default": false },
         { "name": "invalid", "type": "boolean", "default": false }
@@ -632,7 +632,7 @@
       "cssBlock": "dsn-text-input",
       "category": "form-input",
       "purpose": "Password input with a show/hide toggle button; extends TextInput styles.",
-      "platforms": ["react"],
+      "platforms": ["html-css", "react"],
       "primaryProps": [
         {
           "name": "passwordAutocomplete",
@@ -646,7 +646,7 @@
       "cssBlock": "dsn-text-input",
       "category": "form-input",
       "purpose": "Numeric text input following the GOV.UK pattern; extends TextInput styles.",
-      "platforms": ["react"],
+      "platforms": ["html-css", "react"],
       "primaryProps": [
         { "name": "allowDecimals", "type": "boolean", "default": false },
         {
@@ -661,7 +661,7 @@
       "cssBlock": "dsn-text-input",
       "category": "form-input",
       "purpose": "Telephone number input with type=\"tel\"; extends TextInput styles.",
-      "platforms": ["react"],
+      "platforms": ["html-css", "react"],
       "primaryProps": [
         { "name": "disabled", "type": "boolean", "default": false },
         { "name": "invalid", "type": "boolean", "default": false }
@@ -672,7 +672,7 @@
       "cssBlock": "dsn-text-input",
       "category": "form-input",
       "purpose": "Search input with an inline search icon and a suppressed native clear button.",
-      "platforms": ["react"],
+      "platforms": ["html-css", "react"],
       "primaryProps": [
         { "name": "disabled", "type": "boolean", "default": false }
       ]
@@ -682,7 +682,7 @@
       "cssBlock": "dsn-text-input",
       "category": "form-input",
       "purpose": "Time input with an inline icon button that opens the native time picker.",
-      "platforms": ["react"],
+      "platforms": ["html-css", "react"],
       "primaryProps": [
         { "name": "disabled", "type": "boolean", "default": false }
       ]
@@ -692,7 +692,7 @@
       "cssBlock": "dsn-text-input",
       "category": "form-input",
       "purpose": "Date input with an inline calendar icon button that opens the native date picker.",
-      "platforms": ["react"],
+      "platforms": ["html-css", "react"],
       "primaryProps": [
         { "name": "disabled", "type": "boolean", "default": false }
       ]
@@ -702,7 +702,7 @@
       "cssBlock": "dsn-text-input",
       "category": "form-input",
       "purpose": "Native select dropdown with a custom chevron icon; extends TextInput wrapper styles.",
-      "platforms": ["react"],
+      "platforms": ["html-css", "react"],
       "primaryProps": [
         { "name": "disabled", "type": "boolean", "default": false },
         { "name": "invalid", "type": "boolean", "default": false },
@@ -718,7 +718,7 @@
       "cssBlock": "dsn-date-input-group",
       "category": "form-input",
       "purpose": "Three separate day/month/year NumberInput fields; more accessible than a native date picker.",
-      "platforms": ["react"],
+      "platforms": ["html-css", "react"],
       "primaryProps": []
     },
     {
@@ -726,7 +726,7 @@
       "cssBlock": "dsn-checkbox",
       "category": "form-option",
       "purpose": "Custom styled checkbox with a visual check indicator.",
-      "platforms": ["react"],
+      "platforms": ["html-css", "react"],
       "primaryProps": [
         { "name": "checked", "type": "boolean", "default": false },
         { "name": "disabled", "type": "boolean", "default": false },
@@ -738,7 +738,7 @@
       "cssBlock": "dsn-radio",
       "category": "form-option",
       "purpose": "Custom styled radio button with an inner circle indicator.",
-      "platforms": ["react"],
+      "platforms": ["html-css", "react"],
       "primaryProps": [
         { "name": "checked", "type": "boolean", "default": false },
         { "name": "disabled", "type": "boolean", "default": false }
@@ -749,7 +749,7 @@
       "cssBlock": "dsn-option-label",
       "category": "form-option",
       "purpose": "Label element paired with a Checkbox or Radio control.",
-      "platforms": ["react"],
+      "platforms": ["html-css", "react"],
       "primaryProps": [
         { "name": "htmlFor", "type": "string", "required": true }
       ]
@@ -759,7 +759,7 @@
       "cssBlock": "dsn-checkbox-option",
       "category": "form-option",
       "purpose": "Composite of Checkbox and OptionLabel for a single labelled checkbox option.",
-      "platforms": ["react"],
+      "platforms": ["html-css", "react"],
       "primaryProps": [
         { "name": "label", "type": "string", "required": true },
         { "name": "checked", "type": "boolean", "default": false },
@@ -771,7 +771,7 @@
       "cssBlock": "dsn-radio-option",
       "category": "form-option",
       "purpose": "Composite of Radio and OptionLabel for a single labelled radio option.",
-      "platforms": ["react"],
+      "platforms": ["html-css", "react"],
       "primaryProps": [
         { "name": "label", "type": "string", "required": true },
         { "name": "checked", "type": "boolean", "default": false },
@@ -783,7 +783,7 @@
       "cssBlock": "dsn-checkbox-group",
       "category": "form-option",
       "purpose": "Container for a group of CheckboxOption items; wrap in FormFieldset for accessible labelling.",
-      "platforms": ["react"],
+      "platforms": ["html-css", "react"],
       "primaryProps": []
     },
     {
@@ -791,7 +791,7 @@
       "cssBlock": "dsn-radio-group",
       "category": "form-option",
       "purpose": "Container for a group of RadioOption items; wrap in FormFieldset for accessible labelling.",
-      "platforms": ["react"],
+      "platforms": ["html-css", "react"],
       "primaryProps": []
     },
     {
@@ -809,7 +809,7 @@
       "cssBlock": "dsn-form-field-label",
       "category": "form-field",
       "purpose": "Legend element for a fieldset group; visually identical to FormFieldLabel.",
-      "platforms": ["react"],
+      "platforms": ["html-css", "react"],
       "primaryProps": [
         { "name": "required", "type": "boolean", "default": false }
       ]
@@ -849,7 +849,7 @@
       "cssBlock": "dsn-form-field",
       "category": "form-field",
       "purpose": "Container that assembles FormFieldLabel, FormFieldDescription, FormFieldErrorMessage, FormFieldStatus, and a single form input.",
-      "platforms": ["react"],
+      "platforms": ["html-css", "react"],
       "primaryProps": [
         { "name": "label", "type": "string", "required": true },
         { "name": "invalid", "type": "boolean", "default": false },
@@ -861,7 +861,7 @@
       "cssBlock": "dsn-form-field",
       "category": "form-field",
       "purpose": "Fieldset/legend container for groups of form controls such as CheckboxGroup or RadioGroup.",
-      "platforms": ["react"],
+      "platforms": ["html-css", "react"],
       "primaryProps": [
         { "name": "legend", "type": "string", "required": true },
         { "name": "invalid", "type": "boolean", "default": false }

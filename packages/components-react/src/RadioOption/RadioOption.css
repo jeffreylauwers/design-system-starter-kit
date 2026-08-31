@@ -1,17 +1,6 @@
 /**
- * RadioOption Component Styles
- * Radio button with label - combines Radio and OptionLabel
+ * RadioOption Component Styles for React
+ * Re-exports the base RadioOption styles from components-html
  */
 
-.dsn-radio-option {
-  display: inline-flex;
-  align-items: flex-start;
-  gap: var(--dsn-radio-option-gap);
-  padding-block: var(--dsn-radio-option-padding-block);
-  cursor: pointer;
-  width: fit-content;
-}
-
-.dsn-radio-option:has(input:disabled) {
-  cursor: not-allowed;
-}
+@import '../../../components-html/src/radio-option/radio-option.css';

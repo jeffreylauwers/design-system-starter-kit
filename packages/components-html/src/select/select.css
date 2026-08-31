@@ -1,0 +1,98 @@
+/**
+ * Select Component Styles
+ * Wrapper positions the chevron-down icon absolutely at inline-end inside the select.
+ * The select uses dsn-text-input base styles with extra padding-inline-end
+ * to prevent selected text from overlapping the icon.
+ * The native dropdown arrow is hidden via appearance: none.
+ */
+
+/* The input carries dsn-text-input too, and overrides it on equal
+   specificity, so text-input.css has to come first in the bundle. */
+/* @dsn-depends-on: text-input */
+
+/* Wrapper — positions icon absolutely inside the select */
+.dsn-select-wrapper {
+  position: relative;
+  display: block;
+  inline-size: 100%;
+  max-inline-size: var(--dsn-form-control-max-inline-size);
+}
+
+/* Chevron icon — centered vertically, positioned at inline-end */
+.dsn-select__icon {
+  position: absolute;
+  inset-block-start: 50%;
+  inset-inline-end: var(--dsn-select-icon-inset-inline-end);
+  transform: translateY(-50%);
+  inline-size: var(--dsn-select-icon-size);
+  block-size: var(--dsn-select-icon-size);
+  color: var(--dsn-select-icon-color);
+  pointer-events: none;
+}
+
+/* Select — reset browser defaults, hide native arrow, add padding for custom icon */
+/* Also override :read-only styles from dsn-text-input, because browsers consider
+   <select> as :read-only (non-typeable), which incorrectly triggers those styles. */
+/* max-inline-size is set to none so the wrapper controls the width, not the select itself. */
+.dsn-select {
+  appearance: none;
+  background-color: var(--dsn-text-input-background-color);
+  border: var(--dsn-text-input-border-width) solid
+    var(--dsn-text-input-border-color);
+  color: var(--dsn-text-input-color);
+  cursor: pointer;
+  max-inline-size: none;
+  padding-inline-end: var(--dsn-select-padding-inline-end-with-icon);
+}
+
+/* Undo the :read-only styles inherited from dsn-text-input */
+.dsn-select:read-only {
+  background-color: var(--dsn-text-input-background-color);
+  border-color: var(--dsn-text-input-border-color);
+  color: var(--dsn-text-input-color);
+  cursor: pointer;
+}
+
+.dsn-select:disabled {
+  background-color: var(--dsn-text-input-disabled-background-color);
+  border-color: var(--dsn-text-input-disabled-border-color);
+  cursor: not-allowed;
+}
+
+.dsn-select[aria-invalid='true'] {
+  background-color: var(--dsn-text-input-invalid-background-color);
+  border-color: var(--dsn-text-input-invalid-border-color);
+}
+
+/* Forced colors (High Contrast mode) */
+@media (forced-colors: active) {
+  .dsn-select__icon {
+    forced-color-adjust: auto;
+    color: ButtonText;
+  }
+}
+
+/* Remove native arrow in IE/Edge */
+.dsn-select::-ms-expand {
+  display: none;
+}
+
+/* Width variants on the wrapper */
+.dsn-select-wrapper--width-xs {
+  max-inline-size: var(--dsn-form-control-width-xs);
+}
+.dsn-select-wrapper--width-sm {
+  max-inline-size: var(--dsn-form-control-width-sm);
+}
+.dsn-select-wrapper--width-md {
+  max-inline-size: var(--dsn-form-control-width-md);
+}
+.dsn-select-wrapper--width-lg {
+  max-inline-size: var(--dsn-form-control-width-lg);
+}
+.dsn-select-wrapper--width-xl {
+  max-inline-size: var(--dsn-form-control-width-xl);
+}
+.dsn-select-wrapper--width-full {
+  max-inline-size: var(--dsn-form-control-width-full);
+}

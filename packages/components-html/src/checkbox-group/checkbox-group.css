@@ -1,0 +1,10 @@
+/**
+ * CheckboxGroup Component Styles
+ * Container for multiple CheckboxOption components
+ */
+
+.dsn-checkbox-group {
+  display: flex;
+  flex-direction: column;
+  gap: var(--dsn-checkbox-group-gap);
+}
