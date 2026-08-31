@@ -48,6 +48,11 @@ import '@dsn-starter-kit/components-react/css';
 
 The order matters: core first (tokens), then components (which reference those tokens).
 
+Both imports are required. The JavaScript ships without CSS imports of its own, so
+nothing arrives on its own if you skip this step. That is a deliberate trade-off: it
+is what makes the packages loadable by Node, and therefore usable in server-side
+rendering. See step 7.
+
 ---
 
 ## 3. Use your first component
@@ -195,7 +200,8 @@ point, as described in step 2.
 
 ## Where to go next
 
-- **[Live Storybook](https://jeffreylauwers.github.io/design-system-starter-kit/)** — browse all 75 components with interactive examples and usage guidelines
+- **[Live Storybook](https://jeffreylauwers.github.io/design-system-starter-kit/)** — browse all 73 components with interactive examples and usage guidelines
 - **[Design Tokens Reference](./02-design-tokens-reference.md)** — all token values, scales, and how to use them in your own CSS
 - **[Components Reference](./03-components.md)** — component API specifications
 - **[Contributing](../CONTRIBUTING.md)** — how to add or change components
+- **[Upgrading from 2.x](./changelog.md#upgraden-van-2x-naar-300)** — the four breaking changes in 3.0.0, two of which only affect hand-written HTML/CSS

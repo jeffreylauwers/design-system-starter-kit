@@ -3473,15 +3473,29 @@ defineButton('my-custom-button');
 
 ## Component Statistics
 
-**Total Components:** 75
+**Total Components:** 73 (React)
 
 **Implementations:**
 
-- **HTML/CSS:** 75 components
-- **React:** 75 components (1661 tests total, 80 test suites)
+- **React:** 73 components, in `packages/components-react/src/`
+- **HTML/CSS:** 54 components, in `packages/components-html/src/`
 - **Web Component:** 7 components (Button, Heading, Icon, Link, OrderedList, Paragraph, UnorderedList)
 
-**Test Coverage:** 1661 tests across 80 test suites
+The gap between 73 and 54 is deliberate for 5 of them, and a known deviation for the
+other 14.
+
+Deliberate — these render another component's markup and define no CSS of their own:
+EmailInput, NumberInput, PasswordInput and TelephoneInput render `dsn-text-input`;
+FormFieldLegend leans on the shared `form-control` tokens.
+
+Deviation — these define their CSS inside `components-react` instead of in the
+HTML/CSS layer, which means the HTML/CSS layer does not ship them: Checkbox,
+CheckboxGroup, CheckboxOption, DateInput, DateInputGroup, FormField, FormFieldset,
+OptionLabel, Radio, RadioGroup, RadioOption, SearchInput, Select and TimeInput.
+For `FormField` this is visible from the outside: `components-html` exports
+`./form-field`, but the file it points at does not exist.
+
+**Test Coverage:** 1665 tests across 80 test suites
 
 ---
 
