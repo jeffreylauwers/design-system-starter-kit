@@ -1,6 +1,6 @@
 {
   "name": "@dsn-starter-kit/color-palette-generator",
-  "version": "2.0.0",
+  "version": "3.0.0",
   "private": true,
   "description": "Interactive OKLCH color palette generator for white-label themes",
   "scripts": {
