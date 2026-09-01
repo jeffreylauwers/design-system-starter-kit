@@ -1,6 +1,6 @@
 import React from 'react';
 import { classNames, FormControlWidth } from '@dsn-starter-kit/core';
-import '../TextInput/TextInput.css';
+import './TelephoneInput.css';
 
 export interface TelephoneInputProps extends Omit<
   React.InputHTMLAttributes<HTMLInputElement>,

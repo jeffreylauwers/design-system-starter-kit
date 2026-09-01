@@ -1,6 +1,6 @@
 import React from 'react';
 import { classNames, FormControlWidth } from '@dsn-starter-kit/core';
-import '../TextInput/TextInput.css';
+import './PasswordInput.css';
 
 export type PasswordAutocomplete = 'current-password' | 'new-password' | 'off';
 

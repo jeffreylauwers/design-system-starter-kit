@@ -1,6 +1,6 @@
 import React from 'react';
 import { classNames, FormControlWidth } from '@dsn-starter-kit/core';
-import '../TextInput/TextInput.css';
+import './NumberInput.css';
 
 export interface NumberInputProps extends Omit<
   React.InputHTMLAttributes<HTMLInputElement>,
