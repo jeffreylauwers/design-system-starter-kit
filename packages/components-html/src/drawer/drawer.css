@@ -51,9 +51,16 @@
   /* Altijd flex-direction column, ook tijdens sluitanimatie */
   flex-direction: column;
 
-  /* Animatietransitie (ook voor sluitanimatie) */
-  opacity: 1;
-  transform: translateX(0);
+  /*
+   * Animatietransitie (openen én sluiten).
+   *
+   * De basis-selector houdt de *gesloten* waarden. Bij het sluiten valt
+   * `[open]` weg en schuift de drawer dus terug naar buiten beeld, terwijl
+   * `display`/`overlay` via allow-discrete tot het einde van de transitie
+   * blijven staan. De uit-transform staat per zijde bij de side-modifier,
+   * omdat die per richting verschilt.
+   */
+  opacity: 0;
   transition:
     opacity var(--dsn-transition-duration-normal)
       var(--dsn-transition-easing-default),
@@ -72,6 +79,15 @@
  */
 .dsn-drawer[open] {
   display: flex;
+
+  /* Zichtbare eindwaarden van de openingsanimatie (beide zijden) */
+  opacity: 1;
+  transform: translateX(0);
+}
+
+/* Backdrop is zichtbaar zolang de drawer open is; fade't uit bij sluiten */
+.dsn-drawer[open]::backdrop {
+  opacity: 1;
 }
 
 /* Animatie uitschakelen bij prefers-reduced-motion */
@@ -90,6 +106,9 @@
   /* Alleen de rand aan de kant van de pagina (links) */
   border-inline-start: var(--dsn-drawer-border-width) solid
     var(--dsn-drawer-border-color);
+
+  /* Gesloten positie: buiten beeld rechts (start én eind van de animatie) */
+  transform: translateX(100%);
 }
 
 /* Openingsanimatie rechts: start buiten beeld rechts */
@@ -104,7 +123,9 @@
 .dsn-drawer--side-right::backdrop {
   background: var(--dsn-backdrop-background, rgba(0, 0, 0, 0.5));
   backdrop-filter: var(--dsn-backdrop-blur, blur(2px));
-  opacity: 1;
+
+  /* Gesloten waarde: de backdrop fade't ook weer uit bij sluiten */
+  opacity: 0;
   transition:
     opacity var(--dsn-transition-duration-normal)
       var(--dsn-transition-easing-default),
@@ -135,6 +156,9 @@
   /* Alleen de rand aan de kant van de pagina (rechts) */
   border-inline-end: var(--dsn-drawer-border-width) solid
     var(--dsn-drawer-border-color);
+
+  /* Gesloten positie: buiten beeld links (start én eind van de animatie) */
+  transform: translateX(-100%);
 }
 
 /* Openingsanimatie links: start buiten beeld links */
@@ -149,7 +173,9 @@
 .dsn-drawer--side-left::backdrop {
   background: var(--dsn-backdrop-background, rgba(0, 0, 0, 0.5));
   backdrop-filter: var(--dsn-backdrop-blur, blur(2px));
-  opacity: 1;
+
+  /* Gesloten waarde: de backdrop fade't ook weer uit bij sluiten */
+  opacity: 0;
   transition:
     opacity var(--dsn-transition-duration-normal)
       var(--dsn-transition-easing-default),

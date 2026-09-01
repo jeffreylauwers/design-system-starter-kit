@@ -10,6 +10,18 @@ All notable changes to this project are documented in this file.
 
 Nog niet gepubliceerde wijzigingen. Schrijf nieuwe changelog-entries hieronder; bij de volgende release wordt deze kop gepromoveerd naar het definitieve versienummer.
 
+### Drawer, ModalDialog en Popover animeren nu ook bij sluiten
+
+De drie overlays hadden alle machinerie voor een sluitanimatie al staan: een `transition` met `allow-discrete` op `display` en `overlay`, zodat het element tijdens het uitanimeren in de top-layer blijft. Alleen stonden de _zichtbare_ waarden (`opacity: 1`, `transform` op de neutrale stand) op de basis-selector in plaats van op de open-staat. Bij het sluiten animeerde het element dus van zichtbaar naar zichtbaar, en verdween het abrupt zodra `display` omklapte.
+
+De waarden staan nu volgens het gebruikelijke patroon: de gesloten waarden op de basis-selector, de zichtbare waarden op `[open]` (Drawer, ModalDialog) respectievelijk `:popover-open` (Popover). De bestaande `@starting-style`-regels voor de openingsanimatie blijven nodig en zijn ongewijzigd, want een element dat uit `display: none` komt heeft geen eerdere stijl om vanaf te animeren.
+
+Bij de Drawer verschilt de uit-transform per zijde, dus die staat op de side-modifiers: `translateX(100%)` voor `--side-right` en `translateX(-100%)` voor `--side-left`. De `::backdrop` van beide `<dialog>`-componenten fade't mee uit; die had dezelfde omkering nodig.
+
+De Popover kent daarnaast een CSS-only modus zonder het `popover`-attribuut, waarin `:popover-open` nooit matcht. Voor dat geval zet `.dsn-popover:not([popover])` de zichtbare waarden expliciet, zodat die modus blijft werken zoals gedocumenteerd.
+
+Geverifieerd in Chrome via de Web Animations API: bij het sluiten ontstaan nu transities voor `opacity` en `transform` naast die voor `display` en `overlay`, en halverwege de transitie staat `display` nog op `flex` terwijl `opacity` interpoleert. `prefers-reduced-motion: reduce` schakelt de transitie onveranderd volledig uit, dus daar sluit het venster direct.
+
 ### CI controleert nu ook de types van Storybook
 
 `packages/storybook` had geen `type-check`-script. De root-`type-check` is `pnpm -r type-check`, en `pnpm -r` slaat packages zonder dat script stilzwijgend over. Gevolg: de 95 TypeScript-bestanden in `packages/storybook/src` (alle stories en docs) werden door geen enkele CI-stap gecontroleerd.
