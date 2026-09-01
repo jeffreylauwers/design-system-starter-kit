@@ -1,4 +1,7 @@
 /**
- * TelephoneInput Component Styles
- * Uses dsn-text-input styles from TextInput.css — no additional styles needed
+ * TelephoneInput Component Styles for React
+ * Re-exports the base TextInput styles from components-html: TelephoneInput
+ * renders the same .dsn-text-input class
  */
+
+@import '../../../components-html/src/text-input/text-input.css';

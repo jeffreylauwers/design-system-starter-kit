@@ -1,4 +1,7 @@
 /**
- * EmailInput Component Styles
- * Uses dsn-text-input styles from TextInput.css — no additional styles needed
+ * EmailInput Component Styles for React
+ * Re-exports the base TextInput styles from components-html: EmailInput
+ * renders the same .dsn-text-input class
  */
+
+@import '../../../components-html/src/text-input/text-input.css';
