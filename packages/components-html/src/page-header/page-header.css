@@ -306,16 +306,90 @@
    Zoekpaneel (standaard verborgen via [hidden])
    ============================================================================= */
 
+/*
+ * Uitklapanimatie — zelfde patroon als Drawer, ModalDialog en Popover:
+ * de basis-selector houdt de *gesloten* waarden, `:not([hidden])` de zichtbare,
+ * en `display` transitioneert met allow-discrete zodat het paneel zichtbaar
+ * blijft terwijl het dichtklapt.
+ *
+ * `display` staat uitsluitend op de open-staat. Zou het op de basis-selector
+ * staan, dan wint die van de UA-regel `[hidden] { display: none }` (auteurs-
+ * origin verslaat UA-origin) en zou het paneel altijd zichtbaar zijn.
+ *
+ * De hoogte animeert via grid-template-rows van `0fr` naar `1fr`. Bij `0fr` is
+ * de rij nul hoog en steekt het item erbuiten; `overflow: hidden` klipt dat weg,
+ * waardoor het paneel zelf geen ruimte meer inneemt en de pagina-inhoud mee
+ * omhoog schuift.
+ *
+ * De padding-block animeert mee van `0` naar zijn token-waarde. Padding krimpt
+ * namelijk niet onder zijn eigen hoogte, dus zonder die transitie blijft er bij
+ * `0fr` een strook ter hoogte van de padding staan. Het paneel klipt op zijn
+ * padding-box, dus de focus-ring van het zoekveld valt binnen die padding en
+ * wordt niet afgesneden.
+ */
+
 .dsn-page-header__search-panel {
   background-color: var(--dsn-page-header-search-panel-background-color);
+  overflow: hidden;
+
+  /* Gesloten waarden */
+  grid-template-rows: 0fr;
+  padding-block: 0;
+  opacity: 0;
+
+  transition:
+    grid-template-rows var(--dsn-transition-duration-normal)
+      var(--dsn-transition-easing-default),
+    padding-block var(--dsn-transition-duration-normal)
+      var(--dsn-transition-easing-default),
+    opacity var(--dsn-transition-duration-normal)
+      var(--dsn-transition-easing-default),
+    display var(--dsn-transition-duration-normal)
+      var(--dsn-transition-easing-default) allow-discrete;
+}
+
+/* Zichtbare eindwaarden van de uitklapanimatie */
+.dsn-page-header__search-panel:not([hidden]) {
+  display: grid;
+  grid-template-rows: 1fr;
   padding-block: var(--dsn-page-header-search-panel-padding-block);
+  opacity: 1;
+}
+
+/* Openingsanimatie: startwaarden voor de zichtbare staat */
+@starting-style {
+  .dsn-page-header__search-panel:not([hidden]) {
+    grid-template-rows: 0fr;
+    padding-block: 0;
+    opacity: 0;
+  }
+}
+
+/* Animatie uitschakelen bij prefers-reduced-motion */
+@media (prefers-reduced-motion: reduce) {
+  .dsn-page-header__search-panel {
+    transition: none;
+  }
 }
 
 .dsn-page-header__search-inner {
   display: flex;
   gap: var(--dsn-space-inline-md);
   align-items: flex-start;
+
+  /* Nodig om onder de contenthoogte te kunnen krimpen bij grid-template-rows: 0fr */
+  min-block-size: 0;
+
   padding-inline: var(--dsn-page-header-search-panel-padding-inline);
+
+  /*
+   * inline-size: 100% is nodig omdat het paneel een grid-container is: een
+   * grid-item met `margin-inline: auto` krijgt fit-content-breedte in plaats van
+   * de volle breedte, waardoor het zoekveld smaller zou worden. Met een
+   * expliciete breedte vullen we de rij en centreren de auto-marges pas zodra
+   * max-inline-size begrenst — hetzelfde gedrag als in de block-layout.
+   */
+  inline-size: 100%;
   max-inline-size: var(--dsn-page-max-inline-size);
   margin-inline: auto;
 }

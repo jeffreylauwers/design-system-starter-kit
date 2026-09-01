@@ -262,6 +262,8 @@ De inverse modifier overschrijft via CSS custom properties:
 
 Het zoekpaneel verschijnt direct onder de header-binnenbalk. Het paneel bevat een `SearchInput` en een zoekknop:
 
+Het paneel klapt open en dicht met een CSS-transitie: `grid-template-rows` gaat van `0fr` naar `1fr`, met `padding-block` en `opacity` mee. `display` transitioneert met `allow-discrete`, zodat het paneel zichtbaar blijft terwijl het dichtklapt in plaats van meteen te verdwijnen. Er is geen JavaScript voor nodig: het `hidden`-attribuut blijft de enige schakelaar. Bij `prefers-reduced-motion: reduce` verschijnt en verdwijnt het paneel direct.
+
 ```html
 <div class="dsn-page-header__search-panel" id="search-panel" hidden>
   <div class="dsn-page-header__search-inner">

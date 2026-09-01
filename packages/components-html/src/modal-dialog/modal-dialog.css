@@ -48,9 +48,17 @@
   /* Altijd flex-direction column, ook tijdens sluitanimatie */
   flex-direction: column;
 
-  /* Animatietransitie (ook voor sluitanimatie) */
-  opacity: 1;
-  transform: translateY(0) scale(1);
+  /*
+   * Animatietransitie (openen én sluiten).
+   *
+   * De basis-selector houdt de *gesloten* waarden. Bij het sluiten valt
+   * `[open]` weg en animeert de dialog dus terug naar deze waarden, terwijl
+   * `display`/`overlay` via allow-discrete tot het einde van de transitie
+   * blijven staan. Zonder deze gesloten waarden op de basis-selector
+   * verdwijnt de dialog abrupt.
+   */
+  opacity: 0;
+  transform: translateY(-0.5rem) scale(0.98);
   transition:
     opacity var(--dsn-transition-duration-normal)
       var(--dsn-transition-easing-default),
@@ -69,6 +77,10 @@
  */
 .dsn-modal-dialog[open] {
   display: flex;
+
+  /* Zichtbare eindwaarden van de openingsanimatie */
+  opacity: 1;
+  transform: translateY(0) scale(1);
 }
 
 /* Openingsanimatie: startwaarden voor de [open] staat */
@@ -90,7 +102,9 @@
 .dsn-modal-dialog::backdrop {
   background: var(--dsn-backdrop-background, rgba(0, 0, 0, 0.5));
   backdrop-filter: var(--dsn-backdrop-blur, blur(2px));
-  opacity: 1;
+
+  /* Gesloten waarde: de backdrop fade't ook weer uit bij sluiten */
+  opacity: 0;
   transition:
     opacity var(--dsn-transition-duration-normal)
       var(--dsn-transition-easing-default),
@@ -98,6 +112,10 @@
       var(--dsn-transition-easing-default) allow-discrete,
     overlay var(--dsn-transition-duration-normal)
       var(--dsn-transition-easing-default) allow-discrete;
+}
+
+.dsn-modal-dialog[open]::backdrop {
+  opacity: 1;
 }
 
 @starting-style {

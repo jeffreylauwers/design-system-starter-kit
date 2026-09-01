@@ -99,9 +99,17 @@
    */
   flex-direction: column;
 
-  /* Animatietransitie (ook voor sluitanimatie via allow-discrete) */
-  opacity: 1;
-  transform: scale(1) translateY(0);
+  /*
+   * Animatietransitie (openen én sluiten).
+   *
+   * De basis-selector houdt de *gesloten* waarden. Bij het sluiten valt
+   * `:popover-open` weg en animeert de popover dus terug naar deze waarden,
+   * terwijl `display`/`overlay` via allow-discrete tot het einde van de
+   * transitie blijven staan. Zonder deze gesloten waarden op de basis-selector
+   * verdwijnt de popover abrupt.
+   */
+  opacity: 0;
+  transform: scale(0.97) translateY(-0.25rem);
   transition:
     opacity var(--dsn-transition-duration-normal)
       var(--dsn-transition-easing-default),
@@ -111,6 +119,16 @@
       var(--dsn-transition-easing-default) allow-discrete,
     overlay var(--dsn-transition-duration-normal)
       var(--dsn-transition-easing-default) allow-discrete;
+}
+
+/*
+ * CSS-only fallback (zonder het popover-attribuut).
+ * Er is dan geen :popover-open staat die de zichtbare waarden zet, dus zonder
+ * deze regel zou de gesloten staat van de basis-selector blijven staan.
+ */
+.dsn-popover:not([popover]) {
+  opacity: 1;
+  transform: scale(1) translateY(0);
 }
 
 /*
@@ -129,6 +147,10 @@
   flex-direction: column;
   position: fixed;
   z-index: var(--dsn-popover-z-index);
+
+  /* Zichtbare eindwaarden van de openingsanimatie */
+  opacity: 1;
+  transform: scale(1) translateY(0);
 }
 
 /* Openingsanimatie: startwaarden voor de :popover-open staat */
