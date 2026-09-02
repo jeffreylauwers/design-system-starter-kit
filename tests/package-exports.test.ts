@@ -102,6 +102,7 @@ describe('package exports: stylesheets', () => {
 
     describe(name, () => {
       const files = (json.files ?? []) as string[];
+      const distDir = path.join(dir, 'dist');
 
       it.each(styleEntries.map((entry) => [entry.subpath, entry] as const))(
         '%s heeft een types-conditie die naar een bestaande stub wijst',
@@ -127,6 +128,22 @@ describe('package exports: stylesheets', () => {
           const types = (entry.conditions?.types ?? '') as string;
           expect(isPublished(files, types)).toBe(true);
           expect(isPublished(files, entry.target)).toBe(true);
+        }
+      );
+
+      it.each(styleEntries.map((entry) => [entry.subpath, entry] as const))(
+        '%s wijst naar een bestand dat de build daadwerkelijk maakt',
+        (_subpath, entry) => {
+          // Alleen zinvol na een build: `dist/` bestaat niet op een verse
+          // checkout. Zonder deze check is een export naar een bestand dat de
+          // build nooit maakt onzichtbaar tot een consumer erover valt. Zo was
+          // `./css/dark-scoped` in 3.2.0 en 3.3.0 een dood pad: het viel netjes
+          // binnen `files`, alleen bestond het bestand niet.
+          const target = path.join(dir, entry.target);
+          if (entry.target.startsWith('./dist/') && !existsSync(distDir)) {
+            return;
+          }
+          expect(existsSync(target)).toBe(true);
         }
       );
 

@@ -12,6 +12,38 @@ Nog niet gepubliceerde wijzigingen. Schrijf nieuwe changelog-entries hieronder; 
 
 ---
 
+## Version 3.4.0 (September 2, 2026)
+
+Deze release maakt het omschakelen van thema, mode en dichtheid tijdens runtime werkend. Dat was het al bijna: de scoped token-CSS bestond, werd meegepubliceerd, en de klassen ervoor stonden in de build. Alleen ontbraken de Start-varianten volledig, konden zes van de bestanden niet geïmporteerd worden, en beschreef de handleiding een klasse die nergens bestaat. Elk van die drie gaten was op zichzelf genoeg om de functie onbruikbaar te maken.
+
+Zes nieuwe exportpaden, nul verwijderde. `css/dark-scoped` blijft bestaan en wijst nu eindelijk naar een bestand dat er ook is. Geen breaking changes.
+
+### De dark mode van het Start-thema wordt nu ook gebouwd
+
+`@dsn-starter-kit/design-tokens` exporteerde `./css/dark-scoped` naar `dist/css/variables-dark-scoped.css`, maar dat bestand zat niet in de tarball. Geverifieerd tegen npm: het ontbrak in 3.2.0 én 3.3.0, dus `import '@dsn-starter-kit/design-tokens/css/dark-scoped'` faalde met een module-not-found. Gevonden bij de release-verificatie van v3.3.0.
+
+De oorzaak zat een laag dieper. `createBackwardCompatibilityAliases()` kopieert dat bestand uit `dist/css/scoped/start-dark.css`, achter een `fs.existsSync`-guard, en die bron werd nooit gebouwd: `scopedConfigs` bevatte alleen de density-configs en de twee wireframe-varianten. De guard sloeg stil over, waarna de build het bestand alsnog in zijn eindsamenvatting opsomde.
+
+`scopedConfigs` bevat nu ook `start-light-scoped` en `start-dark-scoped`. De comment erboven suggereerde dat alleen wireframe zou werken omdat het "simple value aliases" gebruikt, maar dat is niet zo: beide thema's hebben vergelijkbare referenties en de Start-configs bouwen zonder klacht.
+
+De light-variant is geen overbodige symmetrie. De basis-CSS zet Start light op `:root`, dus voor het schakelen van de body volstaat dat. Maar bij geneste containers, het side-by-side vergelijken van thema's waar de docs het over hebben, erft een Start-container binnen een Wireframe-ouder de Wireframe-tokens en is er niets dat ze terugzet. `scoped/start-light.css` is precies die reset.
+
+**Zes scoped bestanden zijn nu ook bereikbaar.** Ze werden al meegepubliceerd binnen `dist`, maar zonder entry in de `exports`-map kon niemand ze importeren: `css/scoped/start-light`, `css/scoped/start-dark`, `css/scoped/wireframe-light`, `css/scoped/wireframe-dark`, `css/scoped/density-default` en `css/scoped/density-information-dense`. `css/dark-scoped` blijft bestaan als alias naar dezelfde inhoud als `css/scoped/start-dark`.
+
+Geverifieerd in Chrome tegen de gebouwde bestanden, met computed styles in een schoon document. Baseline zonder klassen geeft `#fcfcfc`; `dsn-theme-start dsn-mode-dark` geeft `#111111`, exact de `bg-document` uit `themes/start/colors-dark.json`; wireframe light en dark geven wit en zwart. En de geneste gevallen kloppen: een Start-container binnen een Wireframe-body valt terug op de Start-waarden terwijl de ouder wireframe blijft.
+
+### De theming-documentatie beschreef een klasse die niet bestaat
+
+`docs/00-getting-started.md` schreef `dsn-theme-start--dark` voor om dark mode aan te zetten. Die klasse komt in geen enkel CSS-bestand voor; de conventie die de token-build en de Storybook-loader daadwerkelijk gebruiken is `dsn-theme-{theme}` naast `dsn-mode-{mode}`, met `dsn-density-{default,dense}` voor dichtheid. Wie de docs volgde kreeg dus nooit dark mode.
+
+Sectie 4 beschrijft nu beide routes: schakelen tijdens runtime via de scoped bestanden plus die klassen, en vastzetten tijdens build-time door in plaats daarvan `css/dark` te importeren.
+
+### De contracttest controleert nu ook of het doelbestand bestaat
+
+`tests/package-exports.test.ts` controleerde of een exportpad binnen `files` viel, maar niet of er ook echt een bestand staat. Daardoor ontsnapte `./css/dark-scoped`: het pad viel keurig binnen `dist`, alleen bestond het bestand niet. De test kijkt nu ook op schijf, en slaat `dist`-paden over wanneer er nog geen build is gedraaid. In CI draait `pnpm build` vóór `pnpm test`, dus daar telt de check altijd mee.
+
+---
+
 ## Version 3.3.0 (September 2, 2026)
 
 Deze release repareert de `exports`-maps van de gepubliceerde packages. Drie problemen die allemaal onzichtbaar zijn binnen de monorepo, omdat Storybook en vitest de bronbestanden gebruiken en niet het gepubliceerde artifact: CSS- en SCSS-exports zonder `types`, `"sideEffects": false` waarmee webpack de stylesheets weggooide, en de `manifest`-export van `components-html` die niet naar zijn eigen declaraties wees.

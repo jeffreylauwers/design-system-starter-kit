@@ -88,33 +88,61 @@ That is all you need. No additional configuration, no theme provider, no CSS mod
 
 ## 4. Theming
 
-The system ships with two themes: **Start** (blue accent) and **Wireframe** (monochrome). Light and dark modes are both included.
+The system ships with two themes: **Start** (blue accent) and **Wireframe** (monochrome), each in light and dark mode.
 
-Apply a theme by adding a class to your root element:
+`@dsn-starter-kit/design-tokens/css` gives you Start light on `:root`. That is the baseline, and if it is the only theme you need you are already done.
+
+### Switching at runtime
+
+To switch theme or mode without swapping stylesheets, import the scoped token files you need. Each one applies its tokens under a class selector, so you switch by changing classes:
+
+```tsx
+import '@dsn-starter-kit/design-tokens/css'; // baseline: Start light
+import '@dsn-starter-kit/design-tokens/css/scoped/start-dark';
+import '@dsn-starter-kit/design-tokens/css/scoped/wireframe-light';
+import '@dsn-starter-kit/design-tokens/css/scoped/wireframe-dark';
+```
+
+The classes are `dsn-theme-{theme}` and `dsn-mode-{mode}`:
 
 ```html
-<!-- Start theme, light mode (default) -->
-<body class="dsn-theme-start">
+<!-- Start theme, light mode: the baseline, no classes required -->
+<body>
   ...
 </body>
 
 <!-- Start theme, dark mode -->
-<body class="dsn-theme-start dsn-theme-start--dark">
+<body class="dsn-theme-start dsn-mode-dark">
   ...
 </body>
 
-<!-- Wireframe theme, light mode -->
-<body class="dsn-theme-wireframe">
+<!-- Wireframe theme, dark mode -->
+<body class="dsn-theme-wireframe dsn-mode-dark">
   ...
 </body>
 ```
 
-The theme class can be set on any container, not just `<body>` — useful for side-by-side theme previews.
-
 To toggle dark mode at runtime:
 
 ```tsx
-document.body.classList.toggle('dsn-theme-start--dark');
+document.body.classList.add('dsn-theme-start');
+document.body.classList.toggle('dsn-mode-dark');
+```
+
+The classes can be set on any container, not just `<body>`, which is what makes side-by-side theme previews possible. Import `css/scoped/start-light` as well if you nest a Start container inside a Wireframe one: without it, the Wireframe tokens are inherited and the nested container keeps the wrong colors.
+
+Density works the same way, with `dsn-density-default` and `dsn-density-dense`:
+
+```tsx
+import '@dsn-starter-kit/design-tokens/css/scoped/density-information-dense';
+```
+
+### Switching at build time
+
+If the theme is fixed for your application, import that one stylesheet instead and skip the classes entirely. `css/dark` is Start dark on `:root`:
+
+```tsx
+import '@dsn-starter-kit/design-tokens/css/dark';
 ```
 
 ---

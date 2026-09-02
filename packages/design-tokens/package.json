@@ -1,6 +1,6 @@
 {
   "name": "@dsn-starter-kit/design-tokens",
-  "version": "3.3.0",
+  "version": "3.4.0",
   "description": "Design tokens for the design system",
   "type": "module",
   "main": "dist/js/tokens.cjs",
@@ -54,6 +54,30 @@
     "./css/scoped/wireframe-hero-image-light": {
       "types": "./css.d.ts",
       "default": "./dist/css/scoped/wireframe-light-hero-image.css"
+    },
+    "./css/scoped/start-light": {
+      "types": "./css.d.ts",
+      "default": "./dist/css/scoped/start-light.css"
+    },
+    "./css/scoped/start-dark": {
+      "types": "./css.d.ts",
+      "default": "./dist/css/scoped/start-dark.css"
+    },
+    "./css/scoped/wireframe-light": {
+      "types": "./css.d.ts",
+      "default": "./dist/css/scoped/wireframe-light.css"
+    },
+    "./css/scoped/wireframe-dark": {
+      "types": "./css.d.ts",
+      "default": "./dist/css/scoped/wireframe-dark.css"
+    },
+    "./css/scoped/density-default": {
+      "types": "./css.d.ts",
+      "default": "./dist/css/scoped/density-default.css"
+    },
+    "./css/scoped/density-information-dense": {
+      "types": "./css.d.ts",
+      "default": "./dist/css/scoped/density-information-dense.css"
     },
     "./package.json": "./package.json"
   },
