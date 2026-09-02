@@ -53,6 +53,10 @@ nothing arrives on its own if you skip this step. That is a deliberate trade-off
 is what makes the packages loadable by Node, and therefore usable in server-side
 rendering. See step 7.
 
+These imports type-check out of the box, including with
+`noUncheckedSideEffectImports` enabled: every CSS and SCSS export carries a `types`
+condition. You do not need a local `declare module '@dsn-starter-kit/core/css'`.
+
 ---
 
 ## 3. Use your first component

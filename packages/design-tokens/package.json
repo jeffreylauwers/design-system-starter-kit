@@ -27,18 +27,43 @@
         "default": "./dist/js/tokens-dark.cjs"
       }
     },
-    "./css": "./dist/css/variables.css",
-    "./css/dark": "./dist/css/variables-dark.css",
-    "./css/dark-scoped": "./dist/css/variables-dark-scoped.css",
-    "./scss": "./dist/scss/_variables.scss",
-    "./scss/dark": "./dist/scss/_variables-dark.scss",
-    "./css/scoped/start-hero-image-light": "./dist/css/scoped/start-light-hero-image.css",
-    "./css/scoped/wireframe-hero-image-light": "./dist/css/scoped/wireframe-light-hero-image.css",
+    "./css": {
+      "types": "./css.d.ts",
+      "default": "./dist/css/variables.css"
+    },
+    "./css/dark": {
+      "types": "./css.d.ts",
+      "default": "./dist/css/variables-dark.css"
+    },
+    "./css/dark-scoped": {
+      "types": "./css.d.ts",
+      "default": "./dist/css/variables-dark-scoped.css"
+    },
+    "./scss": {
+      "types": "./css.d.ts",
+      "default": "./dist/scss/_variables.scss"
+    },
+    "./scss/dark": {
+      "types": "./css.d.ts",
+      "default": "./dist/scss/_variables-dark.scss"
+    },
+    "./css/scoped/start-hero-image-light": {
+      "types": "./css.d.ts",
+      "default": "./dist/css/scoped/start-light-hero-image.css"
+    },
+    "./css/scoped/wireframe-hero-image-light": {
+      "types": "./css.d.ts",
+      "default": "./dist/css/scoped/wireframe-light-hero-image.css"
+    },
     "./package.json": "./package.json"
   },
-  "sideEffects": false,
+  "sideEffects": [
+    "**/*.css",
+    "**/*.scss"
+  ],
   "files": [
-    "dist"
+    "dist",
+    "css.d.ts"
   ],
   "scripts": {
     "build": "node src/config/build.js && tsdown",
