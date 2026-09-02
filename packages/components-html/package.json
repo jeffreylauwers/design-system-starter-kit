@@ -1,85 +1,292 @@
 {
   "name": "@dsn-starter-kit/components-html",
-  "version": "3.2.0",
+  "version": "3.3.0",
   "description": "Pure HTML/CSS components for the design system",
   "style": "dist/components.css",
   "main": "dist/components.css",
   "exports": {
-    ".": "./dist/components.css",
+    ".": {
+      "types": "./css.d.ts",
+      "default": "./dist/components.css"
+    },
     "./manifest": {
       "types": "./manifest.d.ts",
       "default": "./manifest.json"
     },
     "./manifest-schema": "./manifest-schema.json",
     "./assets/*": "./assets/*",
-    "./action-group": "./src/action-group/action-group.css",
-    "./alert": "./src/alert/alert.css",
-    "./backdrop": "./src/backdrop/backdrop.css",
-    "./body": "./src/body/body.css",
-    "./breadcrumb-navigation": "./src/breadcrumb-navigation/breadcrumb-navigation.css",
-    "./breakout-section": "./src/breakout-section/breakout-section.css",
-    "./button": "./src/button/button.css",
-    "./button-link": "./src/button-link/button-link.css",
-    "./card": "./src/card/card.css",
-    "./checkbox": "./src/checkbox/checkbox.css",
-    "./checkbox-group": "./src/checkbox-group/checkbox-group.css",
-    "./checkbox-option": "./src/checkbox-option/checkbox-option.css",
-    "./container": "./src/container/container.css",
-    "./date-input": "./src/date-input/date-input.css",
-    "./date-input-group": "./src/date-input-group/date-input-group.css",
-    "./details": "./src/details/details.css",
-    "./dot-badge": "./src/dot-badge/dot-badge.css",
-    "./drawer": "./src/drawer/drawer.css",
-    "./file": "./src/file/file.css",
-    "./file-input": "./src/file-input/file-input.css",
-    "./form-field": "./src/form-field/form-field.css",
-    "./form-field-description": "./src/form-field-description/form-field-description.css",
-    "./form-field-error-message": "./src/form-field-error-message/form-field-error-message.css",
-    "./form-field-label": "./src/form-field-label/form-field-label.css",
-    "./form-field-status": "./src/form-field-status/form-field-status.css",
-    "./form-fieldset": "./src/form-fieldset/form-fieldset.css",
-    "./grid": "./src/grid/grid.css",
-    "./heading": "./src/heading/heading.css",
-    "./heading-group": "./src/heading-group/heading-group.css",
-    "./option-label": "./src/option-label/option-label.css",
-    "./pre-heading": "./src/pre-heading/pre-heading.css",
-    "./hero": "./src/hero/hero.css",
-    "./icon": "./src/icon/icon.css",
-    "./icon-list": "./src/icon-list/icon-list.css",
-    "./image": "./src/image/image.css",
-    "./link": "./src/link/link.css",
-    "./link-button": "./src/link-button/link-button.css",
-    "./logo": "./src/logo/logo.css",
-    "./menu": "./src/menu/menu.css",
-    "./menu-button": "./src/menu-button/menu-button.css",
-    "./menu-link": "./src/menu-link/menu-link.css",
-    "./modal-dialog": "./src/modal-dialog/modal-dialog.css",
-    "./note": "./src/note/note.css",
-    "./number-badge": "./src/number-badge/number-badge.css",
-    "./ordered-list": "./src/ordered-list/ordered-list.css",
-    "./page-body": "./src/page-body/page-body.css",
-    "./page-footer": "./src/page-footer/page-footer.css",
-    "./page-header": "./src/page-header/page-header.css",
-    "./page-layout": "./src/page-layout/page-layout.css",
-    "./paragraph": "./src/paragraph/paragraph.css",
-    "./popover": "./src/popover/popover.css",
-    "./progress-bar": "./src/progress-bar/progress-bar.css",
-    "./radio": "./src/radio/radio.css",
-    "./radio-group": "./src/radio-group/radio-group.css",
-    "./radio-option": "./src/radio-option/radio-option.css",
-    "./search-input": "./src/search-input/search-input.css",
-    "./select": "./src/select/select.css",
-    "./skip-link": "./src/skip-link/skip-link.css",
-    "./spinner": "./src/spinner/spinner.css",
-    "./stack": "./src/stack/stack.css",
-    "./status-badge": "./src/status-badge/status-badge.css",
-    "./summary-list": "./src/summary-list/summary-list.css",
-    "./table": "./src/table/table.css",
-    "./table-of-contents": "./src/table-of-contents/table-of-contents.css",
-    "./text-area": "./src/text-area/text-area.css",
-    "./text-input": "./src/text-input/text-input.css",
-    "./time-input": "./src/time-input/time-input.css",
-    "./unordered-list": "./src/unordered-list/unordered-list.css",
+    "./action-group": {
+      "types": "./css.d.ts",
+      "default": "./src/action-group/action-group.css"
+    },
+    "./alert": {
+      "types": "./css.d.ts",
+      "default": "./src/alert/alert.css"
+    },
+    "./backdrop": {
+      "types": "./css.d.ts",
+      "default": "./src/backdrop/backdrop.css"
+    },
+    "./body": {
+      "types": "./css.d.ts",
+      "default": "./src/body/body.css"
+    },
+    "./breadcrumb-navigation": {
+      "types": "./css.d.ts",
+      "default": "./src/breadcrumb-navigation/breadcrumb-navigation.css"
+    },
+    "./breakout-section": {
+      "types": "./css.d.ts",
+      "default": "./src/breakout-section/breakout-section.css"
+    },
+    "./button": {
+      "types": "./css.d.ts",
+      "default": "./src/button/button.css"
+    },
+    "./button-link": {
+      "types": "./css.d.ts",
+      "default": "./src/button-link/button-link.css"
+    },
+    "./card": {
+      "types": "./css.d.ts",
+      "default": "./src/card/card.css"
+    },
+    "./checkbox": {
+      "types": "./css.d.ts",
+      "default": "./src/checkbox/checkbox.css"
+    },
+    "./checkbox-group": {
+      "types": "./css.d.ts",
+      "default": "./src/checkbox-group/checkbox-group.css"
+    },
+    "./checkbox-option": {
+      "types": "./css.d.ts",
+      "default": "./src/checkbox-option/checkbox-option.css"
+    },
+    "./container": {
+      "types": "./css.d.ts",
+      "default": "./src/container/container.css"
+    },
+    "./date-input": {
+      "types": "./css.d.ts",
+      "default": "./src/date-input/date-input.css"
+    },
+    "./date-input-group": {
+      "types": "./css.d.ts",
+      "default": "./src/date-input-group/date-input-group.css"
+    },
+    "./details": {
+      "types": "./css.d.ts",
+      "default": "./src/details/details.css"
+    },
+    "./dot-badge": {
+      "types": "./css.d.ts",
+      "default": "./src/dot-badge/dot-badge.css"
+    },
+    "./drawer": {
+      "types": "./css.d.ts",
+      "default": "./src/drawer/drawer.css"
+    },
+    "./file": {
+      "types": "./css.d.ts",
+      "default": "./src/file/file.css"
+    },
+    "./file-input": {
+      "types": "./css.d.ts",
+      "default": "./src/file-input/file-input.css"
+    },
+    "./form-field": {
+      "types": "./css.d.ts",
+      "default": "./src/form-field/form-field.css"
+    },
+    "./form-field-description": {
+      "types": "./css.d.ts",
+      "default": "./src/form-field-description/form-field-description.css"
+    },
+    "./form-field-error-message": {
+      "types": "./css.d.ts",
+      "default": "./src/form-field-error-message/form-field-error-message.css"
+    },
+    "./form-field-label": {
+      "types": "./css.d.ts",
+      "default": "./src/form-field-label/form-field-label.css"
+    },
+    "./form-field-status": {
+      "types": "./css.d.ts",
+      "default": "./src/form-field-status/form-field-status.css"
+    },
+    "./form-fieldset": {
+      "types": "./css.d.ts",
+      "default": "./src/form-fieldset/form-fieldset.css"
+    },
+    "./grid": {
+      "types": "./css.d.ts",
+      "default": "./src/grid/grid.css"
+    },
+    "./heading": {
+      "types": "./css.d.ts",
+      "default": "./src/heading/heading.css"
+    },
+    "./heading-group": {
+      "types": "./css.d.ts",
+      "default": "./src/heading-group/heading-group.css"
+    },
+    "./option-label": {
+      "types": "./css.d.ts",
+      "default": "./src/option-label/option-label.css"
+    },
+    "./pre-heading": {
+      "types": "./css.d.ts",
+      "default": "./src/pre-heading/pre-heading.css"
+    },
+    "./hero": {
+      "types": "./css.d.ts",
+      "default": "./src/hero/hero.css"
+    },
+    "./icon": {
+      "types": "./css.d.ts",
+      "default": "./src/icon/icon.css"
+    },
+    "./icon-list": {
+      "types": "./css.d.ts",
+      "default": "./src/icon-list/icon-list.css"
+    },
+    "./image": {
+      "types": "./css.d.ts",
+      "default": "./src/image/image.css"
+    },
+    "./link": {
+      "types": "./css.d.ts",
+      "default": "./src/link/link.css"
+    },
+    "./link-button": {
+      "types": "./css.d.ts",
+      "default": "./src/link-button/link-button.css"
+    },
+    "./logo": {
+      "types": "./css.d.ts",
+      "default": "./src/logo/logo.css"
+    },
+    "./menu": {
+      "types": "./css.d.ts",
+      "default": "./src/menu/menu.css"
+    },
+    "./menu-button": {
+      "types": "./css.d.ts",
+      "default": "./src/menu-button/menu-button.css"
+    },
+    "./menu-link": {
+      "types": "./css.d.ts",
+      "default": "./src/menu-link/menu-link.css"
+    },
+    "./modal-dialog": {
+      "types": "./css.d.ts",
+      "default": "./src/modal-dialog/modal-dialog.css"
+    },
+    "./note": {
+      "types": "./css.d.ts",
+      "default": "./src/note/note.css"
+    },
+    "./number-badge": {
+      "types": "./css.d.ts",
+      "default": "./src/number-badge/number-badge.css"
+    },
+    "./ordered-list": {
+      "types": "./css.d.ts",
+      "default": "./src/ordered-list/ordered-list.css"
+    },
+    "./page-body": {
+      "types": "./css.d.ts",
+      "default": "./src/page-body/page-body.css"
+    },
+    "./page-footer": {
+      "types": "./css.d.ts",
+      "default": "./src/page-footer/page-footer.css"
+    },
+    "./page-header": {
+      "types": "./css.d.ts",
+      "default": "./src/page-header/page-header.css"
+    },
+    "./page-layout": {
+      "types": "./css.d.ts",
+      "default": "./src/page-layout/page-layout.css"
+    },
+    "./paragraph": {
+      "types": "./css.d.ts",
+      "default": "./src/paragraph/paragraph.css"
+    },
+    "./popover": {
+      "types": "./css.d.ts",
+      "default": "./src/popover/popover.css"
+    },
+    "./progress-bar": {
+      "types": "./css.d.ts",
+      "default": "./src/progress-bar/progress-bar.css"
+    },
+    "./radio": {
+      "types": "./css.d.ts",
+      "default": "./src/radio/radio.css"
+    },
+    "./radio-group": {
+      "types": "./css.d.ts",
+      "default": "./src/radio-group/radio-group.css"
+    },
+    "./radio-option": {
+      "types": "./css.d.ts",
+      "default": "./src/radio-option/radio-option.css"
+    },
+    "./search-input": {
+      "types": "./css.d.ts",
+      "default": "./src/search-input/search-input.css"
+    },
+    "./select": {
+      "types": "./css.d.ts",
+      "default": "./src/select/select.css"
+    },
+    "./skip-link": {
+      "types": "./css.d.ts",
+      "default": "./src/skip-link/skip-link.css"
+    },
+    "./spinner": {
+      "types": "./css.d.ts",
+      "default": "./src/spinner/spinner.css"
+    },
+    "./stack": {
+      "types": "./css.d.ts",
+      "default": "./src/stack/stack.css"
+    },
+    "./status-badge": {
+      "types": "./css.d.ts",
+      "default": "./src/status-badge/status-badge.css"
+    },
+    "./summary-list": {
+      "types": "./css.d.ts",
+      "default": "./src/summary-list/summary-list.css"
+    },
+    "./table": {
+      "types": "./css.d.ts",
+      "default": "./src/table/table.css"
+    },
+    "./table-of-contents": {
+      "types": "./css.d.ts",
+      "default": "./src/table-of-contents/table-of-contents.css"
+    },
+    "./text-area": {
+      "types": "./css.d.ts",
+      "default": "./src/text-area/text-area.css"
+    },
+    "./text-input": {
+      "types": "./css.d.ts",
+      "default": "./src/text-input/text-input.css"
+    },
+    "./time-input": {
+      "types": "./css.d.ts",
+      "default": "./src/time-input/time-input.css"
+    },
+    "./unordered-list": {
+      "types": "./css.d.ts",
+      "default": "./src/unordered-list/unordered-list.css"
+    },
     "./package.json": "./package.json"
   },
   "files": [
@@ -88,7 +295,8 @@
     "assets",
     "manifest.json",
     "manifest.d.ts",
-    "manifest-schema.json"
+    "manifest-schema.json",
+    "css.d.ts"
   ],
   "scripts": {
     "build": "node scripts/validate-manifest.js && node scripts/build.js",

@@ -10,6 +10,45 @@ All notable changes to this project are documented in this file.
 
 Nog niet gepubliceerde wijzigingen. Schrijf nieuwe changelog-entries hieronder; bij de volgende release wordt deze kop gepromoveerd naar het definitieve versienummer.
 
+---
+
+## Version 3.3.0 (September 2, 2026)
+
+Deze release repareert de `exports`-maps van de gepubliceerde packages. Drie problemen die allemaal onzichtbaar zijn binnen de monorepo, omdat Storybook en vitest de bronbestanden gebruiken en niet het gepubliceerde artifact: CSS- en SCSS-exports zonder `types`, `"sideEffects": false` waarmee webpack de stylesheets weggooide, en de `manifest`-export van `components-html` die niet naar zijn eigen declaraties wees.
+
+Het zwaarste daarvan is de tweede: consumenten die met webpack of Next.js een productiebuild maakten konden hun styling verliezen zonder ook maar één waarschuwing.
+
+Verder animeren de overlays nu ook bij het sluiten, klapt het zoekpaneel van PageHeader open en dicht, en dekt `pnpm type-check` eindelijk ook `packages/storybook`.
+
+Geen breaking changes. Dezelfde exportpaden, dezelfde klassen, dezelfde markup en dezelfde React-API. Wie de lokale workaround `declare module '@dsn-starter-kit/design-tokens/css'` had staan, kan die nu weghalen.
+
+### CSS-exports krijgen types, en stylesheets worden niet meer weggesnoeid
+
+Twee losse problemen in de `exports`-maps van de gepubliceerde packages, allebei alleen zichtbaar bij een consument buiten de monorepo.
+
+**1. Geen types op de CSS- en SCSS-exports.** Een entry stond als kale string in de map (`"./css": "./dist/css/variables.css"`). TypeScript kan een side-effect import als `import '@dsn-starter-kit/design-tokens/css'` dan niet oplossen en meldt TS2882, "Cannot find module or type declarations for side-effect import". Dat gebeurt zodra de consument `noUncheckedSideEffectImports` aanzet (TypeScript 5.6 en hoger); zonder die vlag zwijgt `tsc`, maar editors tonen de fout alsnog.
+
+Alle 78 CSS- en SCSS-entries in `design-tokens`, `core`, `components-react` en `components-html` staan nu in conditie-vorm, met een `types`-conditie vóór `default`:
+
+```json
+"./css": {
+  "types": "./css.d.ts",
+  "default": "./dist/css/variables.css"
+}
+```
+
+Elk van die vier packages heeft daarvoor één stub `css.d.ts` met `export {}` in de package-root, meegepubliceerd via `files`. Eén stub per package is genoeg: alle subpaden wijzen naar hetzelfde bestand. De stub staat bewust in de root en niet in `dist/`, zodat hij niet afhangt van buildvolgorde en `clean` hem niet weggooit. `components-html/manifest.d.ts` werkt al langer zo.
+
+**2. `"sideEffects": false` sloopte de styling in webpack-builds.** CSS-imports zijn per definitie side effects, dus met dat veld op `false` mocht webpack `import '@dsn-starter-kit/components-react/css'` weggooien. Gemeten met webpack 5 in productiemodus tegen de gepakte tarballs: met `false` levert de build **nul bytes CSS** op, met `["**/*.css"]` de verwachte 181 kB. De styling verdween dus stil, zonder waarschuwing, bij de bundler die het grootste deel van de Next.js-wereld gebruikt.
+
+`design-tokens`, `core` en `components-react` markeren hun stylesheets nu expliciet: `["**/*.css"]`, en bij `design-tokens` ook `**/*.scss`. `components-html` heeft geen `sideEffects`-veld en is daarmee al veilig.
+
+Het tree-shaking-voordeel uit het publicatiecontract blijft intact, want alleen stylesheets zijn nu als side-effect gemarkeerd en JavaScript niet. Een Vite-build van een consument die alleen `Button` importeert levert voor en na exact dezelfde bundel op, tot op de byte en de contenthash.
+
+Een nieuwe contracttest, `tests/package-exports.test.ts`, bewaakt allebei: elke export die naar een stylesheet wijst moet een `types`-conditie op de eerste plaats hebben, die stub moet bestaan en binnen `files` vallen, en `sideEffects` mag niet `false` zijn in een package dat CSS exporteert.
+
+Geen wijziging aan de API of aan de bestandspaden zelf. Consumers die de lokale workaround `declare module '@dsn-starter-kit/design-tokens/css'` hadden staan, kunnen die na de volgende release weghalen.
+
 ### PageHeader: het zoekpaneel klapt open en dicht
 
 Op small en compact viewport verscheen en verdween het zoekpaneel abrupt, waarbij de pagina-inhoud eronder in één klap opsprong. Het paneel animeert nu open en dicht, met dezelfde techniek als de overlays hierboven: de gesloten waarden op de basis-selector, de zichtbare waarden op `:not([hidden])`, en `display` met `allow-discrete` zodat het paneel zichtbaar blijft terwijl het dichtklapt.

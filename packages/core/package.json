@@ -1,6 +1,6 @@
 {
   "name": "@dsn-starter-kit/core",
-  "version": "3.2.0",
+  "version": "3.3.0",
   "description": "Core styles and utilities for the design system",
   "type": "module",
   "main": "dist/index.cjs",
@@ -18,12 +18,18 @@
         "default": "./dist/index.cjs"
       }
     },
-    "./css": "./dist/core.css",
+    "./css": {
+      "types": "./css.d.ts",
+      "default": "./dist/core.css"
+    },
     "./package.json": "./package.json"
   },
-  "sideEffects": false,
+  "sideEffects": [
+    "**/*.css"
+  ],
   "files": [
-    "dist"
+    "dist",
+    "css.d.ts"
   ],
   "scripts": {
     "build": "npm run build:js && npm run build:css",

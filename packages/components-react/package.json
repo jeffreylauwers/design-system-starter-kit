@@ -1,6 +1,6 @@
 {
   "name": "@dsn-starter-kit/components-react",
-  "version": "3.2.0",
+  "version": "3.3.0",
   "description": "React components for the design system",
   "type": "module",
   "main": "dist/index.cjs",
@@ -17,12 +17,18 @@
         "default": "./dist/index.cjs"
       }
     },
-    "./css": "./dist/index.css",
+    "./css": {
+      "types": "./css.d.ts",
+      "default": "./dist/index.css"
+    },
     "./package.json": "./package.json"
   },
-  "sideEffects": false,
+  "sideEffects": [
+    "**/*.css"
+  ],
   "files": [
-    "dist"
+    "dist",
+    "css.d.ts"
   ],
   "scripts": {
     "generate:icons": "node scripts/generate-icons.js",
