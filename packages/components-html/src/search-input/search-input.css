@@ -5,8 +5,10 @@
  * to prevent typed text from overlapping the icon.
  */
 
-/* The input carries dsn-text-input too, and overrides it on equal
-   specificity, so text-input.css has to come first in the bundle. */
+/* Het veld draagt ook dsn-text-input. Overrides worden daarom geschreven als
+   .dsn-text-input.dsn-search-input, zodat ze op specificiteit winnen en niet op
+   volgorde. Bundlers splitsen CSS per component-chunk, en dan is de volgorde
+   niet gegarandeerd. */
 /* @dsn-depends-on: text-input */
 
 /* Wrapper — positions icon absolutely inside the input */
@@ -30,7 +32,7 @@
 }
 
 /* Input — extra padding-inline-start to make room for the icon */
-.dsn-search-input {
+.dsn-text-input.dsn-search-input {
   padding-inline-start: var(--dsn-search-input-padding-inline-start-with-icon);
 }
 

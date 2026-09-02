@@ -6,8 +6,10 @@
  * The native dropdown arrow is hidden via appearance: none.
  */
 
-/* The input carries dsn-text-input too, and overrides it on equal
-   specificity, so text-input.css has to come first in the bundle. */
+/* Het veld draagt ook dsn-text-input. Overrides worden daarom geschreven als
+   .dsn-text-input.dsn-select, zodat ze op specificiteit winnen en niet op
+   volgorde. Bundlers splitsen CSS per component-chunk, en dan is de volgorde
+   niet gegarandeerd. */
 /* @dsn-depends-on: text-input */
 
 /* Wrapper — positions icon absolutely inside the select */
@@ -34,7 +36,7 @@
 /* Also override :read-only styles from dsn-text-input, because browsers consider
    <select> as :read-only (non-typeable), which incorrectly triggers those styles. */
 /* max-inline-size is set to none so the wrapper controls the width, not the select itself. */
-.dsn-select {
+.dsn-text-input.dsn-select {
   appearance: none;
   background-color: var(--dsn-text-input-background-color);
   border: var(--dsn-text-input-border-width) solid
@@ -46,20 +48,20 @@
 }
 
 /* Undo the :read-only styles inherited from dsn-text-input */
-.dsn-select:read-only {
+.dsn-text-input.dsn-select:read-only {
   background-color: var(--dsn-text-input-background-color);
   border-color: var(--dsn-text-input-border-color);
   color: var(--dsn-text-input-color);
   cursor: pointer;
 }
 
-.dsn-select:disabled {
+.dsn-text-input.dsn-select:disabled {
   background-color: var(--dsn-text-input-disabled-background-color);
   border-color: var(--dsn-text-input-disabled-border-color);
   cursor: not-allowed;
 }
 
-.dsn-select[aria-invalid='true'] {
+.dsn-text-input.dsn-select[aria-invalid='true'] {
   background-color: var(--dsn-text-input-invalid-background-color);
   border-color: var(--dsn-text-input-invalid-border-color);
 }
