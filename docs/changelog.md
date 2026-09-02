@@ -10,6 +10,14 @@ All notable changes to this project are documented in this file.
 
 Nog niet gepubliceerde wijzigingen. Schrijf nieuwe changelog-entries hieronder; bij de volgende release wordt deze kop gepromoveerd naar het definitieve versienummer.
 
+---
+
+## Version 3.4.0 (September 2, 2026)
+
+Deze release maakt het omschakelen van thema, mode en dichtheid tijdens runtime werkend. Dat was het al bijna: de scoped token-CSS bestond, werd meegepubliceerd, en de klassen ervoor stonden in de build. Alleen ontbraken de Start-varianten volledig, konden zes van de bestanden niet geïmporteerd worden, en beschreef de handleiding een klasse die nergens bestaat. Elk van die drie gaten was op zichzelf genoeg om de functie onbruikbaar te maken.
+
+Zes nieuwe exportpaden, nul verwijderde. `css/dark-scoped` blijft bestaan en wijst nu eindelijk naar een bestand dat er ook is. Geen breaking changes.
+
 ### De dark mode van het Start-thema wordt nu ook gebouwd
 
 `@dsn-starter-kit/design-tokens` exporteerde `./css/dark-scoped` naar `dist/css/variables-dark-scoped.css`, maar dat bestand zat niet in de tarball. Geverifieerd tegen npm: het ontbrak in 3.2.0 én 3.3.0, dus `import '@dsn-starter-kit/design-tokens/css/dark-scoped'` faalde met een module-not-found. Gevonden bij de release-verificatie van v3.3.0.
