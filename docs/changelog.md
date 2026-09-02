@@ -10,6 +10,18 @@ All notable changes to this project are documented in this file.
 
 Nog niet gepubliceerde wijzigingen. Schrijf nieuwe changelog-entries hieronder; bij de volgende release wordt deze kop gepromoveerd naar het definitieve versienummer.
 
+---
+
+## Version 3.3.0 (September 2, 2026)
+
+Deze release repareert de `exports`-maps van de gepubliceerde packages. Drie problemen die allemaal onzichtbaar zijn binnen de monorepo, omdat Storybook en vitest de bronbestanden gebruiken en niet het gepubliceerde artifact: CSS- en SCSS-exports zonder `types`, `"sideEffects": false` waarmee webpack de stylesheets weggooide, en de `manifest`-export van `components-html` die niet naar zijn eigen declaraties wees.
+
+Het zwaarste daarvan is de tweede: consumenten die met webpack of Next.js een productiebuild maakten konden hun styling verliezen zonder ook maar één waarschuwing.
+
+Verder animeren de overlays nu ook bij het sluiten, klapt het zoekpaneel van PageHeader open en dicht, en dekt `pnpm type-check` eindelijk ook `packages/storybook`.
+
+Geen breaking changes. Dezelfde exportpaden, dezelfde klassen, dezelfde markup en dezelfde React-API. Wie de lokale workaround `declare module '@dsn-starter-kit/design-tokens/css'` had staan, kan die nu weghalen.
+
 ### CSS-exports krijgen types, en stylesheets worden niet meer weggesnoeid
 
 Twee losse problemen in de `exports`-maps van de gepubliceerde packages, allebei alleen zichtbaar bij een consument buiten de monorepo.
