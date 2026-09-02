@@ -19,6 +19,7 @@ import {
   paintsForVector,
   requireCollections,
 } from './bindings.js';
+import { findOrCreatePage, openPage, sortManagedPages } from './pages.js';
 
 /** Hoeveel iconen naast elkaar, en hoeveel ruimte eromheen. */
 const COLUMNS = 10;
@@ -33,42 +34,6 @@ const CELL = 72;
  * elkaar lopen.
  */
 export const ICON_PAGE = 'dsn/Icons';
-
-/**
- * De pagina waar de iconset op staat.
- *
- * `figma.root.children` is pas te lezen na loadAllPagesAsync in een bestand met
- * dynamic page loading; zonder die aanroep gooit Figma daar sinds 2024 een
- * fout op.
- */
-async function findOrCreatePage(name) {
-  if (typeof figma.loadAllPagesAsync === 'function') {
-    await figma.loadAllPagesAsync();
-  }
-
-  const existing = figma.root.children.find(
-    (page) => page.type === 'PAGE' && page.name === name
-  );
-  if (existing) return existing;
-
-  const page = figma.createPage();
-  page.name = name;
-  return page;
-}
-
-/**
- * Opent een pagina. In een bestand met dynamic page loading is het synchrone
- * `figma.currentPage =` niet meer toegestaan; setCurrentPageAsync is de route
- * die het wel is.
- */
-async function openPage(page) {
-  if (figma.currentPage === page) return;
-  if (typeof figma.setCurrentPageAsync === 'function') {
-    await figma.setCurrentPageAsync(page);
-  } else {
-    figma.currentPage = page;
-  }
-}
 
 /**
  * Zet de strepen van een lijn-icoon om naar vlakken.
@@ -245,6 +210,9 @@ export async function importIconSet(payload, log) {
   const context = { log, variables, stats };
 
   const page = await findOrCreatePage(spec.page);
+  // De iconpagina staat tussen de componentpagina's in de lijst, dus hij hoort
+  // in dezelfde alfabetische volgorde mee.
+  await sortManagedPages();
   const existing = new Map(
     page.children
       .filter((node) => node.type === 'COMPONENT')

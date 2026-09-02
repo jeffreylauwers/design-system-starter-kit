@@ -75,6 +75,35 @@ de kleur stuurt in plaats van een lege Fill te tonen. De variable bepaalt
 daarna kleur én alpha. Voor strokes gebeurt dat niet: een frame zonder rand
 heeft wel een standaard `strokeWeight`, dus daar zou een lijn ontstaan.
 
+## Pagina's
+
+Elke component set komt op een eigen pagina, `dsn/{Component}`; de iconset
+staat op `dsn/Icons`. De plugin maakt die pagina aan als hij nog niet bestaat
+en zet daarna de `dsn/`-pagina's alfabetisch.
+
+Alleen die pagina's. Een pagina zonder de prefix is van de designer en blijft
+staan waar hij stond: de plugin herschikt de beheerde pagina's binnen de
+plekken die ze al innamen, in plaats van de hele lijst om te gooien.
+
+De componentimport laat zijn pagina open staan, want dat is de pagina waar de
+designer naartoe wil. De iconimport doet het omgekeerde: die opent `dsn/Icons`
+alleen om te kunnen bouwen (`createNodeFromSvg` werkt op de huidige pagina) en
+zet daarna terug wat er openstond.
+
+## Het canvas onder de varianten
+
+De component set krijgt verticale auto layout met 48px ruimte eromheen en
+ertussen, en als achtergrond de documentachtergrond van het design system,
+gebonden aan `dsn/Primitives → color/neutral/bg-document`.
+
+Zonder die binding staat de set op het grijs van Figma: schakelt een designer
+de mode naar `start-dark`, dan worden de componenten donker terwijl de plaat
+licht blijft en is geen enkele variant meer te lezen.
+
+De maten komen uit `componentSet.canvas` in de spec. Ontbreekt dat blok (een
+oudere `dist/{component}.json`), dan valt de plugin terug op alleen de
+verticale stapeling.
+
 ## Laagstructuur
 
 Het root-element van de spec wordt niet in een frame gezet maar **is** het
@@ -261,7 +290,12 @@ Figma laadt.
 
 - **Component sets bijwerken.** Elke import maakt een nieuwe set aan. Bestaande
   instanties in designbestanden koppelen daar niet vanzelf aan. De iconen doen
-  dit wél, zie hierboven.
+  dit wél, zie hierboven. Op een eigen pagina wordt dat zichtbaar als twee sets
+  met dezelfde naam onder elkaar; de plugin meldt dat. De oude set weggooien is
+  handwerk, want dat detacht elke geplaatste instance.
+- **Geneste componenten hergebruiken.** De Heading en Paragraph in een Alert of
+  een Note zijn gemeten lagen, geen instances van de losse component sets. Voor
+  iconen gebeurt dat wél.
 - **Effect styles.** Box shadows staan in het skip-report en moeten nog
   Figma-effectstijlen worden.
 - **Booleans die tokens veranderen.** `iconOnly`, `loading` en `fullWidth` bij

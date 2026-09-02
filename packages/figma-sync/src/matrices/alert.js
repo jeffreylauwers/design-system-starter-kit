@@ -9,16 +9,10 @@
  * extractor overgeslagen: die hebben in Figma geen tegenhanger.
  */
 
+import { icon as renderIcon } from '../icons.js';
 import { HEADING, TEKST } from '../text.js';
 
-const ICONS = {
-  info: `<path d="M12 9h.01M11 12h1v4h1"/><circle cx="12" cy="12" r="9"/>`,
-  positive: `<circle cx="12" cy="12" r="9"/><path d="M9 12l2 2 4-4"/>`,
-  negative: `<circle cx="12" cy="12" r="9"/><path d="M12 8v4M12 16h.01"/>`,
-  warning: `<path d="M12 4l9 16H3z"/><path d="M12 10v4M12 17h.01"/>`,
-};
-
-/** Wordt de naam van de icoonlaag in Figma. */
+/** Het icoon per variant; de naam wordt ook de naam van de laag in Figma. */
 const ICON_NAMES = {
   info: 'info-circle',
   positive: 'circle-check',
@@ -71,7 +65,7 @@ export default {
     const iconMarkup =
       icon === 'with-icon'
         ? `<span class="dsn-alert__icon" aria-hidden="true">
-             <svg class="dsn-icon dsn-icon--xl" data-icon="${ICON_NAMES[variant]}" aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">${ICONS[variant]}</svg>
+             ${renderIcon(ICON_NAMES[variant], { modifier: 'xl' })}
            </span>`
         : '';
 

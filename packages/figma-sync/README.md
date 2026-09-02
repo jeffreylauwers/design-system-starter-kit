@@ -157,15 +157,15 @@ binding missen, maar geen verkeerde binding leggen. Zie
 
 Wat er gebonden wordt:
 
-| Figma-veld                                 | Uit                                                      |
-| ------------------------------------------ | -------------------------------------------------------- |
-| `fills`                                    | `background-color`, of `color` bij tekst en iconen       |
-| `strokes`                                  | `border-*-color`                                         |
-| `strokeWeight`                             | `border-*-width`                                         |
-| `topLeftRadius` en de drie andere hoeken   | `border-*-radius`                                        |
-| `paddingTop` / `Right` / `Bottom` / `Left` | `padding-*`                                              |
-| `itemSpacing`                              | `row-gap` of `column-gap`, naar de as van de auto layout |
-| `fontSize`                                 | `font-size`                                              |
+| Figma-veld                                   | Uit                                                      |
+| -------------------------------------------- | -------------------------------------------------------- |
+| `fills`                                      | `background-color`, of `color` bij tekst en iconen       |
+| `strokes`                                    | `border-*-color` van de zijde die de rand tekent         |
+| `strokeWeight`, of `stroke*Weight` per zijde | `border-*-width` van diezelfde zijde                     |
+| `topLeftRadius` en de drie andere hoeken     | `border-*-radius`                                        |
+| `paddingTop` / `Right` / `Bottom` / `Left`   | `padding-*`                                              |
+| `itemSpacing`                                | `row-gap` of `column-gap`, naar de as van de auto layout |
+| `fontSize`                                   | `font-size`                                              |
 
 #### Wat een vaste waarde houdt
 
@@ -197,6 +197,53 @@ daarmee een aanraakdoel onder [WCAG 2.5.5](https://www.w3.org/WAI/WCAG22/quickre
 `minWidth` en `minHeight` gaan daarom expliciet mee in de spec, en worden net als
 de rest aan hun token gebonden. Ze bestaan in Figma alleen op een auto-layout
 frame; op een frame zonder layoutMode komen ze in het report.
+
+### Randen die niet rondom lopen
+
+Een rand hoeft niet alle vier de zijden te raken. Note tekent alleen een
+accentrand aan de inline-start, en een tabelrij scheidt zich met één lijn
+onderaan. Zo'n rand als uniforme stroke overnemen levert in Figma een kader om
+het hele component op, en dat is geen waarschuwing waard maar een verkeerd
+component.
+
+Figma kent per zijde een `strokeTopWeight` en zijn drie broers. Die worden
+gezet zodra de zijden verschillen; de zijden zonder rand komen op 0. De
+binding gaat dan naar de zijde die de rand tekent: `border-left-width` en
+`border-left-color` bij Note, want `border-top-color` bestaat daar niet eens.
+
+Let op de volgorde in de plugin: `strokeWeight` zet in Figma álle vier de
+zijden, dus de losse diktes moeten daarna komen.
+
+### Pagina per component
+
+Elke component set komt op een eigen pagina, `dsn/{Component}`. Alles op één
+pagina zetten werkt zolang het er vijf zijn; bij de volle bibliotheek is een
+pagina per component de enige indeling waarin een designer iets terugvindt
+zonder het canvas af te scrollen.
+
+De plugin zet de `dsn/`-pagina's daarna alfabetisch, en alleen die: pagina's
+zonder de prefix blijven staan waar de designer ze had. `dsn/Icons` schuift
+gewoon mee in die volgorde.
+
+De set zelf heet naar de CSS-klasse (`dsn-button`) en de pagina naar het
+component (`dsn/Button`). Dat is geen inconsistentie: de setnaam is waar een
+designer in de code op zoekt, de paginanaam is wat er in een lijst prettig
+leest.
+
+### Het canvas onder de varianten
+
+De varianten staan onder elkaar, met 48px ruimte eromheen en ertussen, op de
+documentachtergrond van het design system in plaats van op het grijs van Figma.
+
+Die achtergrond wordt gebonden aan `dsn/Primitives →
+color/neutral/bg-document`. Zonder die binding schakelt een designer de mode
+naar `start-dark` en kijkt naar donkere componenten op een lichte plaat, waar
+geen enkele variant meer op te lezen is.
+
+De 48px is bewust een vast getal en geen token: dit is de presentatie van de
+bibliotheekpagina, geen eigenschap van het component. Een spacing-token zou
+betekenen dat de afstand tussen twee varianten meebeweegt met een
+densitywissel, en dat zegt over het component niets.
 
 ### Laagstructuur
 
@@ -246,6 +293,47 @@ Plus een vierde die geen meetfout is maar wel dezelfde vorm heeft: `body.css`
 hangt aan de klasse `.dsn-body`, niet aan het element. Zonder die klasse op de
 meetpagina erft alles zonder eigen font-family-token het browserstandaard­
 lettertype, en meet je Times.
+
+### Pseudo-toestanden
+
+`pseudoStates` koppelt een as-waarde aan een toestand die niet in markup uit te
+drukken is. Er zijn er twee:
+
+| Waarde  | Wat de extractor doet                    |
+| ------- | ---------------------------------------- |
+| `hover` | de muis over `[data-figma-root]` bewegen |
+| `focus` | één keer Tab indrukken                   |
+
+Bij `focus` is dat bewust een echte toetsaanslag en geen `.focus()`: Chromium
+zet `:focus-visible` alleen bij toetsenbordfocus, en juist die selector draagt
+de focusstijl. Tab landt op het eerste focusbare element van de pagina, dus een
+matrix met een focus-as hoort er precies één te renderen. SkipLink is daar het
+voorbeeld van: die is standaard weggeklipt en krijgt zijn hele verschijning pas
+op `:focus-visible`.
+
+### `color: inherit` is geen waarde
+
+`inherit` is een verwijzing: het element neemt de berekende waarde van zijn
+ouder over. Als winnende declaratie heeft het geen `var()`-keten, en zonder
+extra stap valt het dus weg als "de waarde komt niet uit één token".
+
+De cascade-nabootsing loopt daarom bij `inherit` door naar de ouder, net als de
+browser. Zonder die stap kreeg het icoon in een StatusBadge een vaste kleur en
+volgde het de theme-schakelaar niet, puur omdat de CSS daar een expliciete
+`color: inherit` heeft staan.
+
+### Iconen in een matrix
+
+`icon('chevron-right')` uit `src/icons.js` leest hetzelfde SVG-bestand uit
+`components-html/assets/icons` dat ook de iconset vult, en zet er meteen het
+`data-icon`-attribuut op waarmee de plugin het icooncomponent terugvindt.
+
+Paden met de hand overtypen in een matrix werkt, maar levert een tweede
+waarheid op: een icoon dat in de assets-map wordt bijgewerkt verandert dan wel
+in de iconset en niet in de componenten die hem tonen.
+
+Een SVG die géén icoon uit die set is (de cirkel van Spinner) heeft geen
+`data-icon` en krijgt zijn laagnaam uit zijn eigen klasse.
 
 ## Hoe de icongeneratie werkt
 
@@ -382,12 +470,68 @@ code het icoon, dus dat zijn hier de instance swaps. De boolean die ze aan- en
 uitzet krijgt `show` ervoor (`showIconStart`), omdat twee properties in Figma
 niet dezelfde naam kunnen dragen.
 
-## Wat hier bewust niet in hoort
+En één afspraak die niet uit de props volgt: de tekst van een component heet
+altijd `label`, ook waar de React-prop `children` is. `children` is een
+React-begrip; in het rechterpaneel van Figma zegt het niets.
 
-- **Layoutcomponenten** (`Grid`, `Container`, `PageBody`, `BreakoutSection`).
-  Dat is layoutgedrag zonder eigen visuele identiteit. Een designer gebruikt
-  daar Figma auto layout voor, een gegenereerd "Stack-component" is een
-  anti-patroon.
+Een TEXT-property hangt aan een tekstlaag, dus de `data-figma-slot="label"`
+hoort op het element dat de tekst draagt en niet op de root, tenzij de root
+zelf tot tekst inklapt. Bij NumberBadge en SkipLink staat de markering daarom
+op een `<span>` binnen het component; die kost in Figma geen extra laag, want
+een element dat alleen tekst bevat wordt één TEXT-node.
+
+## Welke componenten wel en niet een matrix krijgen
+
+De regel: **elk component uit `components-html/manifest.json` krijgt een
+matrix, behalve wat hieronder staat.** Wat er af is, staat in `src/matrices/`;
+dat is de lijst, niet een tabel in dit bestand die naast de code kan gaan
+staan.
+
+Een component overslaan is een besluit en geen achterstand, dus het staat hier
+met naam en reden.
+
+### Layoutcomponenten
+
+`ActionGroup`, `BreakoutSection`, `Container`, `Grid`, `PageBody`,
+`PageLayout`, `Stack`.
+
+Layoutgedrag zonder eigen visuele identiteit: ze tekenen niets, ze plaatsen
+alleen wat erin zit. Een designer gebruikt daar Figma auto layout voor, en een
+gegenereerd "Stack-component" is een anti-patroon: het levert een lege laag op
+die precies doet wat het frame eromheen ook al kan.
+
+### Componenten die het canvas zelf zijn
+
+- **`Body`.** De documentwortel. Zijn achtergrond- en tekstkleur zitten al in
+  Figma: dat is de plaat waar elke component set op staat, gebonden aan
+  `dsn/Primitives → color/neutral/bg-document`.
+- **`Icon`.** Dat is de iconset. Die komt uit `build-icons.js` en staat als 51
+  losse componenten op `dsn/Icons`, want een instance swap kiest uit
+  componenten en niet uit varianten van één set.
+
+### Dezelfde CSS, een ander HTML-element
+
+Figma kent geen HTML-elementen. Twee componenten die op dezelfde klassen
+uitkomen leveren dus twee identieke component sets op, en een designer die er
+één van de twee kiest maakt geen keuze maar een fout die niet te zien is.
+
+| Overgeslagen                                                   | Levert hetzelfde op als | Verschil                           |
+| -------------------------------------------------------------- | ----------------------- | ---------------------------------- |
+| `ButtonLink`                                                   | `Button`                | `<a>` in plaats van `<button>`     |
+| `LinkButton`                                                   | `Link`                  | `<button>` in plaats van `<a>`     |
+| `FormFieldLegend`                                              | `FormFieldLabel`        | `<legend>` in plaats van `<label>` |
+| `FormFieldset`                                                 | `FormField`             | `<fieldset>` in plaats van `<div>` |
+| `EmailInput`, `NumberInput`, `PasswordInput`, `TelephoneInput` | `TextInput`             | alleen een andere `type`-attribuut |
+
+`DateInput`, `TimeInput`, `SearchInput` en `Select` staan hier níet tussen:
+die hebben wel eigen CSS (een kalenderknop, een kruisje, een chevron) en dus
+een eigen verschijning.
+
+### Overig
+
+- **`Backdrop`.** Een verduistering over het hele viewport, waarvan de enige
+  eigenschap een achtergrondkleur is. In Figma is dat een rechthoek met een
+  variable, geen component.
 - **Patronen en templates.** Die componeer je in Figma uit de gegenereerde
   componenten.
 - **Box shadows.** Die horen Figma effect styles te worden, geen variables.

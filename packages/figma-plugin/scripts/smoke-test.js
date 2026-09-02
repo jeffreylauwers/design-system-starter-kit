@@ -241,6 +241,9 @@ check(
 // componenten, en dan moeten ze er al staan.
 console.log('\n=== icons.json ===');
 const iconsPayload = read('packages/figma-sync/dist/icons.json');
+// De iconimport opent de iconpagina om te kunnen bouwen en hoort daarna terug
+// te zetten wat de designer openhad.
+const pageBeforeIcons = figma.currentPage;
 const icons = await importIconSet(iconsPayload, log);
 
 const iconsPage = state.root.children.find(
@@ -259,11 +262,11 @@ check(
   `${iconsPage?.children.length ?? 0}/${iconsPayload.iconSet.icons.length}`
 );
 
-// De component-import zet zijn set op figma.currentPage. Zou de iconimport de
-// pagina omzetten, dan belandde een Button tussen de iconen.
+// De iconimport opent zijn eigen pagina om te kunnen bouwen, maar hoort de
+// designer niet te verslepen: bij afloop staat weer open wat er openstond.
 check(
   'de iconimport laat de open pagina met rust',
-  figma.currentPage === state.page,
+  figma.currentPage === pageBeforeIcons,
   figma.currentPage.name
 );
 
@@ -422,9 +425,38 @@ for (const file of componentFiles) {
   );
   check('component set gecombineerd', imported.combined === true);
 
+  // Elk component krijgt zijn eigen pagina. Zonder die scheiding groeit één
+  // pagina met 73 component sets dicht en is er niets meer terug te vinden.
+  const componentPage = state.root.children.find(
+    (page) => page.name === payload.componentSet.page
+  );
+  check(
+    'de set staat op zijn eigen pagina',
+    Boolean(componentPage) &&
+      componentPage.children.some(
+        (node) =>
+          node.type === 'COMPONENT_SET' &&
+          node.name === payload.componentSet.name
+      ),
+    payload.componentSet.page
+  );
+  check(
+    'de plugin meldt op welke pagina de set staat',
+    imported.page === payload.componentSet.page,
+    imported.page
+  );
+
+  const setNode = componentPage?.children.at(-1);
+
   // Het root-element is het component zelf, dus de gebouwde boom begint bij de
-  // component-node en niet bij een frame daarbinnen.
-  const built = (index) => state.page.children.at(-1)?.children[index];
+  // component-node en niet bij een frame daarbinnen. Uitzondering: een root die
+  // in zijn geheel tot tekst of een vector inklapt kán zichzelf niet zijn, dus
+  // daar zet de plugin wél een frame omheen en zit de spec een laag dieper.
+  const built = (index) => {
+    const variant = setNode?.children[index];
+    const rootType = payload.componentSet.components[index].node.type;
+    return rootType === 'FRAME' ? variant : variant?.children[0];
+  };
 
   const fresh = problems
     .slice(before)
@@ -623,10 +655,34 @@ for (const file of componentFiles) {
   );
 
   // ---------------------------------------------------------------------------
+  // Het canvas rond de set
+  // ---------------------------------------------------------------------------
+
+  const canvas = payload.componentSet.canvas;
+  check(
+    'de varianten staan onder elkaar met lucht ertussen',
+    setNode?.layoutMode === 'VERTICAL' &&
+      setNode?.itemSpacing === canvas.itemSpacing &&
+      setNode?.paddingTop === canvas.padding &&
+      setNode?.paddingLeft === canvas.padding,
+    `${setNode?.layoutMode}, gap ${setNode?.itemSpacing}, padding ${setNode?.paddingTop}`
+  );
+
+  // Zonder gebonden achtergrond kijkt een designer in dark mode naar donkere
+  // componenten op een lichte plaat, en is geen enkele variant meer te lezen.
+  const canvasAlias = setNode?.fills?.[0]?.boundVariables?.color;
+  const canvasVariable = canvasAlias && byId.get(canvasAlias.id);
+  check(
+    'de achtergrond hangt aan de documentachtergrond',
+    canvasVariable?.name === canvas.boundVariables?.fills.name,
+    canvasVariable ? canvasVariable.name : 'niet gebonden'
+  );
+
+  // ---------------------------------------------------------------------------
   // Component properties
   // ---------------------------------------------------------------------------
 
-  const set = state.page.children.at(-1);
+  const set = setNode;
   const definitions = set.componentPropertyDefinitions ?? {};
   const declaredHere = payload.componentSet.componentProperties ?? [];
 
@@ -753,6 +809,57 @@ for (const file of componentFiles) {
     unnamedIcons.length ? `${unnamedIcons.length} zonder data-icon` : ''
   );
 }
+
+// =============================================================================
+// Paginavolgorde
+// =============================================================================
+
+console.log('\n=== paginavolgorde ===');
+
+const managed = state.root.children
+  .filter((page) => page.name.startsWith('dsn/'))
+  .map((page) => page.name);
+const alphabetical = [...managed].sort((a, b) => a.localeCompare(b, 'nl'));
+check(
+  'de dsn-paginas staan alfabetisch',
+  managed.join('|') === alphabetical.join('|'),
+  managed.join(', ')
+);
+
+// De pagina's van de designer horen te blijven staan waar ze stonden: een
+// plugin die de hele lijst herschikt gooit een indeling om die met de hand is
+// gemaakt.
+check(
+  'de eigen paginas van de designer blijven staan',
+  state.root.children[0] === state.page,
+  state.root.children[0].name
+);
+
+// Een tweede import maakt een nieuwe set aan in plaats van de bestaande bij te
+// werken. Dat is bekend gedrag (zie de README), maar het moet gemeld worden:
+// twee sets met dezelfde naam op één pagina is anders niet te zien.
+const rerunPayload = read('packages/figma-sync/dist/button.json');
+const buttonPage = state.root.children.find(
+  (page) => page.name === rerunPayload.componentSet.page
+);
+const setsBefore = buttonPage.children.length;
+const beforeRerunProblems = problems.length;
+await importComponentSet(rerunPayload, log);
+check(
+  'een tweede import van hetzelfde component wordt gemeld',
+  problems
+    .slice(beforeRerunProblems)
+    .some(
+      (problem) =>
+        problem.level === 'warn' && /stond al een/.test(problem.message)
+    ),
+  'waarschuwing over de dubbele set'
+);
+check(
+  'de bestaande set wordt niet weggegooid',
+  buttonPage.children.length === setsBefore + 1,
+  `${buttonPage.children.length} sets`
+);
 
 // =============================================================================
 // Volgt een gebonden laag de theme-schakelaar?
