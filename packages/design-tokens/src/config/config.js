@@ -361,7 +361,9 @@ const scopedConfigs = {
       createProjectTypeScopedConfig(pt),
     ])
   ),
-  // Wireframe color configs work - they use simple value aliases
+  // Kleurconfigs per thema en mode, voor runtime omschakelen zonder herbouw.
+  'start-light-scoped': createModeScopedConfig('start', 'light'),
+  'start-dark-scoped': createModeScopedConfig('start', 'dark'),
   'wireframe-light-scoped': createModeScopedConfig('wireframe', 'light'),
   'wireframe-dark-scoped': createModeScopedConfig('wireframe', 'dark'),
 };
