@@ -434,6 +434,28 @@ Elk component-CSS-bestand volgt dezelfde vaste sectievolgorde, gescheiden door e
 }
 ```
 
+### Een ander component overschrijven op gelijke specificiteit
+
+Sommige velden dragen twee block-klassen tegelijk: `class="dsn-text-input dsn-select"`.
+De override moet dan op specificiteit winnen, niet op volgorde. Bundlers splitsen CSS
+per component-chunk, en welke chunk als laatste in het document belandt ligt niet vast.
+
+```css
+/* ❌: gelijke specificiteit, wint alleen als select.css na text-input.css staat */
+.dsn-select {
+  padding-inline-end: var(--dsn-select-padding-inline-end-with-icon);
+}
+
+/* ✅: compound selector, wint altijd en documenteert de vereiste markup */
+.dsn-text-input.dsn-select {
+  padding-inline-end: var(--dsn-select-padding-inline-end-with-icon);
+}
+```
+
+Dit geldt voor elk component met `@dsn-depends-on`: SearchInput, Select, DateInput
+en TimeInput. Neem ook de toestandsselectors mee (`:disabled`, `:read-only`,
+`[aria-invalid='true']`), die botsen op dezelfde manier.
+
 ---
 
 ## Gerelateerde documentatie

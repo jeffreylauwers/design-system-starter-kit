@@ -6,8 +6,10 @@
  * Button hover/focus/color states come from the Button component itself.
  */
 
-/* The input carries dsn-text-input too, and overrides it on equal
-   specificity, so text-input.css has to come first in the bundle. */
+/* Het veld draagt ook dsn-text-input. Overrides worden daarom geschreven als
+   .dsn-text-input.dsn-time-input, zodat ze op specificiteit winnen en niet op
+   volgorde. Bundlers splitsen CSS per component-chunk, en dan is de volgorde
+   niet gegarandeerd. */
 /* @dsn-depends-on: text-input */
 
 /* Wrapper — fixed sm width, positions clock button absolutely inside the input */
@@ -28,7 +30,7 @@
 
 /* Input — extra padding-inline-end to make room for the clock button */
 /* Hide the native browser clock/time picker indicator */
-.dsn-time-input {
+.dsn-text-input.dsn-time-input {
   padding-inline-end: var(--dsn-time-input-padding-inline-end-with-icon);
 }
 

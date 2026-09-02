@@ -10,6 +10,14 @@ All notable changes to this project are documented in this file.
 
 Nog niet gepubliceerde wijzigingen. Schrijf nieuwe changelog-entries hieronder; bij de volgende release wordt deze kop gepromoveerd naar het definitieve versienummer.
 
+### Tekst valt niet langer achter het icoon in SearchInput, Select, DateInput en TimeInput
+
+Vier formuliervelden dragen twee block-klassen tegelijk (`class="dsn-text-input dsn-search-input"`) en maken ruimte voor hun icoon door de `padding-inline` van `dsn-text-input` te overschrijven. Die override stond op gelijke specificiteit en won dus alleen zolang `text-input.css` eerder in het document geladen werd. Dat is geen garantie: de bundler splitst CSS per component-chunk, en in de gepubliceerde Storybook belandde het TextInput-chunk ná het SearchInput-chunk. Resultaat: `padding-inline-start: 12px` in plaats van de berekende 46px, en getypte tekst die dwars over het vergrootglas liep.
+
+De overrides zijn nu compound selectors: `.dsn-text-input.dsn-search-input`, `.dsn-text-input.dsn-select`, `.dsn-text-input.dsn-date-input` en `.dsn-text-input.dsn-time-input`. Die winnen op specificiteit en zijn daarmee onafhankelijk van laadvolgorde. Bij Select gold hetzelfde probleem voor de toestandsselectors `:read-only`, `:disabled` en `[aria-invalid='true']`, die zijn op dezelfde manier meegenomen.
+
+Geen wijziging in de markup, de tokens of de React-API. `@dsn-depends-on: text-input` blijft staan: dat regelt nog steeds de volgorde binnen de gebundelde `index.css` van `components-html`.
+
 ---
 
 ## Version 3.4.0 (September 2, 2026)
