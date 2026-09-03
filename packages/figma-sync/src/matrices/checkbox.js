@@ -8,12 +8,15 @@
  * Let op: de CSS van dit component staat in components-react en niet in
  * components-html, anders dan het twee-lagen-patroon voorschrijft. De css-lijst
  * hieronder wijst daarom naar een ander package dan bij de overige matrices.
+ *
+ * Het vinkje komt uit de assets-map, net als in `Checkbox.tsx` (`<Icon
+ * name="check">`). Het stond hier eerst als overgetypt pad op `stroke-width=3`,
+ * en dat is precies waarom overtypen niet werkt: het asset tekent op 2 met
+ * ronde uiteinden, dus de Figma-checkbox week af van het component zonder dat
+ * iets dat meldde.
  */
 
-const ICONS = {
-  check: `<path d="M5 12l5 5L20 7"/>`,
-  minus: `<path d="M5 12h14"/>`,
-};
+import { icon } from '../icons.js';
 
 export default {
   component: 'Checkbox',
@@ -48,7 +51,6 @@ export default {
   render({ state, interaction }) {
     const checked = state === 'checked' ? ' checked' : '';
     const disabled = interaction === 'disabled' ? ' disabled' : '';
-    const icon = state === 'indeterminate' ? ICONS.minus : ICONS.check;
     const iconName = state === 'indeterminate' ? 'minus' : 'check';
     const indeterminate =
       state === 'indeterminate' ? ' data-indeterminate' : '';
@@ -56,7 +58,7 @@ export default {
     return `<div class="dsn-checkbox" data-figma-root>
       <input type="checkbox" class="dsn-checkbox__input"${checked}${disabled}${indeterminate}>
       <span class="dsn-checkbox__control" aria-hidden="true">
-        <svg class="dsn-icon dsn-checkbox__icon" data-icon="${iconName}" aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3">${icon}</svg>
+        ${icon(iconName, { className: 'dsn-checkbox__icon' })}
       </span>
     </div>`;
   },

@@ -146,15 +146,105 @@ function gridLayoutFrom(styles, wideStyles, warnings, pathLabel) {
   };
 }
 
+/** De vier paddings als Figma ze verwacht. */
+function paddingFrom(styles) {
+  return {
+    paddingTop: px(styles.paddingTop),
+    paddingRight: px(styles.paddingRight),
+    paddingBottom: px(styles.paddingBottom),
+    paddingLeft: px(styles.paddingLeft),
+  };
+}
+
+/** Hoeveel twee gemeten waarden mogen schelen om nog "gelijk" te heten. */
+const STACK_TOLERANCE = 0.5;
+
+/**
+ * Zet een element zonder flex of grid alsnog op verticale auto layout, als dat
+ * aantoonbaar niets verschuift.
+ *
+ * Figma kent padding, `minWidth` en `minHeight` uitsluitend op een auto-layout
+ * frame. Een element dat in CSS gewoon een blok is (een `<input>`, een `<ol>`,
+ * de footer van een Card) verloor daardoor al zijn spacing-bindingen: de maat
+ * klopte visueel, want die is gemeten, maar het token erachter was weg. Dat was
+ * veruit de grootste post in het bindingsrapport.
+ *
+ * Promoveren mag alleen als de plaatsing er niet van verandert, en dat is in
+ * twee gevallen hard te maken:
+ *
+ * 1. **Geen kinderen.** Er valt niets te ordenen. Elk formulierveld valt
+ *    hieronder, en dat is precies waar de meeste spacing-tokens zitten.
+ * 2. **Kinderen die al onder elkaar staan, met steeds dezelfde tussenruimte.**
+ *    Dat is wat verticale auto layout óók doet. Overlappen ze, staan ze naast
+ *    elkaar, of verschillen de gaten, dan zou Figma ze verplaatsen en blijft
+ *    het frame zonder auto layout.
+ *
+ * Absoluut gepositioneerde kinderen sluiten promotie uit: die vallen buiten de
+ * stroom, dus uit hun rechthoek is niets af te leiden over de rest.
+ */
+function blockLayoutFrom(node, styles, warnings, pathLabel) {
+  const base = {
+    layoutMode: 'VERTICAL',
+    layoutWrap: 'NO_WRAP',
+    itemReverseZIndex: false,
+    ...paddingFrom(styles),
+    primaryAxisAlignItems: 'MIN',
+    counterAxisAlignItems: 'MIN',
+    stretchChildren: false,
+    reversed: false,
+  };
+
+  const children = node.children ?? [];
+  if (!children.length) return { ...base, itemSpacing: 0 };
+
+  if (children.some((child) => child.styles?.position === 'absolute')) {
+    return null;
+  }
+
+  const gaps = [];
+  for (const [index, child] of children.entries()) {
+    if (!child.rect) return null;
+    if (index === 0) continue;
+
+    const previous = children[index - 1];
+    const gap = child.rect.y - (previous.rect.y + previous.rect.height);
+    // Negatief betekent overlap, en gelijke y betekent naast elkaar.
+    if (gap < -STACK_TOLERANCE) return null;
+    if (Math.abs(child.rect.y - previous.rect.y) < STACK_TOLERANCE) return null;
+    gaps.push(Math.max(gap, 0));
+  }
+
+  const spacing = gaps[0] ?? 0;
+  if (gaps.some((gap) => Math.abs(gap - spacing) > STACK_TOLERANCE)) {
+    return null;
+  }
+
+  // De ruimte tussen blokken komt uit de marges van de kinderen, niet uit een
+  // `gap`, en de binder leest alleen gaps. De waarde klopt dus wel maar hangt
+  // aan niets. Melden in plaats van stil laten: een stil verlies is in het
+  // bindingsrapport niet terug te vinden.
+  if (spacing > 0) {
+    warnings.push(
+      `${pathLabel}: de ruimte van ${spacing}px tussen de kinderen komt uit hun marges en niet uit een gap, dus itemSpacing houdt een vaste waarde`
+    );
+  }
+
+  return { ...base, itemSpacing: spacing };
+}
+
 /** Bouwt de auto layout-eigenschappen uit de flexbox computed styles. */
-function autoLayoutFrom(styles, wideStyles, warnings, pathLabel) {
+function autoLayoutFrom(node, styles, wideStyles, warnings, pathLabel) {
   if (styles.display === 'grid' || styles.display === 'inline-grid') {
     return gridLayoutFrom(styles, wideStyles, warnings, pathLabel);
   }
 
   const isFlex = styles.display === 'flex' || styles.display === 'inline-flex';
   if (!isFlex) {
-    return { layoutMode: 'NONE' };
+    return (
+      blockLayoutFrom(node, styles, warnings, pathLabel) ?? {
+        layoutMode: 'NONE',
+      }
+    );
   }
 
   const vertical = styles.flexDirection.startsWith('column');
@@ -178,10 +268,7 @@ function autoLayoutFrom(styles, wideStyles, warnings, pathLabel) {
     layoutWrap: styles.flexWrap === 'wrap' ? 'WRAP' : 'NO_WRAP',
     itemSpacing: gap,
     itemReverseZIndex: false,
-    paddingTop: px(styles.paddingTop),
-    paddingRight: px(styles.paddingRight),
-    paddingBottom: px(styles.paddingBottom),
-    paddingLeft: px(styles.paddingLeft),
+    ...paddingFrom(styles),
     primaryAxisAlignItems: PRIMARY_AXIS_ALIGN[styles.justifyContent] ?? 'MIN',
     counterAxisAlignItems: COUNTER_AXIS_ALIGN[styles.alignItems] ?? 'MIN',
     // Kinderen krijgen layoutAlign STRETCH als de parent ze uitrekt.
@@ -502,7 +589,13 @@ function convertElement(node, wideNode, warnings, pathLabel, bindings) {
   }
 
   const { styles } = node;
-  const layout = autoLayoutFrom(styles, wideNode?.styles, warnings, pathLabel);
+  const layout = autoLayoutFrom(
+    node,
+    styles,
+    wideNode?.styles,
+    warnings,
+    pathLabel
+  );
   const strokes = strokesFrom(styles, warnings, pathLabel);
 
   // Een element dat alleen tekst bevat en zelf niets tekent, wordt in Figma
@@ -773,9 +866,18 @@ export function toComponentSet(matrix, extracted, variableIndex) {
       // matrixnaam: `dsn-button` is waar hij in de code op zoekt. Klapt de root
       // om welke reden dan ook niet naar een `dsn-`-element, dan blijft de
       // matrixnaam over.
-      name: components[0]?.node.name?.startsWith('dsn-')
-        ? components[0].node.name
-        : matrix.component,
+      //
+      // `setName` overschrijft dat. Nodig zodra de root meerdere blokklassen
+      // draagt: HeadingGroup is `class="dsn-heading dsn-heading--2
+      // dsn-heading-group"`, en de eerste klasse wint, dus zonder override
+      // zouden Heading en HeadingGroup allebei `dsn-heading` heten. Twee sets
+      // met dezelfde naam is voor een designer die op de klasse zoekt geen
+      // keuze maar een gok.
+      name:
+        matrix.setName ??
+        (components[0]?.node.name?.startsWith('dsn-')
+          ? components[0].node.name
+          : matrix.component),
       variantAxes: matrix.axes,
       componentProperties: checkComponentProperties(
         matrix.componentProperties,
@@ -784,8 +886,11 @@ export function toComponentSet(matrix, extracted, variableIndex) {
       ),
       components,
     },
-    // Ontdubbeld: dezelfde waarschuwing komt per variant terug.
-    warnings: [...new Set(warnings)],
+    // Ontdubbeld: dezelfde waarschuwing komt per variant terug. De matrix mag
+    // er zelf ook een meegeven, voor een beperking die de generator niet kán
+    // zien: `::marker` is geen DOM-element, dus een lijst komt zonder bolletjes
+    // in Figma en niets in de meting valt daarover op te merken.
+    warnings: [...new Set([...(matrix.warnings ?? []), ...warnings])],
     // Wat er aan variables gebonden is, en wat een vaste waarde hield.
     bindings: { ...report.summary(), modes: variableIndex?.modes },
   };

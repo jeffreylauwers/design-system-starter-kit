@@ -216,6 +216,33 @@ daarmee een aanraakdoel onder [WCAG 2.5.5](https://www.w3.org/WAI/WCAG22/quickre
 de rest aan hun token gebonden. Ze bestaan in Figma alleen op een auto-layout
 frame; op een frame zonder layoutMode komen ze in het report.
 
+### Blokken krijgen alsnog auto layout
+
+Figma kent padding, `minWidth` en `minHeight` uitsluitend op een auto-layout
+frame. Een element dat in CSS gewoon een blok is (een `<input>`, een `<ol>`, de
+footer van een Card) verloor daardoor al zijn spacing-bindingen. De maat klopte
+visueel, want die is gemeten, maar het token erachter was weg: veruit de
+grootste post in het bindingsrapport.
+
+Zo'n element wordt daarom alsnog op verticale auto layout gezet, maar alleen
+als aantoonbaar is dat er niets van verschuift:
+
+| Geval                                             | Waarom het veilig is                    |
+| ------------------------------------------------- | --------------------------------------- |
+| geen kinderen                                     | er valt niets te ordenen                |
+| kinderen staan al onder elkaar, met gelijke gaten | dat is precies wat auto layout ook doet |
+
+Overlappen de kinderen, staan ze naast elkaar, verschillen de gaten, of is er
+een absoluut gepositioneerd kind bij, dan blijft het frame zonder auto layout
+en komt de padding als vanouds in het rapport. Dat gebeurt bijvoorbeeld bij de
+`invalid`-variant van FormField, waar de marge onder het label verandert zodra
+er een beschrijving achter staat.
+
+Eén ding blijft daarbij liggen: de ruimte tussen blokken komt uit de marges van
+de kinderen en niet uit een `gap`, en de binder leest alleen gaps. De waarde
+klopt dus wel, maar `itemSpacing` hangt aan niets. Dat wordt per variant als
+waarschuwing gemeld in plaats van stil overgeslagen.
+
 ### Randen die niet rondom lopen
 
 Een rand hoeft niet alle vier de zijden te raken. Note tekent alleen een
@@ -416,6 +443,22 @@ export default {
 De `fonts`-lijst is niet optioneel als het component tekst bevat: zonder
 geladen webfont meet de browser met een systeemfont en kloppen de breedtes niet.
 De fontnaam moet ook in Figma beschikbaar zijn.
+
+### Wat een matrix zelf kan meegeven
+
+Twee velden die je zelden nodig hebt, maar zonder welke een component niet
+klopt:
+
+- **`setName`** overschrijft de naam van de component set. Die komt normaal uit
+  de eerste CSS-klasse van de root, en dat gaat mis zodra de root meerdere
+  blokklassen draagt: HeadingGroup is `class="dsn-heading dsn-heading--2
+dsn-heading-group"`, dus zonder override zouden Heading en HeadingGroup
+  allebei `dsn-heading` heten.
+- **`warnings`** zet een vaste waarschuwing in de spec, voor een beperking die
+  de generator zelf niet kán zien. `::marker` is het voorbeeld: de bolletjes van
+  een UnorderedList zijn een pseudo-element en dus geen DOM-node, dus er valt
+  niets te meten en niets in de meting valt daarover op te merken. Wat er wél
+  in Figma landt is de typografie, de inspringing en de afstand tussen items.
 
 ## Component properties
 
