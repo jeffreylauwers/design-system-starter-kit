@@ -539,11 +539,23 @@ export function createTokenReader(trackedProperties) {
       let owner = element;
       let winner = winnersFor(owner).get(property);
 
-      while (!winner && INHERITED.has(property) && owner.parentElement) {
+      // `color: inherit` is geen waarde maar een verwijzing: het element neemt
+      // de berekende waarde van zijn ouder over. Zonder deze stap zou het als
+      // winnaar zonder var()-keten binnenkomen en dus als "de waarde komt niet
+      // uit één token" wegvallen. Een icoon in een StatusBadge kreeg zo een
+      // vaste kleur en volgde de theme-schakelaar niet.
+      const isInherit = (candidate) =>
+        candidate && candidate.value.trim().toLowerCase() === 'inherit';
+
+      while (
+        (!winner || isInherit(winner)) &&
+        INHERITED.has(property) &&
+        owner.parentElement
+      ) {
         owner = owner.parentElement;
         winner = winnersFor(owner).get(property);
       }
-      if (!winner) continue;
+      if (!winner || isInherit(winner)) continue;
 
       sources[property] = {
         chain: chainFor(owner, winner.value),

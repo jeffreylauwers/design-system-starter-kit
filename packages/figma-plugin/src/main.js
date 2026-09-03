@@ -37,7 +37,7 @@ async function runImport(message, log) {
     return `${result.created} iconen toegevoegd, ${result.updated} bijgewerkt`;
   }
   const result = await importComponentSet(message.payload, log);
-  return `${result.variants} varianten, ${result.bindings.bound} bindingen`;
+  return `${result.variants} varianten, ${result.bindings.bound} bindingen${result.page ? ` op ${result.page}` : ''}`;
 }
 
 async function handleImport(message) {

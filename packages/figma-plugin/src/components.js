@@ -22,6 +22,7 @@ import {
 } from './bindings.js';
 import { recolorVectors } from './svg.js';
 import { ICON_PAGE, loadIconIndex } from './icons.js';
+import { findOrCreatePage, openPage, sortManagedPages } from './pages.js';
 
 /** Figma verwacht een style-naam, geen numeriek gewicht. */
 const WEIGHT_TO_STYLE = {
@@ -86,6 +87,12 @@ function applyPaints(target, spec) {
     target.strokes = spec.strokes;
     if (spec.strokeWeight !== undefined)
       target.strokeWeight = spec.strokeWeight;
+    // Na strokeWeight: dat veld zet in Figma alle vier de zijden tegelijk, dus
+    // de losse diktes moeten erna komen. Zonder deze stap loopt de accentrand
+    // van een Note rondom in plaats van alleen aan de inline-start.
+    for (const [field, weight] of Object.entries(spec.strokeWeights ?? {})) {
+      target[field] = weight;
+    }
     if (spec.dashPattern) target.dashPattern = spec.dashPattern;
   }
 }
@@ -493,6 +500,49 @@ function applyComponentProperties(set, properties, variants, context) {
  * @param {object} payload de inhoud van een {component}.json
  * @param {object} log verzamelaar met .info/.warn/.error
  */
+/**
+ * De ruimte tussen twee component sets als er al een op de pagina staat.
+ * Ruim genoeg om de oude en de nieuwe uit elkaar te houden.
+ */
+const CANVAS_MARGIN = 120;
+
+/**
+ * De opmaak van de component set zelf: de plaat waar de varianten op staan.
+ *
+ * Varianten onder elkaar met lucht ertussen, op de documentachtergrond van het
+ * design system in plaats van op het grijs van Figma. Die achtergrond wordt aan
+ * zijn variable gebonden, zodat een designer die de `dsn/Primitives`-mode naar
+ * `start-dark` zet niet naar donkere componenten op een lichte plaat kijkt.
+ *
+ * Zonder canvas in de spec blijft het gedrag van vóór deze stap: alleen de
+ * verticale stapeling, zodat een oudere `dist/{component}.json` niet omvalt.
+ */
+function applyCanvas(set, canvas, context) {
+  set.layoutMode = 'VERTICAL';
+  set.counterAxisSizingMode = 'AUTO';
+  set.primaryAxisSizingMode = 'AUTO';
+
+  if (!canvas) {
+    set.itemSpacing = 24;
+    return;
+  }
+
+  set.itemSpacing = canvas.itemSpacing;
+  // Na layoutMode: Figma kent padding alleen op een auto-layout frame.
+  for (const side of [
+    'paddingTop',
+    'paddingRight',
+    'paddingBottom',
+    'paddingLeft',
+  ]) {
+    set[side] = canvas.padding;
+  }
+
+  if (canvas.fills) set.fills = canvas.fills;
+  // Met de naam van de set erbij, zodat een mislukte binding te herleiden is.
+  applyBindings(set, { ...canvas, name: set.name }, context);
+}
+
 export async function importComponentSet(payload, log) {
   if (payload.$schema !== 'dsn-figma-components/1') {
     throw new Error(
@@ -527,7 +577,25 @@ export async function importComponentSet(payload, log) {
     slots: new Map(),
   };
 
-  const page = figma.currentPage;
+  // Eén pagina per component. `createNodeFromSvg` (voor de ingebakken iconen)
+  // en `combineAsVariants` werken op de huidige pagina, dus die moet ook echt
+  // open staan en niet alleen bestaan.
+  const page = spec.page
+    ? await findOrCreatePage(spec.page)
+    : figma.currentPage;
+  await openPage(page);
+
+  // Een tweede import maakt een nieuwe set aan in plaats van de bestaande bij
+  // te werken; zie de README. Op een eigen pagina wordt dat zichtbaar als twee
+  // sets met dezelfde naam, en dat is beter gemeld dan stil.
+  const previousSets = page.children.filter(
+    (node) => node.type === 'COMPONENT_SET' && node.name === spec.name
+  );
+  const startY = previousSets.length
+    ? Math.max(...previousSets.map((node) => node.y + node.height)) +
+      CANVAS_MARGIN
+    : 0;
+
   const components = [];
   let cursorX = 0;
   let rowHeight = 0;
@@ -563,7 +631,7 @@ export async function importComponentSet(payload, log) {
 
     // Varianten naast elkaar leggen; combineAsVariants ordent daarna zelf.
     wrapper.x = cursorX;
-    wrapper.y = 0;
+    wrapper.y = startY;
     cursorX += wrapper.width + 40;
     rowHeight = Math.max(rowHeight, wrapper.height);
     components.push(wrapper);
@@ -578,10 +646,6 @@ export async function importComponentSet(payload, log) {
   try {
     set = figma.combineAsVariants(components, page);
     set.name = spec.name;
-    set.layoutMode = 'VERTICAL';
-    set.itemSpacing = 24;
-    set.counterAxisSizingMode = 'AUTO';
-    set.primaryAxisSizingMode = 'AUTO';
   } catch (error) {
     log.error(
       `Component set "${spec.name}" kon niet gecombineerd worden: ${error.message}. De losse varianten staan wel op de pagina.`
@@ -593,6 +657,8 @@ export async function importComponentSet(payload, log) {
       bindings: reportBindings(payload, stats, log),
     };
   }
+
+  applyCanvas(set, spec.canvas, context);
 
   log.info(`${spec.name}: ${components.length} varianten gecombineerd`);
   reportBindings(payload, stats, log);
@@ -610,11 +676,21 @@ export async function importComponentSet(payload, log) {
     for (const warning of payload.warnings) log.warn(warning);
   }
 
+  if (previousSets.length) {
+    log.warn(
+      `Er stond al een "${spec.name}" op ${page.name}; de nieuwe set staat eronder. Een bestaande set bijwerken zou elke geplaatste instance detachen, dus dat is handwerk: zet de instances over en verwijder daarna de oude set.`
+    );
+  }
+
+  // Pas nadat de pagina bestaat: de nieuwe pagina moet mee in de sortering.
+  await sortManagedPages();
+
   figma.currentPage.selection = [set];
   figma.viewport.scrollAndZoomIntoView([set]);
 
   return {
     name: spec.name,
+    page: page.name,
     variants: components.length,
     combined: true,
     bindings: { ...stats, missing: [...stats.missing] },

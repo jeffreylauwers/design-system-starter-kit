@@ -7,6 +7,7 @@
  * variant properties in Figma.
  */
 
+import { icon } from '../icons.js';
 import { TEKST } from '../text.js';
 
 /**
@@ -21,11 +22,8 @@ import { TEKST } from '../text.js';
  * variant die het slot niet rendert zou de property de helft van de tijd niets
  * laten doen.
  */
-const icon = (name, slot, path) =>
-  `<svg class="dsn-icon" data-icon="${name}" data-figma-slot="${slot}" aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="${path}"/></svg>`;
-
-const ICON_START = icon('chevron-left', 'icon-start', 'M15 6l-6 6 6 6');
-const ICON_END = icon('chevron-right', 'icon-end', 'M9 6l6 6-6 6');
+const ICON_START = icon('chevron-left', { slot: 'icon-start' });
+const ICON_END = icon('chevron-right', { slot: 'icon-end' });
 
 export default {
   component: 'Button',

@@ -35,8 +35,6 @@ const FRAME_FIELDS = [
     kind: 'paint',
     materialise: true,
   },
-  { field: 'strokes', property: 'border-top-color', kind: 'paint' },
-  { field: 'strokeWeight', property: 'border-top-width', kind: 'number' },
   {
     field: 'topLeftRadius',
     property: 'border-top-left-radius',
@@ -65,6 +63,30 @@ const FRAME_FIELDS = [
   { field: 'paddingLeft', property: 'padding-left', kind: 'number' },
 ];
 
+/**
+ * De randvelden, aan de zijde die de rand daadwerkelijk tekent.
+ *
+ * Een rand die maar aan één kant loopt (de accentrand van Note, de scheidslijn
+ * in een tabelrij) heeft aan de andere zijden helemaal geen token. Binden aan
+ * `border-top-color` zou daar niets vinden, of erger: het token van een zijde
+ * die niets tekent.
+ *
+ * Verschillen de zijden, dan zet de generator per zijde een `stroke*Weight`;
+ * dan is dát het veld dat gebonden moet worden, want `strokeWeight` zet in
+ * Figma alle vier de zijden tegelijk en zou de rand rondom laten lopen.
+ */
+function strokeFieldsFor(spec) {
+  const side = spec.strokeSide ?? 'top';
+  const weightField = spec.strokeWeights
+    ? `stroke${side[0].toUpperCase()}${side.slice(1)}Weight`
+    : 'strokeWeight';
+
+  return [
+    { field: 'strokes', property: `border-${side}-color`, kind: 'paint' },
+    { field: weightField, property: `border-${side}-width`, kind: 'number' },
+  ];
+}
+
 const TEXT_FIELDS = [
   { field: 'fills', property: 'color', kind: 'paint', materialise: true },
   { field: 'fontSize', property: 'font-size', kind: 'number' },
@@ -81,6 +103,11 @@ function measuredValue(spec, field) {
       return spec.fills?.[0];
     case 'strokes':
       return spec.strokes?.[0];
+    case 'strokeTopWeight':
+    case 'strokeRightWeight':
+    case 'strokeBottomWeight':
+    case 'strokeLeftWeight':
+      return spec.strokeWeights?.[field];
     case 'topLeftRadius':
     case 'topRightRadius':
     case 'bottomRightRadius':
@@ -193,7 +220,7 @@ export function bindingsFor(spec, sources, index, report) {
       ? TEXT_FIELDS
       : spec.type === 'VECTOR'
         ? VECTOR_FIELDS
-        : FRAME_FIELDS;
+        : [...FRAME_FIELDS, ...strokeFieldsFor(spec)];
 
   const bound = {};
 

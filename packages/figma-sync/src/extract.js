@@ -60,7 +60,15 @@ const CAPTURED_PROPERTIES = [
   'borderBottomWidth',
   'borderLeftWidth',
   'borderTopColor',
-  'borderStyle',
+  'borderRightColor',
+  'borderBottomColor',
+  'borderLeftColor',
+  // Per zijde, niet de shorthand: bij verschillende randen geeft de browser
+  // daar "none none none solid" terug en is er niets uit af te leiden.
+  'borderTopStyle',
+  'borderRightStyle',
+  'borderBottomStyle',
+  'borderLeftStyle',
   'borderTopLeftRadius',
   'borderTopRightRadius',
   'borderBottomLeftRadius',
@@ -273,6 +281,11 @@ export async function extractMatrix(matrix) {
       .map((value) => matrix.pseudoStates?.[value])
       .find(Boolean);
     if (pseudo === 'hover') await page.hover('[data-figma-root]');
+    // `:focus-visible` ontstaat alleen bij toetsenbordfocus; een
+    // programmatische `.focus()` zet hem in Chromium niet. Tab landt op het
+    // eerste focusbare element, dus een matrix met een focus-as hoort er maar
+    // één te renderen.
+    if (pseudo === 'focus') await page.keyboard.press('Tab');
 
     await page.evaluate(installTokenReader);
 

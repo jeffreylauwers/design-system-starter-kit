@@ -190,37 +190,77 @@ function autoLayoutFrom(styles, wideStyles, warnings, pathLabel) {
   };
 }
 
-/** Randen: alleen uniforme randen worden een Figma stroke. */
+/** De vier randen, in de volgorde die CSS aanhoudt. */
+const SIDES = ['top', 'right', 'bottom', 'left'];
+
+/** `top` -> `strokeTopWeight`. */
+function weightFieldFor(side) {
+  return `stroke${side[0].toUpperCase()}${side.slice(1)}Weight`;
+}
+
+/**
+ * Randen naar een Figma stroke.
+ *
+ * Een rand hoeft niet rondom te lopen. Note tekent alleen een accentrand aan de
+ * inline-start, en Table en SummaryList scheiden hun rijen met één lijn. Zo'n
+ * rand als uniforme stroke overnemen zou in Figma een kader om het hele
+ * component zetten: niet een waarschuwing waard maar een verkeerd component.
+ *
+ * Figma kent daarom per zijde een `stroke*Weight`. Die worden gezet zodra de
+ * zijden verschillen; de zijden zonder rand komen op 0 en tekenen dus niets.
+ * `strokeWeight` blijft de dikste waarde, want dat is wat Figma teruggeeft
+ * zolang er nog niets per zijde gezet is.
+ */
 function strokesFrom(styles, warnings, pathLabel) {
-  const widths = [
-    px(styles.borderTopWidth),
-    px(styles.borderRightWidth),
-    px(styles.borderBottomWidth),
-    px(styles.borderLeftWidth),
-  ];
-  const maximum = Math.max(...widths);
-  if (maximum === 0 || styles.borderStyle === 'none') return null;
+  const widths = SIDES.map((side) =>
+    px(styles[`border${side[0].toUpperCase()}${side.slice(1)}Width`])
+  );
+  // Bij verschillende randen per zijde geeft de browser de shorthand terug
+  // ("none none none solid"); per zijde uitlezen is de betrouwbare route.
+  const borderStyles = SIDES.map(
+    (side) => styles[`border${side[0].toUpperCase()}${side.slice(1)}Style`]
+  );
 
-  const uniform = widths.every((width) => width === widths[0]);
-  if (!uniform) {
+  const drawn = SIDES.map(
+    (_, index) => widths[index] > 0 && borderStyles[index] !== 'none'
+  );
+  if (!drawn.some(Boolean)) return null;
+
+  // De zijde die de rand daadwerkelijk tekent levert kleur, dikte en stijl.
+  // Bij Note is dat `left`, en `border-top-color` bestaat daar niet eens.
+  const reference = drawn.indexOf(true);
+  const side = SIDES[reference];
+  const style = borderStyles[reference];
+
+  if (style !== 'solid' && style !== 'dashed') {
     warnings.push(
-      `${pathLabel}: ongelijke randbreedtes (${widths.join('/')}), Figma krijgt de dikste`
+      `${pathLabel}: border-style ${style} wordt in Figma een doorlopende lijn`
     );
   }
-  if (styles.borderStyle !== 'solid') {
-    warnings.push(
-      `${pathLabel}: border-style ${styles.borderStyle} wordt in Figma een dashPattern`
-    );
-  }
 
-  const color = parseCssColor(styles.borderTopColor);
+  const color = parseCssColor(
+    styles[`border${side[0].toUpperCase()}${side.slice(1)}Color`]
+  );
   if (!color) return null;
 
-  return {
-    strokeWeight: maximum,
+  const effective = widths.map((width, index) => (drawn[index] ? width : 0));
+  const uniform = effective.every((width) => width === effective[0]);
+
+  const spec = {
+    strokeWeight: Math.max(...effective),
     strokes: [{ type: 'SOLID', color: rgbOf(color), opacity: color.a }],
-    dashPattern: styles.borderStyle === 'dashed' ? [4, 4] : [],
+    dashPattern: style === 'dashed' ? [4, 4] : [],
+    // Waar de rand vandaan komt; bindings.js bindt aan de tokens van díe zijde.
+    strokeSide: side,
   };
+
+  if (!uniform) {
+    spec.strokeWeights = Object.fromEntries(
+      SIDES.map((name, index) => [weightFieldFor(name), effective[index]])
+    );
+  }
+
+  return spec;
 }
 
 /**
@@ -446,7 +486,11 @@ function convertElement(node, wideNode, warnings, pathLabel, bindings) {
   if (node.kind === 'vector') {
     const vector = {
       type: 'VECTOR',
-      name: node.iconName ?? 'icon',
+      // `iconName` komt uit `data-icon` en is het koppelstuk met de iconset.
+      // Een SVG die géén icoon uit die set is (de cirkel van Spinner) valt
+      // terug op zijn eigen klassenaam: "icon" zou een designer het bestand
+      // laten opentrekken om te zien wat de laag voorstelt.
+      name: node.iconName ?? node.classes[0] ?? 'icon',
       width: node.rect.width,
       height: node.rect.height,
       // De plugin importeert dit met figma.createNodeFromSvg().
@@ -619,6 +663,69 @@ function checkComponentProperties(declared, components, warnings) {
   });
 }
 
+// =============================================================================
+// HET CANVAS ROND EEN COMPONENT SET
+// =============================================================================
+
+/**
+ * De pagina waar een component set op komt te staan.
+ *
+ * Eén pagina per component, met dezelfde `dsn/`-vorm als `dsn/Icons`. Alles op
+ * één pagina zetten werkt alleen zolang het er vijf zijn: bij de volle
+ * bibliotheek is een pagina per component de enige indeling waarin een designer
+ * een component terugvindt zonder eerst het hele canvas af te scrollen.
+ *
+ * De naam volgt de matrix en niet de CSS-klasse. De set zelf heet `dsn-button`,
+ * want dat is waar een designer in de code op zoekt; een paginalijst leest
+ * prettiger als `dsn/Button`, en de plugin sorteert die lijst alfabetisch.
+ */
+export function pageNameFor(component) {
+  return `dsn/${component}`;
+}
+
+/**
+ * De ruimte rond en tussen de varianten op het canvas.
+ *
+ * Bewust een vast getal en geen token: dit is de presentatie van de
+ * bibliotheekpagina, geen eigenschap van het component. Een spacing-token
+ * hieraan hangen zou betekenen dat de afstand tussen twee varianten meebeweegt
+ * met een densitywissel, en dat zegt over het component niets.
+ */
+const CANVAS_SPACING = 48;
+
+/**
+ * De achtergrond van het canvas is de documentachtergrond van het design
+ * system, gebonden aan zijn variable.
+ *
+ * Zonder dit staat de set op het grijs van Figma zelf. Dat is niet alleen
+ * lelijk: schakelt een designer de `dsn/Primitives`-mode naar `start-dark`, dan
+ * worden de componenten donker op een lichte plaat en is er geen enkele variant
+ * meer te lezen. Gebonden aan de variable schakelt de plaat mee.
+ *
+ * Net als de kleur van de iconset is dit een gekozen standaard en geen gemeten
+ * binding: er is geen element op het canvas om tegen af te zetten. De
+ * verificatie uit DR-2026-06 geldt hier dus niet.
+ */
+const CANVAS_BACKGROUND = 'dsn-color-neutral-bg-document';
+
+function canvasFor(variableIndex, report) {
+  const canvas = { padding: CANVAS_SPACING, itemSpacing: CANVAS_SPACING };
+
+  const variable = variableIndex?.lookup(CANVAS_BACKGROUND);
+  if (!variable || variable.type !== 'COLOR' || !variable.value) return canvas;
+
+  const { r, g, b, a = 1 } = variable.value;
+  canvas.fills = [{ type: 'SOLID', color: { r, g, b }, opacity: a }];
+  canvas.boundVariables = {
+    fills: { collection: variable.collection, name: variable.name },
+  };
+  // Meetellen in hetzelfde rapport als de rest: de plugin legt deze binding via
+  // dezelfde route, en de smoke test vergelijkt beide aantallen.
+  report.bind(variable.collection);
+
+  return canvas;
+}
+
 /**
  * Bouwt een complete Figma component set uit de geëxtraheerde varianten.
  *
@@ -651,10 +758,17 @@ export function toComponentSet(matrix, extracted, variableIndex) {
     return { name: label, variantProperties: variant, node };
   });
 
+  // Vóór report.summary(): de achtergrondbinding telt mee in hetzelfde rapport.
+  const canvas = canvasFor(variableIndex, report);
+
   return {
     $schema: 'dsn-figma-components/1',
     generatedAt: new Date().toISOString(),
     componentSet: {
+      // Eén pagina per component; de plugin maakt hem aan en zet de
+      // `dsn/`-pagina's daarna alfabetisch.
+      page: pageNameFor(matrix.component),
+      canvas,
       // De naam die een designer in Figma terugvindt is de CSS-klasse, niet de
       // matrixnaam: `dsn-button` is waar hij in de code op zoekt. Klapt de root
       // om welke reden dan ook niet naar een `dsn-`-element, dan blijft de

@@ -134,6 +134,21 @@ class Node {
     this.children.push(child);
   }
 
+  /**
+   * Zoals in Figma: een node die al een ouder heeft wordt verplaatst, niet
+   * gekopieerd. De paginasortering leunt daarop.
+   */
+  insertChild(index, child) {
+    if (index < 0 || index > this.children.length) {
+      throw new Error(`insertChild: index ${index} valt buiten de lijst`);
+    }
+    if (child.parent) {
+      child.parent.children = child.parent.children.filter((c) => c !== child);
+    }
+    child.parent = this;
+    this.children.splice(index, 0, child);
+  }
+
   resize(width, height) {
     this.width = width;
     this.height = height;
