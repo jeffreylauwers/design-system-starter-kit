@@ -38,6 +38,38 @@ async function loadMatrices(requested) {
   );
 }
 
+/**
+ * Ruimt specs op waar geen matrix meer bij hoort.
+ *
+ * `dist/` staat in `.gitignore` en overleeft dus een branchwissel. Een matrix
+ * die op de ene branch bestaat en op de andere niet laat daar zijn JSON achter,
+ * en die wordt daarna gewoon meegenomen door `pnpm test:figma-plugin` en door
+ * de plugin. Dan test je een spec van de ene branch tegen een plugin van de
+ * andere, zonder dat iets je waarschuwt.
+ *
+ * Alleen bij een volledige build: draait er een filter mee (`build-components
+ * button`), dan zegt het ontbreken van de andere bestanden niets over hun
+ * bestaansrecht en zou opruimen juist weggooien wat er hoort te staan.
+ *
+ * `icons.json` blijft altijd staan: dat bestand komt van `build-icons.js` en
+ * heeft geen matrix.
+ */
+function pruneStaleSpecs(matrices) {
+  const expected = new Set([
+    'icons.json',
+    ...matrices.map(({ key }) => `${key}.json`),
+  ]);
+
+  const stale = fs
+    .readdirSync(outputDir)
+    .filter((file) => file.endsWith('.json'))
+    .filter((file) => !expected.has(file));
+
+  for (const file of stale) fs.rmSync(path.join(outputDir, file));
+
+  return stale;
+}
+
 async function main() {
   const requested = process.argv.slice(2);
   const matrices = await loadMatrices(requested);
@@ -49,6 +81,14 @@ async function main() {
 
   fs.mkdirSync(outputDir, { recursive: true });
   console.log('🧩 Building Figma component specs...\n');
+
+  // Alleen bij een volledige build; zie pruneStaleSpecs.
+  const stale = requested.length ? [] : pruneStaleSpecs(matrices);
+  if (stale.length) {
+    console.log(
+      `   🧹 ${stale.length} verouderde spec${stale.length === 1 ? '' : 's'} opgeruimd: ${stale.join(', ')}\n      Er is geen matrix meer die daarbij hoort.\n`
+    );
+  }
 
   // De variables bepalen wat er te binden valt. Ontbreken ze, dan draait de
   // build gewoon door met vaste waarden; de componenten volgen dan alleen de

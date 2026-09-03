@@ -71,6 +71,24 @@ hoofdproduct waar Storybook, de componenten en npm-consumenten van afhangen;
 die hoort niet om te vallen door een fout in een generator die er alleen maar
 naast draait. Faalt de Figma-keten, dan faalt alleen de Figma-keten.
 
+### `dist/` wordt opgeruimd, maar alleen bij een volledige build
+
+Een volledige `build:figma-components` verwijdert elke `dist/{component}.json`
+waar geen matrix meer bij hoort, en meldt wat er weg is. `icons.json` blijft
+staan: dat bestand komt van `build-icons.js` en heeft geen matrix.
+
+Dat is nodig omdat `dist/` in `.gitignore` staat en dus een branchwissel
+overleeft. Een matrix die op de ene branch bestaat en op de andere niet laat
+daar zijn JSON achter, en die wordt daarna gewoon opgepakt door
+`pnpm test:figma-plugin` en door de plugin. Je test dan een spec van de ene
+branch tegen een plugin van de andere, en dat ziet er precies uit als een echte
+regressie: een bindingsaantal dat één afwijkt, of een component set die op de
+verkeerde plek belandt.
+
+Draait er een filter mee (`build:figma-components button`), dan wordt er niets
+opgeruimd. Het ontbreken van de andere bestanden zegt daar niets over hun
+bestaansrecht, en opruimen zou weggooien wat er hoort te staan.
+
 ## Hoe de componentgeneratie werkt
 
 De CSS parsen om Figma-nodes te bouwen werkt niet: cascade, custom properties,
