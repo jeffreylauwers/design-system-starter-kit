@@ -52,12 +52,13 @@ function drawingPaths(name) {
  * Eén icoon als inline SVG, klaar voor de meetpagina.
  *
  * @param {string} name bestandsnaam uit de assets-map, zonder `.svg`
- * @param {{modifier?: string, slot?: string}} [options]
- *   `modifier` is een `dsn-icon--*`-maatklasse, `slot` een `data-figma-slot`
- *   waar een component property aan hangt.
+ * @param {{modifier?: string, className?: string, slot?: string}} [options]
+ *   `modifier` is een `dsn-icon--*`-maatklasse, `className` een extra klasse
+ *   waarmee een component zijn eigen icoon aanstuurt (`dsn-icon-list__icon`),
+ *   en `slot` een `data-figma-slot` waar een component property aan hangt.
  */
-export function icon(name, { modifier, slot } = {}) {
-  const classes = ['dsn-icon', modifier && `dsn-icon--${modifier}`]
+export function icon(name, { modifier, className, slot } = {}) {
+  const classes = ['dsn-icon', modifier && `dsn-icon--${modifier}`, className]
     .filter(Boolean)
     .join(' ');
   const slotAttribute = slot ? ` data-figma-slot="${slot}"` : '';

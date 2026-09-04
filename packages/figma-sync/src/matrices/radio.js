@@ -9,8 +9,9 @@
  *
  * Radio kent geen indeterminate-toestand.
  *
- * Let op: de CSS staat in components-react in plaats van components-html.
- * Zie het issue over de ontbrekende HTML/CSS-laag voor formuliercontrols.
+ * Zelfde valkuil als bij Checkbox: deze matrix wees naar de re-export in
+ * components-react, en die is nog maar een `@import`. Een `@import` lost in een
+ * inline `<style>` niet op, dus de Radio werd ongestyled gemeten.
  */
 
 export default {
@@ -22,7 +23,7 @@ export default {
 
   css: [
     '@dsn-starter-kit/design-tokens/dist/css/start-light-default.css',
-    '@dsn-starter-kit/components-react/src/Radio/Radio.css',
+    '@dsn-starter-kit/components-html/src/radio/radio.css',
   ],
 
   axes: {

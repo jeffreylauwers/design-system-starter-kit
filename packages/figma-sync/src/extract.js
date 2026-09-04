@@ -25,6 +25,46 @@ function resolveCssPath(specifier) {
 }
 
 /**
+ * Leest een stylesheet en vervangt zijn `@import`-regels door de inhoud waar ze
+ * naar wijzen.
+ *
+ * De stylesheets gaan als tekst in een `<style>`-blok, en daarin lost een
+ * relatief `@import` nooit op: er is geen basis-URL om hem tegen af te zetten.
+ * Dat ging stil mis. `components-react/src/Checkbox/Checkbox.css` is sinds de
+ * verhuizing van de formuliercontrols nog maar één regel, namelijk een
+ * `@import` van de echte CSS in `components-html`, en de Checkbox werd daardoor
+ * volledig ongestyled gemeten: geen kleuren, geen randen, geen enkele binding.
+ * De build was groen, want een component zonder tokens levert ook geen
+ * misgelopen bindingen op.
+ *
+ * Een import die niet te vinden is gooit daarom, in plaats van te verdwijnen.
+ * Beter een build die stukloopt dan een Figma-component dat er is maar leeg.
+ */
+function readStylesheet(file, seen = new Set()) {
+  if (seen.has(file)) return '';
+  seen.add(file);
+
+  const source = fs.readFileSync(file, 'utf8');
+
+  return source.replace(
+    /@import\s+(?:url\()?['"]([^'"]+)['"]\)?\s*;/g,
+    (statement, specifier) => {
+      const target = specifier.startsWith('@dsn-starter-kit/')
+        ? resolveCssPath(specifier)
+        : path.resolve(path.dirname(file), specifier);
+
+      if (!fs.existsSync(target)) {
+        throw new Error(
+          `${file} doet \`${statement}\`, maar ${target} bestaat niet. Een @import lost in een inline <style> niet op, dus dit zou een component zonder stijl opleveren.`
+        );
+      }
+
+      return readStylesheet(target, seen);
+    }
+  );
+}
+
+/**
  * Eigenschappen die we uitlezen. Alles wat hier niet in staat bestaat voor de
  * generator niet, dus deze lijst is de feitelijke scope van de conversie.
  */
@@ -206,7 +246,7 @@ const GRID_PROBE_DELTA = 240;
 export async function extractMatrix(matrix) {
   const stylesheets = [...BASE_CSS, ...matrix.css]
     .map(resolveCssPath)
-    .map((file) => fs.readFileSync(file, 'utf8'))
+    .map((file) => readStylesheet(file))
     .join('\n');
 
   const fontLinks = (matrix.fonts ?? [])
