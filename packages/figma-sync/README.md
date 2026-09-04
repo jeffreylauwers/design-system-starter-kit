@@ -614,10 +614,11 @@ De extractor loopt de DOM af, en een pseudo-element is geen DOM-node. Dat raakt
 drie plekken, en op alle drie staat het als vaste `warnings`-regel in de matrix
 in plaats van dat het stil blijft:
 
-| Pseudo-element           | Component                  | Wat ontbreekt            |
-| ------------------------ | -------------------------- | ------------------------ |
-| `::marker`               | UnorderedList, OrderedList | bolletjes en nummers     |
-| `::file-selector-button` | FileInput                  | de knop "Bestand kiezen" |
+| Pseudo-element           | Component                  | Wat ontbreekt             |
+| ------------------------ | -------------------------- | ------------------------- |
+| `::marker`               | UnorderedList, OrderedList | bolletjes en nummers      |
+| `::file-selector-button` | FileInput                  | de knop "Bestand kiezen"  |
+| `::backdrop`             | ModalDialog, Drawer        | de verduistering erachter |
 
 `IconList` laat zien wat het alternatief is: die zet `list-style: none` en
 tekent zijn markering met een echt `<svg>`, en komt daardoor wel volledig over.
