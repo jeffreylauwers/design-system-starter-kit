@@ -16,7 +16,7 @@ export default {
 
   css: [
     '@dsn-starter-kit/design-tokens/dist/css/start-light-default.css',
-    '@dsn-starter-kit/components-react/src/Radio/Radio.css',
+    '@dsn-starter-kit/components-html/src/radio/radio.css',
     '@dsn-starter-kit/components-html/src/option-label/option-label.css',
     '@dsn-starter-kit/components-html/src/radio-option/radio-option.css',
     '@dsn-starter-kit/components-html/src/radio-group/radio-group.css',

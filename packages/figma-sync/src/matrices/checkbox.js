@@ -5,9 +5,11 @@
  * custom control liggen allebei absoluut over elkaar heen. De input is
  * bovendien volledig doorzichtig en wordt door de extractor overgeslagen.
  *
- * Let op: de CSS van dit component staat in components-react en niet in
- * components-html, anders dan het twee-lagen-patroon voorschrijft. De css-lijst
- * hieronder wijst daarom naar een ander package dan bij de overige matrices.
+ * De css-lijst wees hier lang naar `components-react/src/Checkbox/Checkbox.css`,
+ * uit de tijd dat de formuliercontrols daar hun CSS hadden. Sinds die verhuisd
+ * zijn is dat bestand nog maar een `@import` van de echte CSS, en een `@import`
+ * lost in een inline `<style>` niet op: de Checkbox werd daardoor volledig
+ * ongestyled gemeten. De extractor gooit nu op zo'n import.
  *
  * Het vinkje komt uit de assets-map, net als in `Checkbox.tsx` (`<Icon
  * name="check">`). Het stond hier eerst als overgetypt pad op `stroke-width=3`,
@@ -28,7 +30,7 @@ export default {
   css: [
     '@dsn-starter-kit/design-tokens/dist/css/start-light-default.css',
     '@dsn-starter-kit/components-html/src/icon/icon.css',
-    '@dsn-starter-kit/components-react/src/Checkbox/Checkbox.css',
+    '@dsn-starter-kit/components-html/src/checkbox/checkbox.css',
   ],
 
   axes: {

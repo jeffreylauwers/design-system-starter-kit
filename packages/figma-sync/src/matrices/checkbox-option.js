@@ -22,7 +22,7 @@ export default {
   css: [
     '@dsn-starter-kit/design-tokens/dist/css/start-light-default.css',
     '@dsn-starter-kit/components-html/src/icon/icon.css',
-    '@dsn-starter-kit/components-react/src/Checkbox/Checkbox.css',
+    '@dsn-starter-kit/components-html/src/checkbox/checkbox.css',
     '@dsn-starter-kit/components-html/src/option-label/option-label.css',
     '@dsn-starter-kit/components-html/src/checkbox-option/checkbox-option.css',
   ],
