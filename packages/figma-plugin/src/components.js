@@ -208,6 +208,44 @@ function applySizing(node, spec, log) {
       log.warn(`${spec.name ?? spec.type}: ${axis}=${value} niet toegestaan`);
     }
   }
+
+  // De gemeten maat wordt in applyFrame gezet, maar dat gebeurt vóór de auto
+  // layout en vóór de kinderen. Daarna rekent Figma de maat opnieuw uit, en
+  // FIXED bevriest dus niet de gemeten waarde maar wat Figma er zelf van
+  // maakte. Zichtbaar bij Checkbox als `20.08 x 24`: de breedte was gekrompen
+  // naar het vinkje en dáár vastgezet.
+  //
+  // Een FIXED as krijgt daarom hier zijn gemeten maat terug, ná alles wat hem
+  // kon verschuiven.
+  const fixedWidth = spec.layoutSizingHorizontal === 'FIXED' && spec.width;
+  const fixedHeight = spec.layoutSizingVertical === 'FIXED' && spec.height;
+  if (!fixedWidth && !fixedHeight) return;
+
+  try {
+    node.resize(
+      fixedWidth ? spec.width : node.width,
+      fixedHeight ? spec.height : node.height
+    );
+  } catch (error) {
+    log.warn(
+      `${spec.name ?? spec.type}: kon de gemeten maat niet terugzetten: ${error.message}`
+    );
+    return;
+  }
+
+  // `resize` zet een as die op HUG stond om naar FIXED. Bij een node die maar
+  // op één as vast is (een Alert is FIXED breed en HUG hoog) zou de hoogte
+  // daarmee stilletjes bevriezen en niet meer meegroeien met zijn tekst.
+  for (const axis of ['layoutSizingHorizontal', 'layoutSizingVertical']) {
+    if (spec[axis] !== 'HUG') continue;
+    try {
+      node[axis] = 'HUG';
+    } catch {
+      log.warn(
+        `${spec.name ?? spec.type}: ${axis}=HUG niet hersteld na resize`
+      );
+    }
+  }
 }
 
 /**

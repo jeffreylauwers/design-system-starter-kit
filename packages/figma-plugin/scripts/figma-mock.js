@@ -132,6 +132,58 @@ class Node {
     }
     child.parent = this;
     this.children.push(child);
+    this.recomputeFromChildren();
+  }
+
+  /**
+   * Zoals in Figma: een auto-layout frame rekent op een HUG-as zijn maat
+   * opnieuw uit de inhoud, en gooit daarmee weg wat `resize()` er eerder op
+   * zette. Een vers auto-layout frame hugt standaard, dus een as waarvan de
+   * sizing nog niet expliciet gezet is telt ook als HUG.
+   *
+   * Zonder deze nabootsing was een hele klasse fouten hier onzichtbaar. De
+   * Checkbox kwam in Figma uit op 20.08 breed terwijl de spec 24 zei, en de
+   * smoke test zag alleen de 24 die hij zelf had gezet.
+   *
+   * Absoluut gepositioneerde kinderen tellen niet mee, precies zoals in Figma:
+   * daarom klapte de root van de Checkbox helemaal in.
+   */
+  recomputeFromChildren() {
+    const horizontal = this.layoutMode === 'HORIZONTAL';
+    if (!horizontal && this.layoutMode !== 'VERTICAL') return;
+
+    const flow = this.children.filter(
+      (child) => child.layoutPositioning !== 'ABSOLUTE'
+    );
+    const spacing = Math.max(flow.length - 1, 0) * (this.itemSpacing ?? 0);
+    const along =
+      flow.reduce(
+        (total, child) => total + (horizontal ? child.width : child.height),
+        0
+      ) + spacing;
+    const across = flow.reduce(
+      (widest, child) =>
+        Math.max(widest, horizontal ? child.height : child.width),
+      0
+    );
+
+    const hugs = (axis) =>
+      this[`_${axis}`] === 'HUG' || this[`_${axis}`] === undefined;
+
+    if (hugs('layoutSizingHorizontal')) {
+      this.width =
+        (horizontal ? along : across) +
+        (this.paddingLeft ?? 0) +
+        (this.paddingRight ?? 0);
+    }
+    if (hugs('layoutSizingVertical')) {
+      this.height =
+        (horizontal ? across : along) +
+        (this.paddingTop ?? 0) +
+        (this.paddingBottom ?? 0);
+    }
+
+    this.parent?.recomputeFromChildren?.();
   }
 
   /**

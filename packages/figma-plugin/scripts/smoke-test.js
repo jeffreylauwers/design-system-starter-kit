@@ -654,6 +654,39 @@ for (const file of componentFiles) {
     payload.componentSet.name
   );
 
+  // Een FIXED as hoort de gemeten maat te houden. Figma rekent een auto-layout
+  // frame op een HUG-as opnieuw uit, en dat gebeurt ná de resize in applyFrame:
+  // zonder herstel bevriest FIXED niet de gemeten waarde maar wat Figma ervan
+  // maakte. Zichtbaar geweest als een Checkbox van 20.08 breed in plaats van 24.
+  const wrongSizes = [];
+  const checkFixedSizes = (node, spec) => {
+    if (spec?.layoutSizingHorizontal === 'FIXED' && spec.width) {
+      if (Math.abs(node?.width - spec.width) > 0.5) {
+        wrongSizes.push(
+          `${spec.name}: breedte ${node?.width} i.p.v. ${spec.width}`
+        );
+      }
+    }
+    if (spec?.layoutSizingVertical === 'FIXED' && spec.height) {
+      if (Math.abs(node?.height - spec.height) > 0.5) {
+        wrongSizes.push(
+          `${spec.name}: hoogte ${node?.height} i.p.v. ${spec.height}`
+        );
+      }
+    }
+    (spec?.children ?? []).forEach((childSpec, index) =>
+      checkFixedSizes(node?.children?.[index], childSpec)
+    );
+  };
+  payload.componentSet.components.forEach((component, index) =>
+    checkFixedSizes(built(index), component.node)
+  );
+  check(
+    'een FIXED as houdt de gemeten maat',
+    wrongSizes.length === 0,
+    wrongSizes.length ? `${wrongSizes.length}x, o.a. ${wrongSizes[0]}` : ''
+  );
+
   // ---------------------------------------------------------------------------
   // Het canvas rond de set
   // ---------------------------------------------------------------------------
