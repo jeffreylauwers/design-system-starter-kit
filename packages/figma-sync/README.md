@@ -216,6 +216,24 @@ daarmee een aanraakdoel onder [WCAG 2.5.5](https://www.w3.org/WAI/WCAG22/quickre
 de rest aan hun token gebonden. Ze bestaan in Figma alleen op een auto-layout
 frame; op een frame zonder layoutMode komen ze in het report.
 
+### Layoutmodellen die Figma niet kent
+
+Een `<table>` is `display: table`, en `<tr>` en `<td>` zijn `table-row` en
+`table-cell`. Figma kent daar niets van. Wat een tabel echter _is_, is een
+verticale stapel rijen waarvan de cellen naast elkaar staan, en dat is precies
+verticale en horizontale auto layout.
+
+De promotie van blokelementen hierboven kijkt daarom naar beide richtingen. Ze
+staan onder elkaar met gelijke gaten, of naast elkaar met gelijke gaten, of
+geen van beide: in dat laatste geval blijft het frame zonder auto layout en
+komt de padding in het rapport. Zonder de horizontale variant verloor elke
+`<tr>` zijn padding-bindingen.
+
+Hetzelfde geldt voor de overlays. Een `<dialog>` en een `[popover]` bestaan
+alleen in hun open stand: zonder `[open]` of `showPopover()` geldt de
+`display: none` uit de UA-stylesheet en valt er niets te meten. De matrices
+zetten dat attribuut of doen die aanroep in `domSetup`.
+
 ### HUG mag de gemeten maat niet weggooien
 
 Een auto-layout frame staat in Figma standaard op HUG, en rekent zijn maat dus
