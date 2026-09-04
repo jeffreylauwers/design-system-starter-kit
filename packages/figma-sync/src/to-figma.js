@@ -468,11 +468,18 @@ function applyChildPlacement(
   const styles = child.styles;
   if (!styles) return;
 
+  // Een absoluut kind staat buiten de auto-layout stroom, dus meerekken is er
+  // niet bij: zijn maat komt uit zijn eigen insets. FILL en ABSOLUTE zijn in
+  // Figma tegenstrijdig, en de control van een Checkbox is allebei tegelijk.
+  const outOfFlow =
+    styles.position === 'absolute' || styles.position === 'fixed';
+
   // Een kind dat precies de binnenbreedte van zijn ouder vult is een
   // blok-element. In Figma hoort dat FILL te zijn: met een vaste breedte
   // schaalt het niet mee als de ouder groeit. FILL kan alleen binnen een
   // auto-layout ouder; anders weigert de API het.
   if (
+    !outOfFlow &&
     parentLayout.layoutMode &&
     parentLayout.layoutMode !== 'NONE' &&
     parentContentWidth !== undefined &&
@@ -696,9 +703,30 @@ function convertElement(node, wideNode, warnings, pathLabel, bindings) {
   // auto layout is er niets om naar te huggen en weigert de API het.
   const hasAutoLayout =
     autoLayout.layoutMode && autoLayout.layoutMode !== 'NONE';
+
+  // HUG laat Figma de maat opnieuw uitrekenen uit de inhoud, en gooit de
+  // gemeten maat dus weg. Dat is precies de bedoeling bij een knop of een
+  // alert, die met zijn tekst moet meegroeien, maar fout zodra de CSS de maat
+  // zélf vastzet. Twee gevallen waarin dat zo is:
+  //
+  //  - de CSS zet een `width` of `height` (`.dsn-checkbox` is 24x24 via
+  //    `--dsn-checkbox-size`);
+  //  - de node is absoluut gepositioneerd, en haalt zijn maat dus uit zijn
+  //    insets en niet uit zijn inhoud.
+  //
+  // Checkbox liep op allebei stuk. De control hugde naar het vinkje van 16px
+  // in plaats van de 24 aan te houden, en de root hugde naar niets, want een
+  // absoluut kind telt in Figma niet mee voor de maat van zijn ouder.
+  const absolute = styles.position === 'absolute';
+  const fixedWidth = absolute || Boolean(node.tokens?.width);
+  const fixedHeight = absolute || Boolean(node.tokens?.height);
+
   figmaNode.layoutSizingHorizontal =
-    hasAutoLayout && styles.display === 'inline-flex' ? 'HUG' : 'FIXED';
-  figmaNode.layoutSizingVertical = hasAutoLayout ? 'HUG' : 'FIXED';
+    hasAutoLayout && styles.display === 'inline-flex' && !fixedWidth
+      ? 'HUG'
+      : 'FIXED';
+  figmaNode.layoutSizingVertical =
+    hasAutoLayout && !fixedHeight ? 'HUG' : 'FIXED';
 
   // Als laatste: de bindingen worden geverifieerd tegen de waarden die
   // hierboven in de spec terecht zijn gekomen.

@@ -216,6 +216,34 @@ daarmee een aanraakdoel onder [WCAG 2.5.5](https://www.w3.org/WAI/WCAG22/quickre
 de rest aan hun token gebonden. Ze bestaan in Figma alleen op een auto-layout
 frame; op een frame zonder layoutMode komen ze in het report.
 
+### HUG mag de gemeten maat niet weggooien
+
+Een auto-layout frame staat in Figma standaard op HUG, en rekent zijn maat dus
+opnieuw uit content plus padding. Bij een knop is dat precies de bedoeling: die
+moet met zijn tekst meegroeien. Maar zodra de CSS de maat zélf vastzet, is HUG
+fout, en dat blijft onzichtbaar zolang de inhoud toevallig even groot is.
+
+Checkbox liep er op twee manieren tegelijk op stuk. De control hugde naar het
+vinkje van 16px in plaats van de 24 aan te houden, en de root hugde naar niets,
+want een absoluut gepositioneerd kind telt in Figma niet mee voor de maat van
+zijn ouder. Het gevolg was een aangevinkte checkbox die kleiner was dan een
+lege.
+
+Een node blijft daarom FIXED wanneer:
+
+- de CSS een `width` of een `height` zet (`.dsn-checkbox` is 24x24 via
+  `--dsn-checkbox-size`);
+- de node absoluut gepositioneerd is, en zijn maat dus uit zijn insets haalt.
+
+`width` en `height` zijn daarvoor toegevoegd aan de gevolgde properties. Niet
+om te binden, maar omdat de computed waarde altijd een pixelgetal is: daaruit
+valt niet af te lezen of de maat van een declaratie komt of van de inhoud. Uit
+de cascade wel.
+
+Om dezelfde reden krijgt een absoluut kind nooit `FILL`. Dat kind staat buiten
+de auto-layout stroom, dus meerekken met de ouder is er niet bij; FILL en
+ABSOLUTE zijn in Figma tegenstrijdig.
+
 ### Blokken krijgen alsnog auto layout
 
 Figma kent padding, `minWidth` en `minHeight` uitsluitend op een auto-layout

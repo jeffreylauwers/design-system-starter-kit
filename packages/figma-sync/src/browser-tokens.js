@@ -43,6 +43,11 @@ export const TRACKED_PROPERTIES = [
   'min-width',
   'min-height',
   'font-size',
+  // Niet om te binden, maar om te weten óf de CSS de maat expliciet zet.
+  // Computed `width` is altijd een pixelwaarde, dus daaruit valt niet af te
+  // lezen of hij van een declaratie komt of van de inhoud. Uit de cascade wel.
+  'width',
+  'height',
 ];
 
 /**
