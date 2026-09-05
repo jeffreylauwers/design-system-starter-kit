@@ -3490,12 +3490,22 @@ component's block: EmailInput, NumberInput, PasswordInput and TelephoneInput
 render `dsn-text-input`, and FormFieldLegend renders `dsn-form-field-label`.
 That is what makes 68 files enough for 73 components.
 
-A component that overrides another one on equal specificity declares that with a
-`@dsn-depends-on: <component>` comment in its CSS, so the build emits it after
-the component it overrides. See
-[DR-2026-08](./decisions/DR-2026-08-formuliercontrols-krijgen-een-html-css-laag.md).
+A component that leans on another one declares that with a `@dsn-depends-on:
+<component>` comment in its CSS, so the build emits it after what it depends on.
+That covers two cases: overriding another component on equal specificity
+(SearchInput, Select, DateInput and TimeInput over TextInput), and rendering
+another component's classes in its own markup (the sort button in a Table column
+header carries `dsn-button`, ButtonLink carries `dsn-button`, LinkButton carries
+`dsn-link`, and MenuLink, File and HeadingGroup do the same).
 
-**Test Coverage:** 1678 tests across 81 test suites
+In the second case the React CSS must also import that dependency, or the class
+is used without its rules ever being loaded. `tests/css-dependencies.test.ts`
+enforces both halves. See
+[DR-2026-08](./decisions/DR-2026-08-formuliercontrols-krijgen-een-html-css-laag.md)
+and
+[DR-2026-09](./decisions/DR-2026-09-css-afhankelijkheden-declareren-per-laag.md).
+
+**Test Coverage:** 2082 tests across 83 test suites
 
 ---
 

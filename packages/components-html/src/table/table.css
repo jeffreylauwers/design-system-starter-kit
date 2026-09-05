@@ -1,3 +1,5 @@
+/* @dsn-depends-on: button */
+
 /* ===== Scroll-wrapper ===== */
 /*
  * Scroll-affordance schaduw (Lea Verou techniek):
@@ -174,6 +176,10 @@
 /*
  * Aanvullende klasse op dsn-button dsn-button--size-small dsn-button--subtle dsn-button--icon-only.
  * Voorkomt dat de knop inkrimpt in smalle kolommen.
+ *
+ * De knop leunt volledig op dsn-button voor zijn reset, typografie en kleur.
+ * Zie de @dsn-depends-on bovenaan dit bestand: zonder button.css rendert de
+ * sorteerknop met de standaard knop-chrome van de browser.
  */
 
 .dsn-table__sort-button {
@@ -181,22 +187,32 @@
 }
 
 /* ===== Sorteericoon — drie staten via aria-sort op de th ===== */
+/*
+ * De sorteericonen dragen ook .dsn-icon, en icon.css zet daarop
+ * `display: inline-block`. Dat is dezelfde specificiteit (0,1,0) als een kale
+ * .dsn-table__sort-icon--*, dus dan beslist de bronvolgorde wie wint. Bundlers
+ * splitsen CSS per component-chunk en die volgorde is niet gegarandeerd: laadt
+ * icon.css na table.css, dan verschijnen alle drie de iconen tegelijk.
+ *
+ * Daarom zijn beide selectors met .dsn-icon verzwaard: verbergen wordt (0,2,0)
+ * en tonen (0,3,0). Zo wint de uitkomst op specificiteit in plaats van volgorde.
+ */
 
-.dsn-table__sort-icon--none,
-.dsn-table__sort-icon--ascending,
-.dsn-table__sort-icon--descending {
+.dsn-icon.dsn-table__sort-icon--none,
+.dsn-icon.dsn-table__sort-icon--ascending,
+.dsn-icon.dsn-table__sort-icon--descending {
   display: none;
 }
 
-[aria-sort='none'] .dsn-table__sort-icon--none {
+[aria-sort='none'] .dsn-icon.dsn-table__sort-icon--none {
   display: inline-flex;
 }
 
-[aria-sort='ascending'] .dsn-table__sort-icon--ascending {
+[aria-sort='ascending'] .dsn-icon.dsn-table__sort-icon--ascending {
   display: inline-flex;
 }
 
-[aria-sort='descending'] .dsn-table__sort-icon--descending {
+[aria-sort='descending'] .dsn-icon.dsn-table__sort-icon--descending {
   display: inline-flex;
 }
 

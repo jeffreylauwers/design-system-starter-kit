@@ -3,4 +3,9 @@
  * Re-exports the base LinkButton styles from components-html
  */
 
+/* Afhankelijkheden uit de HTML/CSS-laag, gedeclareerd als
+   @dsn-depends-on in link-button.css. Ze staan hier vóór de eigen import,
+   zodat de eigen regels bij gelijke specificiteit winnen. */
+@import '../../../components-html/src/link/link.css';
+
 @import '../../../components-html/src/link-button/link-button.css';

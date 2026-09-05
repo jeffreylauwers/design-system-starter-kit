@@ -10,6 +10,34 @@ All notable changes to this project are documented in this file.
 
 Nog niet gepubliceerde wijzigingen. Schrijf nieuwe changelog-entries hieronder; bij de volgende release wordt deze kop gepromoveerd naar het definitieve versienummer.
 
+### De Kitchen Sink-pagina blokkeert Chromatic niet langer
+
+Chromatic maakt geen snapshots van stories groter dan 25.000.000 pixels oppervlak. De Kitchen Sink meet 1.200 x 25.335, oftewel 30.400.200, en liet de build daarom stranden met `Encountered 1 build error` nadat alle 637 snapshots al gemaakt waren. Voor het eerst zichtbaar in build 499 van 4 september.
+
+De pagina blijft zoals hij is. Alleen zijn snapshot staat uit via `chromatic: { disableSnapshot: true }`. Dat kost geen dekking: elk component dat op de pagina staat heeft zijn eigen stories en die worden wel gesnapshot. Wat de Kitchen Sink uniek toont is de compositie, en dat is precies het stuk dat niet in één beeld past.
+
+### Componenten laden nu de CSS van de klassen die ze renderen
+
+Zes componenten zetten klassen van een ánder component in hun markup zonder dat iets die CSS meelaadde. De sorteerknop van Table draagt `dsn-button`, ButtonLink draagt `dsn-button`, MenuLink heeft een uitklapknop, File rendert `dsn-link` en `dsn-link-button`, en HeadingGroup rendert `dsn-heading` en `dsn-pre-heading`. In elk van die gevallen importeerde de component-CSS alleen zichzelf.
+
+Zolang alle component-CSS in één bundel zat viel dat niet op, want dan was `button.css` er toch wel. Zodra de bundler per component een CSS-chunk maakt, laadt die chunk alleen wat de modulegraaf aanwijst. Gemeten op de gepubliceerde Storybook: op de Table-pagina bestond geen enkele `.dsn-button`-regel, waardoor `dsn-button--icon-only` het label niet verborg en de tekst "Sorteer op Naam" naast het icoon kwam te staan. ButtonLink rendeerde met `background-color: rgba(0, 0, 0, 0)` en `padding: 0px`, dus als kale linktekst. Dat laatste raakte ook consumenten van het npm-package, niet alleen Storybook.
+
+De HTML/CSS-laag declareert die afhankelijkheid nu met `@dsn-depends-on`, hetzelfde mechanisme dat de vier formuliervelden hierboven al gebruiken. De React-CSS haalt de gedeclareerde afhankelijkheden op vóór zijn eigen import, zodat de eigen regels bij gelijke specificiteit blijven winnen. Bij SearchInput, Select, DateInput en TimeInput stond die afhankelijkheid als `import '../TextInput/TextInput.css'` in het `.tsx`-bestand; die is verplaatst naar het CSS-bestand, waar de andere componenten hem nu ook hebben.
+
+`tests/css-dependencies.test.ts` bewaakt dit vanaf nu. De test faalt zodra een React-component een `dsn-*` klasse rendert waarvan de CSS niet bereikbaar is via zijn imports, en zodra een `@dsn-depends-on` uit de HTML/CSS-laag niet wordt opgehaald door de bijbehorende React-CSS.
+
+### Sorteericonen in Table tonen weer één staat tegelijk
+
+De drie sorteericonen in een kolomkop dragen naast `dsn-table__sort-icon--*` ook `dsn-icon`, en `icon.css` zet daarop `display: inline-block`. Dat is dezelfde specificiteit (0,1,0) als de kale `.dsn-table__sort-icon--*` die ze op `display: none` zet, dus besliste de bronvolgorde. In de gepubliceerde Storybook laadde het Icon-chunk ná het Table-chunk en verschenen alle drie de iconen tegelijk: het neutrale, het oplopende en het aflopende.
+
+De selectors zijn verzwaard met `.dsn-icon`, zodat verbergen (0,2,0) en tonen (0,3,0) wordt. De uitkomst hangt daarmee af van specificiteit in plaats van laadvolgorde. Geen wijziging in de markup: de klassen blijven hetzelfde.
+
+Hiermee vervalt ook de aanleiding voor issue #376. De sorteerknop had geen reset omdat `button.css` ontbrak, niet omdat `dsn-button` er geen levert. Een eigen reset op `.dsn-table__sort-button` zou `dsn-button` gaan dupliceren.
+
+### De achtergrond van het voorbeeldvlak op docs-pagina's wisselt weer mee met dark mode
+
+`PreviewFrame` in Storybook zette `className="dsn-body"` op een kale `div`, maar niets importeerde `body.css`. Op elke docs-pagina bleef het vlak daardoor doorzichtig en veranderde er niets bij het omschakelen naar dark mode. De frame gebruikt nu het `Body`-component, dat zijn eigen CSS meebrengt.
+
 ### Tekst valt niet langer achter het icoon in SearchInput, Select, DateInput en TimeInput
 
 Vier formuliervelden dragen twee block-klassen tegelijk (`class="dsn-text-input dsn-search-input"`) en maken ruimte voor hun icoon door de `padding-inline` van `dsn-text-input` te overschrijven. Die override stond op gelijke specificiteit en won dus alleen zolang `text-input.css` eerder in het document geladen werd. Dat is geen garantie: de bundler splitst CSS per component-chunk, en in de gepubliceerde Storybook belandde het TextInput-chunk ná het SearchInput-chunk. Resultaat: `padding-inline-start: 12px` in plaats van de berekende 46px, en getypte tekst die dwars over het vergrootglas liep.
