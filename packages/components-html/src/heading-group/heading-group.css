@@ -1,3 +1,5 @@
+/* @dsn-depends-on: heading, pre-heading */
+
 .dsn-heading-group {
   display: flex;
   flex-direction: column;

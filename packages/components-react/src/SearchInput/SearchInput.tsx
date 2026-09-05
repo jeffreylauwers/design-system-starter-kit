@@ -1,7 +1,6 @@
 import React from 'react';
 import { classNames, FormControlWidth } from '@dsn-starter-kit/core';
 import { Icon } from '../Icon';
-import '../TextInput/TextInput.css';
 import './SearchInput.css';
 
 export interface SearchInputProps extends Omit<

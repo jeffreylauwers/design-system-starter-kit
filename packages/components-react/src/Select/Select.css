@@ -3,4 +3,9 @@
  * Re-exports the base Select styles from components-html
  */
 
+/* Afhankelijkheden uit de HTML/CSS-laag, gedeclareerd als
+   @dsn-depends-on in select.css. Ze staan hier vóór de eigen import,
+   zodat de eigen regels bij gelijke specificiteit winnen. */
+@import '../../../components-html/src/text-input/text-input.css';
+
 @import '../../../components-html/src/select/select.css';
