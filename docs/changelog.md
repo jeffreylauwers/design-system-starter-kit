@@ -10,6 +10,12 @@ All notable changes to this project are documented in this file.
 
 Nog niet gepubliceerde wijzigingen. Schrijf nieuwe changelog-entries hieronder; bij de volgende release wordt deze kop gepromoveerd naar het definitieve versienummer.
 
+### De Kitchen Sink-pagina blokkeert Chromatic niet langer
+
+Chromatic maakt geen snapshots van stories groter dan 25.000.000 pixels oppervlak. De Kitchen Sink meet 1.200 x 25.335, oftewel 30.400.200, en liet de build daarom stranden met `Encountered 1 build error` nadat alle 637 snapshots al gemaakt waren. Voor het eerst zichtbaar in build 499 van 4 september.
+
+De pagina blijft zoals hij is. Alleen zijn snapshot staat uit via `chromatic: { disableSnapshot: true }`. Dat kost geen dekking: elk component dat op de pagina staat heeft zijn eigen stories en die worden wel gesnapshot. Wat de Kitchen Sink uniek toont is de compositie, en dat is precies het stuk dat niet in één beeld past.
+
 ### Componenten laden nu de CSS van de klassen die ze renderen
 
 Zes componenten zetten klassen van een ánder component in hun markup zonder dat iets die CSS meelaadde. De sorteerknop van Table draagt `dsn-button`, ButtonLink draagt `dsn-button`, MenuLink heeft een uitklapknop, File rendert `dsn-link` en `dsn-link-button`, en HeadingGroup rendert `dsn-heading` en `dsn-pre-heading`. In elk van die gevallen importeerde de component-CSS alleen zichzelf.
