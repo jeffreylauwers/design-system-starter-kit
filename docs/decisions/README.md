@@ -16,6 +16,7 @@ Een decision record documenteert **waarom** iets is zoals het is — niet alleen
 | [DR-2026-06](DR-2026-06-figma-bindingen-meten-plus-cssom.md)            | Figma-bindingen: waarde gemeten, tokennaam uit de CSSOM, geverifieerd    | Accepted |
 | [DR-2026-07](DR-2026-07-css-los-van-de-javascript-bundel.md)            | CSS los van de JavaScript-bundel, zodat het package laadbaar is in Node  | Accepted |
 | [DR-2026-08](DR-2026-08-formuliercontrols-krijgen-een-html-css-laag.md) | Formuliercontrols krijgen alsnog een HTML/CSS-laag; geen React-only meer | Accepted |
+| [DR-2026-09](DR-2026-09-css-afhankelijkheden-declareren-per-laag.md)    | CSS-afhankelijkheden per laag declareren: `@dsn-depends-on` plus import  | Accepted |
 
 ## Een nieuw record toevoegen
 

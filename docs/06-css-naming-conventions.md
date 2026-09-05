@@ -492,6 +492,11 @@ Alleen in het CSS-bestand ligt de volgorde ten opzichte van de eigen regels vast
 React-component rendert moet bereikbaar zijn via zijn imports, en elke
 `@dsn-depends-on` moet door de bijbehorende React-CSS worden opgehaald.
 
+De afweging achter dit patroon staat in
+[DR-2026-09](./decisions/DR-2026-09-css-afhankelijkheden-declareren-per-laag.md).
+Let op: dit is niet zichtbaar in de Storybook dev-server, die serveert uit één
+modulegraaf en splitst niet per chunk. Verifieer tegen een productiebuild.
+
 ---
 
 ## Gerelateerde documentatie
