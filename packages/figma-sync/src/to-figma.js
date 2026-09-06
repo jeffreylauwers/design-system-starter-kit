@@ -848,6 +848,48 @@ function canvasFor(variableIndex, report) {
 }
 
 /**
+ * Vat waarschuwingen samen die alleen in hun variant verschillen.
+ *
+ * Elke waarschuwing draagt het pad waar hij vandaan komt, en dat begint met de
+ * variant: `TextInput[state=focus, width=md] > dsn-text-input: ...`. Ontdubbelen
+ * op de hele tekst helpt dan niets, en TextInput leverde 21 keer dezelfde regel
+ * over box-shadow op. Met acht formuliervelden verdrinkt daar een échte melding
+ * in, en dan is een waarschuwing die niemand meer leest net zo goed geen
+ * waarschuwing.
+ *
+ * De variant gaat er daarom af en het aantal komt erbij. Wat overblijft is per
+ * knelpunt één regel, met de eerste variant erbij om het terug te vinden.
+ */
+function summariseWarnings(warnings) {
+  const groups = new Map();
+
+  for (const warning of warnings) {
+    // `Component[as=waarde, as=waarde]` aan het begin; de rest is het knelpunt.
+    const match = warning.match(/^([A-Za-z]+)\[([^\]]*)\](.*)$/s);
+    if (!match) {
+      groups.set(warning, { text: warning, variants: [] });
+      continue;
+    }
+
+    const [, component, variant, rest] = match;
+    const key = `${component}${rest}`;
+    const existing = groups.get(key);
+    if (existing) {
+      existing.variants.push(variant);
+      continue;
+    }
+    groups.set(key, { text: `${component}${rest}`, variants: [variant] });
+  }
+
+  return [...groups.values()].map(({ text, variants }) => {
+    if (variants.length <= 1) {
+      return variants.length ? `${text} (${variants[0]})` : text;
+    }
+    return `${text} — in ${variants.length} varianten, o.a. ${variants[0]}`;
+  });
+}
+
+/**
  * Bouwt een complete Figma component set uit de geëxtraheerde varianten.
  *
  * @param {object} matrix de matrixdefinitie
@@ -914,11 +956,15 @@ export function toComponentSet(matrix, extracted, variableIndex) {
       ),
       components,
     },
-    // Ontdubbeld: dezelfde waarschuwing komt per variant terug. De matrix mag
-    // er zelf ook een meegeven, voor een beperking die de generator niet kán
-    // zien: `::marker` is geen DOM-element, dus een lijst komt zonder bolletjes
-    // in Figma en niets in de meting valt daarover op te merken.
-    warnings: [...new Set([...(matrix.warnings ?? []), ...warnings])],
+    // Samengevat: dezelfde waarschuwing komt per variant terug, en dat zijn er
+    // bij een grote set tientallen. De matrix mag er zelf ook een meegeven,
+    // voor een beperking die de generator niet kán zien: `::marker` is geen
+    // DOM-element, dus een lijst komt zonder bolletjes in Figma en niets in de
+    // meting valt daarover op te merken.
+    warnings: [
+      ...(matrix.warnings ?? []),
+      ...summariseWarnings([...new Set(warnings)]),
+    ],
     // Wat er aan variables gebonden is, en wat een vaste waarde hield.
     bindings: { ...report.summary(), modes: variableIndex?.modes },
   };
