@@ -184,7 +184,6 @@ const STACK_TOLERANCE = 0.5;
  */
 function blockLayoutFrom(node, styles, warnings, pathLabel) {
   const base = {
-    layoutMode: 'VERTICAL',
     layoutWrap: 'NO_WRAP',
     itemReverseZIndex: false,
     ...paddingFrom(styles),
@@ -195,41 +194,69 @@ function blockLayoutFrom(node, styles, warnings, pathLabel) {
   };
 
   const children = node.children ?? [];
-  if (!children.length) return { ...base, itemSpacing: 0 };
+  // Zonder kinderen valt er niets te ordenen, dus de richting maakt niet uit.
+  if (!children.length) {
+    return { ...base, layoutMode: 'VERTICAL', itemSpacing: 0 };
+  }
 
   if (children.some((child) => child.styles?.position === 'absolute')) {
     return null;
   }
+  if (children.some((child) => !child.rect)) return null;
 
-  const gaps = [];
-  for (const [index, child] of children.entries()) {
-    if (!child.rect) return null;
-    if (index === 0) continue;
-
-    const previous = children[index - 1];
-    const gap = child.rect.y - (previous.rect.y + previous.rect.height);
-    // Negatief betekent overlap, en gelijke y betekent naast elkaar.
-    if (gap < -STACK_TOLERANCE) return null;
-    if (Math.abs(child.rect.y - previous.rect.y) < STACK_TOLERANCE) return null;
-    gaps.push(Math.max(gap, 0));
-  }
-
-  const spacing = gaps[0] ?? 0;
-  if (gaps.some((gap) => Math.abs(gap - spacing) > STACK_TOLERANCE)) {
-    return null;
-  }
+  const spacing = stackSpacing(children, 'vertical');
+  const layoutMode = spacing !== null ? 'VERTICAL' : 'HORIZONTAL';
+  const gap = spacing ?? stackSpacing(children, 'horizontal');
+  if (gap === null) return null;
 
   // De ruimte tussen blokken komt uit de marges van de kinderen, niet uit een
   // `gap`, en de binder leest alleen gaps. De waarde klopt dus wel maar hangt
   // aan niets. Melden in plaats van stil laten: een stil verlies is in het
   // bindingsrapport niet terug te vinden.
-  if (spacing > 0) {
+  if (gap > 0) {
     warnings.push(
-      `${pathLabel}: de ruimte van ${spacing}px tussen de kinderen komt uit hun marges en niet uit een gap, dus itemSpacing houdt een vaste waarde`
+      `${pathLabel}: de ruimte van ${gap}px tussen de kinderen komt uit hun marges en niet uit een gap, dus itemSpacing houdt een vaste waarde`
     );
   }
 
-  return { ...base, itemSpacing: spacing };
+  return { ...base, layoutMode, itemSpacing: gap };
+}
+
+/**
+ * De tussenruimte als de kinderen in deze richting op een rij staan, of `null`
+ * als ze dat niet doen.
+ *
+ * Op een rij staan betekent: elk volgend kind begint na het vorige, ze
+ * overlappen niet, en de gaten zijn steeds even groot. Dat is precies wat
+ * auto layout ook doet, dus dan verschuift promoveren niets.
+ *
+ * Twee richtingen, want een tabelrij zet zijn cellen naast elkaar terwijl een
+ * `<ol>` zijn items onder elkaar zet. Zonder de horizontale variant verloor
+ * elke `<tr>` zijn padding-bindingen, want Figma kent padding alleen op een
+ * auto-layout frame.
+ */
+function stackSpacing(children, direction) {
+  const vertical = direction === 'vertical';
+  const start = (child) => (vertical ? child.rect.y : child.rect.x);
+  const size = (child) => (vertical ? child.rect.height : child.rect.width);
+
+  const gaps = [];
+  for (const [index, child] of children.entries()) {
+    if (index === 0) continue;
+    const previous = children[index - 1];
+
+    const gap = start(child) - (start(previous) + size(previous));
+    // Negatief betekent overlap; gelijke start betekent bovenop elkaar.
+    if (gap < -STACK_TOLERANCE) return null;
+    if (Math.abs(start(child) - start(previous)) < STACK_TOLERANCE) return null;
+    gaps.push(Math.max(gap, 0));
+  }
+
+  const spacing = gaps[0] ?? 0;
+  if (gaps.some((value) => Math.abs(value - spacing) > STACK_TOLERANCE)) {
+    return null;
+  }
+  return spacing;
 }
 
 /** Bouwt de auto layout-eigenschappen uit de flexbox computed styles. */

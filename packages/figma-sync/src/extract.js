@@ -243,11 +243,50 @@ const DEFAULT_VIEWPORT = { width: 375, height: 900 };
  */
 const GRID_PROBE_DELTA = 240;
 
+/**
+ * Controleert of de matrix elke `@dsn-depends-on` van zijn componenten laadt.
+ *
+ * Sinds DR-2026-09 declareert elke component-CSS bovenaan van welke andere
+ * lagen hij afhangt. Een matrix die zo'n laag niet meelaadt meet een component
+ * dat er half uitziet, en dat valt niet op: de meting slaagt gewoon, alleen met
+ * de verkeerde waarden.
+ *
+ * Dat is precies wat er bij Table gebeurde. `table.css` hangt van `button` af,
+ * de matrix laadde die niet, en de sorteerknop werd gemeten met de knop-chrome
+ * van de browser: 13,33px Arial en een `outset` rand. Drie waarschuwingen die
+ * er als een generatorfout uitzagen, terwijl de matrix simpelweg te weinig CSS
+ * laadde. Na het toevoegen van button.css ging Table van 97 naar 181
+ * bindingen.
+ *
+ * Een waarschuwing en geen fout: een matrix mag bewust een afhankelijkheid
+ * weglaten, bijvoorbeeld omdat die laag in die variant niet gerenderd wordt.
+ */
+function checkDeclaredDependencies(files, warnings) {
+  const loaded = new Set(files.map((file) => path.basename(file, '.css')));
+
+  for (const file of files) {
+    const source = fs.readFileSync(file, 'utf8');
+    const declared = source.match(/\/\*\s*@dsn-depends-on:\s*([^*]+?)\s*\*\//);
+    if (!declared) continue;
+
+    const missing = declared[1]
+      .split(',')
+      .map((name) => name.trim())
+      .filter((name) => name && !loaded.has(name));
+
+    if (missing.length) {
+      warnings.push(
+        `${path.basename(file)} declareert @dsn-depends-on: ${missing.join(', ')}, maar die CSS staat niet in de css-lijst van de matrix. Het component wordt dan gemeten zonder die laag.`
+      );
+    }
+  }
+}
+
 export async function extractMatrix(matrix) {
-  const stylesheets = [...BASE_CSS, ...matrix.css]
-    .map(resolveCssPath)
-    .map((file) => readStylesheet(file))
-    .join('\n');
+  const files = [...BASE_CSS, ...matrix.css].map(resolveCssPath);
+  checkDeclaredDependencies(files, matrix.warnings ?? (matrix.warnings = []));
+
+  const stylesheets = files.map((file) => readStylesheet(file)).join('\n');
 
   const fontLinks = (matrix.fonts ?? [])
     .map((href) => `<link rel="stylesheet" href="${href}">`)
