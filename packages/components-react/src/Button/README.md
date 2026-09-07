@@ -82,14 +82,13 @@ import { Icon } from '@dsn-starter-kit/components-react';
 <Button variant="default" size="large">Cancel</Button>
 
 // With icon
-<Button variant="strong">
-  <Icon name="plus" />
+<Button variant="strong" iconStart={<Icon name="plus" />}>
   Add item
 </Button>
 
-// Icon only
-<Button variant="subtle" iconOnly aria-label="Settings">
-  <Icon name="settings" />
+// Icon only — children is the accessible label, the icon goes in iconStart
+<Button variant="subtle" iconOnly iconStart={<Icon name="settings" />}>
+  Settings
 </Button>
 
 // Loading state (automatically disabled + aria-busy)
@@ -112,48 +111,65 @@ import { Icon } from '@dsn-starter-kit/components-react';
 
 ```html
 <!-- Basic button -->
-<button class="dsn-button dsn-button--strong dsn-button--size-default">
-  Save
+<button
+  type="button"
+  class="dsn-button dsn-button--strong dsn-button--size-default"
+>
+  <span class="dsn-button__label">Save</span>
 </button>
 
 <!-- With size -->
-<button class="dsn-button dsn-button--default dsn-button--size-large">
-  Cancel
+<button
+  type="button"
+  class="dsn-button dsn-button--default dsn-button--size-large"
+>
+  <span class="dsn-button__label">Cancel</span>
 </button>
 
 <!-- With icon -->
-<button class="dsn-button dsn-button--strong dsn-button--size-default">
+<button
+  type="button"
+  class="dsn-button dsn-button--strong dsn-button--size-default"
+>
   <svg class="dsn-icon" aria-hidden="true">...</svg>
-  Add item
+  <span class="dsn-button__label">Add item</span>
 </button>
 
-<!-- Icon only -->
+<!-- Icon only — the label span stays in the DOM, dsn-button--icon-only hides it visually -->
 <button
+  type="button"
   class="dsn-button dsn-button--subtle dsn-button--size-default dsn-button--icon-only"
-  aria-label="Settings"
 >
-  <svg class="dsn-icon">...</svg>
+  <svg class="dsn-icon" aria-hidden="true">...</svg>
+  <span class="dsn-button__label">Settings</span>
 </button>
 
 <!-- Loading (add aria-busy for screen readers) -->
 <button
+  type="button"
   class="dsn-button dsn-button--strong dsn-button--size-default dsn-button--loading"
   disabled
   aria-busy="true"
 >
-  Saving...
+  <svg class="dsn-icon dsn-button__loader" aria-hidden="true">...</svg>
+  <span class="dsn-button__label">Saving...</span>
 </button>
 
 <!-- Full width -->
 <button
+  type="button"
   class="dsn-button dsn-button--strong dsn-button--size-default dsn-button--full-width"
 >
-  Continue
+  <span class="dsn-button__label">Continue</span>
 </button>
 
 <!-- Disabled -->
-<button class="dsn-button dsn-button--strong dsn-button--size-default" disabled>
-  Disabled
+<button
+  type="button"
+  class="dsn-button dsn-button--strong dsn-button--size-default"
+  disabled
+>
+  <span class="dsn-button__label">Disabled</span>
 </button>
 ```
 
@@ -179,18 +195,37 @@ import { Icon } from '@dsn-starter-kit/components-react';
 
 ### Icon-Only Buttons
 
-Icon-only buttons **must** have an accessible label:
+Icon-only buttons **must** have an accessible label, and that label is always a
+`dsn-button__label` span: pass the text as `children` and the icon as `iconStart`.
+`dsn-button--icon-only` hides the span visually but keeps it in the accessibility
+tree. Never use `aria-label` on a button: an attribute value is not picked up by
+browser translation tools, so screen reader users of a translated interface keep
+hearing the original language.
 
 ```tsx
-// GOOD
-<Button iconOnly aria-label="Close dialog">
-  <Icon name="x" />
+// GOOD - text as children, icon via iconStart
+<Button iconOnly iconStart={<Icon name="x" />}>
+  Close dialog
 </Button>
 
-// BAD - No accessible label
+// BAD - aria-label is not translated by browser translation tools
+<Button iconOnly aria-label="Close dialog" iconStart={<Icon name="x" />} />
+
+// BAD - icon as children ends up inside the accessible name
 <Button iconOnly>
   <Icon name="x" />
 </Button>
+```
+
+```html
+<!-- GOOD - the same pattern in the HTML/CSS layer -->
+<button
+  type="button"
+  class="dsn-button dsn-button--subtle dsn-button--size-default dsn-button--icon-only"
+>
+  <svg class="dsn-icon" aria-hidden="true">...</svg>
+  <span class="dsn-button__label">Close dialog</span>
+</button>
 ```
 
 ### Loading State

@@ -73,7 +73,7 @@ pnpm add -D vite-plugin-svgr
 ### React (Recommended)
 
 ```tsx
-import { Icon } from '@dsn-starter-kit/components-react';
+import { Button, Icon } from '@dsn-starter-kit/components-react';
 
 function App() {
   return (
@@ -87,11 +87,10 @@ function App() {
       {/* Standalone icon (needs label) */}
       <Icon name="settings" size="lg" aria-label="Open settings" />
 
-      {/* Icon button */}
-      <button>
-        <Icon name="plus" size="md" />
+      {/* Icon in a button: pass it as iconStart, never as children */}
+      <Button variant="strong" iconStart={<Icon name="plus" size="md" />}>
         Add item
-      </button>
+      </Button>
 
       {/* Different sizes */}
       <Icon name="heart" size="2xl" aria-label="Like" />
@@ -155,12 +154,22 @@ For static HTML without React:
 
 - **Standalone icons**: Always provide `aria-label`
 - **Icons with adjacent text**: Icon is decorative (automatically `aria-hidden`)
-- **Icon buttons**: Provide `aria-label` on the button
+- **Icon buttons**: Never `aria-label` on the button. Use `Button` with `iconOnly`,
+  pass the text as `children` and the icon as `iconStart`: the text is rendered in a
+  `dsn-button__label` span that `dsn-button--icon-only` hides visually but keeps in the
+  accessibility tree. An attribute value is not picked up by browser translation tools,
+  a visible DOM text node is. The same applies to an icon-only link: use a
+  `dsn-visually-hidden` span inside the `<a>`.
 
 ### Examples
 
 ```tsx
-// GOOD: Icon button with label on button
+// GOOD: Icon-only button, text as children and icon via iconStart
+<Button iconOnly iconStart={<Icon name="x" />}>
+  Close dialog
+</Button>
+
+// BAD: aria-label on a button is not translated by browser translation tools
 <button aria-label="Close dialog">
   <Icon name="x" />
 </button>
@@ -188,9 +197,10 @@ For static HTML without React:
   <Icon name="settings" />
 </a>
 
-// GOOD: Link with only icon, has label
-<a href="/settings" aria-label="Settings">
+// GOOD: Link with only icon, label as visually hidden text
+<a href="/settings">
   <Icon name="settings" />
+  <span className="dsn-visually-hidden">Settings</span>
 </a>
 ```
 
