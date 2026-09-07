@@ -188,19 +188,27 @@ function matchesMeasurement({ kind, materialise }, variable, measured) {
 }
 
 /**
- * Kiest de eerste schakel in de var()-keten die een Figma-variable is.
+ * Alle schakels in de var()-keten die een Figma-variable zijn, in volgorde.
  *
  * De keten loopt van de property naar het token: een component-CSS kan
  * `var(--dsn-button-background-color)` schrijven en die lokaal doorzetten naar
- * `var(--dsn-button-strong-background-color)`. Alleen de laatste bestaat als
- * token, dus de keten wordt afgelopen tot er een treffer is.
+ * `var(--dsn-button-strong-background-color)`.
+ *
+ * Er wordt niet op de eerste treffer gestopt, want een variant werkt vaak door
+ * een custom property te hérdefiniëren in plaats van de property opnieuw te
+ * zetten. `.dsn-page-footer--inverse` zet `--dsn-page-footer-background-color`
+ * op een andere waarde; de winnende declaratie blijft dan
+ * `background-color: var(--dsn-page-footer-background-color)`, en die eerste
+ * schakel bestáát als variable maar draagt de standaardwaarde. De schakel die
+ * de gemeten kleur wél oplevert staat verderop in de keten.
  */
 function variableForChain(chain, index) {
+  const found = [];
   for (const cssName of chain) {
-    const found = index.lookup(cssName);
-    if (found) return found;
+    const variable = index.lookup(cssName);
+    if (variable) found.push(variable);
   }
-  return null;
+  return found;
 }
 
 /**
@@ -234,8 +242,8 @@ export function bindingsFor(spec, sources, index, report) {
       return;
     }
 
-    const variable = variableForChain(source.chain, index);
-    if (!variable) {
+    const candidates = variableForChain(source.chain, index);
+    if (!candidates.length) {
       report.miss(
         property,
         'het token bestaat niet als Figma-variable',
@@ -246,22 +254,29 @@ export function bindingsFor(spec, sources, index, report) {
 
     const unavailable = unavailableReason(spec, field);
     if (unavailable) {
-      report.miss(property, unavailable, variable.name);
+      report.miss(property, unavailable, candidates[0].name);
       return;
     }
 
-    const mismatch = matchesMeasurement(
-      entry,
-      variable,
-      measuredValue(spec, field)
-    );
-    if (mismatch) {
-      report.miss(property, mismatch, variable.name);
-      return;
+    // De eerste schakel die de gemeten waarde daadwerkelijk oplevert wint. Niet
+    // de eerste die bestaat: bij een variant die een custom property
+    // herdefinieert draagt die de standaardwaarde en niet die van de variant.
+    const measured = measuredValue(spec, field);
+    let mismatch;
+    for (const candidate of candidates) {
+      const reason = matchesMeasurement(entry, candidate, measured);
+      if (!reason) {
+        bound[field] = {
+          collection: candidate.collection,
+          name: candidate.name,
+        };
+        report.bind(candidate.collection);
+        return;
+      }
+      mismatch ??= reason;
     }
 
-    bound[field] = { collection: variable.collection, name: variable.name };
-    report.bind(variable.collection);
+    report.miss(property, mismatch, candidates[0].name);
   };
 
   for (const entry of fields) consider(entry);

@@ -216,6 +216,61 @@ daarmee een aanraakdoel onder [WCAG 2.5.5](https://www.w3.org/WAI/WCAG22/quickre
 de rest aan hun token gebonden. Ze bestaan in Figma alleen op een auto-layout
 frame; op een frame zonder layoutMode komen ze in het report.
 
+### Wat niet rendert wordt overgeslagen
+
+De extractor slaat een element over als het `dsn-visually-hidden` draagt,
+`opacity: 0` heeft, `display: none` is of `visibility: hidden`. De laatste twee
+kwamen erbij met BreadcrumbNavigation: de compacte variant is een container
+query die alle items op één na verbergt, en zonder die regel kwamen die items
+als 0x0-lagen in Figma terecht, mét hun kinderen eronder.
+
+Dat is niet alleen opruimen. Bij Table stonden alle drie de sorteericonen in
+elke variant over elkaar heen; nu draagt elke variant precies het icoon dat bij
+zijn `aria-sort` hoort.
+
+### De juiste schakel in de var()-keten
+
+Een variant werkt vaak door een custom property te _herdefiniëren_ in plaats van
+de property opnieuw te zetten:
+
+```css
+.dsn-page-footer {
+  background-color: var(--dsn-page-footer-background-color);
+}
+.dsn-page-footer--inverse {
+  --dsn-page-footer-background-color: var(
+    --dsn-color-accent-1-inverse-bg-default
+  );
+}
+```
+
+De winnende declaratie blijft dan die van de basisklasse, en de eerste schakel
+in de keten (`page-footer/background-color`) bestáát als variable, maar draagt
+de standaardwaarde. Binden op "de eerste schakel die bestaat" leverde daar dus
+de verkeerde kleur op, en de verificatie weigerde terecht.
+
+De keten wordt daarom helemaal afgelopen, en de eerste schakel wint waarvan de
+waarde met de meting klopt. Klopt er geen enkele, dan komt de eerste in het
+rapport, zodat de melding blijft wijzen naar wat de CSS bedoelde.
+
+### CSS-afhankelijkheden en imports
+
+Sinds [DR-2026-09](../../docs/decisions/DR-2026-09-css-afhankelijkheden-declareren-per-laag.md)
+declareert elke component-CSS bovenaan van welke andere lagen hij afhangt. De
+extractor leest die `@dsn-depends-on` en waarschuwt als zo'n laag niet in de
+`css`-lijst van de matrix staat. Een matrix die te weinig CSS laadt meet een
+component dat er half uitziet, en dat valt niet op: de meting slaagt gewoon,
+alleen met de verkeerde waarden. Table ging van 97 naar 181 bindingen toen
+`button.css` erbij kwam.
+
+`@import` in een stylesheet wordt opgelost voordat de CSS de meetpagina in gaat,
+want in een inline `<style>` lost een relatief `@import` nooit op. Dat gaat ook
+via de `exports`-map van het package, want daar wijkt de exportnaam soms af van
+de bestandsnaam: `hero.css` importeert
+`@dsn-starter-kit/design-tokens/css/scoped/start-hero-image-light`, en dat is
+`dist/css/scoped/start-light-hero-image.css`. Bestaat het doel niet, dan gooit
+de build: liever stuklopen dan een component dat er is maar leeg.
+
 ### Layoutmodellen die Figma niet kent
 
 Een `<table>` is `display: table`, en `<tr>` en `<td>` zijn `table-row` en

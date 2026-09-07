@@ -18,10 +18,52 @@ const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const monorepoRoot = path.resolve(__dirname, '..', '..', '..');
 
 /** `@dsn-starter-kit/x/y/z.css` -> absoluut pad binnen de monorepo. */
+/**
+ * De `exports`-map van een package, als bestandspaden.
+ *
+ * Nodig omdat de component-CSS haar afhankelijkheden via de package-exports
+ * declareert en niet via een pad: `hero.css` doet
+ * `@import '@dsn-starter-kit/design-tokens/css/scoped/start-hero-image-light'`,
+ * en dat wijst naar `dist/css/scoped/start-light-hero-image.css`. De exportnaam
+ * en de bestandsnaam verschillen daar, dus dat pad valt niet te raden.
+ */
+function exportsOf(packageName) {
+  const manifest = path.join(
+    monorepoRoot,
+    'packages',
+    packageName,
+    'package.json'
+  );
+  if (!fs.existsSync(manifest)) return new Map();
+
+  const { exports: map } = JSON.parse(fs.readFileSync(manifest, 'utf8'));
+  const entries = new Map();
+
+  for (const [key, value] of Object.entries(map ?? {})) {
+    const target = typeof value === 'string' ? value : value?.default;
+    if (typeof target !== 'string' || !target.endsWith('.css')) continue;
+    entries.set(key.replace(/^\.\//, ''), target.replace(/^\.\//, ''));
+  }
+
+  return entries;
+}
+
 function resolveCssPath(specifier) {
   const match = specifier.match(/^@dsn-starter-kit\/([^/]+)\/(.+)$/);
   if (!match) return path.resolve(monorepoRoot, specifier);
-  return path.join(monorepoRoot, 'packages', match[1], match[2]);
+
+  const [, packageName, subpath] = match;
+  const packageRoot = path.join(monorepoRoot, 'packages', packageName);
+
+  // Eerst het letterlijke pad; de matrices schrijven `src/button/button.css`.
+  const direct = path.join(packageRoot, subpath);
+  if (fs.existsSync(direct)) return direct;
+
+  // Anders de exports-map, waar de CSS zelf zijn afhankelijkheden mee aanwijst.
+  const exported = exportsOf(packageName).get(subpath);
+  if (exported) return path.join(packageRoot, exported);
+
+  return direct;
 }
 
 /**
@@ -193,9 +235,19 @@ function domWalker([properties, hiddenClass]) {
       }
       if (child.nodeType !== Node.ELEMENT_NODE) continue;
       if (child.classList.contains(hiddenClass)) continue;
+
+      const childStyles = getComputedStyle(child);
       // Volledig doorzichtige elementen (zoals de native input onder een
       // custom control) leveren in Figma alleen een onzichtbare node op.
-      if (getComputedStyle(child).opacity === '0') continue;
+      if (childStyles.opacity === '0') continue;
+      // `display: none` rendert niet, dus er is niets te meten: zonder deze
+      // regel komt zo'n element als 0x0-laag in Figma terecht, mét zijn
+      // kinderen eronder. Zichtbaar bij de compacte BreadcrumbNavigation, waar
+      // een container query alle items op één na verbergt.
+      if (childStyles.display === 'none') continue;
+      // `visibility: hidden` neemt wél ruimte in maar tekent niets. Een laag
+      // die alleen ruimte bezet is in Figma geen laag maar padding.
+      if (childStyles.visibility === 'hidden') continue;
       node.children.push(visit(child));
     }
 
