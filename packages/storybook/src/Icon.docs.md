@@ -28,6 +28,7 @@ De Icon component biedt een consistente, toegankelijke manier om iconen te gebru
 - **Kies de juiste size.** Gebruik iconen die passen bij de omliggende tekst: `sm` bij kleine tekst, `md` bij normale tekst, `lg` en groter voor standalone iconen.
 - **Vermijd te veel iconen.** Teveel iconen zorgen voor visuele ruis. Gebruik iconen alleen waar ze echte waarde toevoegen.
 - **Test met gebruikers.** Niet alle iconen zijn universeel begrijpelijk. Test of gebruikers de betekenis begrijpen, vooral bij abstracte concepten.
+- **Weet dat de hele set meekomt.** `Icon` zoekt de naam op runtime op in `iconMap`, dus tree-shaking per icoon is niet mogelijk: alle 51 iconen komen in de bundle. Gemeten aan `dist/Icon/icon-registry.generated.mjs`: 23.998 bytes, 3.128 gzipped. Heb je maar een handvol iconen nodig, pak dan de losse SVG's uit `@dsn-starter-kit/components-html/assets/icons/`. De afweging staat in `docs/decisions/DR-2026-10-iconen-inline-in-de-registry.md`.
 
 ## Design tokens
 

@@ -10,6 +10,23 @@ All notable changes to this project are documented in this file.
 
 Nog niet gepubliceerde wijzigingen. Schrijf nieuwe changelog-entries hieronder; bij de volgende release wordt deze kop gepromoveerd naar het definitieve versienummer.
 
+### De losse README's van Button en Icon zijn weg
+
+Van de 75 componentmappen in `packages/components-react/src` hadden er precies twee een `README.md`: Button en Icon. Beide stammen uit de initial commit van februari, van vóór de Storybook-docsconventie. Daarnaast bestaan `Button.docs.md` en `Icon.docs.md` gewoon, dus die twee componenten waren dubbel gedocumenteerd. `package.json` publiceert alleen `dist` en `css.d.ts`, dus de README's bereikten geen enkele consument op npm.
+
+Ze liepen ook uit de pas, op precies het punt waar het pijn doet. Beide toonden een icon-only knop met `aria-label`, wat de projectregel verbiedt (DR-2026-01). En `Icon/README.md` schreef consumenten voor om `vite-plugin-svgr` te installeren als vereiste, terwijl hetzelfde bestand 180 regels lager uitlegt dat de SVG's juist inline staan zodat dat niet nodig is. Die onderste sectie kwam er in augustus bij, de bovenste bleef staan.
+
+Documentatie die niet staat waar mensen kijken, wordt niet bijgewerkt als de code verandert. De canonieke plek is `packages/storybook/src/{Component}.docs.md`, en dat blijft zo.
+
+Wat uniek was, is verplaatst in plaats van verdwenen:
+
+- De afweging achter inline SVG's is nu `docs/decisions/DR-2026-10-iconen-inline-in-de-registry.md`
+- Het bundle-gevolg (51 iconen, geen tree-shaking per icoon) staat bij de best practices in `Icon.docs.md`
+
+Bij het verplaatsen bleek het getal dat de README en de changelog-entry van augustus noemden, niet te kloppen: "circa 19 KB aan padgegevens, ruwweg 5-6 KB gzipped". Die 19 KB is de omvang van de losse `.svg`-bronbestanden op schijf (18.955 bytes voor `cat assets/icons/*.svg`), niet van wat er bij de consument in de bundle komt. Gemeten aan het gepubliceerde artifact is `dist/Icon/icon-registry.generated.mjs` 23.998 bytes, gzipped 3.128. Beide helften van de oude bewering zijn dus vervangen door de meting.
+
+- De `generate:icons`-workflow stond al in `packages/components-react/README.md`
+
 ### ModalDialog en Drawer erven weer de documenttekstkleur
 
 Een `<dialog>` erft zijn tekstkleur niet van zijn ouder: de UA-stylesheet zet `color: CanvasText` op het element zelf, en dat wint van overerving. `modal-dialog.css` en `drawer.css` zetten wel een kleur op hun heading, maar niet op de dialoog zelf.
