@@ -569,6 +569,41 @@ zelf tot tekst inklapt. Bij NumberBadge en SkipLink staat de markering daarom
 op een `<span>` binnen het component; die kost in Figma geen extra laag, want
 een element dat alleen tekst bevat wordt één TEXT-node.
 
+### Een fluid token dat op de verkeerde viewport vastgeprikt staat, bindt niet
+
+Twaalf fluid waarden staan in een collection waarvan de mode-as het theme is en
+niet de viewport, en zijn daarom op 1440px vastgeprikt (zie "Fluid typografie").
+De matrices meten op 375px. De verificatie uit DR-2026-06 vergelijkt beide, ziet
+een verschil, en weigert de binding.
+
+Dat is het systeem dat werkt zoals bedoeld, maar het gevolg is wel dat die
+waarden in Figma een vaste waarde houden. Het raakt onder meer
+`form-control/font-size`, en daarmee de tekst in élk formulierveld, plus de vier
+`padding-*-with-icon`-tokens van Select, SearchInput, DateInput en TimeInput.
+
+Zichtbaar in de build als:
+
+```
+font-size  de waarde van het token (19.4) wijkt af van de gemeten 16
+```
+
+Dit hoort bij issue #328. Zolang die openstaat is het geen regressie maar een
+bekende post: 55 bindingen over vier componenten.
+
+### Pseudo-elementen komen nooit mee
+
+De extractor loopt de DOM af, en een pseudo-element is geen DOM-node. Dat raakt
+drie plekken, en op alle drie staat het als vaste `warnings`-regel in de matrix
+in plaats van dat het stil blijft:
+
+| Pseudo-element           | Component                  | Wat ontbreekt            |
+| ------------------------ | -------------------------- | ------------------------ |
+| `::marker`               | UnorderedList, OrderedList | bolletjes en nummers     |
+| `::file-selector-button` | FileInput                  | de knop "Bestand kiezen" |
+
+`IconList` laat zien wat het alternatief is: die zet `list-style: none` en
+tekent zijn markering met een echt `<svg>`, en komt daardoor wel volledig over.
+
 ## Welke componenten wel en niet een matrix krijgen
 
 De regel: **elk component uit `components-html/manifest.json` krijgt een
