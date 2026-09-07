@@ -363,9 +363,12 @@ function registerSlot(node, spec, context) {
  *
  * Staat los van `buildNode` omdat het root-element van een component geen eigen
  * frame krijgt: het *is* het component. Zie `importComponentSet`.
+ *
+ * `name` staat daarom apart van de spec: de wrapper van een variant heet naar
+ * zijn variantlabel en niet naar het root-element.
  */
-function applyFrame(frame, spec, context) {
-  frame.name = spec.name ?? 'Frame';
+function applyFrame(frame, spec, context, name = spec.name ?? 'Frame') {
+  frame.name = name;
 
   // Een nieuw frame heeft een witte vulling; die overschrijven we altijd,
   // ook met een lege lijst, anders krijgt elk transparant element wit.
@@ -495,6 +498,24 @@ function preferredIcons(context) {
 }
 
 /**
+ * De naam van een property uit zijn sleutel in `componentPropertyDefinitions`.
+ *
+ * Die map is gesleuteld op `naam#nodeId:sessionId` (`label#5:0`), en de
+ * definitie eronder draagt de naam **niet**: een `ComponentPropertyDefinition`
+ * is `{ type, defaultValue, preferredValues?, variantOptions? }`. Uit die
+ * definitie de naam willen lezen levert overal `undefined` op, en dan wordt
+ * elke property opnieuw aangemaakt in plaats van bijgewerkt. Figma weigert dat
+ * niet maar hernoemt de nieuwe naar "label 2", en bij de volgende import naar
+ * "label 3".
+ *
+ * Een variant-as heeft geen achtervoegsel; de sleutel is dan de naam zelf.
+ */
+function propertyNameOf(key) {
+  const suffix = key.lastIndexOf('#');
+  return suffix === -1 ? key : key.slice(0, suffix);
+}
+
+/**
  * De properties die al op de set staan, op naam.
  *
  * De variant-assen (`size`, `variant`, ...) staan hier ook in, maar die komen
@@ -507,7 +528,7 @@ function existingProperties(set) {
     set.componentPropertyDefinitions ?? {}
   )) {
     if (definition.type === 'VARIANT') continue;
-    byName.set(definition.name, { propertyId, ...definition });
+    byName.set(propertyNameOf(propertyId), { propertyId, ...definition });
   }
   return byName;
 }
@@ -809,16 +830,22 @@ export async function importComponentSet(payload, log) {
     const known = knownVariants.get(component.name);
     const wrapper = known ?? figma.createComponent();
 
+    // De variantnaam staat er vanaf het begin op en blijft er de hele bouw op
+    // staan. Een component set leidt zijn variant-assen af uit de namen van
+    // zijn kinderen, en op de update-route hangt deze wrapper daar al in: een
+    // wrapper die ook maar even "dsn-link" heet is daar geen geldige variant,
+    // en negen wrappers die tegelijk zo heten laat Figma niet staan. Vandaar
+    // ook de naam als los argument aan `applyFrame`, dat anders de naam van
+    // het root-element eroverheen zet.
+    wrapper.name = component.name;
+
     if (known) {
       resetVariant(wrapper);
       updated += 1;
     } else {
-      // De naam vóór het aanhangen: een component set leidt zijn variant-assen
-      // uit de naam af, en een net aangemaakt component heet "Component 1".
-      // Dat is geen geldige variantnaam, en de set zou er in Figma op klagen.
-      wrapper.name = component.name;
       // Een nieuwe variant hangt meteen in de set als die er al is; anders op
-      // de pagina, waar `combineAsVariants` hem straks ophaalt.
+      // de pagina, waar `combineAsVariants` hem straks ophaalt. De naam staat
+      // er al op, want een set met een ongeldig genoemd kind is stuk.
       (target ?? page).appendChild(wrapper);
       created += 1;
     }
@@ -830,7 +857,7 @@ export async function importComponentSet(payload, log) {
     // lege laag met dezelfde auto layout toevoegen, en dat is precies de
     // nesting die een Figma-library onwerkbaar maakt.
     if (component.node.type === 'FRAME') {
-      applyFrame(wrapper, component.node, context);
+      applyFrame(wrapper, component.node, context, component.name);
       applySizing(wrapper, component.node, log);
     } else {
       // Een component dat in zijn geheel tot tekst of een vector inklapt kan
@@ -841,10 +868,6 @@ export async function importComponentSet(payload, log) {
       wrapper.fills = [];
       buildNode(component.node, wrapper, context);
     }
-
-    // Na applyFrame, die de naam van het root-element zet. Deze naam bepaalt de
-    // variant properties zodra combineAsVariants draait.
-    wrapper.name = component.name;
 
     // Alleen bij een verse import: varianten naast elkaar leggen zodat
     // combineAsVariants ze kan ophalen. Zit de variant al in een set, dan

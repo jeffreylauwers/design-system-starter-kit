@@ -24,6 +24,13 @@ Wat wél verloren gaat: overrides die een designer op de geneste lagen van een i
 
 De smoke test importeert nu **elk** component twee keer en draait alle bestaande controles op het resultaat van de tweede import. Een import die alleen op een leeg bestand klopt is voor een library die al in gebruik is niets waard. Daarbovenop staat er een eigen sectie voor het bijwerken zelf: een geplaatste instance die de import moet overleven, een variant die uit de spec is gevallen, en een variant die er nieuw bij komt. Twee canary-runs bevestigden dat die controles ook echt afgaan: het leegmaken van een variant uitschakelen levert 46 rode checks op, het hergebruik uitschakelen 60.
 
+Twee bugs die pas in Figma zelf boven kwamen, allebei doordat de mock een andere vorm had dan de Plugin API:
+
+- `componentPropertyDefinitions` is gesleuteld op `naam#nodeId:sessionId` en de definitie eronder draagt de naam **niet**. De reconciliatie las `definition.name`, kreeg overal `undefined`, en maakte elke property opnieuw aan. Figma weigert dat niet maar hernoemt naar "label 2", bij de volgende import naar "label 3".
+- `applyFrame` zette de naam van het root-element op de wrapper (`dsn-link`). Op een verse import staat die wrapper op de pagina en is dat onschuldig, maar op de update-route hangt hij al ín de set, en een set leidt zijn variant-assen af uit de namen van zijn kinderen. Negen varianten die tegelijk `dsn-link` heten laat Figma niet staan.
+
+De mock is op beide punten naar de echte vorm gebracht: definities zonder `name`-veld, een botsende propertynaam die hernoemd wordt in plaats van geweigerd, en een component set die een ongeldige of dubbele variantnaam bij zijn kinderen weigert. Met die mock gaan de twee bugs van 21 respectievelijk 1 rode check af. Dat is de les uit deze ronde: waar de mock en de Plugin API uit elkaar lopen is de mock waardeloos, want hij is dan streng op het verkeerde en blind voor het echte.
+
 Bij het bouwen bleek nog een tweede staleness-probleem, dat op een verse import onzichtbaar is: `applyAutoLayout` zette padding, `itemSpacing` en de uitlijningen alleen wanneer de spec ze noemde. Op een nieuw frame is dat gelijk aan de standaardwaarde, maar op een hergebruikte variant bleef er een gap of een uitlijning uit de vorige import staan. Die velden krijgen nu altijd een expliciete waarde, net als de bindingen aan variables die op een hergebruikte variant eerst worden losgemaakt.
 
 ### De losse README's van Button en Icon zijn weg

@@ -16,6 +16,10 @@
  *    variable moet bij het veld passen (een kleur is geen padding)
  * 7. padding, itemSpacing en de minimum-maten bestaan alleen op een frame met
  *    auto layout
+ * 8. `componentPropertyDefinitions` is gesleuteld op `naam#id` en de definitie
+ *    eronder heeft geen `name`; een botsende naam wordt hernoemd, niet
+ *    geweigerd
+ * 9. een kind van een component set draagt een geldige, unieke variantnaam
  */
 
 /**
@@ -106,12 +110,31 @@ const COMPONENT_PROPERTY_FIELDS = new Set(
   Object.values(FIELD_FOR_PROPERTY_TYPE)
 );
 
+/**
+ * De naam van een property uit zijn sleutel, net als in de Plugin API:
+ * `componentPropertyDefinitions` is gesleuteld op `naam#nodeId:sessionId`.
+ */
+function propertyNameOf(key) {
+  const suffix = key.lastIndexOf('#');
+  return suffix === -1 ? key : key.slice(0, suffix);
+}
+
+/**
+ * Een variant heet `as=waarde, as=waarde`. Een component set leidt zijn
+ * variant-assen uit die namen af, dus een kind dat er niet aan voldoet, of
+ * twee kinderen met dezelfde naam, maakt de set stuk. Figma herstelt dat zelf
+ * door te hernoemen; de mock weigert het, zodat het hier opvalt in plaats van
+ * pas in Figma.
+ */
+const VARIANT_NAME = /^[^=,]+=[^=,]*(, [^=,]+=[^=,]*)*$/;
+
 const loadedFonts = new Set();
 
 class Node {
   constructor(type) {
     this.type = type;
     this.id = id(type);
+    this._name = undefined;
     this.children = [];
     this.parent = null;
     this.width = 0;
@@ -126,12 +149,43 @@ class Node {
     this.gridRowSizes = [];
   }
 
+  set name(value) {
+    this._name = value;
+    this.#assertVariantName();
+  }
+  get name() {
+    return this._name;
+  }
+
+  /**
+   * Een kind van een component set moet een geldige, unieke variantnaam
+   * hebben. Zonder deze controle blijft het onzichtbaar dat de bouw een
+   * variant tijdelijk naar de naam van zijn root-element hernoemt terwijl hij
+   * al in de set hangt: in de mock is dat een naam als elke andere, in Figma
+   * gaan de variant-assen eraan.
+   */
+  #assertVariantName() {
+    if (this.parent?.type !== 'COMPONENT_SET') return;
+    if (!VARIANT_NAME.test(this._name ?? '')) {
+      throw new Error(
+        `"${this._name}" is geen geldige variantnaam in een component set (verwacht "as=waarde, as=waarde")`
+      );
+    }
+    const twin = this.parent.children.find(
+      (sibling) => sibling !== this && sibling.name === this._name
+    );
+    if (twin) {
+      throw new Error(`twee varianten in dezelfde set heten "${this._name}"`);
+    }
+  }
+
   appendChild(child) {
     if (child.parent) {
       child.parent.children = child.parent.children.filter((c) => c !== child);
     }
     child.parent = this;
     this.children.push(child);
+    child.#assertVariantName();
     this.recomputeFromChildren();
   }
 
@@ -369,10 +423,19 @@ class Node {
     }
 
     this.componentPropertyDefinitions = this.componentPropertyDefinitions ?? {};
-    const taken = Object.values(this.componentPropertyDefinitions).some(
-      (definition) => definition.name === name
+
+    // Zoals in Figma, en dit is bewust geen fout: een naam die al bezet is
+    // wordt hernoemd naar "label 2", bij de volgende keer naar "label 3".
+    // Waargenomen in Figma Desktop toen de plugin een bestaande property
+    // opnieuw aanmaakte in plaats van bij te werken. De mock wierp daar eerst
+    // een fout op, en juist daardoor bleef die bug hier onzichtbaar.
+    const names = new Set(
+      Object.keys(this.componentPropertyDefinitions).map(propertyNameOf)
     );
-    if (taken) throw new Error(`property ${name} bestaat al op deze set`);
+    let unique = name;
+    for (let suffix = 2; names.has(unique); suffix += 1) {
+      unique = `${name} ${suffix}`;
+    }
 
     const expected = { TEXT: 'string', BOOLEAN: 'boolean' }[type];
     if (expected && typeof defaultValue !== expected) {
@@ -390,9 +453,11 @@ class Node {
       }
     }
 
-    const propertyId = `${name}#${id('PROP')}`;
+    // Zoals in Figma: de sleutel draagt de naam plus een achtervoegsel, en de
+    // definitie eronder heeft géén `name`-veld. Wie de naam uit de definitie
+    // probeert te lezen krijgt overal undefined.
+    const propertyId = `${unique}#${id('PROP')}`;
     this.componentPropertyDefinitions[propertyId] = {
-      name,
       type,
       defaultValue,
       preferredValues: options?.preferredValues,
@@ -415,7 +480,8 @@ class Node {
     }
 
     const next = { ...definition };
-    if (changes.name !== undefined) next.name = changes.name;
+    const currentName = propertyNameOf(propertyId);
+    const nextName = changes.name ?? currentName;
     if (changes.preferredValues !== undefined) {
       next.preferredValues = changes.preferredValues;
     }
@@ -438,7 +504,7 @@ class Node {
     }
 
     const nextId =
-      next.name === definition.name ? propertyId : `${next.name}#${id('PROP')}`;
+      nextName === currentName ? propertyId : `${nextName}#${id('PROP')}`;
     delete this.componentPropertyDefinitions[propertyId];
     this.componentPropertyDefinitions[nextId] = next;
     return nextId;

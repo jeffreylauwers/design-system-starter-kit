@@ -270,6 +270,13 @@ geeft onder de **property-id**, dus een property weggooien en opnieuw aanmaken
 zet elke instance terug op de standaardwaarde. Daarom wordt hij bijgewerkt met
 `editComponentProperty` in plaats van opnieuw aangemaakt.
 
+Let bij het opzoeken van een bestaande property op de vorm van
+`componentPropertyDefinitions`: die map is gesleuteld op `naam#nodeId:sessionId`
+(`label#5:0`) en de definitie eronder draagt de naam **niet**. Uit de definitie
+de naam willen lezen levert overal `undefined` op, en dan wordt elke property
+opnieuw aangemaakt. Figma weigert dat niet maar hernoemt de nieuwe naar
+"label 2", bij de volgende import naar "label 3".
+
 **Wat wél verloren gaat:** overrides die een designer op de geneste lagen van
 een instance heeft gelegd. De lagen binnen een variant worden opnieuw
 opgebouwd, en Figma zoekt die overrides terug via het laagpad. Dat is de prijs
@@ -284,6 +291,13 @@ valt. Automatisch verwijderen zou elke instance ervan detachen, en dat is een
 beslissing van een mens. Dezelfde afweging als bij een icoon dat uit de
 assets-map verdwijnt.
 
+De variantnaam staat op de wrapper vanaf het moment dat hij bestaat, en blijft
+er de hele bouw op staan. Een component set leidt zijn variant-assen af uit de
+namen van zijn kinderen, en op de update-route hangt de wrapper daar al in: een
+wrapper die ook maar even naar zijn root-element heet (`dsn-link`) is daar geen
+geldige variant, en Figma gaat dat dan zelf herstellen. Vandaar dat `applyFrame`
+de naam als los argument krijgt in plaats van hem uit de spec te halen.
+
 Tijdens het bouwen haalt de plugin de auto layout van de set tijdelijk weg.
 Anders hangt een variant in een auto-layout ouder waar hij bij een verse import
 los op de pagina staat, en gelden er andere sizing-regels: dan zou een tweede
@@ -296,7 +310,7 @@ pnpm test:figma-plugin
 ```
 
 Draait de import-logica tegen de echte gegenereerde JSON met een mock van de
-Plugin API (`scripts/figma-mock.js`). De mock dwingt de volgorde- en type-eisen
+Plugin API (`scripts/figma-mock.js`). De mock dwingt de volgorde-, vorm- en type-eisen
 af die in Figma echt fouten geven:
 
 1. `characters` zetten voordat het font geladen is
@@ -311,6 +325,18 @@ af die in Figma echt fouten geven:
 7. een component property koppelen aan een veld dat de node niet heeft
    (`mainComponent` op iets anders dan een instance), of aan een property die
    niet op de omvattende set staat
+8. `componentPropertyDefinitions` is gesleuteld op `naam#id` en de definitie
+   eronder heeft geen `name`; een botsende naam wordt hernoemd naar "label 2",
+   niet geweigerd
+9. een kind van een component set draagt een geldige, unieke variantnaam
+   (`as=waarde, as=waarde`)
+
+Punt 8 en 9 staan er sinds ze in Figma zelf misgingen terwijl de smoke test
+groen stond. De mock zette destijds een `name` op de definitie en wierp een
+fout bij een dubbele naam, allebei anders dan de echte API, en dekte daarmee
+precies de twee bugs af die hij had moeten vangen. Waar de mock en de Plugin
+API uit elkaar lopen, is de mock waardeloos: hij is dan strenger op het
+verkeerde en blind voor het echte.
 
 Voor de bindingen controleert de test niet alleen het aantal maar leest hij per
 veld de naam van de variable terug uit de gebouwde boom. Anders zou een import

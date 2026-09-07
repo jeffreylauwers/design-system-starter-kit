@@ -58,6 +58,18 @@ function iconPaint(node) {
   return undefined;
 }
 
+/**
+ * De naam van een component property uit zijn sleutel.
+ *
+ * Figma sleutelt `componentPropertyDefinitions` op `naam#nodeId:sessionId` en
+ * zet de naam niet op de definitie. De plugin doet dit dus ook, en de test moet
+ * langs dezelfde route lezen als wat hij controleert.
+ */
+function propertyNameOf(key) {
+  const suffix = key.lastIndexOf('#');
+  return suffix === -1 ? key : key.slice(0, suffix);
+}
+
 const componentFiles = fs
   .readdirSync(path.join(monorepoRoot, 'packages/figma-sync/dist'))
   .filter((file) => file.endsWith('.json'))
@@ -775,7 +787,7 @@ for (const file of componentFiles) {
   if (declaredHere.length) {
     const byName = new Map(
       Object.entries(definitions).map(([propertyId, definition]) => [
-        definition.name,
+        propertyNameOf(propertyId),
         { propertyId, ...definition },
       ])
     );
@@ -1045,6 +1057,19 @@ check(
   propertyIdsAfter.length ===
     (rerunPayload.componentSet.componentProperties ?? []).length,
   propertyIdsAfter.join(', ')
+);
+
+// Figma weigert een dubbele propertynaam niet maar hernoemt hem naar
+// "label 2". Alleen op de id letten zou dat missen: dat is een ander id, en
+// het aantal klopt zolang de oude er ook nog staat.
+const namesAfter = propertyIdsAfter.map(propertyNameOf).sort();
+const declaredNames = (rerunPayload.componentSet.componentProperties ?? [])
+  .map((property) => property.name)
+  .sort();
+check(
+  'de properties houden hun naam, zonder "2" erachter',
+  namesAfter.join('|') === declaredNames.join('|'),
+  namesAfter.join(', ')
 );
 
 // Een variant die in Figma ontbreekt maar wel in de spec staat hoort erbij te
