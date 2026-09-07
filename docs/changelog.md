@@ -10,6 +10,16 @@ All notable changes to this project are documented in this file.
 
 Nog niet gepubliceerde wijzigingen. Schrijf nieuwe changelog-entries hieronder; bij de volgende release wordt deze kop gepromoveerd naar het definitieve versienummer.
 
+### ModalDialog en Drawer erven weer de documenttekstkleur
+
+Een `<dialog>` erft zijn tekstkleur niet van zijn ouder: de UA-stylesheet zet `color: CanvasText` op het element zelf, en dat wint van overerving. `modal-dialog.css` en `drawer.css` zetten wel een kleur op hun heading, maar niet op de dialoog zelf.
+
+Gemeten in Storybook op `dsn-mode-dark`: `.dsn-modal-dialog`, `.dsn-drawer` en al hun `__header`, `__body` en `__footer` kwamen uit op `rgb(0, 0, 0)`, terwijl `body` op `rgb(241, 241, 241)` stond. Er staat nergens in de repo een `color-scheme`-declaratie, dus die zwarte kleur is onvoorwaardelijk en volgt niet de dark mode van het besturingssysteem.
+
+De zichtbare schade bleef beperkt tot alles wat zijn kleur erft: kale tekstnodes, inline elementen en componenten zonder eigen `--dsn-*-color`. Componenten die hun kleur wel uit een token halen, zoals `dsn-paragraph` en de headings, kleurden gewoon goed. Dat maakte de bug makkelijk te missen in de bestaande stories.
+
+Beide componenten zetten nu `color: inherit`, precies zoals `popover.css` dat al deed. Na de wijziging meten dialoog, drawer en hun secties `rgb(241, 241, 241)` in dark mode en `rgb(27, 27, 27)` in light mode, gelijk aan `body`.
+
 ### De Kitchen Sink-pagina blokkeert Chromatic niet langer
 
 Chromatic maakt geen snapshots van stories groter dan 25.000.000 pixels oppervlak. De Kitchen Sink meet 1.200 x 25.335, oftewel 30.400.200, en liet de build daarom stranden met `Encountered 1 build error` nadat alle 637 snapshots al gemaakt waren. Voor het eerst zichtbaar in build 499 van 4 september.

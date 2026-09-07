@@ -35,6 +35,14 @@
   background: var(--dsn-drawer-background-color);
   padding: 0;
 
+  /*
+   * De UA-stylesheet zet `color: CanvasText` op het element zelf, en dat wint
+   * van overerving. Zonder deze regel krijgt alles wat zijn kleur erft (kale
+   * tekstnodes, inline elementen, componenten zonder eigen kleurtoken) de
+   * systeemkleur in plaats van de documentkleur. Popover doet hetzelfde.
+   */
+  color: inherit;
+
   /* Grootte */
   inline-size: min(
     var(--dsn-drawer-max-width),
