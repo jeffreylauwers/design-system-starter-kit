@@ -10,6 +10,39 @@ All notable changes to this project are documented in this file.
 
 Nog niet gepubliceerde wijzigingen. Schrijf nieuwe changelog-entries hieronder; bij de volgende release wordt deze kop gepromoveerd naar het definitieve versienummer.
 
+### De Figma-plugin werkt bestaande component sets bij in plaats van ze te dupliceren
+
+De variables-import en de iconimport waren al idempotent, de componentenimport niet: elke import maakte een nieuwe component set aan naast de oude. Zolang niemand met de library werkt is dat onschuldig, maar zodra er instances in designbestanden staan blijven die aan de oude set hangen. Dat was de belangrijkste blokkade om de gegenereerde library daadwerkelijk in gebruik te nemen.
+
+De plugin zoekt nu op de pagina van het component een set met dezelfde naam en werkt die bij. Wat daarbij telt is de **node-id**: elke geplaatste instance hangt aan de node-id van zijn variant, en een nieuw component met dezelfde naam is voor Figma een ánder component. Een variant die al bestaat wordt daarom leeggemaakt en opnieuw gevuld in plaats van vervangen. Precies de afweging die de iconimport al maakte.
+
+Hetzelfde geldt een laag hoger, voor de component properties. Figma bewaart de waarde die een instance aan een property geeft onder de **property-id**, dus `label` weggooien en opnieuw aanmaken zet elke instance terug op de standaardwaarde. Bestaande properties worden nu bijgewerkt met `editComponentProperty`.
+
+Wat nooit vanzelf verdwijnt: een variant of een property die uit de spec is gevallen blijft staan, met een melding in de log. Automatisch verwijderen zou elke instance ervan detachen, en dat is een beslissing van een mens.
+
+Wat wél verloren gaat: overrides die een designer op de geneste lagen van een instance heeft gelegd. De lagen binnen een variant worden opnieuw opgebouwd, en Figma zoekt die overrides terug via het laagpad. Het alternatief (de bestaande lagen één voor één bijwerken) vereist een betrouwbare identiteit per laag die een gemeten boom niet heeft. De instance blijft aan zijn component hangen, en dat is het verschil tussen een import die je kunt draaien en een die je niet kunt draaien.
+
+De smoke test importeert nu **elk** component twee keer en draait alle bestaande controles op het resultaat van de tweede import. Een import die alleen op een leeg bestand klopt is voor een library die al in gebruik is niets waard. Daarbovenop staat er een eigen sectie voor het bijwerken zelf: een geplaatste instance die de import moet overleven, een variant die uit de spec is gevallen, en een variant die er nieuw bij komt. Twee canary-runs bevestigden dat die controles ook echt afgaan: het leegmaken van een variant uitschakelen levert 46 rode checks op, het hergebruik uitschakelen 60.
+
+Twee bugs die pas in Figma zelf boven kwamen, allebei doordat de mock een andere vorm had dan de Plugin API:
+
+- `componentPropertyDefinitions` is gesleuteld op `naam#nodeId:sessionId` en de definitie eronder draagt de naam **niet**. De reconciliatie las `definition.name`, kreeg overal `undefined`, en maakte elke property opnieuw aan. Figma weigert dat niet maar hernoemt naar "label 2", bij de volgende import naar "label 3".
+- `applyFrame` zette de naam van het root-element op de wrapper (`dsn-link`). Op een verse import staat die wrapper op de pagina en is dat onschuldig, maar op de update-route hangt hij al ín de set, en een set leidt zijn variant-assen af uit de namen van zijn kinderen. Negen varianten die tegelijk `dsn-link` heten laat Figma niet staan.
+
+De mock is op beide punten naar de echte vorm gebracht: definities zonder `name`-veld, een botsende propertynaam die hernoemd wordt in plaats van geweigerd, en een component set die een ongeldige of dubbele variantnaam bij zijn kinderen weigert. Met die mock gaan de twee bugs van 21 respectievelijk 1 rode check af. Dat is de les uit deze ronde: waar de mock en de Plugin API uit elkaar lopen is de mock waardeloos, want hij is dan streng op het verkeerde en blind voor het echte.
+
+Een derde ronde in Figma bracht nog drie dingen boven:
+
+- **De bestandskiezer vuurde niet twee keer.** `<input type="file">` geeft geen `change` als je hetzelfde bestand opnieuw kiest, want de waarde is niet veranderd. De plugin leek dan niet te reageren, en werkte pas na een ander component ertussen. Een bestaande UI-bug die nooit kon opvallen: vóór deze wijziging was dezelfde JSON opnieuw importeren zinloos. De kiezer wordt nu na elke keuze leeggemaakt.
+- **Een teruggezette variant kwam onderaan.** Een variant die opnieuw wordt toegevoegd hangt achteraan in de kinderlijst. De varianten worden nu na afloop in specvolgorde gezet; wat niet meer in de spec staat schuift daarmee naar achteren.
+- **Het icoon in een variant verliest zijn kleur, en dat is nog niet opgelost.** Na een tweede import staat het icoon op `color/neutral/color-default`, de eigen kleur van het icooncomponent, in plaats van op de kleur uit de spec. Twee verklaringen zijn geprobeerd en allebei in Figma weerlegd: het opnieuw zetten van de `INSTANCE_SWAP`-standaardwaarde, en de volgorde waarin de kleur en de properties geschreven worden.
+
+  Wat er wél is veranderd: de kleur wordt nu als allerlaatste geschreven, ná het koppelen van de properties, en daarna teruggelezen. Een icoonlaag die zijn variable alsnog niet draagt gaat als waarschuwing de log in. Dat sluit de volgorde uit als oorzaak en levert de meting op om verder te zoeken. De standaardwaarde van een bestaande `INSTANCE_SWAP` blijft daarnaast staan, want wat Figma daar opslaat is niet per se de `key` die de plugin aanleverde, en die waarde is de keuze van de designer.
+
+  De mock bootst de verwisseling nu na: haal de herhaling weg en de smoke test meldt `chevron-left.fills -> color/neutral/color-default (verwacht link/color)`, precies wat er in Figma te zien is. In Figma verandert de herhaling niets, dus het echte verschil zit in iets wat de mock nóg niet nadoet. Verder opgepakt in een eigen issue.
+
+Bij het bouwen bleek nog een tweede staleness-probleem, dat op een verse import onzichtbaar is: `applyAutoLayout` zette padding, `itemSpacing` en de uitlijningen alleen wanneer de spec ze noemde. Op een nieuw frame is dat gelijk aan de standaardwaarde, maar op een hergebruikte variant bleef er een gap of een uitlijning uit de vorige import staan. Die velden krijgen nu altijd een expliciete waarde, net als de bindingen aan variables die op een hergebruikte variant eerst worden losgemaakt.
+
 ### De losse README's van Button en Icon zijn weg
 
 Van de 75 componentmappen in `packages/components-react/src` hadden er precies twee een `README.md`: Button en Icon. Beide stammen uit de initial commit van februari, van vóór de Storybook-docsconventie. Daarnaast bestaan `Button.docs.md` en `Icon.docs.md` gewoon, dus die twee componenten waren dubbel gedocumenteerd. `package.json` publiceert alleen `dist` en `css.d.ts`, dus de README's bereikten geen enkele consument op npm.

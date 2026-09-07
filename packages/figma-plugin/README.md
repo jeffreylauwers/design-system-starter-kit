@@ -35,6 +35,11 @@ pnpm build:figma
 | `figma-sync/dist/icons.json`              | 51 icooncomponenten op de pagina `dsn/Icons` |
 | `figma-sync/dist/{component}.json`        | Eén component set met al zijn varianten      |
 
+Hetzelfde bestand nog een keer kiezen werkt gewoon: de bestandskiezer wordt na
+elke keuze leeggemaakt, want anders vuurt de `change`-event niet een tweede keer
+en lijkt de plugin niet te reageren. Dat is precies de handeling die er sinds
+het bijwerken van bestaande sets toe doet.
+
 Het `$schema`-veld bepaalt wat er geïmporteerd wordt, niet de bestandsnaam.
 Sleep je meerdere bestanden tegelijk, dan zet de plugin ze zelf op volgorde
 (variables, iconen, componenten) en verwerkt ze één voor één.
@@ -243,14 +248,88 @@ alleen in Figma zelf te bevestigen is.
 
 ## Idempotent
 
-Bestaande collections, modes, variables en icooncomponenten worden hergebruikt
-en bijgewerkt, niet gedupliceerd. Dat is een harde eis: dupliceren zou de
-bindingen verbreken die designers al gelegd hebben. De smoke test controleert
-dit expliciet door de import twee keer te draaien, en vergelijkt bij de iconen
-ook de node-ids.
+Bestaande collections, modes, variables, icooncomponenten en component sets
+worden hergebruikt en bijgewerkt, niet gedupliceerd. Dat is een harde eis:
+dupliceren zou de bindingen en de instances verbreken die designers al gelegd
+hebben. De smoke test controleert dit expliciet door élke import twee keer te
+draaien en de node-ids te vergelijken.
 
-Component sets worden wél elke keer opnieuw aangemaakt. Een bestaande set
-bijwerken zonder instanties te breken is een apart probleem, zie hieronder.
+### Hoe een component set wordt bijgewerkt
+
+De plugin zoekt op de pagina van het component een set met dezelfde naam. Staat
+die er, dan wordt hij bijgewerkt in plaats van dat er een tweede naast komt:
+
+| Wat                                          | Wat er gebeurt                                    |
+| -------------------------------------------- | ------------------------------------------------- |
+| Variant staat in de spec en in Figma         | Het component blijft, zijn inhoud wordt vervangen |
+| Variant staat in de spec, nog niet in Figma  | Wordt toegevoegd aan de bestaande set             |
+| Variant staat in Figma, niet meer in de spec | Blijft staan, met een melding in de log           |
+| Property staat in de spec en op de set       | Wordt bijgewerkt, houdt zijn property-id          |
+| Property staat op de set, niet in de spec    | Blijft staan, met een melding in de log           |
+
+Het hergebruiken van het component zélf is de kern. Elke geplaatste instance
+hangt aan de **node-id** van zijn variant; een nieuw component met dezelfde naam
+is voor Figma een ánder component en laat elke instance los. Hetzelfde geldt
+voor een component property: Figma bewaart de waarde die een instance eraan
+geeft onder de **property-id**, dus een property weggooien en opnieuw aanmaken
+zet elke instance terug op de standaardwaarde. Daarom wordt hij bijgewerkt met
+`editComponentProperty` in plaats van opnieuw aangemaakt.
+
+Let bij het opzoeken van een bestaande property op de vorm van
+`componentPropertyDefinitions`: die map is gesleuteld op `naam#nodeId:sessionId`
+(`label#5:0`) en de definitie eronder draagt de naam **niet**. Uit de definitie
+de naam willen lezen levert overal `undefined` op, en dan wordt elke property
+opnieuw aangemaakt. Figma weigert dat niet maar hernoemt de nieuwe naar
+"label 2", bij de volgende import naar "label 3".
+
+**Wat wél verloren gaat:** overrides die een designer op de geneste lagen van
+een instance heeft gelegd. De lagen binnen een variant worden opnieuw
+opgebouwd, en Figma zoekt die overrides terug via het laagpad. Dat is de prijs
+van een import die de CSS daadwerkelijk doorzet; het alternatief (de bestaande
+lagen één voor één bijwerken) vereist een betrouwbare identiteit per laag die
+een gemeten boom niet heeft. De instance blijft wel aan zijn component hangen,
+en dát is het verschil tussen een import die je kunt draaien en een die je niet
+kunt draaien.
+
+**De icoonkleur overleeft een tweede import niet. Dit is een openstaand
+probleem**, zie "Wat dit nog niet doet". Een icoon is een instance van het
+icooncomponent en zijn kleur is een override op de geneste `Group > Shape`. Na
+een tweede import staat die override op `color/neutral/color-default`, de eigen
+kleur van het icooncomponent, in plaats van op de kleur uit de spec.
+
+De kleuren worden na afloop van álles nog een keer gezet en daarna teruggelezen;
+een icoonlaag die zijn variable alsnog niet draagt gaat als waarschuwing de log
+in. Dat lost het in Figma níet op, maar het sluit wel uit dat de volgorde van de
+stappen ervóór de oorzaak is, en de terugleescontrole levert de meting op om het
+verder uit te zoeken.
+
+**De standaardwaarde van een bestaande `INSTANCE_SWAP` blijft staan.** Wat Figma
+daar opslaat is niet per se de `key` of de node-id die de plugin aanleverde, dus
+erop vergelijken helpt niet. Het icoon dat een designer als standaard kiest is
+bovendien zijn keuze en niet die van de volgende import. Een property die verder
+niet verandert wordt helemaal niet aangeraakt.
+
+Na afloop worden de varianten in de volgorde van de spec gezet. Een variant die
+opnieuw wordt toegevoegd hangt anders achteraan in de kinderlijst, en dan staat
+een teruggezette `state=hover` onderaan de plaat in plaats van bij zijn eigen
+maat. Varianten die niet meer in de spec staan schuiven daarmee naar achteren.
+
+**Wat nooit vanzelf verdwijnt:** een variant of een property die uit de spec
+valt. Automatisch verwijderen zou elke instance ervan detachen, en dat is een
+beslissing van een mens. Dezelfde afweging als bij een icoon dat uit de
+assets-map verdwijnt.
+
+De variantnaam staat op de wrapper vanaf het moment dat hij bestaat, en blijft
+er de hele bouw op staan. Een component set leidt zijn variant-assen af uit de
+namen van zijn kinderen, en op de update-route hangt de wrapper daar al in: een
+wrapper die ook maar even naar zijn root-element heet (`dsn-link`) is daar geen
+geldige variant, en Figma gaat dat dan zelf herstellen. Vandaar dat `applyFrame`
+de naam als los argument krijgt in plaats van hem uit de spec te halen.
+
+Tijdens het bouwen haalt de plugin de auto layout van de set tijdelijk weg.
+Anders hangt een variant in een auto-layout ouder waar hij bij een verse import
+los op de pagina staat, en gelden er andere sizing-regels: dan zou een tweede
+import iets anders opleveren dan de eerste. Het canvas wordt daarna weer gezet.
 
 ## Smoke test
 
@@ -259,7 +338,7 @@ pnpm test:figma-plugin
 ```
 
 Draait de import-logica tegen de echte gegenereerde JSON met een mock van de
-Plugin API (`scripts/figma-mock.js`). De mock dwingt de volgorde- en type-eisen
+Plugin API (`scripts/figma-mock.js`). De mock dwingt de volgorde-, vorm- en type-eisen
 af die in Figma echt fouten geven:
 
 1. `characters` zetten voordat het font geladen is
@@ -274,12 +353,33 @@ af die in Figma echt fouten geven:
 7. een component property koppelen aan een veld dat de node niet heeft
    (`mainComponent` op iets anders dan een instance), of aan een property die
    niet op de omvattende set staat
+8. `componentPropertyDefinitions` is gesleuteld op `naam#id` en de definitie
+   eronder heeft geen `name`; een botsende naam wordt hernoemd naar "label 2",
+   niet geweigerd
+9. een kind van een component set draagt een geldige, unieke variantnaam
+   (`as=waarde, as=waarde`)
+10. een instance swap property koppelen verwisselt de laag, en dat wist de
+    overrides op zijn geneste lagen
+
+Punt 8, 9 en 10 staan er sinds ze in Figma zelf misgingen terwijl de smoke test
+groen stond. De mock zette destijds een `name` op de definitie en wierp een
+fout bij een dubbele naam, allebei anders dan de echte API, en dekte daarmee
+precies de twee bugs af die hij had moeten vangen. Waar de mock en de Plugin
+API uit elkaar lopen, is de mock waardeloos: hij is dan strenger op het
+verkeerde en blind voor het echte.
 
 Voor de bindingen controleert de test niet alleen het aantal maar leest hij per
 veld de naam van de variable terug uit de gebouwde boom. Anders zou een import
 die alles aan het verkeerde token hangt net zo groen zijn. Ook getest: een
 import zonder variables in het bestand wordt geweigerd, en de tweede
 iconimport houdt de node-ids gelijk in plaats van te vervangen.
+
+Elk component wordt **twee keer** geïmporteerd, en alle controles kijken naar
+het resultaat van de tweede. Een import die alleen op een leeg bestand klopt is
+voor een library die al in gebruik is niets waard: de tweede is de import die
+een designer in de praktijk draait. Daarbovenop staat er een eigen sectie voor
+het bijwerken zelf, met een geplaatste instance die de import moet overleven,
+een variant die uit de spec is gevallen en een variant die er nieuw bij komt.
 
 Die eerste ronde vond meteen drie bugs in de generator: `HUG` op nodes zonder
 auto layout, `FILL` binnen een niet-auto-layout ouder, en twee variables die
@@ -288,11 +388,20 @@ Figma laadt.
 
 ## Wat dit nog niet doet
 
-- **Component sets bijwerken.** Elke import maakt een nieuwe set aan. Bestaande
-  instanties in designbestanden koppelen daar niet vanzelf aan. De iconen doen
-  dit wél, zie hierboven. Op een eigen pagina wordt dat zichtbaar als twee sets
-  met dezelfde naam onder elkaar; de plugin meldt dat. De oude set weggooien is
-  handwerk, want dat detacht elke geplaatste instance.
+- **De icoonkleur na een tweede import.** Het icoon in een variant staat na een
+  herimport op `color/neutral/color-default` in plaats van op de kleur uit de
+  spec. Twee verklaringen zijn geprobeerd en allebei weerlegd in Figma: het
+  opnieuw zetten van de `INSTANCE_SWAP`-standaardwaarde, en de volgorde waarin
+  de kleur en de properties geschreven worden. De kleur wordt inmiddels als
+  allerlaatste geschreven en daarna teruggelezen, en het probleem blijft. De
+  mock bootst de verwisseling na en is op dat punt groen, dus het verschil zit
+  in iets wat de mock nog niet nadoet.
+- **Overrides op geneste lagen bewaren.** Een bijgewerkte variant wordt van
+  binnen opnieuw opgebouwd, en overrides die een designer op de lagen van een
+  instance heeft gelegd zoekt Figma terug via het laagpad. De instance blijft
+  aan zijn component hangen; wat erop lag niet. Zie "Idempotent" hierboven.
+- **Een droogloop.** Er is nog geen stand waarin de plugin eerst toont wat er
+  zou veranderen voordat hij het doet.
 - **Geneste componenten hergebruiken.** De Heading en Paragraph in een Alert of
   een Note zijn gemeten lagen, geen instances van de losse component sets. Voor
   iconen gebeurt dat wél.

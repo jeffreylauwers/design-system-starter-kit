@@ -16,6 +16,10 @@
  *    variable moet bij het veld passen (een kleur is geen padding)
  * 7. padding, itemSpacing en de minimum-maten bestaan alleen op een frame met
  *    auto layout
+ * 8. `componentPropertyDefinitions` is gesleuteld op `naam#id` en de definitie
+ *    eronder heeft geen `name`; een botsende naam wordt hernoemd, niet
+ *    geweigerd
+ * 9. een kind van een component set draagt een geldige, unieke variantnaam
  */
 
 /**
@@ -106,12 +110,31 @@ const COMPONENT_PROPERTY_FIELDS = new Set(
   Object.values(FIELD_FOR_PROPERTY_TYPE)
 );
 
+/**
+ * De naam van een property uit zijn sleutel, net als in de Plugin API:
+ * `componentPropertyDefinitions` is gesleuteld op `naam#nodeId:sessionId`.
+ */
+function propertyNameOf(key) {
+  const suffix = key.lastIndexOf('#');
+  return suffix === -1 ? key : key.slice(0, suffix);
+}
+
+/**
+ * Een variant heet `as=waarde, as=waarde`. Een component set leidt zijn
+ * variant-assen uit die namen af, dus een kind dat er niet aan voldoet, of
+ * twee kinderen met dezelfde naam, maakt de set stuk. Figma herstelt dat zelf
+ * door te hernoemen; de mock weigert het, zodat het hier opvalt in plaats van
+ * pas in Figma.
+ */
+const VARIANT_NAME = /^[^=,]+=[^=,]*(, [^=,]+=[^=,]*)*$/;
+
 const loadedFonts = new Set();
 
 class Node {
   constructor(type) {
     this.type = type;
     this.id = id(type);
+    this._name = undefined;
     this.children = [];
     this.parent = null;
     this.width = 0;
@@ -126,12 +149,43 @@ class Node {
     this.gridRowSizes = [];
   }
 
+  set name(value) {
+    this._name = value;
+    this.#assertVariantName();
+  }
+  get name() {
+    return this._name;
+  }
+
+  /**
+   * Een kind van een component set moet een geldige, unieke variantnaam
+   * hebben. Zonder deze controle blijft het onzichtbaar dat de bouw een
+   * variant tijdelijk naar de naam van zijn root-element hernoemt terwijl hij
+   * al in de set hangt: in de mock is dat een naam als elke andere, in Figma
+   * gaan de variant-assen eraan.
+   */
+  #assertVariantName() {
+    if (this.parent?.type !== 'COMPONENT_SET') return;
+    if (!VARIANT_NAME.test(this._name ?? '')) {
+      throw new Error(
+        `"${this._name}" is geen geldige variantnaam in een component set (verwacht "as=waarde, as=waarde")`
+      );
+    }
+    const twin = this.parent.children.find(
+      (sibling) => sibling !== this && sibling.name === this._name
+    );
+    if (twin) {
+      throw new Error(`twee varianten in dezelfde set heten "${this._name}"`);
+    }
+  }
+
   appendChild(child) {
     if (child.parent) {
       child.parent.children = child.parent.children.filter((c) => c !== child);
     }
     child.parent = this;
     this.children.push(child);
+    child.#assertVariantName();
     this.recomputeFromChildren();
   }
 
@@ -283,14 +337,15 @@ class Node {
   // een direct kind daarvan; eraan toewijzen geeft anders een fout.
   set minWidth(value) {
     this.#assertAutoLayoutField('minWidth');
-    this._minWidth = value;
+    // Zoals in de echte API: null haalt de minimum-maat weg.
+    this._minWidth = value === null ? undefined : value;
   }
   get minWidth() {
     return this._minWidth;
   }
   set minHeight(value) {
     this.#assertAutoLayoutField('minHeight');
-    this._minHeight = value;
+    this._minHeight = value === null ? undefined : value;
   }
   get minHeight() {
     return this._minHeight;
@@ -311,6 +366,19 @@ class Node {
    * `mainComponent` bestaat alleen op een instance, `characters` alleen op
    * tekst.
    */
+  /**
+   * Zet de geneste lagen terug op wat het component voorschrijft. Dat is wat
+   * Figma bij een instance swap doet: de overrides op de oude lagen gelden
+   * niet meer voor de nieuwe.
+   */
+  #resetOverrides() {
+    if (this.type !== 'INSTANCE' || !this.mainComponent) return;
+    for (const child of [...this.children]) child.remove();
+    for (const child of this.mainComponent.children) {
+      this.appendChild(cloneNode(child));
+    }
+  }
+
   set componentPropertyReferences(value) {
     for (const [field, propertyId] of Object.entries(value ?? {})) {
       if (!COMPONENT_PROPERTY_FIELDS.has(field)) {
@@ -338,6 +406,15 @@ class Node {
       }
       if (!ancestor.componentPropertyDefinitions?.[propertyId]) {
         throw new Error(`property ${propertyId} bestaat niet op de set`);
+      }
+      if (field === 'mainComponent') {
+        // Zoals in Figma: het mainComponent van deze laag komt vanaf nu uit de
+        // property, en Figma past die standaardwaarde meteen toe. Dat is een
+        // verwisseling, en een verwisseling gooit de overrides op de geneste
+        // lagen weg: het icoon valt terug op de kleur van zijn eigen
+        // component. Waargenomen in Figma Desktop, waar de icoonkleur na een
+        // tweede import terugsprong naar color/neutral/color-default.
+        this.#resetOverrides();
       }
       const expected =
         FIELD_FOR_PROPERTY_TYPE[
@@ -368,10 +445,19 @@ class Node {
     }
 
     this.componentPropertyDefinitions = this.componentPropertyDefinitions ?? {};
-    const taken = Object.values(this.componentPropertyDefinitions).some(
-      (definition) => definition.name === name
+
+    // Zoals in Figma, en dit is bewust geen fout: een naam die al bezet is
+    // wordt hernoemd naar "label 2", bij de volgende keer naar "label 3".
+    // Waargenomen in Figma Desktop toen de plugin een bestaande property
+    // opnieuw aanmaakte in plaats van bij te werken. De mock wierp daar eerst
+    // een fout op, en juist daardoor bleef die bug hier onzichtbaar.
+    const names = new Set(
+      Object.keys(this.componentPropertyDefinitions).map(propertyNameOf)
     );
-    if (taken) throw new Error(`property ${name} bestaat al op deze set`);
+    let unique = name;
+    for (let suffix = 2; names.has(unique); suffix += 1) {
+      unique = `${name} ${suffix}`;
+    }
 
     const expected = { TEXT: 'string', BOOLEAN: 'boolean' }[type];
     if (expected && typeof defaultValue !== expected) {
@@ -389,9 +475,11 @@ class Node {
       }
     }
 
-    const propertyId = `${name}#${id('PROP')}`;
+    // Zoals in Figma: de sleutel draagt de naam plus een achtervoegsel, en de
+    // definitie eronder heeft géén `name`-veld. Wie de naam uit de definitie
+    // probeert te lezen krijgt overal undefined.
+    const propertyId = `${unique}#${id('PROP')}`;
     this.componentPropertyDefinitions[propertyId] = {
-      name,
       type,
       defaultValue,
       preferredValues: options?.preferredValues,
@@ -399,10 +487,72 @@ class Node {
     return propertyId;
   }
 
+  /**
+   * Werkt een bestaande property bij. De echte API levert de (mogelijk
+   * gewijzigde) property-id terug; die blijft gelijk zolang de naam gelijk
+   * blijft, en dat is precies waar een instance zijn waarde onder bewaart.
+   */
+  editComponentProperty(propertyId, changes) {
+    // Meegeteld zodat de smoke test kan zien dát er geschreven wordt. Een
+    // INSTANCE_SWAP-default opnieuw zetten laat Figma de geneste instance
+    // opnieuw verwisselen en wist de overrides erop, dus een import die niets
+    // verandert hoort hier niet langs te komen.
+    state.propertyEdits += 1;
+    const definition = this.componentPropertyDefinitions?.[propertyId];
+    if (!definition) {
+      throw new Error(`property ${propertyId} bestaat niet op deze set`);
+    }
+    if (definition.type === 'VARIANT') {
+      throw new Error('een variant-as is geen component property');
+    }
+
+    const next = { ...definition };
+    const currentName = propertyNameOf(propertyId);
+    const nextName = changes.name ?? currentName;
+    if (changes.preferredValues !== undefined) {
+      next.preferredValues = changes.preferredValues;
+    }
+    if (changes.defaultValue !== undefined) {
+      const expected = { TEXT: 'string', BOOLEAN: 'boolean' }[next.type];
+      if (expected && typeof changes.defaultValue !== expected) {
+        throw new Error(
+          `${next.type} verwacht een ${expected} als standaardwaarde, kreeg ${typeof changes.defaultValue}`
+        );
+      }
+      if (
+        next.type === 'INSTANCE_SWAP' &&
+        (typeof changes.defaultValue !== 'string' || !changes.defaultValue)
+      ) {
+        throw new Error(
+          'INSTANCE_SWAP verwacht een verwijzing naar een component als standaardwaarde'
+        );
+      }
+      next.defaultValue = changes.defaultValue;
+    }
+
+    const nextId =
+      nextName === currentName ? propertyId : `${nextName}#${id('PROP')}`;
+    delete this.componentPropertyDefinitions[propertyId];
+    this.componentPropertyDefinitions[nextId] = next;
+    return nextId;
+  }
+
+  deleteComponentProperty(propertyId) {
+    if (!this.componentPropertyDefinitions?.[propertyId]) {
+      throw new Error(`property ${propertyId} bestaat niet op deze set`);
+    }
+    delete this.componentPropertyDefinitions[propertyId];
+  }
+
   setBoundVariable(field, variable) {
     const expected = BINDABLE_FIELDS[field];
     if (!expected) {
       throw new Error(`cannot bind variable to field ${field}`);
+    }
+    // Zoals in de echte API: null maakt de binding los.
+    if (variable === null) {
+      if (this.boundVariables) delete this.boundVariables[field];
+      return;
     }
     if (variable.resolvedType !== expected) {
       throw new Error(
@@ -556,6 +706,7 @@ root.appendChild(rootPage);
 const state = {
   collections: [],
   variables: [],
+  propertyEdits: 0,
   page: rootPage,
   root,
 };

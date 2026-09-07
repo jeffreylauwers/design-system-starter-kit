@@ -130,14 +130,14 @@ function applyAutoLayout(frame, spec) {
     if (spec.gridColumnSizes) frame.gridColumnSizes = spec.gridColumnSizes;
     if (spec.gridRowSizes) frame.gridRowSizes = spec.gridRowSizes;
   } else {
-    if (spec.itemSpacing !== undefined) frame.itemSpacing = spec.itemSpacing;
-    if (spec.layoutWrap) frame.layoutWrap = spec.layoutWrap;
-    if (spec.primaryAxisAlignItems) {
-      frame.primaryAxisAlignItems = spec.primaryAxisAlignItems;
-    }
-    if (spec.counterAxisAlignItems) {
-      frame.counterAxisAlignItems = spec.counterAxisAlignItems;
-    }
+    // Overal een expliciete waarde, ook als de spec het veld niet noemt. Op een
+    // vers frame is dat de standaard en verandert er niets, maar een variant die
+    // uit een vorige import wordt hergebruikt houdt anders een gap of een
+    // uitlijning die in de nieuwe spec niet meer staat.
+    frame.itemSpacing = spec.itemSpacing ?? 0;
+    frame.layoutWrap = spec.layoutWrap ?? 'NO_WRAP';
+    frame.primaryAxisAlignItems = spec.primaryAxisAlignItems ?? 'MIN';
+    frame.counterAxisAlignItems = spec.counterAxisAlignItems ?? 'MIN';
   }
 
   for (const side of [
@@ -146,7 +146,7 @@ function applyAutoLayout(frame, spec) {
     'paddingBottom',
     'paddingLeft',
   ]) {
-    if (spec[side] !== undefined) frame[side] = spec[side];
+    frame[side] = spec[side] ?? 0;
   }
 }
 
@@ -331,7 +331,13 @@ function buildNode(spec, parent, context) {
     // binding moet mee in de paints die eroverheen worden gezet. Bij een
     // instance is dat een override op de geneste lagen, precies zoals een
     // designer die met de hand zou leggen.
-    recolorVectors(node.children ?? [], paintsForVector(spec, context));
+    //
+    // De opdracht wordt onthouden en aan het eind van de import herhaald; zie
+    // `recolorIcons`. `paintsForVector` telt mee in de statistieken en wordt
+    // daarom maar één keer aangeroepen.
+    const paints = paintsForVector(spec, context);
+    recolorVectors(node.children ?? [], paints);
+    context.recolors.push({ node, paints, name: spec.name, spec });
     applyPlacement(node, spec, log);
     registerSlot(node, spec, context);
     return node;
@@ -363,9 +369,12 @@ function registerSlot(node, spec, context) {
  *
  * Staat los van `buildNode` omdat het root-element van een component geen eigen
  * frame krijgt: het *is* het component. Zie `importComponentSet`.
+ *
+ * `name` staat daarom apart van de spec: de wrapper van een variant heet naar
+ * zijn variantlabel en niet naar het root-element.
  */
-function applyFrame(frame, spec, context) {
-  frame.name = spec.name ?? 'Frame';
+function applyFrame(frame, spec, context, name = spec.name ?? 'Frame') {
+  frame.name = name;
 
   // Een nieuw frame heeft een witte vulling; die overschrijven we altijd,
   // ook met een lege lijst, anders krijgt elk transparant element wit.
@@ -383,6 +392,133 @@ function applyFrame(frame, spec, context) {
   applyBindings(frame, spec, context);
 
   for (const child of spec.children ?? []) buildNode(child, frame, context);
+}
+
+/**
+ * Velden waarvan de binding op de paints zelf zit en niet op de node.
+ * `setBoundVariable` weigert ze; ze verdwijnen vanzelf zodra de paints
+ * vervangen worden.
+ */
+const PAINT_FIELDS = new Set(['fills', 'strokes']);
+
+/** Maakt elke variable-binding op deze node los. */
+function clearBoundVariables(node) {
+  for (const field of Object.keys(node.boundVariables ?? {})) {
+    if (PAINT_FIELDS.has(field)) continue;
+    try {
+      node.setBoundVariable(field, null);
+    } catch {
+      // Niet elk veld laat zich losmaken. De spec zet er verderop hoe dan ook
+      // een waarde overheen; blijft er een binding op staan, dan wint die, en
+      // dat is minder erg dan hier afbreken.
+    }
+  }
+}
+
+/**
+ * Zet een hergebruikte variant terug naar de staat van een vers component.
+ *
+ * Dit is de kern van het bijwerken: het component zélf blijft bestaan, alleen
+ * zijn inhoud gaat eruit. Elke geplaatste instance hangt aan de node-id van dit
+ * component, en een nieuw component met dezelfde naam is voor Figma een ander
+ * component: dan raakt elke instance los. Dezelfde afweging als bij de iconen.
+ *
+ * De prijs is dat overrides die een designer op de gestapelde lagen van een
+ * instance heeft gelegd wegvallen, want Figma zoekt die terug via het laagpad
+ * en dat pad wordt opnieuw opgebouwd. De instance blijft wel aan zijn component
+ * hangen, en dat is het verschil tussen een import die je kunt draaien en een
+ * die je niet kunt draaien.
+ *
+ * Alles wat `applyFrame` alleen zet wanneer de spec het noemt moet hier weg.
+ * Anders houdt een variant een rand, een radius of een gap uit de vorige
+ * import die in de nieuwe spec niet meer voorkomt.
+ */
+function resetVariant(component) {
+  for (const child of [...component.children]) child.remove();
+
+  clearBoundVariables(component);
+  component.componentPropertyReferences = {};
+
+  // Vóór het weghalen van de auto layout: minWidth en minHeight bestaan
+  // daarzonder niet, dus daarna zijn ze niet meer los te maken.
+  for (const field of ['minWidth', 'minHeight']) {
+    try {
+      component[field] = null;
+    } catch {
+      // Stond er geen auto layout op, dan staat er ook geen minimum-maat.
+    }
+  }
+
+  component.layoutMode = 'NONE';
+  component.fills = [];
+  component.strokes = [];
+  component.dashPattern = [];
+  component.cornerRadius = 0;
+  component.opacity = 1;
+  component.clipsContent = true;
+}
+
+/**
+ * Zet de icoonkleuren nog een keer, als allerlaatste stap van de import.
+ *
+ * Een icoon is een instance van het icooncomponent, en zijn kleur is een
+ * override op de geneste `Group > Shape`. Alles wat Figma daarna met die
+ * instance doet kan die override wegvagen: een instance swap property zet het
+ * `mainComponent` van de laag, en bij zo'n verwisseling gooit Figma de
+ * overrides weg. Het icoon valt dan terug op de neutrale kleur van het
+ * icooncomponent, en dat is precies wat er in Figma gebeurde.
+ *
+ * Wie het laatst schrijft wint, dus schrijft de kleur het laatst. Dat scheelt
+ * ook het uitzoeken wélke stap ertussen de override precies opruimt: de
+ * volgorde doet er daarna niet meer toe.
+ *
+ * `node.children` wordt hier opnieuw gelezen en niet hergebruikt: na een
+ * verwisseling zijn het andere lagen dan tijdens de bouw.
+ */
+function recolorIcons(context) {
+  for (const job of context.recolors) {
+    recolorVectors(job.node.children ?? [], job.paints);
+  }
+  return context.recolors.length;
+}
+
+/**
+ * Leest terug of de iconen hun variable daadwerkelijk dragen.
+ *
+ * Een icoon dat zijn binding kwijt is ziet er in Figma uit als een icoon dat
+ * het gewoon doet, tot iemand naar dark mode schakelt. Stil laten gebeuren is
+ * daarom geen optie; zie ook `reportBindings`.
+ */
+function verifyIconColors(context) {
+  const lost = [];
+
+  for (const job of context.recolors) {
+    const expected = job.paints?.[0]?.boundVariables?.color?.id;
+    if (!expected) continue;
+
+    const find = (node) => {
+      if (Array.isArray(node.fills) && node.fills.length) return node.fills[0];
+      for (const child of node.children ?? []) {
+        const found = find(child);
+        if (found) return found;
+      }
+      return undefined;
+    };
+
+    const paint = find(job.node);
+    if (paint?.boundVariables?.color?.id !== expected) {
+      lost.push(job.name ?? 'icon');
+    }
+  }
+
+  if (lost.length) {
+    const unique = [...new Set(lost)];
+    context.log.warn(
+      `${lost.length} icoonlagen dragen hun kleur-variable niet (${unique.slice(0, 3).join(', ')}${unique.length > 3 ? ', ...' : ''}); ze volgen de theme-schakelaar niet`
+    );
+  }
+
+  return lost.length;
 }
 
 // =============================================================================
@@ -431,6 +567,145 @@ function preferredIcons(context) {
 }
 
 /**
+ * De naam van een property uit zijn sleutel in `componentPropertyDefinitions`.
+ *
+ * Die map is gesleuteld op `naam#nodeId:sessionId` (`label#5:0`), en de
+ * definitie eronder draagt de naam **niet**: een `ComponentPropertyDefinition`
+ * is `{ type, defaultValue, preferredValues?, variantOptions? }`. Uit die
+ * definitie de naam willen lezen levert overal `undefined` op, en dan wordt
+ * elke property opnieuw aangemaakt in plaats van bijgewerkt. Figma weigert dat
+ * niet maar hernoemt de nieuwe naar "label 2", en bij de volgende import naar
+ * "label 3".
+ *
+ * Een variant-as heeft geen achtervoegsel; de sleutel is dan de naam zelf.
+ */
+function propertyNameOf(key) {
+  const suffix = key.lastIndexOf('#');
+  return suffix === -1 ? key : key.slice(0, suffix);
+}
+
+/**
+ * De properties die al op de set staan, op naam.
+ *
+ * De variant-assen (`size`, `variant`, ...) staan hier ook in, maar die komen
+ * uit de variantnamen en worden niet door de generator gedeclareerd; ze horen
+ * dus niet in deze afweging thuis.
+ */
+function existingProperties(set) {
+  const byName = new Map();
+  for (const [propertyId, definition] of Object.entries(
+    set.componentPropertyDefinitions ?? {}
+  )) {
+    if (definition.type === 'VARIANT') continue;
+    byName.set(propertyNameOf(propertyId), { propertyId, ...definition });
+  }
+  return byName;
+}
+
+/**
+ * Staat deze property er al precies zo op?
+ *
+ * `defaults` bevat bij een INSTANCE_SWAP twee kandidaten (de `key` en de
+ * node-id van het icooncomponent), want welke Figma accepteert verschilt per
+ * versie. Komt de bestaande waarde met één van beide overeen, dan is er niets
+ * te wijzigen.
+ */
+function unchangedProperty(existing, property, defaults, options) {
+  // Bij een INSTANCE_SWAP telt de standaardwaarde niet mee. Wat Figma daar
+  // opslaat is niet per se de `key` of de node-id die wij aanleverden, dus een
+  // vergelijking erop slaat nooit aan en dan zou hier elke import doorheen
+  // lopen. Belangrijker: die waarde opnieuw zetten laat Figma de geneste
+  // instance verwisselen en dat wist de kleuroverride erop. Het icoon dat een
+  // designer als standaard kiest is bovendien zijn keuze, niet die van een
+  // volgende import.
+  const sameDefault =
+    property.type === 'INSTANCE_SWAP' ||
+    defaults.some((value) => existing.defaultValue === value);
+  if (!sameDefault) return false;
+
+  const wanted = options?.preferredValues;
+  if (wanted === undefined) return true;
+  return (
+    JSON.stringify(existing.preferredValues ?? []) === JSON.stringify(wanted)
+  );
+}
+
+/**
+ * Zorgt dat de property op de set staat en geeft zijn id terug.
+ *
+ * Bestaat hij al met hetzelfde type, dan wordt hij bijgewerkt in plaats van
+ * opnieuw aangemaakt. Dat is niet cosmetisch: Figma bewaart de waarde die een
+ * instance aan een property geeft onder de property-id, dus een property
+ * weggooien en opnieuw aanmaken zet elke instance terug op de standaardwaarde.
+ *
+ * Van type wisselen kan niet; dan moet de oude er wel uit, en dat wordt gemeld.
+ */
+function ensureComponentProperty(set, property, defaults, options, known, log) {
+  const existing = known.get(property.name);
+  let lastError;
+
+  if (existing && existing.type !== property.type) {
+    log.warn(
+      `Property "${property.name}" wijzigt van ${existing.type} naar ${property.type}; opnieuw aangemaakt, instances vallen terug op de standaardwaarde`
+    );
+    try {
+      set.deleteComponentProperty(existing.propertyId);
+    } catch (error) {
+      lastError = error;
+    }
+  } else if (existing) {
+    // Niets schrijven wat niet verandert. De standaardwaarde van een
+    // INSTANCE_SWAP opnieuw zetten laat Figma de geneste instance opnieuw
+    // verwisselen, en een swap wist de overrides op die instance: het icoon in
+    // de variant verliest dan de kleur die de plugin erop had gelegd en valt
+    // terug op de kleur van het icooncomponent zelf.
+    if (unchangedProperty(existing, property, defaults, options)) {
+      return { id: existing.propertyId, reused: true, unchanged: true };
+    }
+
+    // Alleen de velden die daadwerkelijk wijzigen, om dezelfde reden: elke
+    // schrijfactie op een INSTANCE_SWAP-default is een verwisseling.
+    const changes =
+      property.type === 'INSTANCE_SWAP'
+        ? [{ ...(options ?? {}) }]
+        : defaults.map((value) => ({
+            defaultValue: value,
+            ...(options ?? {}),
+          }));
+
+    for (const change of changes) {
+      try {
+        return {
+          id: set.editComponentProperty(existing.propertyId, change),
+          reused: true,
+        };
+      } catch (error) {
+        lastError = error;
+      }
+    }
+    return { id: null, error: lastError, reused: true };
+  }
+
+  for (const value of defaults) {
+    try {
+      return {
+        id: set.addComponentProperty(
+          property.name,
+          property.type,
+          value,
+          options
+        ),
+        reused: false,
+      };
+    } catch (error) {
+      lastError = error;
+    }
+  }
+
+  return { id: null, error: lastError };
+}
+
+/**
  * Legt de gedeclareerde component properties op de set en koppelt de lagen.
  *
  * Alles wat hier niet lukt gaat als fout de log in. Een property die stil
@@ -440,6 +715,7 @@ function preferredIcons(context) {
 function applyComponentProperties(set, properties, variants, context) {
   const { log } = context;
   const applied = [];
+  const known = existingProperties(set);
 
   for (const property of properties ?? []) {
     const targets = variants.map((variant) => variant.slots.get(property.slot));
@@ -474,28 +750,25 @@ function applyComponentProperties(set, properties, variants, context) {
     const options =
       property.type === 'INSTANCE_SWAP' ? preferredIcons(context) : undefined;
 
-    let id;
-    let lastError;
-    for (const value of defaults) {
-      try {
-        id = set.addComponentProperty(
-          property.name,
-          property.type,
-          value,
-          options
-        );
-        break;
-      } catch (error) {
-        lastError = error;
-      }
-    }
+    const outcome = ensureComponentProperty(
+      set,
+      property,
+      defaults,
+      options,
+      known,
+      log
+    );
+    const id = outcome.id;
+    let lastError = outcome.error;
 
     if (!id) {
       log.error(
-        `Property "${property.name}" (${property.type}) kon niet aangemaakt worden: ${lastError?.message ?? 'onbekende fout'}`
+        `Property "${property.name}" (${property.type}) kon niet ${outcome.reused ? 'bijgewerkt' : 'aangemaakt'} worden: ${lastError?.message ?? 'onbekende fout'}`
       );
       continue;
     }
+
+    known.delete(property.name);
 
     // De lagen op de standaardstand zetten vóór de koppeling: daarna bepaalt
     // de property de waarde, en een laag die daar niet mee overeenkomt laat de
@@ -529,20 +802,17 @@ function applyComponentProperties(set, properties, variants, context) {
     log.info(`Component properties gelegd: ${applied.join(', ')}`);
   }
 
+  // Wat na de lus in `known` overblijft staat wel op de set maar niet meer in
+  // de spec. Verwijderen zou de waarde wegnemen die instances eraan hebben
+  // gegeven, dus dat blijft een beslissing van een mens.
+  for (const name of known.keys()) {
+    log.warn(
+      `Property "${name}" staat wel op ${set.name} in Figma maar niet meer in de spec; handmatig verwijderen als dat de bedoeling is`
+    );
+  }
+
   return applied;
 }
-
-/**
- * Importeert een volledige component set.
- *
- * @param {object} payload de inhoud van een {component}.json
- * @param {object} log verzamelaar met .info/.warn/.error
- */
-/**
- * De ruimte tussen twee component sets als er al een op de pagina staat.
- * Ruim genoeg om de oude en de nieuwe uit elkaar te houden.
- */
-const CANVAS_MARGIN = 120;
 
 /**
  * De opmaak van de component set zelf: de plaat waar de varianten op staan.
@@ -559,6 +829,9 @@ function applyCanvas(set, canvas, context) {
   set.layoutMode = 'VERTICAL';
   set.counterAxisSizingMode = 'AUTO';
   set.primaryAxisSizingMode = 'AUTO';
+  // Bij een bestaande set: wat de vorige import bond en de nieuwe spec niet
+  // meer noemt zou anders blijven staan en de nieuwe waarde overrulen.
+  clearBoundVariables(set);
 
   if (!canvas) {
     set.itemSpacing = 24;
@@ -581,6 +854,17 @@ function applyCanvas(set, canvas, context) {
   applyBindings(set, { ...canvas, name: set.name }, context);
 }
 
+/**
+ * Importeert een volledige component set: nieuw of bijgewerkt.
+ *
+ * Staat er al een set met deze naam op de pagina, dan wordt die bijgewerkt.
+ * Elke geplaatste instance hangt aan de node-id van zijn variant, dus een
+ * variant die opnieuw wordt aangemaakt laat elke instance los; zie
+ * `resetVariant`.
+ *
+ * @param {object} payload de inhoud van een {component}.json
+ * @param {object} log verzamelaar met .info/.warn/.error
+ */
 export async function importComponentSet(payload, log) {
   if (payload.$schema !== 'dsn-figma-components/1') {
     throw new Error(
@@ -611,6 +895,8 @@ export async function importComponentSet(payload, log) {
     stats,
     icons,
     inlinedIcons: new Set(),
+    // Per icoonlaag de paints die eroverheen moeten; aan het eind herhaald.
+    recolors: [],
     // Per variant opnieuw gevuld; zie de bouwlus hieronder.
     slots: new Map(),
   };
@@ -623,26 +909,61 @@ export async function importComponentSet(payload, log) {
     : figma.currentPage;
   await openPage(page);
 
-  // Een tweede import maakt een nieuwe set aan in plaats van de bestaande bij
-  // te werken; zie de README. Op een eigen pagina wordt dat zichtbaar als twee
-  // sets met dezelfde naam, en dat is beter gemeld dan stil.
-  const previousSets = page.children.filter(
+  // Een bestaande set wordt bijgewerkt, niet vervangen. Elke geplaatste
+  // instance hangt aan de node-id van zijn variant; een nieuwe variant met
+  // dezelfde naam is voor Figma een ander component en laat elke instance los.
+  const existingSets = page.children.filter(
     (node) => node.type === 'COMPONENT_SET' && node.name === spec.name
   );
-  const startY = previousSets.length
-    ? Math.max(...previousSets.map((node) => node.y + node.height)) +
-      CANVAS_MARGIN
-    : 0;
+  const target = existingSets[0] ?? null;
+
+  if (existingSets.length > 1) {
+    log.warn(
+      `Er staan ${existingSets.length} sets "${spec.name}" op ${page.name}; alleen de bovenste is bijgewerkt. De rest komt uit een oudere plugin-versie en kan weg zodra de instances zijn overgezet.`
+    );
+  }
+
+  const knownVariants = new Map(
+    (target?.children ?? [])
+      .filter((node) => node.type === 'COMPONENT')
+      .map((node) => [node.name, node])
+  );
+
+  // Tijdens het bouwen mag de set geen auto layout hebben. Een variant die in
+  // een auto-layout ouder hangt krijgt andere sizing-regels dan een die los op
+  // de pagina staat, en dan zou een tweede import iets anders opleveren dan de
+  // eerste. `applyCanvas` zet de stapeling verderop terug.
+  if (target) target.layoutMode = 'NONE';
 
   const components = [];
-  let cursorX = 0;
-  let rowHeight = 0;
-
   const variantSlots = [];
+  let created = 0;
+  let updated = 0;
+  let cursorX = 0;
 
   for (const [index, component] of spec.components.entries()) {
-    const wrapper = figma.createComponent();
-    page.appendChild(wrapper);
+    const known = knownVariants.get(component.name);
+    const wrapper = known ?? figma.createComponent();
+
+    // De variantnaam staat er vanaf het begin op en blijft er de hele bouw op
+    // staan. Een component set leidt zijn variant-assen af uit de namen van
+    // zijn kinderen, en op de update-route hangt deze wrapper daar al in: een
+    // wrapper die ook maar even "dsn-link" heet is daar geen geldige variant,
+    // en negen wrappers die tegelijk zo heten laat Figma niet staan. Vandaar
+    // ook de naam als los argument aan `applyFrame`, dat anders de naam van
+    // het root-element eroverheen zet.
+    wrapper.name = component.name;
+
+    if (known) {
+      resetVariant(wrapper);
+      updated += 1;
+    } else {
+      // Een nieuwe variant hangt meteen in de set als die er al is; anders op
+      // de pagina, waar `combineAsVariants` hem straks ophaalt. De naam staat
+      // er al op, want een set met een ongeldig genoemd kind is stuk.
+      (target ?? page).appendChild(wrapper);
+      created += 1;
+    }
 
     // Elke variant heeft zijn eigen lagen, dus ook zijn eigen slots.
     context.slots = new Map();
@@ -651,7 +972,7 @@ export async function importComponentSet(payload, log) {
     // lege laag met dezelfde auto layout toevoegen, en dat is precies de
     // nesting die een Figma-library onwerkbaar maakt.
     if (component.node.type === 'FRAME') {
-      applyFrame(wrapper, component.node, context);
+      applyFrame(wrapper, component.node, context, component.name);
       applySizing(wrapper, component.node, log);
     } else {
       // Een component dat in zijn geheel tot tekst of een vector inklapt kan
@@ -663,42 +984,66 @@ export async function importComponentSet(payload, log) {
       buildNode(component.node, wrapper, context);
     }
 
-    // Na applyFrame, die de naam van het root-element zet. Deze naam bepaalt de
-    // variant properties zodra combineAsVariants draait.
-    wrapper.name = component.name;
+    // Alleen bij een verse import: varianten naast elkaar leggen zodat
+    // combineAsVariants ze kan ophalen. Zit de variant al in een set, dan
+    // bepaalt de auto layout van die set zijn plek.
+    if (!target) {
+      wrapper.x = cursorX;
+      wrapper.y = 0;
+      cursorX += wrapper.width + 40;
+      if ((index + 1) % 6 === 0) cursorX = 0;
+    }
 
-    // Varianten naast elkaar leggen; combineAsVariants ordent daarna zelf.
-    wrapper.x = cursorX;
-    wrapper.y = startY;
-    cursorX += wrapper.width + 40;
-    rowHeight = Math.max(rowHeight, wrapper.height);
     components.push(wrapper);
     variantSlots.push({ component: wrapper, slots: context.slots });
+  }
 
-    if ((index + 1) % 6 === 0) {
-      cursorX = 0;
+  let set = target;
+  if (!set) {
+    try {
+      set = figma.combineAsVariants(components, page);
+      set.name = spec.name;
+    } catch (error) {
+      log.error(
+        `Component set "${spec.name}" kon niet gecombineerd worden: ${error.message}. De losse varianten staan wel op de pagina.`
+      );
+      return {
+        name: spec.name,
+        variants: components.length,
+        created,
+        updated,
+        orphans: [],
+        combined: false,
+        bindings: reportBindings(payload, stats, log),
+      };
     }
   }
 
-  let set;
-  try {
-    set = figma.combineAsVariants(components, page);
-    set.name = spec.name;
-  } catch (error) {
-    log.error(
-      `Component set "${spec.name}" kon niet gecombineerd worden: ${error.message}. De losse varianten staan wel op de pagina.`
+  // Varianten die uit de spec verdwenen zijn blijven staan. Ze automatisch
+  // verwijderen zou elke instance ervan detachen, en dat is een beslissing van
+  // een mens. Dezelfde afweging als bij een icoon dat uit de assets-map valt.
+  const inSpec = new Set(spec.components.map((component) => component.name));
+  const orphans = [...knownVariants.keys()].filter((name) => !inSpec.has(name));
+  for (const name of orphans) {
+    log.warn(
+      `Variant "${name}" staat wel in ${spec.name} in Figma maar niet meer in de spec; handmatig verwijderen als dat de bedoeling is`
     );
-    return {
-      name: spec.name,
-      variants: components.length,
-      combined: false,
-      bindings: reportBindings(payload, stats, log),
-    };
   }
+
+  // De varianten in de volgorde van de spec zetten. Een variant die opnieuw
+  // wordt toegevoegd hangt anders achteraan in de kinderlijst, en dan staat een
+  // teruggezette `state=hover` onderaan de plaat in plaats van bij zijn eigen
+  // maat. Varianten die niet meer in de spec staan schuiven daarmee naar
+  // achteren, en dat is precies waar ze horen.
+  components.forEach((variant, index) => {
+    if (set.children[index] !== variant) set.insertChild(index, variant);
+  });
 
   applyCanvas(set, spec.canvas, context);
 
-  log.info(`${spec.name}: ${components.length} varianten gecombineerd`);
+  log.info(
+    `${spec.name}: ${components.length} varianten (${created} nieuw, ${updated} bijgewerkt)`
+  );
   reportBindings(payload, stats, log);
 
   // Na combineAsVariants: component properties horen op de set, niet op de
@@ -710,14 +1055,12 @@ export async function importComponentSet(payload, log) {
     context
   );
 
+  // Als allerlaatste, ná het koppelen van de properties: zie `recolorIcons`.
+  const recolored = recolorIcons(context);
+  const lostColors = verifyIconColors(context);
+
   if (payload.warnings && payload.warnings.length) {
     for (const warning of payload.warnings) log.warn(warning);
-  }
-
-  if (previousSets.length) {
-    log.warn(
-      `Er stond al een "${spec.name}" op ${page.name}; de nieuwe set staat eronder. Een bestaande set bijwerken zou elke geplaatste instance detachen, dus dat is handwerk: zet de instances over en verwijder daarna de oude set.`
-    );
   }
 
   // Pas nadat de pagina bestaat: de nieuwe pagina moet mee in de sortering.
@@ -730,6 +1073,11 @@ export async function importComponentSet(payload, log) {
     name: spec.name,
     page: page.name,
     variants: components.length,
+    created,
+    updated,
+    orphans,
+    recolored,
+    lostColors,
     combined: true,
     bindings: { ...stats, missing: [...stats.missing] },
     properties,
