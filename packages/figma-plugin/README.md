@@ -35,6 +35,11 @@ pnpm build:figma
 | `figma-sync/dist/icons.json`              | 51 icooncomponenten op de pagina `dsn/Icons` |
 | `figma-sync/dist/{component}.json`        | Eén component set met al zijn varianten      |
 
+Hetzelfde bestand nog een keer kiezen werkt gewoon: de bestandskiezer wordt na
+elke keuze leeggemaakt, want anders vuurt de `change`-event niet een tweede keer
+en lijkt de plugin niet te reageren. Dat is precies de handeling die er sinds
+het bijwerken van bestaande sets toe doet.
+
 Het `$schema`-veld bepaalt wat er geïmporteerd wordt, niet de bestandsnaam.
 Sleep je meerdere bestanden tegelijk, dan zet de plugin ze zelf op volgorde
 (variables, iconen, componenten) en verwerkt ze één voor één.
@@ -285,6 +290,19 @@ lagen één voor één bijwerken) vereist een betrouwbare identiteit per laag di
 een gemeten boom niet heeft. De instance blijft wel aan zijn component hangen,
 en dát is het verschil tussen een import die je kunt draaien en een die je niet
 kunt draaien.
+
+**Wat er niet geschreven wordt:** een property die al precies zo op de set
+staat. Figma duwt een opnieuw gezette standaardwaarde van een `INSTANCE_SWAP`
+door naar elke gekoppelde geneste instance, en zo'n verwisseling wist de
+overrides op die instance. Het icoon in een variant verliest daarmee de kleur
+die de plugin erop legde en valt terug op de neutrale kleur van het
+icooncomponent zelf. Een import die niets verandert raakt de property dus niet
+aan.
+
+Na afloop worden de varianten in de volgorde van de spec gezet. Een variant die
+opnieuw wordt toegevoegd hangt anders achteraan in de kinderlijst, en dan staat
+een teruggezette `state=hover` onderaan de plaat in plaats van bij zijn eigen
+maat. Varianten die niet meer in de spec staan schuiven daarmee naar achteren.
 
 **Wat nooit vanzelf verdwijnt:** een variant of een property die uit de spec
 valt. Automatisch verwijderen zou elke instance ervan detachen, en dat is een

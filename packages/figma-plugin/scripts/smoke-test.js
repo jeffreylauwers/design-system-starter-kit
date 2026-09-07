@@ -975,8 +975,10 @@ ghost.name = 'variant=ghost, size=small, state=default';
 setBefore.appendChild(ghost);
 
 const beforeRerunProblems = problems.length;
+const editsBeforeRerun = state.propertyEdits;
 const rerun = await importComponentSet(rerunPayload, log);
 const rerunProblems = problems.slice(beforeRerunProblems);
+const editsDuringRerun = state.propertyEdits - editsBeforeRerun;
 
 check(
   'er komt geen tweede set naast de bestaande',
@@ -1066,6 +1068,17 @@ const namesAfter = propertyIdsAfter.map(propertyNameOf).sort();
 const declaredNames = (rerunPayload.componentSet.componentProperties ?? [])
   .map((property) => property.name)
   .sort();
+// Een import die niets aan een property verandert hoort er ook niets aan te
+// schrijven. Figma duwt een opnieuw gezette INSTANCE_SWAP-default door naar
+// elke gekoppelde geneste instance, en die swap wist de kleuroverride die de
+// plugin op het icoon had gelegd: het icoon valt dan terug op de kleur van het
+// icooncomponent zelf.
+check(
+  'een ongewijzigde property wordt niet opnieuw geschreven',
+  editsDuringRerun === 0,
+  `${editsDuringRerun} schrijfacties`
+);
+
 check(
   'de properties houden hun naam, zonder "2" erachter',
   namesAfter.join('|') === declaredNames.join('|'),
@@ -1081,14 +1094,33 @@ const droppedName = dropped.name;
 dropped.remove();
 
 const added = await importComponentSet(rerunPayload, log);
+const setWithAdded = setsOf(buttonPage, rerunPayload.componentSet.name)[0];
 check(
   'een variant die nog niet in Figma staat wordt toegevoegd',
   added.created === 1 &&
     added.updated === rerunPayload.componentSet.components.length - 1 &&
-    setsOf(buttonPage, rerunPayload.componentSet.name)[0].children.some(
-      (variant) => variant.name === droppedName
-    ),
+    setWithAdded.children.some((variant) => variant.name === droppedName),
   `${added.created} nieuw, ${added.updated} bijgewerkt`
+);
+
+// Een toegevoegde variant hangt achteraan in de kinderlijst, dus zonder
+// herordenen staat een teruggezette `state=hover` onderaan de plaat in plaats
+// van bij zijn eigen maat. De varianten die niet meer in de spec staan horen
+// juist wél achteraan.
+const specOrder = rerunPayload.componentSet.components.map(
+  (component) => component.name
+);
+check(
+  'de varianten staan in de volgorde van de spec',
+  setWithAdded.children
+    .slice(0, specOrder.length)
+    .every((variant, index) => variant.name === specOrder[index]),
+  `positie van ${droppedName}: ${setWithAdded.children.findIndex((v) => v.name === droppedName)}, verwacht ${specOrder.indexOf(droppedName)}`
+);
+check(
+  'een variant die niet meer in de spec staat schuift naar achteren',
+  setWithAdded.children.at(-1) === ghost,
+  setWithAdded.children.at(-1)?.name
 );
 
 // =============================================================================

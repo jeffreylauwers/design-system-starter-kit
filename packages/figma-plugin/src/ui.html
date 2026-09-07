@@ -165,7 +165,16 @@
     drop.classList.remove('over');
     handleFiles(event.dataTransfer.files);
   });
-  fileInput.addEventListener('change', () => handleFiles(fileInput.files));
+  fileInput.addEventListener('change', () => {
+    const chosen = [...fileInput.files];
+    // De waarde meteen leegmaken, anders vuurt `change` niet wanneer je
+    // hetzelfde bestand nog een keer kiest: de waarde van het input-element is
+    // dan immers niet veranderd, en de plugin lijkt niet te reageren. Dat is
+    // precies de handeling die er sinds het bijwerken van bestaande sets toe
+    // doet, want dezelfde JSON opnieuw importeren is nu de normale gang.
+    fileInput.value = '';
+    handleFiles(chosen);
+  });
 
   onmessage = (event) => {
     const message = event.data.pluginMessage;

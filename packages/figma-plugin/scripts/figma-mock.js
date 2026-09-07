@@ -471,6 +471,11 @@ class Node {
    * blijft, en dat is precies waar een instance zijn waarde onder bewaart.
    */
   editComponentProperty(propertyId, changes) {
+    // Meegeteld zodat de smoke test kan zien dát er geschreven wordt. Een
+    // INSTANCE_SWAP-default opnieuw zetten laat Figma de geneste instance
+    // opnieuw verwisselen en wist de overrides erop, dus een import die niets
+    // verandert hoort hier niet langs te komen.
+    state.propertyEdits += 1;
     const definition = this.componentPropertyDefinitions?.[propertyId];
     if (!definition) {
       throw new Error(`property ${propertyId} bestaat niet op deze set`);
@@ -679,6 +684,7 @@ root.appendChild(rootPage);
 const state = {
   collections: [],
   variables: [],
+  propertyEdits: 0,
   page: rootPage,
   root,
 };

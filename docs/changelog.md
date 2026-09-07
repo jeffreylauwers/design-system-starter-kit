@@ -31,6 +31,12 @@ Twee bugs die pas in Figma zelf boven kwamen, allebei doordat de mock een andere
 
 De mock is op beide punten naar de echte vorm gebracht: definities zonder `name`-veld, een botsende propertynaam die hernoemd wordt in plaats van geweigerd, en een component set die een ongeldige of dubbele variantnaam bij zijn kinderen weigert. Met die mock gaan de twee bugs van 21 respectievelijk 1 rode check af. Dat is de les uit deze ronde: waar de mock en de Plugin API uit elkaar lopen is de mock waardeloos, want hij is dan streng op het verkeerde en blind voor het echte.
 
+Een derde ronde in Figma bracht nog drie dingen boven:
+
+- **De bestandskiezer vuurde niet twee keer.** `<input type="file">` geeft geen `change` als je hetzelfde bestand opnieuw kiest, want de waarde is niet veranderd. De plugin leek dan niet te reageren, en werkte pas na een ander component ertussen. Een bestaande UI-bug die nooit kon opvallen: vóór deze wijziging was dezelfde JSON opnieuw importeren zinloos. De kiezer wordt nu na elke keuze leeggemaakt.
+- **Een teruggezette variant kwam onderaan.** Een variant die opnieuw wordt toegevoegd hangt achteraan in de kinderlijst. De varianten worden nu na afloop in specvolgorde gezet; wat niet meer in de spec staat schuift daarmee naar achteren.
+- **Het icoon in een variant verloor zijn kleur.** De plugin schreef bij elke import de standaardwaarde van elke property opnieuw, ook als er niets veranderde. Figma duwt een opnieuw gezette `INSTANCE_SWAP`-default door naar elke gekoppelde geneste instance, en zo'n verwisseling wist de overrides erop: het icoon viel terug op de neutrale kleur van het icooncomponent. Een ongewijzigde property wordt nu niet meer aangeraakt.
+
 Bij het bouwen bleek nog een tweede staleness-probleem, dat op een verse import onzichtbaar is: `applyAutoLayout` zette padding, `itemSpacing` en de uitlijningen alleen wanneer de spec ze noemde. Op een nieuw frame is dat gelijk aan de standaardwaarde, maar op een hergebruikte variant bleef er een gap of een uitlijning uit de vorige import staan. Die velden krijgen nu altijd een expliciete waarde, net als de bindingen aan variables die op een hergebruikte variant eerst worden losgemaakt.
 
 ### De losse README's van Button en Icon zijn weg

@@ -534,6 +534,24 @@ function existingProperties(set) {
 }
 
 /**
+ * Staat deze property er al precies zo op?
+ *
+ * `defaults` bevat bij een INSTANCE_SWAP twee kandidaten (de `key` en de
+ * node-id van het icooncomponent), want welke Figma accepteert verschilt per
+ * versie. Komt de bestaande waarde met één van beide overeen, dan is er niets
+ * te wijzigen.
+ */
+function unchangedProperty(existing, defaults, options) {
+  if (!defaults.some((value) => existing.defaultValue === value)) return false;
+
+  const wanted = options?.preferredValues;
+  if (wanted === undefined) return true;
+  return (
+    JSON.stringify(existing.preferredValues ?? []) === JSON.stringify(wanted)
+  );
+}
+
+/**
  * Zorgt dat de property op de set staat en geeft zijn id terug.
  *
  * Bestaat hij al met hetzelfde type, dan wordt hij bijgewerkt in plaats van
@@ -557,6 +575,15 @@ function ensureComponentProperty(set, property, defaults, options, known, log) {
       lastError = error;
     }
   } else if (existing) {
+    // Niets schrijven wat niet verandert. De standaardwaarde van een
+    // INSTANCE_SWAP opnieuw zetten laat Figma de geneste instance opnieuw
+    // verwisselen, en een swap wist de overrides op die instance: het icoon in
+    // de variant verliest dan de kleur die de plugin erop had gelegd en valt
+    // terug op de kleur van het icooncomponent zelf.
+    if (unchangedProperty(existing, defaults, options)) {
+      return { id: existing.propertyId, reused: true, unchanged: true };
+    }
+
     for (const value of defaults) {
       try {
         return {
@@ -914,6 +941,15 @@ export async function importComponentSet(payload, log) {
       `Variant "${name}" staat wel in ${spec.name} in Figma maar niet meer in de spec; handmatig verwijderen als dat de bedoeling is`
     );
   }
+
+  // De varianten in de volgorde van de spec zetten. Een variant die opnieuw
+  // wordt toegevoegd hangt anders achteraan in de kinderlijst, en dan staat een
+  // teruggezette `state=hover` onderaan de plaat in plaats van bij zijn eigen
+  // maat. Varianten die niet meer in de spec staan schuiven daarmee naar
+  // achteren, en dat is precies waar ze horen.
+  components.forEach((variant, index) => {
+    if (set.children[index] !== variant) set.insertChild(index, variant);
+  });
 
   applyCanvas(set, spec.canvas, context);
 
