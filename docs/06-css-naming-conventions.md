@@ -456,6 +456,47 @@ Dit geldt voor elk component met `@dsn-depends-on`: SearchInput, Select, DateInp
 en TimeInput. Neem ook de toestandsselectors mee (`:disabled`, `:read-only`,
 `[aria-invalid='true']`), die botsen op dezelfde manier.
 
+### Klassen van een ander component: declareer de afhankelijkheid
+
+Volgorde is één probleem, aanwezigheid een tweede. Rendert een component klassen
+van een ander component, dan moet die CSS ook echt geladen worden. Chunking laadt
+alleen wat de modulegraaf aanwijst, dus een klasse zonder import blijft stil zonder
+stijl.
+
+De HTML/CSS-laag is de bron van waarheid en declareert het:
+
+```css
+/* packages/components-html/src/table/table.css */
+/* @dsn-depends-on: button */
+```
+
+`packages/components-html/scripts/build.js` gebruikt die declaratie om de volgorde
+in `dist/components.css` te bepalen. Gebruik hier bewust géén `@import`: die zou
+letterlijk in de gebundelde CSS blijven staan, met een pad dat vanaf `dist/` nergens
+op uitkomt.
+
+De React-laag is hiervan afgeleid en haalt dezelfde afhankelijkheden op, vóór zijn
+eigen import:
+
+```css
+/* packages/components-react/src/Table/Table.css */
+@import '../../../components-html/src/button/button.css';
+
+@import '../../../components-html/src/table/table.css';
+```
+
+Zet dit in het CSS-bestand, niet als `import '../Button/Button.css'` in de `.tsx`.
+Alleen in het CSS-bestand ligt de volgorde ten opzichte van de eigen regels vast.
+
+`tests/css-dependencies.test.ts` bewaakt beide kanten: elke `dsn-*` klasse die een
+React-component rendert moet bereikbaar zijn via zijn imports, en elke
+`@dsn-depends-on` moet door de bijbehorende React-CSS worden opgehaald.
+
+De afweging achter dit patroon staat in
+[DR-2026-09](./decisions/DR-2026-09-css-afhankelijkheden-declareren-per-laag.md).
+Let op: dit is niet zichtbaar in de Storybook dev-server, die serveert uit één
+modulegraaf en splitst niet per chunk. Verifieer tegen een productiebuild.
+
 ---
 
 ## Gerelateerde documentatie

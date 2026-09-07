@@ -40,6 +40,14 @@
   background: var(--dsn-modal-dialog-background-color);
   padding: 0;
 
+  /*
+   * De UA-stylesheet zet `color: CanvasText` op het element zelf, en dat wint
+   * van overerving. Zonder deze regel krijgt alles wat zijn kleur erft (kale
+   * tekstnodes, inline elementen, componenten zonder eigen kleurtoken) de
+   * systeemkleur in plaats van de documentkleur. Popover doet hetzelfde.
+   */
+  color: inherit;
+
   /* Grootte en positionering */
   inline-size: min(var(--dsn-modal-dialog-max-width), calc(100svw - 2rem));
   max-block-size: min(calc(100svh - 4rem), 40rem);

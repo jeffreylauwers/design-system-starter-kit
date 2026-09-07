@@ -43,7 +43,7 @@ pnpm --filter @dsn-starter-kit/design-tokens watch
 # Start Storybook in development mode
 pnpm dev
 
-# Run tests (1678 tests across 81 test suites)
+# Run tests (2082 tests across 83 test suites)
 pnpm test
 
 # Run tests in watch mode
@@ -593,9 +593,26 @@ In Windows High Contrast mode / forced-colors mode worden `background-color`, `c
 
 ### Test Coverage
 
-- **Total tests:** 1678 across 81 test suites
+- **Total tests:** 2082 across 83 test suites
 - **Frameworks:** Vitest + React Testing Library
-- **Coverage areas:** React components, Web Components, utilities
+- **Coverage areas:** React components, Web Components, utilities, en twee contracttests in `tests/`
+
+### Contracttests in `tests/`
+
+Naast de tests per component staan er twee tests in `tests/` die iets bewaken wat
+in geen enkele component-test zichtbaar wordt. Beide bestaan omdat het misging en
+pas bij een consument opviel, niet in de monorepo.
+
+| Bestand                    | Bewaakt                                                                                      |
+| -------------------------- | -------------------------------------------------------------------------------------------- |
+| `package-exports.test.ts`  | De vorm van de gepubliceerde packages: CSS-exports met types, en `sideEffects` correct gezet |
+| `css-dependencies.test.ts` | Dat een component de CSS laadt van elke klasse die hij rendert                               |
+
+`css-dependencies.test.ts` faalt zodra een React-component een `dsn-*` klasse
+rendert waarvan de CSS niet bereikbaar is via zijn imports, en zodra een
+`@dsn-depends-on` uit de HTML/CSS-laag niet wordt opgehaald door de bijbehorende
+React-CSS. Zie [CSS Naming Conventions](./06-css-naming-conventions.md) voor het
+patroon dat hij afdwingt.
 
 ### Running Tests
 
@@ -674,6 +691,9 @@ After adding/updating a component:
 - [ ] Event handlers work correctly
 - [ ] Edge cases are covered
 - [ ] TypeScript types are correct
+- [ ] Rendert het component klassen van een ánder component? Dan is die
+      afhankelijkheid gedeclareerd met `@dsn-depends-on` en opgehaald in de
+      React-CSS
 
 ---
 

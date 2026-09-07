@@ -3,4 +3,9 @@
  * Re-exports the base SearchInput styles from components-html
  */
 
+/* Afhankelijkheden uit de HTML/CSS-laag, gedeclareerd als
+   @dsn-depends-on in search-input.css. Ze staan hier vóór de eigen import,
+   zodat de eigen regels bij gelijke specificiteit winnen. */
+@import '../../../components-html/src/text-input/text-input.css';
+
 @import '../../../components-html/src/search-input/search-input.css';

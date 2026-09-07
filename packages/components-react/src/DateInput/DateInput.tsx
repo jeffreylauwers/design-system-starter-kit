@@ -2,7 +2,6 @@ import React from 'react';
 import { classNames } from '@dsn-starter-kit/core';
 import { Button } from '../Button';
 import { Icon } from '../Icon';
-import '../TextInput/TextInput.css';
 import './DateInput.css';
 
 export interface DateInputProps extends Omit<

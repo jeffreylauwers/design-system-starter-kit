@@ -3,4 +3,9 @@
  * Re-exports the base DateInput styles from components-html
  */
 
+/* Afhankelijkheden uit de HTML/CSS-laag, gedeclareerd als
+   @dsn-depends-on in date-input.css. Ze staan hier vóór de eigen import,
+   zodat de eigen regels bij gelijke specificiteit winnen. */
+@import '../../../components-html/src/text-input/text-input.css';
+
 @import '../../../components-html/src/date-input/date-input.css';

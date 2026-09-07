@@ -361,6 +361,18 @@ const meta: Meta = {
   title: 'Templates/KitchenSinkPage',
   parameters: {
     layout: 'fullscreen',
+    // Chromatic maakt van deze pagina geen snapshot. Zijn limiet is 25.000.000
+    // pixels oppervlak, en deze story meet 1.200 x 25.335 = 30.400.200. Bij
+    // 1.200px breed is 20.833px de maximale hoogte, en daar zit een pagina die
+    // bewust élk component toont ruim overheen.
+    //
+    // Dat kost geen dekking: elk component dat hier staat heeft zijn eigen
+    // stories, en die worden wél gesnapshot. Wat deze pagina uniek toont is de
+    // compositie, en dat is precies het stuk dat niet in één beeld past.
+    //
+    // Knip de pagina niet op om Chromatic te plezieren. Hij is bedoeld om in
+    // één keer doorheen te scrollen.
+    chromatic: { disableSnapshot: true },
   },
 };
 

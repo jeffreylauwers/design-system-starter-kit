@@ -1,3 +1,5 @@
+/* @dsn-depends-on: button */
+
 /**
  * MenuLink Component
  * Navigatielink met niveau-hiërarchie, actieve staat en uitklapbare subnavigatie.

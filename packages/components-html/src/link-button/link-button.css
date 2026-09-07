@@ -1,3 +1,5 @@
+/* @dsn-depends-on: link */
+
 /**
  * LinkButton Component
  * Resets native <button> styles so the element inherits dsn-link appearance.

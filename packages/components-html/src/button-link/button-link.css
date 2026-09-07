@@ -1,3 +1,5 @@
+/* @dsn-depends-on: button */
+
 /**
  * ButtonLink Component
  * Resets <a> styles so the element uses dsn-button appearance.

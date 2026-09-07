@@ -130,6 +130,45 @@ import '@dsn-starter-kit/components-html/modal-dialog';
 - `./time-input` — Time input styles
 - `./unordered-list` — Unordered list styles
 
+### Components that need another component's CSS
+
+Some components put another component's classes in their own markup. The sort
+button in a Table column header carries `dsn-button`, a ButtonLink carries
+`dsn-button`, a LinkButton carries `dsn-link`. Import one of those on its own and
+you get the component's own rules without the ones it builds on, which renders as
+an unstyled button or link.
+
+Each such component declares it at the top of its CSS:
+
+```css
+/* packages/components-html/src/table/table.css */
+/* @dsn-depends-on: button */
+```
+
+| Component         | Also import                  |
+| ----------------- | ---------------------------- |
+| `./button-link`   | `./button`                   |
+| `./date-input`    | `./text-input`               |
+| `./file`          | `./link`, `./link-button`    |
+| `./heading-group` | `./heading`, `./pre-heading` |
+| `./link-button`   | `./link`                     |
+| `./menu-link`     | `./button`                   |
+| `./search-input`  | `./text-input`               |
+| `./select`        | `./text-input`               |
+| `./table`         | `./button`                   |
+| `./time-input`    | `./text-input`               |
+
+Import the dependency first, so the component's own rules still win at equal
+specificity:
+
+```tsx
+import '@dsn-starter-kit/components-html/button';
+import '@dsn-starter-kit/components-html/table';
+```
+
+This does not apply to the `.` export: `dist/components.css` contains every
+component, ordered so that each one comes after what it depends on.
+
 ## Available Components
 
 | Component             | CSS Classes                                                      | Export Path                  |
@@ -271,6 +310,12 @@ field fails the build instead of shipping. Run that check on its own with:
 ```bash
 pnpm --filter @dsn-starter-kit/components-html validate:manifest
 ```
+
+The `@dsn-depends-on` comments determine the order in `dist/components.css`: a
+component is emitted after everything it declares. Use a comment rather than an
+`@import` here. An `@import` would survive into the bundled CSS with a relative
+path that resolves to nothing from `dist/`, and the bundler of a consuming package
+would inline the same file a second time, after the overriding rules.
 
 ## License
 

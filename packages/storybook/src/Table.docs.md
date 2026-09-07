@@ -57,6 +57,7 @@ Sorteerfunctionaliteit (state management, data manipulatie) valt buiten de scope
 - Laat `aria-sort` weg op niet-sorteerbare kolommen.
 - Gebruik `dsn-button dsn-button--size-small dsn-button--subtle dsn-button--icon-only dsn-table__sort-button` als klasse op de knop.
 - Geef de knop een toegankelijke naam via `dsn-button__label`: gebruik geen `aria-label`.
+- Importeer ook `@dsn-starter-kit/components-html/button` als je de losse CSS-exports gebruikt. `table.css` declareert dat met `@dsn-depends-on: button`; zonder die import krijgt de sorteerknop de standaard knop-chrome van de browser en blijft het label zichtbaar naast het icoon.
 - Voeg drie sorteericonen toe in de knop: de CSS toont het juiste icoon op basis van `aria-sort`:
 
 ```html
