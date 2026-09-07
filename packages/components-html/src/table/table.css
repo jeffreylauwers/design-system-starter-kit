@@ -150,11 +150,11 @@
  *     <button
  *       class="dsn-button dsn-button--size-small dsn-button--subtle dsn-button--icon-only dsn-table__sort-button"
  *       type="button"
- *       aria-label="Sorteer op Naam"
  *     >
  *       <svg class="dsn-icon dsn-table__sort-icon--none" aria-hidden="true">...</svg>
  *       <svg class="dsn-icon dsn-table__sort-icon--ascending" aria-hidden="true">...</svg>
  *       <svg class="dsn-icon dsn-table__sort-icon--descending" aria-hidden="true">...</svg>
+ *       <span class="dsn-button__label">Sorteer op Naam</span>
  *     </button>
  *   </span>
  * </th>
