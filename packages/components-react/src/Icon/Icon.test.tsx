@@ -96,7 +96,7 @@ describe('icon registry', () => {
 
   // De registry moet zelfstandig zijn: geen imports van .svg-bestanden en geen
   // svgr-suffix. Zulke imports wijzen buiten het gepubliceerde package en breken
-  // de build van consumers. Zie Icon/README.md.
+  // de build van consumers. Zie docs/decisions/DR-2026-10-iconen-inline-in-de-registry.md.
   it('has no external asset imports', () => {
     const source = readFileSync(
       join(__dirname, 'icon-registry.generated.ts'),
