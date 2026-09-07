@@ -283,14 +283,15 @@ class Node {
   // een direct kind daarvan; eraan toewijzen geeft anders een fout.
   set minWidth(value) {
     this.#assertAutoLayoutField('minWidth');
-    this._minWidth = value;
+    // Zoals in de echte API: null haalt de minimum-maat weg.
+    this._minWidth = value === null ? undefined : value;
   }
   get minWidth() {
     return this._minWidth;
   }
   set minHeight(value) {
     this.#assertAutoLayoutField('minHeight');
-    this._minHeight = value;
+    this._minHeight = value === null ? undefined : value;
   }
   get minHeight() {
     return this._minHeight;
@@ -399,10 +400,66 @@ class Node {
     return propertyId;
   }
 
+  /**
+   * Werkt een bestaande property bij. De echte API levert de (mogelijk
+   * gewijzigde) property-id terug; die blijft gelijk zolang de naam gelijk
+   * blijft, en dat is precies waar een instance zijn waarde onder bewaart.
+   */
+  editComponentProperty(propertyId, changes) {
+    const definition = this.componentPropertyDefinitions?.[propertyId];
+    if (!definition) {
+      throw new Error(`property ${propertyId} bestaat niet op deze set`);
+    }
+    if (definition.type === 'VARIANT') {
+      throw new Error('een variant-as is geen component property');
+    }
+
+    const next = { ...definition };
+    if (changes.name !== undefined) next.name = changes.name;
+    if (changes.preferredValues !== undefined) {
+      next.preferredValues = changes.preferredValues;
+    }
+    if (changes.defaultValue !== undefined) {
+      const expected = { TEXT: 'string', BOOLEAN: 'boolean' }[next.type];
+      if (expected && typeof changes.defaultValue !== expected) {
+        throw new Error(
+          `${next.type} verwacht een ${expected} als standaardwaarde, kreeg ${typeof changes.defaultValue}`
+        );
+      }
+      if (
+        next.type === 'INSTANCE_SWAP' &&
+        (typeof changes.defaultValue !== 'string' || !changes.defaultValue)
+      ) {
+        throw new Error(
+          'INSTANCE_SWAP verwacht een verwijzing naar een component als standaardwaarde'
+        );
+      }
+      next.defaultValue = changes.defaultValue;
+    }
+
+    const nextId =
+      next.name === definition.name ? propertyId : `${next.name}#${id('PROP')}`;
+    delete this.componentPropertyDefinitions[propertyId];
+    this.componentPropertyDefinitions[nextId] = next;
+    return nextId;
+  }
+
+  deleteComponentProperty(propertyId) {
+    if (!this.componentPropertyDefinitions?.[propertyId]) {
+      throw new Error(`property ${propertyId} bestaat niet op deze set`);
+    }
+    delete this.componentPropertyDefinitions[propertyId];
+  }
+
   setBoundVariable(field, variable) {
     const expected = BINDABLE_FIELDS[field];
     if (!expected) {
       throw new Error(`cannot bind variable to field ${field}`);
+    }
+    // Zoals in de echte API: null maakt de binding los.
+    if (variable === null) {
+      if (this.boundVariables) delete this.boundVariables[field];
+      return;
     }
     if (variable.resolvedType !== expected) {
       throw new Error(

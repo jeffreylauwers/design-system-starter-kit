@@ -416,6 +416,26 @@ for (const file of componentFiles) {
   console.log(`\n=== ${file} ===`);
   const payload = read(`packages/figma-sync/dist/${file}`);
   const before = problems.length;
+
+  // Elk component wordt twee keer geïmporteerd, en alle controles hieronder
+  // kijken naar het resultaat van de tweede. Een import die alleen op een leeg
+  // bestand klopt is voor een library die al in gebruik is niets waard: de
+  // tweede is de import die een designer in de praktijk draait.
+  await importComponentSet(payload, log);
+
+  const componentPage = state.root.children.find(
+    (page) => page.name === payload.componentSet.page
+  );
+  const setsHere = () =>
+    (componentPage?.children ?? []).filter(
+      (node) =>
+        node.type === 'COMPONENT_SET' && node.name === payload.componentSet.name
+    );
+  const firstSet = setsHere()[0];
+  const idsAfterFirst = new Map(
+    (firstSet?.children ?? []).map((variant) => [variant.name, variant.id])
+  );
+
   const imported = await importComponentSet(payload, log);
 
   check(
@@ -427,18 +447,10 @@ for (const file of componentFiles) {
 
   // Elk component krijgt zijn eigen pagina. Zonder die scheiding groeit één
   // pagina met 73 component sets dicht en is er niets meer terug te vinden.
-  const componentPage = state.root.children.find(
-    (page) => page.name === payload.componentSet.page
-  );
   check(
-    'de set staat op zijn eigen pagina',
-    Boolean(componentPage) &&
-      componentPage.children.some(
-        (node) =>
-          node.type === 'COMPONENT_SET' &&
-          node.name === payload.componentSet.name
-      ),
-    payload.componentSet.page
+    'er staat precies één set met deze naam op zijn eigen pagina',
+    setsHere().length === 1,
+    `${setsHere().length}x op ${payload.componentSet.page}`
   );
   check(
     'de plugin meldt op welke pagina de set staat',
@@ -446,7 +458,21 @@ for (const file of componentFiles) {
     imported.page
   );
 
-  const setNode = componentPage?.children.at(-1);
+  const setNode = setsHere()[0];
+
+  // De kern van het bijwerken: een variant die opnieuw wordt aangemaakt heeft
+  // dezelfde naam maar een andere node-id, en dan laat elke geplaatste
+  // instance los.
+  check(
+    'de tweede import werkt de varianten bij in plaats van ze te vervangen',
+    imported.created === 0 &&
+      imported.updated === payload.componentSet.components.length &&
+      setNode?.id === firstSet?.id &&
+      (setNode?.children ?? []).every(
+        (variant) => idsAfterFirst.get(variant.name) === variant.id
+      ),
+    `${imported.updated} bijgewerkt, ${imported.created} nieuw`
+  );
 
   // Het root-element is het component zelf, dus de gebouwde boom begint bij de
   // component-node en niet bij een frame daarbinnen. Uitzondering: een root die
@@ -621,6 +647,33 @@ for (const file of componentFiles) {
     'geen extra wrapperframe rond de root',
     doubleWrapped.length === 0,
     doubleWrapped.length ? `${doubleWrapped.length} varianten` : ''
+  );
+
+  // Een hergebruikte variant moet leeggemaakt worden voordat hij opnieuw wordt
+  // opgebouwd. Gebeurt dat niet, dan komen de nieuwe lagen bovenop de oude en
+  // is dat structureel niet te zien: de oude lagen zijn identiek. Aan het
+  // aantal wel.
+  const extraLayers = [];
+  const checkChildCount = (node, spec) => {
+    // Een VECTOR wordt in Figma een instance met `Group > Shape` erin of een
+    // ingebakken SVG; die kinderen staan niet in de spec.
+    if (!spec || spec.type === 'VECTOR') return;
+    if (node && node.children.length !== (spec.children ?? []).length) {
+      extraLayers.push(
+        `${spec.name ?? spec.type}: ${node.children.length} lagen i.p.v. ${(spec.children ?? []).length}`
+      );
+    }
+    (spec.children ?? []).forEach((childSpec, index) =>
+      checkChildCount(node?.children?.[index], childSpec)
+    );
+  };
+  payload.componentSet.components.forEach((component, index) =>
+    checkChildCount(built(index), component.node)
+  );
+  check(
+    'geen lagen uit de vorige import blijven staan',
+    extraLayers.length === 0,
+    extraLayers.length ? `${extraLayers.length}x, o.a. ${extraLayers[0]}` : ''
   );
 
   // Een HUG-frame rekent zijn maat opnieuw uit, dus een min-maat die niet
@@ -868,30 +921,149 @@ check(
   state.root.children[0].name
 );
 
-// Een tweede import maakt een nieuwe set aan in plaats van de bestaande bij te
-// werken. Dat is bekend gedrag (zie de README), maar het moet gemeld worden:
-// twee sets met dezelfde naam op één pagina is anders niet te zien.
+// =============================================================================
+// Een tweede import van een component set
+// =============================================================================
+
+// Dit is waar het bij een library om draait. Een tweede import moet de
+// bestaande set bijwerken, want elke instance in een designbestand hangt aan de
+// node-id van zijn variant: een nieuwe variant met dezelfde naam is voor Figma
+// een ánder component en laat elke instance los.
+console.log('\n=== tweede import van een component set ===');
+
 const rerunPayload = read('packages/figma-sync/dist/button.json');
 const buttonPage = state.root.children.find(
   (page) => page.name === rerunPayload.componentSet.page
 );
-const setsBefore = buttonPage.children.length;
+const setsOf = (page, name) =>
+  page.children.filter(
+    (node) => node.type === 'COMPONENT_SET' && node.name === name
+  );
+
+const setBefore = setsOf(buttonPage, rerunPayload.componentSet.name)[0];
+const setIdBefore = setBefore.id;
+const variantIdsBefore = new Map(
+  setBefore.children.map((variant) => [variant.name, variant.id])
+);
+const propertyIdsBefore = Object.keys(
+  setBefore.componentPropertyDefinitions ?? {}
+).sort();
+
+// Een geplaatste instance, zoals een designer die in een designbestand zet.
+// Die moet de import overleven.
+const placed = setBefore.children[0].createInstance();
+state.page.appendChild(placed);
+const placedOn = setBefore.children[0];
+
+// Een variant die wel in Figma staat maar niet meer in de spec. Verwijderen
+// zou elke instance ervan detachen, dus die hoort te blijven staan en gemeld te
+// worden.
+const ghost = figma.createComponent();
+ghost.name = 'variant=ghost, size=small, state=default';
+setBefore.appendChild(ghost);
+
 const beforeRerunProblems = problems.length;
-await importComponentSet(rerunPayload, log);
+const rerun = await importComponentSet(rerunPayload, log);
+const rerunProblems = problems.slice(beforeRerunProblems);
+
 check(
-  'een tweede import van hetzelfde component wordt gemeld',
-  problems
-    .slice(beforeRerunProblems)
-    .some(
-      (problem) =>
-        problem.level === 'warn' && /stond al een/.test(problem.message)
-    ),
-  'waarschuwing over de dubbele set'
+  'er komt geen tweede set naast de bestaande',
+  setsOf(buttonPage, rerunPayload.componentSet.name).length === 1,
+  `${setsOf(buttonPage, rerunPayload.componentSet.name).length} sets op ${buttonPage.name}`
+);
+
+const setAfter = setsOf(buttonPage, rerunPayload.componentSet.name)[0];
+check(
+  'de set zelf is dezelfde node',
+  setAfter.id === setIdBefore,
+  `${setAfter.id}`
+);
+
+check(
+  'alle varianten uit de spec worden bijgewerkt, geen enkele nieuw aangemaakt',
+  rerun.updated === rerunPayload.componentSet.components.length &&
+    rerun.created === 0,
+  `${rerun.updated} bijgewerkt, ${rerun.created} nieuw`
+);
+
+// Strenger dan alleen tellen: een variant die opnieuw aangemaakt wordt heeft
+// dezelfde naam maar een andere node-id, en juist daar hangen de instances aan.
+const changedIds = setAfter.children.filter(
+  (variant) =>
+    variantIdsBefore.has(variant.name) &&
+    variantIdsBefore.get(variant.name) !== variant.id
 );
 check(
-  'de bestaande set wordt niet weggegooid',
-  buttonPage.children.length === setsBefore + 1,
-  `${buttonPage.children.length} sets`
+  'de varianten houden hun node-id',
+  changedIds.length === 0,
+  changedIds.length
+    ? `${changedIds.length}x gewijzigd, o.a. ${changedIds[0].name}`
+    : `${variantIdsBefore.size} varianten`
+);
+
+check(
+  'een geplaatste instance blijft aan zijn component hangen',
+  placed.mainComponent === placedOn && placedOn.parent === setAfter,
+  placed.mainComponent === placedOn ? 'zelfde component' : 'losgeraakt'
+);
+
+// De inhoud wordt wél vervangen: het component blijft, zijn lagen niet. Zonder
+// deze controle zou een import die de variant ongemoeid laat hier net zo groen
+// zijn, en dan komt een CSS-wijziging nooit in Figma aan.
+const rebuilt = setAfter.children.find(
+  (variant) => variant.name === rerunPayload.componentSet.components[0].name
+);
+check(
+  'de inhoud van een bijgewerkte variant is opnieuw opgebouwd',
+  rebuilt.children.length > 0,
+  `${rebuilt.children.length} lagen`
+);
+
+check(
+  'een variant die niet meer in de spec staat blijft staan en wordt gemeld',
+  ghost.parent === setAfter &&
+    rerun.orphans.includes(ghost.name) &&
+    rerunProblems.some(
+      (problem) =>
+        problem.level === 'warn' && problem.message.includes(ghost.name)
+    ),
+  ghost.parent === setAfter ? 'gemeld en behouden' : 'weggegooid'
+);
+
+// Een property opnieuw aanmaken levert een nieuwe property-id op, en Figma
+// bewaart de waarde die een instance aan een property geeft onder díé id.
+const propertyIdsAfter = Object.keys(
+  setAfter.componentPropertyDefinitions ?? {}
+).sort();
+check(
+  'de component properties houden hun id',
+  propertyIdsAfter.join('|') === propertyIdsBefore.join('|'),
+  `${propertyIdsAfter.length} properties`
+);
+check(
+  'de properties zijn niet gedupliceerd',
+  propertyIdsAfter.length ===
+    (rerunPayload.componentSet.componentProperties ?? []).length,
+  propertyIdsAfter.join(', ')
+);
+
+// Een variant die in Figma ontbreekt maar wel in de spec staat hoort erbij te
+// komen, anders mist een nieuwe maat of stand na een import.
+const dropped = setAfter.children.find(
+  (variant) => variant.name === rerunPayload.componentSet.components[1].name
+);
+const droppedName = dropped.name;
+dropped.remove();
+
+const added = await importComponentSet(rerunPayload, log);
+check(
+  'een variant die nog niet in Figma staat wordt toegevoegd',
+  added.created === 1 &&
+    added.updated === rerunPayload.componentSet.components.length - 1 &&
+    setsOf(buttonPage, rerunPayload.componentSet.name)[0].children.some(
+      (variant) => variant.name === droppedName
+    ),
+  `${added.created} nieuw, ${added.updated} bijgewerkt`
 );
 
 // =============================================================================

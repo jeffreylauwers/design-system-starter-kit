@@ -95,7 +95,7 @@ Omvang bij invoering: 1308 variables waarvan 783 aliassen, en vijf componenten (
 
 **Wat moeilijker wordt:**
 
-- Component sets worden bij elke import opnieuw aangemaakt; bestaande instanties koppelen daar niet vanzelf aan
+- Component sets werden bij elke import opnieuw aangemaakt; bestaande instanties koppelden daar niet vanzelf aan. Opgelost in september 2026: de plugin werkt een bestaande set bij en houdt de node-ids van de varianten gelijk. Wat nog wél verdwijnt zijn de overrides op de geneste lagen van een instance, want de lagen binnen een variant worden opnieuw opgebouwd. Zie de README van `figma-plugin`.
 - Zonder Code Connect is de koppeling tussen Figma-component en code-component alleen conventie (naamgeving, een link in de componentbeschrijving)
 
 **Nieuwe verplichting voor contributors:**

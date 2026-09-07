@@ -243,14 +243,51 @@ alleen in Figma zelf te bevestigen is.
 
 ## Idempotent
 
-Bestaande collections, modes, variables en icooncomponenten worden hergebruikt
-en bijgewerkt, niet gedupliceerd. Dat is een harde eis: dupliceren zou de
-bindingen verbreken die designers al gelegd hebben. De smoke test controleert
-dit expliciet door de import twee keer te draaien, en vergelijkt bij de iconen
-ook de node-ids.
+Bestaande collections, modes, variables, icooncomponenten en component sets
+worden hergebruikt en bijgewerkt, niet gedupliceerd. Dat is een harde eis:
+dupliceren zou de bindingen en de instances verbreken die designers al gelegd
+hebben. De smoke test controleert dit expliciet door élke import twee keer te
+draaien en de node-ids te vergelijken.
 
-Component sets worden wél elke keer opnieuw aangemaakt. Een bestaande set
-bijwerken zonder instanties te breken is een apart probleem, zie hieronder.
+### Hoe een component set wordt bijgewerkt
+
+De plugin zoekt op de pagina van het component een set met dezelfde naam. Staat
+die er, dan wordt hij bijgewerkt in plaats van dat er een tweede naast komt:
+
+| Wat                                          | Wat er gebeurt                                    |
+| -------------------------------------------- | ------------------------------------------------- |
+| Variant staat in de spec en in Figma         | Het component blijft, zijn inhoud wordt vervangen |
+| Variant staat in de spec, nog niet in Figma  | Wordt toegevoegd aan de bestaande set             |
+| Variant staat in Figma, niet meer in de spec | Blijft staan, met een melding in de log           |
+| Property staat in de spec en op de set       | Wordt bijgewerkt, houdt zijn property-id          |
+| Property staat op de set, niet in de spec    | Blijft staan, met een melding in de log           |
+
+Het hergebruiken van het component zélf is de kern. Elke geplaatste instance
+hangt aan de **node-id** van zijn variant; een nieuw component met dezelfde naam
+is voor Figma een ánder component en laat elke instance los. Hetzelfde geldt
+voor een component property: Figma bewaart de waarde die een instance eraan
+geeft onder de **property-id**, dus een property weggooien en opnieuw aanmaken
+zet elke instance terug op de standaardwaarde. Daarom wordt hij bijgewerkt met
+`editComponentProperty` in plaats van opnieuw aangemaakt.
+
+**Wat wél verloren gaat:** overrides die een designer op de geneste lagen van
+een instance heeft gelegd. De lagen binnen een variant worden opnieuw
+opgebouwd, en Figma zoekt die overrides terug via het laagpad. Dat is de prijs
+van een import die de CSS daadwerkelijk doorzet; het alternatief (de bestaande
+lagen één voor één bijwerken) vereist een betrouwbare identiteit per laag die
+een gemeten boom niet heeft. De instance blijft wel aan zijn component hangen,
+en dát is het verschil tussen een import die je kunt draaien en een die je niet
+kunt draaien.
+
+**Wat nooit vanzelf verdwijnt:** een variant of een property die uit de spec
+valt. Automatisch verwijderen zou elke instance ervan detachen, en dat is een
+beslissing van een mens. Dezelfde afweging als bij een icoon dat uit de
+assets-map verdwijnt.
+
+Tijdens het bouwen haalt de plugin de auto layout van de set tijdelijk weg.
+Anders hangt een variant in een auto-layout ouder waar hij bij een verse import
+los op de pagina staat, en gelden er andere sizing-regels: dan zou een tweede
+import iets anders opleveren dan de eerste. Het canvas wordt daarna weer gezet.
 
 ## Smoke test
 
@@ -281,6 +318,13 @@ die alles aan het verkeerde token hangt net zo groen zijn. Ook getest: een
 import zonder variables in het bestand wordt geweigerd, en de tweede
 iconimport houdt de node-ids gelijk in plaats van te vervangen.
 
+Elk component wordt **twee keer** geïmporteerd, en alle controles kijken naar
+het resultaat van de tweede. Een import die alleen op een leeg bestand klopt is
+voor een library die al in gebruik is niets waard: de tweede is de import die
+een designer in de praktijk draait. Daarbovenop staat er een eigen sectie voor
+het bijwerken zelf, met een geplaatste instance die de import moet overleven,
+een variant die uit de spec is gevallen en een variant die er nieuw bij komt.
+
 Die eerste ronde vond meteen drie bugs in de generator: `HUG` op nodes zonder
 auto layout, `FILL` binnen een niet-auto-layout ouder, en twee variables die
 niet in elke mode een waarde hadden. Draai deze test dus voordat je iets in
@@ -288,11 +332,12 @@ Figma laadt.
 
 ## Wat dit nog niet doet
 
-- **Component sets bijwerken.** Elke import maakt een nieuwe set aan. Bestaande
-  instanties in designbestanden koppelen daar niet vanzelf aan. De iconen doen
-  dit wél, zie hierboven. Op een eigen pagina wordt dat zichtbaar als twee sets
-  met dezelfde naam onder elkaar; de plugin meldt dat. De oude set weggooien is
-  handwerk, want dat detacht elke geplaatste instance.
+- **Overrides op geneste lagen bewaren.** Een bijgewerkte variant wordt van
+  binnen opnieuw opgebouwd, en overrides die een designer op de lagen van een
+  instance heeft gelegd zoekt Figma terug via het laagpad. De instance blijft
+  aan zijn component hangen; wat erop lag niet. Zie "Idempotent" hierboven.
+- **Een droogloop.** Er is nog geen stand waarin de plugin eerst toont wat er
+  zou veranderen voordat hij het doet.
 - **Geneste componenten hergebruiken.** De Heading en Paragraph in een Alert of
   een Note zijn gemeten lagen, geen instances van de losse component sets. Voor
   iconen gebeurt dat wél.
