@@ -24,6 +24,7 @@ export default {
     '@dsn-starter-kit/design-tokens/dist/css/start-light-default.css',
     '@dsn-starter-kit/components-html/src/icon/icon.css',
     '@dsn-starter-kit/components-html/src/link/link.css',
+    '@dsn-starter-kit/components-html/src/link-button/link-button.css',
     '@dsn-starter-kit/components-html/src/file/file.css',
   ],
 
@@ -43,7 +44,7 @@ export default {
       actions === 'with-actions'
         ? `<div class="dsn-file__actions">
              ${icon('check', { className: 'dsn-file__status-icon' })}
-             <span class="dsn-link dsn-link--size-default">${TEKST}</span>
+             <button type="button" class="dsn-link dsn-link-button dsn-link--size-default">${TEKST}</button>
            </div>`
         : '';
 
