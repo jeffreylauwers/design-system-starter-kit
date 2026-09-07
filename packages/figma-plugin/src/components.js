@@ -331,7 +331,13 @@ function buildNode(spec, parent, context) {
     // binding moet mee in de paints die eroverheen worden gezet. Bij een
     // instance is dat een override op de geneste lagen, precies zoals een
     // designer die met de hand zou leggen.
-    recolorVectors(node.children ?? [], paintsForVector(spec, context));
+    //
+    // De opdracht wordt onthouden en aan het eind van de import herhaald; zie
+    // `recolorIcons`. `paintsForVector` telt mee in de statistieken en wordt
+    // daarom maar één keer aangeroepen.
+    const paints = paintsForVector(spec, context);
+    recolorVectors(node.children ?? [], paints);
+    context.recolors.push({ node, paints, name: spec.name, spec });
     applyPlacement(node, spec, log);
     registerSlot(node, spec, context);
     return node;
@@ -452,6 +458,69 @@ function resetVariant(component) {
   component.clipsContent = true;
 }
 
+/**
+ * Zet de icoonkleuren nog een keer, als allerlaatste stap van de import.
+ *
+ * Een icoon is een instance van het icooncomponent, en zijn kleur is een
+ * override op de geneste `Group > Shape`. Alles wat Figma daarna met die
+ * instance doet kan die override wegvagen: een instance swap property zet het
+ * `mainComponent` van de laag, en bij zo'n verwisseling gooit Figma de
+ * overrides weg. Het icoon valt dan terug op de neutrale kleur van het
+ * icooncomponent, en dat is precies wat er in Figma gebeurde.
+ *
+ * Wie het laatst schrijft wint, dus schrijft de kleur het laatst. Dat scheelt
+ * ook het uitzoeken wélke stap ertussen de override precies opruimt: de
+ * volgorde doet er daarna niet meer toe.
+ *
+ * `node.children` wordt hier opnieuw gelezen en niet hergebruikt: na een
+ * verwisseling zijn het andere lagen dan tijdens de bouw.
+ */
+function recolorIcons(context) {
+  for (const job of context.recolors) {
+    recolorVectors(job.node.children ?? [], job.paints);
+  }
+  return context.recolors.length;
+}
+
+/**
+ * Leest terug of de iconen hun variable daadwerkelijk dragen.
+ *
+ * Een icoon dat zijn binding kwijt is ziet er in Figma uit als een icoon dat
+ * het gewoon doet, tot iemand naar dark mode schakelt. Stil laten gebeuren is
+ * daarom geen optie; zie ook `reportBindings`.
+ */
+function verifyIconColors(context) {
+  const lost = [];
+
+  for (const job of context.recolors) {
+    const expected = job.paints?.[0]?.boundVariables?.color?.id;
+    if (!expected) continue;
+
+    const find = (node) => {
+      if (Array.isArray(node.fills) && node.fills.length) return node.fills[0];
+      for (const child of node.children ?? []) {
+        const found = find(child);
+        if (found) return found;
+      }
+      return undefined;
+    };
+
+    const paint = find(job.node);
+    if (paint?.boundVariables?.color?.id !== expected) {
+      lost.push(job.name ?? 'icon');
+    }
+  }
+
+  if (lost.length) {
+    const unique = [...new Set(lost)];
+    context.log.warn(
+      `${lost.length} icoonlagen dragen hun kleur-variable niet (${unique.slice(0, 3).join(', ')}${unique.length > 3 ? ', ...' : ''}); ze volgen de theme-schakelaar niet`
+    );
+  }
+
+  return lost.length;
+}
+
 // =============================================================================
 // COMPONENT PROPERTIES
 // =============================================================================
@@ -541,8 +610,18 @@ function existingProperties(set) {
  * versie. Komt de bestaande waarde met één van beide overeen, dan is er niets
  * te wijzigen.
  */
-function unchangedProperty(existing, defaults, options) {
-  if (!defaults.some((value) => existing.defaultValue === value)) return false;
+function unchangedProperty(existing, property, defaults, options) {
+  // Bij een INSTANCE_SWAP telt de standaardwaarde niet mee. Wat Figma daar
+  // opslaat is niet per se de `key` of de node-id die wij aanleverden, dus een
+  // vergelijking erop slaat nooit aan en dan zou hier elke import doorheen
+  // lopen. Belangrijker: die waarde opnieuw zetten laat Figma de geneste
+  // instance verwisselen en dat wist de kleuroverride erop. Het icoon dat een
+  // designer als standaard kiest is bovendien zijn keuze, niet die van een
+  // volgende import.
+  const sameDefault =
+    property.type === 'INSTANCE_SWAP' ||
+    defaults.some((value) => existing.defaultValue === value);
+  if (!sameDefault) return false;
 
   const wanted = options?.preferredValues;
   if (wanted === undefined) return true;
@@ -580,17 +659,24 @@ function ensureComponentProperty(set, property, defaults, options, known, log) {
     // verwisselen, en een swap wist de overrides op die instance: het icoon in
     // de variant verliest dan de kleur die de plugin erop had gelegd en valt
     // terug op de kleur van het icooncomponent zelf.
-    if (unchangedProperty(existing, defaults, options)) {
+    if (unchangedProperty(existing, property, defaults, options)) {
       return { id: existing.propertyId, reused: true, unchanged: true };
     }
 
-    for (const value of defaults) {
-      try {
-        return {
-          id: set.editComponentProperty(existing.propertyId, {
+    // Alleen de velden die daadwerkelijk wijzigen, om dezelfde reden: elke
+    // schrijfactie op een INSTANCE_SWAP-default is een verwisseling.
+    const changes =
+      property.type === 'INSTANCE_SWAP'
+        ? [{ ...(options ?? {}) }]
+        : defaults.map((value) => ({
             defaultValue: value,
             ...(options ?? {}),
-          }),
+          }));
+
+    for (const change of changes) {
+      try {
+        return {
+          id: set.editComponentProperty(existing.propertyId, change),
           reused: true,
         };
       } catch (error) {
@@ -809,6 +895,8 @@ export async function importComponentSet(payload, log) {
     stats,
     icons,
     inlinedIcons: new Set(),
+    // Per icoonlaag de paints die eroverheen moeten; aan het eind herhaald.
+    recolors: [],
     // Per variant opnieuw gevuld; zie de bouwlus hieronder.
     slots: new Map(),
   };
@@ -967,6 +1055,10 @@ export async function importComponentSet(payload, log) {
     context
   );
 
+  // Als allerlaatste, ná het koppelen van de properties: zie `recolorIcons`.
+  const recolored = recolorIcons(context);
+  const lostColors = verifyIconColors(context);
+
   if (payload.warnings && payload.warnings.length) {
     for (const warning of payload.warnings) log.warn(warning);
   }
@@ -984,6 +1076,8 @@ export async function importComponentSet(payload, log) {
     created,
     updated,
     orphans,
+    recolored,
+    lostColors,
     combined: true,
     bindings: { ...stats, missing: [...stats.missing] },
     properties,

@@ -291,13 +291,25 @@ een gemeten boom niet heeft. De instance blijft wel aan zijn component hangen,
 en dát is het verschil tussen een import die je kunt draaien en een die je niet
 kunt draaien.
 
-**Wat er niet geschreven wordt:** een property die al precies zo op de set
-staat. Figma duwt een opnieuw gezette standaardwaarde van een `INSTANCE_SWAP`
-door naar elke gekoppelde geneste instance, en zo'n verwisseling wist de
-overrides op die instance. Het icoon in een variant verliest daarmee de kleur
-die de plugin erop legde en valt terug op de neutrale kleur van het
-icooncomponent zelf. Een import die niets verandert raakt de property dus niet
-aan.
+**De icoonkleur wordt als laatste geschreven.** Een icoon is een instance van
+het icooncomponent en zijn kleur is een override op de geneste `Group > Shape`.
+Het koppelen van een instance swap property zet het `mainComponent` van die
+laag, en bij zo'n verwisseling gooit Figma de overrides erop weg: het icoon valt
+terug op de neutrale kleur van het icooncomponent. Zichtbaar geweest als een
+Link waarvan het icoon na een tweede import op
+`color/neutral/color-default` stond in plaats van op `link/color`.
+
+De kleuren worden daarom na afloop van álles nog een keer gezet, en daarna
+teruggelezen: een icoonlaag die zijn variable alsnog niet draagt gaat als
+waarschuwing de log in. Wie het laatst schrijft wint, en dan doet de volgorde
+van de stappen ervóór er niet meer toe.
+
+**De standaardwaarde van een bestaande `INSTANCE_SWAP` blijft staan.** Wat Figma
+daar opslaat is niet per se de `key` of de node-id die de plugin aanleverde, dus
+erop vergelijken helpt niet, en hem opnieuw zetten is weer een verwisseling. Het
+icoon dat een designer als standaard kiest is bovendien zijn keuze en niet die
+van de volgende import. Een property die verder niet verandert wordt helemaal
+niet aangeraakt.
 
 Na afloop worden de varianten in de volgorde van de spec gezet. Een variant die
 opnieuw wordt toegevoegd hangt anders achteraan in de kinderlijst, en dan staat
@@ -348,8 +360,10 @@ af die in Figma echt fouten geven:
    niet geweigerd
 9. een kind van een component set draagt een geldige, unieke variantnaam
    (`as=waarde, as=waarde`)
+10. een instance swap property koppelen verwisselt de laag, en dat wist de
+    overrides op zijn geneste lagen
 
-Punt 8 en 9 staan er sinds ze in Figma zelf misgingen terwijl de smoke test
+Punt 8, 9 en 10 staan er sinds ze in Figma zelf misgingen terwijl de smoke test
 groen stond. De mock zette destijds een `name` op de definitie en wierp een
 fout bij een dubbele naam, allebei anders dan de echte API, en dekte daarmee
 precies de twee bugs af die hij had moeten vangen. Waar de mock en de Plugin

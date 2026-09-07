@@ -366,6 +366,19 @@ class Node {
    * `mainComponent` bestaat alleen op een instance, `characters` alleen op
    * tekst.
    */
+  /**
+   * Zet de geneste lagen terug op wat het component voorschrijft. Dat is wat
+   * Figma bij een instance swap doet: de overrides op de oude lagen gelden
+   * niet meer voor de nieuwe.
+   */
+  #resetOverrides() {
+    if (this.type !== 'INSTANCE' || !this.mainComponent) return;
+    for (const child of [...this.children]) child.remove();
+    for (const child of this.mainComponent.children) {
+      this.appendChild(cloneNode(child));
+    }
+  }
+
   set componentPropertyReferences(value) {
     for (const [field, propertyId] of Object.entries(value ?? {})) {
       if (!COMPONENT_PROPERTY_FIELDS.has(field)) {
@@ -393,6 +406,15 @@ class Node {
       }
       if (!ancestor.componentPropertyDefinitions?.[propertyId]) {
         throw new Error(`property ${propertyId} bestaat niet op de set`);
+      }
+      if (field === 'mainComponent') {
+        // Zoals in Figma: het mainComponent van deze laag komt vanaf nu uit de
+        // property, en Figma past die standaardwaarde meteen toe. Dat is een
+        // verwisseling, en een verwisseling gooit de overrides op de geneste
+        // lagen weg: het icoon valt terug op de kleur van zijn eigen
+        // component. Waargenomen in Figma Desktop, waar de icoonkleur na een
+        // tweede import terugsprong naar color/neutral/color-default.
+        this.#resetOverrides();
       }
       const expected =
         FIELD_FOR_PROPERTY_TYPE[
