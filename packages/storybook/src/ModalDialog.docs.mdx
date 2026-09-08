@@ -17,6 +17,35 @@ export const [intro, rest] = docs.split('<!-- VOORBEELD -->');
 
 <CodeTabs
   of={ModalDialogStories.Default}
+  react={`const [isOpen, setIsOpen] = useState(false);
+const triggerRef = useRef<HTMLButtonElement>(null);
+
+<Button ref={triggerRef} variant="default" onClick={() => setIsOpen(true)}>
+  Dialoogvenster
+</Button>
+
+<ModalDialog
+  isOpen={isOpen}
+  onClose={() => setIsOpen(false)}
+  triggerRef={triggerRef}
+>
+  <ModalDialogHeader>
+    <ModalDialogHeading>Dialoogvenster titel</ModalDialogHeading>
+  </ModalDialogHeader>
+  <ModalDialogBody>
+    <Paragraph>Tekst</Paragraph>
+  </ModalDialogBody>
+  <ModalDialogFooter>
+    <ActionGroup>
+      <Button variant="strong" onClick={() => setIsOpen(false)}>
+        Bevestigen
+      </Button>
+      <Button variant="default" onClick={() => setIsOpen(false)}>
+        Annuleren
+      </Button>
+    </ActionGroup>
+  </ModalDialogFooter>
+</ModalDialog>`}
   html={`<dialog class="dsn-modal-dialog" open tabindex="-1" aria-labelledby="dialog-title">
   <div class="dsn-modal-dialog__header">
     <h2 class="dsn-modal-dialog-heading" id="dialog-title" tabindex="-1">Dialoogvenster titel</h2>
