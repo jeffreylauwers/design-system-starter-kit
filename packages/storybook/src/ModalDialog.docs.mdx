@@ -17,9 +17,9 @@ export const [intro, rest] = docs.split('<!-- VOORBEELD -->');
 
 <CodeTabs
   of={ModalDialogStories.Default}
-  html={`<dialog class="dsn-modal-dialog" open aria-labelledby="dialog-title">
+  html={`<dialog class="dsn-modal-dialog" open tabindex="-1" aria-labelledby="dialog-title">
   <div class="dsn-modal-dialog__header">
-    <h2 class="dsn-modal-dialog-heading" id="dialog-title">Dialoogvenster titel</h2>
+    <h2 class="dsn-modal-dialog-heading" id="dialog-title" tabindex="-1">Dialoogvenster titel</h2>
     <button type="button" class="dsn-button dsn-button--subtle dsn-button--size-small dsn-button--icon-only">
       <svg class="dsn-icon" aria-hidden="true"><!-- x --></svg>
       <span class="dsn-button__label">Sluiten</span>

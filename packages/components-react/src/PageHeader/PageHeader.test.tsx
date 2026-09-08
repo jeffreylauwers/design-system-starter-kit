@@ -1,6 +1,14 @@
-import { describe, it, expect, vi } from 'vitest';
+import { describe, it, expect, vi, beforeEach } from 'vitest';
 import { render, screen, fireEvent } from '@testing-library/react';
 import { PageHeader } from './PageHeader';
+
+// De menuknop opent een Drawer, en jsdom heeft geen volledige
+// HTMLDialogElement implementatie. Mock showModal, show en close.
+beforeEach(() => {
+  HTMLDialogElement.prototype.showModal = vi.fn();
+  HTMLDialogElement.prototype.show = vi.fn();
+  HTMLDialogElement.prototype.close = vi.fn();
+});
 
 const defaultLogo = (
   <a href="/">
@@ -69,6 +77,23 @@ describe('PageHeader', () => {
     const { container } = render(<PageHeader logoSlot={defaultLogo} />);
     const panel = container.querySelector('.dsn-page-header__search-panel');
     expect(panel).toHaveAttribute('hidden');
+  });
+
+  it('menuknop heeft aria-expanded="false" bij gesloten menu', () => {
+    const { container } = render(<PageHeader logoSlot={defaultLogo} />);
+    const menuButton = container.querySelector(
+      '.dsn-page-header__start button'
+    );
+    expect(menuButton).toHaveAttribute('aria-expanded', 'false');
+  });
+
+  it('menuknop heeft aria-expanded="true" bij geopend menu', () => {
+    const { container } = render(<PageHeader logoSlot={defaultLogo} />);
+    const menuButton = container.querySelector<HTMLButtonElement>(
+      '.dsn-page-header__start button'
+    )!;
+    fireEvent.click(menuButton);
+    expect(menuButton).toHaveAttribute('aria-expanded', 'true');
   });
 
   it('zoekknop heeft aria-expanded="false" bij gesloten paneel', () => {

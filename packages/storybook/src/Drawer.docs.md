@@ -39,6 +39,34 @@ Het Drawer component toont een zijpaneel dat over de pagina-inhoud schuift. In t
 - **Modal** (`modal={true}`, standaard): achtergrond geblokkeerd via de native `::backdrop`. Gebruik dit wanneer de gebruiker de subtaak volledig moet afronden voordat hij terugkeert naar de pagina.
 - **Non-modal** (`modal={false}`): achtergrond blijft interactief. Gebruik dit voor filtervensters of infovensters waarbij de gebruiker de pagina naast het paneel wil bedienen.
 
+### Status van de trigger
+
+Geef de knop die het zijpaneel opent mee via `triggerRef`. Het zijpaneel zet dan zelf `aria-expanded` op die knop: `false` zolang het paneel dicht is, `true` zodra het open staat. Screenreadergebruikers horen daardoor of het paneel al open is.
+
+```tsx
+function Voorbeeld() {
+  const [isOpen, setIsOpen] = useState(false);
+  const triggerRef = useRef<HTMLButtonElement>(null);
+
+  return (
+    <>
+      <Button ref={triggerRef} onClick={() => setIsOpen(true)}>
+        Zijpaneel
+      </Button>
+      <Drawer
+        isOpen={isOpen}
+        onClose={() => setIsOpen(false)}
+        triggerRef={triggerRef}
+      >
+        ...
+      </Drawer>
+    </>
+  );
+}
+```
+
+Omdat de open- of dichtstaat al uit `aria-expanded` blijkt, hoeft het woord "openen" niet meer in de knoptekst: "Zijpaneel" volstaat.
+
 ### Sluitgedrag
 
 - **Sluitknop** in de header sluit het zijpaneel altijd: altijd aanwezig.
@@ -88,9 +116,26 @@ Het Drawer component toont een zijpaneel dat over de pagina-inhoud schuift. In t
 ## Accessibility
 
 - Het zijpaneel gebruikt het native `<dialog>` element met impliciete `role="dialog"` semantiek.
-- `.showModal()` (modal variant) activeert automatisch de native focus-trap, `aria-modal`-gedrag en `inert`-attribuut op de achtergrond.
-- `.show()` (non-modal variant) toont het paneel zonder focus-trap: de gebruiker kan via Tab navigeren tussen het paneel en de achtergrond.
+- `.showModal()` (modal variant) activeert automatisch `aria-modal`-gedrag en het `inert`-attribuut op de achtergrond.
 - `aria-labelledby` koppelt het zijpaneel automatisch aan de `DrawerHeading`: geen handmatige ID nodig.
 - De sluitknop gebruikt `dsn-button__label` met de tekst "Sluiten": nooit `aria-label`.
 - Escape sluit het zijpaneel (modaal via het native `cancel`-event; non-modaal via `keydown`-listener).
 - Animaties zijn uitgeschakeld bij `prefers-reduced-motion: reduce`.
+
+### Focus bij openen
+
+De `DrawerHeading` heeft `tabindex="-1"` en krijgt bij openen de focus. Zonder dat landt de focus op de sluitknop, en dan leest VoiceOver in Safari wel die knop voor maar niet de titel uit `aria-labelledby`. Omdat de sluitknop na de titel staat, kom je de titel bij verder lezen ook niet meer tegen. Met de focus op de heading wordt de titel als eerste voorgelezen en loopt de leesvolgorde daarna door naar de sluitknop en de inhoud.
+
+Is er geen `DrawerHeading`, dan krijgt het `<dialog>` zelf de focus. De focusomtrek op de heading verschijnt alleen bij toetsenbordgebruik, via `:focus-visible`.
+
+### Focus binnen het paneel houden
+
+Bij `modal={true}` blijft de toetsenbordfocus binnen het paneel. Naast de native focus-trap van `.showModal()` zit daar een expliciete trap op: Tab vanaf het laatste element springt naar het eerste, Shift+Tab vanaf het eerste (of vanaf de heading) naar het laatste. Dat is nodig omdat de native trap de focus in een `<iframe>` alsnog naar de omliggende pagina laat ontsnappen, bijvoorbeeld in Safari, in Storybook en in embeds.
+
+Bij `modal={false}` is er bewust geen trap: de gebruiker moet juist tussen het paneel en de achtergrondpagina kunnen tabben. Dat is het hele doel van de non-modale variant. Kies daarom `modal={true}` zodra de gebruiker de subtaak eerst moet afronden.
+
+Bij sluiten keert de focus terug naar het element dat het paneel opende (native browsergedrag).
+
+### Naam, rol en waarde van de trigger
+
+Geef `triggerRef` mee zodat `aria-expanded` op de openknop synchroon loopt met de open-staat. Een screenreader leest de knop dan voor als "Zijpaneel, samengevouwen" of "Zijpaneel, uitgevouwen". Zie het kopje "Status van de trigger" onder Best practices voor een codevoorbeeld. Gerelateerd WCAG-succescriterium: [4.1.2 Naam, rol, waarde](https://nldesignsystem.nl/wcag/4.1.2/).

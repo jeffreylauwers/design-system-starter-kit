@@ -1,5 +1,6 @@
+import React from 'react';
 import { describe, it, expect, vi, beforeEach } from 'vitest';
-import { render, screen } from '@testing-library/react';
+import { render, screen, fireEvent } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import {
   Drawer,
@@ -227,5 +228,153 @@ describe('Drawer', () => {
       </Drawer>
     );
     expect(screen.getByTestId('mijn-drawer')).toBeInTheDocument();
+  });
+
+  // ===========================
+  // Focus bij openen (titel wordt voorgelezen)
+  // ===========================
+
+  it('gives the heading tabindex="-1" so it can receive focus', () => {
+    render(<DefaultDrawer />);
+    expect(screen.getByText('Drawertitel')).toHaveAttribute('tabindex', '-1');
+  });
+
+  it('gives the dialog tabindex="-1" as fallback focus target', () => {
+    const { container } = render(<DefaultDrawer />);
+    expect(container.querySelector('dialog')).toHaveAttribute('tabindex', '-1');
+  });
+
+  it('moves focus to the heading when it opens', () => {
+    render(<DefaultDrawer />);
+    expect(screen.getByText('Drawertitel')).toHaveFocus();
+  });
+
+  it('moves focus to the dialog itself when there is no heading', () => {
+    render(
+      <Drawer isOpen={true}>
+        <DrawerBody>Inhoud</DrawerBody>
+      </Drawer>
+    );
+    expect(document.querySelector('dialog')).toHaveFocus();
+  });
+
+  it('does not move focus while it is closed', () => {
+    render(<DefaultDrawer isOpen={false} />);
+    expect(screen.getByText('Drawertitel')).not.toHaveFocus();
+  });
+
+  // ===========================
+  // aria-expanded op de trigger
+  // ===========================
+
+  const DrawerWithTrigger = ({ isOpen }: { isOpen: boolean }) => {
+    const triggerRef = React.useRef<HTMLButtonElement>(null);
+    return (
+      <>
+        <button type="button" ref={triggerRef}>
+          Zijpaneel
+        </button>
+        <Drawer isOpen={isOpen} triggerRef={triggerRef}>
+          <DrawerHeader>
+            <DrawerHeading>Drawertitel</DrawerHeading>
+          </DrawerHeader>
+          <DrawerBody>Inhoud</DrawerBody>
+        </Drawer>
+      </>
+    );
+  };
+
+  it('sets aria-expanded="false" on the trigger while closed', () => {
+    render(<DrawerWithTrigger isOpen={false} />);
+    expect(screen.getByText('Zijpaneel')).toHaveAttribute(
+      'aria-expanded',
+      'false'
+    );
+  });
+
+  it('sets aria-expanded="true" on the trigger while open', () => {
+    render(<DrawerWithTrigger isOpen={true} />);
+    expect(screen.getByText('Zijpaneel')).toHaveAttribute(
+      'aria-expanded',
+      'true'
+    );
+  });
+
+  it('updates aria-expanded when the open state changes', () => {
+    const { rerender } = render(<DrawerWithTrigger isOpen={false} />);
+    rerender(<DrawerWithTrigger isOpen={true} />);
+    expect(screen.getByText('Zijpaneel')).toHaveAttribute(
+      'aria-expanded',
+      'true'
+    );
+    rerender(<DrawerWithTrigger isOpen={false} />);
+    expect(screen.getByText('Zijpaneel')).toHaveAttribute(
+      'aria-expanded',
+      'false'
+    );
+  });
+
+  it('leaves the trigger alone when no triggerRef is given', () => {
+    render(<DefaultDrawer />);
+    const closeButton = screen.getByText('Sluiten').closest('button')!;
+    expect(closeButton).not.toHaveAttribute('aria-expanded');
+  });
+
+  // ===========================
+  // Focus-trap
+  // ===========================
+
+  it('wraps focus from the last to the first element on Tab', () => {
+    render(<DefaultDrawer />);
+    const closeButton = screen.getByText('Sluiten').closest('button')!;
+    const applyButton = screen.getByText('Toepassen');
+
+    applyButton.focus();
+    fireEvent.keyDown(applyButton, { key: 'Tab' });
+
+    expect(closeButton).toHaveFocus();
+  });
+
+  it('wraps focus from the first to the last element on Shift+Tab', () => {
+    render(<DefaultDrawer />);
+    const closeButton = screen.getByText('Sluiten').closest('button')!;
+    const applyButton = screen.getByText('Toepassen');
+
+    closeButton.focus();
+    fireEvent.keyDown(closeButton, { key: 'Tab', shiftKey: true });
+
+    expect(applyButton).toHaveFocus();
+  });
+
+  it('wraps focus from the heading to the last element on Shift+Tab', () => {
+    render(<DefaultDrawer />);
+    const heading = screen.getByText('Drawertitel');
+    const applyButton = screen.getByText('Toepassen');
+
+    expect(heading).toHaveFocus();
+    fireEvent.keyDown(heading, { key: 'Tab', shiftKey: true });
+
+    expect(applyButton).toHaveFocus();
+  });
+
+  it('leaves other keys alone', () => {
+    render(<DefaultDrawer />);
+    const applyButton = screen.getByText('Toepassen');
+
+    applyButton.focus();
+    fireEvent.keyDown(applyButton, { key: 'ArrowDown' });
+
+    expect(applyButton).toHaveFocus();
+  });
+
+  it('does not trap focus in the non-modal variant', () => {
+    render(<DefaultDrawer modal={false} />);
+    const applyButton = screen.getByText('Toepassen');
+
+    applyButton.focus();
+    fireEvent.keyDown(applyButton, { key: 'Tab' });
+
+    // Zonder trap verplaatst jsdom de focus niet: hij blijft staan waar hij was
+    expect(applyButton).toHaveFocus();
   });
 });

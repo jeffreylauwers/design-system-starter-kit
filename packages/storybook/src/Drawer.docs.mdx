@@ -17,9 +17,9 @@ export const [intro, rest] = docs.split('<!-- VOORBEELD -->');
 
 <CodeTabs
   of={DrawerStories.Default}
-  html={`<dialog class="dsn-drawer dsn-drawer--side-right" open aria-labelledby="drawer-title">
+  html={`<dialog class="dsn-drawer dsn-drawer--side-right" open tabindex="-1" aria-labelledby="drawer-title">
   <div class="dsn-drawer__header">
-    <h2 class="dsn-drawer-heading" id="drawer-title">Zijpaneel titel</h2>
+    <h2 class="dsn-drawer-heading" id="drawer-title" tabindex="-1">Zijpaneel titel</h2>
     <button type="button" class="dsn-button dsn-button--subtle dsn-button--size-small dsn-button--icon-only">
       <svg class="dsn-icon" aria-hidden="true"><!-- x --></svg>
       <span class="dsn-button__label">Sluiten</span>

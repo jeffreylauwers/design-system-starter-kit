@@ -311,8 +311,9 @@ Het paneel klapt open en dicht met een CSS-transitie: `grid-template-rows` gaat 
 - `<header>` heeft impliciete `role="banner"`: geen extra ARIA nodig.
 - De menuknop en zoekknop gebruiken altijd een `dsn-button__label` span voor de toegankelijke naam: nooit `aria-label`.
 - Zoekknop heeft `aria-expanded` (false/true) en `aria-controls` gericht op het zoekpaneel-ID.
+- Menuknop heeft `aria-expanded` (false/true): de `Drawer` houdt dat synchroon via `triggerRef`.
 - Bij openen zoekpaneel: focus verplaatst automatisch naar het `<input>` van de `SearchInput`.
 - Bij sluiten zoekpaneel: focus keert terug naar de zoek-/sluitknop.
 - Alle `<nav>`-elementen (zowel in de Drawer als op large viewport) gebruiken `aria-label` ("Hoofd-navigatie", "Service-navigatie"): geen verborgen headings, zodat de heading-hiërarchie van de pagina niet vervuild wordt vóór de `<h1>`.
-- Drawer-focusbeheer wordt verzorgd door het bestaande `Drawer`-component.
+- Drawer-focusbeheer wordt verzorgd door het bestaande `Drawer`-component: bij openen gaat de focus naar de Drawer-heading, de focus blijft binnen het paneel, en bij sluiten keert hij terug naar de menuknop.
 - Op large viewport: `dsn-page-header__small-layout` en `dsn-page-header__large-layout` worden geswitcht met `display: none`: de inactieve sectie valt automatisch uit de accessibility tree.

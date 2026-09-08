@@ -24,12 +24,12 @@ const meta: Meta<typeof Drawer> = {
   parameters: {
     dsn: {
       htmlTemplate: () => {
-        return `<button type="button" class="dsn-button dsn-button--default dsn-button--size-default" onclick="this.nextElementSibling.showModal()">
+        return `<button type="button" class="dsn-button dsn-button--default dsn-button--size-default" aria-expanded="false" onclick="const t = this, d = document.getElementById('drawer'); t.setAttribute('aria-expanded', 'true'); d.addEventListener('close', () => t.setAttribute('aria-expanded', 'false'), { once: true }); d.showModal(); d.querySelector('.dsn-drawer-heading').focus();">
   <span class="dsn-button__label">Zijpaneel openen</span>
 </button>
-<dialog class="dsn-drawer dsn-drawer--side-right" aria-labelledby="drawer-title">
+<dialog id="drawer" class="dsn-drawer dsn-drawer--side-right" tabindex="-1" aria-labelledby="drawer-title">
   <div class="dsn-drawer__header">
-    <h2 class="dsn-drawer-heading" id="drawer-title">Zijpaneel titel</h2>
+    <h2 class="dsn-drawer-heading" id="drawer-title" tabindex="-1">Zijpaneel titel</h2>
     <button type="button" class="dsn-button dsn-button--subtle dsn-button--size-small dsn-button--icon-only" onclick="this.closest('dialog').close()">
       <svg class="dsn-icon" aria-hidden="true"><!-- x --></svg>
       <span class="dsn-button__label">Sluiten</span>
@@ -92,9 +92,15 @@ function DrawerWithTrigger({
   children: (close: () => void) => React.ReactNode;
 }) {
   const [isOpen, setIsOpen] = React.useState(false);
+  // Via triggerRef houdt de Drawer aria-expanded op de knop synchroon
+  const triggerRef = React.useRef<HTMLButtonElement>(null);
   return (
     <>
-      <Button variant="default" onClick={() => setIsOpen(true)}>
+      <Button
+        ref={triggerRef}
+        variant="default"
+        onClick={() => setIsOpen(true)}
+      >
         {triggerLabel}
       </Button>
       <Drawer
@@ -102,6 +108,7 @@ function DrawerWithTrigger({
         onClose={() => setIsOpen(false)}
         modal={modal}
         side={side}
+        triggerRef={triggerRef}
       >
         {children(() => setIsOpen(false))}
       </Drawer>
