@@ -10,6 +10,20 @@ All notable changes to this project are documented in this file.
 
 Nog niet gepubliceerde wijzigingen. Schrijf nieuwe changelog-entries hieronder; bij de volgende release wordt deze kop gepromoveerd naar het definitieve versienummer.
 
+### Drawer en ModalDialog: toetsenbordfocus, titelvolgorde en status van de openknop
+
+Uit de accessibility review kwamen drie punten op het zijpaneel (issue #303). Ze gelden alle drie ook voor het ModalDialog, dat dezelfde structuur heeft, dus beide componenten zijn samen aangepakt.
+
+**De titel werd niet voorgelezen.** Bij openen zette de browser de focus op het eerste focusbare element, en dat is de sluitknop. VoiceOver in Safari las die knop wel voor, maar niet de titel uit `aria-labelledby`. En omdat de sluitknop ná de titel staat, kwam je de titel bij verder lezen ook niet meer tegen. De heading krijgt nu `tabindex="-1"` en bij openen de focus: de titel wordt als eerste voorgelezen, en de leesvolgorde loopt daarna gewoon door naar de sluitknop en de inhoud. Dat is het patroon uit de ARIA Authoring Practices, en het houdt DOM-volgorde en visuele volgorde gelijk. Het alternatief (de sluitknop vóór de titel in de DOM en alleen visueel erna) is niet gekozen, omdat dat precies de mismatch introduceert die we bij andere componenten juist willen vermijden. Is er geen heading, dan krijgt het `<dialog>` zelf de focus. De focusomtrek op de heading verschijnt alleen bij toetsenbordgebruik, via `:focus-visible`.
+
+**De focus viel uit het venster.** Er zit nu een expliciete focus-trap op, volgens [de techniek van Hidde de Vries](https://hidde.blog/using-javascript-to-trap-focus-in-an-element/), in `components-react/src/utils/focusTrap.ts`. Die staat bovenop de native trap van `.showModal()`, want die native trap laat de focus in een `<iframe>` alsnog over de iframe-grens ontsnappen naar de omliggende pagina, bijvoorbeeld in Safari, in Storybook en in embeds. Tab vanaf het laatste element springt naar het eerste, Shift+Tab vanaf het eerste (of vanaf de heading, die niet in de tabvolgorde staat) naar het laatste. De non-modale Drawer krijgt bewust géén trap: daar hoort de gebruiker juist tussen paneel en achtergrondpagina te kunnen tabben.
+
+Eén detail uit de implementatie is het onthouden waard: `getFocusableElements` loopt alle elementen langs en toetst ze met `matches`, in plaats van `querySelectorAll` met de hele selectorlijst in één keer. Browsers geven daar documentvolgorde bij terug, maar jsdom groepeert het resultaat per losse selector. Zonder die omweg zou de trap in tests ander gedrag vertonen dan in het echt, en juist bij een focus-trap is die volgorde het hele mechanisme.
+
+**De openknop had geen status.** Nieuwe optionele `triggerRef` prop op beide componenten, hetzelfde patroon als Popover al gebruikt: geef de openknop mee en het component houdt `aria-expanded` daarop synchroon met de open-staat. Een screenreader leest de knop dan voor als "Zijpaneel, samengevouwen" of "Zijpaneel, uitgevouwen". Omdat die status daarmee al hoorbaar is, hoeft het woord "openen" niet meer in de knoptekst. Gerelateerd WCAG-succescriterium: [4.1.2 Naam, rol, waarde](https://nldesignsystem.nl/wcag/4.1.2/).
+
+De menuknop van `PageHeader` is meteen op die nieuwe prop aangesloten, want die opent een `Drawer` en had als enige consument in deze repo dezelfde omissie.
+
 ### De Figma-plugin werkt bestaande component sets bij in plaats van ze te dupliceren
 
 De variables-import en de iconimport waren al idempotent, de componentenimport niet: elke import maakte een nieuwe component set aan naast de oude. Zolang niemand met de library werkt is dat onschuldig, maar zodra er instances in designbestanden staan blijven die aan de oude set hangen. Dat was de belangrijkste blokkade om de gegenereerde library daadwerkelijk in gebruik te nemen.

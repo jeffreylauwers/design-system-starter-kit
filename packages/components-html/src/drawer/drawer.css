@@ -4,14 +4,24 @@
  * dsn-drawer — Zijpaneel dat vanuit links of rechts de viewport inschuift
  *
  * Gebaseerd op het native <dialog> element.
- * Modaal (modal prop): openen via .showModal() — natieve focus-trap + ::backdrop.
- * Non-modaal:          openen via .show()      — achtergrond blijft interactief.
+ * Modaal (modal prop): openen via .showModal(), met focus-trap en ::backdrop.
+ * Non-modaal:          openen via .show(), achtergrond blijft interactief.
+ *
+ * Toetsenbord en screenreaders (JS-gedrag, zie components-react/src/Drawer):
+ *   - De trigger krijgt aria-expanded="false"/"true", synchroon met de open-staat.
+ *   - De heading heeft tabindex="-1" en krijgt bij openen de focus, zodat de
+ *     titel als eerste wordt voorgelezen.
+ *   - Bij de modale variant houdt een expliciete focus-trap de focus binnen het
+ *     paneel. De native trap van .showModal() volstaat niet in een <iframe>.
  *
  * HTML-structuur:
  *
- * <dialog class="dsn-drawer dsn-drawer--side-right" aria-labelledby="drawer-title">
+ * <button type="button" class="dsn-button dsn-button--default dsn-button--size-default" aria-expanded="false">
+ *   <span class="dsn-button__label">Zijpaneel</span>
+ * </button>
+ * <dialog class="dsn-drawer dsn-drawer--side-right" tabindex="-1" aria-labelledby="drawer-title">
  *   <div class="dsn-drawer__header">
- *     <h2 class="dsn-drawer-heading" id="drawer-title">Titel</h2>
+ *     <h2 class="dsn-drawer-heading" id="drawer-title" tabindex="-1">Titel</h2>
  *     <button type="button" class="dsn-button dsn-button--subtle dsn-button--size-small dsn-button--icon-only">
  *       <svg class="dsn-icon" aria-hidden="true"><!-- x --></svg>
  *       <span class="dsn-button__label">Sluiten</span>
@@ -233,6 +243,21 @@
   font-size: var(--dsn-drawer-heading-font-size);
   line-height: var(--dsn-drawer-heading-line-height);
   color: var(--dsn-drawer-heading-color);
+}
+
+/*
+ * De heading krijgt tabindex="-1" zodat hij bij openen de focus kan krijgen.
+ * Bij muisgebruik hoort daar geen focusomtrek bij, bij toetsenbordgebruik wel:
+ * :focus-visible laat de browser dat onderscheid maken.
+ */
+.dsn-drawer-heading:focus {
+  outline: none;
+}
+
+.dsn-drawer-heading:focus-visible {
+  outline: var(--dsn-focus-outline-width) var(--dsn-focus-outline-style)
+    var(--dsn-focus-outline-color);
+  outline-offset: var(--dsn-focus-outline-offset);
 }
 
 /* ===== Body met scroll-affordance ===== */

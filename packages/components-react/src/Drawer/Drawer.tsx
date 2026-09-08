@@ -2,6 +2,7 @@ import React from 'react';
 import { classNames } from '@dsn-starter-kit/core';
 import { Button } from '../Button';
 import { Icon } from '../Icon';
+import { useFocusTrap } from '../utils/focusTrap';
 import './Drawer.css';
 
 // =============================================================================
@@ -10,11 +11,13 @@ import './Drawer.css';
 
 interface DrawerContextValue {
   headingId: string;
+  headingRef: React.MutableRefObject<HTMLHeadingElement | null>;
   onClose?: () => void;
 }
 
 const DrawerContext = React.createContext<DrawerContextValue>({
   headingId: '',
+  headingRef: { current: null },
 });
 
 // =============================================================================
@@ -39,12 +42,20 @@ export interface DrawerProps extends Omit<
   /**
    * Modaal of non-modaal gedrag.
    * - `true` (standaard): opent via `.showModal()` — achtergrond geblokkeerd,
-   *   natieve focus-trap, Escape sluit via `cancel`-event.
-   * - `false`: opent via `.show()` — achtergrond blijft interactief,
-   *   Escape sluit via `keydown`-listener.
+   *   focus blijft binnen het paneel, Escape sluit via `cancel`-event.
+   * - `false`: opent via `.show()` — achtergrond blijft interactief en de
+   *   gebruiker kan er met Tab naartoe, Escape sluit via `keydown`-listener.
    * @default true
    */
   modal?: boolean;
+
+  /**
+   * Ref naar het element dat het zijpaneel opent. Wanneer je die meegeeft,
+   * houdt het zijpaneel `aria-expanded` op dat element synchroon met de
+   * open-staat: `false` wanneer het paneel gesloten is, `true` wanneer het
+   * open staat.
+   */
+  triggerRef?: React.RefObject<HTMLElement | null>;
 
   /**
    * De kant van de viewport vanwaar het zijpaneel inschuift.
@@ -92,6 +103,7 @@ export const Drawer = React.forwardRef<HTMLDialogElement, DrawerProps>(
       isOpen,
       onClose,
       modal = true,
+      triggerRef,
       side = 'right',
       children,
       ...props
@@ -102,6 +114,7 @@ export const Drawer = React.forwardRef<HTMLDialogElement, DrawerProps>(
     const dialogRef =
       (ref as React.RefObject<HTMLDialogElement>) ?? internalRef;
     const headingId = React.useId();
+    const headingRef = React.useRef<HTMLHeadingElement | null>(null);
 
     React.useEffect(() => {
       const dialog = dialogRef.current;
@@ -113,10 +126,43 @@ export const Drawer = React.forwardRef<HTMLDialogElement, DrawerProps>(
         } else {
           dialog.show();
         }
+
+        /*
+         * Zet de focus op de heading, niet op de sluitknop. De browser zet de
+         * focus bij het openen zelf op het eerste focusbare element, en dat is
+         * de sluitknop. VoiceOver in Safari leest die knop dan wel voor, maar
+         * niet de titel uit `aria-labelledby`, en omdat de sluitknop na de
+         * titel staat kom je de titel bij verder lezen ook niet meer tegen.
+         *
+         * Met de focus op de heading (die `tabindex="-1"` heeft) wordt de
+         * titel als eerste voorgelezen en loopt de leesvolgorde daarna door
+         * naar de sluitknop en de inhoud. Dit is het patroon uit de ARIA
+         * Authoring Practices, en het houdt DOM-volgorde en visuele volgorde
+         * gelijk.
+         */
+        (headingRef.current ?? dialog).focus();
       } else if (!isOpen && dialog.open) {
         dialog.close();
       }
     }, [isOpen, modal, dialogRef]);
+
+    /*
+     * Expliciete focus-trap bovenop de native trap van `.showModal()`.
+     * Zie `utils/focusTrap.ts` voor waarom de native trap niet volstaat.
+     * Non-modaal krijgt bewust geen trap: daar hoort de gebruiker juist
+     * tussen paneel en achtergrondpagina te kunnen tabben.
+     */
+    useFocusTrap(dialogRef, isOpen && modal);
+
+    // Synchroniseer aria-expanded op het triggerelement
+    React.useEffect(() => {
+      const trigger = triggerRef?.current;
+      if (!trigger) return;
+      trigger.setAttribute('aria-expanded', isOpen ? 'true' : 'false');
+      return () => {
+        trigger.setAttribute('aria-expanded', 'false');
+      };
+    }, [isOpen, triggerRef]);
 
     // Non-modaal: handmatige Escape-afhandeling via keydown
     React.useEffect(() => {
@@ -147,12 +193,13 @@ export const Drawer = React.forwardRef<HTMLDialogElement, DrawerProps>(
     );
 
     return (
-      <DrawerContext.Provider value={{ headingId, onClose }}>
+      <DrawerContext.Provider value={{ headingId, headingRef, onClose }}>
         <dialog
           ref={dialogRef}
           className={classes}
           aria-labelledby={headingId}
           onCancel={handleCancel}
+          tabIndex={-1}
           {...props}
         >
           {children}
@@ -226,19 +273,36 @@ export interface DrawerHeadingProps extends React.HTMLAttributes<HTMLHeadingElem
 /**
  * DrawerHeading
  * De heading van het zijpaneel. ID wordt automatisch gegenereerd voor aria-labelledby.
+ * Krijgt `tabindex="-1"` zodat de Drawer er bij openen de focus op kan zetten.
  */
 export const DrawerHeading = React.forwardRef<
   HTMLHeadingElement,
   DrawerHeadingProps
 >(({ className, level = 2, children, ...props }, ref) => {
-  const { headingId } = React.useContext(DrawerContext);
+  const { headingId, headingRef } = React.useContext(DrawerContext);
   const Tag = `h${level}` as React.ElementType;
+
+  // De Drawer heeft de heading nodig om er bij openen de focus op te zetten;
+  // een eventuele meegegeven ref blijft daarnaast gewoon werken.
+  const setRef = React.useCallback(
+    (node: HTMLHeadingElement | null) => {
+      headingRef.current = node;
+      if (typeof ref === 'function') {
+        ref(node);
+      } else if (ref) {
+        (ref as React.MutableRefObject<HTMLHeadingElement | null>).current =
+          node;
+      }
+    },
+    [headingRef, ref]
+  );
 
   return (
     <Tag
-      ref={ref}
+      ref={setRef}
       id={headingId}
       className={classNames('dsn-drawer-heading', className)}
+      tabIndex={-1}
       {...props}
     >
       {children}

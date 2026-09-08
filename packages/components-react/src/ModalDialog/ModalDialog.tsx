@@ -2,6 +2,7 @@ import React from 'react';
 import { classNames } from '@dsn-starter-kit/core';
 import { Button } from '../Button';
 import { Icon } from '../Icon';
+import { useFocusTrap } from '../utils/focusTrap';
 import './ModalDialog.css';
 
 // =============================================================================
@@ -10,11 +11,13 @@ import './ModalDialog.css';
 
 interface ModalDialogContextValue {
   headingId: string;
+  headingRef: React.MutableRefObject<HTMLHeadingElement | null>;
   onClose?: () => void;
 }
 
 const ModalDialogContext = React.createContext<ModalDialogContextValue>({
   headingId: '',
+  headingRef: { current: null },
 });
 
 // =============================================================================
@@ -38,6 +41,14 @@ export interface ModalDialogProps extends Omit<
   onClose?: () => void;
 
   /**
+   * Ref naar het element dat het dialoogvenster opent. Wanneer je die meegeeft,
+   * houdt het dialoogvenster `aria-expanded` op dat element synchroon met de
+   * open-staat: `false` wanneer het venster gesloten is, `true` wanneer het
+   * open staat.
+   */
+  triggerRef?: React.RefObject<HTMLElement | null>;
+
+  /**
    * De subcomponenten van het dialoogvenster:
    * `ModalDialogHeader`, `ModalDialogBody`, `ModalDialogFooter`
    */
@@ -48,8 +59,10 @@ export interface ModalDialogProps extends Omit<
  * ModalDialog component
  * Modaal dialoogvenster gebaseerd op het native `<dialog>` element.
  *
- * Gebruik altijd `.showModal()` (intern afgehandeld via `isOpen` prop) — nooit `.show()`.
- * Dit garandeert natieve focus-trap, aria-modal semantiek en inert-attribuut op de achtergrond.
+ * Gebruik altijd `.showModal()` (intern afgehandeld via `isOpen` prop), nooit `.show()`.
+ * Dit garandeert aria-modal semantiek en het inert-attribuut op de achtergrond.
+ * De focus blijft binnen het venster via de native focus-trap plus een
+ * expliciete trap, en komt bij openen op de heading te staan.
  *
  * @example
  * ```tsx
@@ -72,10 +85,11 @@ export interface ModalDialogProps extends Omit<
 export const ModalDialog = React.forwardRef<
   HTMLDialogElement,
   ModalDialogProps
->(({ className, isOpen, onClose, children, ...props }, ref) => {
+>(({ className, isOpen, onClose, triggerRef, children, ...props }, ref) => {
   const internalRef = React.useRef<HTMLDialogElement>(null);
   const dialogRef = (ref as React.RefObject<HTMLDialogElement>) ?? internalRef;
   const headingId = React.useId();
+  const headingRef = React.useRef<HTMLHeadingElement | null>(null);
 
   React.useEffect(() => {
     const dialog = dialogRef.current;
@@ -83,10 +97,40 @@ export const ModalDialog = React.forwardRef<
 
     if (isOpen && !dialog.open) {
       dialog.showModal();
+
+      /*
+       * Zet de focus op de heading, niet op de sluitknop. De browser zet de
+       * focus bij het openen zelf op het eerste focusbare element, en dat is
+       * de sluitknop. VoiceOver in Safari leest die knop dan wel voor, maar
+       * niet de titel uit `aria-labelledby`, en omdat de sluitknop na de
+       * titel staat kom je de titel bij verder lezen ook niet meer tegen.
+       *
+       * Met de focus op de heading (die `tabindex="-1"` heeft) wordt de titel
+       * als eerste voorgelezen en loopt de leesvolgorde daarna door naar de
+       * sluitknop en de inhoud. Dit is het patroon uit de ARIA Authoring
+       * Practices, en het houdt DOM-volgorde en visuele volgorde gelijk.
+       */
+      (headingRef.current ?? dialog).focus();
     } else if (!isOpen && dialog.open) {
       dialog.close();
     }
   }, [isOpen, dialogRef]);
+
+  /*
+   * Expliciete focus-trap bovenop de native trap van `.showModal()`.
+   * Zie `utils/focusTrap.ts` voor waarom de native trap niet volstaat.
+   */
+  useFocusTrap(dialogRef, isOpen);
+
+  // Synchroniseer aria-expanded op het triggerelement
+  React.useEffect(() => {
+    const trigger = triggerRef?.current;
+    if (!trigger) return;
+    trigger.setAttribute('aria-expanded', isOpen ? 'true' : 'false');
+    return () => {
+      trigger.setAttribute('aria-expanded', 'false');
+    };
+  }, [isOpen, triggerRef]);
 
   const handleCancel = (event: React.SyntheticEvent<HTMLDialogElement>) => {
     event.preventDefault();
@@ -96,12 +140,13 @@ export const ModalDialog = React.forwardRef<
   const classes = classNames('dsn-modal-dialog', className);
 
   return (
-    <ModalDialogContext.Provider value={{ headingId, onClose }}>
+    <ModalDialogContext.Provider value={{ headingId, headingRef, onClose }}>
       <dialog
         ref={dialogRef}
         className={classes}
         aria-labelledby={headingId}
         onCancel={handleCancel}
+        tabIndex={-1}
         {...props}
       >
         {children}
@@ -175,19 +220,36 @@ export interface ModalDialogHeadingProps extends React.HTMLAttributes<HTMLHeadin
 /**
  * ModalDialogHeading
  * De heading van het dialoogvenster. ID wordt automatisch gegenereerd voor aria-labelledby.
+ * Krijgt `tabindex="-1"` zodat het ModalDialog er bij openen de focus op kan zetten.
  */
 export const ModalDialogHeading = React.forwardRef<
   HTMLHeadingElement,
   ModalDialogHeadingProps
 >(({ className, level = 2, children, ...props }, ref) => {
-  const { headingId } = React.useContext(ModalDialogContext);
+  const { headingId, headingRef } = React.useContext(ModalDialogContext);
   const Tag = `h${level}` as React.ElementType;
+
+  // Het ModalDialog heeft de heading nodig om er bij openen de focus op te
+  // zetten; een eventuele meegegeven ref blijft daarnaast gewoon werken.
+  const setRef = React.useCallback(
+    (node: HTMLHeadingElement | null) => {
+      headingRef.current = node;
+      if (typeof ref === 'function') {
+        ref(node);
+      } else if (ref) {
+        (ref as React.MutableRefObject<HTMLHeadingElement | null>).current =
+          node;
+      }
+    },
+    [headingRef, ref]
+  );
 
   return (
     <Tag
-      ref={ref}
+      ref={setRef}
       id={headingId}
       className={classNames('dsn-modal-dialog-heading', className)}
+      tabIndex={-1}
       {...props}
     >
       {children}

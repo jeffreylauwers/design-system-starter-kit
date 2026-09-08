@@ -24,12 +24,12 @@ const meta: Meta<typeof ModalDialog> = {
   parameters: {
     dsn: {
       htmlTemplate: () => {
-        return `<button type="button" class="dsn-button dsn-button--default dsn-button--size-default" onclick="this.nextElementSibling.showModal()">
+        return `<button type="button" class="dsn-button dsn-button--default dsn-button--size-default" aria-expanded="false" onclick="const t = this, d = document.getElementById('dialog'); t.setAttribute('aria-expanded', 'true'); d.addEventListener('close', () => t.setAttribute('aria-expanded', 'false'), { once: true }); d.showModal(); d.querySelector('.dsn-modal-dialog-heading').focus();">
   <span class="dsn-button__label">Dialoogvenster openen</span>
 </button>
-<dialog class="dsn-modal-dialog" aria-labelledby="dialog-title">
+<dialog id="dialog" class="dsn-modal-dialog" tabindex="-1" aria-labelledby="dialog-title">
   <div class="dsn-modal-dialog__header">
-    <h2 class="dsn-modal-dialog-heading" id="dialog-title">Dialoogvenster titel</h2>
+    <h2 class="dsn-modal-dialog-heading" id="dialog-title" tabindex="-1">Dialoogvenster titel</h2>
     <button type="button" class="dsn-button dsn-button--subtle dsn-button--size-small dsn-button--icon-only" onclick="this.closest('dialog').close()">
       <svg class="dsn-icon" aria-hidden="true"><!-- x --></svg>
       <span class="dsn-button__label">Sluiten</span>
@@ -78,12 +78,22 @@ function DialogWithTrigger({
   children: (close: () => void) => React.ReactNode;
 }) {
   const [isOpen, setIsOpen] = React.useState(false);
+  // Via triggerRef houdt het ModalDialog aria-expanded op de knop synchroon
+  const triggerRef = React.useRef<HTMLButtonElement>(null);
   return (
     <>
-      <Button variant="default" onClick={() => setIsOpen(true)}>
+      <Button
+        ref={triggerRef}
+        variant="default"
+        onClick={() => setIsOpen(true)}
+      >
         {triggerLabel}
       </Button>
-      <ModalDialog isOpen={isOpen} onClose={() => setIsOpen(false)}>
+      <ModalDialog
+        isOpen={isOpen}
+        onClose={() => setIsOpen(false)}
+        triggerRef={triggerRef}
+      >
         {children(() => setIsOpen(false))}
       </ModalDialog>
     </>

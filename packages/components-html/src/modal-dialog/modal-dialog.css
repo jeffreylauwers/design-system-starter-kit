@@ -10,11 +10,21 @@
  *   - Natieve focus-trap
  *   - ::backdrop pseudo-element
  *
+ * Toetsenbord en screenreaders (JS-gedrag, zie components-react/src/ModalDialog):
+ *   - De trigger krijgt aria-expanded="false"/"true", synchroon met de open-staat.
+ *   - De heading heeft tabindex="-1" en krijgt bij openen de focus, zodat de
+ *     titel als eerste wordt voorgelezen.
+ *   - Een expliciete focus-trap houdt de focus binnen het venster. De native
+ *     trap van .showModal() volstaat niet in een <iframe>.
+ *
  * HTML-structuur:
  *
- * <dialog class="dsn-modal-dialog" aria-labelledby="dialog-title">
+ * <button type="button" class="dsn-button dsn-button--default dsn-button--size-default" aria-expanded="false">
+ *   <span class="dsn-button__label">Dialoogvenster</span>
+ * </button>
+ * <dialog class="dsn-modal-dialog" tabindex="-1" aria-labelledby="dialog-title">
  *   <div class="dsn-modal-dialog__header">
- *     <h2 class="dsn-modal-dialog-heading" id="dialog-title">Titel</h2>
+ *     <h2 class="dsn-modal-dialog-heading" id="dialog-title" tabindex="-1">Titel</h2>
  *     <button type="button" class="dsn-button dsn-button--subtle dsn-button--size-small dsn-button--icon-only">
  *       <svg class="dsn-icon" aria-hidden="true"><!-- x --></svg>
  *       <span class="dsn-button__label">Sluiten</span>
@@ -166,6 +176,21 @@
   font-size: var(--dsn-modal-dialog-heading-font-size);
   line-height: var(--dsn-modal-dialog-heading-line-height);
   color: var(--dsn-modal-dialog-heading-color);
+}
+
+/*
+ * De heading krijgt tabindex="-1" zodat hij bij openen de focus kan krijgen.
+ * Bij muisgebruik hoort daar geen focusomtrek bij, bij toetsenbordgebruik wel:
+ * :focus-visible laat de browser dat onderscheid maken.
+ */
+.dsn-modal-dialog-heading:focus {
+  outline: none;
+}
+
+.dsn-modal-dialog-heading:focus-visible {
+  outline: var(--dsn-focus-outline-width) var(--dsn-focus-outline-style)
+    var(--dsn-focus-outline-color);
+  outline-offset: var(--dsn-focus-outline-offset);
 }
 
 /* ===== Body met scroll-affordance ===== */

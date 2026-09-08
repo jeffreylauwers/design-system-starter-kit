@@ -1900,6 +1900,9 @@ Brengt consistente verticale ruimte aan tussen directe child-elementen via `flex
 **Features:**
 
 - Gebaseerd op het native `<dialog>` element met `.showModal()`: ingebakken focus-trap, `aria-modal`, `inert`-attribuut op de achtergrond
+- Expliciete focus-trap bovenop de native trap (`utils/focusTrap.ts`): de native trap laat de focus in een `<iframe>` alsnog ontsnappen
+- Focus gaat bij openen naar de heading (`tabindex="-1"`), zodat screenreaders de titel voorlezen
+- `triggerRef` prop houdt `aria-expanded` op de openknop synchroon met de open-staat
 - Compound component patroon met React Context: `headingId` en `onClose` automatisch doorgegeven aan sub-componenten
 - `aria-labelledby` automatisch gekoppeld aan `ModalDialogHeading` via `React.useId()`: geen handmatige ID nodig
 - Sluitknop (`dsn-button--icon-only`) altijd aanwezig in de header: nooit `aria-label`; tekst via `dsn-button__label`
@@ -1923,12 +1926,13 @@ Brengt consistente verticale ruimte aan tussen directe child-elementen via `flex
 
 **Props (React: ModalDialog):**
 
-| Prop       | Type                           | Default | Beschrijving                                             |
-| ---------- | ------------------------------ | ------- | -------------------------------------------------------- |
-| `isOpen`   | `boolean`                      | -       | Bepaalt of het dialoogvenster getoond wordt              |
-| `onClose`  | `() => void`                   | -       | Callback bij sluiten (sluitknop, Escape, buiten klikken) |
-| `children` | `React.ReactNode`              | -       | Sub-componenten: Header, Body, Footer                    |
-| `ref`      | `React.Ref<HTMLDialogElement>` | -       | Doorgegeven via `React.forwardRef`                       |
+| Prop         | Type                                 | Default | Beschrijving                                             |
+| ------------ | ------------------------------------ | ------- | -------------------------------------------------------- |
+| `isOpen`     | `boolean`                            | -       | Bepaalt of het dialoogvenster getoond wordt              |
+| `onClose`    | `() => void`                         | -       | Callback bij sluiten (sluitknop, Escape, buiten klikken) |
+| `triggerRef` | `React.RefObject<HTMLElement\|null>` | -       | Openknop; krijgt `aria-expanded` synchroon met de staat  |
+| `children`   | `React.ReactNode`                    | -       | Sub-componenten: Header, Body, Footer                    |
+| `ref`        | `React.Ref<HTMLDialogElement>`       | -       | Doorgegeven via `React.forwardRef`                       |
 
 **HTML/CSS:**
 
@@ -1936,13 +1940,14 @@ Brengt consistente verticale ruimte aan tussen directe child-elementen via `flex
 <button
   type="button"
   class="dsn-button dsn-button--default dsn-button--size-medium"
+  aria-expanded="false"
   onclick="this.nextElementSibling.showModal()"
 >
-  <span class="dsn-button__label">Dialoogvenster openen</span>
+  <span class="dsn-button__label">Dialoogvenster</span>
 </button>
-<dialog class="dsn-modal-dialog" aria-labelledby="dialog-title">
+<dialog class="dsn-modal-dialog" tabindex="-1" aria-labelledby="dialog-title">
   <div class="dsn-modal-dialog__header">
-    <h2 class="dsn-modal-dialog-heading" id="dialog-title">
+    <h2 class="dsn-modal-dialog-heading" id="dialog-title" tabindex="-1">
       Bevestig verwijderen
     </h2>
     <button
@@ -2017,6 +2022,9 @@ const [isOpen, setIsOpen] = React.useState(false);
 **Features:**
 
 - Gebaseerd op het native `<dialog>` element: `modal` prop bepaalt `.showModal()` (focus-trap, backdrop, `aria-modal`) of `.show()` (niet-modaal, achtergrond blijft interactief)
+- Expliciete focus-trap bij `modal={true}` bovenop de native trap (`utils/focusTrap.ts`); niet-modaal krijgt bewust geen trap
+- Focus gaat bij openen naar de heading (`tabindex="-1"`), zodat screenreaders de titel voorlezen
+- `triggerRef` prop houdt `aria-expanded` op de openknop synchroon met de open-staat
 - `side` prop (`'right'` | `'left'`, default `'right'`): positioneert het paneel aan de juiste of linker zijkant van het scherm
 - Compound component patroon met React Context: `headingId` en `onClose` automatisch doorgegeven aan sub-componenten
 - `aria-labelledby` automatisch gekoppeld aan `DrawerHeading` via `React.useId()`: geen handmatige ID nodig
@@ -2044,14 +2052,15 @@ const [isOpen, setIsOpen] = React.useState(false);
 
 **Props (React: Drawer):**
 
-| Prop       | Type                           | Default   | Beschrijving                                       |
-| ---------- | ------------------------------ | --------- | -------------------------------------------------- |
-| `isOpen`   | `boolean`                      | -         | Bepaalt of het zijpaneel getoond wordt             |
-| `onClose`  | `() => void`                   | -         | Callback bij sluiten (sluitknop, Escape)           |
-| `modal`    | `boolean`                      | `true`    | Modal (focus-trap, backdrop) of niet-modaal        |
-| `side`     | `'right' \| 'left'`            | `'right'` | Zijde van het scherm waaraan het paneel verschijnt |
-| `children` | `React.ReactNode`              | -         | Sub-componenten: Header, Body, Footer              |
-| `ref`      | `React.Ref<HTMLDialogElement>` | -         | Doorgegeven via `React.forwardRef`                 |
+| Prop         | Type                                 | Default   | Beschrijving                                         |
+| ------------ | ------------------------------------ | --------- | ---------------------------------------------------- |
+| `isOpen`     | `boolean`                            | -         | Bepaalt of het zijpaneel getoond wordt               |
+| `onClose`    | `() => void`                         | -         | Callback bij sluiten (sluitknop, Escape)             |
+| `modal`      | `boolean`                            | `true`    | Modal (focus-trap, backdrop) of niet-modaal          |
+| `triggerRef` | `React.RefObject<HTMLElement\|null>` | -         | Openknop; krijgt `aria-expanded` synchroon met staat |
+| `side`       | `'right' \| 'left'`                  | `'right'` | Zijde van het scherm waaraan het paneel verschijnt   |
+| `children`   | `React.ReactNode`                    | -         | Sub-componenten: Header, Body, Footer                |
+| `ref`        | `React.Ref<HTMLDialogElement>`       | -         | Doorgegeven via `React.forwardRef`                   |
 
 **HTML/CSS:**
 
@@ -2059,16 +2068,20 @@ const [isOpen, setIsOpen] = React.useState(false);
 <button
   type="button"
   class="dsn-button dsn-button--default dsn-button--size-medium"
+  aria-expanded="false"
   onclick="this.nextElementSibling.showModal()"
 >
-  <span class="dsn-button__label">Zijpaneel openen</span>
+  <span class="dsn-button__label">Zijpaneel</span>
 </button>
 <dialog
   class="dsn-drawer dsn-drawer--side-right"
+  tabindex="-1"
   aria-labelledby="drawer-title"
 >
   <div class="dsn-drawer__header">
-    <h2 class="dsn-drawer-heading" id="drawer-title">Zijpaneel titel</h2>
+    <h2 class="dsn-drawer-heading" id="drawer-title" tabindex="-1">
+      Zijpaneel titel
+    </h2>
     <button
       type="button"
       class="dsn-button dsn-button--subtle dsn-button--size-small dsn-button--icon-only"

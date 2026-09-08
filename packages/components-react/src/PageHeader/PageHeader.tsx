@@ -536,7 +536,12 @@ export const PageHeader = React.forwardRef<HTMLElement, PageHeaderProps>(
         </header>
 
         {/* Navigatielade (sibling aan PageHeader, altijd in DOM) */}
-        <Drawer isOpen={isMenuOpen} onClose={handleMenuClose} side="left">
+        <Drawer
+          isOpen={isMenuOpen}
+          onClose={handleMenuClose}
+          side="left"
+          triggerRef={menuButtonRef}
+        >
           <DrawerHeader>
             <DrawerHeading>{menuButtonLabel}</DrawerHeading>
           </DrawerHeader>

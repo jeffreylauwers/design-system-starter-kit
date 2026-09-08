@@ -1,5 +1,6 @@
+import React from 'react';
 import { describe, it, expect, vi, beforeEach } from 'vitest';
-import { render, screen } from '@testing-library/react';
+import { render, screen, fireEvent } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import {
   ModalDialog,
@@ -195,5 +196,142 @@ describe('ModalDialog', () => {
       </ModalDialog>
     );
     expect(screen.getByTestId('mijn-dialog')).toBeInTheDocument();
+  });
+
+  // ===========================
+  // Focus bij openen (titel wordt voorgelezen)
+  // ===========================
+
+  it('gives the heading tabindex="-1" so it can receive focus', () => {
+    render(<DefaultDialog />);
+    expect(screen.getByText('Dialoogtitel')).toHaveAttribute('tabindex', '-1');
+  });
+
+  it('gives the dialog tabindex="-1" as fallback focus target', () => {
+    const { container } = render(<DefaultDialog />);
+    expect(container.querySelector('dialog')).toHaveAttribute('tabindex', '-1');
+  });
+
+  it('moves focus to the heading when it opens', () => {
+    render(<DefaultDialog />);
+    expect(screen.getByText('Dialoogtitel')).toHaveFocus();
+  });
+
+  it('moves focus to the dialog itself when there is no heading', () => {
+    render(
+      <ModalDialog isOpen={true}>
+        <ModalDialogBody>Inhoud</ModalDialogBody>
+      </ModalDialog>
+    );
+    expect(document.querySelector('dialog')).toHaveFocus();
+  });
+
+  it('does not move focus while it is closed', () => {
+    render(<DefaultDialog isOpen={false} />);
+    expect(screen.getByText('Dialoogtitel')).not.toHaveFocus();
+  });
+
+  // ===========================
+  // aria-expanded op de trigger
+  // ===========================
+
+  const DialogWithTrigger = ({ isOpen }: { isOpen: boolean }) => {
+    const triggerRef = React.useRef<HTMLButtonElement>(null);
+    return (
+      <>
+        <button type="button" ref={triggerRef}>
+          Dialoogvenster
+        </button>
+        <ModalDialog isOpen={isOpen} triggerRef={triggerRef}>
+          <ModalDialogHeader>
+            <ModalDialogHeading>Dialoogtitel</ModalDialogHeading>
+          </ModalDialogHeader>
+          <ModalDialogBody>Inhoud</ModalDialogBody>
+        </ModalDialog>
+      </>
+    );
+  };
+
+  it('sets aria-expanded="false" on the trigger while closed', () => {
+    render(<DialogWithTrigger isOpen={false} />);
+    expect(screen.getByText('Dialoogvenster')).toHaveAttribute(
+      'aria-expanded',
+      'false'
+    );
+  });
+
+  it('sets aria-expanded="true" on the trigger while open', () => {
+    render(<DialogWithTrigger isOpen={true} />);
+    expect(screen.getByText('Dialoogvenster')).toHaveAttribute(
+      'aria-expanded',
+      'true'
+    );
+  });
+
+  it('updates aria-expanded when the open state changes', () => {
+    const { rerender } = render(<DialogWithTrigger isOpen={false} />);
+    rerender(<DialogWithTrigger isOpen={true} />);
+    expect(screen.getByText('Dialoogvenster')).toHaveAttribute(
+      'aria-expanded',
+      'true'
+    );
+    rerender(<DialogWithTrigger isOpen={false} />);
+    expect(screen.getByText('Dialoogvenster')).toHaveAttribute(
+      'aria-expanded',
+      'false'
+    );
+  });
+
+  it('leaves the trigger alone when no triggerRef is given', () => {
+    render(<DefaultDialog />);
+    const closeButton = screen.getByText('Sluiten').closest('button')!;
+    expect(closeButton).not.toHaveAttribute('aria-expanded');
+  });
+
+  // ===========================
+  // Focus-trap
+  // ===========================
+
+  it('wraps focus from the last to the first element on Tab', () => {
+    render(<DefaultDialog />);
+    const closeButton = screen.getByText('Sluiten').closest('button')!;
+    const confirmButton = screen.getByText('Bevestigen');
+
+    confirmButton.focus();
+    fireEvent.keyDown(confirmButton, { key: 'Tab' });
+
+    expect(closeButton).toHaveFocus();
+  });
+
+  it('wraps focus from the first to the last element on Shift+Tab', () => {
+    render(<DefaultDialog />);
+    const closeButton = screen.getByText('Sluiten').closest('button')!;
+    const confirmButton = screen.getByText('Bevestigen');
+
+    closeButton.focus();
+    fireEvent.keyDown(closeButton, { key: 'Tab', shiftKey: true });
+
+    expect(confirmButton).toHaveFocus();
+  });
+
+  it('wraps focus from the heading to the last element on Shift+Tab', () => {
+    render(<DefaultDialog />);
+    const heading = screen.getByText('Dialoogtitel');
+    const confirmButton = screen.getByText('Bevestigen');
+
+    expect(heading).toHaveFocus();
+    fireEvent.keyDown(heading, { key: 'Tab', shiftKey: true });
+
+    expect(confirmButton).toHaveFocus();
+  });
+
+  it('leaves other keys alone', () => {
+    render(<DefaultDialog />);
+    const confirmButton = screen.getByText('Bevestigen');
+
+    confirmButton.focus();
+    fireEvent.keyDown(confirmButton, { key: 'ArrowDown' });
+
+    expect(confirmButton).toHaveFocus();
   });
 });

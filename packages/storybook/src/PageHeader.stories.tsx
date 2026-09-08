@@ -625,7 +625,7 @@ ${indent}</li>`;
   <div class="dsn-page-header__small-layout">
     <div class="dsn-page-header__inner">
       <div class="dsn-page-header__start">
-        <button type="button" class="dsn-button dsn-button--subtle dsn-button--size-default">
+        <button type="button" class="dsn-button dsn-button--subtle dsn-button--size-default" aria-expanded="false">
           <svg class="dsn-icon" aria-hidden="true"><!-- menu --></svg>
           <span class="dsn-button__label">Menu</span>
         </button>
@@ -673,9 +673,9 @@ ${menuItems(primaryItems, '            ')}
   </div>
 </header>
 <!-- Drawer met het menu voor kleine schermen -->
-<dialog class="dsn-drawer dsn-drawer--side-left" aria-labelledby="drawer-title">
+<dialog class="dsn-drawer dsn-drawer--side-left" tabindex="-1" aria-labelledby="drawer-title">
   <div class="dsn-drawer__header">
-    <h2 id="drawer-title" class="dsn-drawer-heading">Menu</h2>
+    <h2 id="drawer-title" class="dsn-drawer-heading" tabindex="-1">Menu</h2>
     <button type="button" class="dsn-button dsn-button--subtle dsn-button--size-small dsn-button--icon-only">
       <svg class="dsn-icon" aria-hidden="true"><!-- x --></svg>
       <span class="dsn-button__label">Sluiten</span>

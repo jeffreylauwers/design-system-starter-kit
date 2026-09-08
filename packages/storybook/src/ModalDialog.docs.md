@@ -86,9 +86,47 @@ Het ModalDialog component toont een tijdelijk overlay-venster dat de achtergrond
 ## Accessibility
 
 - Het dialoogvenster gebruikt het native `<dialog>` element met impliciete `role="dialog"` semantiek.
-- `.showModal()` activeert automatisch de native focus-trap, `aria-modal`-gedrag en `inert`-attribuut op de achtergrond.
+- `.showModal()` activeert automatisch `aria-modal`-gedrag en het `inert`-attribuut op de achtergrond.
 - `aria-labelledby` koppelt het dialoogvenster automatisch aan de `ModalDialogHeading`: geen handmatige ID nodig.
 - De sluitknop gebruikt `dsn-button__label` met de tekst "Sluiten": nooit `aria-label`.
 - Focus keert terug naar het element dat het dialoogvenster opende bij sluiten (native browsergedrag).
 - Escape sluit het dialoogvenster via het native `cancel`-event.
 - Animaties zijn uitgeschakeld bij `prefers-reduced-motion: reduce`.
+
+### Focus bij openen
+
+De `ModalDialogHeading` heeft `tabindex="-1"` en krijgt bij openen de focus. Zonder dat landt de focus op de sluitknop, en dan leest VoiceOver in Safari wel die knop voor maar niet de titel uit `aria-labelledby`. Omdat de sluitknop na de titel staat, kom je de titel bij verder lezen ook niet meer tegen. Met de focus op de heading wordt de titel als eerste voorgelezen en loopt de leesvolgorde daarna door naar de sluitknop en de inhoud.
+
+Is er geen `ModalDialogHeading`, dan krijgt het `<dialog>` zelf de focus. De focusomtrek op de heading verschijnt alleen bij toetsenbordgebruik, via `:focus-visible`.
+
+### Focus binnen het venster houden
+
+De toetsenbordfocus blijft binnen het dialoogvenster. Naast de native focus-trap van `.showModal()` zit daar een expliciete trap op: Tab vanaf het laatste element springt naar het eerste, Shift+Tab vanaf het eerste (of vanaf de heading) naar het laatste. Dat is nodig omdat de native trap de focus in een `<iframe>` alsnog naar de omliggende pagina laat ontsnappen, bijvoorbeeld in Safari, in Storybook en in embeds.
+
+### Status van de trigger
+
+Geef de knop die het venster opent mee via `triggerRef`. Het dialoogvenster zet dan zelf `aria-expanded` op die knop: `false` zolang het venster dicht is, `true` zodra het open staat. Een screenreader leest de knop dan voor als "Dialoogvenster, samengevouwen" of "Dialoogvenster, uitgevouwen".
+
+```tsx
+function Voorbeeld() {
+  const [isOpen, setIsOpen] = useState(false);
+  const triggerRef = useRef<HTMLButtonElement>(null);
+
+  return (
+    <>
+      <Button ref={triggerRef} onClick={() => setIsOpen(true)}>
+        Dialoogvenster
+      </Button>
+      <ModalDialog
+        isOpen={isOpen}
+        onClose={() => setIsOpen(false)}
+        triggerRef={triggerRef}
+      >
+        ...
+      </ModalDialog>
+    </>
+  );
+}
+```
+
+Omdat de open- of dichtstaat al uit `aria-expanded` blijkt, hoeft het woord "openen" niet meer in de knoptekst. Gerelateerd WCAG-succescriterium: [4.1.2 Naam, rol, waarde](https://nldesignsystem.nl/wcag/4.1.2/).
