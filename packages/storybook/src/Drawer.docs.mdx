@@ -17,6 +17,36 @@ export const [intro, rest] = docs.split('<!-- VOORBEELD -->');
 
 <CodeTabs
   of={DrawerStories.Default}
+  react={`const [isOpen, setIsOpen] = useState(false);
+const triggerRef = useRef<HTMLButtonElement>(null);
+
+<Button ref={triggerRef} variant="default" onClick={() => setIsOpen(true)}>
+  Zijpaneel
+</Button>
+
+<Drawer
+  isOpen={isOpen}
+  onClose={() => setIsOpen(false)}
+  triggerRef={triggerRef}
+  side="right"
+>
+  <DrawerHeader>
+    <DrawerHeading>Zijpaneel titel</DrawerHeading>
+  </DrawerHeader>
+  <DrawerBody>
+    <Paragraph>Tekst</Paragraph>
+  </DrawerBody>
+  <DrawerFooter>
+    <ActionGroup>
+      <Button variant="strong" onClick={() => setIsOpen(false)}>
+        Toepassen
+      </Button>
+      <Button variant="default" onClick={() => setIsOpen(false)}>
+        Annuleren
+      </Button>
+    </ActionGroup>
+  </DrawerFooter>
+</Drawer>`}
   html={`<dialog class="dsn-drawer dsn-drawer--side-right" open tabindex="-1" aria-labelledby="drawer-title">
   <div class="dsn-drawer__header">
     <h2 class="dsn-drawer-heading" id="drawer-title" tabindex="-1">Zijpaneel titel</h2>
