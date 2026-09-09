@@ -193,7 +193,14 @@
    Uitklapknop (expand button)
    ============================================================================= */
 
-.dsn-menu-link__expand-button {
+/*
+ * Verzwaard met .dsn-button: die klasse staat ook op de knop en button.css zet
+ * daarop `align-self: flex-start`. Bij gelijke specificiteit beslist de
+ * bronvolgorde, en elk component-chunk dat button.css meeneemt en ná dit
+ * bestand laadt zet de knop terug op flex-start. Zie date-input.css voor de
+ * volledige redenering.
+ */
+.dsn-button.dsn-menu-link__expand-button {
   flex-shrink: 0;
   align-self: center;
 }

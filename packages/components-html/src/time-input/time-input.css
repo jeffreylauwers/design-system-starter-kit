@@ -21,7 +21,13 @@
 }
 
 /* Clock button — centered vertically, positioned at inline-end with reduced margin */
-.dsn-time-input__button {
+/*
+ * Verzwaard met .dsn-button, om dezelfde reden als bij DateInput: de knop
+ * draagt die klasse ook, button.css zet daarop `position: relative`, en bij
+ * gelijke specificiteit beslist de bronvolgorde. Dat time-input.css in de
+ * huidige bundel toevallig als laatste laadt is geen garantie.
+ */
+.dsn-button.dsn-time-input__button {
   position: absolute;
   inset-block-start: 50%;
   inset-inline-end: var(--dsn-time-input-button-inset-inline-end);
