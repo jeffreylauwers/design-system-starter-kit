@@ -10,6 +10,10 @@ All notable changes to this project are documented in this file.
 
 Nog niet gepubliceerde wijzigingen. Schrijf nieuwe changelog-entries hieronder; bij de volgende release wordt deze kop gepromoveerd naar het definitieve versienummer.
 
+## Version 3.5.0 (September 9, 2026)
+
+Minor release. Additief aan de API: Drawer en ModalDialog krijgen een optionele `triggerRef`, en er komt een `focusTrap`-util bij. Verder alleen fixes. Er is niets verwijderd of hernoemd, en de gepubliceerde `figma-sync`-wijzigingen tellen niet mee omdat dat package private is.
+
 ### Documentatie bijgewerkt na de cascade-fixes
 
 De regel die de DateInput-bug overtrad stond al in `docs/06-css-naming-conventions.md`, maar alleen in één vorm: een veld dat twee block-klassen draagt, zoals `class="dsn-text-input dsn-select"`. De vorm die ons brak stond er niet: een element met zijn eigen element-klasse plus de block-klasse van een ander component, zoals `class="dsn-button dsn-date-input__button"`. Die is toegevoegd, met de waarschuwing dat button.css in méér chunks zit dan alleen die van Button, en met wat er bij het verzwaren mee moet: regels uit `@media (forced-colors: active)` en `@media (prefers-reduced-motion)` verliezen anders, want een media query verhoogt de specificiteit niet.
