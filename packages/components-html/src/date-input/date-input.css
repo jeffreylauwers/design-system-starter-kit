@@ -21,7 +21,20 @@
 }
 
 /* Calendar button — centered vertically, positioned at inline-end with reduced margin */
-.dsn-date-input__button {
+/*
+ * Verzwaard met .dsn-button, want de knop draagt die klasse ook en button.css
+ * zet daarop `position: relative` als ankerpunt voor DotBadge. Een kale
+ * .dsn-date-input__button heeft dezelfde specificiteit (0,1,0), en dan beslist
+ * de bronvolgorde. Bundlers splitsen CSS per component-chunk en die volgorde is
+ * niet gegarandeerd: elk chunk dat button.css meeneemt en ná dit bestand laadt
+ * (Table en MenuLink doen dat) zet de knop terug op `position: relative`. De
+ * knop belandt dan op zijn statische positie, links onder het veld.
+ *
+ * Met (0,2,0) wint de uitkomst op specificiteit in plaats van op volgorde.
+ * Zelfde afweging als bij het veld hierboven, en als bij de sorteericonen in
+ * table.css.
+ */
+.dsn-button.dsn-date-input__button {
   position: absolute;
   inset-block-start: 50%;
   inset-inline-end: var(--dsn-date-input-button-inset-inline-end);

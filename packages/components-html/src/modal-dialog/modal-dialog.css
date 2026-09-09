@@ -208,7 +208,22 @@
   --_bg: var(--dsn-modal-dialog-background-color);
   --_shadow: var(--dsn-color-shadow-scroll, rgba(0, 0, 0, 0.12));
 
-  flex: 1;
+  /*
+   * `flex: 1 1 auto`, niet `flex: 1`.
+   *
+   * De dialog heeft geen vaste hoogte: alleen een `max-block-size`. De hoogte
+   * volgt dus uit de inhoud. Bij `flex: 1` (= `flex-basis: 0`) berekent Safari
+   * de intrinsieke hoogte van de kolom-flexcontainer uit die basis van 0, niet
+   * uit de inhoud van de body. De dialog wordt dan zo hoog als header + footer
+   * en de body klapt samen tot alleen zijn padding, met een scrollbalk voor
+   * alle tekst. Chrome en Firefox gebruiken hier wél de inhoudshoogte.
+   *
+   * Met `flex-basis: auto` is de basis de inhoudshoogte, in alle browsers.
+   * Groeien en krimpen blijven aan: zodra de inhoud boven `max-block-size`
+   * uitkomt, krimpt de body en scrollt hij. Dat mag ook echt krimpen, want
+   * `overflow-y: auto` zet de automatische minimumhoogte op 0.
+   */
+  flex: 1 1 auto;
   overflow-y: auto;
 
   padding-block: var(--dsn-modal-dialog-body-padding-block);

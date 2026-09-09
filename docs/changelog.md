@@ -10,6 +10,32 @@ All notable changes to this project are documented in this file.
 
 Nog niet gepubliceerde wijzigingen. Schrijf nieuwe changelog-entries hieronder; bij de volgende release wordt deze kop gepromoveerd naar het definitieve versienummer.
 
+### DateInput: de kalenderknop stond onder het veld in plaats van erin
+
+De knop belandde linksonder het veld, buiten het invoervak. TimeInput heeft precies dezelfde opbouw en ging wél goed, en dat verschil wees de oorzaak aan.
+
+De knop draagt twee componentklassen tegelijk: `dsn-button` en `dsn-date-input__button`. Beide selectors zetten `position`, button.css op `relative` als ankerpunt voor de DotBadge en date-input.css op `absolute`. Met één klasse elk hebben ze dezelfde specificiteit (0,1,0), dus beslist de bronvolgorde. En die volgorde is geen eigenschap van dit pakket: de bundler splitst CSS per component-chunk, en zowel Table als MenuLink neemt button.css mee. In de Storybook-bundel landen die chunks ná DateInput, waardoor `position: relative` won en de knop op zijn statische positie viel, dat wil zeggen op de plek waar hij zonder positionering zou staan: onder het blok-level invoerveld. TimeInput ontsnapte er alleen aan omdat zijn chunk toevallig als laatste laadt.
+
+Dit is dus geen Safari-probleem. Gemeten in de gebouwde Storybook geeft Chromium exact hetzelfde resultaat als WebKit. Dat het bij een crossbrowser-check bovenkwam is toeval.
+
+De regels zijn nu geschreven als `.dsn-button.dsn-date-input__button` en `.dsn-button.dsn-time-input__button`, zodat de uitkomst op specificiteit wordt beslist in plaats van op volgorde. Precies de afweging die date-input.css al maakte voor het invoerveld zelf (`.dsn-text-input.dsn-date-input`) en table.css voor de sorteericonen.
+
+Bij het nalopen bleek `.dsn-menu-link__expand-button` hetzelfde te hebben: die zet `align-self: center`, en `.dsn-button` zet `align-self: flex-start`. Daar won button.css al, dus de uitklapknop van MenuLink stond niet gecentreerd. Ook verzwaard.
+
+Er staat nu een test op deze klasse fouten: `packages/components-html/scripts/cascade-independence.test.ts`. Die leest de markup uit de repo, zoekt elementen die twee componentklassen dragen, en meldt elke override die dezelfde eigenschap met een ándere waarde zet zonder verzwaarde selector. Zes bestaande gevallen staan op een expliciete lijst met bekende schuld: bij die regels moeten de begeleidende regels uit `@media (forced-colors: active)` en `@media (prefers-reduced-motion)` mee verzwaard worden, want een media query verhoogt de specificiteit niet. Verzwaar je daar alleen de basisregel, dan breekt hoog contrast. Dat vraagt om een eigen ronde met eigen verificatie.
+
+### ModalDialog: de inhoud viel in Safari samen tot een strookje
+
+In Safari was van het `body`-deel van een dialoogvenster maar een paar regels zichtbaar, met een scrollbalk voor de rest. Chrome en Firefox lieten hetzelfde venster gewoon op inhoudshoogte zien. De oorzaak zit in één declaratie: `.dsn-modal-dialog__body` had `flex: 1`, en dat is de afkorting voor `flex-basis: 0`.
+
+Het venster heeft geen vaste hoogte, alleen een `max-block-size`. De hoogte volgt dus uit de inhoud, en daarvoor moet de browser de intrinsieke hoogte van de kolom-flexcontainer bepalen. Safari rekent die uit met de opgegeven `flex-basis` van 0 in plaats van met de inhoudshoogte van de body. Het venster werd daarmee zo hoog als header plus footer, en de body hield alleen zijn eigen padding over. Chrome en Firefox gebruiken op die plek wél de inhoudshoogte, waardoor het verschil alleen in Safari zichtbaar was.
+
+De body staat nu op `flex: 1 1 auto`. De basis is daarmee de inhoudshoogte, in alle browsers hetzelfde. Groeien en krimpen blijven gewoon aan: zodra de inhoud boven `max-block-size` uitkomt, krimpt de body en scrollt hij, precies zoals eerst. Dat krimpen mag ook echt, want `overflow-y: auto` zet de automatische minimumhoogte op 0.
+
+De Drawer heeft dezelfde structuur maar geen last van dit gedrag: die staat op `block-size: 100svh` en heeft dus een vaste hoogte, en dan speelt de intrinsieke berekening geen rol. Daar blijft `flex: 1` staan.
+
+Gemeten in WebKit naast Chromium, met een kort en een lang venster. Kort venster: body 86px in beide, geen scrollbalk. Lang venster: venster afgetopt op 638px, body 496px met scrollende inhoud, in beide gelijk. Vóór de wijziging was de body in WebKit 48px bij het korte venster. Let op dat Chromatic op Chrome draait, dus deze klasse van verschillen komt daar niet uit.
+
 ### Drawer en ModalDialog: toetsenbordfocus, titelvolgorde en status van de openknop
 
 Uit de accessibility review kwamen drie punten op het zijpaneel (issue #303). Ze gelden alle drie ook voor het ModalDialog, dat dezelfde structuur heeft, dus beide componenten zijn samen aangepakt.
