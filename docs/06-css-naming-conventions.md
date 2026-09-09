@@ -456,6 +456,40 @@ Dit geldt voor elk component met `@dsn-depends-on`: SearchInput, Select, DateInp
 en TimeInput. Neem ook de toestandsselectors mee (`:disabled`, `:read-only`,
 `[aria-invalid='true']`), die botsen op dezelfde manier.
 
+Dezelfde botsing komt in een tweede vorm voor, en die is makkelijker te missen:
+een element dat naast zijn eigen element-klasse óók de block-klasse van een ander
+component draagt. De knop in DateInput is `class="dsn-button ...
+dsn-date-input__button"`, en beide selectors zetten `position`.
+
+```css
+/* ❌: wint alleen als date-input.css ná button.css staat */
+.dsn-date-input__button {
+  position: absolute;
+}
+
+/* ✅: compound selector, wint altijd */
+.dsn-button.dsn-date-input__button {
+  position: absolute;
+}
+```
+
+De volgorde is hier extra onbetrouwbaar, omdat button.css in méér chunks zit dan
+alleen die van Button: elk component dat `@dsn-depends-on: button` declareert
+neemt hem mee. In de Storybook-bundel landen de chunks van Table en MenuLink ná
+die van DateInput, waardoor `position: relative` uit button.css won en de knop op
+zijn statische positie viel, onder het veld.
+
+Verzwaar je zo'n regel, kijk dan meteen naar de regels eromheen. Een media query
+verhoogt de specificiteit niet, dus een `@media (forced-colors: active)` of
+`@media (prefers-reduced-motion)` die dezelfde eigenschap op de kale klasse zet,
+verliest vanaf dat moment. Die moeten mee.
+
+`packages/components-html/scripts/cascade-independence.test.ts` bewaakt dit: hij
+leest de markup uit de repo, zoekt elementen die twee componentklassen dragen, en
+faalt zodra een override dezelfde eigenschap met een ándere waarde zet zonder
+verzwaarde selector. Zes bestaande gevallen staan daar op een lijst met bekende
+schuld, precies omdat hun begeleidende regels mee moeten.
+
 ### Klassen van een ander component: declareer de afhankelijkheid
 
 Volgorde is één probleem, aanwezigheid een tweede. Rendert een component klassen

@@ -92,7 +92,7 @@ pnpm --filter @dsn-starter-kit/design-tokens watch
 # Start Storybook in development mode
 pnpm dev
 
-# Run tests (2082 tests across 83 test suites)
+# Run tests (2121 tests across 85 test suites)
 pnpm test
 
 # Run tests in watch mode
@@ -449,7 +449,7 @@ Comprehensive documentation is available in the `/docs` folder:
 
 - **Pre-commit hooks** via Husky + lint-staged (ESLint + Prettier)
 - **Type checking** across all packages (`pnpm type-check`)
-- **2082 tests** covering React components, Web Components, and utilities
+- **2121 tests** covering React components, Web Components, and utilities
 - **CI/CD** via GitHub Actions (lint, type-check, test, build)
 
 ## Tech Stack

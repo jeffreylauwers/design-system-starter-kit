@@ -10,6 +10,18 @@ All notable changes to this project are documented in this file.
 
 Nog niet gepubliceerde wijzigingen. Schrijf nieuwe changelog-entries hieronder; bij de volgende release wordt deze kop gepromoveerd naar het definitieve versienummer.
 
+### Documentatie bijgewerkt na de cascade-fixes
+
+De regel die de DateInput-bug overtrad stond al in `docs/06-css-naming-conventions.md`, maar alleen in één vorm: een veld dat twee block-klassen draagt, zoals `class="dsn-text-input dsn-select"`. De vorm die ons brak stond er niet: een element met zijn eigen element-klasse plus de block-klasse van een ander component, zoals `class="dsn-button dsn-date-input__button"`. Die is toegevoegd, met de waarschuwing dat button.css in méér chunks zit dan alleen die van Button, en met wat er bij het verzwaren mee moet: regels uit `@media (forced-colors: active)` en `@media (prefers-reduced-motion)` verliezen anders, want een media query verhoogt de specificiteit niet.
+
+`docs/03-components.md` beschreef bij `@dsn-depends-on` alleen de aanwezigheidskant ("de CSS moet geladen worden"). De volgordekant staat er nu naast: geladen zijn zegt nog niet wie wint.
+
+`docs/04-development-workflow.md` sprak van twee contracttests. Het zijn er drie, en de nieuwe staat niet in `tests/` maar in `packages/components-html/scripts/`. De tabel noemt nu voor alle drie het volledige pad.
+
+Verouderde tellingen rechtgezet: 2082 tests over 83 suites was 2121 over 85 (README, `docs/README.md`, `docs/03-components.md`, `docs/04-development-workflow.md`). En `docs/README.md` stond nog op 601 stories over 72 pagina's, terwijl dat bij 3.3.0 al gecorrigeerd was naar 637 over 88; dat bestand was toen overgeslagen.
+
+Geen decision record voor deze ronde. De afweging zelf staat al in [DR-2026-09](decisions/DR-2026-09-css-afhankelijkheden-declareren-per-laag.md), die de compound selector expliciet als oplossing noemt. Wat hier bijkwam is handhaving van een bestaande beslissing, geen nieuwe.
+
 ### DateInput: de kalenderknop stond onder het veld in plaats van erin
 
 De knop belandde linksonder het veld, buiten het invoervak. TimeInput heeft precies dezelfde opbouw en ging wél goed, en dat verschil wees de oorzaak aan.
