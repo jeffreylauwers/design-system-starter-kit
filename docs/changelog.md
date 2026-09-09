@@ -10,6 +10,18 @@ All notable changes to this project are documented in this file.
 
 Nog niet gepubliceerde wijzigingen. Schrijf nieuwe changelog-entries hieronder; bij de volgende release wordt deze kop gepromoveerd naar het definitieve versienummer.
 
+### ModalDialog: de inhoud viel in Safari samen tot een strookje
+
+In Safari was van het `body`-deel van een dialoogvenster maar een paar regels zichtbaar, met een scrollbalk voor de rest. Chrome en Firefox lieten hetzelfde venster gewoon op inhoudshoogte zien. De oorzaak zit in één declaratie: `.dsn-modal-dialog__body` had `flex: 1`, en dat is de afkorting voor `flex-basis: 0`.
+
+Het venster heeft geen vaste hoogte, alleen een `max-block-size`. De hoogte volgt dus uit de inhoud, en daarvoor moet de browser de intrinsieke hoogte van de kolom-flexcontainer bepalen. Safari rekent die uit met de opgegeven `flex-basis` van 0 in plaats van met de inhoudshoogte van de body. Het venster werd daarmee zo hoog als header plus footer, en de body hield alleen zijn eigen padding over. Chrome en Firefox gebruiken op die plek wél de inhoudshoogte, waardoor het verschil alleen in Safari zichtbaar was.
+
+De body staat nu op `flex: 1 1 auto`. De basis is daarmee de inhoudshoogte, in alle browsers hetzelfde. Groeien en krimpen blijven gewoon aan: zodra de inhoud boven `max-block-size` uitkomt, krimpt de body en scrollt hij, precies zoals eerst. Dat krimpen mag ook echt, want `overflow-y: auto` zet de automatische minimumhoogte op 0.
+
+De Drawer heeft dezelfde structuur maar geen last van dit gedrag: die staat op `block-size: 100svh` en heeft dus een vaste hoogte, en dan speelt de intrinsieke berekening geen rol. Daar blijft `flex: 1` staan.
+
+Gemeten in WebKit naast Chromium, met een kort en een lang venster. Kort venster: body 86px in beide, geen scrollbalk. Lang venster: venster afgetopt op 638px, body 496px met scrollende inhoud, in beide gelijk. Vóór de wijziging was de body in WebKit 48px bij het korte venster. Let op dat Chromatic op Chrome draait, dus deze klasse van verschillen komt daar niet uit.
+
 ### Drawer en ModalDialog: toetsenbordfocus, titelvolgorde en status van de openknop
 
 Uit de accessibility review kwamen drie punten op het zijpaneel (issue #303). Ze gelden alle drie ook voor het ModalDialog, dat dezelfde structuur heeft, dus beide componenten zijn samen aangepakt.
