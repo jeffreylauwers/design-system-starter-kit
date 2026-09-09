@@ -43,7 +43,7 @@ pnpm --filter @dsn-starter-kit/design-tokens watch
 # Start Storybook in development mode
 pnpm dev
 
-# Run tests (2082 tests across 83 test suites)
+# Run tests (2121 tests across 85 test suites)
 pnpm test
 
 # Run tests in watch mode
@@ -593,26 +593,43 @@ In Windows High Contrast mode / forced-colors mode worden `background-color`, `c
 
 ### Test Coverage
 
-- **Total tests:** 2082 across 83 test suites
+- **Total tests:** 2121 across 85 test suites
 - **Frameworks:** Vitest + React Testing Library
-- **Coverage areas:** React components, Web Components, utilities, en twee contracttests in `tests/`
+- **Coverage areas:** React components, Web Components, utilities, en drie contracttests
 
-### Contracttests in `tests/`
+### Contracttests
 
-Naast de tests per component staan er twee tests in `tests/` die iets bewaken wat
-in geen enkele component-test zichtbaar wordt. Beide bestaan omdat het misging en
-pas bij een consument opviel, niet in de monorepo.
+Naast de tests per component staan er drie tests die iets bewaken wat in geen
+enkele component-test zichtbaar wordt. Alle drie bestaan omdat het misging op een
+plek waar geen enkele component-test kijkt: bij een consument, of pas in een
+productiebuild.
 
-| Bestand                    | Bewaakt                                                                                      |
-| -------------------------- | -------------------------------------------------------------------------------------------- |
-| `package-exports.test.ts`  | De vorm van de gepubliceerde packages: CSS-exports met types, en `sideEffects` correct gezet |
-| `css-dependencies.test.ts` | Dat een component de CSS laadt van elke klasse die hij rendert                               |
+| Bestand                                                         | Bewaakt                                                                                      |
+| --------------------------------------------------------------- | -------------------------------------------------------------------------------------------- |
+| `tests/package-exports.test.ts`                                 | De vorm van de gepubliceerde packages: CSS-exports met types, en `sideEffects` correct gezet |
+| `tests/css-dependencies.test.ts`                                | Dat een component de CSS laadt van elke klasse die hij rendert                               |
+| `packages/components-html/scripts/cascade-independence.test.ts` | Dat een override wint op specificiteit en niet op bronvolgorde                               |
 
 `css-dependencies.test.ts` faalt zodra een React-component een `dsn-*` klasse
 rendert waarvan de CSS niet bereikbaar is via zijn imports, en zodra een
 `@dsn-depends-on` uit de HTML/CSS-laag niet wordt opgehaald door de bijbehorende
 React-CSS. Zie [CSS Naming Conventions](./06-css-naming-conventions.md) voor het
 patroon dat hij afdwingt.
+
+`cascade-independence.test.ts` pakt de andere helft van datzelfde probleem. Dat de
+CSS geladen wordt zegt nog niets over wie wint: zodra een element twee
+componentklassen draagt, beslist bij gelijke specificiteit de bronvolgorde, en die
+ligt niet vast zodra de bundler per component-chunk splitst. De test leest de
+markup uit `components-react`, `storybook` en `figma-sync`, en faalt zodra een
+override dezelfde eigenschap met een ándere waarde zet zonder verzwaarde selector.
+Gelijke waarden tellen niet mee, want dan kan de volgorde niets veranderen.
+
+Zes bestaande gevallen staan op een expliciete lijst met bekende schuld, met een
+tweede test die bewaakt dat die lijst niet veroudert. Ze zijn nog niet weggewerkt
+omdat hun begeleidende regels mee moeten: `.dsn-details__icon` en
+`.dsn-file__status-icon` worden overschreven vanuit `@media (forced-colors:
+active)` en `@media (prefers-reduced-motion)`, en een media query verhoogt de
+specificiteit niet.
 
 ### Running Tests
 

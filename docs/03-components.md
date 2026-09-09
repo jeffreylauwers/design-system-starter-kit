@@ -3513,12 +3513,19 @@ header carries `dsn-button`, ButtonLink carries `dsn-button`, LinkButton carries
 
 In the second case the React CSS must also import that dependency, or the class
 is used without its rules ever being loaded. `tests/css-dependencies.test.ts`
-enforces both halves. See
+enforces both halves.
+
+Loading the CSS is only half the problem. Once an element carries two component
+classes, any property both of them set is decided by source order, because a
+single class gives each selector the same specificity. Write those overrides as
+a compound selector (`.dsn-button.dsn-date-input__button`), not a bare one.
+`packages/components-html/scripts/cascade-independence.test.ts` checks this for
+every element in the repo that combines two component classes. See
 [DR-2026-08](./decisions/DR-2026-08-formuliercontrols-krijgen-een-html-css-laag.md)
 and
 [DR-2026-09](./decisions/DR-2026-09-css-afhankelijkheden-declareren-per-laag.md).
 
-**Test Coverage:** 2082 tests across 83 test suites
+**Test Coverage:** 2121 tests across 85 test suites
 
 ---
 
