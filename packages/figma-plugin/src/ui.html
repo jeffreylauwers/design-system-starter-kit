@@ -63,6 +63,16 @@
   .status {
     font-weight: 600;
   }
+  .option {
+    display: flex;
+    align-items: flex-start;
+    gap: 6px;
+    opacity: 0.85;
+    line-height: 1.5;
+  }
+  .option input {
+    margin: 2px 0 0;
+  }
 </style>
 
 <h1>DSN Sync</h1>
@@ -82,6 +92,16 @@
   <input type="file" id="file" accept="application/json,.json" multiple />
 </label>
 
+<label class="option">
+  <input type="checkbox" id="diagnose" />
+  <span>
+    <strong>Meet de kleuren na afloop.</strong> Leest per laag terug welke
+    kleur-variable hij draagt, op de variant én op elke geplaatste instance
+    ervan, en een tweede keer na een tick. Levert een lange log op; alleen nodig
+    om uit te zoeken waar een kleur blijft.
+  </span>
+</label>
+
 <div id="log">Nog niets geïmporteerd.</div>
 
 <script>
@@ -98,6 +118,7 @@
   const logElement = document.getElementById('log');
   const drop = document.getElementById('drop');
   const fileInput = document.getElementById('file');
+  const diagnose = document.getElementById('diagnose');
   let cleared = false;
 
   function write(message, level) {
@@ -148,6 +169,7 @@
             type: 'import',
             kind: job.kind,
             payload: job.payload,
+            diagnose: diagnose.checked,
           },
         },
         '*'

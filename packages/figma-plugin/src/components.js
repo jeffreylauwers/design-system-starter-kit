@@ -21,6 +21,7 @@ import {
   requireCollections,
 } from './bindings.js';
 import { recolorVectors } from './svg.js';
+import { diagnoseColors } from './diagnose.js';
 import { ICON_PAGE, loadIconIndex } from './icons.js';
 import { findOrCreatePage, openPage, sortManagedPages } from './pages.js';
 
@@ -322,6 +323,7 @@ function buildNode(spec, parent, context) {
     applyPlacement(text, spec, log);
     applySizing(text, spec, log);
     registerSlot(text, spec, context);
+    registerColorCheck(text, spec, context);
     return text;
   }
 
@@ -340,6 +342,7 @@ function buildNode(spec, parent, context) {
     context.recolors.push({ node, paints, name: spec.name, spec });
     applyPlacement(node, spec, log);
     registerSlot(node, spec, context);
+    registerColorCheck(node, spec, context);
     return node;
   }
 
@@ -362,6 +365,19 @@ function buildNode(spec, parent, context) {
  */
 function registerSlot(node, spec, context) {
   if (spec.componentSlot) context.slots.set(spec.componentSlot, node);
+}
+
+/**
+ * Onthoudt elke laag waarvan de spec een kleur-variable noemt.
+ *
+ * Alleen voor `diagnoseColors`, en dus voor de tekstlagen net zo goed als voor
+ * de iconen: die twee hangen aan dezelfde variable, en of ze zich hetzelfde
+ * gedragen is precies wat er gemeten moet worden. `recolors` is hier niet
+ * bruikbaar voor, want daar staan alleen de iconen in.
+ */
+function registerColorCheck(node, spec, context) {
+  if (!spec.boundVariables?.fills) return;
+  context.colorChecks.push({ node, spec });
 }
 
 /**
@@ -864,8 +880,9 @@ function applyCanvas(set, canvas, context) {
  *
  * @param {object} payload de inhoud van een {component}.json
  * @param {object} log verzamelaar met .info/.warn/.error
+ * @param {object} [options] `{ diagnose }`; zie `diagnoseColors`
  */
-export async function importComponentSet(payload, log) {
+export async function importComponentSet(payload, log, options = {}) {
   if (payload.$schema !== 'dsn-figma-components/1') {
     throw new Error(
       `Onbekend formaat: ${payload.$schema ?? 'geen $schema'}. Verwacht dsn-figma-components/1.`
@@ -897,6 +914,8 @@ export async function importComponentSet(payload, log) {
     inlinedIcons: new Set(),
     // Per icoonlaag de paints die eroverheen moeten; aan het eind herhaald.
     recolors: [],
+    // Elke laag met een kleur-variable, iconen én tekst; zie `diagnoseColors`.
+    colorChecks: [],
     // Per variant opnieuw gevuld; zie de bouwlus hieronder.
     slots: new Map(),
   };
@@ -968,6 +987,11 @@ export async function importComponentSet(payload, log) {
     // Elke variant heeft zijn eigen lagen, dus ook zijn eigen slots.
     context.slots = new Map();
 
+    // Waar de lagen van deze variant in `colorChecks` beginnen. De meting leest
+    // een laag terug via zijn pad vanaf de variant, en dat pad is er niet
+    // zonder te weten bij welke variant een laag hoort.
+    const checksBefore = context.colorChecks.length;
+
     // Het root-element wórdt het component. Een extra frame eromheen zou een
     // lege laag met dezelfde auto layout toevoegen, en dat is precies de
     // nesting die een Figma-library onwerkbaar maakt.
@@ -992,6 +1016,10 @@ export async function importComponentSet(payload, log) {
       wrapper.y = 0;
       cursorX += wrapper.width + 40;
       if ((index + 1) % 6 === 0) cursorX = 0;
+    }
+
+    for (const check of context.colorChecks.slice(checksBefore)) {
+      check.variant = wrapper;
     }
 
     components.push(wrapper);
@@ -1059,6 +1087,13 @@ export async function importComponentSet(payload, log) {
   const recolored = recolorIcons(context);
   const lostColors = verifyIconColors(context);
 
+  // Alleen wanneer erom gevraagd wordt: de meting wacht een tick en leest elke
+  // laag twee keer terug, en bij 81 varianten is dat een lange log voor iemand
+  // die alleen een import wil draaien.
+  const diagnosis = options.diagnose
+    ? await diagnoseColors(context, log, spec.name)
+    : null;
+
   if (payload.warnings && payload.warnings.length) {
     for (const warning of payload.warnings) log.warn(warning);
   }
@@ -1078,6 +1113,7 @@ export async function importComponentSet(payload, log) {
     orphans,
     recolored,
     lostColors,
+    diagnosis,
     combined: true,
     bindings: { ...stats, missing: [...stats.missing] },
     properties,

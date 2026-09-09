@@ -1124,6 +1124,48 @@ check(
 );
 
 // =============================================================================
+// De kleurmeting
+// =============================================================================
+
+// `diagnoseColors` bestaat om in Figma vast te stellen wát er met de
+// kleuroverride gebeurt, en niet om hier iets te bewijzen: de mock kan het
+// mechanisme nog niet nadoen. Wat hier gecontroleerd wordt is dat de meting
+// draait en de goede lagen te pakken heeft, zodat hij niet stilletjes stukgaat
+// tussen twee sessies in Figma door.
+console.log('\n=== kleurmeting ===');
+
+const measured = await importComponentSet(rerunPayload, log, {
+  diagnose: true,
+});
+const diagnosis = measured.diagnosis;
+
+// Drie gebonden kleurlagen per variant: twee iconen en de tekst.
+const expectedProbes = rerunPayload.componentSet.components.length * 3;
+check(
+  'de meting pakt elke gebonden kleurlaag, iconen én tekst',
+  diagnosis?.probes === expectedProbes,
+  `${diagnosis?.probes} lagen, verwacht ${expectedProbes}`
+);
+
+check(
+  'op de variant draagt elke laag de kleur uit de spec',
+  diagnosis?.before.variantWrong === 0 &&
+    diagnosis.before.variantOk === expectedProbes,
+  `${diagnosis?.before.variantOk} zoals gevraagd, ${diagnosis?.before.variantWrong} niet`
+);
+
+// Precies het gat dat issue #388 benoemt: een instance is in de mock een
+// momentopname en geen levende spiegel van zijn component, dus er is aan die
+// kant niets te meten. Zolang dit nul is kan de smoke test niet rood worden op
+// het echte probleem, en die tekortkoming hoort zichtbaar te zijn in plaats van
+// stilzwijgend.
+check(
+  'de mock levert nog geen geplaatste instances om op te meten',
+  diagnosis?.placed === 0,
+  `${diagnosis?.placed} instances; de mock spiegelt een component nog niet naar zijn instances`
+);
+
+// =============================================================================
 // Volgt een gebonden laag de theme-schakelaar?
 // =============================================================================
 
