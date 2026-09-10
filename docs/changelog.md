@@ -22,6 +22,8 @@ De geneste instances blijven nu staan: `resetVariant` zet ze in een pool en `bui
 
 Ook opgelost daarmee: overrides op geneste instances die een designer zelf heeft gelegd. Dat stond als een los punt in de README maar was dezelfde bug.
 
+En een tweede, dat pas bij de verificatie bleek: een herimport van `button.json` liep niet meer vast. Met 81 varianten werden er 162 icoon-instances weggegooid en opnieuw gemaakt, en 405 keer een `componentPropertyReferences` geschreven waar Figma telkens een geneste instance op naliep. Beide vervallen nu grotendeels, want de instances worden hergebruikt en een koppeling die al klopt wordt overgeslagen. De hang was dus geen eigen bug maar dezelfde oorzaak in een andere vorm: bij Link kostte het de icoonkleur, bij Button het geduld.
+
 En passant kwam vast te staan dat Button geen tegenvoorbeeld was. De specs van Button en Link zijn op elk punt dat deze code raakt identiek (één laagvorm, dezelfde vijf properties met dezelfde defaults, dezelfde iconen), en Button was simpelweg nooit een tweede keer geïmporteerd.
 
 ### `scripts/figma-mock.js`: een instance is een levende spiegel geworden
