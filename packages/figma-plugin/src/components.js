@@ -250,6 +250,49 @@ function applySizing(node, spec, log) {
 }
 
 /**
+ * Het component waar deze instance aan hangt.
+ *
+ * Onder `documentAccess: dynamic-page` is `mainComponent` geen synchrone
+ * eigenschap meer; de oudere API wordt als terugval geprobeerd zodat de plugin
+ * niet aan één versie vastzit. Lukt geen van beide, dan is de laag voor
+ * hergebruik onbruikbaar en behandelt de aanroeper hem als een gewone laag.
+ */
+async function mainComponentOf(instance, context) {
+  try {
+    if (typeof instance.getMainComponentAsync === 'function') {
+      return await instance.getMainComponentAsync();
+    }
+    return instance.mainComponent ?? null;
+  } catch (error) {
+    context.log.warn(
+      `De laag "${instance.name}" is een instance maar zijn component is niet op te vragen (${error.message}); hij wordt opnieuw opgebouwd en verliest zijn overrides`
+    );
+    return null;
+  }
+}
+
+/** Haalt een bewaarde instance van dit component uit de pool, of niets. */
+function takeReusable(context, component) {
+  const pool = context.reusable?.get(component.id);
+  return pool && pool.length ? pool.shift() : null;
+}
+
+/**
+ * Ruimt op wat er na het bouwen in de pool is blijven liggen.
+ *
+ * Een variant die in de nieuwe spec minder iconen heeft, of een ander icoon op
+ * die plek, houdt anders een laag over die nergens meer bij hoort. Ze hangen op
+ * dat moment nog gewoon in de variant, want `resetVariant` heeft ze juist láten
+ * staan.
+ */
+function dropUnusedIcons(context) {
+  for (const pool of context.reusable?.values() ?? []) {
+    for (const instance of pool) instance.remove();
+  }
+  context.reusable = new Map();
+}
+
+/**
  * Het icoon als instance van het icooncomponent, of anders ingebakken.
  *
  * Een instance is het verschil tussen een icoon dat meebeweegt met de iconset
@@ -265,7 +308,12 @@ function buildIcon(spec, parent, context) {
   const component = context.icons.get(spec.name);
 
   if (component) {
-    const instance = component.createInstance();
+    // Eerst kijken of de vorige import hier al een instance van ditzelfde
+    // icooncomponent had staan. Die hergebruiken houdt zijn node-id intact, en
+    // daar hangt de kleuroverride aan die een geplaatste instance moet erven;
+    // zie `resetVariant`.
+    const instance =
+      takeReusable(context, component) ?? component.createInstance();
     parent.appendChild(instance);
     instance.name = spec.name;
     if (spec.width && spec.height) instance.resize(spec.width, spec.height);
@@ -445,12 +493,47 @@ function clearBoundVariables(node) {
  * hangen, en dat is het verschil tussen een import die je kunt draaien en een
  * die je niet kunt draaien.
  *
+ * **Op één laag na: de geneste instances blijven staan.** Een icoon in een
+ * variant is een instance van het icooncomponent, en zijn kleur is een override
+ * op de geneste `Group > Shape`. Die override hangt aan de node-id van de
+ * icoon-instance. Gooit deze functie hem weg en maakt `buildIcon` een nieuwe,
+ * dan klopt de kleur op de variant nog steeds (dat is in Figma gemeten) maar
+ * moet een geplaatste instance zijn spiegel van die geneste laag opnieuw
+ * afleiden, en daarbij gaat de override verloren: het icoon valt terug op
+ * `color/neutral/color-default`, de eigen kleur van het icooncomponent.
+ *
+ * Gemeten in Figma Desktop: na een tweede import droeg elke laag ín de variant
+ * de kleur uit de spec, en op een geplaatste instance waren precies de twee
+ * icoonlagen fout terwijl de tekstlaag aan dezelfde variable goed bleef. Een
+ * tekstlaag heeft die tussenlaag niet; zijn vulling is een eigenschap van de
+ * laag zelf en spiegelt gewoon mee. Zie issue #388.
+ *
+ * De instances gaan daarom naar `context.reusable`, waar `buildIcon` ze weer
+ * ophaalt. Wat daar niet uit opgehaald wordt gaat na het bouwen alsnog weg; zie
+ * `dropUnusedIcons`.
+ *
  * Alles wat `applyFrame` alleen zet wanneer de spec het noemt moet hier weg.
  * Anders houdt een variant een rand, een radius of een gap uit de vorige
  * import die in de nieuwe spec niet meer voorkomt.
  */
-function resetVariant(component) {
-  for (const child of [...component.children]) child.remove();
+async function resetVariant(component, context) {
+  context.reusable = new Map();
+
+  for (const child of [...component.children]) {
+    // `mainComponent` is onder `documentAccess: dynamic-page` niet synchroon te
+    // lezen, vandaar dat de pool hier wordt opgebouwd en niet in `buildIcon`.
+    const main =
+      child.type === 'INSTANCE' ? await mainComponentOf(child, context) : null;
+
+    if (!main) {
+      child.remove();
+      continue;
+    }
+
+    const pool = context.reusable.get(main.id) ?? [];
+    pool.push(child);
+    context.reusable.set(main.id, pool);
+  }
 
   clearBoundVariables(component);
   component.componentPropertyReferences = {};
@@ -504,6 +587,15 @@ function recolorIcons(context) {
  * Een icoon dat zijn binding kwijt is ziet er in Figma uit als een icoon dat
  * het gewoon doet, tot iemand naar dark mode schakelt. Stil laten gebeuren is
  * daarom geen optie; zie ook `reportBindings`.
+ *
+ * **Wat deze controle niet ziet.** Hij kijkt naar de laag ín de variant, en die
+ * klopte bij issue #388 altijd al: de kleur ging pas verloren op een geplaatste
+ * instance ervan. Een blijvend groene uitkomst hier is dus geen bewijs dat een
+ * designer de goede kleur ziet. Die kant wordt met `diagnoseColors` gemeten, en
+ * blijft daar omdat het een import bij 81 varianten anderhalve seconde langer
+ * maakt voor iets wat sinds de fix niet meer stuk kan zonder dat de smoke test
+ * het merkt. Om die reden blijft dit ook een waarschuwing en geen harde fout:
+ * hij meet niet de plek waar het misging.
  */
 function verifyIconColors(context) {
   const lost = [];
@@ -794,6 +886,12 @@ function applyComponentProperties(set, properties, variants, context) {
     for (const target of targets) {
       try {
         if (property.type === 'BOOLEAN') target.visible = defaults[0];
+        // Een koppeling die al klopt niet opnieuw leggen. Bij een INSTANCE_SWAP
+        // is `mainComponent` zetten voor Figma een verwisseling, en die wist de
+        // kleuroverride op de geneste lagen van die instance. Sinds de icoon-
+        // instances hergebruikt worden staat de koppeling er bij een tweede
+        // import al op, en dan is dit puur schade.
+        if (target.componentPropertyReferences?.[field] === id) continue;
         target.componentPropertyReferences = {
           ...target.componentPropertyReferences,
           [field]: id,
@@ -916,6 +1014,8 @@ export async function importComponentSet(payload, log, options = {}) {
     recolors: [],
     // Elke laag met een kleur-variable, iconen én tekst; zie `diagnoseColors`.
     colorChecks: [],
+    // De geneste instances van de variant die nu gebouwd wordt, op component-id.
+    reusable: new Map(),
     // Per variant opnieuw gevuld; zie de bouwlus hieronder.
     slots: new Map(),
   };
@@ -974,9 +1074,13 @@ export async function importComponentSet(payload, log, options = {}) {
     wrapper.name = component.name;
 
     if (known) {
-      resetVariant(wrapper);
+      await resetVariant(wrapper, context);
       updated += 1;
     } else {
+      // Een verse variant heeft niets om te hergebruiken, maar de pool van de
+      // vorige variant mag hier niet blijven staan: dan zou een icoon uit die
+      // variant in deze belanden.
+      context.reusable = new Map();
       // Een nieuwe variant hangt meteen in de set als die er al is; anders op
       // de pagina, waar `combineAsVariants` hem straks ophaalt. De naam staat
       // er al op, want een set met een ongeldig genoemd kind is stuk.
@@ -1017,6 +1121,9 @@ export async function importComponentSet(payload, log, options = {}) {
       cursorX += wrapper.width + 40;
       if ((index + 1) % 6 === 0) cursorX = 0;
     }
+
+    // Wat er niet uit de pool is opgehaald hoort niet meer bij deze variant.
+    dropUnusedIcons(context);
 
     for (const check of context.colorChecks.slice(checksBefore)) {
       check.variant = wrapper;

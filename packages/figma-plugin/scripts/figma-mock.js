@@ -607,6 +607,23 @@ class ComponentNode extends Node {
   constructor() {
     super('COMPONENT');
     this.key = id('KEY');
+    this._instances = [];
+  }
+
+  /**
+   * Zoals `ComponentNode.instances` in de Plugin API: de geplaatste instances,
+   * bijgewerkt naar wat het component nú is.
+   *
+   * Het bijwerken gebeurt hier en niet bij elke wijziging aan de lagen, omdat
+   * een instance in Figma een levende spiegel is en geen kopie die bij een
+   * gebeurtenis wordt bijgesteld. Wie kijkt, ziet de huidige stand. Dat is ook
+   * praktisch: tijdens de bouw hangt een laag al aan zijn ouder voordat zijn
+   * vulling gezet is, en een spiegel die op dát moment ontstaat zou een kleur
+   * missen die er even later wel is.
+   */
+  get instances() {
+    for (const instance of this._instances) syncInstance(this, instance);
+    return this._instances;
   }
 
   createInstance() {
@@ -614,9 +631,84 @@ class ComponentNode extends Node {
     instance.mainComponent = this;
     instance.width = this.width;
     instance.height = this.height;
-    for (const child of this.children) instance.appendChild(cloneNode(child));
+
+    // Een verse instance is een kopie van wat het component nú is, overrides op
+    // geneste lagen incluis. Dat is waarom een eerste import wél een goed
+    // gekleurd icoon oplevert. Het misgaan begint pas bij het opnieuw afleiden;
+    // zie `deriveMirror`.
+    for (const child of this.children) {
+      const mirror = cloneNode(child);
+      mirror._source = child;
+      instance.appendChild(mirror);
+    }
+
+    this._instances.push(instance);
     return instance;
   }
+}
+
+/**
+ * Leidt de laag van een geplaatste instance opnieuw af uit het component.
+ *
+ * Hier zit het gedrag dat de mock vier bugs lang niet had. Voor een gewone laag
+ * is dit een kopie en klaar: een tekstlaag draagt zijn vulling zelf, dus die
+ * spiegelt gewoon mee. Een **geneste instance** is anders. Zijn kleur is geen
+ * eigenschap van de laag maar een override erop, en Figma zoekt die terug via
+ * het laagpad. Is dat pad opnieuw opgebouwd, dan komt de override nergens meer
+ * terecht en valt de laag terug op wat zijn eigen component voorschrijft.
+ *
+ * Vandaar dat een geneste instance hier niet gekopieerd wordt maar opnieuw
+ * opgebouwd uit `mainComponent`. Het icoon krijgt dan de neutrale tekstkleur
+ * van het icooncomponent in plaats van de kleur uit de spec.
+ *
+ * Gemeten in Figma Desktop bij issue #388: na een tweede import van link.json
+ * droegen alle 27 gebonden lagen ín de varianten de kleur uit de spec, en op
+ * een geplaatste instance waren precies de twee icoonlagen fout terwijl de
+ * tekstlaag aan diezelfde variable goed bleef.
+ */
+function deriveMirror(source) {
+  const copy = cloneNode(source);
+  // Een afgeleide spiegel draagt niets eigens en wordt bij elke volgende blik
+  // opnieuw afgeleid, zodat hij de laag volgt waar hij vanaf hangt. Alleen een
+  // spiegel uit `createInstance` blijft staan zoals hij is: dáár zit wat een
+  // designer of de plugin erop heeft gelegd.
+  copy._derived = true;
+
+  if (source.type === 'INSTANCE' && source.mainComponent) {
+    copy.mainComponent = source.mainComponent;
+    copy.children = [];
+    for (const child of source.mainComponent.children) {
+      copy.appendChild(deriveMirror(child));
+    }
+  }
+
+  return copy;
+}
+
+/**
+ * Zet de lagen van `instance` weer gelijk aan die van `component`.
+ *
+ * Een laag die dezelfde bron houdt blijft staan zoals hij is, met alles wat
+ * erop ligt. Een bron die verdwenen is neemt zijn spiegel mee, en een nieuwe
+ * bron krijgt een verse spiegel. Precies dáár gaat de kleur van een icoon
+ * verloren, en precies daarom hergebruikt `resetVariant` de icoon-instances in
+ * plaats van ze weg te gooien.
+ *
+ * De lijst wordt rechtstreeks gezet en niet via `appendChild`, anders roept elke
+ * stap deze functie opnieuw aan.
+ */
+function syncInstance(component, instance) {
+  const kept = new Map();
+  for (const mirror of instance.children) {
+    if (mirror._source && !mirror._derived) kept.set(mirror._source, mirror);
+  }
+
+  instance.children = component.children.map((source) => {
+    const mirror = kept.get(source) ?? deriveMirror(source);
+    mirror._source = source;
+    mirror.parent = instance;
+    return mirror;
+  });
 }
 
 /** Diepe kopie van een laag, genoeg om overrides op te kunnen leggen. */
@@ -629,6 +721,9 @@ function cloneNode(node) {
   copy.y = node.y;
   copy.fills = node.fills ? node.fills.map((paint) => ({ ...paint })) : [];
   if (node.strokes) copy.strokes = node.strokes.map((paint) => ({ ...paint }));
+  // Een gespiegelde instance blijft aan hetzelfde component hangen; zonder dit
+  // is een geneste instance in een kopie niet meer als instance te herkennen.
+  if (node.mainComponent) copy.mainComponent = node.mainComponent;
   for (const child of node.children) copy.appendChild(cloneNode(child));
   return copy;
 }

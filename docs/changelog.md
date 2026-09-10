@@ -10,6 +10,28 @@ All notable changes to this project are documented in this file.
 
 Nog niet gepubliceerde wijzigingen. Schrijf nieuwe changelog-entries hieronder; bij de volgende release wordt deze kop gepromoveerd naar het definitieve versienummer.
 
+### Figma-plugin: de icoonkleur overleeft nu een tweede import
+
+Een icoon in een variant stond na een herimport op `color/neutral/color-default`, de eigen kleur van het icooncomponent, in plaats van op de kleur uit de spec. Daarmee volgde het de theme-schakelaar niet meer. Vier verklaringen zijn hiervoor geprobeerd en alle vier bleken naast de oorzaak te zitten, dus deze ronde is omgedraaid: eerst meten in Figma, dan pas bouwen.
+
+Die meting zit nu in de plugin, achter het vinkje "Meet de kleuren na afloop". Hij leest elke gebonden kleurlaag terug op de variant én op elke geplaatste instance ervan, en een tweede keer na een tick. Wat eruit kwam wees de oorzaak in één keer aan: alle 27 gebonden lagen ín de varianten van `link.json` droegen de kleur uit de spec, en op een geplaatste instance waren precies de twee icoonlagen fout terwijl de tekstlaag aan diezelfde variable goed bleef. Na 400ms was er niets veranderd.
+
+Dat sluit de twee eerdere verklaringen definitief uit (het schrijven klopt, en er wordt na afloop niets opgeruimd) en wijst de derde aan. De kleur van een icoon is geen eigenschap van een laag maar een override op een **geneste instance**, en Figma zoekt die terug via het laagpad. `resetVariant` gooide bij elke import alle lagen van een variant weg, dus ook de icoon-instance, en `buildIcon` maakte een nieuwe met een nieuwe node-id. Op de variant klopte de kleur daarna nog steeds, maar een geplaatste instance moest zijn spiegel van die geneste laag opnieuw afleiden en verloor de override daarbij. Een tekstlaag heeft die tussenlaag niet en spiegelde gewoon mee, en dat is precies het verschil dat de meting liet zien.
+
+De geneste instances blijven nu staan: `resetVariant` zet ze in een pool en `buildIcon` haalt ze daaruit op, zodat hun node-id intact blijft. Wat niet opgehaald wordt gaat na het bouwen alsnog weg. Een koppeling in `componentPropertyReferences` die al klopt wordt om dezelfde reden niet meer opnieuw geschreven: `mainComponent` zetten is voor Figma een verwisseling, en die wist de overrides op die instance.
+
+Ook opgelost daarmee: overrides op geneste instances die een designer zelf heeft gelegd. Dat stond als een los punt in de README maar was dezelfde bug.
+
+En passant kwam vast te staan dat Button geen tegenvoorbeeld was. De specs van Button en Link zijn op elk punt dat deze code raakt identiek (één laagvorm, dezelfde vijf properties met dezelfde defaults, dezelfde iconen), en Button was simpelweg nooit een tweede keer geïmporteerd.
+
+### `scripts/figma-mock.js`: een instance is een levende spiegel geworden
+
+Dit was de vijfde bug in deze keten die alleen bestond in het gat tussen de mock en de echte Plugin API, en de reden dat hij zo lang stand hield: een instance was in de mock een diepe kopie, dus geen enkele test kon zien wat een designer op zijn pagina ziet. De smoke test plaatste wel een instance maar controleerde alleen of die aan zijn component bleef hangen.
+
+De lagen van een geplaatste instance worden nu afgeleid uit die van het component op het moment dat je ernaar kijkt. Een laag die dezelfde bron houdt blijft staan met alles wat erop ligt, een bron die verdwenen is neemt zijn spiegel mee, en een nieuwe bron krijgt een verse spiegel. Een geneste instance wordt daarbij niet gekopieerd maar opnieuw opgebouwd uit zijn eigen component.
+
+De volgorde is deze keer omgedraaid ten opzichte van de vorige vier: eerst is in Figma Desktop gemeten wat er gebeurde, en pas daarna is de mock naar die meting gevormd. Dat de mock nu hetzelfde patroon oplevert als Figma (twee icoonlagen fout, de tekstlaag goed, op één geplaatste instance) is de controle daarop. Zonder de fix is de smoke test rood.
+
 ## Version 3.5.0 (September 9, 2026)
 
 Minor release. Additief aan de API: Drawer en ModalDialog krijgen een optionele `triggerRef`, en er komt een `focusTrap`-util bij. Verder alleen fixes. Er is niets verwijderd of hernoemd, en de gepubliceerde `figma-sync`-wijzigingen tellen niet mee omdat dat package private is.

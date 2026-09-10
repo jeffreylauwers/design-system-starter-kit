@@ -291,17 +291,34 @@ een gemeten boom niet heeft. De instance blijft wel aan zijn component hangen,
 en dát is het verschil tussen een import die je kunt draaien en een die je niet
 kunt draaien.
 
-**De icoonkleur overleeft een tweede import niet. Dit is een openstaand
-probleem**, zie "Wat dit nog niet doet". Een icoon is een instance van het
-icooncomponent en zijn kleur is een override op de geneste `Group > Shape`. Na
-een tweede import staat die override op `color/neutral/color-default`, de eigen
-kleur van het icooncomponent, in plaats van op de kleur uit de spec.
+**De geneste instances blijven staan, en dat is geen detail.** Een icoon in een
+variant is een instance van het icooncomponent, en zijn kleur is een override op
+de geneste `Group > Shape`: het Figma-equivalent van `currentColor`. Die override
+hangt aan de node-id van de icoon-instance. Werd die instance bij elke import
+weggegooid en opnieuw gemaakt, dan bleef de kleur op de variant zelf kloppen maar
+moest een geplaatste instance zijn spiegel van die geneste laag opnieuw afleiden,
+en daarbij ging de override verloren. Het icoon viel dan terug op
+`color/neutral/color-default`, de eigen kleur van het icooncomponent.
 
-De kleuren worden na afloop van álles nog een keer gezet en daarna teruggelezen;
-een icoonlaag die zijn variable alsnog niet draagt gaat als waarschuwing de log
-in. Dat lost het in Figma níet op, maar het sluit wel uit dat de volgorde van de
-stappen ervóór de oorzaak is, en de terugleescontrole levert de meting op om het
-verder uit te zoeken.
+Dat is in Figma Desktop gemeten en niet beredeneerd. Na een tweede import van
+`link.json` droegen alle 27 gebonden lagen ín de varianten de kleur uit de spec,
+en op een geplaatste instance waren precies de twee icoonlagen fout terwijl de
+tekstlaag aan diezelfde variable goed bleef. Een tekstlaag heeft die tussenlaag
+niet: zijn vulling is een eigenschap van de laag zelf en spiegelt gewoon mee. De
+kleur bleef ook staan bij een tweede meting 400ms later, dus er wordt na afloop
+niets opgeruimd.
+
+`resetVariant` bewaart de geneste instances daarom in een pool en `buildIcon`
+haalt ze daar weer uit; wat niet opgehaald wordt gaat na het bouwen alsnog weg.
+Een koppeling in `componentPropertyReferences` die al klopt wordt om dezelfde
+reden niet opnieuw geschreven: `mainComponent` zetten is voor Figma een
+verwisseling, en die wist de overrides op die instance.
+
+Dit is de kant die de terugleescontrole na afloop níet ziet: die kijkt naar de
+laag in de variant, en die klopte altijd al. Om naar de andere kant te kijken is
+er het vinkje **"Meet de kleuren na afloop"** in de UI. Dat leest elke gebonden
+kleurlaag terug op de variant én op elke geplaatste instance ervan, en nog een
+keer na een tick, en zet er in de log naast wat de spec vroeg.
 
 **De standaardwaarde van een bestaande `INSTANCE_SWAP` blijft staan.** Wat Figma
 daar opslaat is niet per se de `key` of de node-id die de plugin aanleverde, dus
@@ -386,20 +403,30 @@ auto layout, `FILL` binnen een niet-auto-layout ouder, en twee variables die
 niet in elke mode een waarde hadden. Draai deze test dus voordat je iets in
 Figma laadt.
 
+**Een instance is in de mock een levende spiegel, geen kopie.** Dat is er pas
+bijgekomen nadat het de vijfde bug had gekost die alleen bestond in het gat
+tussen de mock en de Plugin API. De lagen van een geplaatste instance worden
+afgeleid uit die van het component op het moment dat je ernaar kijkt: een laag
+die dezelfde bron houdt blijft staan met alles wat erop ligt, een bron die
+verdwenen is neemt zijn spiegel mee, en een nieuwe bron krijgt een verse
+spiegel. Een **geneste** instance wordt daarbij niet gekopieerd maar opnieuw
+opgebouwd uit zijn eigen component, en verliest dus de overrides erop. Precies
+daar ging de icoonkleur verloren.
+
+De volgorde waarin dat is gebouwd doet ertoe, want vier keer eerder is het
+andersom gegaan. Eerst is in Figma Desktop gemeten wat er gebeurde, en pas
+daarna is de mock naar die meting gevormd. Dat de mock nu hetzelfde patroon
+oplevert als Figma (twee icoonlagen fout, de tekstlaag aan dezelfde variable
+goed, op één geplaatste instance) is de controle daarop.
+
 ## Wat dit nog niet doet
 
-- **De icoonkleur na een tweede import.** Het icoon in een variant staat na een
-  herimport op `color/neutral/color-default` in plaats van op de kleur uit de
-  spec. Twee verklaringen zijn geprobeerd en allebei weerlegd in Figma: het
-  opnieuw zetten van de `INSTANCE_SWAP`-standaardwaarde, en de volgorde waarin
-  de kleur en de properties geschreven worden. De kleur wordt inmiddels als
-  allerlaatste geschreven en daarna teruggelezen, en het probleem blijft. De
-  mock bootst de verwisseling na en is op dat punt groen, dus het verschil zit
-  in iets wat de mock nog niet nadoet.
-- **Overrides op geneste lagen bewaren.** Een bijgewerkte variant wordt van
-  binnen opnieuw opgebouwd, en overrides die een designer op de lagen van een
-  instance heeft gelegd zoekt Figma terug via het laagpad. De instance blijft
-  aan zijn component hangen; wat erop lag niet. Zie "Idempotent" hierboven.
+- **Overrides op gewone lagen bewaren.** Een bijgewerkte variant wordt van
+  binnen opnieuw opgebouwd, en overrides die een designer op die lagen heeft
+  gelegd zoekt Figma terug via het laagpad. De instance blijft aan zijn
+  component hangen; wat erop lag niet. De geneste instances zijn hierop de
+  uitzondering en blijven wél staan, want daar hangt de icoonkleur aan; zie
+  "Idempotent" hierboven.
 - **Een droogloop.** Er is nog geen stand waarin de plugin eerst toont wat er
   zou veranderen voordat hij het doet.
 - **Geneste componenten hergebruiken.** De Heading en Paragraph in een Alert of

@@ -218,9 +218,20 @@ function tally(rows) {
   return counts;
 }
 
-/** Regel voor regel, zodat de meting na te lezen is en niet alleen te tellen. */
-function sampleLines(rows, log) {
+/**
+ * Regel voor regel, zodat de meting na te lezen is en niet alleen te tellen.
+ *
+ * De varianten met een geplaatste instance gaan voor. Zonder die voorrang laat
+ * een steekproef van de eerste drie varianten precies de kant weg waar het om
+ * gaat: bij negen varianten en één instance is de kans klein dat die er tussen
+ * zit, en dan staat er drie keer "geen instance" en verder niets.
+ */
+function sampleLines(allRows, log) {
   const seen = new Set();
+  const rows = [
+    ...allRows.filter((row) => row.onInstances.length),
+    ...allRows.filter((row) => !row.onInstances.length),
+  ];
 
   for (const { probe, onVariant, onInstances } of rows) {
     if (!probe.path) {
