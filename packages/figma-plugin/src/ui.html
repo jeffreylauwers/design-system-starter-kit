@@ -63,24 +63,71 @@
   .status {
     font-weight: 600;
   }
+  ol {
+    margin: 0;
+    padding-inline-start: 20px;
+    line-height: 1.7;
+  }
+  li::marker {
+    opacity: 0.7;
+  }
+  .progress {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    /* Zodat de log niet omhoog springt zodra de indicator verschijnt. */
+    min-height: 16px;
+  }
+  .progress[hidden] {
+    display: none;
+  }
+  .spinner {
+    flex: none;
+    inline-size: 12px;
+    block-size: 12px;
+    border: 2px solid currentColor;
+    border-block-start-color: transparent;
+    border-radius: 50%;
+    opacity: 0.6;
+    animation: spin 0.7s linear infinite;
+  }
+  @keyframes spin {
+    to {
+      transform: rotate(360deg);
+    }
+  }
+  /* Zonder beweging draagt het label de informatie; een stilstaande ring leest
+     als een indicator die vastzit, dus die gaat dan weg. */
+  @media (prefers-reduced-motion: reduce) {
+    .spinner {
+      display: none;
+    }
+  }
 </style>
 
 <h1>DSN Sync</h1>
+<ol>
+  <li>
+    <code>variables.json</code> uit <code>design-tokens/dist/figma/</code>
+  </li>
+  <li><code>icons.json</code> uit <code>figma-sync/dist/</code></li>
+  <li>het component dat je wilt, uit <code>figma-sync/dist/</code></li>
+</ol>
 <p>
-  Kies <code>variables.json</code> uit <code>design-tokens/dist/figma/</code>,
-  of <code>icons.json</code> en een componentbestand uit
-  <code>figma-sync/dist/</code>. Het formaat wordt automatisch herkend.
-</p>
-<p>
-  <strong>Variables eerst.</strong> De lagen worden aan variables gebonden, dus
-  die moeten al in dit bestand staan. Anders wordt de import geweigerd. Sleep
-  je alles in één keer, dan zet de plugin de volgorde zelf goed.
+  Deze volgorde is nodig: de lagen binden aan variables, en de iconen worden
+  instances van de iconset. Sleep je alles tegelijk, dan sorteert de plugin het
+  zelf.
 </p>
 
 <label class="drop" id="drop">
   Sleep een JSON-bestand hierheen of klik om te kiezen
   <input type="file" id="file" accept="application/json,.json" multiple />
 </label>
+
+<div class="progress" id="progress" hidden>
+  <span class="spinner" aria-hidden="true"></span>
+  <span id="progress-label"></span>
+</div>
 
 <div id="log">Nog niets geïmporteerd.</div>
 
@@ -98,7 +145,32 @@
   const logElement = document.getElementById('log');
   const drop = document.getElementById('drop');
   const fileInput = document.getElementById('file');
+  const progress = document.getElementById('progress');
+  const progressLabel = document.getElementById('progress-label');
   let cleared = false;
+
+  // Een import van een klein component is binnen een fraction klaar, en dan is
+  // een indicator die even opflitst onrustiger dan helemaal geen indicator.
+  // Vandaar dat hij pas verschijnt als het echt iets duurt.
+  const SHOW_AFTER_MS = 250;
+  let showTimer = null;
+
+  function showProgress(label) {
+    progressLabel.textContent = label;
+    if (progress.hidden && showTimer === null) {
+      showTimer = setTimeout(() => {
+        showTimer = null;
+        progress.hidden = false;
+      }, SHOW_AFTER_MS);
+    }
+  }
+
+  function hideProgress() {
+    clearTimeout(showTimer);
+    showTimer = null;
+    progress.hidden = true;
+    progressLabel.textContent = '';
+  }
 
   function write(message, level) {
     if (!cleared) {
@@ -142,6 +214,7 @@
 
     for (const job of jobs) {
       write(`> ${job.name}`);
+      showProgress(`${job.name} inlezen`);
       parent.postMessage(
         {
           pluginMessage: {
@@ -180,7 +253,9 @@
     const message = event.data.pluginMessage;
     if (!message) return;
     if (message.type === 'log') write(`  ${message.message}`, message.level);
+    if (message.type === 'progress') showProgress(message.label);
     if (message.type === 'done') {
+      hideProgress();
       const line = document.createElement('div');
       line.className = 'status' + (message.ok ? '' : ' error');
       line.textContent = (message.ok ? '✓ ' : '✗ ') + message.summary;

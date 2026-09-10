@@ -203,6 +203,7 @@ export async function importIconSet(payload, log) {
   // Dezelfde afweging als bij de componenten: een iconset op een vaste kleur
   // volgt de theme-schakelaar niet, en dat is de helft van wat een iconset in
   // een design system moet doen.
+  log.progress?.('variables lezen');
   const variables = await loadVariableIndex();
   requireCollections(payload.bindings?.collections ?? [], variables);
 
@@ -235,6 +236,15 @@ export async function importIconSet(payload, log) {
 
   try {
     for (const [index, icon] of spec.icons.entries()) {
+      log.progress?.(
+        `icoon ${index + 1} van ${spec.icons.length}: ${icon.name}`
+      );
+      // Zonder await-punt in deze lus bereikt geen enkele melding de UI voordat
+      // alle 51 iconen klaar zijn; zie `yieldToUi` in components.js.
+      if (index && index % 8 === 0) {
+        await new Promise((resolve) => setTimeout(resolve, 0));
+      }
+
       const known = existing.get(icon.name);
       const component = known ?? figma.createComponent();
 

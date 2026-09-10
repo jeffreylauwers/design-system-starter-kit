@@ -12,7 +12,13 @@ import { importIconSet } from './icons.js';
 
 figma.showUI(__html__, { width: 420, height: 520 });
 
-/** Verzamelt meldingen en stuurt ze naar de UI. */
+/**
+ * Verzamelt meldingen en stuurt ze naar de UI.
+ *
+ * `progress` staat naast de drie niveaus en komt niet in de log terecht: het
+ * is de stand van nu, niet iets om terug te lezen. Een import van 81 varianten
+ * duurt seconden, en zonder dit gebeurt er in beeld al die tijd niets.
+ */
 function createLog() {
   const entries = [];
   const push = (level) => (message) => {
@@ -24,6 +30,7 @@ function createLog() {
     info: push('info'),
     warn: push('warn'),
     error: push('error'),
+    progress: (label) => figma.ui.postMessage({ type: 'progress', label }),
   };
 }
 

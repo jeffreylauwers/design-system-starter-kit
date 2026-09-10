@@ -25,6 +25,9 @@ const monorepoRoot = path.resolve(__dirname, '..', '..', '..');
 const problems = [];
 const log = {
   info: () => {},
+  // Bestaat zodat de voortgangsmeldingen in de import hier ook echt langskomen
+  // en een tikfout erin opvalt.
+  progress: () => {},
   warn: (message) => problems.push({ level: 'warn', message }),
   error: (message) => problems.push({ level: 'error', message }),
 };
@@ -1124,6 +1127,52 @@ check(
 );
 
 // =============================================================================
+// De kleurmeting
+// =============================================================================
+
+// `diagnoseColors` bestaat om in Figma vast te stellen wát er met de
+// kleuroverride gebeurt, en niet om hier iets te bewijzen: de mock kan het
+// mechanisme nog niet nadoen. Wat hier gecontroleerd wordt is dat de meting
+// draait en de goede lagen te pakken heeft, zodat hij niet stilletjes stukgaat
+// tussen twee sessies in Figma door.
+console.log('\n=== kleurmeting ===');
+
+const measured = await importComponentSet(rerunPayload, log, {
+  diagnose: true,
+});
+const diagnosis = measured.diagnosis;
+
+// Drie gebonden kleurlagen per variant: twee iconen en de tekst.
+const expectedProbes = rerunPayload.componentSet.components.length * 3;
+check(
+  'de meting pakt elke gebonden kleurlaag, iconen én tekst',
+  diagnosis?.probes === expectedProbes,
+  `${diagnosis?.probes} lagen, verwacht ${expectedProbes}`
+);
+
+check(
+  'op de variant draagt elke laag de kleur uit de spec',
+  diagnosis?.before.variantWrong === 0 &&
+    diagnosis.before.variantOk === expectedProbes,
+  `${diagnosis?.before.variantOk} zoals gevraagd, ${diagnosis?.before.variantWrong} niet`
+);
+
+// Dit is issue #388, en het is de enige controle hier die op de plek kijkt waar
+// het misging. De kleur op de variant klopte namelijk altijd al; in Figma was
+// hij fout op een geplaatste instance, omdat de override op een geneste
+// instance via het laagpad wordt teruggezocht en `resetVariant` dat pad elke
+// import opnieuw opbouwde.
+//
+// Deze regel wordt rood zodra `resetVariant` de icoon-instances weer weggooit
+// in plaats van ze te hergebruiken. Dat is precies wat de mock hiervoor niet
+// kon zien.
+check(
+  'op een geplaatste instance draagt elke laag de kleur uit de spec',
+  diagnosis?.placed > 0 && diagnosis.before.instanceWrong === 0,
+  `${diagnosis?.placed} instances gemeten, ${diagnosis?.before.instanceWrong} lagen fout (${diagnosis?.before.iconInstanceWrong} icoon, ${diagnosis?.before.textInstanceWrong} tekst)`
+);
+
+// =============================================================================
 // Volgt een gebonden laag de theme-schakelaar?
 // =============================================================================
 
@@ -1170,6 +1219,29 @@ check(
   'de achtergrond van een gebonden Button verschilt per mode',
   Boolean(inLight) && JSON.stringify(inLight) !== JSON.stringify(inDark),
   `${fillReference?.name}: light ${channels(inLight)} vs dark ${channels(inDark)}`
+);
+
+// Hetzelfde voor het icoon. Dat het icoon de kleur uit de spec draagt is één
+// ding; de reden dat die kleur aan een variable hangt is dat hij meebeweegt met
+// de mode. Zonder deze controle zou een icoon dat netjes gebonden is aan een
+// variable die in elke mode dezelfde waarde heeft er even goed uitzien.
+const iconNode = withFill?.node.children.find(
+  (child) => child.type === 'VECTOR' && child.boundVariables?.fills
+);
+const iconReference = iconNode?.boundVariables.fills;
+const iconVariable = state.variables.find(
+  (variable) =>
+    variable.name === iconReference?.name &&
+    collectionOf(variable).name === iconReference.collection
+);
+
+const iconLight = resolveInMode(iconVariable, 'start-light');
+const iconDark = resolveInMode(iconVariable, 'start-dark');
+
+check(
+  'de icoonkleur van een gebonden Button verschilt per mode',
+  Boolean(iconLight) && JSON.stringify(iconLight) !== JSON.stringify(iconDark),
+  `${iconReference?.name}: light ${channels(iconLight)} vs dark ${channels(iconDark)}`
 );
 
 console.log(
