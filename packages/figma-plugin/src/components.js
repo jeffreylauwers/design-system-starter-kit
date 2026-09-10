@@ -40,6 +40,18 @@ const WEIGHT_TO_STYLE = {
 
 const FALLBACK_FONT = { family: 'Inter', style: 'Regular' };
 
+/**
+ * Geeft de sandbox even lucht zodat een voortgangsmelding de UI kan bereiken.
+ *
+ * Een verse import heeft in de variantlus geen enkel await-punt: alles wordt
+ * dan pas bezorgd als de hele set al klaar is, en dan staat de indicator de
+ * hele tijd stil op de eerste variant. Bij een tweede import is er wél een
+ * await, maar daarop leunen zou betekenen dat de voortgang alleen werkt in het
+ * geval waar je hem het minst nodig hebt.
+ */
+const YIELD_EVERY = 8;
+const yieldToUi = () => new Promise((resolve) => setTimeout(resolve, 0));
+
 function fontFor(node) {
   const style = WEIGHT_TO_STYLE[node.fontWeight] ?? 'Regular';
   return {
@@ -990,16 +1002,19 @@ export async function importComponentSet(payload, log, options = {}) {
   const spec = payload.componentSet;
 
   // Alle fonts van alle varianten in één keer laden.
+  log.progress?.(`${spec.name}: fonts laden`);
   const fonts = new Map();
   for (const component of spec.components) collectFonts(component.node, fonts);
   const loaded = await loadFonts(fonts, log);
 
   // De variables moeten er zijn vóórdat er lagen aan gebonden worden.
+  log.progress?.(`${spec.name}: variables lezen`);
   const variables = await loadVariableIndex();
   requireCollections(payload.bindings?.collections ?? [], variables);
 
   // De icooncomponenten uit een eerdere icons.json-import. Ontbreken ze, dan
   // worden de iconen ingebakken en meldt buildIcon dat.
+  log.progress?.(`${spec.name}: iconen zoeken`);
   const icons = await loadIconIndex();
 
   const stats = createStats();
@@ -1061,6 +1076,11 @@ export async function importComponentSet(payload, log, options = {}) {
   let cursorX = 0;
 
   for (const [index, component] of spec.components.entries()) {
+    log.progress?.(
+      `${spec.name}: variant ${index + 1} van ${spec.components.length}`
+    );
+    if (index && index % YIELD_EVERY === 0) await yieldToUi();
+
     const known = knownVariants.get(component.name);
     const wrapper = known ?? figma.createComponent();
 
@@ -1183,6 +1203,7 @@ export async function importComponentSet(payload, log, options = {}) {
 
   // Na combineAsVariants: component properties horen op de set, niet op de
   // losse varianten.
+  log.progress?.(`${spec.name}: properties leggen`);
   const properties = applyComponentProperties(
     set,
     spec.componentProperties,
@@ -1191,6 +1212,7 @@ export async function importComponentSet(payload, log, options = {}) {
   );
 
   // Als allerlaatste, ná het koppelen van de properties: zie `recolorIcons`.
+  log.progress?.(`${spec.name}: kleuren zetten`);
   const recolored = recolorIcons(context);
   const lostColors = verifyIconColors(context);
 
@@ -1206,6 +1228,7 @@ export async function importComponentSet(payload, log, options = {}) {
   }
 
   // Pas nadat de pagina bestaat: de nieuwe pagina moet mee in de sortering.
+  log.progress?.("pagina's sorteren");
   await sortManagedPages();
 
   figma.currentPage.selection = [set];

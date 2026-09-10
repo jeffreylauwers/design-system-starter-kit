@@ -315,10 +315,16 @@ reden niet opnieuw geschreven: `mainComponent` zetten is voor Figma een
 verwisseling, en die wist de overrides op die instance.
 
 Dit is de kant die de terugleescontrole na afloop níet ziet: die kijkt naar de
-laag in de variant, en die klopte altijd al. Om naar de andere kant te kijken is
-er het vinkje **"Meet de kleuren na afloop"** in de UI. Dat leest elke gebonden
-kleurlaag terug op de variant én op elke geplaatste instance ervan, en nog een
-keer na een tick, en zet er in de log naast wat de spec vroeg.
+laag in de variant, en die klopte altijd al. Naar de andere kant kijkt
+`diagnoseColors` in `src/diagnose.js`. Dat leest elke gebonden kleurlaag terug
+op de variant én op elke geplaatste instance ervan, en nog een keer na een tick,
+en zet er in de log naast wat de spec vroeg.
+
+Die meting staat niet in de UI, want sinds de fix bewaakt de smoke test dit en
+is het niets waar een designer tijdens zijn werk een knop voor nodig heeft. Ze
+blijft wel staan, omdat ze de bug in één run aanwees waar vier rondes redeneren
+dat niet deden. Aanzetten is één argument: geef `importComponentSet` een derde
+argument `{ diagnose: true }` in `src/main.js` en bouw opnieuw.
 
 **De standaardwaarde van een bestaande `INSTANCE_SWAP` blijft staan.** Wat Figma
 daar opslaat is niet per se de `key` of de node-id die de plugin aanleverde, dus

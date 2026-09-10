@@ -25,6 +25,9 @@ const monorepoRoot = path.resolve(__dirname, '..', '..', '..');
 const problems = [];
 const log = {
   info: () => {},
+  // Bestaat zodat de voortgangsmeldingen in de import hier ook echt langskomen
+  // en een tikfout erin opvalt.
+  progress: () => {},
   warn: (message) => problems.push({ level: 'warn', message }),
   error: (message) => problems.push({ level: 'error', message }),
 };

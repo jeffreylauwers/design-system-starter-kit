@@ -90,6 +90,9 @@ export async function importVariables(payload, log) {
   // Pass 1: collections, modes en alle variables met hun letterlijke waarde.
   // ---------------------------------------------------------------------------
   for (const spec of payload.collections) {
+    log.progress?.(
+      `${spec.name}: ${spec.variables.length} variables schrijven`
+    );
     const collection = await ensureCollection(spec.name);
     const modeIds = ensureModes(collection, spec.modes, log);
 
@@ -137,6 +140,7 @@ export async function importVariables(payload, log) {
   // ---------------------------------------------------------------------------
   // Pass 2: aliassen. Nu bestaan alle doelen.
   // ---------------------------------------------------------------------------
+  log.progress?.('aliassen leggen');
   let aliasCount = 0;
   let aliasFailed = 0;
 

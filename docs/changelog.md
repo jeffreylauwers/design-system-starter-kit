@@ -14,7 +14,7 @@ Nog niet gepubliceerde wijzigingen. Schrijf nieuwe changelog-entries hieronder; 
 
 Een icoon in een variant stond na een herimport op `color/neutral/color-default`, de eigen kleur van het icooncomponent, in plaats van op de kleur uit de spec. Daarmee volgde het de theme-schakelaar niet meer. Vier verklaringen zijn hiervoor geprobeerd en alle vier bleken naast de oorzaak te zitten, dus deze ronde is omgedraaid: eerst meten in Figma, dan pas bouwen.
 
-Die meting zit nu in de plugin, achter het vinkje "Meet de kleuren na afloop". Hij leest elke gebonden kleurlaag terug op de variant én op elke geplaatste instance ervan, en een tweede keer na een tick. Wat eruit kwam wees de oorzaak in één keer aan: alle 27 gebonden lagen ín de varianten van `link.json` droegen de kleur uit de spec, en op een geplaatste instance waren precies de twee icoonlagen fout terwijl de tekstlaag aan diezelfde variable goed bleef. Na 400ms was er niets veranderd.
+Die meting zit nu in de plugin, als `diagnoseColors`. Hij leest elke gebonden kleurlaag terug op de variant én op elke geplaatste instance ervan, en een tweede keer na een tick. Wat eruit kwam wees de oorzaak in één keer aan: alle 27 gebonden lagen ín de varianten van `link.json` droegen de kleur uit de spec, en op een geplaatste instance waren precies de twee icoonlagen fout terwijl de tekstlaag aan diezelfde variable goed bleef. Na 400ms was er niets veranderd.
 
 Dat sluit de twee eerdere verklaringen definitief uit (het schrijven klopt, en er wordt na afloop niets opgeruimd) en wijst de derde aan. De kleur van een icoon is geen eigenschap van een laag maar een override op een **geneste instance**, en Figma zoekt die terug via het laagpad. `resetVariant` gooide bij elke import alle lagen van een variant weg, dus ook de icoon-instance, en `buildIcon` maakte een nieuwe met een nieuwe node-id. Op de variant klopte de kleur daarna nog steeds, maar een geplaatste instance moest zijn spiegel van die geneste laag opnieuw afleiden en verloor de override daarbij. Een tekstlaag heeft die tussenlaag niet en spiegelde gewoon mee, en dat is precies het verschil dat de meting liet zien.
 
@@ -25,6 +25,14 @@ Ook opgelost daarmee: overrides op geneste instances die een designer zelf heeft
 En een tweede, dat pas bij de verificatie bleek: een herimport van `button.json` liep niet meer vast. Met 81 varianten werden er 162 icoon-instances weggegooid en opnieuw gemaakt, en 405 keer een `componentPropertyReferences` geschreven waar Figma telkens een geneste instance op naliep. Beide vervallen nu grotendeels, want de instances worden hergebruikt en een koppeling die al klopt wordt overgeslagen. De hang was dus geen eigen bug maar dezelfde oorzaak in een andere vorm: bij Link kostte het de icoonkleur, bij Button het geduld.
 
 En passant kwam vast te staan dat Button geen tegenvoorbeeld was. De specs van Button en Link zijn op elk punt dat deze code raakt identiek (één laagvorm, dezelfde vijf properties met dezelfde defaults, dezelfde iconen), en Button was simpelweg nooit een tweede keer geïmporteerd.
+
+### Figma-plugin: voortgang in beeld, en een kortere intro
+
+Een import van 81 varianten duurt seconden, en tot nu toe gebeurde er in die tijd niets in beeld: geen manier om te zien of de plugin werkte of vastzat. Er staat nu een indicator met een label van waar hij mee bezig is ("dsn-button: variant 34 van 81", "properties leggen", "aliassen leggen"). Hij verschijnt pas na 250ms, zodat een kleine import niet even opflitst.
+
+Dat vroeg één aanpassing in de import zelf. De variantlus had bij een verse import geen enkel await-punt, en dan bereikt geen enkele melding de UI voordat alles al klaar is. Om de acht varianten wordt de sandbox nu even losgelaten. Dezelfde ingreep in de iconlus.
+
+De introtekst boven het uploadvak is vervangen door een genummerde lijst van de drie stappen. De volgorde was de kern van die tekst, en een lijst zegt dat korter dan twee alinea's.
 
 ### `scripts/figma-mock.js`: een instance is een levende spiegel geworden
 
