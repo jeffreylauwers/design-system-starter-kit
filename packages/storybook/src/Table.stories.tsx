@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useRef, useState } from 'react';
 import type { Meta, StoryObj } from '@storybook/react-vite';
 import {
   Table,
@@ -6,6 +6,11 @@ import {
   Checkbox,
   Link,
   LinkButton,
+  Button,
+  Menu,
+  MenuButton,
+  Popover,
+  PopoverBody,
 } from '@dsn-starter-kit/components-react';
 import type { TableProps } from '@dsn-starter-kit/components-react';
 import DocsPage from './Table.docs.mdx';
@@ -34,6 +39,47 @@ const SortIcons = () => (
     />
   </>
 );
+
+/**
+ * Actiemenu per rij: icon-only button die een Popover met een Menu opent.
+ * De productnaam zit visueel verborgen in het label, zodat elke knop een
+ * unieke toegankelijke naam heeft.
+ */
+const RowActions = ({ productName }: { productName: string }) => {
+  const triggerRef = useRef<HTMLButtonElement>(null);
+  const [isOpen, setIsOpen] = useState(false);
+  const close = () => setIsOpen(false);
+
+  return (
+    <>
+      <Button
+        ref={triggerRef}
+        variant="subtle"
+        size="small"
+        iconOnly
+        iconStart={<Icon name="dots-vertical" aria-hidden />}
+        onClick={() => setIsOpen((prev) => !prev)}
+      >
+        Toon acties
+        <span className="dsn-visually-hidden"> voor {productName}</span>
+      </Button>
+      <Popover
+        isOpen={isOpen}
+        onClose={close}
+        triggerRef={triggerRef}
+        label={`Acties voor ${productName}`}
+      >
+        <PopoverBody>
+          <Menu>
+            <MenuButton onClick={close}>Bewerken</MenuButton>
+            <MenuButton onClick={close}>Dupliceren</MenuButton>
+            <MenuButton onClick={close}>Verwijderen</MenuButton>
+          </Menu>
+        </PopoverBody>
+      </Popover>
+    </>
+  );
+};
 
 const meta: Meta<typeof Table> = {
   title: 'Components/Table',
@@ -624,19 +670,7 @@ export const WithActionsMenu: Story = {
             <td>{product.category}</td>
             <td className="dsn-table__cell--numeric">{product.price}</td>
             <td>
-              <button
-                type="button"
-                className="dsn-button dsn-button--subtle dsn-button--size-small dsn-button--icon-only"
-              >
-                <Icon name="dots-vertical" aria-hidden />
-                <span className="dsn-button__label">
-                  Toon acties
-                  <span className="dsn-visually-hidden">
-                    {' '}
-                    voor {product.name}
-                  </span>
-                </span>
-              </button>
+              <RowActions productName={product.name} />
             </td>
           </tr>
         ))}
@@ -719,19 +753,7 @@ const AllTogetherTable = (args: TableProps) => {
             <td className="dsn-table__cell--numeric">{product.price}</td>
             <td className="dsn-table__cell--numeric">{product.stock}</td>
             <td>
-              <button
-                type="button"
-                className="dsn-button dsn-button--subtle dsn-button--size-small dsn-button--icon-only"
-              >
-                <Icon name="dots-vertical" aria-hidden />
-                <span className="dsn-button__label">
-                  Toon acties
-                  <span className="dsn-visually-hidden">
-                    {' '}
-                    voor {product.name}
-                  </span>
-                </span>
-              </button>
+              <RowActions productName={product.name} />
             </td>
           </tr>
         ))}
