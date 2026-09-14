@@ -10,6 +10,10 @@ All notable changes to this project are documented in this file.
 
 Nog niet gepubliceerde wijzigingen. Schrijf nieuwe changelog-entries hieronder; bij de volgende release wordt deze kop gepromoveerd naar het definitieve versienummer.
 
+### Table: het actiemenu opent nu een Popover
+
+De icon-only "Toon acties"-knop in de stories `WithActionsMenu` en `AllTogether` deed niets bij een klik. Hij opent nu een `Popover` met een `Menu` van drie acties: Bewerken, Dupliceren en Verwijderen. De popover krijgt als `aria-label` dezelfde rij-context als de knop ("Acties voor Laptop"), zodat duidelijk is op welke rij de acties slaan. De knop zelf is omgezet van losse markup naar de React `Button`, omdat `Popover` een `triggerRef` nodig heeft. De Table-docs tonen het patroon nu in HTML en React.
+
 ### Figma-plugin: de icoonkleur overleeft nu een tweede import
 
 Een icoon in een variant stond na een herimport op `color/neutral/color-default`, de eigen kleur van het icooncomponent, in plaats van op de kleur uit de spec. Daarmee volgde het de theme-schakelaar niet meer. Vier verklaringen zijn hiervoor geprobeerd en alle vier bleken naast de oorzaak te zitten, dus deze ronde is omgedraaid: eerst meten in Figma, dan pas bouwen.
