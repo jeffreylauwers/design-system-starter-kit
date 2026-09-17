@@ -184,6 +184,32 @@ Wat er gebonden wordt:
 | `paddingTop` / `Right` / `Bottom` / `Left`   | `padding-*`                                              |
 | `itemSpacing`                                | `row-gap` of `column-gap`, naar de as van de auto layout |
 | `fontSize`                                   | `font-size`                                              |
+| `fontFamily`                                 | `font-family`                                            |
+| `fontWeight`                                 | `font-weight`                                            |
+
+Een font-family-variable is in Figma één familienaam, geen stack:
+`IBM Plex Sans, sans-serif` bestaat daar niet als lettertype. De
+variables-export zet er daarom de eerste echte familie in (`IBM Plex Sans`),
+zonder quotes en zonder generieke sleutelwoorden als `sans-serif` of
+`ui-monospace`. In Figma is er geen terugval, dus die familie moet op de machine
+van de designer geïnstalleerd zijn, ook `Comic Sans MS` voor `wireframe`.
+
+`line-height` wordt **niet** gebonden. Het token is een verhouding (`1.5`), en
+Figma leest een getal op `lineHeight` als pixels: binden zou elke regel 1,5px
+hoog maken. Een pixelwaarde hangt af van twee assen tegelijk, de font-size per
+viewport en de verhouding per theme. Dat is hetzelfde probleem als bij de
+vastgeprikte fluid waarden, zie issue #328. Tot dan houdt de regelafstand de
+gemeten pixelwaarde.
+
+Typografie erft over. Declareert een element zelf geen `font-family` of
+`font-weight`, dan telt die van de dichtstbijzijnde voorouder, tot en met
+`.dsn-body`. Zo bindt SkipLink aan `text/font-family/default` zonder eigen
+token.
+
+Een gewicht dat uit de stylesheet van de browser komt bindt niet. StatusBadge is
+een `<strong>`, en dat is vet zonder declaratie. De voorouder levert dan
+`text/font-weight/default` (400) terwijl er 700 gemeten is, en de verificatie
+weigert de binding. Dat staat in het report en klopt: er is geen token.
 
 #### Wat een vaste waarde houdt
 
@@ -305,13 +331,33 @@ lege.
 Een node blijft daarom FIXED wanneer:
 
 - de CSS een `width` of een `height` zet (`.dsn-checkbox` is 24x24 via
-  `--dsn-checkbox-size`);
-- de node absoluut gepositioneerd is, en zijn maat dus uit zijn insets haalt.
+  `--dsn-checkbox-size`), of hun logische tegenhangers `inline-size` en
+  `block-size`;
+- de node absoluut gepositioneerd is, en zijn maat dus uit zijn insets haalt;
+- de node geen kinderen heeft die meestromen. HUG zonder inhoud klapt in tot de
+  padding: een `<input>`, een lege DotBadge, de wrapper van Popover met alleen
+  een absoluut kind.
 
 `width` en `height` zijn daarvoor toegevoegd aan de gevolgde properties. Niet
 om te binden, maar omdat de computed waarde altijd een pixelgetal is: daaruit
 valt niet af te lezen of de maat van een declaratie komt of van de inhoud. Uit
 de cascade wel.
+
+Horizontaal hugt een node alleen als hij in CSS ook om zijn inhoud krimpt:
+`inline-flex`, `inline-block`, of een absoluut gepositioneerde **root** zonder
+eigen breedte. Die root is de uitzondering op de absolute-regel hierboven. Hij
+is in Figma het component zelf, en er is niets waartegen zijn insets gelden.
+SkipLink is alleen absoluut om zich buiten beeld te zetten, en stond daardoor
+op een vaste 241×40 terwijl hij net als Button met zijn tekst hoort mee te
+groeien. Naar `display` kijken is daar niet genoeg: de browser rekent
+`inline-block` op een absoluut element om naar `block`.
+
+Tekst aan het eind van een rij krijgt FILL. In CSS is tekst in een flex-rij een
+item dat mag krimpen en dan afbreekt; in Figma breekt tekst alleen af als de
+laag een breedte heeft, en op HUG groeit hij de rij uit. Dat geldt alleen in een
+rij die zelf een blok is (`flex`, geen `inline-flex`, want FILL in een HUG-ouder
+kan Figma niet), die vooraan uitlijnt, en voor het laatste kind dat meestroomt.
+Zo loopt de tekst van IconList, CheckboxOption en MenuLink door tot de rand.
 
 Om dezelfde reden krijgt een absoluut kind nooit `FILL`. Dat kind staat buiten
 de auto-layout stroom, dus meerekken met de ouder is er niet bij; FILL en
@@ -405,8 +451,15 @@ dsn-button                         (component set)
     └── chevron-right              (icoon)
 ```
 
+Elke tekstlaag heet **Tekst**, niet naar zijn klasse (`dsn-heading`) of naar de
+eerste woorden van de inhoud. Een designer herkent een tekstlaag aan zijn type,
+en een naam die meeverandert met de inhoud maakt het laagpad onvoorspelbaar.
+
 De component set heet naar de **CSS-klasse van de root** (`dsn-button`), niet
-naar de matrixnaam. Dat is de naam waarop een designer in de code zoekt.
+naar de matrixnaam. Dat is de naam waarop een designer in de code zoekt. Die
+klasse komt uit de DOM en niet uit de laagnaam: een root die tot tekst inklapt,
+zoals Heading, heet als laag "Tekst". De plugin zoekt een bestaande set op naam
+op, dus een setnaam die verschuift levert een tweede set naast de oude op.
 
 Een icoon krijgt zijn naam uit `data-icon` op de `<svg>`. Zonder dat heet elke
 icoonlaag "icon" en moet een designer het bestand opentrekken om te zien welk

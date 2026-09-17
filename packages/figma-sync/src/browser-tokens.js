@@ -42,7 +42,9 @@ export const TRACKED_PROPERTIES = [
   'column-gap',
   'min-width',
   'min-height',
+  'font-family',
   'font-size',
+  'font-weight',
   // Niet om te binden, maar om te weten óf de CSS de maat expliciet zet.
   // Computed `width` is altijd een pixelwaarde, dus daaruit valt niet af te
   // lezen of hij van een declaratie komt of van de inhoud. Uit de cascade wel.
@@ -60,7 +62,12 @@ export function createTokenReader(trackedProperties) {
   const TRACKED = new Set(trackedProperties);
 
   /** Properties die overerven; zonder eigen declaratie telt die van de ouder. */
-  const INHERITED = new Set(['color', 'font-size']);
+  const INHERITED = new Set([
+    'color',
+    'font-family',
+    'font-size',
+    'font-weight',
+  ]);
 
   const BORDER_STYLES = new Set([
     'none',
@@ -351,6 +358,16 @@ export function createTokenReader(trackedProperties) {
       // Binnen writing-mode horizontal-tb is block de hoogte en inline de
       // breedte; de richting (ltr/rtl) doet er voor een maat niet toe.
       return [[minLogical[1] === 'block' ? 'min-height' : 'min-width', value]];
+    }
+
+    // -- size -----------------------------------------------------------------
+    // Alleen om te weten óf de CSS een maat vastzet (zie `width` in
+    // TRACKED_PROPERTIES). Het design system schrijft logische properties, dus
+    // zonder deze vertaling zag de generator de breedte van Drawer en
+    // ModalDialog niet en liet hij ze om hun inhoud krimpen.
+    const sizeLogical = name.match(/^(block|inline)-size$/);
+    if (sizeLogical) {
+      return [[sizeLogical[1] === 'block' ? 'height' : 'width', value]];
     }
 
     // -- gap ------------------------------------------------------------------

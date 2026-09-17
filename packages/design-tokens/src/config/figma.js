@@ -231,6 +231,51 @@ const STRING_TYPES = new Set(['fontFamily', 'string', 'other']);
  */
 const STRING_PATH_SEGMENTS = new Set(['font-family']);
 
+/**
+ * CSS-sleutelwoorden in een font-stack die geen lettertype zijn maar een
+ * categorie. Figma zoekt een variable-waarde letterlijk op als familienaam, dus
+ * `sans-serif` of `ui-monospace` levert daar een ontbrekend font op.
+ */
+const GENERIC_FONT_FAMILIES = new Set([
+  'serif',
+  'sans-serif',
+  'monospace',
+  'cursive',
+  'fantasy',
+  'math',
+  'emoji',
+  'fangsong',
+  'system-ui',
+  'ui-serif',
+  'ui-sans-serif',
+  'ui-monospace',
+  'ui-rounded',
+  '-apple-system',
+  'blinkmacsystemfont',
+]);
+
+/**
+ * De ene familienaam die Figma kan gebruiken, uit een CSS font-stack.
+ *
+ * Een Figma-variable voor `fontFamily` is één familienaam, geen stack:
+ * `IBM Plex Sans, sans-serif` bestaat in Figma niet als lettertype. Dat is de
+ * eerste echte familie uit de stack, zonder quotes. De fallbacks erachter zijn
+ * voor de browser; in Figma is er geen terugval.
+ */
+export function figmaFontFamily(stack) {
+  const families = String(stack)
+    .split(',')
+    .map((family) => family.trim().replace(/^['"]|['"]$/g, ''))
+    .filter(Boolean);
+  return (
+    families.find(
+      (family) => !GENERIC_FONT_FAMILIES.has(family.toLowerCase())
+    ) ??
+    families[0] ??
+    String(stack)
+  );
+}
+
 /** Duur-eenheden bestaan niet als Figma variable. */
 const DURATION_PATTERN = /^-?[\d.]+m?s$/;
 
@@ -268,7 +313,12 @@ export function mapTokenValue(token, pixelsByCssName, viewport) {
     STRING_TYPES.has(type) ||
     token.path.some((segment) => STRING_PATH_SEGMENTS.has(segment))
   ) {
-    return { figmaType: 'STRING', value: String(raw) };
+    const isFontFamily =
+      type === 'fontFamily' || token.path.includes('font-family');
+    return {
+      figmaType: 'STRING',
+      value: isFontFamily ? figmaFontFamily(raw) : String(raw),
+    };
   }
 
   if (DURATION_PATTERN.test(String(raw).trim())) {
