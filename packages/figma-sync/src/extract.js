@@ -188,11 +188,41 @@ function domWalker([properties, hiddenClass]) {
   if (!root) throw new Error('geen [data-figma-root] gevonden');
   const origin = root.getBoundingClientRect();
 
-  const readStyles = (element) => {
-    const computed = getComputedStyle(element);
+  const readStyles = (element, pseudo = null) => {
+    const computed = getComputedStyle(element, pseudo);
     const result = {};
     for (const property of properties) result[property] = computed[property];
     return result;
+  };
+
+  // Alleen deze velden tekenen een `::placeholder`. Een `type="date"` of
+  // `type="time"` toont zijn formaathint (`dd-mm-jjjj`) in de tekstkleur van
+  // het veld zelf, dus daar gelden de stijl en tokens van het element.
+  const PLACEHOLDER_TYPES = new Set([
+    'text',
+    'search',
+    'email',
+    'tel',
+    'url',
+    'password',
+    'number',
+  ]);
+  const showsPlaceholder = (element) =>
+    element.tagName === 'TEXTAREA' ||
+    (element.tagName === 'INPUT' && PLACEHOLDER_TYPES.has(element.type));
+
+  // De stijl van `::placeholder`, op de stijl van het veld. Chromium geeft
+  // voor een pseudo-element soms `line-height: normal` terug terwijl de tekst
+  // de regelhoogte van het veld gebruikt; die komt dan van het veld.
+  const placeholderStyles = (element) => {
+    const own = readStyles(element);
+    const pseudo = readStyles(element, '::placeholder');
+    return {
+      ...own,
+      ...pseudo,
+      lineHeight:
+        pseudo.lineHeight === 'normal' ? own.lineHeight : pseudo.lineHeight,
+    };
   };
 
   const visit = (element) => {
@@ -216,6 +246,53 @@ function domWalker([properties, hiddenClass]) {
       slot: element.dataset.figmaSlot || null,
       children: [],
     };
+
+    // Een tekstveld heeft geen tekst in de DOM: een ingevulde waarde is een
+    // eigenschap van het element, en een placeholder een pseudo-element. Er
+    // valt dus niets af te lopen. De matrix zegt met `data-figma-value` of
+    // `data-figma-placeholder` welke tekst er staat, en die wordt hier een
+    // tekstlaag in het contentvlak van het veld.
+    //
+    // Een waarde wint van een placeholder, net als in de browser. De
+    // placeholder krijgt de stijl en de tokens van `::placeholder`; een waarde
+    // die van het veld zelf, en die erft de tekstlaag al van zijn ouder.
+    const fieldText =
+      element.dataset.figmaValue ?? element.dataset.figmaPlaceholder;
+    if (fieldText !== undefined) {
+      const isValue = element.dataset.figmaValue !== undefined;
+      const computed = getComputedStyle(element);
+      const px = (value) => Number.parseFloat(value) || 0;
+      const left = px(computed.borderLeftWidth) + px(computed.paddingLeft);
+      const top = px(computed.borderTopWidth) + px(computed.paddingTop);
+      const width =
+        rect.width -
+        left -
+        px(computed.borderRightWidth) -
+        px(computed.paddingRight);
+      const lineHeight = px(computed.lineHeight) || px(computed.fontSize) * 1.2;
+
+      node.children.push({
+        kind: 'text',
+        text: fieldText,
+        slot: isValue ? 'value' : 'placeholder',
+        rect: {
+          x: Math.round((node.rect.x + left) * 100) / 100,
+          y: Math.round((node.rect.y + top) * 100) / 100,
+          width: Math.round(width * 100) / 100,
+          height: Math.round(lineHeight * 100) / 100,
+        },
+        ...(isValue || !showsPlaceholder(element)
+          ? {}
+          : {
+              textStyles: placeholderStyles(element),
+              textTokens: window.__dsnReadTokenSources(
+                element,
+                '::placeholder'
+              ),
+            }),
+      });
+      return node;
+    }
 
     // SVG wordt niet uitgelopen: dat wordt in Figma één vector-node.
     if (node.tag === 'svg') {

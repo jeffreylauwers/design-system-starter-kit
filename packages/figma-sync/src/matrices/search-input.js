@@ -8,6 +8,13 @@
 
 import { icon } from '../icons.js';
 
+import {
+  FIELD_TEXT_AXES,
+  FIELD_TEXT_PROPERTIES,
+  fieldTextAttributes,
+} from '../field-text.js';
+import { TEKST } from '../text.js';
+
 export default {
   component: 'SearchInput',
 
@@ -26,12 +33,15 @@ export default {
 
   axes: {
     state: ['default', 'hover', 'focus', 'disabled', 'invalid'],
+    ...FIELD_TEXT_AXES,
     width: ['auto', 'md', 'full'],
   },
 
+  componentProperties: FIELD_TEXT_PROPERTIES,
+
   pseudoStates: { hover: 'hover', focus: 'focus' },
 
-  render({ state, width }) {
+  render({ state, width, ...variant }) {
     const wrapperClasses = [
       'dsn-search-input-wrapper',
       width !== 'auto' && `dsn-search-input-wrapper--width-${width}`,
@@ -44,7 +54,7 @@ export default {
 
     return `<div class="${wrapperClasses}" data-figma-root>
       ${icon('search', { className: 'dsn-search-input__icon' })}
-      <input type="search" class="dsn-text-input dsn-search-input" placeholder="Tekst"${disabled}${invalid}>
+      <input type="search" class="dsn-text-input dsn-search-input"${fieldTextAttributes(variant, { value: TEKST, placeholder: 'Placeholder' })}${disabled}${invalid}>
     </div>`;
   },
 };

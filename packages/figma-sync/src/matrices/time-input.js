@@ -16,6 +16,12 @@
 
 import { icon } from '../icons.js';
 
+import {
+  FIELD_TEXT_AXES,
+  FIELD_TEXT_PROPERTIES,
+  fieldTextAttributes,
+} from '../field-text.js';
+
 export default {
   component: 'TimeInput',
 
@@ -35,11 +41,14 @@ export default {
 
   axes: {
     state: ['default', 'hover', 'focus', 'disabled', 'invalid'],
+    ...FIELD_TEXT_AXES,
   },
+
+  componentProperties: FIELD_TEXT_PROPERTIES,
 
   pseudoStates: { hover: 'hover', focus: 'focus' },
 
-  render({ state }) {
+  render({ state, ...variant }) {
     const disabled = state === 'disabled';
     const invalid = state === 'invalid' ? ' aria-invalid="true"' : '';
 
@@ -51,7 +60,7 @@ export default {
          </button>`;
 
     return `<div class="dsn-time-input-wrapper" data-figma-root>
-      <input type="time" class="dsn-text-input dsn-time-input"${disabled ? ' disabled' : ''}${invalid}>
+      <input type="time" class="dsn-text-input dsn-time-input"${fieldTextAttributes(variant, { value: '09:00', placeholder: '--:--', native: false })}${disabled ? ' disabled' : ''}${invalid}>
       ${button}
     </div>`;
   },

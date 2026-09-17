@@ -825,6 +825,65 @@ function ensureComponentProperty(set, property, defaults, options, known, log) {
   return { id: null, error: lastError };
 }
 
+/** `state=default, width=auto` -> `{ state: 'default', width: 'auto' }`. */
+function parseVariantName(name) {
+  const properties = {};
+  for (const part of name.split(',')) {
+    const [key, ...value] = part.split('=');
+    if (!value.length) return null;
+    properties[key.trim()] = value.join('=').trim();
+  }
+  return properties;
+}
+
+/**
+ * Zoekt de bestaande variant bij een variant uit de spec.
+ *
+ * Eerst op naam. Lukt dat niet, dan kan de set een as bij hebben gekregen: de
+ * tekstvelden kregen `showValue` en `showPlaceholder`, en daarmee heet elke
+ * bestaande variant anders. Op naam zouden ze allemaal als wees blijven staan,
+ * naast een volledig nieuwe set varianten, terwijl de instances in ontwerpen
+ * nog aan de oude hangen. Een oude variant wordt daarom overgenomen door de
+ * nieuwe variant met dezelfde waarden op de oude assen, en de eerste waarde op
+ * elke nieuwe as: de stand die er vóór die as ook al was. Zo houden bestaande
+ * instances hun variant.
+ */
+function variantFinder(knownVariants, axes) {
+  const claimed = new Set();
+  const parsed = [...knownVariants].map(([name, node]) => ({
+    name,
+    node,
+    properties: parseVariantName(name),
+  }));
+
+  return (component) => {
+    const exact = knownVariants.get(component.name);
+    if (exact) {
+      claimed.add(component.name);
+      return exact;
+    }
+
+    const wanted = component.variantProperties ?? {};
+    const match = parsed.find(({ name, properties }) => {
+      if (claimed.has(name) || !properties) return false;
+      const oldKeys = Object.keys(properties);
+      if (!oldKeys.every((key) => wanted[key] === properties[key])) {
+        return false;
+      }
+      const newKeys = Object.keys(wanted).filter((key) => !(key in properties));
+      return (
+        newKeys.length > 0 &&
+        newKeys.every((key) => axes?.[key]?.[0] === wanted[key])
+      );
+    });
+    if (!match) return undefined;
+
+    claimed.add(match.name);
+    knownVariants.delete(match.name);
+    return match.node;
+  };
+}
+
 /**
  * Legt de gedeclareerde component properties op de set en koppelt de lagen.
  *
@@ -838,9 +897,12 @@ function applyComponentProperties(set, properties, variants, context) {
   const known = existingProperties(set);
 
   for (const property of properties ?? []) {
-    const targets = variants.map((variant) => variant.slots.get(property.slot));
-    const missing = targets.filter((target) => !target).length;
-    if (missing) {
+    const found = variants.map((variant) => variant.slots.get(property.slot));
+    const missing = found.filter((target) => !target).length;
+    // Een optionele property koppelt aan de varianten die de laag hebben, zoals
+    // de waarde van een tekstveld die alleen bestaat waar Show Value aan staat.
+    const targets = property.optional ? found.filter(Boolean) : found;
+    if (property.optional ? !targets.length : missing) {
       log.error(
         `Property "${property.name}": slot "${property.slot}" ontbreekt in ${missing} van de ${variants.length} varianten; niet gelegd`
       );
@@ -1062,6 +1124,7 @@ export async function importComponentSet(payload, log, options = {}) {
       .filter((node) => node.type === 'COMPONENT')
       .map((node) => [node.name, node])
   );
+  const findKnown = variantFinder(knownVariants, spec.variantAxes);
 
   // Tijdens het bouwen mag de set geen auto layout hebben. Een variant die in
   // een auto-layout ouder hangt krijgt andere sizing-regels dan een die los op
@@ -1081,7 +1144,7 @@ export async function importComponentSet(payload, log, options = {}) {
     );
     if (index && index % YIELD_EVERY === 0) await yieldToUi();
 
-    const known = knownVariants.get(component.name);
+    const known = findKnown(component);
     const wrapper = known ?? figma.createComponent();
 
     // De variantnaam staat er vanaf het begin op en blijft er de hele bouw op
