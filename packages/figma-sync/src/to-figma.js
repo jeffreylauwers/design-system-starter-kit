@@ -455,18 +455,63 @@ function cornerRadiusFrom(styles, rect) {
  */
 const TEXT_LAYER_NAME = 'Tekst';
 
+/** Zoveel pixels mag font-size maal verhouding afwijken van de gemeten regelhoogte. */
+const LINE_HEIGHT_TOLERANCE = 0.5;
+
+/**
+ * De regelhoogte, als verhouding waar de CSS dat ook is.
+ *
+ * In code is line-height unitless (`1.5`): een verhouding die met de font-size
+ * meeschaalt. Figma kent dat als procent (`150%`). De computed style is altijd
+ * een pixelwaarde, dus of het een verhouding was staat in de cascade: een
+ * unitless declaratie, of een token in de `var()`-keten waarvan de waarde een
+ * verhouding is.
+ *
+ * Bewust geen variable. Figma leest een getal-variable op `lineHeight` als
+ * pixels, en een procent-variable bestaat niet. Een vaste procentwaarde volgt
+ * daardoor wel de viewport-modes (de font-size verandert, de verhouding blijft)
+ * maar niet de theme-schakelaar (1.5 in `start`, 1.4 in `wireframe`).
+ *
+ * Net als bij de bindingen wordt de verhouding geverifieerd: font-size maal
+ * verhouding moet de gemeten regelhoogte opleveren. Zo niet, dan blijft het de
+ * gemeten pixelwaarde.
+ */
+function lineHeightFrom(styles, sources, index) {
+  if (styles.lineHeight === 'normal') return { unit: 'AUTO' };
+
+  const measured = px(styles.lineHeight);
+  const fontSize = px(styles.fontSize, 16);
+  const source = sources?.['line-height'];
+
+  const candidates = [];
+  if (source && /^\s*\d*\.?\d+\s*$/.test(source.value)) {
+    candidates.push(Number(source.value));
+  }
+  for (const cssName of source?.chain ?? []) {
+    const variable = index?.lookup(cssName);
+    if (variable?.type === 'FLOAT' && typeof variable.value === 'number') {
+      candidates.push(variable.value);
+    }
+  }
+
+  const ratio = candidates.find(
+    (candidate) =>
+      Math.abs(fontSize * candidate - measured) <= LINE_HEIGHT_TOLERANCE
+  );
+  if (ratio === undefined) return { unit: 'PIXELS', value: measured };
+
+  // Twee decimalen: 1.1 is 110%, geen 110.00000000000001%.
+  return { unit: 'PERCENT', value: Math.round(ratio * 10000) / 100 };
+}
+
 /** Tekststijl uit de computed styles van het *ouder*-element. */
-function textStyleFrom(styles) {
-  const lineHeight = styles.lineHeight;
+function textStyleFrom(styles, sources, index) {
   return {
     fontFamily: styles.fontFamily.split(',')[0].replace(/['"]/g, '').trim(),
     fontSize: px(styles.fontSize, 16),
     fontWeight: Number.parseInt(styles.fontWeight, 10) || 400,
     italic: styles.fontStyle === 'italic',
-    lineHeight:
-      lineHeight === 'normal'
-        ? { unit: 'AUTO' }
-        : { unit: 'PIXELS', value: px(lineHeight) },
+    lineHeight: lineHeightFrom(styles, sources, index),
     letterSpacing:
       styles.letterSpacing === 'normal' ? 0 : px(styles.letterSpacing),
     textAlignHorizontal: (styles.textAlign === 'start'
@@ -694,7 +739,7 @@ function convertElement(
       type: 'TEXT',
       name: TEXT_LAYER_NAME,
       characters: node.children[0].text,
-      ...textStyleFrom(styles),
+      ...textStyleFrom(styles, node.tokens, bindings?.index),
     };
   }
 
@@ -758,9 +803,13 @@ function convertElement(
       if (converted.type === 'TEXT') {
         // Tekst erft de typografie van het element waarin hij staat, dus ook
         // de tokens daarvan. Zo wijzen spec en binding dezelfde waarde aan.
-        Object.assign(converted, textStyleFrom(styles), {
-          name: TEXT_LAYER_NAME,
-        });
+        Object.assign(
+          converted,
+          textStyleFrom(styles, node.tokens, bindings?.index),
+          {
+            name: TEXT_LAYER_NAME,
+          }
+        );
         converted.boundVariables = bindVariables(
           converted,
           node.tokens,

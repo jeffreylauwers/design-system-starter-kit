@@ -194,12 +194,22 @@ zonder quotes en zonder generieke sleutelwoorden als `sans-serif` of
 `ui-monospace`. In Figma is er geen terugval, dus die familie moet op de machine
 van de designer geïnstalleerd zijn, ook `Comic Sans MS` voor `wireframe`.
 
-`line-height` wordt **niet** gebonden. Het token is een verhouding (`1.5`), en
-Figma leest een getal op `lineHeight` als pixels: binden zou elke regel 1,5px
-hoog maken. Een pixelwaarde hangt af van twee assen tegelijk, de font-size per
-viewport en de verhouding per theme. Dat is hetzelfde probleem als bij de
-vastgeprikte fluid waarden, zie issue #328. Tot dan houdt de regelafstand de
-gemeten pixelwaarde.
+`line-height` wordt **niet** gebonden, maar komt als **procent** mee. Het token
+is een verhouding (`1.5`), en Figma leest een getal-variable op `lineHeight` als
+pixels: binden zou elke regel 1,5px hoog maken, en een procent-variable bestaat
+niet. Een vaste procentwaarde kan wel. `1.5` wordt `150%`, en die schaalt net
+als in CSS mee met de font-size, dus ook met de viewport-modes van
+`dsn/Density`.
+
+Of een regelhoogte een verhouding is staat niet in de computed style, want die
+is altijd in pixels. De generator haalt het uit de cascade: een unitless
+declaratie, of een token in de `var()`-keten met een verhouding als waarde. Die
+verhouding wordt geverifieerd: font-size maal verhouding moet de gemeten
+regelhoogte opleveren, anders blijft het de gemeten pixelwaarde.
+
+Wat een vaste procentwaarde niet doet, is de theme-schakelaar volgen: `start`
+gebruikt 1.5, `wireframe` 1.4. Daarvoor is een variable in pixels nodig, per
+theme én per viewport, en dat is dezelfde keuze als in issue #328.
 
 Typografie erft over. Declareert een element zelf geen `font-family` of
 `font-weight`, dan telt die van de dichtstbijzijnde voorouder, tot en met
