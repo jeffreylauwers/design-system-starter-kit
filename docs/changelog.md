@@ -10,6 +10,14 @@ All notable changes to this project are documented in this file.
 
 Nog niet gepubliceerde wijzigingen. Schrijf nieuwe changelog-entries hieronder; bij de volgende release wordt deze kop gepromoveerd naar het definitieve versienummer.
 
+### Figma-sync: tekstvelden krijgen Show Value en Show Placeholder
+
+TextInput, TextArea, SearchInput, DateInput en TimeInput kwamen in Figma binnen als leeg frame. Een waarde of placeholder staat in de browser niet als tekst in de DOM, dus er viel niets te meten. Ze krijgen nu twee assen, `showValue` en `showPlaceholder`, die Figma als schakelaar toont, met daarbij een tekstlaag voor de waarde of de placeholder. De tekst is via de TEXT-properties `value` en `placeholder` in het properties panel in te vullen. Staan beide aan, dan toont de variant de waarde, net als de browser. Select doet niet mee.
+
+De placeholder bindt aan zijn eigen tokens, zoals `text-input/placeholder/color`; daarvoor leest de generator nu ook `::placeholder`-regels. DateInput en TimeInput tonen hun formaathint (`dd-mm-jjjj`, `--:--`) in de tekstkleur van het veld, net als in de browser.
+
+Het aantal varianten gaat maal vier, TextInput bijvoorbeeld van 35 naar 140. De variant met beide assen op `false` is exact de oude variant. Bij een herimport hernoemt de plugin een bestaande variant naar die stand in plaats van hem als wees te laten staan, dus geplaatste instances blijven hangen. Aan de componentcode is niets veranderd.
+
 ### Figma-sync: line-height komt als procent in Figma
 
 In code is line-height unitless (`1.5`), en tot nu toe kwam hij in Figma als vaste pixelwaarde mee. Op een andere viewport-mode, met een andere font-size, klopte die niet meer. Een unitless line-height wordt nu een procent: `1.5` wordt `150%`, `1.25` wordt `125%`. Dat schaalt net als in de browser mee met de font-size. Over alle 55 sets gaat het om 431 tekstlagen; verder verandert er niets.

@@ -825,14 +825,25 @@ for (const file of componentFiles) {
             : node.children.map(find).find(Boolean);
         return find(variant);
       });
-      if (linked.length !== set.children.length) {
+      // Een optionele property hangt alleen in de varianten waar de spec de
+      // laag heeft: de waarde van een tekstveld bestaat waar Show Value aan
+      // staat, niet daarbuiten.
+      const hasSlot = (node) =>
+        node.componentSlot === property.slot ||
+        (node.children ?? []).some(hasSlot);
+      const expected = property.optional
+        ? payload.componentSet.components.filter((component) =>
+            hasSlot(component.node)
+          ).length
+        : set.children.length;
+      if (linked.length !== expected) {
         unlinked.push(
-          `${property.name} in ${set.children.length - linked.length} varianten`
+          `${property.name} in ${linked.length} van de verwachte ${expected} varianten`
         );
       }
     }
     check(
-      'elke property hangt in elke variant aan een laag',
+      'elke property hangt in elke variant met die laag aan een laag',
       unlinked.length === 0,
       unlinked.join(', ')
     );
@@ -1243,6 +1254,117 @@ check(
   Boolean(iconLight) && JSON.stringify(iconLight) !== JSON.stringify(iconDark),
   `${iconReference?.name}: light ${channels(iconLight)} vs dark ${channels(iconDark)}`
 );
+
+// =============================================================================
+// Een as erbij
+// =============================================================================
+
+// De tekstvelden kregen `showValue` en `showPlaceholder`. Daarmee heet elke
+// bestaande variant anders, en op naam zouden ze allemaal als wees blijven
+// staan terwijl de instances in ontwerpen er nog aan hangen. De oude variant
+// hoort over te gaan in de nieuwe variant waarin de nieuwe assen op hun eerste
+// waarde staan.
+console.log('\n=== een as erbij (TextInput) ===');
+{
+  const nieuw = read('packages/figma-sync/dist/text-input.json');
+  const nieuweAssen = ['showValue', 'showPlaceholder'];
+  const naamVan = (properties) =>
+    Object.entries(properties)
+      .map(([axis, value]) => `${axis}=${value}`)
+      .join(', ');
+
+  const test = structuredClone(nieuw);
+  test.componentSet.name = 'dsn-text-input-as-erbij';
+  test.componentSet.page = 'dsn/TextInputAsErbij';
+
+  const oud = structuredClone(test);
+  oud.componentSet.componentProperties = [];
+  oud.componentSet.variantAxes = Object.fromEntries(
+    Object.entries(oud.componentSet.variantAxes).filter(
+      ([axis]) => !nieuweAssen.includes(axis)
+    )
+  );
+  oud.componentSet.components = oud.componentSet.components
+    .filter((component) =>
+      nieuweAssen.every((axis) => component.variantProperties[axis] === 'false')
+    )
+    .map((component) => {
+      const properties = Object.fromEntries(
+        Object.entries(component.variantProperties).filter(
+          ([axis]) => !nieuweAssen.includes(axis)
+        )
+      );
+      return {
+        ...component,
+        name: naamVan(properties),
+        variantProperties: properties,
+      };
+    });
+
+  await importComponentSet(oud, log);
+  const page = state.root.children.find(
+    (node) => node.name === test.componentSet.page
+  );
+  const set = () =>
+    page.children.find(
+      (node) =>
+        node.type === 'COMPONENT_SET' && node.name === test.componentSet.name
+    );
+  const idsVoor = new Map(set().children.map((node) => [node.name, node.id]));
+  const instance = set().children[0].createInstance();
+  const hoofdVoor = instance.mainComponent.id;
+
+  const voorProblemen = problems.length;
+  const resultaat = await importComponentSet(test, log);
+  const wezen = problems
+    .slice(voorProblemen)
+    .filter((problem) => /niet meer in de spec/.test(problem.message));
+
+  check(
+    'de oude varianten worden overgenomen, niet opnieuw gemaakt',
+    resultaat.updated === oud.componentSet.components.length &&
+      resultaat.created ===
+        test.componentSet.components.length -
+          oud.componentSet.components.length,
+    `${resultaat.updated} bijgewerkt, ${resultaat.created} nieuw`
+  );
+  check(
+    'er blijven geen wezen achter',
+    wezen.length === 0,
+    wezen[0]?.message ?? ''
+  );
+  check(
+    'een oude variant heet nu naar de nieuwe assen, met dezelfde node-id',
+    [...idsVoor].every(([naam, id]) => {
+      const properties = Object.fromEntries(
+        naam.split(', ').map((part) => part.split('='))
+      );
+      const nieuweNaam = test.componentSet.components.find(
+        (component) =>
+          Object.entries(properties).every(
+            ([axis, value]) => component.variantProperties[axis] === value
+          ) &&
+          nieuweAssen.every(
+            (axis) => component.variantProperties[axis] === 'false'
+          )
+      )?.name;
+      return set().children.find((node) => node.id === id)?.name === nieuweNaam;
+    })
+  );
+  check(
+    'een geplaatste instance hangt nog aan dezelfde variant',
+    instance.mainComponent?.id === hoofdVoor
+  );
+
+  const definities = Object.keys(set().componentPropertyDefinitions ?? {}).map(
+    (key) => key.split('#')[0]
+  );
+  check(
+    'de tekst-properties staan op de set',
+    ['value', 'placeholder'].every((naam) => definities.includes(naam)),
+    definities.join(', ')
+  );
+}
 
 console.log(
   `\n${process.exitCode ? '✗ smoke test gefaald' : '✓ smoke test geslaagd'}\n`

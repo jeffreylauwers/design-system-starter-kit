@@ -6,6 +6,13 @@
  * tegenhanger; wat overkomt is de hoogte waarmee het veld begint.
  */
 
+import {
+  FIELD_TEXT_AXES,
+  FIELD_TEXT_PROPERTIES,
+  fieldTextAttributes,
+} from '../field-text.js';
+import { TEKST } from '../text.js';
+
 export default {
   component: 'TextArea',
 
@@ -22,12 +29,15 @@ export default {
 
   axes: {
     state: ['default', 'hover', 'focus', 'disabled', 'invalid'],
+    ...FIELD_TEXT_AXES,
     width: ['auto', 'md', 'full'],
   },
 
+  componentProperties: FIELD_TEXT_PROPERTIES,
+
   pseudoStates: { hover: 'hover', focus: 'focus' },
 
-  render({ state, width }) {
+  render({ state, width, ...variant }) {
     const classes = [
       'dsn-text-area',
       width !== 'auto' && `dsn-text-area--width-${width}`,
@@ -38,6 +48,16 @@ export default {
     const disabled = state === 'disabled' ? ' disabled' : '';
     const invalid = state === 'invalid' ? ' aria-invalid="true"' : '';
 
-    return `<textarea class="${classes}" placeholder="Tekst"${disabled}${invalid} data-figma-root></textarea>`;
+    // Een textarea draagt zijn waarde als inhoud, niet als attribuut.
+    const text = fieldTextAttributes(variant, {
+      value: TEKST,
+      placeholder: 'Placeholder',
+      native: false,
+    });
+    const placeholder =
+      variant.showPlaceholder === 'true' ? ' placeholder="Placeholder"' : '';
+    const content = variant.showValue === 'true' ? TEKST : '';
+
+    return `<textarea class="${classes}"${placeholder}${text}${disabled}${invalid} data-figma-root>${content}</textarea>`;
   },
 };

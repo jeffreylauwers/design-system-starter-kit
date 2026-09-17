@@ -209,6 +209,10 @@ elke variant de bijbehorende laag:
 | `BOOLEAN`       | `visible`       | niets                        |
 | `INSTANCE_SWAP` | `mainComponent` | een **instance**, geen frame |
 
+Een property met `optional: true` wordt alleen gekoppeld in de varianten die
+de laag hebben, zoals `value` en `placeholder` bij de tekstvelden. Heeft geen
+enkele variant de laag, dan is het alsnog een fout.
+
 Button levert daarmee `label`, `showIconStart` / `iconStart` en `showIconEnd` /
 `iconEnd`. De twee icoonslots staan standaard uit; de lagen worden vóór de
 koppeling op die stand gezet, want een laag die niet overeenkomt met de
@@ -259,13 +263,14 @@ draaien en de node-ids te vergelijken.
 De plugin zoekt op de pagina van het component een set met dezelfde naam. Staat
 die er, dan wordt hij bijgewerkt in plaats van dat er een tweede naast komt:
 
-| Wat                                          | Wat er gebeurt                                    |
-| -------------------------------------------- | ------------------------------------------------- |
-| Variant staat in de spec en in Figma         | Het component blijft, zijn inhoud wordt vervangen |
-| Variant staat in de spec, nog niet in Figma  | Wordt toegevoegd aan de bestaande set             |
-| Variant staat in Figma, niet meer in de spec | Blijft staan, met een melding in de log           |
-| Property staat in de spec en op de set       | Wordt bijgewerkt, houdt zijn property-id          |
-| Property staat op de set, niet in de spec    | Blijft staan, met een melding in de log           |
+| Wat                                          | Wat er gebeurt                                                                                             |
+| -------------------------------------------- | ---------------------------------------------------------------------------------------------------------- |
+| Variant staat in de spec en in Figma         | Het component blijft, zijn inhoud wordt vervangen                                                          |
+| Variant staat in de spec, nog niet in Figma  | Wordt toegevoegd aan de bestaande set                                                                      |
+| Variant staat in Figma, niet meer in de spec | Blijft staan, met een melding in de log                                                                    |
+| De set heeft een as bij gekregen             | De oude variant gaat over in de nieuwe variant met dezelfde waarden, en de eerste waarde op elke nieuwe as |
+| Property staat in de spec en op de set       | Wordt bijgewerkt, houdt zijn property-id                                                                   |
+| Property staat op de set, niet in de spec    | Blijft staan, met een melding in de log                                                                    |
 
 Het hergebruiken van het component zélf is de kern. Elke geplaatste instance
 hangt aan de **node-id** van zijn variant; een nieuw component met dezelfde naam

@@ -439,14 +439,24 @@ export function createTokenReader(trackedProperties) {
   const winnerCache = new WeakMap();
 
   /**
+   * Pseudo-elementen die de lezer kent. Een regel als
+   * `.dsn-text-input::placeholder` matcht niet op het element zelf
+   * (`element.matches` gooit er zelfs een fout op), dus die wordt apart gelezen:
+   * het pseudo-deel eraf, en de rest tegen het element houden.
+   */
+  const PSEUDO_ELEMENTS = new Set(['::placeholder']);
+
+  /**
    * De winnende declaratie per longhand voor één element.
    *
    * Volgorde zoals de cascade: `!important` eerst, dan specificiteit, dan
    * documentvolgorde. Alle regels hebben dezelfde origin (author), dus verder
    * speelt er niets mee.
    */
-  function winnersFor(element) {
-    const cached = winnerCache.get(element);
+  function winnersFor(element, pseudo = null) {
+    const byPseudo = winnerCache.get(element) ?? new Map();
+    winnerCache.set(element, byPseudo);
+    const cached = byPseudo.get(pseudo);
     if (cached) return cached;
 
     if (!rules) rules = collectRules();
@@ -494,23 +504,35 @@ export function createTokenReader(trackedProperties) {
     for (const rule of rules) {
       let specificity = -1;
       for (const branch of splitTop(rule.selectorText, ',')) {
+        const trimmed = branch.trim();
+        let target = trimmed;
+        if (pseudo) {
+          // Alleen regels voor dit pseudo-element, en dan zonder dat deel.
+          if (!trimmed.endsWith(pseudo)) continue;
+          target = trimmed.slice(0, -pseudo.length);
+        }
         try {
-          if (!element.matches(branch)) continue;
+          if (!element.matches(target)) continue;
         } catch {
           continue;
         }
-        specificity = Math.max(specificity, specificityOf(branch));
+        // Een pseudo-element telt in de specificiteit als één element.
+        specificity = Math.max(
+          specificity,
+          specificityOf(target) + (pseudo ? 1 : 0)
+        );
       }
       if (specificity < 0) continue;
       apply(rule.declarations, specificity);
     }
 
-    // Een style-attribuut wint van elke selector.
-    if (element.getAttribute('style')) {
+    // Een style-attribuut wint van elke selector, maar geldt niet voor een
+    // pseudo-element.
+    if (!pseudo && element.getAttribute('style')) {
       apply(parseDeclarations(element.style.cssText), 1000000);
     }
 
-    winnerCache.set(element, winners);
+    byPseudo.set(pseudo, winners);
     return winners;
   }
 
@@ -557,12 +579,18 @@ export function createTokenReader(trackedProperties) {
    * Herkomst van elke gevolgde property op dit element.
    * @returns {Record<string, {chain: string[], value: string}>}
    */
-  return function readTokenSources(element) {
+  return function readTokenSources(element, pseudo = null) {
+    if (pseudo && !PSEUDO_ELEMENTS.has(pseudo)) return {};
     const sources = {};
 
     for (const property of TRACKED) {
       let owner = element;
-      let winner = winnersFor(owner).get(property);
+      // Een pseudo-element erft van zijn eigen element. Zonder eigen declaratie
+      // voor die property geldt dus die van het element, en daarna de gewone
+      // overerving.
+      let winner =
+        (pseudo && winnersFor(owner, pseudo).get(property)) ||
+        winnersFor(owner).get(property);
 
       // `color: inherit` is geen waarde maar een verwijzing: het element neemt
       // de berekende waarde van zijn ouder over. Zonder deze stap zou het als

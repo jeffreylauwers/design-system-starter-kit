@@ -566,7 +566,9 @@ function applyChildPlacement(
   label,
   parentContentWidth
 ) {
-  const styles = child.styles;
+  // Een tekstlaag in een tekstveld heeft geen eigen styles, maar wel een
+  // gemeten contentvlak; daarmee kan hij net als een blok FILL krijgen.
+  const styles = child.styles ?? (child.rect ? {} : null);
   if (!styles) return;
 
   // Een absoluut kind staat buiten de auto-layout stroom, dus meerekken is er
@@ -803,16 +805,20 @@ function convertElement(
       if (converted.type === 'TEXT') {
         // Tekst erft de typografie van het element waarin hij staat, dus ook
         // de tokens daarvan. Zo wijzen spec en binding dezelfde waarde aan.
+        // De placeholder van een tekstveld is de uitzondering: die heeft zijn
+        // eigen stijl en tokens, uit `::placeholder`.
+        const textStyles = child.textStyles ?? styles;
+        const textTokens = child.textTokens ?? node.tokens;
         Object.assign(
           converted,
-          textStyleFrom(styles, node.tokens, bindings?.index),
+          textStyleFrom(textStyles, textTokens, bindings?.index),
           {
             name: TEXT_LAYER_NAME,
           }
         );
         converted.boundVariables = bindVariables(
           converted,
-          node.tokens,
+          textTokens,
           bindings
         );
       }
@@ -861,7 +867,10 @@ function convertElement(
   // zijn tekst.
   const absolute = styles.position === 'absolute' && !root;
   const fixedWidth = absolute || Boolean(node.tokens?.width);
-  const fixedHeight = absolute || Boolean(node.tokens?.height);
+  // Een textarea haalt zijn hoogte uit `rows`, niet uit zijn inhoud: met één
+  // regel tekst erin zou HUG hem laten krimpen.
+  const fixedHeight =
+    absolute || Boolean(node.tokens?.height) || node.tag === 'textarea';
 
   // Krimpt om zijn inhoud: `inline-block` net als `inline-flex`, en een
   // absoluut gepositioneerde root zonder eigen breedte ook. Voor die laatste
@@ -928,6 +937,11 @@ function checkComponentProperties(declared, components, warnings) {
       (variant) => !variant.slots.has(property.slot)
     );
     if (!missing.length) return true;
+
+    // Een optionele property hoort maar bij een deel van de varianten: de
+    // tekst van een TextInput bestaat alleen waar Show Value aan staat. Figma
+    // koppelt hem aan de lagen die er zijn. Nergens een laag blijft een fout.
+    if (property.optional && missing.length < perVariant.length) return true;
 
     warnings.push(
       missing.length === perVariant.length

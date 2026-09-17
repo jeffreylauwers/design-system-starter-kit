@@ -15,6 +15,13 @@
  * dat een toestand op die van de inhoud afhangt in plaats van van de variant.
  */
 
+import {
+  FIELD_TEXT_AXES,
+  FIELD_TEXT_PROPERTIES,
+  fieldTextAttributes,
+} from '../field-text.js';
+import { TEKST } from '../text.js';
+
 export default {
   component: 'TextInput',
 
@@ -31,12 +38,15 @@ export default {
 
   axes: {
     state: ['default', 'hover', 'focus', 'disabled', 'invalid'],
+    ...FIELD_TEXT_AXES,
     width: ['auto', 'xs', 'sm', 'md', 'lg', 'xl', 'full'],
   },
 
+  componentProperties: FIELD_TEXT_PROPERTIES,
+
   pseudoStates: { hover: 'hover', focus: 'focus' },
 
-  render({ state, width }) {
+  render({ state, width, ...variant }) {
     const classes = [
       'dsn-text-input',
       width !== 'auto' && `dsn-text-input--width-${width}`,
@@ -47,6 +57,11 @@ export default {
     const disabled = state === 'disabled' ? ' disabled' : '';
     const invalid = state === 'invalid' ? ' aria-invalid="true"' : '';
 
-    return `<input type="text" class="${classes}" placeholder="Tekst"${disabled}${invalid} data-figma-root>`;
+    const text = fieldTextAttributes(variant, {
+      value: TEKST,
+      placeholder: 'Placeholder',
+    });
+
+    return `<input type="text" class="${classes}"${text}${disabled}${invalid} data-figma-root>`;
   },
 };

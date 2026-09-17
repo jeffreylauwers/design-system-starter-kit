@@ -618,6 +618,11 @@ klopt:
   blokklassen draagt: HeadingGroup is `class="dsn-heading dsn-heading--2
 dsn-heading-group"`, dus zonder override zouden Heading en HeadingGroup
   allebei `dsn-heading` heten.
+- **`data-figma-value` en `data-figma-placeholder`** op een tekstveld maken er
+  een tekstlaag van, zie "Tekst in een tekstveld".
+- **`optional: true`** op een component property laat hem alleen hangen in de
+  varianten die de laag hebben. Zonder is een property die niet in elke variant
+  een laag heeft een fout.
 - **`warnings`** zet een vaste waarschuwing in de spec, voor een beperking die
   de generator zelf niet kán zien. `::marker` is het voorbeeld: de bolletjes van
   een UnorderedList zijn een pseudo-element en dus geen DOM-node, dus er valt
@@ -740,6 +745,45 @@ in plaats van dat het stil blijft:
 
 `IconList` laat zien wat het alternatief is: die zet `list-style: none` en
 tekent zijn markering met een echt `<svg>`, en komt daardoor wel volledig over.
+
+### Tekst in een tekstveld
+
+Een tekstveld heeft geen tekst in de DOM. Een ingevulde waarde is een
+eigenschap van het `<input>`, en de placeholder is `::placeholder`. Zonder meer
+kwam het veld in Figma daarom als leeg frame binnen, en kon een designer er
+geen tekst in zetten.
+
+De vijf tekstvelden (TextInput, TextArea, SearchInput, DateInput en TimeInput)
+krijgen daarom twee assen, `showValue` en `showPlaceholder`, met `false` en
+`true`. Figma toont zo'n as als schakelaar. Het zijn assen en geen booleans,
+want de placeholder heeft een andere kleur dan de waarde, en een boolean kan
+alleen een laag aan- of uitzetten. Select hoort er niet bij: die toont een
+gekozen optie, geen getypte waarde of placeholder.
+
+De matrix zet `data-figma-value` of `data-figma-placeholder` op het veld, en de
+extractor maakt daar een tekstlaag van in het contentvlak:
+
+| Variant                | Tekstlaag                                                        |
+| ---------------------- | ---------------------------------------------------------------- |
+| beide `false`          | geen; het veld is leeg, gelijk aan de variant van vóór de assen  |
+| `showValue=true`       | de waarde, in de stijl en met de tokens van het veld             |
+| `showPlaceholder=true` | de placeholder, in de stijl en met de tokens van `::placeholder` |
+| beide `true`           | de waarde, want in de browser verbergt een waarde de placeholder |
+
+Om de placeholder te binden leest de cascade-lezer ook regels voor
+`::placeholder`. DateInput en TimeInput hebben geen placeholder die de browser
+zo tekent: hun formaathint (`dd-mm-jjjj`, `--:--`) staat in de tekstkleur van het
+veld, dus daar krijgt de hint de stijl van het veld zelf.
+
+De tekst zelf komt uit twee TEXT-properties, `value` en `placeholder`. Die zijn
+**optioneel**: ze hangen alleen in de varianten waar die laag bestaat. Een
+TextArea houdt zijn gemeten hoogte, want die komt uit `rows` en niet uit de
+tekst.
+
+Het aantal varianten gaat daarmee maal vier: TextInput van 35 naar 140. Bij een
+herimport gaat een bestaande variant over in de variant met beide assen op
+`false`, dus geplaatste instances blijven aan hun variant hangen. Zie
+"Hoe een component set wordt bijgewerkt" in de README van de plugin.
 
 ## Welke componenten wel en niet een matrix krijgen
 
