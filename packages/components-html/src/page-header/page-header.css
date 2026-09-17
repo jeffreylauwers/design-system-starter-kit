@@ -526,6 +526,10 @@
   --dsn-menu-item-hover-background-color: var(--dsn-color-action-2-bg-hover);
   --dsn-menu-item-active-color: var(--dsn-color-action-2-color-active);
   --dsn-menu-item-active-background-color: var(--dsn-color-action-2-bg-active);
+  --dsn-menu-item-hover-indicator-color: var(--dsn-color-action-2-color-hover);
+  --dsn-menu-item-active-indicator-color: var(
+    --dsn-color-action-2-color-active
+  );
   --dsn-menu-link-current-color: var(--dsn-color-action-2-color-default);
   --dsn-menu-link-current-background-color: var(--dsn-color-action-2-bg-active);
   --dsn-menu-link-current-indicator-color: var(
@@ -563,6 +567,12 @@
   --dsn-menu-item-active-color: var(--dsn-color-accent-1-inverse-color-active);
   --dsn-menu-item-active-background-color: var(
     --dsn-color-accent-1-inverse-bg-active
+  );
+  --dsn-menu-item-hover-indicator-color: var(
+    --dsn-color-accent-1-inverse-color-hover
+  );
+  --dsn-menu-item-active-indicator-color: var(
+    --dsn-color-accent-1-inverse-color-active
   );
   /* MenuLink current (actieve pagina) */
   --dsn-menu-link-current-color: var(

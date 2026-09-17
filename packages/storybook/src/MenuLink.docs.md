@@ -90,6 +90,10 @@ Gebruik `current` om de actieve pagina te markeren. Dit voegt `aria-current="pag
 </a>
 ```
 
+### Indicator
+
+Elk item heeft een indicator van 3px: een border aan de inline-start-kant, of aan de onderkant in een horizontaal `Menu`. Standaard is die transparent. Bij hover en active krijgt hij de hover- of active-kleur, bij de actieve pagina de current-kleur. Omdat de indicator altijd ruimte inneemt, verspringt de tekst niet wanneer hij zichtbaar wordt. `MenuButton` gedraagt zich hetzelfde, zodat alle items in één `Menu` gelijk reageren.
+
 ### NumberBadge
 
 Gebruik `numberBadge` om een telbadge rechts van het label te tonen. Voeg screenreader-context toe via `dsn-visually-hidden` in het label wanneer het getal afgekapt is:
@@ -132,22 +136,26 @@ MenuLink gebruikt twee token-sets. De gedeelde `--dsn-menu-item-*` tokens zijn o
 
 ### Gedeeld met MenuButton (`--dsn-menu-item-*`)
 
-| Token                                     | Beschrijving                 |
-| ----------------------------------------- | ---------------------------- |
-| `--dsn-menu-item-font-size`               | Lettergrootte                |
-| `--dsn-menu-item-font-weight`             | Letterdikte (regular)        |
-| `--dsn-menu-item-line-height`             | Regelhoogte                  |
-| `--dsn-menu-item-padding-block`           | Verticale padding            |
-| `--dsn-menu-item-padding-inline`          | Horizontale padding          |
-| `--dsn-menu-item-gap`                     | Ruimte tussen icoon en label |
-| `--dsn-menu-item-min-block-size`          | Minimale raakbare hoogte     |
-| `--dsn-menu-item-icon-size`               | Icoongrootte                 |
-| `--dsn-menu-item-color`                   | Tekstkleur (standaard)       |
-| `--dsn-menu-item-background-color`        | Achtergrondkleur (standaard) |
-| `--dsn-menu-item-hover-color`             | Tekstkleur bij hover         |
-| `--dsn-menu-item-hover-background-color`  | Achtergrondkleur bij hover   |
-| `--dsn-menu-item-active-color`            | Tekstkleur bij active        |
-| `--dsn-menu-item-active-background-color` | Achtergrondkleur bij active  |
+| Token                                     | Beschrijving                                    |
+| ----------------------------------------- | ----------------------------------------------- |
+| `--dsn-menu-item-font-size`               | Lettergrootte                                   |
+| `--dsn-menu-item-font-weight`             | Letterdikte (regular)                           |
+| `--dsn-menu-item-line-height`             | Regelhoogte                                     |
+| `--dsn-menu-item-padding-block`           | Verticale padding                               |
+| `--dsn-menu-item-padding-inline`          | Horizontale padding                             |
+| `--dsn-menu-item-gap`                     | Ruimte tussen icoon en label                    |
+| `--dsn-menu-item-min-block-size`          | Minimale raakbare hoogte                        |
+| `--dsn-menu-item-icon-size`               | Icoongrootte                                    |
+| `--dsn-menu-item-color`                   | Tekstkleur (standaard)                          |
+| `--dsn-menu-item-background-color`        | Achtergrondkleur (standaard)                    |
+| `--dsn-menu-item-indicator-width`         | Dikte van de indicator (3px)                    |
+| `--dsn-menu-item-indicator-color`         | Kleur van de indicator (standaard, transparent) |
+| `--dsn-menu-item-hover-color`             | Tekstkleur bij hover                            |
+| `--dsn-menu-item-hover-background-color`  | Achtergrondkleur bij hover                      |
+| `--dsn-menu-item-hover-indicator-color`   | Kleur van de indicator bij hover                |
+| `--dsn-menu-item-active-color`            | Tekstkleur bij active                           |
+| `--dsn-menu-item-active-background-color` | Achtergrondkleur bij active                     |
+| `--dsn-menu-item-active-indicator-color`  | Kleur van de indicator bij active               |
 
 ### MenuLink-specifiek (`--dsn-menu-link-*`)
 
@@ -157,8 +165,7 @@ MenuLink gebruikt twee token-sets. De gedeelde `--dsn-menu-item-*` tokens zijn o
 | `--dsn-menu-link-current-font-weight`             | Letterdikte voor de actieve/huidige pagina (bold)                    |
 | `--dsn-menu-link-current-color`                   | Tekstkleur voor de actieve/huidige pagina                            |
 | `--dsn-menu-link-current-background-color`        | Achtergrondkleur voor de actieve/huidige pagina (action-2.bg-active) |
-| `--dsn-menu-link-current-indicator-color`         | Kleur van de border-inline-start indicator                           |
-| `--dsn-menu-link-current-indicator-width`         | Breedte van de border-inline-start indicator (3px)                   |
+| `--dsn-menu-link-current-indicator-color`         | Kleur van de indicator voor de actieve/huidige pagina                |
 | `--dsn-menu-link-current-hover-color`             | Hover tekstkleur voor de actieve pagina                              |
 | `--dsn-menu-link-current-hover-background-color`  | Hover achtergrondkleur voor de actieve pagina                        |
 | `--dsn-menu-link-current-active-color`            | Active tekstkleur voor de actieve pagina                             |
@@ -171,3 +178,4 @@ MenuLink gebruikt twee token-sets. De gedeelde `--dsn-menu-item-*` tokens zijn o
 - `aria-expanded` op de uitklapknop geeft de uit-/ingeklapte staat door aan screenreaders.
 - Het icoon in de link en de uitklapknop heeft altijd `aria-hidden="true"`.
 - Zorg dat de omliggende `<ul>` in een `<nav>` staat met een beschrijvende `aria-label`.
+- In forced-colors mode (hoog contrast) krijgt de indicator systeemkleuren: `Canvas` in rust, zodat hij onzichtbaar blijft, `Highlight` bij hover en active, en `CanvasText` voor de actieve pagina. Daar valt de achtergrondkleur weg, dus de indicator draagt dan de current-staat.

@@ -32,8 +32,10 @@
  *   dsn-menu-link--level-3   (2× level-indent via margin-inline-start)
  *   dsn-menu-link--level-4   (3× level-indent via margin-inline-start)
  *
- * Actieve pagina — border-inline-start indicator op de <a>:
- *   aria-current="page" op het <a>-element → current-kleuren + indicator
+ * Indicator — border-inline-start op de <a> (border-block-end in een horizontaal Menu):
+ *   Altijd aanwezig in de kleur transparent, zodat hover en current niet verspringen.
+ *   :hover / :active       → hover- en active-kleur van de indicator
+ *   aria-current="page"    → current-kleuren + indicator
  *
  * Uitklapbaar:
  *   aria-expanded="true/false" op dsn-menu-link__expand-button
@@ -65,6 +67,13 @@
   gap: var(--dsn-menu-item-gap);
   padding-block: var(--dsn-menu-item-padding-block);
   padding-inline: var(--dsn-menu-item-padding-inline);
+  /* Indicator: altijd aanwezig, alleen de kleur verandert per staat. De padding
+     compenseert de breedte zodat de tekst op dezelfde plek blijft staan. */
+  border: 0 solid var(--dsn-menu-item-indicator-color);
+  border-inline-start-width: var(--dsn-menu-item-indicator-width);
+  padding-inline-start: calc(
+    var(--dsn-menu-item-padding-inline) - var(--dsn-menu-item-indicator-width)
+  );
   font-family: inherit;
   font-size: var(--dsn-menu-item-font-size);
   font-weight: var(--dsn-menu-item-font-weight);
@@ -76,6 +85,8 @@
     background-color var(--dsn-transition-duration-normal)
       var(--dsn-transition-easing-default),
     color var(--dsn-transition-duration-normal)
+      var(--dsn-transition-easing-default),
+    border-color var(--dsn-transition-duration-normal)
       var(--dsn-transition-easing-default);
 }
 
@@ -97,11 +108,13 @@
 .dsn-menu-link__link:hover {
   color: var(--dsn-menu-item-hover-color);
   background-color: var(--dsn-menu-item-hover-background-color);
+  border-color: var(--dsn-menu-item-hover-indicator-color);
 }
 
 .dsn-menu-link__link:active {
   color: var(--dsn-menu-item-active-color);
   background-color: var(--dsn-menu-item-active-background-color);
+  border-color: var(--dsn-menu-item-active-indicator-color);
 }
 
 .dsn-menu-link__link:focus-visible {
@@ -116,20 +129,16 @@
 }
 
 /* =============================================================================
-   Current (actieve pagina) — border-inline-start indicator
+   Current (actieve pagina) — indicator in de current-kleur
+   Staat na :hover en :active, zodat de current-indicator bij gelijke
+   specificiteit wint.
    ============================================================================= */
 
 .dsn-menu-link__link[aria-current='page'] {
   font-weight: var(--dsn-menu-link-current-font-weight);
   color: var(--dsn-menu-link-current-color);
   background-color: var(--dsn-menu-link-current-background-color);
-  border-inline-start: var(--dsn-menu-link-current-indicator-width) solid
-    var(--dsn-menu-link-current-indicator-color);
-  /* Compenseer de indicator-breedte zodat de tekst horizontaal uitlijnt met niet-actieve items */
-  padding-inline-start: calc(
-    var(--dsn-menu-item-padding-inline) -
-      var(--dsn-menu-link-current-indicator-width)
-  );
+  border-color: var(--dsn-menu-link-current-indicator-color);
 }
 
 .dsn-menu-link__link[aria-current='page']:hover {
@@ -143,21 +152,41 @@
 }
 
 /* =============================================================================
-   Current in horizontale Menu — border-block-end indicator
-   Overschrijft de border-inline-start uit de verticale variant.
+   Horizontale Menu — indicator als border-block-end
+   Verplaatst de indicator uit de verticale variant naar de onderkant.
    ============================================================================= */
 
-.dsn-menu--horizontal .dsn-menu-link__link[aria-current='page'] {
-  border-inline-start: none;
+.dsn-menu--horizontal .dsn-menu-link__link {
+  border-inline-start-width: 0;
+  border-block-end-width: var(--dsn-menu-item-indicator-width);
   /* Reset de padding-compensatie van de verticale variant */
   padding-inline-start: var(--dsn-menu-item-padding-inline);
-  border-block-end: var(--dsn-menu-link-current-indicator-width) solid
-    var(--dsn-menu-link-current-indicator-color);
-  /* Compenseer de indicator-hoogte zodat de tekst verticaal uitlijnt met niet-actieve items */
+  /* Compenseer de indicator-hoogte zodat de tekst verticaal op dezelfde plek blijft */
   padding-block-end: calc(
-    var(--dsn-menu-item-padding-block) -
-      var(--dsn-menu-link-current-indicator-width)
+    var(--dsn-menu-item-padding-block) - var(--dsn-menu-item-indicator-width)
   );
+}
+
+/* =============================================================================
+   Forced colors (High Contrast mode)
+   Een transparante border wordt in forced-colors mode zichtbaar gemaakt. Zonder
+   deze regels krijgt elk item een lijn. Systeemkleuren worden niet overschreven,
+   dus Canvas verbergt de indicator en de staten krijgen een eigen systeemkleur.
+   ============================================================================= */
+
+@media (forced-colors: active) {
+  .dsn-menu-link__link {
+    border-color: Canvas;
+  }
+
+  .dsn-menu-link__link:hover,
+  .dsn-menu-link__link:active {
+    border-color: Highlight;
+  }
+
+  .dsn-menu-link__link[aria-current='page'] {
+    border-color: CanvasText;
+  }
 }
 
 /* =============================================================================

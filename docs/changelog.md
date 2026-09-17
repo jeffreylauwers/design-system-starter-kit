@@ -10,6 +10,18 @@ All notable changes to this project are documented in this file.
 
 Nog niet gepubliceerde wijzigingen. Schrijf nieuwe changelog-entries hieronder; bij de volgende release wordt deze kop gepromoveerd naar het definitieve versienummer.
 
+### MenuLink en MenuButton: de indicator verschijnt nu ook bij hover
+
+De dikke lijn die de actieve pagina markeert (3px, aan de inline-start-kant of aan de onderkant in een horizontaal `Menu`) verschijnt nu ook bij hover en active, in de hover- en active-kleur. Dat geldt voor `MenuLink` en `MenuButton`, en dus ook voor `Menu` en de navigatie in `PageHeader`.
+
+De indicator wordt niet meer per staat toegevoegd. Elk item heeft hem altijd, in de kleur transparent, en de padding compenseert zijn breedte. Alleen de kleur verandert per staat, dus de tekst verspringt niet en de lijn loopt mee met de bestaande `transition`. Een `box-shadow` viel af: die verdwijnt in forced-colors mode, en daarmee ook de current-indicator, precies waar hij het hardst nodig is.
+
+Een transparante border wordt in forced-colors mode juist wél zichtbaar. Zonder extra regel had elk item daar een lijn gekregen. De indicator krijgt daarom systeemkleuren: `Canvas` in rust, `Highlight` bij hover en active, `CanvasText` voor de actieve pagina.
+
+Nieuwe tokens in `menu-item.json`: `--dsn-menu-item-indicator-width`, `--dsn-menu-item-indicator-color`, `--dsn-menu-item-hover-indicator-color` en `--dsn-menu-item-active-indicator-color`. De inverse navbar en de Popover-reset in `PageHeader` zetten de hover- en active-kleur mee.
+
+**Let op:** `--dsn-menu-link-current-indicator-width` is vervangen door `--dsn-menu-item-indicator-width`, omdat de breedte nu voor elk item geldt. Wie de oude custom property overschreef, moet de nieuwe gebruiken.
+
 ### Table: het actiemenu opent nu een Popover
 
 De icon-only "Toon acties"-knop in de stories `WithActionsMenu` en `AllTogether` deed niets bij een klik. Hij opent nu een `Popover` met een `Menu` van drie acties: Bewerken, Dupliceren en Verwijderen. De popover krijgt als `aria-label` dezelfde rij-context als de knop ("Acties voor Laptop"), zodat duidelijk is op welke rij de acties slaan. De knop zelf is omgezet van losse markup naar de React `Button`, omdat `Popover` een `triggerRef` nodig heeft. De Table-docs tonen het patroon nu in HTML en React.

@@ -5,6 +5,10 @@
  *
  * Gedeelde visuele stijl via --dsn-menu-item-* tokens (menu-item.json).
  *
+ * Indicator — border-inline-start (border-block-end in een horizontaal Menu):
+ *   Altijd aanwezig in de kleur transparent, zichtbaar bij :hover en :active.
+ *   Zelfde gedrag als MenuLink, zodat items in één Menu gelijk reageren.
+ *
  * Structuur:
  * <li class="dsn-menu-button">
  *   <button type="button" class="dsn-menu-button__button">
@@ -47,6 +51,15 @@
   padding-block: var(--dsn-menu-item-padding-block);
   padding-inline: var(--dsn-menu-item-padding-inline);
 
+  /* Indicator: altijd aanwezig, alleen de kleur verandert per staat. De padding
+     compenseert de breedte zodat de tekst op dezelfde plek blijft staan. */
+  border-style: solid;
+  border-color: var(--dsn-menu-item-indicator-color);
+  border-inline-start-width: var(--dsn-menu-item-indicator-width);
+  padding-inline-start: calc(
+    var(--dsn-menu-item-padding-inline) - var(--dsn-menu-item-indicator-width)
+  );
+
   /* Typography */
   font-family: inherit;
   font-size: var(--dsn-menu-item-font-size);
@@ -63,6 +76,8 @@
     background-color var(--dsn-transition-duration-normal)
       var(--dsn-transition-easing-default),
     color var(--dsn-transition-duration-normal)
+      var(--dsn-transition-easing-default),
+    border-color var(--dsn-transition-duration-normal)
       var(--dsn-transition-easing-default);
 }
 
@@ -86,11 +101,13 @@
 .dsn-menu-button__button:hover {
   color: var(--dsn-menu-item-hover-color);
   background-color: var(--dsn-menu-item-hover-background-color);
+  border-color: var(--dsn-menu-item-hover-indicator-color);
 }
 
 .dsn-menu-button__button:active {
   color: var(--dsn-menu-item-active-color);
   background-color: var(--dsn-menu-item-active-background-color);
+  border-color: var(--dsn-menu-item-active-indicator-color);
 }
 
 .dsn-menu-button__button:focus-visible {
@@ -102,4 +119,36 @@
   box-shadow: 0 0 0
     calc(var(--dsn-focus-outline-offset) + var(--dsn-focus-outline-width))
     var(--dsn-focus-inverse-outline-color);
+}
+
+/* =============================================================================
+   Horizontale Menu — indicator als border-block-end
+   ============================================================================= */
+
+.dsn-menu--horizontal .dsn-menu-button__button {
+  border-inline-start-width: 0;
+  border-block-end-width: var(--dsn-menu-item-indicator-width);
+  /* Reset de padding-compensatie van de verticale variant */
+  padding-inline-start: var(--dsn-menu-item-padding-inline);
+  /* Compenseer de indicator-hoogte zodat de tekst verticaal op dezelfde plek blijft */
+  padding-block-end: calc(
+    var(--dsn-menu-item-padding-block) - var(--dsn-menu-item-indicator-width)
+  );
+}
+
+/* =============================================================================
+   Forced colors (High Contrast mode)
+   Een transparante border wordt in forced-colors mode zichtbaar gemaakt.
+   Canvas verbergt de indicator, Highlight toont hem bij hover en active.
+   ============================================================================= */
+
+@media (forced-colors: active) {
+  .dsn-menu-button__button {
+    border-color: Canvas;
+  }
+
+  .dsn-menu-button__button:hover,
+  .dsn-menu-button__button:active {
+    border-color: Highlight;
+  }
 }

@@ -25,12 +25,7 @@
         "indicator-color": {
           "$value": "{dsn.color.action-2.color-default}",
           "$type": "color",
-          "$description": "MenuLink-specifiek: kleur van de border-inline-start indicator"
-        },
-        "indicator-width": {
-          "$value": "3px",
-          "$type": "dimension",
-          "$description": "MenuLink-specifiek: breedte van de border-inline-start indicator"
+          "$description": "MenuLink-specifiek: kleur van de indicator voor de actieve/huidige pagina"
         },
         "hover": {
           "color": {

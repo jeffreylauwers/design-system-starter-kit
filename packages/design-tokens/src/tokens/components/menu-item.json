@@ -51,6 +51,16 @@
         "$type": "color",
         "$description": "Gedeeld: standaard achtergrondkleur"
       },
+      "indicator-width": {
+        "$value": "3px",
+        "$type": "dimension",
+        "$description": "Gedeeld: dikte van de indicator (border-inline-start, of border-block-end in een horizontaal Menu). Altijd aanwezig zodat hover en current niet verspringen"
+      },
+      "indicator-color": {
+        "$value": "{dsn.color.transparent}",
+        "$type": "color",
+        "$description": "Gedeeld: standaard kleur van de indicator, onzichtbaar"
+      },
       "hover": {
         "color": {
           "$value": "{dsn.color.action-2.color-hover}",
@@ -61,6 +71,11 @@
           "$value": "{dsn.color.action-2.bg-hover}",
           "$type": "color",
           "$description": "Gedeeld: hover achtergrondkleur"
+        },
+        "indicator-color": {
+          "$value": "{dsn.color.action-2.color-hover}",
+          "$type": "color",
+          "$description": "Gedeeld: hover kleur van de indicator"
         }
       },
       "active": {
@@ -73,6 +88,11 @@
           "$value": "{dsn.color.action-2.bg-active}",
           "$type": "color",
           "$description": "Gedeeld: active achtergrondkleur"
+        },
+        "indicator-color": {
+          "$value": "{dsn.color.action-2.color-active}",
+          "$type": "color",
+          "$description": "Gedeeld: active kleur van de indicator"
         }
       }
     }
