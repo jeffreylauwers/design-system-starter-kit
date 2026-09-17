@@ -87,9 +87,18 @@ function strokeFieldsFor(spec) {
   ];
 }
 
+/**
+ * `line-height` staat hier bewust niet tussen. Het token is een verhouding
+ * (1.5), en Figma leest een getal op `lineHeight` als pixels. Binden zou elke
+ * regel 1,5px hoog maken; de verificatie hieronder houdt dat tegen, maar het
+ * probleem zelf is dat de pixelwaarde van twee assen afhangt (font-size per
+ * viewport, verhouding per theme). Zie issue #328.
+ */
 const TEXT_FIELDS = [
   { field: 'fills', property: 'color', kind: 'paint', materialise: true },
+  { field: 'fontFamily', property: 'font-family', kind: 'string' },
   { field: 'fontSize', property: 'font-size', kind: 'number' },
+  { field: 'fontWeight', property: 'font-weight', kind: 'number' },
 ];
 
 const VECTOR_FIELDS = [
@@ -171,6 +180,19 @@ function matchesMeasurement({ kind, materialise }, variable, measured) {
       Math.abs((measured.opacity ?? 1) - (target.a ?? 1)) < CHANNEL_TOLERANCE;
     if (!sameChannels || !sameAlpha) {
       return 'de waarde van het token wijkt af van de gemeten kleur';
+    }
+    return null;
+  }
+
+  if (kind === 'string') {
+    if (variable.type !== 'STRING') {
+      return `het token is ${variable.type}, geen tekst`;
+    }
+    if (typeof measured !== 'string') {
+      return 'er is geen gemeten waarde voor dit veld';
+    }
+    if (measured !== variable.value) {
+      return `de waarde van het token (${variable.value}) wijkt af van de gemeten ${measured}`;
     }
     return null;
   }

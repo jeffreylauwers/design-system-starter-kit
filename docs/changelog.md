@@ -10,6 +10,20 @@ All notable changes to this project are documented in this file.
 
 Nog niet gepubliceerde wijzigingen. Schrijf nieuwe changelog-entries hieronder; bij de volgende release wordt deze kop gepromoveerd naar het definitieve versienummer.
 
+### Figma-sync: typografie bindt, tekstlagen heten Tekst, maten volgen de CSS
+
+Voortgekomen uit de eerste ronde van de setcontrole (Tekst en lijsten, Acties). Drie bevindingen die in bijna elke set terugkwamen zijn in de generator opgelost, zodat ze in de volgende groepen niet opnieuw opduiken.
+
+**Font-family en font-weight binden nu aan hun variable.** Tot nu toe bond een tekstlaag alleen zijn kleur en `font-size`; de 115 typografie-variables bestonden wel, maar hingen aan niets. Over alle 55 sets zijn er 431 font-family- en 421 font-weight-bindingen bijgekomen. Daarvoor zet de variables-export in een font-family-variable nu één familienaam in plaats van de CSS-stack: `IBM Plex Sans`, niet `IBM Plex Sans, sans-serif`, want de stack bestaat in Figma niet als lettertype. Dat raakt vier variables (`text/font-family/default` en `/monospace`, `heading/font-family`, `form-control/font-family`), en niets anders in `variables.json`.
+
+`line-height` bindt bewust niet. Het token is een verhouding, en Figma leest een getal op `lineHeight` als pixels. De pixelwaarde hangt van viewport en theme tegelijk af, en dat is issue #328.
+
+StatusBadge bindt zijn gewicht niet: het is een `<strong>`, vet door de browser en niet door een token. Dat staat in het bindingsrapport.
+
+**Elke tekstlaag heet Tekst.** Eerst heette een tekstlaag naar zijn klasse (`dsn-heading`) of naar de eerste 24 tekens van de inhoud (`Ga direct naar de hoofdi`). Na een herimport gaat tekst die een designer in een geplaatste instance had aangepast daardoor één keer verloren, want Figma zoekt die override terug via het laagpad. De setnamen veranderen niet: die kwamen voor Heading, Paragraph en de andere tekst-sets uit de laagnaam, en worden nu uit de CSS-klasse gehaald.
+
+**Maten volgen de CSS.** SkipLink hugt nu in beide richtingen in plaats van vast op 241×40 te staan. Een absoluut gepositioneerde root krimpt om zijn inhoud, net als in de browser. De tekst van IconList, CheckboxOption, MenuLink en andere rijen staat op FILL, zodat hij afbreekt in plaats van de rij uit te groeien. Daarnaast twee correcties die daarbij boven kwamen: `inline-size` en `block-size` tellen nu mee als vaste maat (anders zouden Drawer en ModalDialog om hun inhoud krimpen), en een frame zonder inhoud hugt niet meer, want dat klapt in tot zijn padding. Dat laatste zet de hoogte van de zeven tekstvelden, de divider van MenuLink en de media van File op hun gemeten maat.
+
 ### MenuLink en MenuButton: de indicator verschijnt nu ook bij hover
 
 De dikke lijn die de actieve pagina markeert (3px, aan de inline-start-kant of aan de onderkant in een horizontaal `Menu`) verschijnt nu ook bij hover en active, in de hover- en active-kleur. Dat geldt voor `MenuLink` en `MenuButton`, en dus ook voor `Menu` en de navigatie in `PageHeader`.

@@ -446,6 +446,15 @@ function cornerRadiusFrom(styles, rect) {
       };
 }
 
+/**
+ * De naam van elke tekstlaag.
+ *
+ * Eén vaste naam in plaats van de klasse (`dsn-heading`) of de eerste woorden
+ * van de tekst. Een designer herkent een tekstlaag aan zijn type, en een naam
+ * die meeverandert met de inhoud maakt een laagpad onvoorspelbaar.
+ */
+const TEXT_LAYER_NAME = 'Tekst';
+
 /** Tekststijl uit de computed styles van het *ouder*-element. */
 function textStyleFrom(styles) {
   const lineHeight = styles.lineHeight;
@@ -484,6 +493,26 @@ function paintFrom(cssColor) {
  * een absoluut gepositioneerd kind (Figma: layoutPositioning ABSOLUTE) en een
  * kind met een expliciete cel in een grid (Figma: grid anchors).
  */
+/**
+ * Mag de tekst aan het eind van deze rij de resterende breedte vullen?
+ *
+ * In CSS is tekst in een flex-rij een item dat mag krimpen, en dus afbreekt
+ * zodra hij niet meer past. In Figma breekt tekst alleen af als de laag een
+ * breedte heeft: op HUG groeit hij de rij uit. FILL is daar het equivalent.
+ *
+ * Alleen in een rij die zelf een blok is (`flex`, geen `inline-flex`): een
+ * inline rij hugt, en FILL in een HUG-ouder kan Figma niet. En alleen als de
+ * rij vooraan uitlijnt, anders schuift het vullen de uitlijning op.
+ */
+function fillsRemainingRow(styles, layout) {
+  return (
+    layout.layoutMode === 'HORIZONTAL' &&
+    styles.display === 'flex' &&
+    (layout.primaryAxisAlignItems ?? 'MIN') === 'MIN' &&
+    layout.layoutWrap !== 'WRAP'
+  );
+}
+
 function applyChildPlacement(
   converted,
   child,
@@ -583,13 +612,21 @@ function applyChildPlacement(
  * @param {string} pathLabel leesbaar pad voor in de waarschuwing
  * @param {object} [bindings] variable-index en report, zie bindings.js
  */
-function convertNode(node, wideNode, warnings, pathLabel, bindings) {
+function convertNode(
+  node,
+  wideNode,
+  warnings,
+  pathLabel,
+  bindings,
+  options = {}
+) {
   const converted = convertElement(
     node,
     wideNode,
     warnings,
     pathLabel,
-    bindings
+    bindings,
+    options
   );
   // `data-figma-slot` uit de matrix: hier hangt straks een component property
   // aan. Het reist als `componentSlot` mee tot in de plugin, die de laag erop
@@ -598,7 +635,14 @@ function convertNode(node, wideNode, warnings, pathLabel, bindings) {
   return converted;
 }
 
-function convertElement(node, wideNode, warnings, pathLabel, bindings) {
+function convertElement(
+  node,
+  wideNode,
+  warnings,
+  pathLabel,
+  bindings,
+  { root = false } = {}
+) {
   if (node.kind === 'text') {
     // Een kale tekstnode erft zijn stijl van de ouder; die wordt daar gezet.
     return { type: 'TEXT', characters: node.text };
@@ -648,7 +692,7 @@ function convertElement(node, wideNode, warnings, pathLabel, bindings) {
     // aanwijzen dan er in de spec staat. De ouder legt ze.
     return {
       type: 'TEXT',
-      name: node.classes[0] ?? node.children[0].text.slice(0, 24),
+      name: TEXT_LAYER_NAME,
       characters: node.children[0].text,
       ...textStyleFrom(styles),
     };
@@ -678,6 +722,16 @@ function convertElement(node, wideNode, warnings, pathLabel, bindings) {
     px(styles.borderRightWidth);
   const children = reversed ? [...paired].reverse() : paired;
 
+  // Het laatste kind dat meestroomt; een absoluut kind staat buiten de rij.
+  const lastInFlowIndex = children.reduce(
+    (last, { child }, index) =>
+      child.styles?.position === 'absolute' ||
+      child.styles?.position === 'fixed'
+        ? last
+        : index,
+    -1
+  );
+
   const figmaNode = {
     type: 'FRAME',
     name: node.classes[0] ?? node.tag,
@@ -705,7 +759,7 @@ function convertElement(node, wideNode, warnings, pathLabel, bindings) {
         // Tekst erft de typografie van het element waarin hij staat, dus ook
         // de tokens daarvan. Zo wijzen spec en binding dezelfde waarde aan.
         Object.assign(converted, textStyleFrom(styles), {
-          name: converted.characters.slice(0, 24),
+          name: TEXT_LAYER_NAME,
         });
         converted.boundVariables = bindVariables(
           converted,
@@ -722,6 +776,13 @@ function convertElement(node, wideNode, warnings, pathLabel, bindings) {
         childLabel,
         contentWidth
       );
+      if (
+        converted.type === 'TEXT' &&
+        index === lastInFlowIndex &&
+        fillsRemainingRow(styles, autoLayout)
+      ) {
+        converted.layoutSizingHorizontal = 'FILL';
+      }
       return converted;
     }),
   };
@@ -744,16 +805,33 @@ function convertElement(node, wideNode, warnings, pathLabel, bindings) {
   // Checkbox liep op allebei stuk. De control hugde naar het vinkje van 16px
   // in plaats van de 24 aan te houden, en de root hugde naar niets, want een
   // absoluut kind telt in Figma niet mee voor de maat van zijn ouder.
-  const absolute = styles.position === 'absolute';
+  //
+  // De root van een variant telt niet als absoluut. Hij is in Figma het
+  // component zelf, en er is niets waartegen zijn insets gelden. SkipLink is
+  // alleen absoluut om zich buiten beeld te zetten; zijn maat komt gewoon uit
+  // zijn tekst.
+  const absolute = styles.position === 'absolute' && !root;
   const fixedWidth = absolute || Boolean(node.tokens?.width);
   const fixedHeight = absolute || Boolean(node.tokens?.height);
 
+  // Krimpt om zijn inhoud: `inline-block` net als `inline-flex`, en een
+  // absoluut gepositioneerde root zonder eigen breedte ook. Voor die laatste
+  // kijken naar `display` werkt niet: de browser rekent `inline-block` op een
+  // absoluut element om naar `block`.
+  const positioned =
+    styles.position === 'absolute' || styles.position === 'fixed';
+  const shrinkWraps =
+    styles.display === 'inline-flex' ||
+    styles.display === 'inline-block' ||
+    (root && positioned);
+
+  // HUG zonder iets om naar te huggen klapt in tot 0. Een DotBadge is een lege
+  // stip, en de wrapper van Popover heeft alleen een absoluut kind.
+  const canHug = hasAutoLayout && lastInFlowIndex >= 0;
+
   figmaNode.layoutSizingHorizontal =
-    hasAutoLayout && styles.display === 'inline-flex' && !fixedWidth
-      ? 'HUG'
-      : 'FIXED';
-  figmaNode.layoutSizingVertical =
-    hasAutoLayout && !fixedHeight ? 'HUG' : 'FIXED';
+    canHug && shrinkWraps && !fixedWidth ? 'HUG' : 'FIXED';
+  figmaNode.layoutSizingVertical = canHug && !fixedHeight ? 'HUG' : 'FIXED';
 
   // Als laatste: de bindingen worden geverifieerd tegen de waarden die
   // hierboven in de spec terecht zijn gekomen.
@@ -938,7 +1016,8 @@ export function toComponentSet(matrix, extracted, variableIndex) {
       wideTree,
       warnings,
       `${matrix.component}[${label}]`,
-      bindings
+      bindings,
+      { root: true }
     );
     // Een component dat in zijn geheel tot tekst inklapt heeft geen ouder die
     // de binding voor hem kan leggen.
@@ -947,6 +1026,8 @@ export function toComponentSet(matrix, extracted, variableIndex) {
     }
     return { name: label, variantProperties: variant, node };
   });
+
+  const rootClass = extracted[0]?.tree.classes?.[0];
 
   // Vóór report.summary(): de achtergrondbinding telt mee in hetzelfde rapport.
   const canvas = canvasFor(variableIndex, report);
@@ -970,11 +1051,12 @@ export function toComponentSet(matrix, extracted, variableIndex) {
       // zouden Heading en HeadingGroup allebei `dsn-heading` heten. Twee sets
       // met dezelfde naam is voor een designer die op de klasse zoekt geen
       // keuze maar een gok.
+      //
+      // De klasse komt uit de DOM en niet uit de laagnaam van de root: een root
+      // die tot tekst inklapt (Heading, Paragraph) heet als laag "Tekst".
       name:
         matrix.setName ??
-        (components[0]?.node.name?.startsWith('dsn-')
-          ? components[0].node.name
-          : matrix.component),
+        (rootClass?.startsWith('dsn-') ? rootClass : matrix.component),
       variantAxes: matrix.axes,
       componentProperties: checkComponentProperties(
         matrix.componentProperties,
