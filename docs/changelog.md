@@ -10,6 +10,12 @@ All notable changes to this project are documented in this file.
 
 Nog niet gepubliceerde wijzigingen. Schrijf nieuwe changelog-entries hieronder; bij de volgende release wordt deze kop gepromoveerd naar het definitieve versienummer.
 
+### Figma-sync: line-height komt als procent in Figma
+
+In code is line-height unitless (`1.5`), en tot nu toe kwam hij in Figma als vaste pixelwaarde mee. Op een andere viewport-mode, met een andere font-size, klopte die niet meer. Een unitless line-height wordt nu een procent: `1.5` wordt `150%`, `1.25` wordt `125%`. Dat schaalt net als in de browser mee met de font-size. Over alle 55 sets gaat het om 431 tekstlagen; verder verandert er niets.
+
+Het is bewust geen variable. Figma leest een getal-variable op line-height als pixels, en een procent-variable bestaat niet. Het verschil tussen themes (1.5 in `start`, 1.4 in `wireframe`) volgt de tekst dus nog niet; daarvoor is een variable in pixels per theme en viewport nodig, zoals in #328.
+
 ### Figma-sync: typografie bindt, tekstlagen heten Tekst, maten volgen de CSS
 
 Voortgekomen uit de eerste ronde van de setcontrole (Tekst en lijsten, Acties). Drie bevindingen die in bijna elke set terugkwamen zijn in de generator opgelost, zodat ze in de volgende groepen niet opnieuw opduiken.

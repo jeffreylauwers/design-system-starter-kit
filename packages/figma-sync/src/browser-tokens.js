@@ -45,6 +45,8 @@ export const TRACKED_PROPERTIES = [
   'font-family',
   'font-size',
   'font-weight',
+  // Niet om te binden, maar om te zien of de regelhoogte een verhouding is.
+  'line-height',
   // Niet om te binden, maar om te weten óf de CSS de maat expliciet zet.
   // Computed `width` is altijd een pixelwaarde, dus daaruit valt niet af te
   // lezen of hij van een declaratie komt of van de inhoud. Uit de cascade wel.
@@ -67,6 +69,7 @@ export function createTokenReader(trackedProperties) {
     'font-family',
     'font-size',
     'font-weight',
+    'line-height',
   ]);
 
   const BORDER_STYLES = new Set([
