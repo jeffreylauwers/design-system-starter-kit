@@ -12,6 +12,8 @@
 
 import { TEKST } from '../text.js';
 
+import { FLAG } from '../flags.js';
+
 export default {
   component: 'OptionLabel',
 
@@ -25,15 +27,15 @@ export default {
   ],
 
   axes: {
-    state: ['default', 'disabled'],
+    disabled: FLAG,
   },
 
   componentProperties: [{ name: 'label', type: 'TEXT', slot: 'label' }],
 
-  render({ state }) {
+  render({ disabled }) {
     const classes = [
       'dsn-option-label',
-      state === 'disabled' && 'dsn-option-label--disabled',
+      disabled === 'true' && 'dsn-option-label--disabled',
     ]
       .filter(Boolean)
       .join(' ');

@@ -8,6 +8,8 @@
 
 import { TEKST, VEEL_TEKST } from '../text.js';
 
+import { FLAG } from '../flags.js';
+
 export default {
   component: 'RadioOption',
 
@@ -25,16 +27,17 @@ export default {
   wrapperStyle: 'width: 343px;',
 
   axes: {
-    state: ['unchecked', 'checked', 'disabled'],
+    state: ['unchecked', 'checked'],
+    disabled: FLAG,
     length: ['short-text', 'long-text'],
   },
 
-  render({ state, length }) {
+  render({ state, length, disabled: isDisabled }) {
     const checked = state === 'checked' ? ' checked' : '';
-    const disabled = state === 'disabled' ? ' disabled' : '';
+    const disabled = isDisabled === 'true' ? ' disabled' : '';
     const labelClasses = [
       'dsn-option-label',
-      state === 'disabled' && 'dsn-option-label--disabled',
+      isDisabled === 'true' && 'dsn-option-label--disabled',
     ]
       .filter(Boolean)
       .join(' ');

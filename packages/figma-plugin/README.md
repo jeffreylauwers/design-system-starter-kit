@@ -269,6 +269,7 @@ die er, dan wordt hij bijgewerkt in plaats van dat er een tweede naast komt:
 | Variant staat in de spec, nog niet in Figma  | Wordt toegevoegd aan de bestaande set                                                                      |
 | Variant staat in Figma, niet meer in de spec | Blijft staan, met een melding in de log                                                                    |
 | De set heeft een as bij gekregen             | De oude variant gaat over in de nieuwe variant met dezelfde waarden, en de eerste waarde op elke nieuwe as |
+| Een waarde is een eigen as geworden          | `state=disabled` gaat over in `state=default` plus `disabled=true`, met dezelfde node-id                   |
 | Property staat in de spec en op de set       | Wordt bijgewerkt, houdt zijn property-id                                                                   |
 | Property staat op de set, niet in de spec    | Blijft staan, met een melding in de log                                                                    |
 

@@ -15,6 +15,8 @@
 import { icon } from '../icons.js';
 import { TEKST } from '../text.js';
 
+import { FLAG } from '../flags.js';
+
 export default {
   component: 'FormField',
 
@@ -35,12 +37,12 @@ export default {
   wrapperStyle: 'width: 343px;',
 
   axes: {
-    state: ['default', 'invalid'],
+    invalid: FLAG,
     description: ['with-description', 'no-description'],
   },
 
-  render({ state, description }) {
-    const invalid = state === 'invalid';
+  render({ invalid: isInvalid, description }) {
+    const invalid = isInvalid === 'true';
 
     const classes = ['dsn-form-field', invalid && 'dsn-form-field--invalid']
       .filter(Boolean)

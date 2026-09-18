@@ -16,6 +16,8 @@ const FIELDS = [
   { label: 'Jaar', width: 'sm', value: '2026' },
 ];
 
+import { FLAG } from '../flags.js';
+
 export default {
   component: 'DateInputGroup',
 
@@ -33,11 +35,11 @@ export default {
   wrapperStyle: 'width: 343px;',
 
   axes: {
-    state: ['default', 'invalid'],
+    invalid: FLAG,
   },
 
-  render({ state }) {
-    const invalid = state === 'invalid' ? ' aria-invalid="true"' : '';
+  render({ invalid: isInvalid }) {
+    const invalid = isInvalid === 'true' ? ' aria-invalid="true"' : '';
 
     const fields = FIELDS.map(
       ({ label, width, value }) =>

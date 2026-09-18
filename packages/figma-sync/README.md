@@ -620,6 +620,9 @@ dsn-heading-group"`, dus zonder override zouden Heading en HeadingGroup
   allebei `dsn-heading` heten.
 - **`data-figma-value` en `data-figma-placeholder`** op een tekstveld maken er
   een tekstlaag van, zie "Tekst in een tekstveld".
+- **`skipVariant(combination)`** laat combinaties weg die niets betekenen. Een
+  uitgeschakelde knop heeft geen hover, en een veld is niet tegelijk `disabled`
+  en `invalid`. `skipFlagCombinations` in `src/flags.js` bouwt zo'n functie.
 - **`optional: true`** op een component property laat hem alleen hangen in de
   varianten die de laag hebben. Zonder is een property die niet in elke variant
   een laag heeft een fout.
@@ -746,6 +749,27 @@ in plaats van dat het stil blijft:
 `IconList` laat zien wat het alternatief is: die zet `list-style: none` en
 tekent zijn markering met een echt `<svg>`, en komt daardoor wel volledig over.
 
+### Disabled en invalid zijn eigen assen
+
+In code is `disabled` geen waarde van een toestand maar een eigen schakelaar:
+een veld kan tegelijk hover en invalid zijn. Zolang ze waarden van de
+`state`-as waren, moest een designer kiezen.
+
+`disabled` en `invalid` zijn daarom eigen assen met `false` en `true`. Figma
+toont een as met precies die twee waarden als schakelaar, dus in het properties
+panel is het verschil met een boolean er niet. Een echte BOOLEAN-property kan
+het niet zijn: die toont of verbergt alleen een laag, en deze toestanden
+veranderen kleuren en randen.
+
+Zonder meer zou elke as het aantal varianten verdubbelen met standen die niemand
+kiest, zoals hover én disabled. `skipVariant` laat die weg: een vlag staat
+alleen aan met de andere assen in hun basisstand, en twee vlaggen tegelijk
+bestaan niet. Daardoor blijft het aantal varianten gelijk aan wat het met de
+oude `state`-as was.
+
+Dit geldt voor Button, Link, de zeven formuliervelden, FormField,
+DateInputGroup, OptionLabel, Checkbox, Radio, CheckboxOption en RadioOption.
+
 ### Tekst in een tekstveld
 
 Een tekstveld heeft geen tekst in de DOM. Een ingevulde waarde is een
@@ -776,9 +800,16 @@ zo tekent: hun formaathint (`dd-mm-jjjj`, `--:--`) staat in de tekstkleur van he
 veld, dus daar krijgt de hint de stijl van het veld zelf.
 
 De tekst zelf komt uit twee TEXT-properties, `value` en `placeholder`. Die zijn
-**optioneel**: ze hangen alleen in de varianten waar die laag bestaat. Een
-TextArea houdt zijn gemeten hoogte, want die komt uit `rows` en niet uit de
-tekst.
+**optioneel**: ze hangen alleen in de varianten waar die laag bestaat.
+
+De tekstlaag **hugt**, en het veld eromheen krijgt `clipsContent`. Te lange
+tekst loopt daarmee het veld uit en wordt afgeknipt, precies zoals in de
+browser: een `<input>` groeit niet mee en breekt niet af. De tekst staat
+verticaal gecentreerd en links, zoals de browser hem ook zet.
+
+TextArea doet dit alles níet. Daar breekt tekst wél af en groeit hij naar
+beneden, dus de tekstlaag houdt FILL, lijnt bovenaan uit en het veld houdt zijn
+gemeten hoogte: die komt uit `rows` en niet uit de tekst.
 
 Het aantal varianten gaat daarmee maal vier: TextInput van 35 naar 140. Bij een
 herimport gaat een bestaande variant over in de variant met beide assen op

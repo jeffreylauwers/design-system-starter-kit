@@ -17,6 +17,8 @@ import { TEKST } from '../text.js';
 const ICON_START = icon('chevron-left', { slot: 'icon-start' });
 const ICON_END = icon('chevron-right', { slot: 'icon-end' });
 
+import { FLAG, skipFlagCombinations } from '../flags.js';
+
 export default {
   component: 'Link',
 
@@ -32,8 +34,14 @@ export default {
 
   axes: {
     size: ['small', 'default', 'large'],
-    state: ['default', 'hover', 'disabled'],
+    state: ['default', 'hover'],
+    disabled: FLAG,
   },
+
+  skipVariant: skipFlagCombinations({
+    flags: ['disabled'],
+    base: { state: 'default' },
+  }),
 
   pseudoStates: { hover: 'hover' },
 
@@ -60,8 +68,8 @@ export default {
     },
   ],
 
-  render({ size, state }) {
-    const disabled = state === 'disabled' ? ' aria-disabled="true"' : '';
+  render({ size, disabled: isDisabled }) {
+    const disabled = isDisabled === 'true' ? ' aria-disabled="true"' : '';
 
     return `<a href="#" class="dsn-link dsn-link--size-${size}"${disabled} data-figma-root>
       ${ICON_START}

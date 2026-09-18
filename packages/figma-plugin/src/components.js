@@ -864,16 +864,27 @@ function variantFinder(knownVariants, axes) {
     }
 
     const wanted = component.variantProperties ?? {};
+    const base = (axis) => axes?.[axis]?.[0];
     const match = parsed.find(({ name, properties }) => {
       if (claimed.has(name) || !properties) return false;
-      const oldKeys = Object.keys(properties);
-      if (!oldKeys.every((key) => wanted[key] === properties[key])) {
+
+      // Een waarde kan ook een eigen as zijn geworden: `state=disabled` werd
+      // `state=default` plus `disabled=true`. De oude variant hoort dan bij de
+      // nieuwe variant waarin die as aan staat.
+      const promoted = [];
+      for (const [key, value] of Object.entries(properties)) {
+        if (wanted[key] === value) continue;
+        if (wanted[value] === 'true' && wanted[key] === base(key)) {
+          promoted.push(value);
+          continue;
+        }
         return false;
       }
+
       const newKeys = Object.keys(wanted).filter((key) => !(key in properties));
-      return (
-        newKeys.length > 0 &&
-        newKeys.every((key) => axes?.[key]?.[0] === wanted[key])
+      if (!newKeys.length && !promoted.length) return false;
+      return newKeys.every(
+        (key) => promoted.includes(key) || base(key) === wanted[key]
       );
     });
     if (!match) return undefined;

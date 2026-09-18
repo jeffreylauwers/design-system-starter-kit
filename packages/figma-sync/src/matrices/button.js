@@ -25,6 +25,8 @@ import { TEKST } from '../text.js';
 const ICON_START = icon('chevron-left', { slot: 'icon-start' });
 const ICON_END = icon('chevron-right', { slot: 'icon-end' });
 
+import { FLAG, skipFlagCombinations } from '../flags.js';
+
 export default {
   component: 'Button',
 
@@ -67,13 +69,19 @@ export default {
       'subtle-positive',
     ],
     size: ['small', 'default', 'large'],
-    state: ['default', 'hover', 'disabled'],
+    state: ['default', 'hover'],
+    disabled: FLAG,
   },
 
   /**
    * Toestanden die in de browser via een pseudo-klasse ontstaan en dus door
    * Playwright nagebootst moeten worden in plaats van via een class.
    */
+  skipVariant: skipFlagCombinations({
+    flags: ['disabled'],
+    base: { state: 'default' },
+  }),
+
   pseudoStates: { hover: 'hover' },
 
   /**
@@ -117,13 +125,13 @@ export default {
   ],
 
   /** Bouwt de markup voor één cel van de matrix. */
-  render({ variant, size, state }) {
+  render({ variant, size, disabled: isDisabled }) {
     const classes = [
       'dsn-button',
       `dsn-button--${variant}`,
       `dsn-button--size-${size}`,
     ].join(' ');
-    const disabled = state === 'disabled' ? ' disabled' : '';
+    const disabled = isDisabled === 'true' ? ' disabled' : '';
 
     return `<button type="button" class="${classes}"${disabled} data-figma-root>
       ${ICON_START}

@@ -431,7 +431,11 @@ export async function extractMatrix(matrix) {
   // daar bij het eerste gebruik een cascade-index van.
   const installTokenReader = `window.__dsnReadTokenSources = (${createTokenReader.toString()})(${JSON.stringify(TRACKED_PROPERTIES)});`;
 
-  const combinations = cartesian(matrix.axes);
+  // `skipVariant` laat combinaties weg die niets betekenen: een uitgeschakelde
+  // knop heeft geen hover. Zie `flags.js`.
+  const combinations = cartesian(matrix.axes).filter(
+    (combination) => !matrix.skipVariant?.(combination)
+  );
   const results = [];
 
   const documentFor = (combination, wrapperStyle) =>

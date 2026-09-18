@@ -1277,22 +1277,36 @@ console.log('\n=== een as erbij (TextInput) ===');
   test.componentSet.name = 'dsn-text-input-as-erbij';
   test.componentSet.page = 'dsn/TextInputAsErbij';
 
+  // De set zoals hij vóór deze twee stappen in Figma stond: zonder `showValue`
+  // en `showPlaceholder`, en met `disabled` en `invalid` als waarde van de
+  // `state`-as in plaats van als eigen as.
+  const vlaggen = ['disabled', 'invalid'];
+  const weg = [...nieuweAssen, ...vlaggen];
   const oud = structuredClone(test);
   oud.componentSet.componentProperties = [];
-  oud.componentSet.variantAxes = Object.fromEntries(
-    Object.entries(oud.componentSet.variantAxes).filter(
-      ([axis]) => !nieuweAssen.includes(axis)
-    )
-  );
+  oud.componentSet.variantAxes = {
+    ...Object.fromEntries(
+      Object.entries(oud.componentSet.variantAxes).filter(
+        ([axis]) => !weg.includes(axis)
+      )
+    ),
+    state: [...oud.componentSet.variantAxes.state, ...vlaggen],
+  };
   oud.componentSet.components = oud.componentSet.components
     .filter((component) =>
       nieuweAssen.every((axis) => component.variantProperties[axis] === 'false')
     )
     .map((component) => {
+      const vlagAan = vlaggen.find(
+        (vlag) => component.variantProperties[vlag] === 'true'
+      );
       const properties = Object.fromEntries(
-        Object.entries(component.variantProperties).filter(
-          ([axis]) => !nieuweAssen.includes(axis)
-        )
+        Object.entries(component.variantProperties)
+          .filter(([axis]) => !weg.includes(axis))
+          .map(([axis, value]) => [
+            axis,
+            axis === 'state' && vlagAan ? vlagAan : value,
+          ])
       );
       return {
         ...component,
@@ -1339,10 +1353,21 @@ console.log('\n=== een as erbij (TextInput) ===');
       const properties = Object.fromEntries(
         naam.split(', ').map((part) => part.split('='))
       );
+      const vlagAan = vlaggen.find((vlag) => properties.state === vlag);
       const nieuweNaam = test.componentSet.components.find(
         (component) =>
           Object.entries(properties).every(
-            ([axis, value]) => component.variantProperties[axis] === value
+            ([axis, value]) =>
+              component.variantProperties[axis] === value ||
+              (axis === 'state' &&
+                vlagAan &&
+                component.variantProperties[axis] ===
+                  test.componentSet.variantAxes.state[0])
+          ) &&
+          vlaggen.every(
+            (vlag) =>
+              component.variantProperties[vlag] ===
+              (vlag === vlagAan ? 'true' : 'false')
           ) &&
           nieuweAssen.every(
             (axis) => component.variantProperties[axis] === 'false'
