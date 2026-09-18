@@ -10,6 +10,16 @@ All notable changes to this project are documented in this file.
 
 Nog niet gepubliceerde wijzigingen. Schrijf nieuwe changelog-entries hieronder; bij de volgende release wordt deze kop gepromoveerd naar het definitieve versienummer.
 
+### Figma-sync: disabled en invalid zijn eigen schakelaars, en tekst loopt het veld uit
+
+`disabled` en `invalid` waren waarden van de `state`-as, dus een designer kon niet tegelijk hover en invalid kiezen. Het zijn nu eigen assen met `false` en `true`, die Figma als schakelaar toont. Dat geldt voor Button, Link, de zeven formuliervelden, FormField, DateInputGroup, OptionLabel, Checkbox, Radio, CheckboxOption en RadioOption.
+
+Een matrix kan met `skipVariant` combinaties weglaten die niets betekenen: hover én disabled bestaat niet, en twee vlaggen tegelijk ook niet. Daardoor blijft het aantal varianten vrijwel gelijk; alleen CheckboxOption en RadioOption groeien van 6 naar 8, want een uitgevinkte én een aangevinkte optie kan nu ook disabled zijn.
+
+In de tekstvelden hugt de tekstlaag voortaan, en het veld knipt af (`clipsContent`). Te lange tekst loopt daarmee het veld uit in plaats van af te breken, net als in de browser, en de tekst staat verticaal gecentreerd en links. TextArea doet dit niet: daar breekt tekst wél af, dus die houdt FILL en lijnt bovenaan uit.
+
+Bij een herimport gaat een bestaande variant over in zijn nieuwe tegenhanger: `state=disabled` wordt `state=default` plus `disabled=true`, met dezelfde node-id. Geplaatste instances blijven dus hangen. Aan de componentcode is niets veranderd.
+
 ### Figma-sync: tekstvelden krijgen Show Value en Show Placeholder
 
 TextInput, TextArea, SearchInput, DateInput en TimeInput kwamen in Figma binnen als leeg frame. Een waarde of placeholder staat in de browser niet als tekst in de DOM, dus er viel niets te meten. Ze krijgen nu twee assen, `showValue` en `showPlaceholder`, die Figma als schakelaar toont, met daarbij een tekstlaag voor de waarde of de placeholder. De tekst is via de TEXT-properties `value` en `placeholder` in het properties panel in te vullen. Staan beide aan, dan toont de variant de waarde, net als de browser. Select doet niet mee.

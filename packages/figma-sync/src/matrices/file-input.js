@@ -10,6 +10,8 @@
  * expliciet gemeld in plaats van stil gelaten.
  */
 
+import { FLAG, skipFlagCombinations } from '../flags.js';
+
 export default {
   component: 'FileInput',
 
@@ -29,14 +31,21 @@ export default {
   ],
 
   axes: {
-    state: ['default', 'hover', 'focus', 'disabled', 'invalid'],
+    state: ['default', 'hover', 'focus'],
+    disabled: FLAG,
+    invalid: FLAG,
   },
+
+  skipVariant: skipFlagCombinations({
+    flags: ['disabled', 'invalid'],
+    base: { state: 'default' },
+  }),
 
   pseudoStates: { hover: 'hover', focus: 'focus' },
 
-  render({ state }) {
-    const disabled = state === 'disabled' ? ' disabled' : '';
-    const invalid = state === 'invalid' ? ' aria-invalid="true"' : '';
+  render(variant) {
+    const disabled = variant.disabled === 'true' ? ' disabled' : '';
+    const invalid = variant.invalid === 'true' ? ' aria-invalid="true"' : '';
 
     return `<input type="file" class="dsn-file-input"${disabled}${invalid} data-figma-root>`;
   },

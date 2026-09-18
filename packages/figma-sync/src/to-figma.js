@@ -455,6 +455,17 @@ function cornerRadiusFrom(styles, rect) {
  */
 const TEXT_LAYER_NAME = 'Tekst';
 
+/**
+ * De tekstlaag die de extractor onder een tekstveld heeft gezet: de ingevulde
+ * waarde of de placeholder. Zie "Tekst in een tekstveld" in de README.
+ */
+function isFieldText(child) {
+  return (
+    child?.kind === 'text' &&
+    (child.slot === 'value' || child.slot === 'placeholder')
+  );
+}
+
 /** Zoveel pixels mag font-size maal verhouding afwijken van de gemeten regelhoogte. */
 const LINE_HEIGHT_TOLERANCE = 0.5;
 
@@ -779,6 +790,14 @@ function convertElement(
     -1
   );
 
+  // Een tekstveld met een waarde of placeholder erin. De tekstlaag hugt en
+  // loopt daarmee buiten het veld zodra hij te lang is, precies zoals in de
+  // browser, waar het veld de tekst afknipt en niet meegroeit. Dat afknippen
+  // doet `clipsContent`. Een textarea doet dit níet: daar breekt de tekst af
+  // en groeit hij naar beneden, dus die houdt FILL en lijnt bovenaan uit.
+  const fieldText =
+    node.tag !== 'textarea' && children.some(({ child }) => isFieldText(child));
+
   const figmaNode = {
     type: 'FRAME',
     name: node.classes[0] ?? node.tag,
@@ -787,12 +806,18 @@ function convertElement(
     x: node.rect.x,
     y: node.rect.y,
     ...autoLayout,
+    // Tekst in een veld staat verticaal gecentreerd en links, zoals de browser
+    // hem zet. In een verticale auto layout is dat de hoofdas voor het
+    // centreren en de kruisas voor links.
+    ...(fieldText && autoLayout.layoutMode === 'VERTICAL'
+      ? { primaryAxisAlignItems: 'CENTER', counterAxisAlignItems: 'MIN' }
+      : {}),
     ...minimumSizesFrom(styles, autoLayout),
     ...cornerRadiusFrom(styles, node.rect),
     fills: paintFrom(styles.backgroundColor),
     ...(strokes ?? {}),
     opacity: Number(styles.opacity) === 1 ? undefined : Number(styles.opacity),
-    clipsContent: styles.overflow === 'hidden',
+    clipsContent: fieldText || styles.overflow === 'hidden',
     children: children.map(({ child, wide }, index) => {
       const childLabel = `${pathLabel} > ${child.classes?.[0] ?? child.kind ?? child.tag ?? index}`;
       const converted = convertNode(
@@ -837,6 +862,11 @@ function convertElement(
         fillsRemainingRow(styles, autoLayout)
       ) {
         converted.layoutSizingHorizontal = 'FILL';
+      }
+      // De tekst in een veld hugt: te lange tekst loopt het veld uit in plaats
+      // van af te breken. Het veld knipt hem af, zie `clipsContent` hierboven.
+      if (fieldText && isFieldText(child)) {
+        converted.layoutSizingHorizontal = 'HUG';
       }
       return converted;
     }),

@@ -7,7 +7,8 @@
  *
  * 1. `characters` zetten voordat het font geladen is
  * 2. `layoutSizing*` op FILL terwijl de ouder geen auto layout heeft
- * 3. `layoutSizing*` op HUG terwijl de node zelf geen layoutMode heeft
+ * 3. `layoutSizing*` op HUG terwijl de node zelf geen layoutMode heeft (een
+ *    tekstlaag is de uitzondering: HUG is daar auto-width)
  * 4. `gridColumnAnchorIndex` en `gridRowAnchorIndex` zijn read-only; plaatsen
  *    in een grid gaat via setGridChildPosition(rowIndex, columnIndex)
  * 5. `gridAutoTracks` gaat over automatisch rijen toevoegen; de maten van de
@@ -585,6 +586,11 @@ class Node {
   }
 
   #assertSizing(axis, value) {
+    // Een tekstlaag heeft geen layoutMode maar kan wél huggen: dat is
+    // auto-width, en Figma zet daarvoor `textAutoResize`. Zo hugt de waarde in
+    // een TextInput en loopt te lange tekst het veld uit in plaats van af te
+    // breken.
+    if (value === 'HUG' && this.type === 'TEXT') return;
     if (value === 'HUG' && this.layoutMode === 'NONE') {
       throw new Error(`${axis}=HUG vereist een layoutMode op de node zelf`);
     }

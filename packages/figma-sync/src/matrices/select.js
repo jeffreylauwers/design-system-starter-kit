@@ -13,6 +13,8 @@
 import { icon } from '../icons.js';
 import { TEKST } from '../text.js';
 
+import { FLAG, skipFlagCombinations } from '../flags.js';
+
 export default {
   component: 'Select',
 
@@ -30,13 +32,20 @@ export default {
   wrapperStyle: 'width: 343px;',
 
   axes: {
-    state: ['default', 'hover', 'focus', 'disabled', 'invalid'],
+    state: ['default', 'hover', 'focus'],
+    disabled: FLAG,
+    invalid: FLAG,
     width: ['auto', 'md', 'full'],
   },
 
+  skipVariant: skipFlagCombinations({
+    flags: ['disabled', 'invalid'],
+    base: { state: 'default' },
+  }),
+
   pseudoStates: { hover: 'hover', focus: 'focus' },
 
-  render({ state, width }) {
+  render({ width, ...variant }) {
     const wrapperClasses = [
       'dsn-select-wrapper',
       width !== 'auto' && `dsn-select-wrapper--width-${width}`,
@@ -44,8 +53,8 @@ export default {
       .filter(Boolean)
       .join(' ');
 
-    const disabled = state === 'disabled';
-    const invalid = state === 'invalid' ? ' aria-invalid="true"' : '';
+    const disabled = variant.disabled === 'true';
+    const invalid = variant.invalid === 'true' ? ' aria-invalid="true"' : '';
 
     return `<div class="${wrapperClasses}" data-figma-root>
       <select class="dsn-text-input dsn-select"${disabled ? ' disabled' : ''}${invalid}>

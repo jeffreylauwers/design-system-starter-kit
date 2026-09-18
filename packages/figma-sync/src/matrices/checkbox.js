@@ -20,6 +20,8 @@
 
 import { icon } from '../icons.js';
 
+import { FLAG, skipFlagCombinations } from '../flags.js';
+
 export default {
   component: 'Checkbox',
 
@@ -35,8 +37,14 @@ export default {
 
   axes: {
     state: ['unchecked', 'checked', 'indeterminate'],
-    interaction: ['default', 'hover', 'disabled'],
+    interaction: ['default', 'hover'],
+    disabled: FLAG,
   },
+
+  skipVariant: skipFlagCombinations({
+    flags: ['disabled'],
+    base: { interaction: 'default' },
+  }),
 
   pseudoStates: { hover: 'hover' },
 
@@ -50,9 +58,9 @@ export default {
     }
   `,
 
-  render({ state, interaction }) {
+  render({ state, disabled: isDisabled }) {
     const checked = state === 'checked' ? ' checked' : '';
-    const disabled = interaction === 'disabled' ? ' disabled' : '';
+    const disabled = isDisabled === 'true' ? ' disabled' : '';
     const iconName = state === 'indeterminate' ? 'minus' : 'check';
     const indeterminate =
       state === 'indeterminate' ? ' data-indeterminate' : '';

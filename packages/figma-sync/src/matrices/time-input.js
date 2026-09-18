@@ -22,6 +22,8 @@ import {
   fieldTextAttributes,
 } from '../field-text.js';
 
+import { FLAG, skipFlagCombinations } from '../flags.js';
+
 export default {
   component: 'TimeInput',
 
@@ -40,17 +42,24 @@ export default {
   wrapperStyle: 'width: 343px;',
 
   axes: {
-    state: ['default', 'hover', 'focus', 'disabled', 'invalid'],
+    state: ['default', 'hover', 'focus'],
+    disabled: FLAG,
+    invalid: FLAG,
     ...FIELD_TEXT_AXES,
   },
 
   componentProperties: FIELD_TEXT_PROPERTIES,
 
+  skipVariant: skipFlagCombinations({
+    flags: ['disabled', 'invalid'],
+    base: { state: 'default' },
+  }),
+
   pseudoStates: { hover: 'hover', focus: 'focus' },
 
-  render({ state, ...variant }) {
-    const disabled = state === 'disabled';
-    const invalid = state === 'invalid' ? ' aria-invalid="true"' : '';
+  render(variant) {
+    const disabled = variant.disabled === 'true';
+    const invalid = variant.invalid === 'true' ? ' aria-invalid="true"' : '';
 
     const button = disabled
       ? ''

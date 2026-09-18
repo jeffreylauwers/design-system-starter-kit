@@ -14,6 +14,8 @@
  * inline `<style>` niet op, dus de Radio werd ongestyled gemeten.
  */
 
+import { FLAG, skipFlagCombinations } from '../flags.js';
+
 export default {
   component: 'Radio',
 
@@ -28,14 +30,20 @@ export default {
 
   axes: {
     state: ['unchecked', 'checked'],
-    interaction: ['default', 'hover', 'disabled'],
+    interaction: ['default', 'hover'],
+    disabled: FLAG,
   },
+
+  skipVariant: skipFlagCombinations({
+    flags: ['disabled'],
+    base: { interaction: 'default' },
+  }),
 
   pseudoStates: { hover: 'hover' },
 
-  render({ state, interaction }) {
+  render({ state, disabled: isDisabled }) {
     const checked = state === 'checked' ? ' checked' : '';
-    const disabled = interaction === 'disabled' ? ' disabled' : '';
+    const disabled = isDisabled === 'true' ? ' disabled' : '';
 
     return `<div class="dsn-radio" data-figma-root>
       <input type="radio" name="demo" class="dsn-radio__input"${checked}${disabled}>

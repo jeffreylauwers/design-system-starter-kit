@@ -22,6 +22,8 @@ import {
 } from '../field-text.js';
 import { TEKST } from '../text.js';
 
+import { FLAG, skipFlagCombinations } from '../flags.js';
+
 export default {
   component: 'TextInput',
 
@@ -37,16 +39,23 @@ export default {
   wrapperStyle: 'width: 343px;',
 
   axes: {
-    state: ['default', 'hover', 'focus', 'disabled', 'invalid'],
+    state: ['default', 'hover', 'focus'],
+    disabled: FLAG,
+    invalid: FLAG,
     ...FIELD_TEXT_AXES,
     width: ['auto', 'xs', 'sm', 'md', 'lg', 'xl', 'full'],
   },
 
   componentProperties: FIELD_TEXT_PROPERTIES,
 
+  skipVariant: skipFlagCombinations({
+    flags: ['disabled', 'invalid'],
+    base: { state: 'default' },
+  }),
+
   pseudoStates: { hover: 'hover', focus: 'focus' },
 
-  render({ state, width, ...variant }) {
+  render({ width, ...variant }) {
     const classes = [
       'dsn-text-input',
       width !== 'auto' && `dsn-text-input--width-${width}`,
@@ -54,8 +63,8 @@ export default {
       .filter(Boolean)
       .join(' ');
 
-    const disabled = state === 'disabled' ? ' disabled' : '';
-    const invalid = state === 'invalid' ? ' aria-invalid="true"' : '';
+    const disabled = variant.disabled === 'true' ? ' disabled' : '';
+    const invalid = variant.invalid === 'true' ? ' aria-invalid="true"' : '';
 
     const text = fieldTextAttributes(variant, {
       value: TEKST,
