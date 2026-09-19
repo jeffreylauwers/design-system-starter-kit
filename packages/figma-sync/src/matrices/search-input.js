@@ -33,12 +33,19 @@ export default {
 
   wrapperStyle: 'width: 343px;',
 
+  // De root is een wrapper-div om het veld en zijn icoon heen; die naam zegt
+  // een designer niets. De set heet naar het component zelf.
+  // Het veld en zijn icoon worden in Figma één frame, zie `mergeAdornments`.
+  mergeAdornments: true,
+
+  setName: 'dsn-search-input',
+
   axes: {
     state: ['default', 'hover', 'focus'],
     disabled: FLAG,
     invalid: FLAG,
     ...FIELD_TEXT_AXES,
-    width: ['auto', 'md', 'full'],
+    width: ['auto', 'xs', 'sm', 'md', 'lg', 'xl', 'full'],
   },
 
   componentProperties: FIELD_TEXT_PROPERTIES,

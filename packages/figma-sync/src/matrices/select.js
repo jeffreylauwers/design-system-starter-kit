@@ -31,17 +31,29 @@ export default {
 
   wrapperStyle: 'width: 343px;',
 
+  // De root is een wrapper-div om het veld en zijn icoon heen; die naam zegt
+  // een designer niets. De set heet naar het component zelf.
+  // Het veld en zijn icoon worden in Figma één frame, zie `mergeAdornments`.
+  mergeAdornments: true,
+
+  setName: 'dsn-select',
+
   axes: {
     state: ['default', 'hover', 'focus'],
     disabled: FLAG,
     invalid: FLAG,
-    width: ['auto', 'md', 'full'],
+    width: ['auto', 'xs', 'sm', 'md', 'lg', 'xl', 'full'],
   },
 
   skipVariant: skipFlagCombinations({
     flags: ['disabled', 'invalid'],
     base: { state: 'default' },
   }),
+
+  // Een `<select>` toont de gekozen optie; er is niets in te typen en er is
+  // geen placeholder, dus één tekst-property in plaats van de twee van een
+  // tekstveld.
+  componentProperties: [{ name: 'value', type: 'TEXT', slot: 'value' }],
 
   pseudoStates: { hover: 'hover', focus: 'focus' },
 
@@ -58,7 +70,7 @@ export default {
 
     return `<div class="${wrapperClasses}" data-figma-root>
       <select class="dsn-text-input dsn-select"${disabled ? ' disabled' : ''}${invalid}>
-        <option>${TEKST}</option>
+        <option data-figma-slot="value">${TEKST}</option>
       </select>
       ${disabled ? '' : icon('chevron-down', { className: 'dsn-select__icon' })}
     </div>`;
