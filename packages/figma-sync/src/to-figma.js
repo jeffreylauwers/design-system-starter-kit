@@ -828,19 +828,28 @@ function convertElement(
         bindings
       );
       if (converted.type === 'TEXT') {
-        // Tekst erft de typografie van het element waarin hij staat, dus ook
-        // de tokens daarvan. Zo wijzen spec en binding dezelfde waarde aan.
-        // De placeholder van een tekstveld is de uitzondering: die heeft zijn
-        // eigen stijl en tokens, uit `::placeholder`.
-        const textStyles = child.textStyles ?? styles;
-        const textTokens = child.textTokens ?? node.tokens;
-        Object.assign(
-          converted,
-          textStyleFrom(textStyles, textTokens, bindings?.index),
-          {
-            name: TEXT_LAYER_NAME,
-          }
-        );
+        // Een kále tekstnode erft de typografie van het element waarin hij
+        // staat, dus ook de tokens daarvan. Zo wijzen spec en binding dezelfde
+        // waarde aan. De placeholder van een tekstveld is de uitzondering: die
+        // heeft zijn eigen stijl en tokens, uit `::placeholder`.
+        //
+        // Een élement dat tot tekst inklapt houdt zijn eigen tokens. Het label
+        // van DateInputGroup wijst naar `form-field-label/*`; die van zijn
+        // ouder overnemen leverde daar de generieke `text/*` op.
+        // Een `<option>` is de uitzondering: de browser tekent een dichte
+        // `<select>` met de stijl van het veld zelf, niet met de UA-stijl van
+        // de optie. De tokens van de ouder zijn daar dus de juiste.
+        const collapsed = child.kind !== 'text' && child.tag !== 'option';
+        const textStyles = child.textStyles ?? (collapsed ? null : styles);
+        const textTokens =
+          child.textTokens ?? (collapsed ? child.tokens : node.tokens);
+        if (textStyles) {
+          Object.assign(
+            converted,
+            textStyleFrom(textStyles, textTokens, bindings?.index)
+          );
+        }
+        converted.name = TEXT_LAYER_NAME;
         converted.boundVariables = bindVariables(
           converted,
           textTokens,
@@ -982,6 +991,160 @@ function checkComponentProperties(declared, components, warnings) {
   });
 }
 
+/**
+ * Voegt een veld en zijn versiering samen tot één frame met auto layout.
+ *
+ * In de DOM is een SearchInput een wrapper met een absoluut geplaatst icoon en
+ * daaronder het veld, dat met een extra `padding-inline-start` ruimte voor dat
+ * icoon vrijhoudt. Eén op één vertaald levert dat in Figma drie lagen op waarin
+ * het icoon achter het veld verdwijnt, en een designer die de tekst langer
+ * maakt schuift niets op.
+ *
+ * Hier wordt het één frame: het veld levert zijn achtergrond, rand, radius en
+ * bindingen, en het icoon of de knop komt als gewoon kind in de rij te staan.
+ * De volgorde en de ruimte komen uit de meting, niet uit een aanname: de
+ * padding is de afstand van de rand tot het eerste kind, en `itemSpacing` de
+ * afstand tussen de kinderen.
+ *
+ * De tekst vult de rest van de rij zodra er versiering áchter staat (Select,
+ * DateInput), zodat die rechts uitlijnt. Staat de versiering ervoor
+ * (SearchInput), dan hugt de tekst, net als in een gewoon tekstveld.
+ */
+function mergeAdornments(root, tree, warnings, label) {
+  const domChildren = tree.children ?? [];
+  const outOfFlow = (node) =>
+    node.styles?.position === 'absolute' || node.styles?.position === 'fixed';
+  const fieldIndex = domChildren.findIndex(
+    (child) => child.kind !== 'text' && !outOfFlow(child)
+  );
+  const field = root.children?.[fieldIndex];
+  const adornments = (root.children ?? [])
+    .map((spec, index) => ({ spec, dom: domChildren[index] }))
+    .filter(({ dom }, index) => index !== fieldIndex && dom?.rect);
+
+  if (!field) {
+    warnings.push(
+      `${label}: samenvoegen tot één frame lukt niet, er is geen veld in de wrapper gevonden`
+    );
+    return root;
+  }
+
+  const naam = (tree.classes?.[0] ?? field.name).replace(/-wrapper$/, '');
+
+  // Zonder versiering valt er niets te herschikken: het veld wórdt het frame.
+  // De disabled-varianten van Select en DateInput renderen geen icoon of knop,
+  // en die horen dezelfde laagstructuur te houden als de rest.
+  if (!adornments.length) {
+    return {
+      ...field,
+      name: naam,
+      width: root.width,
+      height: root.height,
+      x: root.x,
+      y: root.y,
+      layoutMode: 'HORIZONTAL',
+      layoutWrap: 'NO_WRAP',
+      primaryAxisAlignItems: 'MIN',
+      counterAxisAlignItems: 'CENTER',
+      clipsContent: true,
+      layoutSizingHorizontal: 'FIXED',
+      layoutSizingVertical: field.layoutSizingVertical ?? 'HUG',
+    };
+  }
+
+  // De tekst van het veld. Zijn rechthoek komt uit de meting; ontbreekt die
+  // (een `<option>` rendert niet), dan telt het contentvlak van het veld.
+  const domField = domChildren[fieldIndex];
+  const contentStart = domField.rect.x + px(domField.styles?.paddingLeft);
+  // Een `<option>` rendert niet en meet dus 0x0. Zo'n rechthoek zegt niets
+  // over waar de tekst staat; dan telt het contentvlak van het veld.
+  const measured = (rect) => (rect?.width ? rect : null);
+  const contentWidth =
+    domField.rect.width -
+    px(domField.styles?.paddingLeft) -
+    px(domField.styles?.paddingRight);
+
+  const items = [
+    ...adornments.map(({ spec, dom }) => ({
+      spec,
+      x: dom.rect.x,
+      width: dom.rect.width,
+    })),
+    ...(field.children ?? []).map((spec, index) => {
+      const rect = measured(domField.children?.[index]?.rect);
+      return {
+        spec,
+        x: rect?.x ?? contentStart,
+        width: rect?.width ?? contentWidth,
+        isText: true,
+      };
+    }),
+  ].sort((a, b) => a.x - b.x);
+
+  const first = items[0];
+  const last = items[items.length - 1];
+  const gaps = items
+    .slice(1)
+    .map((item, index) => item.x - (items[index].x + items[index].width));
+  const textIndex = items.findIndex((item) => item.isText);
+
+  const merged = {
+    ...field,
+    name: naam,
+    width: root.width,
+    height: root.height,
+    x: root.x,
+    y: root.y,
+    layoutMode: 'HORIZONTAL',
+    layoutWrap: 'NO_WRAP',
+    primaryAxisAlignItems: 'MIN',
+    counterAxisAlignItems: 'CENTER',
+    // Alleen de zijde waar versiering staat wordt herrekend. De andere houdt
+    // de padding van het veld, en daarmee ook zijn binding.
+    paddingLeft: first.isText
+      ? field.paddingLeft
+      : Math.max(0, round(first.x - tree.rect.x)),
+    paddingRight: last.isText
+      ? field.paddingRight
+      : Math.max(
+          0,
+          round(tree.rect.x + tree.rect.width - (last.x + last.width))
+        ),
+    itemSpacing: gaps.length ? Math.max(0, round(Math.min(...gaps))) : 0,
+    clipsContent: true,
+    layoutSizingHorizontal: 'FIXED',
+    layoutSizingVertical: field.layoutSizingVertical ?? 'HUG',
+    children: items.map(({ spec, isText }, index) => {
+      const child = { ...spec };
+      delete child.layoutPositioning;
+      if (isText) {
+        // Staat er versiering áchter de tekst, dan duwt FILL die naar rechts.
+        child.layoutSizingHorizontal =
+          index < items.length - 1 ? 'FILL' : 'HUG';
+      }
+      return child;
+    }),
+  };
+
+  // De padding aan een zijde met versiering is herrekend en is dus niet meer
+  // de waarde van het token dat de ruimte voor dat icoon vrijhield.
+  const bindings = { ...(field.boundVariables ?? {}) };
+  for (const [side, oud] of [
+    ['paddingLeft', field.paddingLeft],
+    ['paddingRight', field.paddingRight],
+  ]) {
+    if (merged[side] !== oud) delete bindings[side];
+  }
+  merged.boundVariables = Object.keys(bindings).length ? bindings : undefined;
+
+  return merged;
+}
+
+/** Twee decimalen, zoals de meting ze ook levert. */
+function round(value) {
+  return Math.round(value * 100) / 100;
+}
+
 // =============================================================================
 // HET CANVAS ROND EEN COMPONENT SET
 // =============================================================================
@@ -1104,14 +1267,16 @@ export function toComponentSet(matrix, extracted, variableIndex) {
     const label = Object.entries(variant)
       .map(([axis, value]) => `${axis}=${value}`)
       .join(', ');
-    const node = convertNode(
-      tree,
-      wideTree,
-      warnings,
-      `${matrix.component}[${label}]`,
-      bindings,
-      { root: true }
-    );
+    const pathLabel = `${matrix.component}[${label}]`;
+    let node = convertNode(tree, wideTree, warnings, pathLabel, bindings, {
+      root: true,
+    });
+
+    // Een veld met een icoon of knop ernaast wordt één frame, zie
+    // `mergeAdornments`.
+    if (matrix.mergeAdornments) {
+      node = mergeAdornments(node, tree, warnings, pathLabel);
+    }
     // Een component dat in zijn geheel tot tekst inklapt heeft geen ouder die
     // de binding voor hem kan leggen.
     if (node.type === 'TEXT') {
@@ -1121,6 +1286,17 @@ export function toComponentSet(matrix, extracted, variableIndex) {
   });
 
   const rootClass = extracted[0]?.tree.classes?.[0];
+
+  // Wat er werkelijk in de boom staat. Het rapport telt tijdens het omzetten,
+  // en `mergeAdornments` gooit daarna een laag weg (de wrapper) en laat een
+  // padding-binding los. De plugin controleert zijn eigen aantal tegen dit
+  // getal, dus het hoort over de opgeleverde boom te gaan.
+  const countBindings = (node) =>
+    Object.keys(node.boundVariables ?? {}).length +
+    (node.children ?? []).reduce(
+      (total, child) => total + countBindings(child),
+      0
+    );
 
   // Vóór report.summary(): de achtergrondbinding telt mee in hetzelfde rapport.
   const canvas = canvasFor(variableIndex, report);
@@ -1168,6 +1344,14 @@ export function toComponentSet(matrix, extracted, variableIndex) {
       ...summariseWarnings([...new Set(warnings)]),
     ],
     // Wat er aan variables gebonden is, en wat een vaste waarde hield.
-    bindings: { ...report.summary(), modes: variableIndex?.modes },
+    bindings: {
+      ...report.summary(),
+      bound:
+        components.reduce(
+          (total, component) => total + countBindings(component.node),
+          0
+        ) + countBindings(canvas),
+      modes: variableIndex?.modes,
+    },
   };
 }

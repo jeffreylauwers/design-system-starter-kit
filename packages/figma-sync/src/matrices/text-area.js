@@ -34,7 +34,7 @@ export default {
     disabled: FLAG,
     invalid: FLAG,
     ...FIELD_TEXT_AXES,
-    width: ['auto', 'md', 'full'],
+    width: ['auto', 'xs', 'sm', 'md', 'lg', 'xl', 'full'],
   },
 
   componentProperties: FIELD_TEXT_PROPERTIES,
@@ -67,6 +67,9 @@ export default {
       variant.showPlaceholder === 'true' ? ' placeholder="Placeholder"' : '';
     const content = variant.showValue === 'true' ? TEKST : '';
 
-    return `<textarea class="${classes}"${placeholder}${text}${disabled}${invalid} data-figma-root>${content}</textarea>`;
+    // `rows="4"` is de standaard van het component (`rows = 4` in TextArea.tsx);
+    // een kale textarea is er in de browser 2 hoog en dat is niet wat een
+    // designer in code krijgt.
+    return `<textarea class="${classes}" rows="4"${placeholder}${text}${disabled}${invalid} data-figma-root>${content}</textarea>`;
   },
 };

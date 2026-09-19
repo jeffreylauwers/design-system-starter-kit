@@ -216,6 +216,12 @@ Typografie erft over. Declareert een element zelf geen `font-family` of
 `.dsn-body`. Zo bindt SkipLink aan `text/font-family/default` zonder eigen
 token.
 
+Een element dat tot één tekstlaag inklapt houdt daarbij zijn **eigen** tokens.
+Het label van DateInputGroup wijst naar `form-field-label/*`; die van zijn
+ouder overnemen leverde daar de generieke `text/*` op. Een kale tekstnode erft
+wél van het element waarin hij staat, en een `<option>` ook: de browser tekent
+een dichte `<select>` met de stijl van het veld, niet met die van de optie.
+
 Een gewicht dat uit de stylesheet van de browser komt bindt niet. StatusBadge is
 een `<strong>`, en dat is vet zonder declaratie. De voorouder levert dan
 `text/font-weight/default` (400) terwijl er 700 gemeten is, en de verificatie
@@ -769,6 +775,30 @@ oude `state`-as was.
 
 Dit geldt voor Button, Link, de zeven formuliervelden, FormField,
 DateInputGroup, OptionLabel, Checkbox, Radio, CheckboxOption en RadioOption.
+
+### Een veld met een icoon wordt één frame
+
+In de DOM is een SearchInput een wrapper met een absoluut geplaatst icoon en
+daaronder het veld, dat met een extra `padding-inline-start` ruimte voor dat
+icoon vrijhoudt. Eén op één vertaald levert dat in Figma drie lagen op waarin
+het icoon achter het veld verdwijnt, en tekst die langer wordt schuift niets
+op.
+
+`mergeAdornments: true` op de matrix maakt er één frame van: het veld levert
+zijn achtergrond, rand, radius en bindingen, en het icoon of de knop komt als
+gewoon kind in een horizontale auto layout te staan. De volgorde en de ruimte
+komen uit de meting: de padding is de afstand van de rand tot het eerste kind,
+`itemSpacing` de afstand ertussen. Alleen de zijde met versiering wordt
+herrekend; de andere houdt de padding van het veld, en daarmee zijn binding.
+
+Staat de versiering achter de tekst (Select, DateInput, TimeInput), dan vult de
+tekst de rij en lijnt de versiering rechts uit. Staat hij ervoor (SearchInput),
+dan hugt de tekst. Een variant zonder versiering, zoals de disabled-stand van
+Select, wordt hetzelfde frame zonder die laag, zodat alle varianten dezelfde
+opbouw houden.
+
+De set heet in die gevallen naar het component en niet naar de wrapper-div:
+`setName: 'dsn-select'` in plaats van `dsn-select-wrapper`.
 
 ### Tekst in een tekstveld
 

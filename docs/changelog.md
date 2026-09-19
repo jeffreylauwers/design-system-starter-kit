@@ -10,6 +10,16 @@ All notable changes to this project are documented in this file.
 
 Nog niet gepubliceerde wijzigingen. Schrijf nieuwe changelog-entries hieronder; bij de volgende release wordt deze kop gepromoveerd naar het definitieve versienummer.
 
+### Figma-sync: velden met een icoon worden één frame, en ingeklapte tekst houdt zijn eigen tokens
+
+Uit de setcontrole van de formuliervelden.
+
+**SearchInput, Select, DateInput en TimeInput zijn nu één frame.** Ze bestonden uit een wrapper met een absoluut geplaatst icoon en daaronder het veld, waardoor het icoon in Figma achter het veld verdween en niets meeschoof. Nu levert het veld zijn achtergrond, rand en bindingen, en staat het icoon of de knop als gewoon kind in een horizontale auto layout. Bij Select, DateInput en TimeInput vult de tekst de rij, zodat de versiering rechts uitlijnt; bij SearchInput hugt de tekst achter het icoon. Padding en tussenruimte komen uit de meting. Deze sets heten voortaan naar het component (`dsn-select`) en niet naar hun wrapper-div.
+
+**Een element dat tot tekst inklapt houdt zijn eigen tokens.** Tot nu toe nam het de tokens van zijn ouder over, waardoor het label van DateInputGroup aan `text/*` hing in plaats van aan `form-field-label/*`. Dat raakt de hele bibliotheek: de kop in Alert bindt nu aan `heading/level-3`, de tekst in Card aan `card/heading`, een optielabel aan `option-label/*`. Een kale tekstnode erft nog steeds van zijn element, en een `<option>` ook, want de browser tekent een dichte `<select>` met de stijl van het veld.
+
+**Verder:** TextArea, SearchInput en Select hebben nu alle zeven breedtevarianten; Select heeft een `value`-tekstproperty voor de gekozen optie; en TextArea wordt gemeten met `rows="4"`, de standaard van het component, in plaats van de twee regels van een kale textarea.
+
 ### Figma-sync: disabled en invalid zijn eigen schakelaars, en tekst loopt het veld uit
 
 `disabled` en `invalid` waren waarden van de `state`-as, dus een designer kon niet tegelijk hover en invalid kiezen. Het zijn nu eigen assen met `false` en `true`, die Figma als schakelaar toont. Dat geldt voor Button, Link, de zeven formuliervelden, FormField, DateInputGroup, OptionLabel, Checkbox, Radio, CheckboxOption en RadioOption.
