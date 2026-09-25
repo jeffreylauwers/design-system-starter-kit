@@ -36,33 +36,117 @@
         "$type": "shadow",
         "$description": "Schaduw bij hover — hogere elevatie benadrukt interactiviteit"
       },
-      "body": {
-        "padding-block": {
+      "min-block-size": {
+        "$value": "auto",
+        "$type": "sizing",
+        "$description": "Minimale hoogte van de card"
+      },
+      "pre-header": {
+        "padding-block-start": {
+          "$value": "{dsn.card.header.padding-block-start}",
+          "$type": "spacing",
+          "$description": "Bovenkant padding van de pre-header, gelijk aan de header. Media als direct kind bleedt hier doorheen."
+        },
+        "padding-block-end": {
+          "$value": "{dsn.card.header.padding-block-end}",
+          "$type": "spacing",
+          "$description": "Onderkant padding van de pre-header, gelijk aan de header"
+        },
+        "padding-inline-start": {
+          "$value": "{dsn.card.header.padding-inline-start}",
+          "$type": "spacing",
+          "$description": "Padding aan de beginzijde van de pre-header, gelijk aan de header"
+        },
+        "padding-inline-end": {
+          "$value": "{dsn.card.header.padding-inline-end}",
+          "$type": "spacing",
+          "$description": "Padding aan de eindzijde van de pre-header, gelijk aan de header"
+        },
+        "row-gap": {
+          "$value": "{dsn.card.header.row-gap}",
+          "$type": "spacing",
+          "$description": "Verticale ruimte tussen directe kinderen van de pre-header, gelijk aan de header"
+        }
+      },
+      "header": {
+        "padding-block-start": {
           "$value": "{dsn.space.block.xl}",
           "$type": "spacing",
-          "$description": "Verticale padding van de card body (16px)"
+          "$description": "Bovenkant padding van de header (16px)"
         },
-        "padding-inline": {
+        "padding-block-end": {
+          "$value": "{dsn.space.block.lg}",
+          "$type": "spacing",
+          "$description": "Onderkant padding van de header (12px); ook de ruimte naar de body"
+        },
+        "padding-inline-start": {
           "$value": "{dsn.space.inline.xl}",
           "$type": "spacing",
-          "$description": "Horizontale padding van de card body (16px)"
+          "$description": "Padding aan de beginzijde van de header (16px)"
+        },
+        "padding-inline-end": {
+          "$value": "{dsn.space.inline.xl}",
+          "$type": "spacing",
+          "$description": "Padding aan de eindzijde van de header (16px)"
         },
         "row-gap": {
           "$value": "{dsn.space.block.lg}",
           "$type": "spacing",
-          "$description": "Verticale ruimte tussen directe kinderen van de card body (12px)"
+          "$description": "Verticale ruimte tussen directe kinderen van de header (12px)"
+        }
+      },
+      "body": {
+        "padding-block-start": {
+          "$value": "0",
+          "$type": "spacing",
+          "$description": "Bovenkant padding van de body; de header levert de ruimte erboven"
+        },
+        "padding-block-end": {
+          "$value": "{dsn.space.block.xl}",
+          "$type": "spacing",
+          "$description": "Onderkant padding van de body (16px)"
+        },
+        "padding-inline-start": {
+          "$value": "{dsn.space.inline.xl}",
+          "$type": "spacing",
+          "$description": "Padding aan de beginzijde van de body (16px)"
+        },
+        "padding-inline-end": {
+          "$value": "{dsn.space.inline.xl}",
+          "$type": "spacing",
+          "$description": "Padding aan de eindzijde van de body (16px)"
+        },
+        "row-gap": {
+          "$value": "{dsn.space.block.lg}",
+          "$type": "spacing",
+          "$description": "Verticale ruimte tussen directe kinderen van de body (12px)"
         }
       },
       "footer": {
+        "padding-block-start": {
+          "$value": "0",
+          "$type": "spacing",
+          "$description": "Bovenkant padding van de footer; de sectie erboven levert de ruimte"
+        },
         "padding-block-end": {
           "$value": "{dsn.space.block.3xl}",
           "$type": "spacing",
-          "$description": "Onderkant padding van de card footer (24px)"
+          "$description": "Onderkant padding van de footer (24px)"
         },
-        "padding-inline": {
+        "padding-inline-start": {
           "$value": "{dsn.space.inline.xl}",
           "$type": "spacing",
-          "$description": "Horizontale padding van de card footer (16px)"
+          "$description": "Padding aan de beginzijde van de footer (16px)"
+        },
+        "padding-inline-end": {
+          "$value": "{dsn.space.inline.xl}",
+          "$type": "spacing",
+          "$description": "Padding aan de eindzijde van de footer (16px)"
+        },
+        "column-gap": {
+          "$value": "{dsn.space.inline.md}",
+          "$type": "spacing",
+          "$description": "Horizontale ruimte tussen directe kinderen van de footer"
         }
       },
       "image-placeholder": {
@@ -102,6 +186,67 @@
           "$value": "{dsn.text.line-height.lg}",
           "$type": "lineHeight",
           "$description": "Regelafstand van de card heading"
+        }
+      },
+      "label": {
+        "color": {
+          "$value": "{dsn.color.neutral.color-document}",
+          "$type": "color",
+          "$description": "Kleur van het card-label"
+        },
+        "font-family": {
+          "$value": "{dsn.text.font-family.default}",
+          "$type": "fontFamily",
+          "$description": "Lettertype van het card-label"
+        },
+        "font-size": {
+          "$value": "{dsn.text.font-size.md}",
+          "$type": "fontSize",
+          "$description": "Tekstgrootte van het card-label"
+        },
+        "font-weight": {
+          "$value": "{dsn.text.font-weight.bold}",
+          "$type": "fontWeight",
+          "$description": "Gewicht van het card-label"
+        },
+        "line-height": {
+          "$value": "{dsn.text.line-height.md}",
+          "$type": "lineHeight",
+          "$description": "Regelafstand van het card-label"
+        }
+      },
+      "description": {
+        "color": {
+          "$value": "{dsn.color.neutral.color-document}",
+          "$type": "color",
+          "$description": "Kleur van de card-description"
+        },
+        "font-size": {
+          "$value": "{dsn.text.font-size.md}",
+          "$type": "fontSize",
+          "$description": "Tekstgrootte van de card-description"
+        },
+        "line-height": {
+          "$value": "{dsn.text.line-height.md}",
+          "$type": "lineHeight",
+          "$description": "Regelafstand van de card-description"
+        }
+      },
+      "meta": {
+        "color": {
+          "$value": "{dsn.color.neutral.color-subtle}",
+          "$type": "color",
+          "$description": "Kleur van de card-meta (bijv. datum)"
+        },
+        "font-size": {
+          "$value": "{dsn.text.font-size.sm}",
+          "$type": "fontSize",
+          "$description": "Tekstgrootte van de card-meta"
+        },
+        "line-height": {
+          "$value": "{dsn.text.line-height.sm}",
+          "$type": "lineHeight",
+          "$description": "Regelafstand van de card-meta"
         }
       },
       "group": {

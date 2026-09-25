@@ -123,13 +123,13 @@ Niet meer via `flex: 1` op de body. Dat werkt ook bij een Card zonder body, zoal
 
 ## Impact
 
-| Dimensie                          | Voor                                  | Na                                                           |
-| --------------------------------- | ------------------------------------- | ------------------------------------------------------------ |
-| Secties                           | 3 (header = afbeelding, body, footer) | 4 (pre-header, header, body, footer)                         |
-| Afbeelding in DOM vóór de heading | ja                                    | nee                                                          |
-| `aria-hidden` op de `<figure>`    | altijd                                | nooit; de alt-tekst bepaalt of de afbeelding betekenis heeft |
-| Tabstops per Card as Link         | 1 (plus een verborgen footer-link)    | 1                                                            |
-| Tekst-elementen met eigen tokens  | 1 (heading)                           | 4 (heading, label, description, meta)                        |
+| Dimensie                          | Voor                                  | Na                                                                |
+| --------------------------------- | ------------------------------------- | ----------------------------------------------------------------- |
+| Secties                           | 3 (header = afbeelding, body, footer) | 4 (pre-header, header, body, footer)                              |
+| Afbeelding in DOM vóór de heading | ja                                    | nee                                                               |
+| `aria-hidden` op de `<figure>`    | altijd                                | alleen bij `alt=""`, gezet door `Image`; de alt-tekst bepaalt het |
+| Tabstops per Card as Link         | 1 (plus een verborgen footer-link)    | 1                                                                 |
+| Tekst-elementen met eigen tokens  | 1 (heading)                           | 4 (heading, label, description, meta)                             |
 
 De standaard-tokenwaarden kiezen we zo dat de bestaande stories visueel niet veranderen. Chromatic is daarmee de acceptatietest.
 
@@ -147,12 +147,13 @@ De standaard-tokenwaarden kiezen we zo dat de bestaande stories visueel niet ver
 
 - Dit is een breaking change en vraagt om een major release. `CardHeader` bevat straks de heading; de afbeelding verhuist naar `CardPreHeader`. Oude code blijft renderen, maar met de afbeelding in de verkeerde sectie. De changelog krijgt een migratienotitie.
 - Visuele volgorde en DOM-volgorde verschillen. Wie de CSS leest, moet weten dat `order: -1` bewust is.
+- Tools die de DOM uitlezen, moeten `order` meenemen. De figma-sync-generator sorteert kinderen van flex- en grid-containers daarom voortaan op `order`, anders stond de header in Figma boven de afbeelding.
 
 **Nieuwe verplichtingen voor contributors:**
 
 - Zet de Header in de DOM altijd vóór de Pre-header, ook als de Pre-header visueel bovenaan staat. De HTML moet zonder CSS in een logische volgorde staan.
 - Zet geen focusbare elementen in de Pre-header. Door `order` wijkt de focusvolgorde anders af van de visuele volgorde (WCAG 2.4.3).
-- Geef een afbeelding in een Card geen `aria-hidden`. Decoratief is `alt=""`, betekenisvol is een alt-tekst.
+- Zet in een Card niet zelf `aria-hidden` op een afbeelding. Decoratief is `alt=""` (de `Image` component verbergt de `<figure>` dan zelf), betekenisvol is een alt-tekst.
 
 ---
 

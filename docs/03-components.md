@@ -1113,45 +1113,57 @@ Brengt consistente verticale ruimte aan tussen directe child-elementen via `flex
 
 **Status:** Complete (HTML/CSS, React)
 
-**Location:** `packages/components-{html|react}/src/card/` / `packages/components-react/src/Card/`
+**Location:** `packages/components-html/src/card/` / `packages/components-react/src/Card/`
 
 **Tokens:** `tokens/components/card.json`
 
-**Sub-components:** `Card`, `CardHeader`, `CardBody`, `CardHeading`, `CardFooter`, `CardGroup`
+**Decision record:** DR-2026-11 (Card-secties en DOM-volgorde)
+
+**Sub-components:** `Card`, `CardPreHeader`, `CardHeader`, `CardBody`, `CardFooter`, `CardHeading`, `CardLabel`, `CardDescription`, `CardMeta`, `CardAffordance`, `CardGroup`
 
 **Features:**
 
-- Root is `<article>`: semantisch zelfstandig inhoudsblok, navigeerbaar via schermlezer-sneltoets
-- Stretched-link techniek: `::before` pseudo-element van `dsn-card-heading__link` dekt de volledige card (`position: absolute; inset: 0; z-index: 1`)
-- `CardHeader` toont automatisch een afbeeldingsplaceholder (`dsn-card__image-placeholder`) wanneer geen children aanwezig zijn
-- `CardBody` groeit via `flex: 1`: footer uitlijnt altijd onderaan
-- `CardHeading` ontvangt `href` via React context van parent `Card` en wraps children in een `<a class="dsn-card-heading__link">`
-- Footer-kinderen staan boven de stretched link via `z-index: 2` in CSS
+- Root is `<article>`: semantisch zelfstandig inhoudsblok, navigeerbaar via screenreader-sneltoets
+- Vier optionele secties: pre-header, header, body en footer, elk met eigen padding- en gap-tokens
+- DOM-volgorde: de header staat vóór de pre-header; de pre-header komt visueel bovenaan via `order: -1` (WCAG 1.3.2, issue #300)
+- Pre-header-tokens delegeren naar de header-tokens; een `dsn-image` of placeholder als direct kind bleedt eruit via negatieve marges, overige inhoud houdt zijn padding
+- `CardPreHeader` toont automatisch een afbeeldingsplaceholder (`dsn-card__image-placeholder`) wanneer geen children aanwezig zijn
+- Footer staat onderaan via `margin-block-start: auto`, ook zonder body
+- Stretched link: `::before` van `dsn-card__link` dekt de volledige card. `CardHeading` en `CardLabel` krijgen `href` via React context van `Card`; de link mag ook in de footer staan
+- Andere links en knoppen in de card staan boven de stretched link via `position: relative; z-index: 2`
+- `CardAffordance`: `<span aria-hidden="true">` in link-stijl, geen dubbele tabstop
 - `CardGroup` rendert als `<ul role="list">` (standaard) of `<div>` via `as` prop
-- Standaard geen box-shadow (`none`); hover verhoogt achtergrond naar `bg-elevated` + box-shadow `md`: overgang via CSS `transition` (background-color + box-shadow)
-- Focus: focus-ring rondom de gehele card via CSS `:has(.dsn-card-heading__link:focus-visible)`: zelfde tokens als Button en Link
-- Alle spacing via component-tokens (`dsn.card.body.padding-*`, `dsn.card.footer.padding-*`)
-- Standaard `background: bg-document`; hover `background: bg-elevated` voor elevatie-effect
+- Hover: achtergrond naar `bg-elevated` + box-shadow `md`; focus-ring rondom de gehele card via `:has(.dsn-card__link:focus-visible)`
 
 **CSS klassen:**
 
 | Klasse                        | Element          | Beschrijving                                                                         |
 | ----------------------------- | ---------------- | ------------------------------------------------------------------------------------ |
 | `dsn-card`                    | `<article>`      | Root container; `position: relative`, `display: flex; flex-direction: column`        |
-| `dsn-card__header`            | `<div>`          | Header-sectie; geen padding, afbeelding edge-to-edge                                 |
-| `dsn-card__body`              | `<div>`          | Body-sectie; `flex: 1` zodat body groeit en footer onderaan blijft                   |
-| `dsn-card__footer`            | `<div>`          | Footer-sectie; directe kinderen krijgen `position: relative; z-index: 2`             |
+| `dsn-card__pre-header`        | `<div>`          | Slot voor afbeelding, badge, logo of icoon; `order: -1`, in de DOM ná de header      |
+| `dsn-card__header`            | `<div>`          | Heading of label, eventueel met badge                                                |
+| `dsn-card__body`              | `<div>`          | Inhoudssectie                                                                        |
+| `dsn-card__footer`            | `<div>`          | Footer-sectie; `margin-block-start: auto`                                            |
 | `dsn-card__image-placeholder` | `<div>`          | Decoratieve placeholder met `aspect-ratio: 16 / 9`; altijd `aria-hidden="true"`      |
-| `dsn-card-heading`            | `<h2>`–`<h4>`    | Heading sub-component; typography via eigen tokens                                   |
-| `dsn-card-heading__link`      | `<a>`            | Stretched link; `::before` met `position: absolute; inset: 0; z-index: 1`            |
+| `dsn-card__heading`           | `<h2>`–`<h4>`    | Heading; typografie via eigen tokens                                                 |
+| `dsn-card__label`             | `<p>`            | Label zonder heading-semantiek; typografie via eigen tokens                          |
+| `dsn-card__description`       | `<p>`            | Korte omschrijving; typografie via eigen tokens                                      |
+| `dsn-card__meta`              | `<p>`            | Aanvullende gegevens, zoals een datum                                                |
+| `dsn-card__link`              | `<a>`            | Stretched link; `::before` met `position: absolute; inset: 0; z-index: 1`            |
+| `dsn-card__affordance`        | `<span>`         | Visuele "Lees meer" in link-stijl; altijd `aria-hidden="true"`                       |
 | `dsn-card-group`              | `<ul>` / `<div>` | Flexbox wrapper; gelijke hoogte via `flex: 1 1 var(--dsn-card-group-item-min-width)` |
 
 **HTML/CSS:**
 
 ```html
-<!-- Basis: card met afbeelding en stretched link -->
+<!-- Basis: header vóór pre-header in de DOM -->
 <article class="dsn-card">
   <div class="dsn-card__header">
+    <h2 class="dsn-card__heading">
+      <a href="/artikel/slug" class="dsn-card__link">Artikeltitel</a>
+    </h2>
+  </div>
+  <div class="dsn-card__pre-header">
     <figure class="dsn-image dsn-image--ratio-16-9" aria-hidden="true">
       <img
         class="dsn-image__img"
@@ -1165,21 +1177,17 @@ Brengt consistente verticale ruimte aan tussen directe child-elementen via `flex
     </figure>
   </div>
   <div class="dsn-card__body">
-    <h2 class="dsn-card-heading">
-      <a href="/artikel/slug" class="dsn-card-heading__link">Artikeltitel</a>
-    </h2>
     <p class="dsn-paragraph">Korte beschrijving.</p>
   </div>
   <div class="dsn-card__footer">
-    <a href="/artikel/slug" class="dsn-link" aria-hidden="true" tabindex="-1"
-      >Lees meer</a
-    >
+    <span class="dsn-card__affordance" aria-hidden="true">Lees meer</span>
   </div>
 </article>
 
-<!-- Card zonder afbeelding: placeholder via lege header -->
+<!-- Card zonder afbeelding: placeholder in de pre-header -->
 <article class="dsn-card">
-  <div class="dsn-card__header">
+  <!-- header -->
+  <div class="dsn-card__pre-header">
     <div class="dsn-card__image-placeholder" aria-hidden="true"></div>
   </div>
   <!-- ... -->
@@ -1199,49 +1207,55 @@ Brengt consistente verticale ruimte aan tussen directe child-elementen via `flex
 **React:**
 
 ```tsx
-// Basis
+// Basis: CardHeader vóór CardPreHeader
 <Card href="/artikel/slug">
   <CardHeader>
-    <Image src="/foto.jpg" alt="" width={800} height={450} ratio="16:9" />
-  </CardHeader>
-  <CardBody>
     <CardHeading level={2}>Artikeltitel</CardHeading>
+  </CardHeader>
+  <CardPreHeader>
+    <Image src="/foto.jpg" alt="" width={800} height={450} ratio="16:9" />
+  </CardPreHeader>
+  <CardBody>
     <Paragraph>Korte beschrijving.</Paragraph>
   </CardBody>
   <CardFooter>
-    <Link href="/artikel/slug" aria-hidden tabIndex={-1}>Lees meer</Link>
+    <CardAffordance>Lees meer</CardAffordance>
   </CardFooter>
 </Card>
 
-// Zonder afbeelding: lege CardHeader toont automatisch placeholder
-<Card href="/artikel/slug">
-  <CardHeader />
-  <CardBody>
+// Zonder afbeelding: lege CardPreHeader toont automatisch placeholder
+<CardPreHeader />
+
+// Call-to-action in de footer als de link van de card (geen href op Card)
+<Card>
+  <CardHeader>
     <CardHeading level={2}>Artikeltitel</CardHeading>
-    <Paragraph>Beschrijving.</Paragraph>
-  </CardBody>
+  </CardHeader>
   <CardFooter>
-    <Link href="/artikel/slug" aria-hidden tabIndex={-1}>Lees meer</Link>
+    <ButtonLink href="/artikel/slug" className="dsn-card__link">
+      Bekijk artikel
+      <span className="dsn-visually-hidden">: Artikeltitel</span>
+    </ButtonLink>
   </CardFooter>
 </Card>
 
 // CardGroup
 <CardGroup>
-  <li><Card href="/1"><!-- ... --></Card></li>
-  <li><Card href="/2"><!-- ... --></Card></li>
+  <li><Card href="/1">{/* ... */}</Card></li>
+  <li><Card href="/2">{/* ... */}</Card></li>
 </CardGroup>
 ```
 
 **Props:**
 
-| Component     | Prop       | Type            | Default | Beschrijving                                                          |
-| ------------- | ---------- | --------------- | ------- | --------------------------------------------------------------------- |
-| `Card`        | `href`     | `string`        | -       | URL voor de stretched link; doorgegeven via context aan `CardHeading` |
-| `CardHeader`  | `children` | `ReactNode`     | -       | Afbeelding; zonder children → placeholder                             |
-| `CardHeading` | `level`    | `2 \| 3 \| 4`   | `2`     | Semantisch heading-niveau                                             |
-| `CardGroup`   | `as`       | `'ul' \| 'div'` | `'ul'`  | Container-element; `ul` rendert `role="list"`                         |
+| Component       | Prop       | Type            | Default | Beschrijving                                                                      |
+| --------------- | ---------- | --------------- | ------- | --------------------------------------------------------------------------------- |
+| `Card`          | `href`     | `string`        | -       | URL voor de stretched link; via context doorgegeven aan `CardHeading`/`CardLabel` |
+| `CardPreHeader` | `children` | `ReactNode`     | -       | Afbeelding, badge, logo of icoon; zonder children → placeholder                   |
+| `CardHeading`   | `level`    | `2 \| 3 \| 4`   | `2`     | Semantisch heading-niveau                                                         |
+| `CardGroup`     | `as`       | `'ul' \| 'div'` | `'ul'`  | Container-element; `ul` rendert `role="list"`                                     |
 
-**Tests:** React (43 tests)
+**Tests:** React (62 tests)
 
 ---
 

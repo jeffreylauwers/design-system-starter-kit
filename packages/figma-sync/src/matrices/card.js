@@ -1,9 +1,14 @@
 /**
  * Variant-matrix voor Card.
  *
- * Card is de test voor nesting: een flex-kolom met header, body en footer,
- * waarbij de body zelf ook weer een flex-kolom is. Als de generator hier een
- * bruikbare boom oplevert, houdt de aanpak ook voor samengestelde componenten.
+ * Card is de test voor nesting: een flex-kolom met pre-header, header, body en
+ * footer, waarbij de secties zelf ook weer flex-kolommen zijn. Als de generator
+ * hier een bruikbare boom oplevert, houdt de aanpak ook voor samengestelde
+ * componenten.
+ *
+ * De header staat in de DOM vóór de pre-header (DR-2026-11); de pre-header komt
+ * visueel bovenaan via `order: -1`. De generator meet posities, dus in Figma
+ * staat de pre-header gewoon bovenaan.
  *
  * Card gebruikt daarnaast box-shadow en overflow:hidden, dus dit is meteen de
  * test of die twee correct als waarschuwing respectievelijk clipsContent
@@ -31,14 +36,14 @@ export default {
   wrapperStyle: 'width: 343px;',
 
   axes: {
-    header: ['with-header', 'no-header'],
+    preHeader: ['with-pre-header', 'no-pre-header'],
     footer: ['with-footer', 'no-footer'],
   },
 
-  render({ header, footer }) {
-    const headerMarkup =
-      header === 'with-header'
-        ? `<div class="dsn-card__header">
+  render({ preHeader, footer }) {
+    const preHeaderMarkup =
+      preHeader === 'with-pre-header'
+        ? `<div class="dsn-card__pre-header">
              <div class="dsn-card__image-placeholder"></div>
            </div>`
         : '';
@@ -46,14 +51,16 @@ export default {
     const footerMarkup =
       footer === 'with-footer'
         ? `<div class="dsn-card__footer">
-             <span class="dsn-link">${TEKST}</span>
+             <span class="dsn-card__affordance">${TEKST}</span>
            </div>`
         : '';
 
     return `<div class="dsn-card" data-figma-root>
-      ${headerMarkup}
+      <div class="dsn-card__header">
+        <h3 class="dsn-card__heading">${HEADING}</h3>
+      </div>
+      ${preHeaderMarkup}
       <div class="dsn-card__body">
-        <h3 class="dsn-card-heading">${HEADING}</h3>
         <p class="dsn-paragraph">${TEKST}</p>
       </div>
       ${footerMarkup}

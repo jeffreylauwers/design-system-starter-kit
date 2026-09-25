@@ -11,11 +11,13 @@ import {
   Button,
   ButtonLink,
   Card,
+  CardAffordance,
   CardBody,
   CardFooter,
   CardGroup,
   CardHeader,
   CardHeading,
+  CardPreHeader,
   Checkbox,
   CheckboxGroup,
   CheckboxOption,
@@ -627,6 +629,9 @@ export const Default: Story = {
                   <li>
                     <Card href="#">
                       <CardHeader>
+                        <CardHeading level={2}>Titel</CardHeading>
+                      </CardHeader>
+                      <CardPreHeader>
                         <Image
                           src="https://picsum.photos/seed/card1/800/450"
                           alt=""
@@ -634,45 +639,42 @@ export const Default: Story = {
                           height={450}
                           ratio="16:9"
                         />
-                      </CardHeader>
+                      </CardPreHeader>
                       <CardBody>
-                        <CardHeading level={2}>Titel</CardHeading>
                         <Paragraph>Tekst</Paragraph>
                       </CardBody>
                       <CardFooter>
-                        <Link href="#" aria-hidden tabIndex={-1}>
-                          Lees meer
-                        </Link>
+                        <CardAffordance>Lees meer</CardAffordance>
                       </CardFooter>
                     </Card>
                   </li>
                   <li>
                     <Card href="#">
-                      <CardHeader />
-                      <CardBody>
+                      <CardHeader>
                         <CardHeading level={2}>
                           Titel met een langere tekst die over meerdere regels
                           loopt
                         </CardHeading>
+                      </CardHeader>
+                      <CardPreHeader />
+                      <CardBody>
                         <Paragraph>Tekst</Paragraph>
                       </CardBody>
                       <CardFooter>
-                        <Link href="#" aria-hidden tabIndex={-1}>
-                          Lees meer
-                        </Link>
+                        <CardAffordance>Lees meer</CardAffordance>
                       </CardFooter>
                     </Card>
                   </li>
                   <li>
                     <Card href="#">
-                      <CardBody>
+                      <CardHeader>
                         <CardHeading level={2}>Titel</CardHeading>
+                      </CardHeader>
+                      <CardBody>
                         <Paragraph>Tekst</Paragraph>
                       </CardBody>
                       <CardFooter>
-                        <Link href="#" aria-hidden tabIndex={-1}>
-                          Lees meer
-                        </Link>
+                        <CardAffordance>Lees meer</CardAffordance>
                       </CardFooter>
                     </Card>
                   </li>

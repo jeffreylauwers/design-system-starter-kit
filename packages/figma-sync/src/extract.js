@@ -304,7 +304,23 @@ function domWalker([properties, hiddenClass]) {
       return node;
     }
 
-    for (const child of element.childNodes) {
+    // Figma zet kinderen in auto layout neer in de volgorde van de array, dus
+    // die moet de visuele volgorde zijn en niet de DOM-volgorde. In een flex-
+    // of grid-container verschuift `order` die, zoals bij de pre-header van
+    // Card (DR-2026-11). De sortering is stabiel: gelijke `order` houdt de
+    // DOM-volgorde, en tekstnodes tellen als `order: 0`, net als in de browser.
+    const display = getComputedStyle(element).display;
+    const ordersChildren = /flex|grid/.test(display);
+    const orderOf = (child) =>
+      ordersChildren && child.nodeType === Node.ELEMENT_NODE
+        ? Number.parseInt(getComputedStyle(child).order, 10) || 0
+        : 0;
+    const childNodes = Array.from(element.childNodes)
+      .map((child, index) => ({ child, index, order: orderOf(child) }))
+      .sort((a, b) => a.order - b.order || a.index - b.index)
+      .map(({ child }) => child);
+
+    for (const child of childNodes) {
       if (child.nodeType === Node.TEXT_NODE) {
         const text = child.textContent.trim();
         if (text) node.children.push({ kind: 'text', text });
