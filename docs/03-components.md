@@ -2582,7 +2582,7 @@ const [isOpen, setIsOpen] = React.useState(false);
 - `colorScheme="inverse"`: accent-1-inverse achtergrond op navbar, compact balk en zoekpaneel; masthead blijft neutraal; logo en menu-items passen kleuren automatisch aan via CSS custom property overrides
 - `primaryNavigationLarge` / `secondaryNavigationLarge`: aparte slots voor large viewport; valt terug op de mobile variant wanneer weggelaten
 - `sticky='sticky'`: `position: sticky; inset-block-start: 0`
-- `sticky='auto-hide'`: sticky + verbergt bij scroll-down via JS `scroll`-eventlistener (`data-hidden` attribuut), CSS-transitie animeert de beweging
+- `sticky='auto-hide'`: sticky + verbergt bij scroll-down via JS `scroll`-eventlistener (`data-hidden` attribuut); komt pas terug na 64px omhoog scrollen. CSS-transitie (`--dsn-transition-duration-slow`) animeert de beweging
 - Zoekpaneel klapt open en dicht met een CSS-transitie op `grid-template-rows` (`0fr` ↔ `1fr`), `padding-block` en `opacity`; `display` transitioneert met `allow-discrete` zodat het paneel zichtbaar blijft tijdens het dichtklappen. Uitgeschakeld bij `prefers-reduced-motion: reduce`
 - Focus management: openen zoekpaneel → focus naar `<input>`; sluiten → focus terug naar zoekknop
 - Unieke IDs via `useId()` voor `aria-controls` (zoekpaneel) en `aria-labelledby` (nav-elementen)

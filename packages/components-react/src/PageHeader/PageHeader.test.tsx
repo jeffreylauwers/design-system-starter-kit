@@ -331,6 +331,69 @@ describe('PageHeader', () => {
     );
   });
 
+  describe('auto-hide scrollgedrag', () => {
+    const scrollTo = (y: number) => {
+      Object.defineProperty(window, 'scrollY', {
+        value: y,
+        configurable: true,
+      });
+      fireEvent.scroll(window);
+    };
+
+    beforeEach(() => scrollTo(0));
+
+    it('verbergt de header bij scroll-down voorbij de offset', () => {
+      const { container } = render(
+        <PageHeader logoSlot={defaultLogo} sticky="auto-hide" />
+      );
+      scrollTo(500);
+      expect(container.querySelector('header')).toHaveAttribute(
+        'data-hidden',
+        'true'
+      );
+    });
+
+    it('blijft verborgen bij een kleine beweging omhoog', () => {
+      const { container } = render(
+        <PageHeader logoSlot={defaultLogo} sticky="auto-hide" />
+      );
+      scrollTo(500);
+      scrollTo(470);
+      scrollTo(450);
+      expect(container.querySelector('header')).toHaveAttribute(
+        'data-hidden',
+        'true'
+      );
+    });
+
+    it('komt terug na voldoende afstand omhoog', () => {
+      const { container } = render(
+        <PageHeader logoSlot={defaultLogo} sticky="auto-hide" />
+      );
+      scrollTo(500);
+      scrollTo(470);
+      scrollTo(430);
+      expect(container.querySelector('header')).toHaveAttribute(
+        'data-hidden',
+        'false'
+      );
+    });
+
+    it('telt opnieuw na een tussentijdse scroll-down', () => {
+      const { container } = render(
+        <PageHeader logoSlot={defaultLogo} sticky="auto-hide" />
+      );
+      scrollTo(500);
+      scrollTo(460);
+      scrollTo(480);
+      scrollTo(440);
+      expect(container.querySelector('header')).toHaveAttribute(
+        'data-hidden',
+        'true'
+      );
+    });
+  });
+
   // ---------------------------------------------------------------------------
   // Callbacks
   // ---------------------------------------------------------------------------

@@ -218,6 +218,7 @@
 /* =============================================================================
    Auto-hide (sticky + CSS-transitie)
    JS toggle via data-hidden attribuut: scroll-down → "true", scroll-up → "false"
+   (pas na een minimale afstand omhoog, zie AUTO_HIDE_REVEAL_DISTANCE in React)
    ============================================================================= */
 
 .dsn-page-header--auto-hide {
@@ -225,7 +226,7 @@
   inset-block-start: 0;
   z-index: var(--dsn-page-header-z-index);
   transition:
-    transform var(--dsn-transition-duration-normal)
+    transform var(--dsn-transition-duration-slow)
       var(--dsn-transition-easing-default),
     box-shadow var(--dsn-transition-duration-normal)
       var(--dsn-transition-easing-default);
