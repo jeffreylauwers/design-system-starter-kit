@@ -52,7 +52,7 @@ Kies het scrollgedrag via de `sticky`-prop:
 </header>
 ```
 
-Bij `auto-hide` detecteert de React-component de scrollrichting via een `scroll`-eventlistener en schakelt `data-hidden` om.
+Bij `auto-hide` detecteert de React-component de scrollrichting via een `scroll`-eventlistener en schakelt `data-hidden` om. Omlaag scrollen verbergt de header direct; terug omhoog scrollen toont hem pas na 64px, zodat een kleine beweging of terugverende swipe hem niet meteen in beeld schuift. Binnen de bovenste 100px van de pagina blijft de header altijd zichtbaar. De slide-animatie gebruikt `--dsn-transition-duration-slow`.
 
 ### Navigatielade
 

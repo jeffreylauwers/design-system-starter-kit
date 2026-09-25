@@ -10,6 +10,10 @@ All notable changes to this project are documented in this file.
 
 Nog niet gepubliceerde wijzigingen. Schrijf nieuwe changelog-entries hieronder; bij de volgende release wordt deze kop gepromoveerd naar het definitieve versienummer.
 
+### PageHeader: auto-hide komt minder snel terug
+
+Bij `sticky="auto-hide"` schoof de header bij de kleinste beweging omhoog al terug in beeld, ook bij een terugverende swipe op touch. Hij komt nu pas terug na 64px omhoog scrollen. Omlaag scrollen verbergt hem nog steeds direct, en binnen de bovenste 100px blijft hij altijd zichtbaar. De slide-animatie gebruikt voortaan `--dsn-transition-duration-slow` (350ms) in plaats van `normal` (200ms).
+
 ### Figma-sync: velden met een icoon worden één frame, en ingeklapte tekst houdt zijn eigen tokens
 
 Uit de setcontrole van de formuliervelden.

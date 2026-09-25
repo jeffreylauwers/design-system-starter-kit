@@ -8,6 +8,12 @@ import { Stack } from '../Stack';
 import './PageHeader.css';
 
 export type PageHeaderSticky = 'none' | 'sticky' | 'auto-hide';
+
+/** Auto-hide: boven deze scrollpositie (px) blijft de header altijd zichtbaar */
+const AUTO_HIDE_OFFSET = 100;
+
+/** Auto-hide: zoveel px omhoog scrollen voordat de header terugkomt */
+const AUTO_HIDE_REVEAL_DISTANCE = 64;
 export type PageHeaderLayout = 'default' | 'compact';
 export type PageHeaderColorScheme = 'default' | 'inverse';
 
@@ -280,16 +286,32 @@ export const PageHeader = React.forwardRef<HTMLElement, PageHeaderProps>(
       if (sticky !== 'auto-hide') return;
 
       let lastScrollY = window.scrollY;
+      // Afgelegde afstand omhoog sinds de laatste scroll-down. De header komt
+      // pas terug na AUTO_HIDE_REVEAL_DISTANCE, zodat een kleine beweging
+      // omhoog (of een terugverende swipe) hem niet direct in beeld schuift.
+      let scrolledUp = 0;
 
       const handleScroll = () => {
         const currentScrollY = window.scrollY;
-        const isScrollingDown =
-          currentScrollY > lastScrollY && currentScrollY > 100;
-        combinedRef.current?.setAttribute(
-          'data-hidden',
-          String(isScrollingDown)
-        );
+        const delta = currentScrollY - lastScrollY;
         lastScrollY = currentScrollY;
+
+        let hidden: boolean;
+        if (currentScrollY <= AUTO_HIDE_OFFSET) {
+          hidden = false;
+          scrolledUp = 0;
+        } else if (delta > 0) {
+          hidden = true;
+          scrolledUp = 0;
+        } else if (delta < 0) {
+          scrolledUp -= delta;
+          if (scrolledUp < AUTO_HIDE_REVEAL_DISTANCE) return;
+          hidden = false;
+        } else {
+          return;
+        }
+
+        combinedRef.current?.setAttribute('data-hidden', String(hidden));
       };
 
       window.addEventListener('scroll', handleScroll, { passive: true });
