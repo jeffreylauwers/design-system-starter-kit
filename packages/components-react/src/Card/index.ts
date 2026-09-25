@@ -1,16 +1,26 @@
 export {
   Card,
+  CardPreHeader,
   CardHeader,
   CardBody,
   CardHeading,
+  CardLabel,
+  CardDescription,
+  CardMeta,
   CardFooter,
+  CardAffordance,
   CardGroup,
 } from './Card';
 export type {
   CardProps,
+  CardPreHeaderProps,
   CardHeaderProps,
   CardBodyProps,
   CardHeadingProps,
+  CardLabelProps,
+  CardDescriptionProps,
+  CardMetaProps,
   CardFooterProps,
+  CardAffordanceProps,
   CardGroupProps,
 } from './Card';

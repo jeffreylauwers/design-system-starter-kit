@@ -19,6 +19,11 @@ export const [intro, rest] = docs.split('<!-- VOORBEELD -->');
   of={CardStories.Default}
   html={`<article class="dsn-card">
   <div class="dsn-card__header">
+    <h2 class="dsn-card__heading">
+      <a href="/artikel/slug" class="dsn-card__link">Artikeltitel</a>
+    </h2>
+  </div>
+  <div class="dsn-card__pre-header">
     <figure class="dsn-image dsn-image--ratio-16-9" aria-hidden="true">
       <img
         class="dsn-image__img"
@@ -32,13 +37,10 @@ export const [intro, rest] = docs.split('<!-- VOORBEELD -->');
     </figure>
   </div>
   <div class="dsn-card__body">
-    <h2 class="dsn-card-heading">
-      <a href="/artikel/slug" class="dsn-card-heading__link">Artikeltitel</a>
-    </h2>
     <p class="dsn-paragraph">Korte beschrijving van het artikel die aanvullende context biedt.</p>
   </div>
   <div class="dsn-card__footer">
-    <a href="/artikel/slug" class="dsn-link" aria-hidden="true" tabindex="-1">Lees meer</a>
+    <span class="dsn-card__affordance" aria-hidden="true">Lees meer</span>
   </div>
 </article>`}
 />

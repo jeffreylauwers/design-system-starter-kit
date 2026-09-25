@@ -1,8 +1,14 @@
 /* =============================================================================
    Card
-   Configureerbare container voor gestructureerde content met header, body en footer.
-   Stretched-link techniek: ::before pseudo-element van de CardHeading link dekt de
-   volledige card — screenreaders lezen alleen de heading-tekst als linknaam.
+   Configureerbare container met vier optionele secties: pre-header, header,
+   body en footer (zie DR-2026-11).
+
+   DOM-volgorde: de header staat vóór de pre-header, zodat een screenreader de
+   heading eerst aankondigt (WCAG 1.3.2). De pre-header komt visueel bovenaan
+   via `order: -1`.
+
+   Stretched-link techniek: het ::before pseudo-element van `dsn-card__link`
+   dekt de volledige card. Screenreaders lezen alleen de linktekst als naam.
    ============================================================================= */
 
 /* Card — root container */
@@ -10,6 +16,7 @@
   position: relative;
   display: flex;
   flex-direction: column;
+  min-block-size: var(--dsn-card-min-block-size);
   background-color: var(--dsn-card-background-color);
   border: var(--dsn-card-border-width) solid var(--dsn-card-border-color);
   border-radius: var(--dsn-card-border-radius);
@@ -24,13 +31,13 @@
 }
 
 /* Hover: verhoogde achtergrond en schaduw benadrukken interactiviteit */
-.dsn-card:has(.dsn-card-heading__link:hover) {
+.dsn-card:has(.dsn-card__link:hover) {
   background-color: var(--dsn-card-background-color-hover);
   box-shadow: var(--dsn-card-box-shadow-hover);
 }
 
 /* Focus: focus-ring rondom de gehele card — zelfde tokens als Button en Link */
-.dsn-card:has(.dsn-card-heading__link:focus-visible) {
+.dsn-card:has(.dsn-card__link:focus-visible) {
   outline: var(--dsn-focus-outline-width) var(--dsn-focus-outline-style)
     var(--dsn-focus-outline-color);
   outline-offset: var(--dsn-focus-outline-offset);
@@ -39,45 +46,93 @@
     var(--dsn-focus-inverse-outline-color);
 }
 
-/* Card header — geen padding; afbeelding gaat edge-to-edge */
-.dsn-card__header {
-  flex-shrink: 0;
-}
+/* =============================================================================
+   Secties
+   ============================================================================= */
 
-/* Afbeelding in header: bovenste hoeken volgen card border-radius, onderkant recht */
-.dsn-card__header > .dsn-image .dsn-image__img {
-  border-start-start-radius: var(--dsn-card-border-radius);
-  border-start-end-radius: var(--dsn-card-border-radius);
-  border-end-start-radius: 0;
-  border-end-end-radius: 0;
-}
-
-/* Card body — groeit zodat footer altijd onderaan blijft */
+.dsn-card__pre-header,
+.dsn-card__header,
 .dsn-card__body {
-  flex: 1;
   display: flex;
   flex-direction: column;
-  gap: var(--dsn-card-body-row-gap);
-  padding-block: var(--dsn-card-body-padding-block);
-  padding-inline: var(--dsn-card-body-padding-inline);
 }
 
-/* Inline-elementen in de body (badges, tags) nemen hun eigen breedte — niet full-width */
-.dsn-card__body > .dsn-status-badge,
-.dsn-card__body > .dsn-dot-badge {
+/* Pre-header — visueel bovenaan, in de DOM ná de header */
+.dsn-card__pre-header {
+  order: -1;
+  row-gap: var(--dsn-card-pre-header-row-gap);
+  padding-block-start: var(--dsn-card-pre-header-padding-block-start);
+  padding-block-end: var(--dsn-card-pre-header-padding-block-end);
+  padding-inline-start: var(--dsn-card-pre-header-padding-inline-start);
+  padding-inline-end: var(--dsn-card-pre-header-padding-inline-end);
+}
+
+.dsn-card__header {
+  row-gap: var(--dsn-card-header-row-gap);
+  padding-block-start: var(--dsn-card-header-padding-block-start);
+  padding-block-end: var(--dsn-card-header-padding-block-end);
+  padding-inline-start: var(--dsn-card-header-padding-inline-start);
+  padding-inline-end: var(--dsn-card-header-padding-inline-end);
+}
+
+.dsn-card__body {
+  row-gap: var(--dsn-card-body-row-gap);
+  padding-block-start: var(--dsn-card-body-padding-block-start);
+  padding-block-end: var(--dsn-card-body-padding-block-end);
+  padding-inline-start: var(--dsn-card-body-padding-inline-start);
+  padding-inline-end: var(--dsn-card-body-padding-inline-end);
+}
+
+/* Footer — margin-block-start: auto duwt hem naar de onderkant, ook zonder body */
+.dsn-card__footer {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  column-gap: var(--dsn-card-footer-column-gap);
+  margin-block-start: auto;
+  padding-block-start: var(--dsn-card-footer-padding-block-start);
+  padding-block-end: var(--dsn-card-footer-padding-block-end);
+  padding-inline-start: var(--dsn-card-footer-padding-inline-start);
+  padding-inline-end: var(--dsn-card-footer-padding-inline-end);
+}
+
+/* Inline-elementen (badges) nemen hun eigen breedte, niet de volle sectiebreedte */
+:is(.dsn-card__pre-header, .dsn-card__header, .dsn-card__body)
+  > :is(.dsn-status-badge, .dsn-dot-badge) {
   align-self: flex-start;
 }
 
-/* Card footer — uitgelijnde onderkant */
-.dsn-card__footer {
-  padding-block-end: var(--dsn-card-footer-padding-block-end);
-  padding-inline: var(--dsn-card-footer-padding-inline);
+/* =============================================================================
+   Full-bleed media in de pre-header
+   De pre-header houdt zijn padding; alleen de media bleedt eruit. Zo houdt
+   overige inhoud (badge, logo) zijn padding. Zie DR-2026-11, deelbesluit 4.
+   ============================================================================= */
+
+.dsn-card__pre-header > :is(.dsn-image, .dsn-card__image-placeholder) {
+  margin-inline-start: calc(
+    -1 * var(--dsn-card-pre-header-padding-inline-start)
+  );
+  margin-inline-end: calc(-1 * var(--dsn-card-pre-header-padding-inline-end));
 }
 
-/* Directe kinderen van footer staan boven de stretched link (z-index: 1 van ::before) */
-.dsn-card__footer > * {
-  position: relative;
-  z-index: 2;
+.dsn-card__pre-header
+  > :is(.dsn-image, .dsn-card__image-placeholder):first-child {
+  margin-block-start: calc(-1 * var(--dsn-card-pre-header-padding-block-start));
+}
+
+.dsn-card__pre-header
+  > :is(.dsn-image, .dsn-card__image-placeholder):last-child {
+  margin-block-end: calc(-1 * var(--dsn-card-pre-header-padding-block-end));
+}
+
+/* Bleedende afbeelding: geen eigen afronding; bovenaan volgt hij de card */
+.dsn-card__pre-header > .dsn-image .dsn-image__img {
+  border-radius: 0;
+}
+
+.dsn-card__pre-header > .dsn-image:first-child .dsn-image__img {
+  border-start-start-radius: var(--dsn-card-border-radius);
+  border-start-end-radius: var(--dsn-card-border-radius);
 }
 
 /* Afbeeldingsplaceholder — visuele consistentie wanneer geen afbeelding beschikbaar */
@@ -90,7 +145,7 @@
   color: var(--dsn-card-image-placeholder-color);
 }
 
-/* Placeholder icoon via SVG background-image */
+/* Placeholder icoon via SVG mask */
 .dsn-card__image-placeholder::before {
   content: '';
   display: block;
@@ -105,42 +160,104 @@
 }
 
 /* =============================================================================
-   CardHeading — sub-component
-   Heading met stretched link die de volledige card klikbaar maakt.
+   Tekst-elementen: eigen tokens, zodat de tekst in een card gelijk blijft,
+   ongeacht het semantische niveau van de heading
    ============================================================================= */
 
-.dsn-card-heading {
+.dsn-card__heading {
   font-family: var(--dsn-card-heading-font-family);
   font-size: var(--dsn-card-heading-font-size);
   font-weight: var(--dsn-card-heading-font-weight);
   line-height: var(--dsn-card-heading-line-height);
   color: var(--dsn-card-heading-color);
   text-wrap: balance;
-  margin-block-start: 0;
-  margin-block-end: 0;
+  margin-block: 0;
 }
 
-/* Link in de heading — erft kleur en maakt de card klikbaar via stretched link */
-.dsn-card-heading__link {
+.dsn-card__label {
+  font-family: var(--dsn-card-label-font-family);
+  font-size: var(--dsn-card-label-font-size);
+  font-weight: var(--dsn-card-label-font-weight);
+  line-height: var(--dsn-card-label-line-height);
+  color: var(--dsn-card-label-color);
+  margin-block: 0;
+}
+
+.dsn-card__description {
+  font-size: var(--dsn-card-description-font-size);
+  line-height: var(--dsn-card-description-line-height);
+  color: var(--dsn-card-description-color);
+  margin-block: 0;
+}
+
+.dsn-card__meta {
+  font-size: var(--dsn-card-meta-font-size);
+  line-height: var(--dsn-card-meta-line-height);
+  color: var(--dsn-card-meta-color);
+  margin-block: 0;
+}
+
+/* =============================================================================
+   Stretched link
+   Staat meestal in de heading of het label, maar mag ook in de footer staan
+   (bijv. "Lees meer over fruit"). Eén per card.
+   ============================================================================= */
+
+/* In heading en label erft de link de tekststijl van zijn ouder */
+:is(.dsn-card__heading, .dsn-card__label) > .dsn-card__link {
   color: inherit;
   text-decoration: none;
 }
 
-.dsn-card-heading__link:hover {
+:is(.dsn-card__heading, .dsn-card__label) > .dsn-card__link:hover {
   text-decoration: underline;
 }
 
-/* Stretched link: ::before dekt de volledige card */
-.dsn-card-heading__link::before {
+/* ::before dekt de volledige card */
+.dsn-card__link::before {
   content: '';
   position: absolute;
   inset: 0;
   z-index: 1;
 }
 
-/* Eigen focus-outline uitschakelen — card toont de focus-ring */
-.dsn-card-heading__link:focus-visible {
+/* Een Link of ButtonLink zet zelf `position: relative`; binnen de card moet
+   het ::before-vlak aan de card hangen, niet aan de link */
+.dsn-card .dsn-card__link {
+  position: static;
+}
+
+/* Eigen focus-outline uitschakelen — de card toont de focus-ring */
+.dsn-card__link:focus-visible {
   outline: none;
+}
+
+/* Andere interactieve elementen staan boven de stretched link en blijven
+   daardoor zelfstandig klikbaar */
+.dsn-card
+  :is(a[href], button, input, select, textarea, summary):not(.dsn-card__link) {
+  position: relative;
+  z-index: 2;
+}
+
+/* =============================================================================
+   Affordance
+   Visuele "Lees meer" zonder eigen interactie: altijd een <span> met
+   aria-hidden="true". De stretched link vangt de klik al af, dus geen
+   dubbele tabstop.
+   ============================================================================= */
+
+.dsn-card__affordance {
+  color: var(--dsn-link-color);
+  text-decoration-line: var(--dsn-link-text-decoration-line);
+  text-decoration-color: var(--dsn-link-text-decoration-color);
+  text-decoration-thickness: var(--dsn-link-text-decoration-thickness);
+  text-underline-offset: var(--dsn-link-text-underline-offset);
+}
+
+.dsn-card:has(.dsn-card__link:hover) .dsn-card__affordance {
+  color: var(--dsn-link-hover-color);
+  text-decoration-line: var(--dsn-link-hover-text-decoration-line);
 }
 
 /* =============================================================================

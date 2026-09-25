@@ -2,10 +2,15 @@ import { describe, it, expect } from 'vitest';
 import { render, screen } from '@testing-library/react';
 import {
   Card,
+  CardPreHeader,
   CardHeader,
   CardBody,
   CardHeading,
+  CardLabel,
+  CardDescription,
+  CardMeta,
   CardFooter,
+  CardAffordance,
   CardGroup,
 } from './Card';
 
@@ -54,51 +59,96 @@ describe('Card', () => {
 });
 
 // =============================================================================
-// CardHeader
+// CardPreHeader
 // =============================================================================
 
-describe('CardHeader', () => {
+describe('CardPreHeader', () => {
   it('renders a <div> element as root', () => {
-    const { container } = render(<CardHeader />);
+    const { container } = render(<CardPreHeader />);
     expect(container.firstChild?.nodeName).toBe('DIV');
   });
 
-  it('always has base dsn-card__header class', () => {
-    const { container } = render(<CardHeader />);
-    expect(container.firstChild).toHaveClass('dsn-card__header');
+  it('always has base dsn-card__pre-header class', () => {
+    const { container } = render(<CardPreHeader />);
+    expect(container.firstChild).toHaveClass('dsn-card__pre-header');
   });
 
   it('renders placeholder when no children provided', () => {
-    const { container } = render(<CardHeader />);
+    const { container } = render(<CardPreHeader />);
     expect(
       container.querySelector('.dsn-card__image-placeholder')
     ).toBeInTheDocument();
   });
 
   it('placeholder has aria-hidden="true"', () => {
-    const { container } = render(<CardHeader />);
+    const { container } = render(<CardPreHeader />);
     const placeholder = container.querySelector('.dsn-card__image-placeholder');
     expect(placeholder).toHaveAttribute('aria-hidden', 'true');
   });
 
   it('does not render placeholder when children provided', () => {
     const { container } = render(
-      <CardHeader>
+      <CardPreHeader>
         <img src="/foto.jpg" alt="Foto" />
-      </CardHeader>
+      </CardPreHeader>
     );
     expect(
       container.querySelector('.dsn-card__image-placeholder')
     ).not.toBeInTheDocument();
   });
 
-  it('renders children when provided', () => {
+  it('does not hide meaningful images from screenreaders', () => {
+    const { container } = render(
+      <CardPreHeader>
+        <img src="/foto.jpg" alt="Tekst op de afbeelding" />
+      </CardPreHeader>
+    );
+    expect(container.firstChild).not.toHaveAttribute('aria-hidden');
+    expect(screen.getByAltText('Tekst op de afbeelding')).toBeInTheDocument();
+  });
+
+  it('applies custom className', () => {
+    const { container } = render(<CardPreHeader className="custom" />);
+    expect(container.firstChild).toHaveClass('dsn-card__pre-header');
+    expect(container.firstChild).toHaveClass('custom');
+  });
+
+  it('forwards ref to the div element', () => {
+    const ref = { current: null as HTMLDivElement | null };
+    render(<CardPreHeader ref={ref} />);
+    expect(ref.current).toBeInstanceOf(HTMLDivElement);
+  });
+});
+
+// =============================================================================
+// CardHeader
+// =============================================================================
+
+describe('CardHeader', () => {
+  it('renders a <div> element as root', () => {
+    const { container } = render(<CardHeader>Content</CardHeader>);
+    expect(container.firstChild?.nodeName).toBe('DIV');
+  });
+
+  it('always has base dsn-card__header class', () => {
+    const { container } = render(<CardHeader>Content</CardHeader>);
+    expect(container.firstChild).toHaveClass('dsn-card__header');
+  });
+
+  it('does not render a placeholder when empty', () => {
+    const { container } = render(<CardHeader />);
+    expect(
+      container.querySelector('.dsn-card__image-placeholder')
+    ).not.toBeInTheDocument();
+  });
+
+  it('renders children', () => {
     render(
       <CardHeader>
-        <img src="/foto.jpg" alt="Afbeelding" />
+        <CardHeading>Titel</CardHeading>
       </CardHeader>
     );
-    expect(screen.getByAltText('Afbeelding')).toBeInTheDocument();
+    expect(screen.getByRole('heading', { name: 'Titel' })).toBeInTheDocument();
   });
 
   it('applies custom className', () => {
@@ -169,9 +219,9 @@ describe('CardHeading', () => {
     expect(container.firstChild?.nodeName).toBe('H4');
   });
 
-  it('always has base dsn-card-heading class', () => {
+  it('always has base dsn-card__heading class', () => {
     const { container } = render(<CardHeading>Titel</CardHeading>);
-    expect(container.firstChild).toHaveClass('dsn-card-heading');
+    expect(container.firstChild).toHaveClass('dsn-card__heading');
   });
 
   it('renders children as plain text without link when no href in context', () => {
@@ -189,14 +239,14 @@ describe('CardHeading', () => {
     const link = screen.getByRole('link', { name: 'Artikel titel' });
     expect(link).toBeInTheDocument();
     expect(link).toHaveAttribute('href', '/artikel/slug');
-    expect(link).toHaveClass('dsn-card-heading__link');
+    expect(link).toHaveClass('dsn-card__link');
   });
 
   it('applies custom className', () => {
     const { container } = render(
       <CardHeading className="custom">Titel</CardHeading>
     );
-    expect(container.firstChild).toHaveClass('dsn-card-heading');
+    expect(container.firstChild).toHaveClass('dsn-card__heading');
     expect(container.firstChild).toHaveClass('custom');
   });
 
@@ -204,6 +254,85 @@ describe('CardHeading', () => {
     const ref = { current: null as HTMLHeadingElement | null };
     render(<CardHeading ref={ref}>Titel</CardHeading>);
     expect(ref.current).toBeInstanceOf(HTMLHeadingElement);
+  });
+});
+
+// =============================================================================
+// CardLabel
+// =============================================================================
+
+describe('CardLabel', () => {
+  it('renders a <p> element with dsn-card__label class', () => {
+    const { container } = render(<CardLabel>Inloggen</CardLabel>);
+    expect(container.firstChild?.nodeName).toBe('P');
+    expect(container.firstChild).toHaveClass('dsn-card__label');
+  });
+
+  it('renders plain text without link when no href in context', () => {
+    const { container } = render(<CardLabel>Inloggen</CardLabel>);
+    expect(container.querySelector('a')).not.toBeInTheDocument();
+  });
+
+  it('renders a stretched link when Card provides href via context', () => {
+    render(
+      <Card href="/inloggen">
+        <CardLabel>Inloggen met DigiD</CardLabel>
+      </Card>
+    );
+    const link = screen.getByRole('link', { name: 'Inloggen met DigiD' });
+    expect(link).toHaveAttribute('href', '/inloggen');
+    expect(link).toHaveClass('dsn-card__link');
+  });
+
+  it('forwards ref to the p element', () => {
+    const ref = { current: null as HTMLParagraphElement | null };
+    render(<CardLabel ref={ref}>Label</CardLabel>);
+    expect(ref.current).toBeInstanceOf(HTMLParagraphElement);
+  });
+});
+
+// =============================================================================
+// CardDescription en CardMeta
+// =============================================================================
+
+describe('CardDescription', () => {
+  it('renders a <p> element with dsn-card__description class', () => {
+    const { container } = render(<CardDescription>Tekst</CardDescription>);
+    expect(container.firstChild?.nodeName).toBe('P');
+    expect(container.firstChild).toHaveClass('dsn-card__description');
+  });
+
+  it('applies custom className', () => {
+    const { container } = render(
+      <CardDescription className="custom">Tekst</CardDescription>
+    );
+    expect(container.firstChild).toHaveClass('dsn-card__description');
+    expect(container.firstChild).toHaveClass('custom');
+  });
+
+  it('forwards ref to the p element', () => {
+    const ref = { current: null as HTMLParagraphElement | null };
+    render(<CardDescription ref={ref}>Tekst</CardDescription>);
+    expect(ref.current).toBeInstanceOf(HTMLParagraphElement);
+  });
+});
+
+describe('CardMeta', () => {
+  it('renders a <p> element with dsn-card__meta class', () => {
+    const { container } = render(
+      <CardMeta>
+        <time dateTime="2026-09-25">25 september 2026</time>
+      </CardMeta>
+    );
+    expect(container.firstChild?.nodeName).toBe('P');
+    expect(container.firstChild).toHaveClass('dsn-card__meta');
+    expect(container.querySelector('time')).toBeInTheDocument();
+  });
+
+  it('forwards ref to the p element', () => {
+    const ref = { current: null as HTMLParagraphElement | null };
+    render(<CardMeta ref={ref}>Meta</CardMeta>);
+    expect(ref.current).toBeInstanceOf(HTMLParagraphElement);
   });
 });
 
@@ -239,6 +368,39 @@ describe('CardFooter', () => {
     const ref = { current: null as HTMLDivElement | null };
     render(<CardFooter ref={ref}>Content</CardFooter>);
     expect(ref.current).toBeInstanceOf(HTMLDivElement);
+  });
+});
+
+// =============================================================================
+// CardAffordance
+// =============================================================================
+
+describe('CardAffordance', () => {
+  it('renders a <span> with aria-hidden="true"', () => {
+    const { container } = render(<CardAffordance>Lees meer</CardAffordance>);
+    expect(container.firstChild?.nodeName).toBe('SPAN');
+    expect(container.firstChild).toHaveClass('dsn-card__affordance');
+    expect(container.firstChild).toHaveAttribute('aria-hidden', 'true');
+  });
+
+  it('is not a link and adds no tab stop', () => {
+    render(
+      <Card href="/artikel/slug">
+        <CardHeader>
+          <CardHeading>Artikeltitel</CardHeading>
+        </CardHeader>
+        <CardFooter>
+          <CardAffordance>Lees meer</CardAffordance>
+        </CardFooter>
+      </Card>
+    );
+    expect(screen.getAllByRole('link')).toHaveLength(1);
+  });
+
+  it('forwards ref to the span element', () => {
+    const ref = { current: null as HTMLSpanElement | null };
+    render(<CardAffordance ref={ref}>Lees meer</CardAffordance>);
+    expect(ref.current).toBeInstanceOf(HTMLSpanElement);
   });
 });
 
@@ -340,18 +502,18 @@ describe('CardGroup', () => {
 // =============================================================================
 
 describe('Card — integratie', () => {
-  it('rendert een volledige card met header, body en footer', () => {
+  it('rendert een volledige card met alle vier de secties', () => {
     render(
       <Card href="/artikel/slug">
-        <CardHeader />
-        <CardBody>
+        <CardHeader>
           <CardHeading level={2}>Artikeltitel</CardHeading>
+        </CardHeader>
+        <CardPreHeader />
+        <CardBody>
           <p>Korte beschrijving.</p>
         </CardBody>
         <CardFooter>
-          <a href="/artikel/slug" aria-hidden tabIndex={-1}>
-            Lees meer
-          </a>
+          <CardAffordance>Lees meer</CardAffordance>
         </CardFooter>
       </Card>
     );
@@ -364,21 +526,39 @@ describe('Card — integratie', () => {
     expect(screen.getByText('Korte beschrijving.')).toBeInTheDocument();
   });
 
+  it('header staat in de DOM vóór de pre-header (WCAG 1.3.2)', () => {
+    const { container } = render(
+      <Card href="/artikel/slug">
+        <CardHeader>
+          <CardHeading>Artikeltitel</CardHeading>
+        </CardHeader>
+        <CardPreHeader>
+          <img src="/foto.jpg" alt="Tekst op de afbeelding" />
+        </CardPreHeader>
+      </Card>
+    );
+    const sections = Array.from(container.querySelectorAll('.dsn-card > *'));
+    expect(sections.map((el) => el.className)).toEqual([
+      'dsn-card__header',
+      'dsn-card__pre-header',
+    ]);
+  });
+
   it('cards in CardGroup: meerdere cards worden gerenderd', () => {
     render(
       <CardGroup>
         <li>
           <Card href="/1">
-            <CardBody>
+            <CardHeader>
               <CardHeading>Kaart 1</CardHeading>
-            </CardBody>
+            </CardHeader>
           </Card>
         </li>
         <li>
           <Card href="/2">
-            <CardBody>
+            <CardHeader>
               <CardHeading>Kaart 2</CardHeading>
-            </CardBody>
+            </CardHeader>
           </Card>
         </li>
       </CardGroup>

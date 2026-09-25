@@ -10,6 +10,58 @@ All notable changes to this project are documented in this file.
 
 Nog niet gepubliceerde wijzigingen. Schrijf nieuwe changelog-entries hieronder; bij de volgende release wordt deze kop gepromoveerd naar het definitieve versienummer.
 
+### Card: vier secties, en de heading staat vóór de afbeelding (breaking)
+
+De Card bestaat nu uit vier optionele secties: pre-header, header, body en footer (DR-2026-11). De heading staat in de DOM vóór de afbeelding, zodat een screenreader een betekenisvolle alt-tekst ná het kopje voorleest. De afbeelding staat visueel nog steeds bovenaan, via `order: -1`. Dat lost issue #300 op (WCAG 1.3.2). De standaard-tokens zijn zo gekozen dat een bestaande card er hetzelfde uitziet.
+
+**Migratie in React.** `CardHeader` bevat voortaan de heading, de afbeelding verhuist naar `CardPreHeader`. Oude code blijft renderen, maar met de afbeelding in de verkeerde sectie, dus pas elke card aan:
+
+```tsx
+// Voor
+<Card href="/artikel">
+  <CardHeader><Image … /></CardHeader>
+  <CardBody>
+    <CardHeading level={2}>Titel</CardHeading>
+    <Paragraph>Tekst</Paragraph>
+  </CardBody>
+  <CardFooter>
+    <Link href="/artikel" aria-hidden tabIndex={-1}>Lees meer</Link>
+  </CardFooter>
+</Card>
+
+// Na
+<Card href="/artikel">
+  <CardHeader>
+    <CardHeading level={2}>Titel</CardHeading>
+  </CardHeader>
+  <CardPreHeader><Image … /></CardPreHeader>
+  <CardBody>
+    <Paragraph>Tekst</Paragraph>
+  </CardBody>
+  <CardFooter>
+    <CardAffordance>Lees meer</CardAffordance>
+  </CardFooter>
+</Card>
+```
+
+Een lege `<CardHeader />` voor de placeholder wordt `<CardPreHeader />`.
+
+**Migratie in HTML/CSS.**
+
+| Voor                                                          | Na                                                       |
+| ------------------------------------------------------------- | -------------------------------------------------------- |
+| `dsn-card__header` met de afbeelding                          | `dsn-card__pre-header`, in de DOM ná `dsn-card__header`  |
+| heading in `dsn-card__body`                                   | heading in `dsn-card__header`                            |
+| `dsn-card-heading`                                            | `dsn-card__heading`                                      |
+| `dsn-card-heading__link`                                      | `dsn-card__link`                                         |
+| `<a class="dsn-link" aria-hidden tabindex="-1">` in de footer | `<span class="dsn-card__affordance" aria-hidden="true">` |
+
+**Tokens.** `--dsn-card-body-padding-block` en `--dsn-card-body-padding-inline` zijn gesplitst in `-start` en `-end`, net als `--dsn-card-footer-padding-inline`. Nieuw zijn tokens per sectie voor de pre-header en header, `--dsn-card-min-block-size`, `--dsn-card-footer-column-gap`, en typografie-tokens voor label, description en meta. De pre-header-tokens verwijzen naar die van de header.
+
+**Nieuw.** `CardLabel` voor een card zonder heading-semantiek, `CardDescription` en `CardMeta` met eigen typografie, en `CardAffordance` voor een visuele "Lees meer" zonder tweede tabstop. De stretched link is nu een losse class, dus hij mag ook op een link in de footer staan. Een afbeelding in de pre-header loopt door tot de rand; overige inhoud van de pre-header houdt zijn padding.
+
+**Figma-sync.** De as `header` van de Card-set heet nu `preHeader` (`with-pre-header`, `no-pre-header`). Bij een herimport komen dat als nieuwe varianten binnen; de oude blijven met een melding staan. Daarnaast volgt de generator voortaan `order` in flex- en grid-containers, zodat de lagen in Figma in de visuele volgorde staan en niet in de DOM-volgorde.
+
 ### PageHeader: auto-hide komt minder snel terug
 
 Bij `sticky="auto-hide"` schoof de header bij de kleinste beweging omhoog al terug in beeld, ook bij een terugverende swipe op touch. Hij komt nu pas terug na 64px omhoog scrollen. Omlaag scrollen verbergt hem nog steeds direct, en binnen de bovenste 100px blijft hij altijd zichtbaar. De slide-animatie gebruikt voortaan `--dsn-transition-duration-slow` (350ms) in plaats van `normal` (200ms).
