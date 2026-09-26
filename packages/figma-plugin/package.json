@@ -1,6 +1,6 @@
 {
   "name": "@dsn-starter-kit/figma-plugin",
-  "version": "3.5.0",
+  "version": "4.0.0",
   "private": true,
   "description": "Figma-plugin die de gegenereerde variables en component specs in Figma schrijft",
   "type": "module",

@@ -10,6 +10,10 @@ All notable changes to this project are documented in this file.
 
 Nog niet gepubliceerde wijzigingen. Schrijf nieuwe changelog-entries hieronder; bij de volgende release wordt deze kop gepromoveerd naar het definitieve versienummer.
 
+## Version 4.0.0 (September 26, 2026)
+
+Major release, met twee breaking changes. De Card bestaat nu uit vier secties en de heading staat in de DOM vóór de afbeelding; dat verandert de verplichte HTML-markup en de React-compositie. De maat van invulvelden heet voortaan `inline-size` in plaats van `width`, in tokens, CSS-klassen, de React-prop en het core-type, en TextArea, EmailInput, PasswordInput, TelephoneInput en SearchInput bieden geen `xs` en `sm` meer. Beide secties hieronder hebben een migratietabel. Kleiner, maar ook breaking: `--dsn-menu-link-current-indicator-width` is vervangen door `--dsn-menu-item-indicator-width`. Verder additief: een Popover-actiemenu in Table, de menu-indicator bij hover en active, en een rustiger auto-hide in PageHeader. De `figma-sync`- en `figma-plugin`-wijzigingen tellen niet mee voor de versie, omdat die packages private zijn.
+
 ### Invulvelden: `width` heet nu `inline-size`, en niet elk veld biedt elke maat (breaking)
 
 De breedte van invulvelden heet voortaan overal `inline-size`, in lijn met de logische CSS-eigenschap `max-inline-size` die de maat zet. Dat geldt voor tokens, CSS-klassen, de React-prop en het core-type.
@@ -97,7 +101,7 @@ Uit de setcontrole van de formuliervelden.
 
 **Een element dat tot tekst inklapt houdt zijn eigen tokens.** Tot nu toe nam het de tokens van zijn ouder over, waardoor het label van DateInputGroup aan `text/*` hing in plaats van aan `form-field-label/*`. Dat raakt de hele bibliotheek: de kop in Alert bindt nu aan `heading/level-3`, de tekst in Card aan `card/heading`, een optielabel aan `option-label/*`. Een kale tekstnode erft nog steeds van zijn element, en een `<option>` ook, want de browser tekent een dichte `<select>` met de stijl van het veld.
 
-**Verder:** TextArea, SearchInput en Select hebben nu alle zeven breedtevarianten; Select heeft een `value`-tekstproperty voor de gekozen optie; en TextArea wordt gemeten met `rows="4"`, de standaard van het component, in plaats van de twee regels van een kale textarea.
+**Verder:** Select heeft nu alle zeven inline-size-varianten, TextArea en SearchInput de vijf die ze toestaan (zie de inline-size-wijziging hierboven); Select heeft een `value`-tekstproperty voor de gekozen optie; en TextArea wordt gemeten met `rows="4"`, de standaard van het component, in plaats van de twee regels van een kale textarea.
 
 ### Figma-sync: disabled en invalid zijn eigen schakelaars, en tekst loopt het veld uit
 
