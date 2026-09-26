@@ -86,7 +86,7 @@ Ga er vanuit dat een formulier alleen de broodnodige velden bevat. De meeste vel
   htmlFor="tussenvoegsel"
   labelSuffix="(niet verplicht)"
 >
-  <TextInput id="tussenvoegsel" width="xs" />
+  <TextInput id="tussenvoegsel" inlineSize="xs" />
 </FormField>
 ```
 

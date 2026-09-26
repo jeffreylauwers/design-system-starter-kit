@@ -34,7 +34,7 @@ export default {
     disabled: FLAG,
     invalid: FLAG,
     ...FIELD_TEXT_AXES,
-    width: ['auto', 'xs', 'sm', 'md', 'lg', 'xl', 'full'],
+    inlineSize: ['auto', 'md', 'lg', 'xl', 'full'],
   },
 
   componentProperties: FIELD_TEXT_PROPERTIES,
@@ -46,10 +46,10 @@ export default {
 
   pseudoStates: { hover: 'hover', focus: 'focus' },
 
-  render({ width, ...variant }) {
+  render({ inlineSize, ...variant }) {
     const classes = [
       'dsn-text-area',
-      width !== 'auto' && `dsn-text-area--width-${width}`,
+      inlineSize !== 'auto' && `dsn-text-area--inline-size-${inlineSize}`,
     ]
       .filter(Boolean)
       .join(' ');

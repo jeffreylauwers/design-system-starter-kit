@@ -26,6 +26,7 @@ Het tonen en verbergen van het ingevulde wachtwoord is bewust **niet** ingebouwd
 - **Voeg een toon/verberg-knop toe via een apart patroon.** Dit component bevat bewust geen toggle: gebruik hiervoor een Button naast het invoerveld.
 - **Combineer met FormField.** Gebruik altijd een label via `FormField` of `FormFieldLabel` voor toegankelijkheid.
 - **Geef validatie feedback.** Gebruik de `invalid` prop in combinatie met `aria-invalid` en een `FormFieldErrorMessage`.
+- **Kies de juiste inline-size.** Gebruik `inlineSize` met `md`, `lg`, `xl` of `full`. `xs` en `sm` bestaan bij PasswordInput niet: een sterk wachtwoord past daar niet in, en een smal veld moedigt korte wachtwoorden aan.
 
 ## Accessibility
 

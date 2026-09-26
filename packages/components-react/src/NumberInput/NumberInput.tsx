@@ -1,5 +1,5 @@
 import React from 'react';
-import { classNames, FormControlWidth } from '@dsn-starter-kit/core';
+import { classNames, FormControlInlineSize } from '@dsn-starter-kit/core';
 import './NumberInput.css';
 
 export interface NumberInputProps extends Omit<
@@ -13,10 +13,10 @@ export interface NumberInputProps extends Omit<
   invalid?: boolean;
 
   /**
-   * Width variant for the input
-   * @default undefined (uses default max-width from form-control)
+   * Inline-size variant for the input
+   * @default undefined (uses default max-inline-size from form-control)
    */
-  width?: FormControlWidth;
+  inlineSize?: FormControlInlineSize;
 
   /**
    * Allow decimal input (e.g. amounts). When false, uses GOV.UK pattern:
@@ -50,10 +50,13 @@ export interface NumberInputProps extends Omit<
  * ```
  */
 export const NumberInput = React.forwardRef<HTMLInputElement, NumberInputProps>(
-  ({ className, invalid, width, allowDecimals = false, ...props }, ref) => {
+  (
+    { className, invalid, inlineSize, allowDecimals = false, ...props },
+    ref
+  ) => {
     const classes = classNames(
       'dsn-text-input',
-      width && `dsn-text-input--width-${width}`,
+      inlineSize && `dsn-text-input--inline-size-${inlineSize}`,
       className
     );
 

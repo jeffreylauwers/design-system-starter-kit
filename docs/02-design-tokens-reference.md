@@ -189,17 +189,17 @@ Maximum width constraints for page layout and readable text lines.
 
 ### Form Control Sizing
 
-Width presets based on expected character count, and a default maximum width cap.
+Inline-size presets based on expected character count, and a default maximum inline-size cap. Not every form control offers every preset: TextArea, EmailInput, PasswordInput, TelephoneInput and SearchInput leave out `xs` and `sm`.
 
-| Token                              | CSS Variable                         | Value | Purpose                                      |
-| ---------------------------------- | ------------------------------------ | ----- | -------------------------------------------- |
-| `dsn.form-control.max-inline-size` | `--dsn-form-control-max-inline-size` | 25rem | Default maximum width when no preset applies |
-| `dsn.form-control.width.xs`        | `--dsn-form-control-width-xs`        | 10ch  | Very short inputs (postal code, year, CVV)   |
-| `dsn.form-control.width.sm`        | `--dsn-form-control-width-sm`        | 14ch  | Short inputs (time HH:MM, short codes)       |
-| `dsn.form-control.width.md`        | `--dsn-form-control-width-md`        | 20ch  | Medium inputs (date, phone number)           |
-| `dsn.form-control.width.lg`        | `--dsn-form-control-width-lg`        | 32ch  | Standard inputs (name, email) — default      |
-| `dsn.form-control.width.xl`        | `--dsn-form-control-width-xl`        | 48ch  | Longer inputs (URL)                          |
-| `dsn.form-control.width.full`      | `--dsn-form-control-width-full`      | 100%  | Full width, responsive to container          |
+| Token                               | CSS Variable                          | Value | Purpose                                            |
+| ----------------------------------- | ------------------------------------- | ----- | -------------------------------------------------- |
+| `dsn.form-control.max-inline-size`  | `--dsn-form-control-max-inline-size`  | 25rem | Default maximum inline-size when no preset applies |
+| `dsn.form-control.inline-size.xs`   | `--dsn-form-control-inline-size-xs`   | 10ch  | Very short inputs (postal code, year, CVV)         |
+| `dsn.form-control.inline-size.sm`   | `--dsn-form-control-inline-size-sm`   | 14ch  | Short inputs (time HH:MM, short codes)             |
+| `dsn.form-control.inline-size.md`   | `--dsn-form-control-inline-size-md`   | 20ch  | Medium inputs (date, phone number)                 |
+| `dsn.form-control.inline-size.lg`   | `--dsn-form-control-inline-size-lg`   | 32ch  | Standard inputs (name, email) — default            |
+| `dsn.form-control.inline-size.xl`   | `--dsn-form-control-inline-size-xl`   | 48ch  | Longer inputs (URL)                                |
+| `dsn.form-control.inline-size.full` | `--dsn-form-control-inline-size-full` | 100%  | Full inline-size, responsive to container          |
 
 ---
 

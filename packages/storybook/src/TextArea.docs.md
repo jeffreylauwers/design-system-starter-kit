@@ -1,10 +1,10 @@
 # Text Area
 
-Een multi-line tekst invoerveld met ondersteuning voor verschillende states en width varianten.
+Een multi-line tekst invoerveld met ondersteuning voor verschillende states en inline-size varianten.
 
 ## Doel
 
-De TextArea component is een gestandaardiseerd invoerveld voor multi-line tekst. Het ondersteunt resize gedrag (standaard vertical), verschillende row heights, en heeft consistent styling voor alle interaction states (hover, focus, disabled, invalid, read-only). De component heeft verschillende width varianten die je kunt instellen met de `width` prop. Vertical resizing is standaard ingeschakeld maar wordt uitgeschakeld bij disabled state. Default height wordt bepaald door het `rows` attribuut (standaard 4 regels).
+De TextArea component is een gestandaardiseerd invoerveld voor multi-line tekst. Het ondersteunt resize gedrag (standaard vertical), verschillende row heights, en heeft consistent styling voor alle interaction states (hover, focus, disabled, invalid, read-only). De component heeft verschillende inline-size varianten die je kunt instellen met de `inlineSize` prop. Vertical resizing is standaard ingeschakeld maar wordt uitgeschakeld bij disabled state. Default height wordt bepaald door het `rows` attribuut (standaard 4 regels).
 
 <!-- VOORBEELD -->
 
@@ -26,11 +26,11 @@ De TextArea component is een gestandaardiseerd invoerveld voor multi-line tekst.
   - `rows={2-3}` - Korte berichten, opmerkingen
   - `rows={4-6}` - Standaard berichten, beschrijvingen (4 is default)
   - `rows={8+}` - Lange teksten, artikelen
-- **Kies de juiste width.** Gebruik `width` om de breedte aan te passen:
-  - `md` (32ch) - Standaard, korte teksten
-  - `lg` (48ch) - Langere teksten
-  - `xl` (64ch) - Zeer lange teksten
-  - `full` (100%) - Responsive, neemt volledige breedte
+- **Kies de juiste inline-size.** Gebruik `inlineSize` om de inline-size aan te passen. `xs` en `sm` bestaan bij TextArea niet: die zijn te smal voor meerdere regels tekst.
+  - `md` (20ch) - Korte teksten
+  - `lg` (32ch) - Langere teksten
+  - `xl` (48ch) - Zeer lange teksten
+  - `full` (100%) - Responsive, neemt volledige inline-size
 - **Labels zijn verplicht.** Wrap in FormField met FormFieldLabel voor accessibility.
 - **Resize gedrag.** Standaard vertical resizing, automatisch disabled bij disabled state.
 - **Invalid state alleen na interactie.** Toon invalid state alleen na blur of submit.
@@ -45,14 +45,14 @@ De TextArea component is een gestandaardiseerd invoerveld voor multi-line tekst.
 | 4-6  | **Standaard** - beschrijvingen, feedback (4 is default) |
 | 8+   | Lange teksten, artikelen, uitgebreide beschrijvingen    |
 
-## Width varianten
+## Inline-size varianten
 
-| Variant | Width | Gebruik                                  |
-| ------- | ----- | ---------------------------------------- |
-| `md`    | 32ch  | **Standaard** - korte tot medium teksten |
-| `lg`    | 48ch  | Langere teksten                          |
-| `xl`    | 64ch  | Zeer lange teksten                       |
-| `full`  | 100%  | Responsive, past zich aan container      |
+| Variant | Inline-size | Gebruik                             |
+| ------- | ----------- | ----------------------------------- |
+| `md`    | 20ch        | Korte tot medium teksten            |
+| `lg`    | 32ch        | Langere teksten                     |
+| `xl`    | 48ch        | Zeer lange teksten                  |
+| `full`  | 100%        | Responsive, past zich aan container |
 
 ## Design tokens
 
@@ -87,12 +87,10 @@ De TextArea component is een gestandaardiseerd invoerveld voor multi-line tekst.
 | `--dsn-text-area-read-only-background-color` | Read-only background color                         |
 | `--dsn-text-area-read-only-border-color`     | Read-only border color                             |
 | `--dsn-text-area-read-only-color`            | Read-only text color                               |
-| `--dsn-form-control-width-xs`                | Extra small width (8ch)                            |
-| `--dsn-form-control-width-sm`                | Small width (16ch)                                 |
-| `--dsn-form-control-width-md`                | Medium width (32ch)                                |
-| `--dsn-form-control-width-lg`                | Large width (48ch)                                 |
-| `--dsn-form-control-width-xl`                | Extra large width (64ch)                           |
-| `--dsn-form-control-width-full`              | Full width (100%)                                  |
+| `--dsn-form-control-inline-size-md`          | Medium inline-size (20ch)                          |
+| `--dsn-form-control-inline-size-lg`          | Large inline-size (32ch)                           |
+| `--dsn-form-control-inline-size-xl`          | Extra large inline-size (48ch)                     |
+| `--dsn-form-control-inline-size-full`        | Full inline-size (100%)                            |
 
 ## Accessibility
 

@@ -25,7 +25,7 @@ De NumberInput component is een gespecialiseerd invoerveld voor het invoeren van
 - **Gebruik `allowDecimals` voor bedragen.** Dit schakelt `inputmode="decimal"` in zodat ook een kommatoets beschikbaar is op mobiel.
 - **Combineer met FormField.** Gebruik altijd een label via `FormField` of `FormFieldLabel` voor toegankelijkheid.
 - **Geef validatie feedback.** Gebruik de `invalid` prop in combinatie met `aria-invalid` en een `FormFieldErrorMessage`.
-- **Beperk de breedte.** Gebruik de `width` prop om de invoerbreedte af te stemmen op de verwachte waarde (bijv. `xs` voor leeftijd, `sm` voor postcode).
+- **Beperk de inline-size.** Gebruik de `inlineSize` prop om de inline-size af te stemmen op de verwachte waarde (bijv. `xs` voor leeftijd, `sm` voor postcode).
 
 ## Accessibility
 

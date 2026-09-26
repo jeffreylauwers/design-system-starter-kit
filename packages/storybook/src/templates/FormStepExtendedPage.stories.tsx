@@ -77,7 +77,11 @@ function FormModals({
               moment afmaken.
             </Paragraph>
             <FormField label="E-mailadres" htmlFor="modal-email">
-              <EmailInput id="modal-email" autoComplete="email" width="xl" />
+              <EmailInput
+                id="modal-email"
+                autoComplete="email"
+                inlineSize="xl"
+              />
             </FormField>
           </Stack>
         </ModalDialogBody>
@@ -165,7 +169,7 @@ function ExtendedDetailsPage() {
                       >
                         <TextInput
                           id="tussenvoegsel"
-                          width="sm"
+                          inlineSize="sm"
                           autoComplete="additional-name"
                         />
                       </FormField>
@@ -177,7 +181,7 @@ function ExtendedDetailsPage() {
                       <FormField label="Straat" htmlFor="straat">
                         <TextInput
                           id="straat"
-                          width="xl"
+                          inlineSize="xl"
                           autoComplete="address-line1"
                         />
                       </FormField>
@@ -185,7 +189,7 @@ function ExtendedDetailsPage() {
                       <FormField label="Huisnummer" htmlFor="huisnummer">
                         <NumberInput
                           id="huisnummer"
-                          width="xs"
+                          inlineSize="xs"
                           autoComplete="address-line2"
                         />
                       </FormField>
@@ -197,7 +201,7 @@ function ExtendedDetailsPage() {
                       >
                         <TextInput
                           id="toevoeging"
-                          width="xs"
+                          inlineSize="xs"
                           autoComplete="address-line2"
                         />
                       </FormField>
@@ -205,7 +209,7 @@ function ExtendedDetailsPage() {
                       <FormField label="Postcode" htmlFor="postcode">
                         <TextInput
                           id="postcode"
-                          width="xs"
+                          inlineSize="xs"
                           autoComplete="postal-code"
                         />
                       </FormField>
@@ -213,7 +217,7 @@ function ExtendedDetailsPage() {
                       <FormField label="Woonplaats" htmlFor="woonplaats">
                         <TextInput
                           id="woonplaats"
-                          width="xl"
+                          inlineSize="xl"
                           autoComplete="address-level2"
                         />
                       </FormField>
@@ -233,7 +237,7 @@ function ExtendedDetailsPage() {
                         <EmailInput
                           id="email"
                           autoComplete="email"
-                          width="xl"
+                          inlineSize="xl"
                         />
                       </FormField>
 
@@ -245,7 +249,6 @@ function ExtendedDetailsPage() {
                         <TelephoneInput
                           id="telefoonnummer"
                           autoComplete="tel"
-                          width="md"
                         />
                       </FormField>
 
@@ -368,7 +371,7 @@ function SingleErrorPage() {
                       >
                         <TextInput
                           id="single-error-tussenvoegsel"
-                          width="sm"
+                          inlineSize="sm"
                           autoComplete="additional-name"
                         />
                       </FormField>
@@ -387,7 +390,7 @@ function SingleErrorPage() {
                       <FormField label="Straat" htmlFor="single-error-straat">
                         <TextInput
                           id="single-error-straat"
-                          width="xl"
+                          inlineSize="xl"
                           autoComplete="address-line1"
                           defaultValue="Laan der Voorbeelden"
                         />
@@ -399,7 +402,7 @@ function SingleErrorPage() {
                       >
                         <NumberInput
                           id="single-error-huisnummer"
-                          width="xs"
+                          inlineSize="xs"
                           autoComplete="address-line2"
                           defaultValue="99999"
                         />
@@ -412,7 +415,7 @@ function SingleErrorPage() {
                       >
                         <TextInput
                           id="single-error-toevoeging"
-                          width="xs"
+                          inlineSize="xs"
                           autoComplete="address-line2"
                         />
                       </FormField>
@@ -423,7 +426,7 @@ function SingleErrorPage() {
                       >
                         <TextInput
                           id="single-error-postcode"
-                          width="xs"
+                          inlineSize="xs"
                           autoComplete="postal-code"
                           defaultValue="1440 VP"
                         />
@@ -435,7 +438,7 @@ function SingleErrorPage() {
                       >
                         <TextInput
                           id="single-error-woonplaats"
-                          width="xl"
+                          inlineSize="xl"
                           autoComplete="address-level2"
                           defaultValue="Westerhaar-Vriezenveensewijk"
                         />
@@ -460,7 +463,7 @@ function SingleErrorPage() {
                         <EmailInput
                           id="single-error-email"
                           autoComplete="email"
-                          width="xl"
+                          inlineSize="xl"
                           defaultValue="jeroenvandrouwen2gmail.com"
                           invalid
                         />
@@ -474,7 +477,6 @@ function SingleErrorPage() {
                         <TelephoneInput
                           id="single-error-telefoonnummer"
                           autoComplete="tel"
-                          width="md"
                         />
                       </FormField>
 
@@ -607,7 +609,7 @@ function MultipleErrorsPage() {
                       >
                         <TextInput
                           id="multi-error-tussenvoegsel"
-                          width="sm"
+                          inlineSize="sm"
                           autoComplete="additional-name"
                         />
                       </FormField>
@@ -626,7 +628,7 @@ function MultipleErrorsPage() {
                       <FormField label="Straat" htmlFor="multi-error-straat">
                         <TextInput
                           id="multi-error-straat"
-                          width="xl"
+                          inlineSize="xl"
                           autoComplete="address-line1"
                           defaultValue="Laan der Voorbeelden"
                         />
@@ -638,7 +640,7 @@ function MultipleErrorsPage() {
                       >
                         <NumberInput
                           id="multi-error-huisnummer"
-                          width="xs"
+                          inlineSize="xs"
                           autoComplete="address-line2"
                           defaultValue="99999"
                         />
@@ -651,7 +653,7 @@ function MultipleErrorsPage() {
                       >
                         <TextInput
                           id="multi-error-toevoeging"
-                          width="xs"
+                          inlineSize="xs"
                           autoComplete="address-line2"
                         />
                       </FormField>
@@ -663,7 +665,7 @@ function MultipleErrorsPage() {
                       >
                         <TextInput
                           id="multi-error-postcode"
-                          width="xs"
+                          inlineSize="xs"
                           autoComplete="postal-code"
                           defaultValue="144 VP"
                           invalid
@@ -676,7 +678,7 @@ function MultipleErrorsPage() {
                       >
                         <TextInput
                           id="multi-error-woonplaats"
-                          width="xl"
+                          inlineSize="xl"
                           autoComplete="address-level2"
                           defaultValue="Westerhaar-Vriezenveensewijk"
                         />
@@ -701,7 +703,7 @@ function MultipleErrorsPage() {
                         <EmailInput
                           id="multi-error-email"
                           autoComplete="email"
-                          width="xl"
+                          inlineSize="xl"
                           defaultValue="jeroenvandrouwen2gmail.com"
                           invalid
                         />
@@ -715,7 +717,6 @@ function MultipleErrorsPage() {
                         <TelephoneInput
                           id="multi-error-telefoonnummer"
                           autoComplete="tel"
-                          width="md"
                         />
                       </FormField>
 

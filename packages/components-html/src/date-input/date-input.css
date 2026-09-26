@@ -1,6 +1,6 @@
 /**
  * DateInput Component Styles
- * Fixed-width wrapper positions the Button (subtle, small, icon-only) at inline-end inside the input.
+ * Fixed inline-size wrapper positions the Button (subtle, small, icon-only) at inline-end inside the input.
  * The input uses dsn-text-input base styles with extra padding-inline-end
  * to prevent typed text from overlapping the button.
  * Button hover/focus/color states come from the Button component itself.
@@ -12,12 +12,12 @@
    niet gegarandeerd. */
 /* @dsn-depends-on: text-input */
 
-/* Wrapper — fixed md width (20ch), positions calendar button absolutely inside the input */
+/* Wrapper — fixed md inline-size (20ch), positions calendar button absolutely inside the input */
 .dsn-date-input-wrapper {
   position: relative;
   display: block;
   inline-size: 100%;
-  max-inline-size: var(--dsn-form-control-width-md);
+  max-inline-size: var(--dsn-form-control-inline-size-md);
 }
 
 /* Calendar button — centered vertically, positioned at inline-end with reduced margin */

@@ -195,25 +195,25 @@ describe('DateInputGroup', () => {
     });
   });
 
-  describe('width variants', () => {
-    it('dag input has xs width class', () => {
+  describe('inline-size variants', () => {
+    it('dag input has xs inline-size class', () => {
       render(<DateInputGroup id="test" value={emptyValue} />);
       expect(screen.getByLabelText('Dag')).toHaveClass(
-        'dsn-text-input--width-xs'
+        'dsn-text-input--inline-size-xs'
       );
     });
 
-    it('maand input has xs width class', () => {
+    it('maand input has xs inline-size class', () => {
       render(<DateInputGroup id="test" value={emptyValue} />);
       expect(screen.getByLabelText('Maand')).toHaveClass(
-        'dsn-text-input--width-xs'
+        'dsn-text-input--inline-size-xs'
       );
     });
 
-    it('jaar input has sm width class', () => {
+    it('jaar input has sm inline-size class', () => {
       render(<DateInputGroup id="test" value={emptyValue} />);
       expect(screen.getByLabelText('Jaar')).toHaveClass(
-        'dsn-text-input--width-sm'
+        'dsn-text-input--inline-size-sm'
       );
     });
   });

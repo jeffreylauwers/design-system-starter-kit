@@ -90,27 +90,27 @@
     var(--dsn-text-input-invalid-box-shadow-color);
 }
 
-/* Width variants */
-.dsn-text-input--width-xs {
-  max-inline-size: var(--dsn-form-control-width-xs);
+/* Inline-size variants */
+.dsn-text-input--inline-size-xs {
+  max-inline-size: var(--dsn-form-control-inline-size-xs);
 }
 
-.dsn-text-input--width-sm {
-  max-inline-size: var(--dsn-form-control-width-sm);
+.dsn-text-input--inline-size-sm {
+  max-inline-size: var(--dsn-form-control-inline-size-sm);
 }
 
-.dsn-text-input--width-md {
-  max-inline-size: var(--dsn-form-control-width-md);
+.dsn-text-input--inline-size-md {
+  max-inline-size: var(--dsn-form-control-inline-size-md);
 }
 
-.dsn-text-input--width-lg {
-  max-inline-size: var(--dsn-form-control-width-lg);
+.dsn-text-input--inline-size-lg {
+  max-inline-size: var(--dsn-form-control-inline-size-lg);
 }
 
-.dsn-text-input--width-xl {
-  max-inline-size: var(--dsn-form-control-width-xl);
+.dsn-text-input--inline-size-xl {
+  max-inline-size: var(--dsn-form-control-inline-size-xl);
 }
 
-.dsn-text-input--width-full {
-  max-inline-size: var(--dsn-form-control-width-full);
+.dsn-text-input--inline-size-full {
+  max-inline-size: var(--dsn-form-control-inline-size-full);
 }

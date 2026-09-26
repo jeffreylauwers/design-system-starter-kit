@@ -6,7 +6,7 @@
  * aanraakdoel uit WCAG 2.5.5 haalt, en een leeg frame zonder auto layout zou
  * die maat in Figma verliezen.
  *
- * De maten staan op een as en niet op een property, want `--width-md` zet een
+ * De maten staan op een as en niet op een property, want `--inline-size-md` zet een
  * `max-inline-size` en verandert dus de gemeten breedte. Geen maat opgeven is
  * ook een stand, en die heet hier `auto`.
  *
@@ -43,7 +43,7 @@ export default {
     disabled: FLAG,
     invalid: FLAG,
     ...FIELD_TEXT_AXES,
-    width: ['auto', 'xs', 'sm', 'md', 'lg', 'xl', 'full'],
+    inlineSize: ['auto', 'xs', 'sm', 'md', 'lg', 'xl', 'full'],
   },
 
   componentProperties: FIELD_TEXT_PROPERTIES,
@@ -55,10 +55,10 @@ export default {
 
   pseudoStates: { hover: 'hover', focus: 'focus' },
 
-  render({ width, ...variant }) {
+  render({ inlineSize, ...variant }) {
     const classes = [
       'dsn-text-input',
-      width !== 'auto' && `dsn-text-input--width-${width}`,
+      inlineSize !== 'auto' && `dsn-text-input--inline-size-${inlineSize}`,
     ]
       .filter(Boolean)
       .join(' ');

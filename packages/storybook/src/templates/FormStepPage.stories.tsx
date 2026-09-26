@@ -75,7 +75,11 @@ function FormModals({
               moment afmaken.
             </Paragraph>
             <FormField label="E-mailadres" htmlFor="modal-email">
-              <EmailInput id="modal-email" autoComplete="email" width="xl" />
+              <EmailInput
+                id="modal-email"
+                autoComplete="email"
+                inlineSize="xl"
+              />
             </FormField>
           </Stack>
         </ModalDialogBody>
@@ -171,7 +175,7 @@ function FormStepExamplePage() {
                         htmlFor="telefoon"
                         labelSuffix="(niet verplicht)"
                       >
-                        <TelephoneInput id="telefoon" width="md" />
+                        <TelephoneInput id="telefoon" />
                       </FormField>
 
                       <ActionGroup
@@ -280,7 +284,7 @@ function FormStepExampleWithProgressPage() {
                         htmlFor="telefoon"
                         labelSuffix="(niet verplicht)"
                       >
-                        <TelephoneInput id="telefoon" width="md" />
+                        <TelephoneInput id="telefoon" />
                       </FormField>
 
                       <ActionGroup
@@ -398,7 +402,7 @@ function FormStepExampleWithProgressBarPage() {
                         htmlFor="telefoon"
                         labelSuffix="(niet verplicht)"
                       >
-                        <TelephoneInput id="telefoon" width="md" />
+                        <TelephoneInput id="telefoon" />
                       </FormField>
 
                       <ActionGroup
@@ -533,7 +537,7 @@ export const WithSaveForLaterModal: Story = {
                         htmlFor="telefoon"
                         labelSuffix="(niet verplicht)"
                       >
-                        <TelephoneInput id="telefoon" width="md" />
+                        <TelephoneInput id="telefoon" />
                       </FormField>
 
                       <ActionGroup
@@ -574,7 +578,11 @@ export const WithSaveForLaterModal: Story = {
               moment afmaken.
             </Paragraph>
             <FormField label="E-mailadres" htmlFor="modal-email">
-              <EmailInput id="modal-email" autoComplete="email" width="xl" />
+              <EmailInput
+                id="modal-email"
+                autoComplete="email"
+                inlineSize="xl"
+              />
             </FormField>
           </Stack>
         </ModalDialogBody>
@@ -649,7 +657,7 @@ export const WithStopFormModal: Story = {
                         htmlFor="telefoon"
                         labelSuffix="(niet verplicht)"
                       >
-                        <TelephoneInput id="telefoon" width="md" />
+                        <TelephoneInput id="telefoon" />
                       </FormField>
 
                       <ActionGroup

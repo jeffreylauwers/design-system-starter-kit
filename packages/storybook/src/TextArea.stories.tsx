@@ -22,7 +22,7 @@ const meta: Meta<typeof TextArea> = {
       htmlTemplate: (args: any) => {
         const cls = [
           'dsn-text-area',
-          args.width && `dsn-text-area--width-${args.width}`,
+          args.inlineSize && `dsn-text-area--inline-size-${args.inlineSize}`,
         ]
           .filter(Boolean)
           .join(' ');
@@ -42,9 +42,9 @@ const meta: Meta<typeof TextArea> = {
     },
   },
   argTypes: {
-    width: {
+    inlineSize: {
       control: 'select',
-      options: ['xs', 'sm', 'md', 'lg', 'xl', 'full', undefined],
+      options: ['md', 'lg', 'xl', 'full', undefined],
     },
     disabled: { control: 'boolean' },
     readOnly: { control: 'boolean' },
@@ -145,11 +145,11 @@ export const RowVariants: Story = {
   ),
 };
 
-export const Widths: Story = {
-  name: 'Width variants',
+export const InlineSizes: Story = {
+  name: 'Inline-size variants',
   render: () => (
     <div style={{ display: 'flex', flexDirection: 'column', gap: '1.5rem' }}>
-      {(['sm', 'md', 'lg', 'full'] as const).map((w) => (
+      {(['md', 'lg', 'xl', 'full'] as const).map((w) => (
         <div key={w}>
           <p
             style={{
@@ -160,7 +160,7 @@ export const Widths: Story = {
           >
             {w}
           </p>
-          <TextArea width={w} rows={2} />
+          <TextArea inlineSize={w} rows={2} />
         </div>
       ))}
     </div>

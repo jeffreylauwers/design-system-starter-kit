@@ -57,7 +57,7 @@ describe('TimeInput', () => {
     expect(screen.getByTestId('input')).toHaveValue('14:30');
   });
 
-  it('wrapper always has fixed width (no width prop)', () => {
+  it('wrapper always has fixed inline-size (no inlineSize prop)', () => {
     const { container } = render(<TimeInput />);
     const wrapper = container.querySelector('.dsn-time-input-wrapper');
     expect(wrapper?.className).toBe('dsn-time-input-wrapper');

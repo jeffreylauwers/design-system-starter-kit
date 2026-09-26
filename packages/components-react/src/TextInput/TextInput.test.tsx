@@ -76,6 +76,18 @@ describe('TextInput', () => {
     expect(screen.getByTestId('input')).toBeRequired();
   });
 
+  describe('inline-size variants', () => {
+    it.each(['xs', 'sm', 'md', 'lg', 'xl', 'full'] as const)(
+      'applies inline-size class for %s',
+      (w) => {
+        render(<TextInput inlineSize={w} data-testid="input" />);
+        expect(screen.getByTestId('input')).toHaveClass(
+          `dsn-text-input--inline-size-${w}`
+        );
+      }
+    );
+  });
+
   describe('invalid state', () => {
     it('sets aria-invalid when invalid prop is true', () => {
       render(<TextInput invalid data-testid="input" />);

@@ -52,22 +52,16 @@
   display: none;
 }
 
-/* Width variants on the wrapper */
-.dsn-search-input-wrapper--width-xs {
-  max-inline-size: var(--dsn-form-control-width-xs);
+/* Inline-size variants on the wrapper (md, lg, xl, full; xs and sm leave too little room next to the icon) */
+.dsn-search-input-wrapper--inline-size-md {
+  max-inline-size: var(--dsn-form-control-inline-size-md);
 }
-.dsn-search-input-wrapper--width-sm {
-  max-inline-size: var(--dsn-form-control-width-sm);
+.dsn-search-input-wrapper--inline-size-lg {
+  max-inline-size: var(--dsn-form-control-inline-size-lg);
 }
-.dsn-search-input-wrapper--width-md {
-  max-inline-size: var(--dsn-form-control-width-md);
+.dsn-search-input-wrapper--inline-size-xl {
+  max-inline-size: var(--dsn-form-control-inline-size-xl);
 }
-.dsn-search-input-wrapper--width-lg {
-  max-inline-size: var(--dsn-form-control-width-lg);
-}
-.dsn-search-input-wrapper--width-xl {
-  max-inline-size: var(--dsn-form-control-width-xl);
-}
-.dsn-search-input-wrapper--width-full {
-  max-inline-size: var(--dsn-form-control-width-full);
+.dsn-search-input-wrapper--inline-size-full {
+  max-inline-size: var(--dsn-form-control-inline-size-full);
 }

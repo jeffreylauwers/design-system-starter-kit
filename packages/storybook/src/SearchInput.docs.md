@@ -4,7 +4,7 @@ Een invoerveld voor zoekopdrachten met een zoekicoon aan de linkerkant.
 
 ## Doel
 
-De SearchInput component is een gespecialiseerd invoerveld voor zoekfunctionaliteit. Een niet-interactief zoekicoon staat links in het veld (`inline-start`) en heeft dezelfde kleur als de ingevoerde tekst (`--dsn-text-input-color`). De `padding-inline-start` van het invoerveld wordt automatisch vergroot zodat tekst nooit achter het icoon terechtkomt. De breedte van het veld wordt bepaald door de wrapper, niet door het input-element zelf.
+De SearchInput component is een gespecialiseerd invoerveld voor zoekfunctionaliteit. Een niet-interactief zoekicoon staat links in het veld (`inline-start`) en heeft dezelfde kleur als de ingevoerde tekst (`--dsn-text-input-color`). De `padding-inline-start` van het invoerveld wordt automatisch vergroot zodat tekst nooit achter het icoon terechtkomt. De inline-size van het veld wordt bepaald door de wrapper, niet door het input-element zelf.
 
 <!-- VOORBEELD -->
 
@@ -26,6 +26,7 @@ De SearchInput component is een gespecialiseerd invoerveld voor zoekfunctionalit
 - **Implementeer live search of debouncing.** Update resultaten tijdens het typen, maar niet bij elke toetsaanslag.
 - **Geef feedback bij geen resultaten.** Toon een melding als er geen resultaten zijn gevonden.
 - **Combineer met FormField voor een label.** Gebruik `FormFieldLabel` of `FormField` voor toegankelijkheid.
+- **Kies de juiste inline-size.** Gebruik `inlineSize` met `md`, `lg`, `xl` of `full`. `xs` en `sm` bestaan bij SearchInput niet: naast het zoekicoon blijft dan te weinig ruimte over voor de zoekterm.
 
 ## Accessibility
 
@@ -37,7 +38,7 @@ De SearchInput component is een gespecialiseerd invoerveld voor zoekfunctionalit
 
 Een SearchInput bestaat uit:
 
-- **Wrapper div**: regelt de breedte en positioneert het icoon relatief aan het veld
+- **Wrapper div**: regelt de inline-size en positioneert het icoon relatief aan het veld
 - **Zoekicoon**: links in het veld, niet-interactief, zelfde kleur als de tekst
 - **Input element**: `type="search"` met extra padding links voor het icoon
 

@@ -1,10 +1,10 @@
 # Text Input
 
-Een single-line tekst invoerveld met ondersteuning voor verschillende states en width varianten.
+Een single-line tekst invoerveld met ondersteuning voor verschillende states en inline-size varianten.
 
 ## Doel
 
-De TextInput component is een gestandaardiseerd invoerveld voor single-line tekst. Het ondersteunt alle native input types (text, email, url, tel, etc.) en heeft consistent styling voor alle interaction states (hover, focus, disabled, invalid, read-only). De component heeft verschillende width varianten die je kunt instellen met de `width` prop, zodat de breedte semantisch past bij het type data (postcode = xs, email = md, URL = lg). Default styling gebruikt character-based widths (ch units) voor voorspelbare sizing onafhankelijk van font-size.
+De TextInput component is een gestandaardiseerd invoerveld voor single-line tekst. Het ondersteunt alle native input types (text, email, url, tel, etc.) en heeft consistent styling voor alle interaction states (hover, focus, disabled, invalid, read-only). De component heeft verschillende inline-size varianten die je kunt instellen met de `inlineSize` prop, zodat de inline-size semantisch past bij het type data (postcode = xs, email = md, URL = lg). Default styling gebruikt character-based inline-sizes (ch units) voor voorspelbare sizing onafhankelijk van font-size.
 
 <!-- VOORBEELD -->
 
@@ -12,7 +12,7 @@ De TextInput component is een gestandaardiseerd invoerveld voor single-line teks
 
 - Je een single-line tekst invoer nodig hebt (naam, email, URL, etc.).
 - Je native HTML input types wilt gebruiken met consistente styling.
-- Je de breedte semantisch wilt aanpassen aan het type data.
+- Je de inline-size semantisch wilt aanpassen aan het type data.
 
 ## Don't use when
 
@@ -22,29 +22,31 @@ De TextInput component is een gestandaardiseerd invoerveld voor single-line teks
 
 ## Best practices
 
-- **Kies de juiste width.** Gebruik `width` om de breedte aan te passen aan het type data:
+- **Kies de juiste inline-size.** Gebruik `inlineSize` om de inline-size aan te passen aan het type data:
   - `xs` (10ch) - Zeer korte codes (postcode, jaar, CVV)
   - `sm` (14ch) - Korte invoer (tijdstip, korte codes)
   - `md` (20ch) - Medium invoer (datum, telefoonnummer)
   - `lg` (32ch) - Standaard (naam, email) - **DEFAULT**
   - `xl` (48ch) - Langere tekst (URL)
-  - `full` (100%) - Responsive, neemt volledige breedte
+  - `full` (100%) - Responsive, neemt volledige inline-size
 - **Gebruik het juiste type.** Gebruik native input types: `email`, `url`, `tel`, `search`, etc.
 - **Vermijd placeholders.** Placeholder tekst verdwijnt zodra de gebruiker begint te typen: daarna is de informatie niet meer zichtbaar. Bovendien kan de lage contrast van placeholders het veld er ingevuld laten uitzien. Gebruik [FormFieldDescription](/docs/components-formfielddescription--docs) voor hints over het verwachte formaat of type data.
 - **Labels zijn verplicht.** Wrap in FormField met FormFieldLabel voor accessibility.
 - **Invalid state alleen na interactie.** Toon invalid state alleen na blur of submit, niet direct.
 - **Disabled vs read-only.** Gebruik `disabled` als veld niet beschikbaar is, `readOnly` als waarde niet aangepast mag worden.
 
-## Width varianten
+## Inline-size varianten
 
-| Variant | Width | Gebruik                                            |
-| ------- | ----- | -------------------------------------------------- |
-| `xs`    | 10ch  | Zeer korte codes (postcode "1234 AB", CVV "123")   |
-| `sm`    | 14ch  | Korte invoer (tijdstip "14:30", korte codes)       |
-| `md`    | 20ch  | Medium invoer (datum "15-03-2025", telefoonnummer) |
-| `lg`    | 32ch  | **Standaard** - naam, email, etc.                  |
-| `xl`    | 48ch  | Langere tekst (URL "https://example.com")          |
-| `full`  | 100%  | Responsive, past zich aan container                |
+Niet elk invulveld biedt alle varianten. TextArea, EmailInput, PasswordInput, TelephoneInput en SearchInput laten `xs` en `sm` weg, omdat die te smal zijn voor de inhoud waarvoor ze bedoeld zijn.
+
+| Variant | Inline-size | Gebruik                                            |
+| ------- | ----------- | -------------------------------------------------- |
+| `xs`    | 10ch        | Zeer korte codes (postcode "1234 AB", CVV "123")   |
+| `sm`    | 14ch        | Korte invoer (tijdstip "14:30", korte codes)       |
+| `md`    | 20ch        | Medium invoer (datum "15-03-2025", telefoonnummer) |
+| `lg`    | 32ch        | **Standaard** - naam, email, etc.                  |
+| `xl`    | 48ch        | Langere tekst (URL "https://example.com")          |
+| `full`  | 100%        | Responsive, past zich aan container                |
 
 ## Design tokens
 
@@ -78,12 +80,12 @@ De TextInput component is een gestandaardiseerd invoerveld voor single-line teks
 | `--dsn-text-input-read-only-background-color` | Read-only background color              |
 | `--dsn-text-input-read-only-border-color`     | Read-only border color                  |
 | `--dsn-text-input-read-only-color`            | Read-only text color                    |
-| `--dsn-form-control-width-xs`                 | Extra small width (10ch)                |
-| `--dsn-form-control-width-sm`                 | Small width (14ch)                      |
-| `--dsn-form-control-width-md`                 | Medium width (20ch)                     |
-| `--dsn-form-control-width-lg`                 | Large width (32ch)                      |
-| `--dsn-form-control-width-xl`                 | Extra large width (48ch)                |
-| `--dsn-form-control-width-full`               | Full width (100%)                       |
+| `--dsn-form-control-inline-size-xs`           | Extra small inline-size (10ch)          |
+| `--dsn-form-control-inline-size-sm`           | Small inline-size (14ch)                |
+| `--dsn-form-control-inline-size-md`           | Medium inline-size (20ch)               |
+| `--dsn-form-control-inline-size-lg`           | Large inline-size (32ch)                |
+| `--dsn-form-control-inline-size-xl`           | Extra large inline-size (48ch)          |
+| `--dsn-form-control-inline-size-full`         | Full inline-size (100%)                 |
 
 ## Accessibility
 

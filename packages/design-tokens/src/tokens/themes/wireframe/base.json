@@ -455,36 +455,36 @@
         "$type": "dimension",
         "$description": "Randbreedte van form controls"
       },
-      "width": {
+      "inline-size": {
         "xs": {
           "$value": "8ch",
           "$type": "dimension",
-          "$description": "Extra kleine breedte — voor korte invoervelden (bijv. postcode, 6 tekens)"
+          "$description": "Extra kleine inline-size — voor korte invoervelden (bijv. postcode, 6 tekens)"
         },
         "sm": {
           "$value": "16ch",
           "$type": "dimension",
-          "$description": "Kleine breedte — voor middelgrote invoervelden (bijv. telefoonnummer, 10-12 cijfers)"
+          "$description": "Kleine inline-size — voor middelgrote invoervelden (bijv. telefoonnummer, 10-12 cijfers)"
         },
         "md": {
           "$value": "32ch",
           "$type": "dimension",
-          "$description": "Middelgrote breedte (standaard) — voor standaard invoervelden (bijv. e-mail, naam)"
+          "$description": "Middelgrote inline-size (standaard) — voor standaard invoervelden (bijv. e-mail, naam)"
         },
         "lg": {
           "$value": "48ch",
           "$type": "dimension",
-          "$description": "Grote breedte — voor langere invoervelden (bijv. URL)"
+          "$description": "Grote inline-size — voor langere invoervelden (bijv. URL)"
         },
         "xl": {
           "$value": "64ch",
           "$type": "dimension",
-          "$description": "Extra grote breedte — voor zeer lange tekstvelden"
+          "$description": "Extra grote inline-size — voor zeer lange tekstvelden"
         },
         "full": {
           "$value": "100%",
           "$type": "dimension",
-          "$description": "Volledige breedte — responsief aan de container"
+          "$description": "Volledige inline-size — responsief aan de container"
         }
       },
       "hover": {

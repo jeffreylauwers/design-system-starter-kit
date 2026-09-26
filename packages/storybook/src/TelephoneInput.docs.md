@@ -25,6 +25,7 @@ De TelephoneInput component is een gespecialiseerd invoerveld voor telefoonnumme
 - **Laat browser-autocomplete aan.** De standaard `autocomplete="tel"` helpt gebruikers snel invullen.
 - **Combineer met FormField.** Gebruik altijd een label via `FormField` of `FormFieldLabel` voor toegankelijkheid.
 - **Geef validatie feedback.** Gebruik de `invalid` prop in combinatie met `aria-invalid` en een `FormFieldErrorMessage`.
+- **Standaard `md`.** TelephoneInput krijgt standaard `inlineSize="md"` (20ch), genoeg voor een telefoonnummer met landcode. Kies `lg`, `xl` of `full` als dat beter in het formulier past. `xs` en `sm` bestaan bij TelephoneInput niet: een telefoonnummer past daar niet in.
 
 ## Accessibility
 

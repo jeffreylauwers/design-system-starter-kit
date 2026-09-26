@@ -15,20 +15,48 @@ Design tokens are the single source of truth for colors, typography, spacing, bo
 ---
 
 <OrderedList>
-  <li><TocLink targetId="colors">Colors</TocLink></li>
-  <li><TocLink targetId="inverse-colors">Inverse Colors</TocLink></li>
-  <li><TocLink targetId="typography">Typography</TocLink></li>
-  <li><TocLink targetId="spacing">Spacing</TocLink></li>
-  <li><TocLink targetId="borders">Borders</TocLink></li>
-  <li><TocLink targetId="focus-indicators">Focus Indicators</TocLink></li>
-  <li><TocLink targetId="icon-sizes">Icon Sizes</TocLink></li>
-  <li><TocLink targetId="pointer-target-sizing">Pointer Target Sizing</TocLink></li>
-  <li><TocLink targetId="content-sizing">Content Sizing</TocLink></li>
-  <li><TocLink targetId="form-control-sizing">Form Control Sizing</TocLink></li>
-  <li><TocLink targetId="box-shadows">Box Shadows</TocLink></li>
-  <li><TocLink targetId="z-index">Z-Index</TocLink></li>
-  <li><TocLink targetId="motion">Motion</TocLink></li>
-  <li><TocLink targetId="breakpoints">Breakpoints</TocLink></li>
+  <li>
+    <TocLink targetId="colors">Colors</TocLink>
+  </li>
+  <li>
+    <TocLink targetId="inverse-colors">Inverse Colors</TocLink>
+  </li>
+  <li>
+    <TocLink targetId="typography">Typography</TocLink>
+  </li>
+  <li>
+    <TocLink targetId="spacing">Spacing</TocLink>
+  </li>
+  <li>
+    <TocLink targetId="borders">Borders</TocLink>
+  </li>
+  <li>
+    <TocLink targetId="focus-indicators">Focus Indicators</TocLink>
+  </li>
+  <li>
+    <TocLink targetId="icon-sizes">Icon Sizes</TocLink>
+  </li>
+  <li>
+    <TocLink targetId="pointer-target-sizing">Pointer Target Sizing</TocLink>
+  </li>
+  <li>
+    <TocLink targetId="content-sizing">Content Sizing</TocLink>
+  </li>
+  <li>
+    <TocLink targetId="form-control-sizing">Form Control Sizing</TocLink>
+  </li>
+  <li>
+    <TocLink targetId="box-shadows">Box Shadows</TocLink>
+  </li>
+  <li>
+    <TocLink targetId="z-index">Z-Index</TocLink>
+  </li>
+  <li>
+    <TocLink targetId="motion">Motion</TocLink>
+  </li>
+  <li>
+    <TocLink targetId="breakpoints">Breakpoints</TocLink>
+  </li>
 </OrderedList>
 
 ---
@@ -42,21 +70,81 @@ Each color scale provides a full set of tokens for backgrounds, borders, and tex
 <TokenTable
   previewType="color"
   tokens={[
-    { name: 'Document BG', cssVar: '--dsn-color-neutral-bg-document', value: '#FCFCFC' },
-    { name: 'Elevated BG', cssVar: '--dsn-color-neutral-bg-elevated', value: '#FCFCFC' },
-    { name: 'Subtle BG', cssVar: '--dsn-color-neutral-bg-subtle', value: '#F6F6F6' },
-    { name: 'Default BG', cssVar: '--dsn-color-neutral-bg-default', value: '#F1F1F1' },
-    { name: 'Hover BG', cssVar: '--dsn-color-neutral-bg-hover', value: '#EBEBEB' },
-    { name: 'Active BG', cssVar: '--dsn-color-neutral-bg-active', value: '#E5E5E5' },
-    { name: 'Subtle Border', cssVar: '--dsn-color-neutral-border-subtle', value: '#C4C4C4' },
-    { name: 'Default Border', cssVar: '--dsn-color-neutral-border-default', value: '#868686' },
-    { name: 'Hover Border', cssVar: '--dsn-color-neutral-border-hover', value: '#7C7C7C' },
-    { name: 'Active Border', cssVar: '--dsn-color-neutral-border-active', value: '#727272' },
-    { name: 'Default Color', cssVar: '--dsn-color-neutral-color-default', value: '#595959' },
-    { name: 'Hover Color', cssVar: '--dsn-color-neutral-color-hover', value: '#4B4B4B' },
-    { name: 'Active Color', cssVar: '--dsn-color-neutral-color-active', value: '#3E3E3E' },
-    { name: 'Subtle Color', cssVar: '--dsn-color-neutral-color-subtle', value: '#636363' },
-    { name: 'Document Color', cssVar: '--dsn-color-neutral-color-document', value: '#1B1B1B' },
+    {
+      name: 'Document BG',
+      cssVar: '--dsn-color-neutral-bg-document',
+      value: '#FCFCFC',
+    },
+    {
+      name: 'Elevated BG',
+      cssVar: '--dsn-color-neutral-bg-elevated',
+      value: '#FCFCFC',
+    },
+    {
+      name: 'Subtle BG',
+      cssVar: '--dsn-color-neutral-bg-subtle',
+      value: '#F6F6F6',
+    },
+    {
+      name: 'Default BG',
+      cssVar: '--dsn-color-neutral-bg-default',
+      value: '#F1F1F1',
+    },
+    {
+      name: 'Hover BG',
+      cssVar: '--dsn-color-neutral-bg-hover',
+      value: '#EBEBEB',
+    },
+    {
+      name: 'Active BG',
+      cssVar: '--dsn-color-neutral-bg-active',
+      value: '#E5E5E5',
+    },
+    {
+      name: 'Subtle Border',
+      cssVar: '--dsn-color-neutral-border-subtle',
+      value: '#C4C4C4',
+    },
+    {
+      name: 'Default Border',
+      cssVar: '--dsn-color-neutral-border-default',
+      value: '#868686',
+    },
+    {
+      name: 'Hover Border',
+      cssVar: '--dsn-color-neutral-border-hover',
+      value: '#7C7C7C',
+    },
+    {
+      name: 'Active Border',
+      cssVar: '--dsn-color-neutral-border-active',
+      value: '#727272',
+    },
+    {
+      name: 'Default Color',
+      cssVar: '--dsn-color-neutral-color-default',
+      value: '#595959',
+    },
+    {
+      name: 'Hover Color',
+      cssVar: '--dsn-color-neutral-color-hover',
+      value: '#4B4B4B',
+    },
+    {
+      name: 'Active Color',
+      cssVar: '--dsn-color-neutral-color-active',
+      value: '#3E3E3E',
+    },
+    {
+      name: 'Subtle Color',
+      cssVar: '--dsn-color-neutral-color-subtle',
+      value: '#636363',
+    },
+    {
+      name: 'Document Color',
+      cssVar: '--dsn-color-neutral-color-document',
+      value: '#1B1B1B',
+    },
   ]}
 />
 
@@ -65,21 +153,81 @@ Each color scale provides a full set of tokens for backgrounds, borders, and tex
 <TokenTable
   previewType="color"
   tokens={[
-    { name: 'Document BG', cssVar: '--dsn-color-accent-1-bg-document', value: '#FBFCFD' },
-    { name: 'Elevated BG', cssVar: '--dsn-color-accent-1-bg-elevated', value: '#FBFCFD' },
-    { name: 'Subtle BG', cssVar: '--dsn-color-accent-1-bg-subtle', value: '#F4F7FA' },
-    { name: 'Default BG', cssVar: '--dsn-color-accent-1-bg-default', value: '#ECF1F7' },
-    { name: 'Hover BG', cssVar: '--dsn-color-accent-1-bg-hover', value: '#E4ECF4' },
-    { name: 'Active BG', cssVar: '--dsn-color-accent-1-bg-active', value: '#DDE6F1' },
-    { name: 'Subtle Border', cssVar: '--dsn-color-accent-1-border-subtle', value: '#B0C6DF' },
-    { name: 'Default Border', cssVar: '--dsn-color-accent-1-border-default', value: '#5C89BE' },
-    { name: 'Hover Border', cssVar: '--dsn-color-accent-1-border-hover', value: '#4E7FB8' },
-    { name: 'Active Border', cssVar: '--dsn-color-accent-1-border-active', value: '#3F74B2' },
-    { name: 'Default Color', cssVar: '--dsn-color-accent-1-color-default', value: '#1B59A4' },
-    { name: 'Hover Color', cssVar: '--dsn-color-accent-1-color-hover', value: '#04499A' },
-    { name: 'Active Color', cssVar: '--dsn-color-accent-1-color-active', value: '#003B81' },
-    { name: 'Subtle Color', cssVar: '--dsn-color-accent-1-color-subtle', value: '#2964AA' },
-    { name: 'Document Color', cssVar: '--dsn-color-accent-1-color-document', value: '#001B3C' },
+    {
+      name: 'Document BG',
+      cssVar: '--dsn-color-accent-1-bg-document',
+      value: '#FBFCFD',
+    },
+    {
+      name: 'Elevated BG',
+      cssVar: '--dsn-color-accent-1-bg-elevated',
+      value: '#FBFCFD',
+    },
+    {
+      name: 'Subtle BG',
+      cssVar: '--dsn-color-accent-1-bg-subtle',
+      value: '#F4F7FA',
+    },
+    {
+      name: 'Default BG',
+      cssVar: '--dsn-color-accent-1-bg-default',
+      value: '#ECF1F7',
+    },
+    {
+      name: 'Hover BG',
+      cssVar: '--dsn-color-accent-1-bg-hover',
+      value: '#E4ECF4',
+    },
+    {
+      name: 'Active BG',
+      cssVar: '--dsn-color-accent-1-bg-active',
+      value: '#DDE6F1',
+    },
+    {
+      name: 'Subtle Border',
+      cssVar: '--dsn-color-accent-1-border-subtle',
+      value: '#B0C6DF',
+    },
+    {
+      name: 'Default Border',
+      cssVar: '--dsn-color-accent-1-border-default',
+      value: '#5C89BE',
+    },
+    {
+      name: 'Hover Border',
+      cssVar: '--dsn-color-accent-1-border-hover',
+      value: '#4E7FB8',
+    },
+    {
+      name: 'Active Border',
+      cssVar: '--dsn-color-accent-1-border-active',
+      value: '#3F74B2',
+    },
+    {
+      name: 'Default Color',
+      cssVar: '--dsn-color-accent-1-color-default',
+      value: '#1B59A4',
+    },
+    {
+      name: 'Hover Color',
+      cssVar: '--dsn-color-accent-1-color-hover',
+      value: '#04499A',
+    },
+    {
+      name: 'Active Color',
+      cssVar: '--dsn-color-accent-1-color-active',
+      value: '#003B81',
+    },
+    {
+      name: 'Subtle Color',
+      cssVar: '--dsn-color-accent-1-color-subtle',
+      value: '#2964AA',
+    },
+    {
+      name: 'Document Color',
+      cssVar: '--dsn-color-accent-1-color-document',
+      value: '#001B3C',
+    },
   ]}
 />
 
@@ -90,21 +238,81 @@ Aliases accent-1 by default. Override in your theme to differentiate.
 <TokenTable
   previewType="color"
   tokens={[
-    { name: 'Document BG', cssVar: '--dsn-color-accent-2-bg-document', value: 'alias → accent-1' },
-    { name: 'Elevated BG', cssVar: '--dsn-color-accent-2-bg-elevated', value: 'alias → accent-1' },
-    { name: 'Subtle BG', cssVar: '--dsn-color-accent-2-bg-subtle', value: 'alias → accent-1' },
-    { name: 'Default BG', cssVar: '--dsn-color-accent-2-bg-default', value: 'alias → accent-1' },
-    { name: 'Hover BG', cssVar: '--dsn-color-accent-2-bg-hover', value: 'alias → accent-1' },
-    { name: 'Active BG', cssVar: '--dsn-color-accent-2-bg-active', value: 'alias → accent-1' },
-    { name: 'Subtle Border', cssVar: '--dsn-color-accent-2-border-subtle', value: 'alias → accent-1' },
-    { name: 'Default Border', cssVar: '--dsn-color-accent-2-border-default', value: 'alias → accent-1' },
-    { name: 'Hover Border', cssVar: '--dsn-color-accent-2-border-hover', value: 'alias → accent-1' },
-    { name: 'Active Border', cssVar: '--dsn-color-accent-2-border-active', value: 'alias → accent-1' },
-    { name: 'Default Color', cssVar: '--dsn-color-accent-2-color-default', value: 'alias → accent-1' },
-    { name: 'Hover Color', cssVar: '--dsn-color-accent-2-color-hover', value: 'alias → accent-1' },
-    { name: 'Active Color', cssVar: '--dsn-color-accent-2-color-active', value: 'alias → accent-1' },
-    { name: 'Subtle Color', cssVar: '--dsn-color-accent-2-color-subtle', value: 'alias → accent-1' },
-    { name: 'Document Color', cssVar: '--dsn-color-accent-2-color-document', value: 'alias → accent-1' },
+    {
+      name: 'Document BG',
+      cssVar: '--dsn-color-accent-2-bg-document',
+      value: 'alias → accent-1',
+    },
+    {
+      name: 'Elevated BG',
+      cssVar: '--dsn-color-accent-2-bg-elevated',
+      value: 'alias → accent-1',
+    },
+    {
+      name: 'Subtle BG',
+      cssVar: '--dsn-color-accent-2-bg-subtle',
+      value: 'alias → accent-1',
+    },
+    {
+      name: 'Default BG',
+      cssVar: '--dsn-color-accent-2-bg-default',
+      value: 'alias → accent-1',
+    },
+    {
+      name: 'Hover BG',
+      cssVar: '--dsn-color-accent-2-bg-hover',
+      value: 'alias → accent-1',
+    },
+    {
+      name: 'Active BG',
+      cssVar: '--dsn-color-accent-2-bg-active',
+      value: 'alias → accent-1',
+    },
+    {
+      name: 'Subtle Border',
+      cssVar: '--dsn-color-accent-2-border-subtle',
+      value: 'alias → accent-1',
+    },
+    {
+      name: 'Default Border',
+      cssVar: '--dsn-color-accent-2-border-default',
+      value: 'alias → accent-1',
+    },
+    {
+      name: 'Hover Border',
+      cssVar: '--dsn-color-accent-2-border-hover',
+      value: 'alias → accent-1',
+    },
+    {
+      name: 'Active Border',
+      cssVar: '--dsn-color-accent-2-border-active',
+      value: 'alias → accent-1',
+    },
+    {
+      name: 'Default Color',
+      cssVar: '--dsn-color-accent-2-color-default',
+      value: 'alias → accent-1',
+    },
+    {
+      name: 'Hover Color',
+      cssVar: '--dsn-color-accent-2-color-hover',
+      value: 'alias → accent-1',
+    },
+    {
+      name: 'Active Color',
+      cssVar: '--dsn-color-accent-2-color-active',
+      value: 'alias → accent-1',
+    },
+    {
+      name: 'Subtle Color',
+      cssVar: '--dsn-color-accent-2-color-subtle',
+      value: 'alias → accent-1',
+    },
+    {
+      name: 'Document Color',
+      cssVar: '--dsn-color-accent-2-color-document',
+      value: 'alias → accent-1',
+    },
   ]}
 />
 
@@ -115,21 +323,81 @@ Aliases accent-1 by default. Override in your theme to differentiate.
 <TokenTable
   previewType="color"
   tokens={[
-    { name: 'Document BG', cssVar: '--dsn-color-accent-3-bg-document', value: 'alias → accent-1' },
-    { name: 'Elevated BG', cssVar: '--dsn-color-accent-3-bg-elevated', value: 'alias → accent-1' },
-    { name: 'Subtle BG', cssVar: '--dsn-color-accent-3-bg-subtle', value: 'alias → accent-1' },
-    { name: 'Default BG', cssVar: '--dsn-color-accent-3-bg-default', value: 'alias → accent-1' },
-    { name: 'Hover BG', cssVar: '--dsn-color-accent-3-bg-hover', value: 'alias → accent-1' },
-    { name: 'Active BG', cssVar: '--dsn-color-accent-3-bg-active', value: 'alias → accent-1' },
-    { name: 'Subtle Border', cssVar: '--dsn-color-accent-3-border-subtle', value: 'alias → accent-1' },
-    { name: 'Default Border', cssVar: '--dsn-color-accent-3-border-default', value: 'alias → accent-1' },
-    { name: 'Hover Border', cssVar: '--dsn-color-accent-3-border-hover', value: 'alias → accent-1' },
-    { name: 'Active Border', cssVar: '--dsn-color-accent-3-border-active', value: 'alias → accent-1' },
-    { name: 'Default Color', cssVar: '--dsn-color-accent-3-color-default', value: 'alias → accent-1' },
-    { name: 'Hover Color', cssVar: '--dsn-color-accent-3-color-hover', value: 'alias → accent-1' },
-    { name: 'Active Color', cssVar: '--dsn-color-accent-3-color-active', value: 'alias → accent-1' },
-    { name: 'Subtle Color', cssVar: '--dsn-color-accent-3-color-subtle', value: 'alias → accent-1' },
-    { name: 'Document Color', cssVar: '--dsn-color-accent-3-color-document', value: 'alias → accent-1' },
+    {
+      name: 'Document BG',
+      cssVar: '--dsn-color-accent-3-bg-document',
+      value: 'alias → accent-1',
+    },
+    {
+      name: 'Elevated BG',
+      cssVar: '--dsn-color-accent-3-bg-elevated',
+      value: 'alias → accent-1',
+    },
+    {
+      name: 'Subtle BG',
+      cssVar: '--dsn-color-accent-3-bg-subtle',
+      value: 'alias → accent-1',
+    },
+    {
+      name: 'Default BG',
+      cssVar: '--dsn-color-accent-3-bg-default',
+      value: 'alias → accent-1',
+    },
+    {
+      name: 'Hover BG',
+      cssVar: '--dsn-color-accent-3-bg-hover',
+      value: 'alias → accent-1',
+    },
+    {
+      name: 'Active BG',
+      cssVar: '--dsn-color-accent-3-bg-active',
+      value: 'alias → accent-1',
+    },
+    {
+      name: 'Subtle Border',
+      cssVar: '--dsn-color-accent-3-border-subtle',
+      value: 'alias → accent-1',
+    },
+    {
+      name: 'Default Border',
+      cssVar: '--dsn-color-accent-3-border-default',
+      value: 'alias → accent-1',
+    },
+    {
+      name: 'Hover Border',
+      cssVar: '--dsn-color-accent-3-border-hover',
+      value: 'alias → accent-1',
+    },
+    {
+      name: 'Active Border',
+      cssVar: '--dsn-color-accent-3-border-active',
+      value: 'alias → accent-1',
+    },
+    {
+      name: 'Default Color',
+      cssVar: '--dsn-color-accent-3-color-default',
+      value: 'alias → accent-1',
+    },
+    {
+      name: 'Hover Color',
+      cssVar: '--dsn-color-accent-3-color-hover',
+      value: 'alias → accent-1',
+    },
+    {
+      name: 'Active Color',
+      cssVar: '--dsn-color-accent-3-color-active',
+      value: 'alias → accent-1',
+    },
+    {
+      name: 'Subtle Color',
+      cssVar: '--dsn-color-accent-3-color-subtle',
+      value: 'alias → accent-1',
+    },
+    {
+      name: 'Document Color',
+      cssVar: '--dsn-color-accent-3-color-document',
+      value: 'alias → accent-1',
+    },
   ]}
 />
 
@@ -140,21 +408,81 @@ Used for primary interactive elements like buttons. Aliases accent-1 by default.
 <TokenTable
   previewType="color"
   tokens={[
-    { name: 'Document BG', cssVar: '--dsn-color-action-1-bg-document', value: 'alias → accent-1' },
-    { name: 'Elevated BG', cssVar: '--dsn-color-action-1-bg-elevated', value: 'alias → accent-1' },
-    { name: 'Subtle BG', cssVar: '--dsn-color-action-1-bg-subtle', value: 'alias → accent-1' },
-    { name: 'Default BG', cssVar: '--dsn-color-action-1-bg-default', value: 'alias → accent-1' },
-    { name: 'Hover BG', cssVar: '--dsn-color-action-1-bg-hover', value: 'alias → accent-1' },
-    { name: 'Active BG', cssVar: '--dsn-color-action-1-bg-active', value: 'alias → accent-1' },
-    { name: 'Subtle Border', cssVar: '--dsn-color-action-1-border-subtle', value: 'alias → accent-1' },
-    { name: 'Default Border', cssVar: '--dsn-color-action-1-border-default', value: 'alias → accent-1' },
-    { name: 'Hover Border', cssVar: '--dsn-color-action-1-border-hover', value: 'alias → accent-1' },
-    { name: 'Active Border', cssVar: '--dsn-color-action-1-border-active', value: 'alias → accent-1' },
-    { name: 'Default Color', cssVar: '--dsn-color-action-1-color-default', value: 'alias → accent-1' },
-    { name: 'Hover Color', cssVar: '--dsn-color-action-1-color-hover', value: 'alias → accent-1' },
-    { name: 'Active Color', cssVar: '--dsn-color-action-1-color-active', value: 'alias → accent-1' },
-    { name: 'Subtle Color', cssVar: '--dsn-color-action-1-color-subtle', value: 'alias → accent-1' },
-    { name: 'Document Color', cssVar: '--dsn-color-action-1-color-document', value: 'alias → accent-1' },
+    {
+      name: 'Document BG',
+      cssVar: '--dsn-color-action-1-bg-document',
+      value: 'alias → accent-1',
+    },
+    {
+      name: 'Elevated BG',
+      cssVar: '--dsn-color-action-1-bg-elevated',
+      value: 'alias → accent-1',
+    },
+    {
+      name: 'Subtle BG',
+      cssVar: '--dsn-color-action-1-bg-subtle',
+      value: 'alias → accent-1',
+    },
+    {
+      name: 'Default BG',
+      cssVar: '--dsn-color-action-1-bg-default',
+      value: 'alias → accent-1',
+    },
+    {
+      name: 'Hover BG',
+      cssVar: '--dsn-color-action-1-bg-hover',
+      value: 'alias → accent-1',
+    },
+    {
+      name: 'Active BG',
+      cssVar: '--dsn-color-action-1-bg-active',
+      value: 'alias → accent-1',
+    },
+    {
+      name: 'Subtle Border',
+      cssVar: '--dsn-color-action-1-border-subtle',
+      value: 'alias → accent-1',
+    },
+    {
+      name: 'Default Border',
+      cssVar: '--dsn-color-action-1-border-default',
+      value: 'alias → accent-1',
+    },
+    {
+      name: 'Hover Border',
+      cssVar: '--dsn-color-action-1-border-hover',
+      value: 'alias → accent-1',
+    },
+    {
+      name: 'Active Border',
+      cssVar: '--dsn-color-action-1-border-active',
+      value: 'alias → accent-1',
+    },
+    {
+      name: 'Default Color',
+      cssVar: '--dsn-color-action-1-color-default',
+      value: 'alias → accent-1',
+    },
+    {
+      name: 'Hover Color',
+      cssVar: '--dsn-color-action-1-color-hover',
+      value: 'alias → accent-1',
+    },
+    {
+      name: 'Active Color',
+      cssVar: '--dsn-color-action-1-color-active',
+      value: 'alias → accent-1',
+    },
+    {
+      name: 'Subtle Color',
+      cssVar: '--dsn-color-action-1-color-subtle',
+      value: 'alias → accent-1',
+    },
+    {
+      name: 'Document Color',
+      cssVar: '--dsn-color-action-1-color-document',
+      value: 'alias → accent-1',
+    },
   ]}
 />
 
@@ -165,21 +493,81 @@ Used for secondary interactive elements like links and navigation. Aliases accen
 <TokenTable
   previewType="color"
   tokens={[
-    { name: 'Document BG', cssVar: '--dsn-color-action-2-bg-document', value: 'alias → accent-1' },
-    { name: 'Elevated BG', cssVar: '--dsn-color-action-2-bg-elevated', value: 'alias → accent-1' },
-    { name: 'Subtle BG', cssVar: '--dsn-color-action-2-bg-subtle', value: 'alias → accent-1' },
-    { name: 'Default BG', cssVar: '--dsn-color-action-2-bg-default', value: 'alias → accent-1' },
-    { name: 'Hover BG', cssVar: '--dsn-color-action-2-bg-hover', value: 'alias → accent-1' },
-    { name: 'Active BG', cssVar: '--dsn-color-action-2-bg-active', value: 'alias → accent-1' },
-    { name: 'Subtle Border', cssVar: '--dsn-color-action-2-border-subtle', value: 'alias → accent-1' },
-    { name: 'Default Border', cssVar: '--dsn-color-action-2-border-default', value: 'alias → accent-1' },
-    { name: 'Hover Border', cssVar: '--dsn-color-action-2-border-hover', value: 'alias → accent-1' },
-    { name: 'Active Border', cssVar: '--dsn-color-action-2-border-active', value: 'alias → accent-1' },
-    { name: 'Default Color', cssVar: '--dsn-color-action-2-color-default', value: 'alias → accent-1' },
-    { name: 'Hover Color', cssVar: '--dsn-color-action-2-color-hover', value: 'alias → accent-1' },
-    { name: 'Active Color', cssVar: '--dsn-color-action-2-color-active', value: 'alias → accent-1' },
-    { name: 'Subtle Color', cssVar: '--dsn-color-action-2-color-subtle', value: 'alias → accent-1' },
-    { name: 'Document Color', cssVar: '--dsn-color-action-2-color-document', value: 'alias → accent-1' },
+    {
+      name: 'Document BG',
+      cssVar: '--dsn-color-action-2-bg-document',
+      value: 'alias → accent-1',
+    },
+    {
+      name: 'Elevated BG',
+      cssVar: '--dsn-color-action-2-bg-elevated',
+      value: 'alias → accent-1',
+    },
+    {
+      name: 'Subtle BG',
+      cssVar: '--dsn-color-action-2-bg-subtle',
+      value: 'alias → accent-1',
+    },
+    {
+      name: 'Default BG',
+      cssVar: '--dsn-color-action-2-bg-default',
+      value: 'alias → accent-1',
+    },
+    {
+      name: 'Hover BG',
+      cssVar: '--dsn-color-action-2-bg-hover',
+      value: 'alias → accent-1',
+    },
+    {
+      name: 'Active BG',
+      cssVar: '--dsn-color-action-2-bg-active',
+      value: 'alias → accent-1',
+    },
+    {
+      name: 'Subtle Border',
+      cssVar: '--dsn-color-action-2-border-subtle',
+      value: 'alias → accent-1',
+    },
+    {
+      name: 'Default Border',
+      cssVar: '--dsn-color-action-2-border-default',
+      value: 'alias → accent-1',
+    },
+    {
+      name: 'Hover Border',
+      cssVar: '--dsn-color-action-2-border-hover',
+      value: 'alias → accent-1',
+    },
+    {
+      name: 'Active Border',
+      cssVar: '--dsn-color-action-2-border-active',
+      value: 'alias → accent-1',
+    },
+    {
+      name: 'Default Color',
+      cssVar: '--dsn-color-action-2-color-default',
+      value: 'alias → accent-1',
+    },
+    {
+      name: 'Hover Color',
+      cssVar: '--dsn-color-action-2-color-hover',
+      value: 'alias → accent-1',
+    },
+    {
+      name: 'Active Color',
+      cssVar: '--dsn-color-action-2-color-active',
+      value: 'alias → accent-1',
+    },
+    {
+      name: 'Subtle Color',
+      cssVar: '--dsn-color-action-2-color-subtle',
+      value: 'alias → accent-1',
+    },
+    {
+      name: 'Document Color',
+      cssVar: '--dsn-color-action-2-color-document',
+      value: 'alias → accent-1',
+    },
   ]}
 />
 
@@ -188,21 +576,81 @@ Used for secondary interactive elements like links and navigation. Aliases accen
 <TokenTable
   previewType="color"
   tokens={[
-    { name: 'Document BG', cssVar: '--dsn-color-positive-bg-document', value: '#FAFDFB' },
-    { name: 'Elevated BG', cssVar: '--dsn-color-positive-bg-elevated', value: '#FAFDFB' },
-    { name: 'Subtle BG', cssVar: '--dsn-color-positive-bg-subtle', value: '#EFF9F3' },
-    { name: 'Default BG', cssVar: '--dsn-color-positive-bg-default', value: '#E4F5EA' },
-    { name: 'Hover BG', cssVar: '--dsn-color-positive-bg-hover', value: '#D9F1E2' },
-    { name: 'Active BG', cssVar: '--dsn-color-positive-bg-active', value: '#CEEDD9' },
-    { name: 'Subtle Border', cssVar: '--dsn-color-positive-border-subtle', value: '#8AD3A6' },
-    { name: 'Default Border', cssVar: '--dsn-color-positive-border-default', value: '#009B3A' },
-    { name: 'Hover Border', cssVar: '--dsn-color-positive-border-hover', value: '#009036' },
-    { name: 'Active Border', cssVar: '--dsn-color-positive-border-active', value: '#008432' },
-    { name: 'Default Color', cssVar: '--dsn-color-positive-color-default', value: '#006827' },
-    { name: 'Hover Color', cssVar: '--dsn-color-positive-color-hover', value: '#005821' },
-    { name: 'Active Color', cssVar: '--dsn-color-positive-color-active', value: '#00481B' },
-    { name: 'Subtle Color', cssVar: '--dsn-color-positive-color-subtle', value: '#00732B' },
-    { name: 'Document Color', cssVar: '--dsn-color-positive-color-document', value: '#00210C' },
+    {
+      name: 'Document BG',
+      cssVar: '--dsn-color-positive-bg-document',
+      value: '#FAFDFB',
+    },
+    {
+      name: 'Elevated BG',
+      cssVar: '--dsn-color-positive-bg-elevated',
+      value: '#FAFDFB',
+    },
+    {
+      name: 'Subtle BG',
+      cssVar: '--dsn-color-positive-bg-subtle',
+      value: '#EFF9F3',
+    },
+    {
+      name: 'Default BG',
+      cssVar: '--dsn-color-positive-bg-default',
+      value: '#E4F5EA',
+    },
+    {
+      name: 'Hover BG',
+      cssVar: '--dsn-color-positive-bg-hover',
+      value: '#D9F1E2',
+    },
+    {
+      name: 'Active BG',
+      cssVar: '--dsn-color-positive-bg-active',
+      value: '#CEEDD9',
+    },
+    {
+      name: 'Subtle Border',
+      cssVar: '--dsn-color-positive-border-subtle',
+      value: '#8AD3A6',
+    },
+    {
+      name: 'Default Border',
+      cssVar: '--dsn-color-positive-border-default',
+      value: '#009B3A',
+    },
+    {
+      name: 'Hover Border',
+      cssVar: '--dsn-color-positive-border-hover',
+      value: '#009036',
+    },
+    {
+      name: 'Active Border',
+      cssVar: '--dsn-color-positive-border-active',
+      value: '#008432',
+    },
+    {
+      name: 'Default Color',
+      cssVar: '--dsn-color-positive-color-default',
+      value: '#006827',
+    },
+    {
+      name: 'Hover Color',
+      cssVar: '--dsn-color-positive-color-hover',
+      value: '#005821',
+    },
+    {
+      name: 'Active Color',
+      cssVar: '--dsn-color-positive-color-active',
+      value: '#00481B',
+    },
+    {
+      name: 'Subtle Color',
+      cssVar: '--dsn-color-positive-color-subtle',
+      value: '#00732B',
+    },
+    {
+      name: 'Document Color',
+      cssVar: '--dsn-color-positive-color-document',
+      value: '#00210C',
+    },
   ]}
 />
 
@@ -211,21 +659,81 @@ Used for secondary interactive elements like links and navigation. Aliases accen
 <TokenTable
   previewType="color"
   tokens={[
-    { name: 'Document BG', cssVar: '--dsn-color-negative-bg-document', value: '#FFFBFB' },
-    { name: 'Elevated BG', cssVar: '--dsn-color-negative-bg-elevated', value: '#FFFBFB' },
-    { name: 'Subtle BG', cssVar: '--dsn-color-negative-bg-subtle', value: '#FEF4F4' },
-    { name: 'Default BG', cssVar: '--dsn-color-negative-bg-default', value: '#FEEDED' },
-    { name: 'Hover BG', cssVar: '--dsn-color-negative-bg-hover', value: '#FDE6E6' },
-    { name: 'Active BG', cssVar: '--dsn-color-negative-bg-active', value: '#FDDEDE' },
-    { name: 'Subtle Border', cssVar: '--dsn-color-negative-border-subtle', value: '#F9B1B1' },
-    { name: 'Default Border', cssVar: '--dsn-color-negative-border-default', value: '#F14848' },
-    { name: 'Hover Border', cssVar: '--dsn-color-negative-border-hover', value: '#EF2929' },
-    { name: 'Active Border', cssVar: '--dsn-color-negative-border-active', value: '#E60000' },
-    { name: 'Default Color', cssVar: '--dsn-color-negative-color-default', value: '#B70000' },
-    { name: 'Hover Color', cssVar: '--dsn-color-negative-color-hover', value: '#9C0000' },
-    { name: 'Active Color', cssVar: '--dsn-color-negative-color-active', value: '#930000' },
-    { name: 'Subtle Color', cssVar: '--dsn-color-negative-color-subtle', value: '#CA0000' },
-    { name: 'Document Color', cssVar: '--dsn-color-negative-color-document', value: '#410000' },
+    {
+      name: 'Document BG',
+      cssVar: '--dsn-color-negative-bg-document',
+      value: '#FFFBFB',
+    },
+    {
+      name: 'Elevated BG',
+      cssVar: '--dsn-color-negative-bg-elevated',
+      value: '#FFFBFB',
+    },
+    {
+      name: 'Subtle BG',
+      cssVar: '--dsn-color-negative-bg-subtle',
+      value: '#FEF4F4',
+    },
+    {
+      name: 'Default BG',
+      cssVar: '--dsn-color-negative-bg-default',
+      value: '#FEEDED',
+    },
+    {
+      name: 'Hover BG',
+      cssVar: '--dsn-color-negative-bg-hover',
+      value: '#FDE6E6',
+    },
+    {
+      name: 'Active BG',
+      cssVar: '--dsn-color-negative-bg-active',
+      value: '#FDDEDE',
+    },
+    {
+      name: 'Subtle Border',
+      cssVar: '--dsn-color-negative-border-subtle',
+      value: '#F9B1B1',
+    },
+    {
+      name: 'Default Border',
+      cssVar: '--dsn-color-negative-border-default',
+      value: '#F14848',
+    },
+    {
+      name: 'Hover Border',
+      cssVar: '--dsn-color-negative-border-hover',
+      value: '#EF2929',
+    },
+    {
+      name: 'Active Border',
+      cssVar: '--dsn-color-negative-border-active',
+      value: '#E60000',
+    },
+    {
+      name: 'Default Color',
+      cssVar: '--dsn-color-negative-color-default',
+      value: '#B70000',
+    },
+    {
+      name: 'Hover Color',
+      cssVar: '--dsn-color-negative-color-hover',
+      value: '#9C0000',
+    },
+    {
+      name: 'Active Color',
+      cssVar: '--dsn-color-negative-color-active',
+      value: '#930000',
+    },
+    {
+      name: 'Subtle Color',
+      cssVar: '--dsn-color-negative-color-subtle',
+      value: '#CA0000',
+    },
+    {
+      name: 'Document Color',
+      cssVar: '--dsn-color-negative-color-document',
+      value: '#410000',
+    },
   ]}
 />
 
@@ -234,21 +742,81 @@ Used for secondary interactive elements like links and navigation. Aliases accen
 <TokenTable
   previewType="color"
   tokens={[
-    { name: 'Document BG', cssVar: '--dsn-color-warning-bg-document', value: '#FFFCF8' },
-    { name: 'Elevated BG', cssVar: '--dsn-color-warning-bg-elevated', value: '#FFFCF8' },
-    { name: 'Subtle BG', cssVar: '--dsn-color-warning-bg-subtle', value: '#FFF5EB' },
-    { name: 'Default BG', cssVar: '--dsn-color-warning-bg-default', value: '#FFEEDD' },
-    { name: 'Hover BG', cssVar: '--dsn-color-warning-bg-hover', value: '#FFE7D0' },
-    { name: 'Active BG', cssVar: '--dsn-color-warning-bg-active', value: '#FFE0C2' },
-    { name: 'Subtle Border', cssVar: '--dsn-color-warning-border-subtle', value: '#FFB46B' },
-    { name: 'Default Border', cssVar: '--dsn-color-warning-border-default', value: '#C8700E' },
-    { name: 'Hover Border', cssVar: '--dsn-color-warning-border-hover', value: '#B86810' },
-    { name: 'Active Border', cssVar: '--dsn-color-warning-border-active', value: '#A96011' },
-    { name: 'Default Color', cssVar: '--dsn-color-warning-color-default', value: '#844C12' },
-    { name: 'Hover Color', cssVar: '--dsn-color-warning-color-hover', value: '#6F4012' },
-    { name: 'Active Color', cssVar: '--dsn-color-warning-color-active', value: '#5A3511' },
-    { name: 'Subtle Color', cssVar: '--dsn-color-warning-color-subtle', value: '#935412' },
-    { name: 'Document Color', cssVar: '--dsn-color-warning-color-document', value: '#27190A' },
+    {
+      name: 'Document BG',
+      cssVar: '--dsn-color-warning-bg-document',
+      value: '#FFFCF8',
+    },
+    {
+      name: 'Elevated BG',
+      cssVar: '--dsn-color-warning-bg-elevated',
+      value: '#FFFCF8',
+    },
+    {
+      name: 'Subtle BG',
+      cssVar: '--dsn-color-warning-bg-subtle',
+      value: '#FFF5EB',
+    },
+    {
+      name: 'Default BG',
+      cssVar: '--dsn-color-warning-bg-default',
+      value: '#FFEEDD',
+    },
+    {
+      name: 'Hover BG',
+      cssVar: '--dsn-color-warning-bg-hover',
+      value: '#FFE7D0',
+    },
+    {
+      name: 'Active BG',
+      cssVar: '--dsn-color-warning-bg-active',
+      value: '#FFE0C2',
+    },
+    {
+      name: 'Subtle Border',
+      cssVar: '--dsn-color-warning-border-subtle',
+      value: '#FFB46B',
+    },
+    {
+      name: 'Default Border',
+      cssVar: '--dsn-color-warning-border-default',
+      value: '#C8700E',
+    },
+    {
+      name: 'Hover Border',
+      cssVar: '--dsn-color-warning-border-hover',
+      value: '#B86810',
+    },
+    {
+      name: 'Active Border',
+      cssVar: '--dsn-color-warning-border-active',
+      value: '#A96011',
+    },
+    {
+      name: 'Default Color',
+      cssVar: '--dsn-color-warning-color-default',
+      value: '#844C12',
+    },
+    {
+      name: 'Hover Color',
+      cssVar: '--dsn-color-warning-color-hover',
+      value: '#6F4012',
+    },
+    {
+      name: 'Active Color',
+      cssVar: '--dsn-color-warning-color-active',
+      value: '#5A3511',
+    },
+    {
+      name: 'Subtle Color',
+      cssVar: '--dsn-color-warning-color-subtle',
+      value: '#935412',
+    },
+    {
+      name: 'Document Color',
+      cssVar: '--dsn-color-warning-color-document',
+      value: '#27190A',
+    },
   ]}
 />
 
@@ -257,21 +825,81 @@ Used for secondary interactive elements like links and navigation. Aliases accen
 <TokenTable
   previewType="color"
   tokens={[
-    { name: 'Document BG', cssVar: '--dsn-color-info-bg-document', value: 'alias → accent-1' },
-    { name: 'Elevated BG', cssVar: '--dsn-color-info-bg-elevated', value: 'alias → accent-1' },
-    { name: 'Subtle BG', cssVar: '--dsn-color-info-bg-subtle', value: 'alias → accent-1' },
-    { name: 'Default BG', cssVar: '--dsn-color-info-bg-default', value: 'alias → accent-1' },
-    { name: 'Hover BG', cssVar: '--dsn-color-info-bg-hover', value: 'alias → accent-1' },
-    { name: 'Active BG', cssVar: '--dsn-color-info-bg-active', value: 'alias → accent-1' },
-    { name: 'Subtle Border', cssVar: '--dsn-color-info-border-subtle', value: 'alias → accent-1' },
-    { name: 'Default Border', cssVar: '--dsn-color-info-border-default', value: 'alias → accent-1' },
-    { name: 'Hover Border', cssVar: '--dsn-color-info-border-hover', value: 'alias → accent-1' },
-    { name: 'Active Border', cssVar: '--dsn-color-info-border-active', value: 'alias → accent-1' },
-    { name: 'Default Color', cssVar: '--dsn-color-info-color-default', value: 'alias → accent-1' },
-    { name: 'Hover Color', cssVar: '--dsn-color-info-color-hover', value: 'alias → accent-1' },
-    { name: 'Active Color', cssVar: '--dsn-color-info-color-active', value: 'alias → accent-1' },
-    { name: 'Subtle Color', cssVar: '--dsn-color-info-color-subtle', value: 'alias → accent-1' },
-    { name: 'Document Color', cssVar: '--dsn-color-info-color-document', value: 'alias → accent-1' },
+    {
+      name: 'Document BG',
+      cssVar: '--dsn-color-info-bg-document',
+      value: 'alias → accent-1',
+    },
+    {
+      name: 'Elevated BG',
+      cssVar: '--dsn-color-info-bg-elevated',
+      value: 'alias → accent-1',
+    },
+    {
+      name: 'Subtle BG',
+      cssVar: '--dsn-color-info-bg-subtle',
+      value: 'alias → accent-1',
+    },
+    {
+      name: 'Default BG',
+      cssVar: '--dsn-color-info-bg-default',
+      value: 'alias → accent-1',
+    },
+    {
+      name: 'Hover BG',
+      cssVar: '--dsn-color-info-bg-hover',
+      value: 'alias → accent-1',
+    },
+    {
+      name: 'Active BG',
+      cssVar: '--dsn-color-info-bg-active',
+      value: 'alias → accent-1',
+    },
+    {
+      name: 'Subtle Border',
+      cssVar: '--dsn-color-info-border-subtle',
+      value: 'alias → accent-1',
+    },
+    {
+      name: 'Default Border',
+      cssVar: '--dsn-color-info-border-default',
+      value: 'alias → accent-1',
+    },
+    {
+      name: 'Hover Border',
+      cssVar: '--dsn-color-info-border-hover',
+      value: 'alias → accent-1',
+    },
+    {
+      name: 'Active Border',
+      cssVar: '--dsn-color-info-border-active',
+      value: 'alias → accent-1',
+    },
+    {
+      name: 'Default Color',
+      cssVar: '--dsn-color-info-color-default',
+      value: 'alias → accent-1',
+    },
+    {
+      name: 'Hover Color',
+      cssVar: '--dsn-color-info-color-hover',
+      value: 'alias → accent-1',
+    },
+    {
+      name: 'Active Color',
+      cssVar: '--dsn-color-info-color-active',
+      value: 'alias → accent-1',
+    },
+    {
+      name: 'Subtle Color',
+      cssVar: '--dsn-color-info-color-subtle',
+      value: 'alias → accent-1',
+    },
+    {
+      name: 'Document Color',
+      cssVar: '--dsn-color-info-color-document',
+      value: 'alias → accent-1',
+    },
   ]}
 />
 
@@ -286,21 +914,81 @@ Inverse color scales are used for components on dark backgrounds (e.g. strong bu
 <TokenTable
   previewType="color"
   tokens={[
-    { name: 'Document BG', cssVar: '--dsn-color-neutral-inverse-bg-document', value: '#242424' },
-    { name: 'Elevated BG', cssVar: '--dsn-color-neutral-inverse-bg-elevated', value: '#242424' },
-    { name: 'Subtle BG', cssVar: '--dsn-color-neutral-inverse-bg-subtle', value: '#1B1B1B' },
-    { name: 'Default BG', cssVar: '--dsn-color-neutral-inverse-bg-default', value: '#595959' },
-    { name: 'Hover BG', cssVar: '--dsn-color-neutral-inverse-bg-hover', value: '#4B4B4B' },
-    { name: 'Active BG', cssVar: '--dsn-color-neutral-inverse-bg-active', value: '#3E3E3E' },
-    { name: 'Subtle Border', cssVar: '--dsn-color-neutral-inverse-border-subtle', value: '#474747' },
-    { name: 'Default Border', cssVar: '--dsn-color-neutral-inverse-border-default', value: '#C9C9C9' },
-    { name: 'Hover Border', cssVar: '--dsn-color-neutral-inverse-border-hover', value: '#D4D4D4' },
-    { name: 'Active Border', cssVar: '--dsn-color-neutral-inverse-border-active', value: '#DFDFDF' },
-    { name: 'Default Color', cssVar: '--dsn-color-neutral-inverse-color-default', value: '#FFFFFF' },
-    { name: 'Hover Color', cssVar: '--dsn-color-neutral-inverse-color-hover', value: '#FFFFFF' },
-    { name: 'Active Color', cssVar: '--dsn-color-neutral-inverse-color-active', value: '#FFFFFF' },
-    { name: 'Subtle Color', cssVar: '--dsn-color-neutral-inverse-color-subtle', value: '#C4C4C4' },
-    { name: 'Document Color', cssVar: '--dsn-color-neutral-inverse-color-document', value: '#FFFFFF' },
+    {
+      name: 'Document BG',
+      cssVar: '--dsn-color-neutral-inverse-bg-document',
+      value: '#242424',
+    },
+    {
+      name: 'Elevated BG',
+      cssVar: '--dsn-color-neutral-inverse-bg-elevated',
+      value: '#242424',
+    },
+    {
+      name: 'Subtle BG',
+      cssVar: '--dsn-color-neutral-inverse-bg-subtle',
+      value: '#1B1B1B',
+    },
+    {
+      name: 'Default BG',
+      cssVar: '--dsn-color-neutral-inverse-bg-default',
+      value: '#595959',
+    },
+    {
+      name: 'Hover BG',
+      cssVar: '--dsn-color-neutral-inverse-bg-hover',
+      value: '#4B4B4B',
+    },
+    {
+      name: 'Active BG',
+      cssVar: '--dsn-color-neutral-inverse-bg-active',
+      value: '#3E3E3E',
+    },
+    {
+      name: 'Subtle Border',
+      cssVar: '--dsn-color-neutral-inverse-border-subtle',
+      value: '#474747',
+    },
+    {
+      name: 'Default Border',
+      cssVar: '--dsn-color-neutral-inverse-border-default',
+      value: '#C9C9C9',
+    },
+    {
+      name: 'Hover Border',
+      cssVar: '--dsn-color-neutral-inverse-border-hover',
+      value: '#D4D4D4',
+    },
+    {
+      name: 'Active Border',
+      cssVar: '--dsn-color-neutral-inverse-border-active',
+      value: '#DFDFDF',
+    },
+    {
+      name: 'Default Color',
+      cssVar: '--dsn-color-neutral-inverse-color-default',
+      value: '#FFFFFF',
+    },
+    {
+      name: 'Hover Color',
+      cssVar: '--dsn-color-neutral-inverse-color-hover',
+      value: '#FFFFFF',
+    },
+    {
+      name: 'Active Color',
+      cssVar: '--dsn-color-neutral-inverse-color-active',
+      value: '#FFFFFF',
+    },
+    {
+      name: 'Subtle Color',
+      cssVar: '--dsn-color-neutral-inverse-color-subtle',
+      value: '#C4C4C4',
+    },
+    {
+      name: 'Document Color',
+      cssVar: '--dsn-color-neutral-inverse-color-document',
+      value: '#FFFFFF',
+    },
   ]}
 />
 
@@ -309,21 +997,81 @@ Inverse color scales are used for components on dark backgrounds (e.g. strong bu
 <TokenTable
   previewType="color"
   tokens={[
-    { name: 'Document BG', cssVar: '--dsn-color-accent-1-inverse-bg-document', value: '#00234D' },
-    { name: 'Elevated BG', cssVar: '--dsn-color-accent-1-inverse-bg-elevated', value: '#00234D' },
-    { name: 'Subtle BG', cssVar: '--dsn-color-accent-1-inverse-bg-subtle', value: '#001B3C' },
-    { name: 'Default BG', cssVar: '--dsn-color-accent-1-inverse-bg-default', value: '#1B59A4' },
-    { name: 'Hover BG', cssVar: '--dsn-color-accent-1-inverse-bg-hover', value: '#04499A' },
-    { name: 'Active BG', cssVar: '--dsn-color-accent-1-inverse-bg-active', value: '#003B81' },
-    { name: 'Subtle Border', cssVar: '--dsn-color-accent-1-inverse-border-subtle', value: '#004494' },
-    { name: 'Default Border', cssVar: '--dsn-color-accent-1-inverse-border-default', value: '#B8CBE2' },
-    { name: 'Hover Border', cssVar: '--dsn-color-accent-1-inverse-border-hover', value: '#C6D6E8' },
-    { name: 'Active Border', cssVar: '--dsn-color-accent-1-inverse-border-active', value: '#D5E1EE' },
-    { name: 'Default Color', cssVar: '--dsn-color-accent-1-inverse-color-default', value: '#FFFFFF' },
-    { name: 'Hover Color', cssVar: '--dsn-color-accent-1-inverse-color-hover', value: '#FFFFFF' },
-    { name: 'Active Color', cssVar: '--dsn-color-accent-1-inverse-color-active', value: '#FFFFFF' },
-    { name: 'Subtle Color', cssVar: '--dsn-color-accent-1-inverse-color-subtle', value: '#B0C6DF' },
-    { name: 'Document Color', cssVar: '--dsn-color-accent-1-inverse-color-document', value: '#FFFFFF' },
+    {
+      name: 'Document BG',
+      cssVar: '--dsn-color-accent-1-inverse-bg-document',
+      value: '#00234D',
+    },
+    {
+      name: 'Elevated BG',
+      cssVar: '--dsn-color-accent-1-inverse-bg-elevated',
+      value: '#00234D',
+    },
+    {
+      name: 'Subtle BG',
+      cssVar: '--dsn-color-accent-1-inverse-bg-subtle',
+      value: '#001B3C',
+    },
+    {
+      name: 'Default BG',
+      cssVar: '--dsn-color-accent-1-inverse-bg-default',
+      value: '#1B59A4',
+    },
+    {
+      name: 'Hover BG',
+      cssVar: '--dsn-color-accent-1-inverse-bg-hover',
+      value: '#04499A',
+    },
+    {
+      name: 'Active BG',
+      cssVar: '--dsn-color-accent-1-inverse-bg-active',
+      value: '#003B81',
+    },
+    {
+      name: 'Subtle Border',
+      cssVar: '--dsn-color-accent-1-inverse-border-subtle',
+      value: '#004494',
+    },
+    {
+      name: 'Default Border',
+      cssVar: '--dsn-color-accent-1-inverse-border-default',
+      value: '#B8CBE2',
+    },
+    {
+      name: 'Hover Border',
+      cssVar: '--dsn-color-accent-1-inverse-border-hover',
+      value: '#C6D6E8',
+    },
+    {
+      name: 'Active Border',
+      cssVar: '--dsn-color-accent-1-inverse-border-active',
+      value: '#D5E1EE',
+    },
+    {
+      name: 'Default Color',
+      cssVar: '--dsn-color-accent-1-inverse-color-default',
+      value: '#FFFFFF',
+    },
+    {
+      name: 'Hover Color',
+      cssVar: '--dsn-color-accent-1-inverse-color-hover',
+      value: '#FFFFFF',
+    },
+    {
+      name: 'Active Color',
+      cssVar: '--dsn-color-accent-1-inverse-color-active',
+      value: '#FFFFFF',
+    },
+    {
+      name: 'Subtle Color',
+      cssVar: '--dsn-color-accent-1-inverse-color-subtle',
+      value: '#B0C6DF',
+    },
+    {
+      name: 'Document Color',
+      cssVar: '--dsn-color-accent-1-inverse-color-document',
+      value: '#FFFFFF',
+    },
   ]}
 />
 
@@ -333,10 +1081,26 @@ All alias accent-1-inverse by default. Available CSS variables:
 
 <TokenTable
   tokens={[
-    { name: 'Accent 2 Inverse (bg-elevated)', cssVar: '--dsn-color-accent-2-inverse-bg-elevated', value: 'alias → accent-1-inverse' },
-    { name: 'Accent 3 Inverse (bg-elevated)', cssVar: '--dsn-color-accent-3-inverse-bg-elevated', value: 'alias → accent-1-inverse' },
-    { name: 'Action 1 Inverse (bg-elevated)', cssVar: '--dsn-color-action-1-inverse-bg-elevated', value: 'alias → accent-1-inverse' },
-    { name: 'Action 2 Inverse (bg-elevated)', cssVar: '--dsn-color-action-2-inverse-bg-elevated', value: 'alias → accent-1-inverse' },
+    {
+      name: 'Accent 2 Inverse (bg-elevated)',
+      cssVar: '--dsn-color-accent-2-inverse-bg-elevated',
+      value: 'alias → accent-1-inverse',
+    },
+    {
+      name: 'Accent 3 Inverse (bg-elevated)',
+      cssVar: '--dsn-color-accent-3-inverse-bg-elevated',
+      value: 'alias → accent-1-inverse',
+    },
+    {
+      name: 'Action 1 Inverse (bg-elevated)',
+      cssVar: '--dsn-color-action-1-inverse-bg-elevated',
+      value: 'alias → accent-1-inverse',
+    },
+    {
+      name: 'Action 2 Inverse (bg-elevated)',
+      cssVar: '--dsn-color-action-2-inverse-bg-elevated',
+      value: 'alias → accent-1-inverse',
+    },
   ]}
 />
 
@@ -345,21 +1109,81 @@ All alias accent-1-inverse by default. Available CSS variables:
 <TokenTable
   previewType="color"
   tokens={[
-    { name: 'Document BG', cssVar: '--dsn-color-positive-inverse-bg-document', value: '#002B10' },
-    { name: 'Elevated BG', cssVar: '--dsn-color-positive-inverse-bg-elevated', value: '#002B10' },
-    { name: 'Subtle BG', cssVar: '--dsn-color-positive-inverse-bg-subtle', value: '#00210C' },
-    { name: 'Default BG', cssVar: '--dsn-color-positive-inverse-bg-default', value: '#006827' },
-    { name: 'Hover BG', cssVar: '--dsn-color-positive-inverse-bg-hover', value: '#005821' },
-    { name: 'Active BG', cssVar: '--dsn-color-positive-inverse-bg-active', value: '#00481B' },
-    { name: 'Subtle Border', cssVar: '--dsn-color-positive-inverse-border-subtle', value: '#00531F' },
-    { name: 'Default Border', cssVar: '--dsn-color-positive-inverse-border-default', value: '#96D8AE' },
-    { name: 'Hover Border', cssVar: '--dsn-color-positive-inverse-border-hover', value: '#ACE0C0' },
-    { name: 'Active Border', cssVar: '--dsn-color-positive-inverse-border-active', value: '#C3E9D1' },
-    { name: 'Default Color', cssVar: '--dsn-color-positive-inverse-color-default', value: '#FFFFFF' },
-    { name: 'Hover Color', cssVar: '--dsn-color-positive-inverse-color-hover', value: '#FFFFFF' },
-    { name: 'Active Color', cssVar: '--dsn-color-positive-inverse-color-active', value: '#FFFFFF' },
-    { name: 'Subtle Color', cssVar: '--dsn-color-positive-inverse-color-subtle', value: '#8AD3A6' },
-    { name: 'Document Color', cssVar: '--dsn-color-positive-inverse-color-document', value: '#FFFFFF' },
+    {
+      name: 'Document BG',
+      cssVar: '--dsn-color-positive-inverse-bg-document',
+      value: '#002B10',
+    },
+    {
+      name: 'Elevated BG',
+      cssVar: '--dsn-color-positive-inverse-bg-elevated',
+      value: '#002B10',
+    },
+    {
+      name: 'Subtle BG',
+      cssVar: '--dsn-color-positive-inverse-bg-subtle',
+      value: '#00210C',
+    },
+    {
+      name: 'Default BG',
+      cssVar: '--dsn-color-positive-inverse-bg-default',
+      value: '#006827',
+    },
+    {
+      name: 'Hover BG',
+      cssVar: '--dsn-color-positive-inverse-bg-hover',
+      value: '#005821',
+    },
+    {
+      name: 'Active BG',
+      cssVar: '--dsn-color-positive-inverse-bg-active',
+      value: '#00481B',
+    },
+    {
+      name: 'Subtle Border',
+      cssVar: '--dsn-color-positive-inverse-border-subtle',
+      value: '#00531F',
+    },
+    {
+      name: 'Default Border',
+      cssVar: '--dsn-color-positive-inverse-border-default',
+      value: '#96D8AE',
+    },
+    {
+      name: 'Hover Border',
+      cssVar: '--dsn-color-positive-inverse-border-hover',
+      value: '#ACE0C0',
+    },
+    {
+      name: 'Active Border',
+      cssVar: '--dsn-color-positive-inverse-border-active',
+      value: '#C3E9D1',
+    },
+    {
+      name: 'Default Color',
+      cssVar: '--dsn-color-positive-inverse-color-default',
+      value: '#FFFFFF',
+    },
+    {
+      name: 'Hover Color',
+      cssVar: '--dsn-color-positive-inverse-color-hover',
+      value: '#FFFFFF',
+    },
+    {
+      name: 'Active Color',
+      cssVar: '--dsn-color-positive-inverse-color-active',
+      value: '#FFFFFF',
+    },
+    {
+      name: 'Subtle Color',
+      cssVar: '--dsn-color-positive-inverse-color-subtle',
+      value: '#8AD3A6',
+    },
+    {
+      name: 'Document Color',
+      cssVar: '--dsn-color-positive-inverse-color-document',
+      value: '#FFFFFF',
+    },
   ]}
 />
 
@@ -368,21 +1192,81 @@ All alias accent-1-inverse by default. Available CSS variables:
 <TokenTable
   previewType="color"
   tokens={[
-    { name: 'Document BG', cssVar: '--dsn-color-negative-inverse-bg-document', value: '#510000' },
-    { name: 'Elevated BG', cssVar: '--dsn-color-negative-inverse-bg-elevated', value: '#510000' },
-    { name: 'Subtle BG', cssVar: '--dsn-color-negative-inverse-bg-subtle', value: '#410000' },
-    { name: 'Default BG', cssVar: '--dsn-color-negative-inverse-bg-default', value: '#B70000' },
-    { name: 'Hover BG', cssVar: '--dsn-color-negative-inverse-bg-hover', value: '#9C0000' },
-    { name: 'Active BG', cssVar: '--dsn-color-negative-inverse-bg-active', value: '#820000' },
-    { name: 'Subtle Border', cssVar: '--dsn-color-negative-inverse-border-subtle', value: '#930000' },
-    { name: 'Default Border', cssVar: '--dsn-color-negative-inverse-border-default', value: '#FAB9B9' },
-    { name: 'Hover Border', cssVar: '--dsn-color-negative-inverse-border-hover', value: '#FBC8C8' },
-    { name: 'Active Border', cssVar: '--dsn-color-negative-inverse-border-active', value: '#FCD7D7' },
-    { name: 'Default Color', cssVar: '--dsn-color-negative-inverse-color-default', value: '#FFFFFF' },
-    { name: 'Hover Color', cssVar: '--dsn-color-negative-inverse-color-hover', value: '#FFFFFF' },
-    { name: 'Active Color', cssVar: '--dsn-color-negative-inverse-color-active', value: '#FFFFFF' },
-    { name: 'Subtle Color', cssVar: '--dsn-color-negative-inverse-color-subtle', value: '#F9B1B1' },
-    { name: 'Document Color', cssVar: '--dsn-color-negative-inverse-color-document', value: '#FFFFFF' },
+    {
+      name: 'Document BG',
+      cssVar: '--dsn-color-negative-inverse-bg-document',
+      value: '#510000',
+    },
+    {
+      name: 'Elevated BG',
+      cssVar: '--dsn-color-negative-inverse-bg-elevated',
+      value: '#510000',
+    },
+    {
+      name: 'Subtle BG',
+      cssVar: '--dsn-color-negative-inverse-bg-subtle',
+      value: '#410000',
+    },
+    {
+      name: 'Default BG',
+      cssVar: '--dsn-color-negative-inverse-bg-default',
+      value: '#B70000',
+    },
+    {
+      name: 'Hover BG',
+      cssVar: '--dsn-color-negative-inverse-bg-hover',
+      value: '#9C0000',
+    },
+    {
+      name: 'Active BG',
+      cssVar: '--dsn-color-negative-inverse-bg-active',
+      value: '#820000',
+    },
+    {
+      name: 'Subtle Border',
+      cssVar: '--dsn-color-negative-inverse-border-subtle',
+      value: '#930000',
+    },
+    {
+      name: 'Default Border',
+      cssVar: '--dsn-color-negative-inverse-border-default',
+      value: '#FAB9B9',
+    },
+    {
+      name: 'Hover Border',
+      cssVar: '--dsn-color-negative-inverse-border-hover',
+      value: '#FBC8C8',
+    },
+    {
+      name: 'Active Border',
+      cssVar: '--dsn-color-negative-inverse-border-active',
+      value: '#FCD7D7',
+    },
+    {
+      name: 'Default Color',
+      cssVar: '--dsn-color-negative-inverse-color-default',
+      value: '#FFFFFF',
+    },
+    {
+      name: 'Hover Color',
+      cssVar: '--dsn-color-negative-inverse-color-hover',
+      value: '#FFFFFF',
+    },
+    {
+      name: 'Active Color',
+      cssVar: '--dsn-color-negative-inverse-color-active',
+      value: '#FFFFFF',
+    },
+    {
+      name: 'Subtle Color',
+      cssVar: '--dsn-color-negative-inverse-color-subtle',
+      value: '#F9B1B1',
+    },
+    {
+      name: 'Document Color',
+      cssVar: '--dsn-color-negative-inverse-color-document',
+      value: '#FFFFFF',
+    },
   ]}
 />
 
@@ -391,21 +1275,81 @@ All alias accent-1-inverse by default. Available CSS variables:
 <TokenTable
   previewType="color"
   tokens={[
-    { name: 'Document BG', cssVar: '--dsn-color-warning-inverse-bg-document', value: '#331F0D' },
-    { name: 'Elevated BG', cssVar: '--dsn-color-warning-inverse-bg-elevated', value: '#331F0D' },
-    { name: 'Subtle BG', cssVar: '--dsn-color-warning-inverse-bg-subtle', value: '#27190A' },
-    { name: 'Default BG', cssVar: '--dsn-color-warning-inverse-bg-default', value: '#844C12' },
-    { name: 'Hover BG', cssVar: '--dsn-color-warning-inverse-bg-hover', value: '#6F4012' },
-    { name: 'Active BG', cssVar: '--dsn-color-warning-inverse-bg-active', value: '#5A3511' },
-    { name: 'Subtle Border', cssVar: '--dsn-color-warning-inverse-border-subtle', value: '#683C12' },
-    { name: 'Default Border', cssVar: '--dsn-color-warning-inverse-border-default', value: '#FFBC7A' },
-    { name: 'Hover Border', cssVar: '--dsn-color-warning-inverse-border-hover', value: '#FFCB98' },
-    { name: 'Active Border', cssVar: '--dsn-color-warning-inverse-border-active', value: '#FFD9B4' },
-    { name: 'Default Color', cssVar: '--dsn-color-warning-inverse-color-default', value: '#FFFFFF' },
-    { name: 'Hover Color', cssVar: '--dsn-color-warning-inverse-color-hover', value: '#FFFFFF' },
-    { name: 'Active Color', cssVar: '--dsn-color-warning-inverse-color-active', value: '#FFFFFF' },
-    { name: 'Subtle Color', cssVar: '--dsn-color-warning-inverse-color-subtle', value: '#FFB46B' },
-    { name: 'Document Color', cssVar: '--dsn-color-warning-inverse-color-document', value: '#FFFFFF' },
+    {
+      name: 'Document BG',
+      cssVar: '--dsn-color-warning-inverse-bg-document',
+      value: '#331F0D',
+    },
+    {
+      name: 'Elevated BG',
+      cssVar: '--dsn-color-warning-inverse-bg-elevated',
+      value: '#331F0D',
+    },
+    {
+      name: 'Subtle BG',
+      cssVar: '--dsn-color-warning-inverse-bg-subtle',
+      value: '#27190A',
+    },
+    {
+      name: 'Default BG',
+      cssVar: '--dsn-color-warning-inverse-bg-default',
+      value: '#844C12',
+    },
+    {
+      name: 'Hover BG',
+      cssVar: '--dsn-color-warning-inverse-bg-hover',
+      value: '#6F4012',
+    },
+    {
+      name: 'Active BG',
+      cssVar: '--dsn-color-warning-inverse-bg-active',
+      value: '#5A3511',
+    },
+    {
+      name: 'Subtle Border',
+      cssVar: '--dsn-color-warning-inverse-border-subtle',
+      value: '#683C12',
+    },
+    {
+      name: 'Default Border',
+      cssVar: '--dsn-color-warning-inverse-border-default',
+      value: '#FFBC7A',
+    },
+    {
+      name: 'Hover Border',
+      cssVar: '--dsn-color-warning-inverse-border-hover',
+      value: '#FFCB98',
+    },
+    {
+      name: 'Active Border',
+      cssVar: '--dsn-color-warning-inverse-border-active',
+      value: '#FFD9B4',
+    },
+    {
+      name: 'Default Color',
+      cssVar: '--dsn-color-warning-inverse-color-default',
+      value: '#FFFFFF',
+    },
+    {
+      name: 'Hover Color',
+      cssVar: '--dsn-color-warning-inverse-color-hover',
+      value: '#FFFFFF',
+    },
+    {
+      name: 'Active Color',
+      cssVar: '--dsn-color-warning-inverse-color-active',
+      value: '#FFFFFF',
+    },
+    {
+      name: 'Subtle Color',
+      cssVar: '--dsn-color-warning-inverse-color-subtle',
+      value: '#FFB46B',
+    },
+    {
+      name: 'Document Color',
+      cssVar: '--dsn-color-warning-inverse-color-document',
+      value: '#FFFFFF',
+    },
   ]}
 />
 
@@ -414,21 +1358,81 @@ All alias accent-1-inverse by default. Available CSS variables:
 <TokenTable
   previewType="color"
   tokens={[
-    { name: 'Document BG', cssVar: '--dsn-color-info-inverse-bg-document', value: '#00234D' },
-    { name: 'Elevated BG', cssVar: '--dsn-color-info-inverse-bg-elevated', value: '#00234D' },
-    { name: 'Subtle BG', cssVar: '--dsn-color-info-inverse-bg-subtle', value: '#001B3C' },
-    { name: 'Default BG', cssVar: '--dsn-color-info-inverse-bg-default', value: '#1B59A4' },
-    { name: 'Hover BG', cssVar: '--dsn-color-info-inverse-bg-hover', value: '#04499A' },
-    { name: 'Active BG', cssVar: '--dsn-color-info-inverse-bg-active', value: '#003B81' },
-    { name: 'Subtle Border', cssVar: '--dsn-color-info-inverse-border-subtle', value: '#004494' },
-    { name: 'Default Border', cssVar: '--dsn-color-info-inverse-border-default', value: '#B8CBE2' },
-    { name: 'Hover Border', cssVar: '--dsn-color-info-inverse-border-hover', value: '#C6D6E8' },
-    { name: 'Active Border', cssVar: '--dsn-color-info-inverse-border-active', value: '#D5E1EE' },
-    { name: 'Default Color', cssVar: '--dsn-color-info-inverse-color-default', value: '#FFFFFF' },
-    { name: 'Hover Color', cssVar: '--dsn-color-info-inverse-color-hover', value: '#FFFFFF' },
-    { name: 'Active Color', cssVar: '--dsn-color-info-inverse-color-active', value: '#FFFFFF' },
-    { name: 'Subtle Color', cssVar: '--dsn-color-info-inverse-color-subtle', value: '#B0C6DF' },
-    { name: 'Document Color', cssVar: '--dsn-color-info-inverse-color-document', value: '#FFFFFF' },
+    {
+      name: 'Document BG',
+      cssVar: '--dsn-color-info-inverse-bg-document',
+      value: '#00234D',
+    },
+    {
+      name: 'Elevated BG',
+      cssVar: '--dsn-color-info-inverse-bg-elevated',
+      value: '#00234D',
+    },
+    {
+      name: 'Subtle BG',
+      cssVar: '--dsn-color-info-inverse-bg-subtle',
+      value: '#001B3C',
+    },
+    {
+      name: 'Default BG',
+      cssVar: '--dsn-color-info-inverse-bg-default',
+      value: '#1B59A4',
+    },
+    {
+      name: 'Hover BG',
+      cssVar: '--dsn-color-info-inverse-bg-hover',
+      value: '#04499A',
+    },
+    {
+      name: 'Active BG',
+      cssVar: '--dsn-color-info-inverse-bg-active',
+      value: '#003B81',
+    },
+    {
+      name: 'Subtle Border',
+      cssVar: '--dsn-color-info-inverse-border-subtle',
+      value: '#004494',
+    },
+    {
+      name: 'Default Border',
+      cssVar: '--dsn-color-info-inverse-border-default',
+      value: '#B8CBE2',
+    },
+    {
+      name: 'Hover Border',
+      cssVar: '--dsn-color-info-inverse-border-hover',
+      value: '#C6D6E8',
+    },
+    {
+      name: 'Active Border',
+      cssVar: '--dsn-color-info-inverse-border-active',
+      value: '#D5E1EE',
+    },
+    {
+      name: 'Default Color',
+      cssVar: '--dsn-color-info-inverse-color-default',
+      value: '#FFFFFF',
+    },
+    {
+      name: 'Hover Color',
+      cssVar: '--dsn-color-info-inverse-color-hover',
+      value: '#FFFFFF',
+    },
+    {
+      name: 'Active Color',
+      cssVar: '--dsn-color-info-inverse-color-active',
+      value: '#FFFFFF',
+    },
+    {
+      name: 'Subtle Color',
+      cssVar: '--dsn-color-info-inverse-color-subtle',
+      value: '#B0C6DF',
+    },
+    {
+      name: 'Document Color',
+      cssVar: '--dsn-color-info-inverse-color-document',
+      value: '#FFFFFF',
+    },
   ]}
 />
 
@@ -440,9 +1444,21 @@ All alias accent-1-inverse by default. Available CSS variables:
 
 <TokenTable
   tokens={[
-    { name: 'Default', cssVar: '--dsn-text-font-family-default', value: 'IBM Plex Sans, sans-serif' },
-    { name: 'Monospace', cssVar: '--dsn-text-font-family-monospace', value: 'IBM Plex Mono, monospace' },
-    { name: 'Heading', cssVar: '--dsn-heading-font-family', value: 'IBM Plex Sans, sans-serif' },
+    {
+      name: 'Default',
+      cssVar: '--dsn-text-font-family-default',
+      value: 'IBM Plex Sans, sans-serif',
+    },
+    {
+      name: 'Monospace',
+      cssVar: '--dsn-text-font-family-monospace',
+      value: 'IBM Plex Mono, monospace',
+    },
+    {
+      name: 'Heading',
+      cssVar: '--dsn-heading-font-family',
+      value: 'IBM Plex Sans, sans-serif',
+    },
   ]}
 />
 
@@ -451,13 +1467,41 @@ All alias accent-1-inverse by default. Available CSS variables:
 <TokenTable
   previewType="typography-size"
   tokens={[
-    { name: 'sm', cssVar: '--dsn-text-font-size-sm', value: 'clamp(0.875rem, 0.75rem + 0.25vw, 1.0625rem)' },
-    { name: 'md', cssVar: '--dsn-text-font-size-md', value: 'clamp(1rem, 0.875rem + 0.375vw, 1.28125rem)' },
-    { name: 'lg', cssVar: '--dsn-text-font-size-lg', value: 'clamp(1.25rem, 1.125rem + 0.375vw, 1.53125rem)' },
-    { name: 'xl', cssVar: '--dsn-text-font-size-xl', value: 'clamp(1.5rem, 1.25rem + 0.625vw, 1.9375rem)' },
-    { name: '2xl', cssVar: '--dsn-text-font-size-2xl', value: 'clamp(2rem, 1.75rem + 0.75vw, 2.5625rem)' },
-    { name: '3xl', cssVar: '--dsn-text-font-size-3xl', value: 'clamp(2.5rem, 2.125rem + 1.125vw, 3.3125rem)' },
-    { name: '4xl', cssVar: '--dsn-text-font-size-4xl', value: 'clamp(3rem, 2.5rem + 1.5vw, 4.125rem)' },
+    {
+      name: 'sm',
+      cssVar: '--dsn-text-font-size-sm',
+      value: 'clamp(0.875rem, 0.75rem + 0.25vw, 1.0625rem)',
+    },
+    {
+      name: 'md',
+      cssVar: '--dsn-text-font-size-md',
+      value: 'clamp(1rem, 0.875rem + 0.375vw, 1.28125rem)',
+    },
+    {
+      name: 'lg',
+      cssVar: '--dsn-text-font-size-lg',
+      value: 'clamp(1.25rem, 1.125rem + 0.375vw, 1.53125rem)',
+    },
+    {
+      name: 'xl',
+      cssVar: '--dsn-text-font-size-xl',
+      value: 'clamp(1.5rem, 1.25rem + 0.625vw, 1.9375rem)',
+    },
+    {
+      name: '2xl',
+      cssVar: '--dsn-text-font-size-2xl',
+      value: 'clamp(2rem, 1.75rem + 0.75vw, 2.5625rem)',
+    },
+    {
+      name: '3xl',
+      cssVar: '--dsn-text-font-size-3xl',
+      value: 'clamp(2.5rem, 2.125rem + 1.125vw, 3.3125rem)',
+    },
+    {
+      name: '4xl',
+      cssVar: '--dsn-text-font-size-4xl',
+      value: 'clamp(3rem, 2.5rem + 1.5vw, 4.125rem)',
+    },
   ]}
 />
 
@@ -496,9 +1540,7 @@ The system defines five spacing concepts: **row** (vertical between components),
 
 <TokenTable
   previewType="spacing"
-  tokens={[
-    { name: 'none', cssVar: '--dsn-space-none', value: '0px' },
-  ]}
+  tokens={[{ name: 'none', cssVar: '--dsn-space-none', value: '0px' }]}
 />
 
 ### Row Spacing (vertical between components)
@@ -506,17 +1548,61 @@ The system defines five spacing concepts: **row** (vertical between components),
 <TokenTable
   previewType="spacing"
   tokens={[
-    { name: '2xs', cssVar: '--dsn-space-row-2xs', value: 'calc(0.5rem * 0.125) = 1px' },
-    { name: 'xs', cssVar: '--dsn-space-row-xs', value: 'calc(0.5rem * 0.25) = 2px' },
-    { name: 'sm', cssVar: '--dsn-space-row-sm', value: 'calc(0.5rem * 0.5) = 4px' },
-    { name: 'md', cssVar: '--dsn-space-row-md', value: 'calc(0.5rem * 1) = 8px' },
-    { name: 'lg', cssVar: '--dsn-space-row-lg', value: 'calc(0.5rem * 1.5) = 12px' },
-    { name: 'xl', cssVar: '--dsn-space-row-xl', value: 'calc(0.5rem * 2) = 16px' },
-    { name: '2xl', cssVar: '--dsn-space-row-2xl', value: 'calc(0.5rem * 2.5) = 20px' },
-    { name: '3xl', cssVar: '--dsn-space-row-3xl', value: 'calc(0.5rem * 3) = 24px' },
-    { name: '4xl', cssVar: '--dsn-space-row-4xl', value: 'calc(0.5rem * 4) = 32px' },
-    { name: '5xl', cssVar: '--dsn-space-row-5xl', value: 'calc(0.5rem * 8) = 64px' },
-    { name: '6xl', cssVar: '--dsn-space-row-6xl', value: 'calc(0.5rem * 20) = 160px' },
+    {
+      name: '2xs',
+      cssVar: '--dsn-space-row-2xs',
+      value: 'calc(0.5rem * 0.125) = 1px',
+    },
+    {
+      name: 'xs',
+      cssVar: '--dsn-space-row-xs',
+      value: 'calc(0.5rem * 0.25) = 2px',
+    },
+    {
+      name: 'sm',
+      cssVar: '--dsn-space-row-sm',
+      value: 'calc(0.5rem * 0.5) = 4px',
+    },
+    {
+      name: 'md',
+      cssVar: '--dsn-space-row-md',
+      value: 'calc(0.5rem * 1) = 8px',
+    },
+    {
+      name: 'lg',
+      cssVar: '--dsn-space-row-lg',
+      value: 'calc(0.5rem * 1.5) = 12px',
+    },
+    {
+      name: 'xl',
+      cssVar: '--dsn-space-row-xl',
+      value: 'calc(0.5rem * 2) = 16px',
+    },
+    {
+      name: '2xl',
+      cssVar: '--dsn-space-row-2xl',
+      value: 'calc(0.5rem * 2.5) = 20px',
+    },
+    {
+      name: '3xl',
+      cssVar: '--dsn-space-row-3xl',
+      value: 'calc(0.5rem * 3) = 24px',
+    },
+    {
+      name: '4xl',
+      cssVar: '--dsn-space-row-4xl',
+      value: 'calc(0.5rem * 4) = 32px',
+    },
+    {
+      name: '5xl',
+      cssVar: '--dsn-space-row-5xl',
+      value: 'calc(0.5rem * 8) = 64px',
+    },
+    {
+      name: '6xl',
+      cssVar: '--dsn-space-row-6xl',
+      value: 'calc(0.5rem * 20) = 160px',
+    },
   ]}
 />
 
@@ -525,17 +1611,61 @@ The system defines five spacing concepts: **row** (vertical between components),
 <TokenTable
   previewType="spacing"
   tokens={[
-    { name: '2xs', cssVar: '--dsn-space-column-2xs', value: 'calc(0.5rem * 0.125) = 1px' },
-    { name: 'xs', cssVar: '--dsn-space-column-xs', value: 'calc(0.5rem * 0.25) = 2px' },
-    { name: 'sm', cssVar: '--dsn-space-column-sm', value: 'calc(0.5rem * 0.5) = 4px' },
-    { name: 'md', cssVar: '--dsn-space-column-md', value: 'calc(0.5rem * 1) = 8px' },
-    { name: 'lg', cssVar: '--dsn-space-column-lg', value: 'calc(0.5rem * 1.5) = 12px' },
-    { name: 'xl', cssVar: '--dsn-space-column-xl', value: 'calc(0.5rem * 2) = 16px' },
-    { name: '2xl', cssVar: '--dsn-space-column-2xl', value: 'calc(0.5rem * 2.5) = 20px' },
-    { name: '3xl', cssVar: '--dsn-space-column-3xl', value: 'calc(0.5rem * 3) = 24px' },
-    { name: '4xl', cssVar: '--dsn-space-column-4xl', value: 'calc(0.5rem * 4) = 32px' },
-    { name: '5xl', cssVar: '--dsn-space-column-5xl', value: 'calc(0.5rem * 8) = 64px' },
-    { name: '6xl', cssVar: '--dsn-space-column-6xl', value: 'calc(0.5rem * 20) = 160px' },
+    {
+      name: '2xs',
+      cssVar: '--dsn-space-column-2xs',
+      value: 'calc(0.5rem * 0.125) = 1px',
+    },
+    {
+      name: 'xs',
+      cssVar: '--dsn-space-column-xs',
+      value: 'calc(0.5rem * 0.25) = 2px',
+    },
+    {
+      name: 'sm',
+      cssVar: '--dsn-space-column-sm',
+      value: 'calc(0.5rem * 0.5) = 4px',
+    },
+    {
+      name: 'md',
+      cssVar: '--dsn-space-column-md',
+      value: 'calc(0.5rem * 1) = 8px',
+    },
+    {
+      name: 'lg',
+      cssVar: '--dsn-space-column-lg',
+      value: 'calc(0.5rem * 1.5) = 12px',
+    },
+    {
+      name: 'xl',
+      cssVar: '--dsn-space-column-xl',
+      value: 'calc(0.5rem * 2) = 16px',
+    },
+    {
+      name: '2xl',
+      cssVar: '--dsn-space-column-2xl',
+      value: 'calc(0.5rem * 2.5) = 20px',
+    },
+    {
+      name: '3xl',
+      cssVar: '--dsn-space-column-3xl',
+      value: 'calc(0.5rem * 3) = 24px',
+    },
+    {
+      name: '4xl',
+      cssVar: '--dsn-space-column-4xl',
+      value: 'calc(0.5rem * 4) = 32px',
+    },
+    {
+      name: '5xl',
+      cssVar: '--dsn-space-column-5xl',
+      value: 'calc(0.5rem * 8) = 64px',
+    },
+    {
+      name: '6xl',
+      cssVar: '--dsn-space-column-6xl',
+      value: 'calc(0.5rem * 20) = 160px',
+    },
   ]}
 />
 
@@ -544,17 +1674,61 @@ The system defines five spacing concepts: **row** (vertical between components),
 <TokenTable
   previewType="spacing"
   tokens={[
-    { name: '2xs', cssVar: '--dsn-space-inline-2xs', value: 'calc(0.5rem * 0.125) = 1px' },
-    { name: 'xs', cssVar: '--dsn-space-inline-xs', value: 'calc(0.5rem * 0.25) = 2px' },
-    { name: 'sm', cssVar: '--dsn-space-inline-sm', value: 'calc(0.5rem * 0.5) = 4px' },
-    { name: 'md', cssVar: '--dsn-space-inline-md', value: 'calc(0.5rem * 1) = 8px' },
-    { name: 'lg', cssVar: '--dsn-space-inline-lg', value: 'calc(0.5rem * 1.5) = 12px' },
-    { name: 'xl', cssVar: '--dsn-space-inline-xl', value: 'calc(0.5rem * 2) = 16px' },
-    { name: '2xl', cssVar: '--dsn-space-inline-2xl', value: 'calc(0.5rem * 2.5) = 20px' },
-    { name: '3xl', cssVar: '--dsn-space-inline-3xl', value: 'calc(0.5rem * 3) = 24px' },
-    { name: '4xl', cssVar: '--dsn-space-inline-4xl', value: 'calc(0.5rem * 4) = 32px' },
-    { name: '5xl', cssVar: '--dsn-space-inline-5xl', value: 'calc(0.5rem * 6) = 48px' },
-    { name: '6xl', cssVar: '--dsn-space-inline-6xl', value: 'calc(0.5rem * 8) = 64px' },
+    {
+      name: '2xs',
+      cssVar: '--dsn-space-inline-2xs',
+      value: 'calc(0.5rem * 0.125) = 1px',
+    },
+    {
+      name: 'xs',
+      cssVar: '--dsn-space-inline-xs',
+      value: 'calc(0.5rem * 0.25) = 2px',
+    },
+    {
+      name: 'sm',
+      cssVar: '--dsn-space-inline-sm',
+      value: 'calc(0.5rem * 0.5) = 4px',
+    },
+    {
+      name: 'md',
+      cssVar: '--dsn-space-inline-md',
+      value: 'calc(0.5rem * 1) = 8px',
+    },
+    {
+      name: 'lg',
+      cssVar: '--dsn-space-inline-lg',
+      value: 'calc(0.5rem * 1.5) = 12px',
+    },
+    {
+      name: 'xl',
+      cssVar: '--dsn-space-inline-xl',
+      value: 'calc(0.5rem * 2) = 16px',
+    },
+    {
+      name: '2xl',
+      cssVar: '--dsn-space-inline-2xl',
+      value: 'calc(0.5rem * 2.5) = 20px',
+    },
+    {
+      name: '3xl',
+      cssVar: '--dsn-space-inline-3xl',
+      value: 'calc(0.5rem * 3) = 24px',
+    },
+    {
+      name: '4xl',
+      cssVar: '--dsn-space-inline-4xl',
+      value: 'calc(0.5rem * 4) = 32px',
+    },
+    {
+      name: '5xl',
+      cssVar: '--dsn-space-inline-5xl',
+      value: 'calc(0.5rem * 6) = 48px',
+    },
+    {
+      name: '6xl',
+      cssVar: '--dsn-space-inline-6xl',
+      value: 'calc(0.5rem * 8) = 64px',
+    },
   ]}
 />
 
@@ -563,17 +1737,61 @@ The system defines five spacing concepts: **row** (vertical between components),
 <TokenTable
   previewType="spacing"
   tokens={[
-    { name: '2xs', cssVar: '--dsn-space-block-2xs', value: 'calc(0.5rem * 0.125) = 1px' },
-    { name: 'xs', cssVar: '--dsn-space-block-xs', value: 'calc(0.5rem * 0.25) = 2px' },
-    { name: 'sm', cssVar: '--dsn-space-block-sm', value: 'calc(0.5rem * 0.5) = 4px' },
-    { name: 'md', cssVar: '--dsn-space-block-md', value: 'calc(0.5rem * 1) = 8px' },
-    { name: 'lg', cssVar: '--dsn-space-block-lg', value: 'calc(0.5rem * 1.5) = 12px' },
-    { name: 'xl', cssVar: '--dsn-space-block-xl', value: 'calc(0.5rem * 2) = 16px' },
-    { name: '2xl', cssVar: '--dsn-space-block-2xl', value: 'calc(0.5rem * 2.5) = 20px' },
-    { name: '3xl', cssVar: '--dsn-space-block-3xl', value: 'calc(0.5rem * 3) = 24px' },
-    { name: '4xl', cssVar: '--dsn-space-block-4xl', value: 'calc(0.5rem * 4) = 32px' },
-    { name: '5xl', cssVar: '--dsn-space-block-5xl', value: 'calc(0.5rem * 6) = 48px' },
-    { name: '6xl', cssVar: '--dsn-space-block-6xl', value: 'calc(0.5rem * 8) = 64px' },
+    {
+      name: '2xs',
+      cssVar: '--dsn-space-block-2xs',
+      value: 'calc(0.5rem * 0.125) = 1px',
+    },
+    {
+      name: 'xs',
+      cssVar: '--dsn-space-block-xs',
+      value: 'calc(0.5rem * 0.25) = 2px',
+    },
+    {
+      name: 'sm',
+      cssVar: '--dsn-space-block-sm',
+      value: 'calc(0.5rem * 0.5) = 4px',
+    },
+    {
+      name: 'md',
+      cssVar: '--dsn-space-block-md',
+      value: 'calc(0.5rem * 1) = 8px',
+    },
+    {
+      name: 'lg',
+      cssVar: '--dsn-space-block-lg',
+      value: 'calc(0.5rem * 1.5) = 12px',
+    },
+    {
+      name: 'xl',
+      cssVar: '--dsn-space-block-xl',
+      value: 'calc(0.5rem * 2) = 16px',
+    },
+    {
+      name: '2xl',
+      cssVar: '--dsn-space-block-2xl',
+      value: 'calc(0.5rem * 2.5) = 20px',
+    },
+    {
+      name: '3xl',
+      cssVar: '--dsn-space-block-3xl',
+      value: 'calc(0.5rem * 3) = 24px',
+    },
+    {
+      name: '4xl',
+      cssVar: '--dsn-space-block-4xl',
+      value: 'calc(0.5rem * 4) = 32px',
+    },
+    {
+      name: '5xl',
+      cssVar: '--dsn-space-block-5xl',
+      value: 'calc(0.5rem * 6) = 48px',
+    },
+    {
+      name: '6xl',
+      cssVar: '--dsn-space-block-6xl',
+      value: 'calc(0.5rem * 8) = 64px',
+    },
   ]}
 />
 
@@ -582,15 +1800,51 @@ The system defines five spacing concepts: **row** (vertical between components),
 <TokenTable
   previewType="spacing"
   tokens={[
-    { name: '3xs', cssVar: '--dsn-space-text-3xs', value: 'calc(0.5rem * 0.125) = 1px' },
-    { name: '2xs', cssVar: '--dsn-space-text-2xs', value: 'calc(0.5rem * 0.25) = 2px' },
-    { name: 'xs', cssVar: '--dsn-space-text-xs', value: 'calc(0.5rem * 0.25) = 2px' },
-    { name: 'sm', cssVar: '--dsn-space-text-sm', value: 'calc(0.5rem * 0.5) = 4px' },
-    { name: 'md', cssVar: '--dsn-space-text-md', value: 'calc(0.5rem * 1) = 8px' },
-    { name: 'lg', cssVar: '--dsn-space-text-lg', value: 'calc(0.5rem * 1.5) = 12px' },
-    { name: 'xl', cssVar: '--dsn-space-text-xl', value: 'calc(0.5rem * 2) = 16px' },
-    { name: '2xl', cssVar: '--dsn-space-text-2xl', value: 'calc(0.5rem * 2.5) = 20px' },
-    { name: '3xl', cssVar: '--dsn-space-text-3xl', value: 'calc(0.5rem * 3) = 24px' },
+    {
+      name: '3xs',
+      cssVar: '--dsn-space-text-3xs',
+      value: 'calc(0.5rem * 0.125) = 1px',
+    },
+    {
+      name: '2xs',
+      cssVar: '--dsn-space-text-2xs',
+      value: 'calc(0.5rem * 0.25) = 2px',
+    },
+    {
+      name: 'xs',
+      cssVar: '--dsn-space-text-xs',
+      value: 'calc(0.5rem * 0.25) = 2px',
+    },
+    {
+      name: 'sm',
+      cssVar: '--dsn-space-text-sm',
+      value: 'calc(0.5rem * 0.5) = 4px',
+    },
+    {
+      name: 'md',
+      cssVar: '--dsn-space-text-md',
+      value: 'calc(0.5rem * 1) = 8px',
+    },
+    {
+      name: 'lg',
+      cssVar: '--dsn-space-text-lg',
+      value: 'calc(0.5rem * 1.5) = 12px',
+    },
+    {
+      name: 'xl',
+      cssVar: '--dsn-space-text-xl',
+      value: 'calc(0.5rem * 2) = 16px',
+    },
+    {
+      name: '2xl',
+      cssVar: '--dsn-space-text-2xl',
+      value: 'calc(0.5rem * 2.5) = 20px',
+    },
+    {
+      name: '3xl',
+      cssVar: '--dsn-space-text-3xl',
+      value: 'calc(0.5rem * 3) = 24px',
+    },
   ]}
 />
 
@@ -631,17 +1885,37 @@ Accessible focus indicators for keyboard navigation, following WCAG 2.4.7.
 <TokenTable
   previewType="color"
   tokens={[
-    { name: 'Outline Color', cssVar: '--dsn-focus-outline-color', value: '#0b0c0c' },
-    { name: 'Background', cssVar: '--dsn-focus-background-color', value: '#ffdd00' },
+    {
+      name: 'Outline Color',
+      cssVar: '--dsn-focus-outline-color',
+      value: '#0b0c0c',
+    },
+    {
+      name: 'Background',
+      cssVar: '--dsn-focus-background-color',
+      value: '#ffdd00',
+    },
     { name: 'Text Color', cssVar: '--dsn-focus-color', value: '#0b0c0c' },
   ]}
 />
 
 <TokenTable
   tokens={[
-    { name: 'Outline Width', cssVar: '--dsn-focus-outline-width', value: '2px' },
-    { name: 'Outline Style', cssVar: '--dsn-focus-outline-style', value: 'dashed' },
-    { name: 'Outline Offset', cssVar: '--dsn-focus-outline-offset', value: '0px' },
+    {
+      name: 'Outline Width',
+      cssVar: '--dsn-focus-outline-width',
+      value: '2px',
+    },
+    {
+      name: 'Outline Style',
+      cssVar: '--dsn-focus-outline-style',
+      value: 'dashed',
+    },
+    {
+      name: 'Outline Offset',
+      cssVar: '--dsn-focus-outline-offset',
+      value: '0px',
+    },
   ]}
 />
 
@@ -654,13 +1928,41 @@ Icon sizes are fluid and coupled to typography: calculated as `font-size * line-
 <TokenTable
   previewType="spacing"
   tokens={[
-    { name: 'sm', cssVar: '--dsn-icon-size-sm', value: 'font-size-sm * line-height-sm' },
-    { name: 'md', cssVar: '--dsn-icon-size-md', value: 'font-size-md * line-height-md' },
-    { name: 'lg', cssVar: '--dsn-icon-size-lg', value: 'font-size-lg * line-height-lg' },
-    { name: 'xl', cssVar: '--dsn-icon-size-xl', value: 'font-size-xl * line-height-xl' },
-    { name: '2xl', cssVar: '--dsn-icon-size-2xl', value: 'font-size-2xl * line-height-2xl' },
-    { name: '3xl', cssVar: '--dsn-icon-size-3xl', value: 'font-size-3xl * line-height-3xl' },
-    { name: '4xl', cssVar: '--dsn-icon-size-4xl', value: 'font-size-4xl * line-height-4xl' },
+    {
+      name: 'sm',
+      cssVar: '--dsn-icon-size-sm',
+      value: 'font-size-sm * line-height-sm',
+    },
+    {
+      name: 'md',
+      cssVar: '--dsn-icon-size-md',
+      value: 'font-size-md * line-height-md',
+    },
+    {
+      name: 'lg',
+      cssVar: '--dsn-icon-size-lg',
+      value: 'font-size-lg * line-height-lg',
+    },
+    {
+      name: 'xl',
+      cssVar: '--dsn-icon-size-xl',
+      value: 'font-size-xl * line-height-xl',
+    },
+    {
+      name: '2xl',
+      cssVar: '--dsn-icon-size-2xl',
+      value: 'font-size-2xl * line-height-2xl',
+    },
+    {
+      name: '3xl',
+      cssVar: '--dsn-icon-size-3xl',
+      value: 'font-size-3xl * line-height-3xl',
+    },
+    {
+      name: '4xl',
+      cssVar: '--dsn-icon-size-4xl',
+      value: 'font-size-4xl * line-height-4xl',
+    },
   ]}
 />
 
@@ -673,8 +1975,16 @@ Minimum touch/click target sizes following WCAG 2.5.5 Target Size.
 <TokenTable
   previewType="spacing"
   tokens={[
-    { name: 'Min Block Size', cssVar: '--dsn-pointer-target-min-block-size', value: '3rem (48px)' },
-    { name: 'Min Inline Size', cssVar: '--dsn-pointer-target-min-inline-size', value: '3rem (48px)' },
+    {
+      name: 'Min Block Size',
+      cssVar: '--dsn-pointer-target-min-block-size',
+      value: '3rem (48px)',
+    },
+    {
+      name: 'Min Inline Size',
+      cssVar: '--dsn-pointer-target-min-inline-size',
+      value: '3rem (48px)',
+    },
   ]}
 />
 
@@ -686,8 +1996,16 @@ Maximum width constraints for page content and readable text lines.
 
 <TokenTable
   tokens={[
-    { name: 'Page Max Inline Size', cssVar: '--dsn-page-max-inline-size', value: '75rem' },
-    { name: 'Text Max Inline Size', cssVar: '--dsn-text-max-inline-size', value: '65ch' },
+    {
+      name: 'Page Max Inline Size',
+      cssVar: '--dsn-page-max-inline-size',
+      value: '75rem',
+    },
+    {
+      name: 'Text Max Inline Size',
+      cssVar: '--dsn-text-max-inline-size',
+      value: '65ch',
+    },
   ]}
 />
 
@@ -695,17 +2013,45 @@ Maximum width constraints for page content and readable text lines.
 
 ## Form Control Sizing
 
-Width presets for form inputs, based on the expected character count of the input value. Use `max-inline-size` as the default cap when no specific width preset applies.
+Inline-size presets for form inputs, based on the expected character count of the input value. Use `max-inline-size` as the default cap when no specific inline-size preset applies.
 
 <TokenTable
   tokens={[
-    { name: 'Max Inline Size', cssVar: '--dsn-form-control-max-inline-size', value: '25rem' },
-    { name: 'Width xs', cssVar: '--dsn-form-control-width-xs', value: '10ch' },
-    { name: 'Width sm', cssVar: '--dsn-form-control-width-sm', value: '14ch' },
-    { name: 'Width md', cssVar: '--dsn-form-control-width-md', value: '20ch' },
-    { name: 'Width lg', cssVar: '--dsn-form-control-width-lg', value: '32ch' },
-    { name: 'Width xl', cssVar: '--dsn-form-control-width-xl', value: '48ch' },
-    { name: 'Width full', cssVar: '--dsn-form-control-width-full', value: '100%' },
+    {
+      name: 'Max Inline Size',
+      cssVar: '--dsn-form-control-max-inline-size',
+      value: '25rem',
+    },
+    {
+      name: 'Inline Size xs',
+      cssVar: '--dsn-form-control-inline-size-xs',
+      value: '10ch',
+    },
+    {
+      name: 'Inline Size sm',
+      cssVar: '--dsn-form-control-inline-size-sm',
+      value: '14ch',
+    },
+    {
+      name: 'Inline Size md',
+      cssVar: '--dsn-form-control-inline-size-md',
+      value: '20ch',
+    },
+    {
+      name: 'Inline Size lg',
+      cssVar: '--dsn-form-control-inline-size-lg',
+      value: '32ch',
+    },
+    {
+      name: 'Inline Size xl',
+      cssVar: '--dsn-form-control-inline-size-xl',
+      value: '48ch',
+    },
+    {
+      name: 'Inline Size full',
+      cssVar: '--dsn-form-control-inline-size-full',
+      value: '100%',
+    },
   ]}
 />
 
@@ -733,7 +2079,11 @@ The three primitives that power all elevation shadows. In light mode `highlight`
 <TokenTable
   previewType="shadow"
   tokens={[
-    { name: 'none: Flat, no elevation', cssVar: '--dsn-box-shadow-none', value: 'none' },
+    {
+      name: 'none: Flat, no elevation',
+      cssVar: '--dsn-box-shadow-none',
+      value: 'none',
+    },
     { name: 'sm: Cards, chips', cssVar: '--dsn-box-shadow-sm' },
     { name: 'md: Dropdowns, tooltips', cssVar: '--dsn-box-shadow-md' },
     { name: 'lg: Modals, dialogs', cssVar: '--dsn-box-shadow-lg' },
@@ -748,11 +2098,31 @@ Z-index tokens definiëren de stapelvolgorde van UI-lagen. De tokennaam is gelij
 
 <TokenTable
   tokens={[
-    { name: '300 — PageHeader (sticky/auto-hide)', cssVar: '--dsn-z-index-300', value: '300' },
-    { name: '350 — Popover, tooltips, dropdowns', cssVar: '--dsn-z-index-350', value: '350' },
-    { name: '400 — Backdrop (achter modals/drawers)', cssVar: '--dsn-z-index-400', value: '400' },
-    { name: '500 — ModalDialog, Drawer', cssVar: '--dsn-z-index-500', value: '500' },
-    { name: '600 — SkipLink (altijd bovenaan)', cssVar: '--dsn-z-index-600', value: '600' },
+    {
+      name: '300 — PageHeader (sticky/auto-hide)',
+      cssVar: '--dsn-z-index-300',
+      value: '300',
+    },
+    {
+      name: '350 — Popover, tooltips, dropdowns',
+      cssVar: '--dsn-z-index-350',
+      value: '350',
+    },
+    {
+      name: '400 — Backdrop (achter modals/drawers)',
+      cssVar: '--dsn-z-index-400',
+      value: '400',
+    },
+    {
+      name: '500 — ModalDialog, Drawer',
+      cssVar: '--dsn-z-index-500',
+      value: '500',
+    },
+    {
+      name: '600 — SkipLink (altijd bovenaan)',
+      cssVar: '--dsn-z-index-600',
+      value: '600',
+    },
   ]}
 />
 
@@ -769,11 +2139,23 @@ Bij `prefers-reduced-motion: reduce` worden alle duration-tokens naar `0ms` geze
 <TokenTable
   previewType="transition-duration"
   tokens={[
-    { name: 'Instant', cssVar: '--dsn-transition-duration-instant', value: '0ms' },
+    {
+      name: 'Instant',
+      cssVar: '--dsn-transition-duration-instant',
+      value: '0ms',
+    },
     { name: 'Fast', cssVar: '--dsn-transition-duration-fast', value: '100ms' },
-    { name: 'Normal', cssVar: '--dsn-transition-duration-normal', value: '200ms' },
+    {
+      name: 'Normal',
+      cssVar: '--dsn-transition-duration-normal',
+      value: '200ms',
+    },
     { name: 'Slow', cssVar: '--dsn-transition-duration-slow', value: '350ms' },
-    { name: 'Slower', cssVar: '--dsn-transition-duration-slower', value: '500ms' },
+    {
+      name: 'Slower',
+      cssVar: '--dsn-transition-duration-slower',
+      value: '500ms',
+    },
   ]}
 />
 
@@ -782,11 +2164,31 @@ Bij `prefers-reduced-motion: reduce` worden alle duration-tokens naar `0ms` geze
 <TokenTable
   previewType="transition-easing"
   tokens={[
-    { name: 'Default', cssVar: '--dsn-transition-easing-default', value: 'cubic-bezier(0.25, 0.1, 0.25, 1)' },
-    { name: 'Enter', cssVar: '--dsn-transition-easing-enter', value: 'cubic-bezier(0, 0, 0.2, 1)' },
-    { name: 'Exit', cssVar: '--dsn-transition-easing-exit', value: 'cubic-bezier(0.4, 0, 1, 1)' },
-    { name: 'Move', cssVar: '--dsn-transition-easing-move', value: 'cubic-bezier(0.4, 0, 0.2, 1)' },
-    { name: 'Linear', cssVar: '--dsn-transition-easing-linear', value: 'linear' },
+    {
+      name: 'Default',
+      cssVar: '--dsn-transition-easing-default',
+      value: 'cubic-bezier(0.25, 0.1, 0.25, 1)',
+    },
+    {
+      name: 'Enter',
+      cssVar: '--dsn-transition-easing-enter',
+      value: 'cubic-bezier(0, 0, 0.2, 1)',
+    },
+    {
+      name: 'Exit',
+      cssVar: '--dsn-transition-easing-exit',
+      value: 'cubic-bezier(0.4, 0, 1, 1)',
+    },
+    {
+      name: 'Move',
+      cssVar: '--dsn-transition-easing-move',
+      value: 'cubic-bezier(0.4, 0, 0.2, 1)',
+    },
+    {
+      name: 'Linear',
+      cssVar: '--dsn-transition-easing-linear',
+      value: 'linear',
+    },
   ]}
 />
 

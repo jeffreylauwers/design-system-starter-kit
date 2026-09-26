@@ -455,36 +455,36 @@
         "$type": "dimension",
         "$description": "Randbreedte van form controls"
       },
-      "width": {
+      "inline-size": {
         "xs": {
           "$value": "10ch",
           "$type": "dimension",
-          "$description": "Extra kleine breedte — voor zeer korte invoervelden (bijv. postcode, jaar, CVV)"
+          "$description": "Extra kleine inline-size — voor zeer korte invoervelden (bijv. postcode, jaar, CVV)"
         },
         "sm": {
           "$value": "14ch",
           "$type": "dimension",
-          "$description": "Kleine breedte — voor korte invoervelden (bijv. tijd UU:MM, korte codes)"
+          "$description": "Kleine inline-size — voor korte invoervelden (bijv. tijd UU:MM, korte codes)"
         },
         "md": {
           "$value": "20ch",
           "$type": "dimension",
-          "$description": "Middelgrote breedte — voor middelgrote invoervelden (bijv. datum dd/mm/jjjj, telefoonnummer)"
+          "$description": "Middelgrote inline-size — voor middelgrote invoervelden (bijv. datum dd/mm/jjjj, telefoonnummer)"
         },
         "lg": {
           "$value": "32ch",
           "$type": "dimension",
-          "$description": "Grote breedte (standaard) — voor standaard invoervelden (bijv. naam, e-mail)"
+          "$description": "Grote inline-size (standaard) — voor standaard invoervelden (bijv. naam, e-mail)"
         },
         "xl": {
           "$value": "48ch",
           "$type": "dimension",
-          "$description": "Extra grote breedte — voor langere invoervelden (bijv. URL)"
+          "$description": "Extra grote inline-size — voor langere invoervelden (bijv. URL)"
         },
         "full": {
           "$value": "100%",
           "$type": "dimension",
-          "$description": "Volledige breedte — responsief aan de container"
+          "$description": "Volledige inline-size — responsief aan de container"
         }
       },
       "hover": {

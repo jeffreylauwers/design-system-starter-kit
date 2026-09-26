@@ -23,7 +23,7 @@ export interface DateInputProps extends Omit<
 /**
  * Date Input component
  * Date input with an interactive calendar button at inline-end that opens the native date picker.
- * Fixed width (sm) — not configurable, as date inputs have a predictable content width.
+ * Fixed inline-size (md): not configurable, as date inputs have a predictable content length.
  *
  * @example
  * ```tsx
