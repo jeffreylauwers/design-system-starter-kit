@@ -76,6 +76,18 @@ describe('TextArea', () => {
     expect(screen.getByTestId('textarea')).toBeRequired();
   });
 
+  describe('inline-size variants', () => {
+    it.each(['md', 'lg', 'xl', 'full'] as const)(
+      'applies inline-size class for %s',
+      (w) => {
+        render(<TextArea inlineSize={w} data-testid="textarea" />);
+        expect(screen.getByTestId('textarea')).toHaveClass(
+          `dsn-text-area--inline-size-${w}`
+        );
+      }
+    );
+  });
+
   describe('invalid state', () => {
     it('sets aria-invalid when invalid prop is true', () => {
       render(<TextArea invalid data-testid="textarea" />);

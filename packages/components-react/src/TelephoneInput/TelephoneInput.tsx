@@ -1,6 +1,15 @@
 import React from 'react';
-import { classNames, FormControlWidth } from '@dsn-starter-kit/core';
+import { classNames, FormControlInlineSize } from '@dsn-starter-kit/core';
 import './TelephoneInput.css';
+
+/**
+ * Inline-size variants offered by TelephoneInput. xs and sm are left out: they
+ * are too narrow for the content this field is meant for.
+ */
+export type TelephoneInputInlineSize = Exclude<
+  FormControlInlineSize,
+  'xs' | 'sm'
+>;
 
 export interface TelephoneInputProps extends Omit<
   React.InputHTMLAttributes<HTMLInputElement>,
@@ -13,10 +22,10 @@ export interface TelephoneInputProps extends Omit<
   invalid?: boolean;
 
   /**
-   * Width variant for the input
-   * @default undefined (uses default max-width from form-control)
+   * Inline-size variant for the input (md, lg, xl or full)
+   * @default 'md'
    */
-  width?: FormControlWidth;
+  inlineSize?: TelephoneInputInlineSize;
 
   /**
    * Additional CSS class names
@@ -44,10 +53,10 @@ export interface TelephoneInputProps extends Omit<
 export const TelephoneInput = React.forwardRef<
   HTMLInputElement,
   TelephoneInputProps
->(({ className, invalid, width, autoComplete, ...props }, ref) => {
+>(({ className, invalid, inlineSize = 'md', autoComplete, ...props }, ref) => {
   const classes = classNames(
     'dsn-text-input',
-    width && `dsn-text-input--width-${width}`,
+    inlineSize && `dsn-text-input--inline-size-${inlineSize}`,
     className
   );
 

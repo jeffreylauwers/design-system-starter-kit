@@ -1,6 +1,15 @@
 import React from 'react';
-import { classNames, FormControlWidth } from '@dsn-starter-kit/core';
+import { classNames, FormControlInlineSize } from '@dsn-starter-kit/core';
 import './PasswordInput.css';
+
+/**
+ * Inline-size variants offered by PasswordInput. xs and sm are left out: they
+ * are too narrow for the content this field is meant for.
+ */
+export type PasswordInputInlineSize = Exclude<
+  FormControlInlineSize,
+  'xs' | 'sm'
+>;
 
 export type PasswordAutocomplete = 'current-password' | 'new-password' | 'off';
 
@@ -24,10 +33,10 @@ export interface PasswordInputProps extends Omit<
   invalid?: boolean;
 
   /**
-   * Width variant for the input
-   * @default undefined (uses default max-width from form-control)
+   * Inline-size variant for the input (md, lg, xl or full)
+   * @default undefined (uses default max-inline-size from form-control)
    */
-  width?: FormControlWidth;
+  inlineSize?: PasswordInputInlineSize;
 
   /**
    * Additional CSS class names
@@ -66,7 +75,7 @@ export const PasswordInput = React.forwardRef<
       passwordAutocomplete = 'current-password',
       className,
       invalid,
-      width,
+      inlineSize,
       autoComplete,
       ...props
     },
@@ -74,7 +83,7 @@ export const PasswordInput = React.forwardRef<
   ) => {
     const classes = classNames(
       'dsn-text-input',
-      width && `dsn-text-input--width-${width}`,
+      inlineSize && `dsn-text-input--inline-size-${inlineSize}`,
       className
     );
 

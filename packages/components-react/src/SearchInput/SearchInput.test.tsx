@@ -52,14 +52,14 @@ describe('SearchInput', () => {
     expect(el).toHaveClass('custom');
   });
 
-  describe('width variants', () => {
-    it.each(['xs', 'sm', 'md', 'lg', 'xl', 'full'] as const)(
-      'applies width class to wrapper for %s',
+  describe('inline-size variants', () => {
+    it.each(['md', 'lg', 'xl', 'full'] as const)(
+      'applies inline-size class to wrapper for %s',
       (w) => {
-        const { container } = render(<SearchInput width={w} />);
+        const { container } = render(<SearchInput inlineSize={w} />);
         expect(
           container.querySelector('.dsn-search-input-wrapper')
-        ).toHaveClass(`dsn-search-input-wrapper--width-${w}`);
+        ).toHaveClass(`dsn-search-input-wrapper--inline-size-${w}`);
       }
     );
   });

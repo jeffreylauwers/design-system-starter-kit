@@ -24,6 +24,7 @@ De EmailInput component is een gespecialiseerd invoerveld voor e-mailadressen. H
 - **Laat browser-autocomplete aan.** De standaard `autocomplete="email"` helpt gebruikers snel invullen. Zet alleen op `off` als daar een goede reden voor is.
 - **Combineer met FormField.** Gebruik altijd een label via `FormField` of `FormFieldLabel` voor toegankelijkheid.
 - **Geef validatie feedback.** Gebruik de `invalid` prop in combinatie met `aria-invalid` en een `FormFieldErrorMessage`.
+- **Kies de juiste inline-size.** Gebruik `inlineSize` met `md`, `lg`, `xl` of `full`. `xs` en `sm` bestaan bij EmailInput niet: een e-mailadres past daar vrijwel nooit in.
 
 ## Accessibility
 

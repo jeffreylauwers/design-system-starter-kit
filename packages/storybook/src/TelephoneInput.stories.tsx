@@ -21,7 +21,7 @@ const meta: Meta<typeof TelephoneInput> = {
       htmlTemplate: (args: any) => {
         const cls = [
           'dsn-text-input',
-          args.width && `dsn-text-input--width-${args.width}`,
+          args.inlineSize && `dsn-text-input--inline-size-${args.inlineSize}`,
         ]
           .filter(Boolean)
           .join(' ');
@@ -44,12 +44,13 @@ const meta: Meta<typeof TelephoneInput> = {
     readOnly: { control: 'boolean' },
     invalid: { control: 'boolean' },
     required: { control: 'boolean' },
-    width: {
+    inlineSize: {
       control: 'select',
-      options: [undefined, 'xs', 'sm', 'md', 'lg', 'xl', 'full'],
+      options: ['md', 'lg', 'xl', 'full'],
     },
   },
   args: {
+    inlineSize: 'md',
     disabled: false,
     readOnly: false,
     invalid: false,
@@ -98,11 +99,11 @@ export const Invalid: Story = {
   args: { invalid: true, value: 'geen nummer' },
 };
 
-export const Widths: Story = {
-  name: 'Width variants',
+export const InlineSizes: Story = {
+  name: 'Inline-size variants',
   render: () => (
     <div style={{ display: 'flex', flexDirection: 'column', gap: '1.5rem' }}>
-      {(['xs', 'sm', 'md', 'lg', 'xl', 'full'] as const).map((w) => (
+      {(['md', 'lg', 'xl', 'full'] as const).map((w) => (
         <div key={w}>
           <p
             style={{
@@ -113,7 +114,7 @@ export const Widths: Story = {
           >
             {w}
           </p>
-          <TelephoneInput width={w} />
+          <TelephoneInput inlineSize={w} />
         </div>
       ))}
     </div>

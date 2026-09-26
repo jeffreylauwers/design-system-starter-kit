@@ -37,7 +37,8 @@ const meta: Meta<typeof Select> = {
       htmlTemplate: (args: any) => {
         const wrapperCls = [
           'dsn-select-wrapper',
-          args.width && `dsn-select-wrapper--width-${args.width}`,
+          args.inlineSize &&
+            `dsn-select-wrapper--inline-size-${args.inlineSize}`,
         ]
           .filter(Boolean)
           .join(' ');
@@ -78,7 +79,7 @@ const meta: Meta<typeof Select> = {
     disabled: { control: 'boolean' },
     invalid: { control: 'boolean' },
     required: { control: 'boolean' },
-    width: {
+    inlineSize: {
       control: 'select',
       options: [undefined, 'xs', 'sm', 'md', 'lg', 'xl', 'full'],
     },
@@ -117,16 +118,16 @@ export const Invalid: Story = {
   args: { invalid: true },
 };
 
-export const Widths: Story = {
-  name: 'Width variants',
+export const InlineSizes: Story = {
+  name: 'Inline-size variants',
   render: () => (
     <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
-      <Select width="xs">{OPTIONS}</Select>
-      <Select width="sm">{OPTIONS}</Select>
-      <Select width="md">{OPTIONS}</Select>
-      <Select width="lg">{OPTIONS}</Select>
-      <Select width="xl">{OPTIONS}</Select>
-      <Select width="full">{OPTIONS}</Select>
+      <Select inlineSize="xs">{OPTIONS}</Select>
+      <Select inlineSize="sm">{OPTIONS}</Select>
+      <Select inlineSize="md">{OPTIONS}</Select>
+      <Select inlineSize="lg">{OPTIONS}</Select>
+      <Select inlineSize="xl">{OPTIONS}</Select>
+      <Select inlineSize="full">{OPTIONS}</Select>
     </div>
   ),
 };

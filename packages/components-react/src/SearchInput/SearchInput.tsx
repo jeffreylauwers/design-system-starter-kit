@@ -1,7 +1,13 @@
 import React from 'react';
-import { classNames, FormControlWidth } from '@dsn-starter-kit/core';
+import { classNames, FormControlInlineSize } from '@dsn-starter-kit/core';
 import { Icon } from '../Icon';
 import './SearchInput.css';
+
+/**
+ * Inline-size variants offered by SearchInput. xs and sm are left out: they
+ * are too narrow for the content this field is meant for.
+ */
+export type SearchInputInlineSize = Exclude<FormControlInlineSize, 'xs' | 'sm'>;
 
 export interface SearchInputProps extends Omit<
   React.InputHTMLAttributes<HTMLInputElement>,
@@ -14,10 +20,10 @@ export interface SearchInputProps extends Omit<
   invalid?: boolean;
 
   /**
-   * Width variant for the input
-   * @default undefined (uses default max-width from form-control)
+   * Inline-size variant for the input (md, lg, xl or full)
+   * @default undefined (uses default max-inline-size from form-control)
    */
-  width?: FormControlWidth;
+  inlineSize?: SearchInputInlineSize;
 
   /**
    * Additional CSS class names
@@ -44,10 +50,10 @@ export interface SearchInputProps extends Omit<
  * ```
  */
 export const SearchInput = React.forwardRef<HTMLInputElement, SearchInputProps>(
-  ({ className, invalid, width, ...props }, ref) => {
+  ({ className, invalid, inlineSize, ...props }, ref) => {
     const wrapperClasses = classNames(
       'dsn-search-input-wrapper',
-      width && `dsn-search-input-wrapper--width-${width}`
+      inlineSize && `dsn-search-input-wrapper--inline-size-${inlineSize}`
     );
     const inputClasses = classNames(
       'dsn-text-input',

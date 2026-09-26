@@ -102,7 +102,7 @@ export const DateInputGroup = React.forwardRef<
         </label>
         <NumberInput
           id={dayId}
-          width="xs"
+          inlineSize="xs"
           value={value?.day ?? ''}
           onChange={handleChange('day')}
           invalid={invalid}
@@ -119,7 +119,7 @@ export const DateInputGroup = React.forwardRef<
         </label>
         <NumberInput
           id={monthId}
-          width="xs"
+          inlineSize="xs"
           value={value?.month ?? ''}
           onChange={handleChange('month')}
           invalid={invalid}
@@ -136,7 +136,7 @@ export const DateInputGroup = React.forwardRef<
         </label>
         <NumberInput
           id={yearId}
-          width="sm"
+          inlineSize="sm"
           value={value?.year ?? ''}
           onChange={handleChange('year')}
           invalid={invalid}

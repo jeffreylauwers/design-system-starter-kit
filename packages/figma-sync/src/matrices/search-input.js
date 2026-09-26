@@ -45,7 +45,7 @@ export default {
     disabled: FLAG,
     invalid: FLAG,
     ...FIELD_TEXT_AXES,
-    width: ['auto', 'xs', 'sm', 'md', 'lg', 'xl', 'full'],
+    inlineSize: ['auto', 'md', 'lg', 'xl', 'full'],
   },
 
   componentProperties: FIELD_TEXT_PROPERTIES,
@@ -57,10 +57,11 @@ export default {
 
   pseudoStates: { hover: 'hover', focus: 'focus' },
 
-  render({ width, ...variant }) {
+  render({ inlineSize, ...variant }) {
     const wrapperClasses = [
       'dsn-search-input-wrapper',
-      width !== 'auto' && `dsn-search-input-wrapper--width-${width}`,
+      inlineSize !== 'auto' &&
+        `dsn-search-input-wrapper--inline-size-${inlineSize}`,
     ]
       .filter(Boolean)
       .join(' ');

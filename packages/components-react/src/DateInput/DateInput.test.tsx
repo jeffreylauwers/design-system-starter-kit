@@ -58,7 +58,7 @@ describe('DateInput', () => {
     expect(screen.getByTestId('input')).toHaveValue('2025-03-15');
   });
 
-  it('wrapper always has fixed width (no width prop)', () => {
+  it('wrapper always has fixed inline-size (no inlineSize prop)', () => {
     const { container } = render(<DateInput />);
     const wrapper = container.querySelector('.dsn-date-input-wrapper');
     expect(wrapper?.className).toBe('dsn-date-input-wrapper');

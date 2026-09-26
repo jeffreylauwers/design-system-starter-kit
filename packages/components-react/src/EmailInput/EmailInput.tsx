@@ -1,6 +1,12 @@
 import React from 'react';
-import { classNames, FormControlWidth } from '@dsn-starter-kit/core';
+import { classNames, FormControlInlineSize } from '@dsn-starter-kit/core';
 import './EmailInput.css';
+
+/**
+ * Inline-size variants offered by EmailInput. xs and sm are left out: they
+ * are too narrow for the content this field is meant for.
+ */
+export type EmailInputInlineSize = Exclude<FormControlInlineSize, 'xs' | 'sm'>;
 
 export interface EmailInputProps extends Omit<
   React.InputHTMLAttributes<HTMLInputElement>,
@@ -13,10 +19,10 @@ export interface EmailInputProps extends Omit<
   invalid?: boolean;
 
   /**
-   * Width variant for the input
-   * @default undefined (uses default max-width from form-control)
+   * Inline-size variant for the input (md, lg, xl or full)
+   * @default undefined (uses default max-inline-size from form-control)
    */
-  width?: FormControlWidth;
+  inlineSize?: EmailInputInlineSize;
 
   /**
    * Additional CSS class names
@@ -42,10 +48,10 @@ export interface EmailInputProps extends Omit<
  * ```
  */
 export const EmailInput = React.forwardRef<HTMLInputElement, EmailInputProps>(
-  ({ className, invalid, width, autoComplete, ...props }, ref) => {
+  ({ className, invalid, inlineSize, autoComplete, ...props }, ref) => {
     const classes = classNames(
       'dsn-text-input',
-      width && `dsn-text-input--width-${width}`,
+      inlineSize && `dsn-text-input--inline-size-${inlineSize}`,
       className
     );
 

@@ -3190,9 +3190,9 @@ const [isOpen, setIsOpen] = React.useState(false);
 
 **States:** default, hover, focus, active, disabled, invalid, read-only
 
-**Props:** `disabled`, `invalid`, `readOnly`, `size`, `width`
+**Props:** `disabled`, `invalid`, `readOnly`, `size`, `inlineSize`
 
-**Width variants:** `xs`, `sm`, `md`, `lg`, `xl`, `full`
+**Inline-size variants:** `xs`, `sm`, `md`, `lg`, `xl`, `full`
 
 **Tests:** React (9 tests)
 
@@ -3202,7 +3202,7 @@ const [isOpen, setIsOpen] = React.useState(false);
 
 **Sizes:** `default`, `large`
 
-**Props:** `disabled`, `invalid`, `readOnly`, `size`, `rows`, `width`
+**Props:** `disabled`, `invalid`, `readOnly`, `size`, `rows`, `inlineSize` (`md`, `lg`, `xl`, `full`)
 
 **Tests:** React (9 tests)
 
@@ -3210,7 +3210,7 @@ const [isOpen, setIsOpen] = React.useState(false);
 
 **Tokens:** `tokens/components/number-input.json`, extends TextInput tokens
 
-**Props:** `min`, `max`, `step`, `disabled`, `invalid`, `readOnly`, `size`, `width`
+**Props:** `min`, `max`, `step`, `disabled`, `invalid`, `readOnly`, `size`, `inlineSize`
 
 **Tests:** React (9 tests)
 
@@ -3218,7 +3218,7 @@ const [isOpen, setIsOpen] = React.useState(false);
 
 **Tokens:** `tokens/components/password-input.json`, extends TextInput tokens
 
-**Props:** All TextInput props, type="password"
+**Props:** All TextInput props, type="password"; `inlineSize` limited to `md`, `lg`, `xl`, `full`
 
 **Tests:** React (9 tests)
 
@@ -3226,7 +3226,7 @@ const [isOpen, setIsOpen] = React.useState(false);
 
 **Tokens:** `tokens/components/email-input.json`, extends TextInput tokens
 
-**Props:** All TextInput props, type="email"
+**Props:** All TextInput props, type="email"; `inlineSize` limited to `md`, `lg`, `xl`, `full`
 
 **Tests:** React (9 tests)
 
@@ -3234,7 +3234,7 @@ const [isOpen, setIsOpen] = React.useState(false);
 
 **Tokens:** `tokens/components/telephone-input.json`, extends TextInput tokens
 
-**Props:** All TextInput props, type="tel"
+**Props:** All TextInput props, type="tel"; `inlineSize` limited to `md`, `lg`, `xl`, `full`, default `md`
 
 **Tests:** React (9 tests)
 
@@ -3244,7 +3244,7 @@ const [isOpen, setIsOpen] = React.useState(false);
 
 **Features:** Search icon on the left, calculated padding to accommodate icon
 
-**Props:** All TextInput props, type="search"
+**Props:** All TextInput props, type="search"; `inlineSize` limited to `md`, `lg`, `xl`, `full`
 
 **Tests:** React (9 tests)
 
@@ -3252,7 +3252,7 @@ const [isOpen, setIsOpen] = React.useState(false);
 
 **Tokens:** `tokens/components/time-input.json`, extends TextInput tokens
 
-**Features:** Wrapper with interactive clock button (`Button subtle small iconOnly`) at inline-end. `showPicker()` triggered via internal ref. No `width` prop: fixed `sm` width.
+**Features:** Wrapper with interactive clock button (`Button subtle small iconOnly`) at inline-end. `showPicker()` triggered via internal ref. No `inlineSize` prop: fixed `sm` inline-size.
 
 **Props:** `invalid`, `disabled`, `readOnly`, and all native `<input type="time">` attributes
 
@@ -3262,7 +3262,7 @@ const [isOpen, setIsOpen] = React.useState(false);
 
 **Tokens:** `tokens/components/date-input.json`, extends TextInput tokens
 
-**Features:** Wrapper with interactive calendar button (`Button subtle small iconOnly`, `calendar-event` icon) at inline-end. Same pattern as TimeInput. `showPicker()` via internal ref + `handleRef` merge. Fixed width: no `width` prop.
+**Features:** Wrapper with interactive calendar button (`Button subtle small iconOnly`, `calendar-event` icon) at inline-end. Same pattern as TimeInput. `showPicker()` via internal ref + `handleRef` merge. Fixed `md` inline-size: no `inlineSize` prop.
 
 **Props:** `invalid`, `disabled`, `readOnly`, and all native `<input type="date">` attributes
 
@@ -3272,9 +3272,9 @@ const [isOpen, setIsOpen] = React.useState(false);
 
 **Tokens:** `tokens/components/select.json`, extends TextInput tokens
 
-**Features:** Wrapper with `chevron-down` icon at inline-end. Native browser arrow hidden via `appearance: none`. Icon disappears when `disabled`. Width variants on wrapper (same pattern as SearchInput).
+**Features:** Wrapper with `chevron-down` icon at inline-end. Native browser arrow hidden via `appearance: none`. Icon disappears when `disabled`. Inline-size variants on wrapper (same pattern as SearchInput).
 
-**Props:** `invalid`, `width`, and all native `<select>` attributes
+**Props:** `invalid`, `inlineSize`, and all native `<select>` attributes
 
 **Tests:** React (9 tests)
 
@@ -3457,7 +3457,7 @@ Base tokens for all input-like controls:
 - Properties: font-family, font-size, font-weight, color, background-color, border-color, border-radius, border-width, padding, min-block-size, max-inline-size
 - States: default, hover, focus, active, disabled, invalid, read-only
 - Size variants: default, large
-- Width variants: xs, sm, md, lg, xl, full
+- Inline-size variants: xs, sm, md, lg, xl, full
 
 ---
 

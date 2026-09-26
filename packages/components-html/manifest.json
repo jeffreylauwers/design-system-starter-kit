@@ -587,7 +587,7 @@
         { "name": "disabled", "type": "boolean", "default": false },
         { "name": "invalid", "type": "boolean", "default": false },
         {
-          "name": "width",
+          "name": "inlineSize",
           "values": ["xs", "sm", "md", "lg", "xl", "full"],
           "default": "full"
         }
@@ -602,7 +602,12 @@
       "primaryProps": [
         { "name": "rows", "type": "number", "default": 4 },
         { "name": "disabled", "type": "boolean", "default": false },
-        { "name": "invalid", "type": "boolean", "default": false }
+        { "name": "invalid", "type": "boolean", "default": false },
+        {
+          "name": "inlineSize",
+          "values": ["md", "lg", "xl", "full"],
+          "default": "full"
+        }
       ]
     },
     {
@@ -624,7 +629,12 @@
       "platforms": ["html-css", "react"],
       "primaryProps": [
         { "name": "disabled", "type": "boolean", "default": false },
-        { "name": "invalid", "type": "boolean", "default": false }
+        { "name": "invalid", "type": "boolean", "default": false },
+        {
+          "name": "inlineSize",
+          "values": ["md", "lg", "xl", "full"],
+          "default": "full"
+        }
       ]
     },
     {
@@ -638,6 +648,11 @@
           "name": "passwordAutocomplete",
           "values": ["current-password", "new-password"],
           "default": "current-password"
+        },
+        {
+          "name": "inlineSize",
+          "values": ["md", "lg", "xl", "full"],
+          "default": "full"
         }
       ]
     },
@@ -650,7 +665,7 @@
       "primaryProps": [
         { "name": "allowDecimals", "type": "boolean", "default": false },
         {
-          "name": "width",
+          "name": "inlineSize",
           "values": ["xs", "sm", "md", "lg", "xl", "full"],
           "default": "full"
         }
@@ -664,7 +679,12 @@
       "platforms": ["html-css", "react"],
       "primaryProps": [
         { "name": "disabled", "type": "boolean", "default": false },
-        { "name": "invalid", "type": "boolean", "default": false }
+        { "name": "invalid", "type": "boolean", "default": false },
+        {
+          "name": "inlineSize",
+          "values": ["md", "lg", "xl", "full"],
+          "default": "md"
+        }
       ]
     },
     {
@@ -674,7 +694,12 @@
       "purpose": "Search input with an inline search icon and a suppressed native clear button.",
       "platforms": ["html-css", "react"],
       "primaryProps": [
-        { "name": "disabled", "type": "boolean", "default": false }
+        { "name": "disabled", "type": "boolean", "default": false },
+        {
+          "name": "inlineSize",
+          "values": ["md", "lg", "xl", "full"],
+          "default": "full"
+        }
       ]
     },
     {
@@ -707,7 +732,7 @@
         { "name": "disabled", "type": "boolean", "default": false },
         { "name": "invalid", "type": "boolean", "default": false },
         {
-          "name": "width",
+          "name": "inlineSize",
           "values": ["xs", "sm", "md", "lg", "xl", "full"],
           "default": "full"
         }

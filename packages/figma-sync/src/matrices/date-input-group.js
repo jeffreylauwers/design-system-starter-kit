@@ -11,9 +11,9 @@
 
 /** Zoals in DateInputGroup.tsx: dag en maand krijgen `xs`, het jaar `sm`. */
 const FIELDS = [
-  { label: 'Dag', width: 'xs', value: '01' },
-  { label: 'Maand', width: 'xs', value: '01' },
-  { label: 'Jaar', width: 'sm', value: '2026' },
+  { label: 'Dag', inlineSize: 'xs', value: '01' },
+  { label: 'Maand', inlineSize: 'xs', value: '01' },
+  { label: 'Jaar', inlineSize: 'sm', value: '2026' },
 ];
 
 import { FLAG } from '../flags.js';
@@ -42,10 +42,10 @@ export default {
     const invalid = isInvalid === 'true' ? ' aria-invalid="true"' : '';
 
     const fields = FIELDS.map(
-      ({ label, width, value }) =>
+      ({ label, inlineSize, value }) =>
         `<div class="dsn-date-input-group__field">
            <label class="dsn-date-input-group__label">${label}</label>
-           <input type="text" inputmode="numeric" class="dsn-text-input dsn-text-input--width-${width}" value="${value}"${invalid}>
+           <input type="text" inputmode="numeric" class="dsn-text-input dsn-text-input--inline-size-${inlineSize}" value="${value}"${invalid}>
          </div>`
     ).join('');
 

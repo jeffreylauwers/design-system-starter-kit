@@ -1,5 +1,5 @@
 import React from 'react';
-import { classNames, FormControlWidth } from '@dsn-starter-kit/core';
+import { classNames, FormControlInlineSize } from '@dsn-starter-kit/core';
 import { Icon } from '../Icon';
 import './Select.css';
 
@@ -11,10 +11,10 @@ export interface SelectProps extends React.SelectHTMLAttributes<HTMLSelectElemen
   invalid?: boolean;
 
   /**
-   * Width variant for the select
-   * @default undefined (uses default max-width from form-control)
+   * Inline-size variant for the select
+   * @default undefined (uses default max-inline-size from form-control)
    */
-  width?: FormControlWidth;
+  inlineSize?: FormControlInlineSize;
 
   /**
    * Additional CSS class names
@@ -45,18 +45,18 @@ export interface SelectProps extends React.SelectHTMLAttributes<HTMLSelectElemen
  *   </Select>
  * </FormField>
  *
- * // Width variant
- * <Select width="lg">...</Select>
+ * // Inline-size variant
+ * <Select inlineSize="lg">...</Select>
  *
  * // Invalid state
  * <Select invalid aria-invalid="true" aria-describedby="error">...</Select>
  * ```
  */
 export const Select = React.forwardRef<HTMLSelectElement, SelectProps>(
-  ({ className, invalid, width, disabled, children, ...props }, ref) => {
+  ({ className, invalid, inlineSize, disabled, children, ...props }, ref) => {
     const wrapperClasses = classNames(
       'dsn-select-wrapper',
-      width && `dsn-select-wrapper--width-${width}`
+      inlineSize && `dsn-select-wrapper--inline-size-${inlineSize}`
     );
 
     const selectClasses = classNames('dsn-text-input', 'dsn-select', className);

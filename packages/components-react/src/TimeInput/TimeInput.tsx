@@ -23,7 +23,7 @@ export interface TimeInputProps extends Omit<
 /**
  * Time Input component
  * Time input with an interactive clock button at inline-end that opens the native time picker.
- * Fixed width (sm) — not configurable, as time inputs have a predictable content width.
+ * Fixed inline-size (sm): not configurable, as time inputs have a predictable content length.
  *
  * @example
  * ```tsx

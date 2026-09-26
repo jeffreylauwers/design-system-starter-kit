@@ -102,7 +102,7 @@ export const Example: Story = {
                         <EmailInput
                           id="email"
                           autoComplete="email"
-                          width="xl"
+                          inlineSize="xl"
                           defaultValue="jeroenvandrouwen@gmail.com"
                         />
                       </FormField>

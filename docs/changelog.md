@@ -10,6 +10,29 @@ All notable changes to this project are documented in this file.
 
 Nog niet gepubliceerde wijzigingen. Schrijf nieuwe changelog-entries hieronder; bij de volgende release wordt deze kop gepromoveerd naar het definitieve versienummer.
 
+### Invulvelden: `width` heet nu `inline-size`, en niet elk veld biedt elke maat (breaking)
+
+De breedte van invulvelden heet voortaan overal `inline-size`, in lijn met de logische CSS-eigenschap `max-inline-size` die de maat zet. Dat geldt voor tokens, CSS-klassen, de React-prop en het core-type.
+
+Daarnaast bieden TextArea, EmailInput, PasswordInput, TelephoneInput en SearchInput geen `xs` en `sm` meer: die maten zijn te smal voor de inhoud van deze velden. TelephoneInput krijgt standaard `md`.
+
+**Migratie.**
+
+| Voor                                     | Na                                             |
+| ---------------------------------------- | ---------------------------------------------- |
+| `--dsn-form-control-width-{maat}`        | `--dsn-form-control-inline-size-{maat}`        |
+| token `dsn.form-control.width.{maat}`    | `dsn.form-control.inline-size.{maat}`          |
+| `dsn-text-input--width-{maat}`           | `dsn-text-input--inline-size-{maat}`           |
+| `dsn-text-area--width-{maat}`            | `dsn-text-area--inline-size-{maat}`            |
+| `dsn-select-wrapper--width-{maat}`       | `dsn-select-wrapper--inline-size-{maat}`       |
+| `dsn-search-input-wrapper--width-{maat}` | `dsn-search-input-wrapper--inline-size-{maat}` |
+| React-prop `width="lg"`                  | `inlineSize="lg"`                              |
+| type `FormControlWidth` uit `core`       | `FormControlInlineSize`                        |
+
+De klassen `dsn-text-area--inline-size-xs/sm` en `dsn-search-input-wrapper--inline-size-xs/sm` bestaan niet. Bij EmailInput, PasswordInput en TelephoneInput blijven de `xs`- en `sm`-klassen technisch werken omdat ze de CSS van TextInput delen, maar de React-types staan ze niet meer toe en de documentatie raadt ze af. Gebruik voor een telefoonveld in HTML voortaan `dsn-text-input--inline-size-md`, dan komt het overeen met de React-default.
+
+In Figma heet de variant-as van TextInput, TextArea, Select en SearchInput nu `inlineSize`; TextArea en SearchInput hebben daar geen `xs` en `sm` meer.
+
 ### Card: vier secties, en de heading staat vóór de afbeelding (breaking)
 
 De Card bestaat nu uit vier optionele secties: pre-header, header, body en footer (DR-2026-11). De heading staat in de DOM vóór de afbeelding, zodat een screenreader een betekenisvolle alt-tekst ná het kopje voorleest. De afbeelding staat visueel nog steeds bovenaan, via `order: -1`. Dat lost issue #300 op (WCAG 1.3.2). De standaard-tokens zijn zo gekozen dat een bestaande card er hetzelfde uitziet.

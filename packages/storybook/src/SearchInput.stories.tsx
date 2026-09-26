@@ -22,7 +22,8 @@ const meta: Meta<typeof SearchInput> = {
       htmlTemplate: (args: any) => {
         const wrapperCls = [
           'dsn-search-input-wrapper',
-          args.width && `dsn-search-input-wrapper--width-${args.width}`,
+          args.inlineSize &&
+            `dsn-search-input-wrapper--inline-size-${args.inlineSize}`,
         ]
           .filter(Boolean)
           .join(' ');
@@ -45,9 +46,9 @@ const meta: Meta<typeof SearchInput> = {
     readOnly: { control: 'boolean' },
     invalid: { control: 'boolean' },
     required: { control: 'boolean' },
-    width: {
+    inlineSize: {
       control: 'select',
-      options: [undefined, 'xs', 'sm', 'md', 'lg', 'xl', 'full'],
+      options: [undefined, 'md', 'lg', 'xl', 'full'],
     },
   },
   args: {
@@ -94,11 +95,11 @@ export const Invalid: Story = {
   args: { invalid: true, value: TEKST },
 };
 
-export const Widths: Story = {
-  name: 'Width variants',
+export const InlineSizes: Story = {
+  name: 'Inline-size variants',
   render: () => (
     <div style={{ display: 'flex', flexDirection: 'column', gap: '1.5rem' }}>
-      {(['xs', 'sm', 'md', 'lg', 'xl', 'full'] as const).map((w) => (
+      {(['md', 'lg', 'xl', 'full'] as const).map((w) => (
         <div key={w}>
           <p
             style={{
@@ -109,7 +110,7 @@ export const Widths: Story = {
           >
             {w}
           </p>
-          <SearchInput width={w} />
+          <SearchInput inlineSize={w} />
         </div>
       ))}
     </div>

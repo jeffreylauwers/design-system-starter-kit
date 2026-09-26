@@ -94,27 +94,19 @@
     var(--dsn-text-area-invalid-box-shadow-color);
 }
 
-/* Width variants */
-.dsn-text-area--width-xs {
-  max-inline-size: var(--dsn-form-control-width-xs);
+/* Inline-size variants (md, lg, xl, full; xs and sm are too narrow for multi-line text) */
+.dsn-text-area--inline-size-md {
+  max-inline-size: var(--dsn-form-control-inline-size-md);
 }
 
-.dsn-text-area--width-sm {
-  max-inline-size: var(--dsn-form-control-width-sm);
+.dsn-text-area--inline-size-lg {
+  max-inline-size: var(--dsn-form-control-inline-size-lg);
 }
 
-.dsn-text-area--width-md {
-  max-inline-size: var(--dsn-form-control-width-md);
+.dsn-text-area--inline-size-xl {
+  max-inline-size: var(--dsn-form-control-inline-size-xl);
 }
 
-.dsn-text-area--width-lg {
-  max-inline-size: var(--dsn-form-control-width-lg);
-}
-
-.dsn-text-area--width-xl {
-  max-inline-size: var(--dsn-form-control-width-xl);
-}
-
-.dsn-text-area--width-full {
-  max-inline-size: var(--dsn-form-control-width-full);
+.dsn-text-area--inline-size-full {
+  max-inline-size: var(--dsn-form-control-inline-size-full);
 }

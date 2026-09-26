@@ -87,7 +87,11 @@ function FormModals({
               moment afmaken.
             </Paragraph>
             <FormField label="E-mailadres" htmlFor="modal-email">
-              <EmailInput id="modal-email" autoComplete="email" width="xl" />
+              <EmailInput
+                id="modal-email"
+                autoComplete="email"
+                inlineSize="xl"
+              />
             </FormField>
           </Stack>
         </ModalDialogBody>
@@ -172,14 +176,14 @@ function AllTypesPage() {
                       </FormField>
 
                       <FormField label="Getal" htmlFor="number-input">
-                        <NumberInput id="number-input" width="xs" />
+                        <NumberInput id="number-input" inlineSize="xs" />
                       </FormField>
 
                       <FormField label="E-mailadres" htmlFor="email-input">
                         <EmailInput
                           id="email-input"
                           autoComplete="email"
-                          width="xl"
+                          inlineSize="xl"
                         />
                       </FormField>
 
@@ -190,7 +194,6 @@ function AllTypesPage() {
                         <TelephoneInput
                           id="telephone-input"
                           autoComplete="tel"
-                          width="md"
                         />
                       </FormField>
 

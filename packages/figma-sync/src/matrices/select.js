@@ -42,7 +42,7 @@ export default {
     state: ['default', 'hover', 'focus'],
     disabled: FLAG,
     invalid: FLAG,
-    width: ['auto', 'xs', 'sm', 'md', 'lg', 'xl', 'full'],
+    inlineSize: ['auto', 'xs', 'sm', 'md', 'lg', 'xl', 'full'],
   },
 
   skipVariant: skipFlagCombinations({
@@ -57,10 +57,10 @@ export default {
 
   pseudoStates: { hover: 'hover', focus: 'focus' },
 
-  render({ width, ...variant }) {
+  render({ inlineSize, ...variant }) {
     const wrapperClasses = [
       'dsn-select-wrapper',
-      width !== 'auto' && `dsn-select-wrapper--width-${width}`,
+      inlineSize !== 'auto' && `dsn-select-wrapper--inline-size-${inlineSize}`,
     ]
       .filter(Boolean)
       .join(' ');

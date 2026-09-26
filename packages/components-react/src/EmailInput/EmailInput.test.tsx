@@ -89,13 +89,13 @@ describe('EmailInput', () => {
     expect(screen.getByTestId('input')).toHaveAttribute('autocomplete', 'off');
   });
 
-  describe('width variants', () => {
-    it.each(['xs', 'sm', 'md', 'lg', 'xl', 'full'] as const)(
-      'applies width class for %s',
+  describe('inline-size variants', () => {
+    it.each(['md', 'lg', 'xl', 'full'] as const)(
+      'applies inline-size class for %s',
       (w) => {
-        render(<EmailInput width={w} data-testid="input" />);
+        render(<EmailInput inlineSize={w} data-testid="input" />);
         expect(screen.getByTestId('input')).toHaveClass(
-          `dsn-text-input--width-${w}`
+          `dsn-text-input--inline-size-${w}`
         );
       }
     );

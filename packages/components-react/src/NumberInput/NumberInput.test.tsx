@@ -101,13 +101,13 @@ describe('NumberInput', () => {
     });
   });
 
-  describe('width variants', () => {
+  describe('inline-size variants', () => {
     it.each(['xs', 'sm', 'md', 'lg', 'xl', 'full'] as const)(
-      'applies width class for %s',
+      'applies inline-size class for %s',
       (w) => {
-        render(<NumberInput width={w} data-testid="input" />);
+        render(<NumberInput inlineSize={w} data-testid="input" />);
         expect(screen.getByTestId('input')).toHaveClass(
-          `dsn-text-input--width-${w}`
+          `dsn-text-input--inline-size-${w}`
         );
       }
     );

@@ -165,7 +165,11 @@ function FormModals({
               moment afmaken.
             </Paragraph>
             <FormField label="E-mailadres" htmlFor="modal-email">
-              <EmailInput id="modal-email" autoComplete="email" width="xl" />
+              <EmailInput
+                id="modal-email"
+                autoComplete="email"
+                inlineSize="xl"
+              />
             </FormField>
           </Stack>
         </ModalDialogBody>

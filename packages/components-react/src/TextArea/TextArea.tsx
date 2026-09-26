@@ -1,6 +1,12 @@
 import React from 'react';
-import { classNames, FormControlWidth } from '@dsn-starter-kit/core';
+import { classNames, FormControlInlineSize } from '@dsn-starter-kit/core';
 import './TextArea.css';
+
+/**
+ * Inline-size variants offered by TextArea. xs and sm are left out: they
+ * are too narrow for the content this field is meant for.
+ */
+export type TextAreaInlineSize = Exclude<FormControlInlineSize, 'xs' | 'sm'>;
 
 export interface TextAreaProps extends React.TextareaHTMLAttributes<HTMLTextAreaElement> {
   /**
@@ -15,10 +21,10 @@ export interface TextAreaProps extends React.TextareaHTMLAttributes<HTMLTextArea
   invalid?: boolean;
 
   /**
-   * Width variant for the textarea
-   * @default undefined (uses default max-width from form-control)
+   * Inline-size variant for the textarea (md, lg, xl or full)
+   * @default undefined (uses default max-inline-size from form-control)
    */
-  width?: FormControlWidth;
+  inlineSize?: TextAreaInlineSize;
 }
 
 /**
@@ -45,10 +51,10 @@ export interface TextAreaProps extends React.TextareaHTMLAttributes<HTMLTextArea
  * ```
  */
 export const TextArea = React.forwardRef<HTMLTextAreaElement, TextAreaProps>(
-  ({ className, invalid, width, rows = 4, ...props }, ref) => {
+  ({ className, invalid, inlineSize, rows = 4, ...props }, ref) => {
     const classes = classNames(
       'dsn-text-area',
-      width && `dsn-text-area--width-${width}`,
+      inlineSize && `dsn-text-area--inline-size-${inlineSize}`,
       className
     );
 

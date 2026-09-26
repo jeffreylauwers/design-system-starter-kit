@@ -6,4 +6,4 @@
 export { classNames, bem, bemModifiers } from './utils/classNames';
 
 // Re-export types
-export type { FormControlWidth } from './types/form';
+export type { FormControlInlineSize } from './types/form';

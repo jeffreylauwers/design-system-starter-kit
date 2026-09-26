@@ -113,8 +113,8 @@ describe('Select', () => {
     });
   });
 
-  describe('width variants', () => {
-    it('wrapper has no width class by default', () => {
+  describe('inline-size variants', () => {
+    it('wrapper has no inline-size class by default', () => {
       const { container } = render(
         <Select>
           <option value="1">Optie 1</option>
@@ -125,15 +125,17 @@ describe('Select', () => {
     });
 
     it.each(['xs', 'sm', 'md', 'lg', 'xl', 'full'] as const)(
-      'applies width-%s class to wrapper',
-      (width) => {
+      'applies inline-size-%s class to wrapper',
+      (inlineSize) => {
         const { container } = render(
-          <Select width={width}>
+          <Select inlineSize={inlineSize}>
             <option value="1">Optie 1</option>
           </Select>
         );
         expect(
-          container.querySelector(`.dsn-select-wrapper--width-${width}`)
+          container.querySelector(
+            `.dsn-select-wrapper--inline-size-${inlineSize}`
+          )
         ).toBeInTheDocument();
       }
     );

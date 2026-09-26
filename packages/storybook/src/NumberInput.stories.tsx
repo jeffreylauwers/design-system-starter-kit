@@ -15,7 +15,7 @@ const meta: Meta<typeof NumberInput> = {
       htmlTemplate: (args: any) => {
         const cls = [
           'dsn-text-input',
-          args.width && `dsn-text-input--width-${args.width}`,
+          args.inlineSize && `dsn-text-input--inline-size-${args.inlineSize}`,
         ]
           .filter(Boolean)
           .join(' ');
@@ -41,7 +41,7 @@ const meta: Meta<typeof NumberInput> = {
     invalid: { control: 'boolean' },
     required: { control: 'boolean' },
     allowDecimals: { control: 'boolean' },
-    width: {
+    inlineSize: {
       control: 'select',
       options: [undefined, 'xs', 'sm', 'md', 'lg', 'xl', 'full'],
     },
@@ -99,8 +99,8 @@ export const Invalid: Story = {
   args: { invalid: true, value: 'abc' },
 };
 
-export const Widths: Story = {
-  name: 'Width variants',
+export const InlineSizes: Story = {
+  name: 'Inline-size variants',
   render: () => (
     <div style={{ display: 'flex', flexDirection: 'column', gap: '1.5rem' }}>
       {(['xs', 'sm', 'md', 'lg', 'xl', 'full'] as const).map((w) => (
@@ -114,7 +114,7 @@ export const Widths: Story = {
           >
             {w}
           </p>
-          <NumberInput width={w} />
+          <NumberInput inlineSize={w} />
         </div>
       ))}
     </div>

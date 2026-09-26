@@ -1,5 +1,5 @@
 import React from 'react';
-import { classNames, FormControlWidth } from '@dsn-starter-kit/core';
+import { classNames, FormControlInlineSize } from '@dsn-starter-kit/core';
 import './TextInput.css';
 
 export interface TextInputProps extends React.InputHTMLAttributes<HTMLInputElement> {
@@ -15,10 +15,10 @@ export interface TextInputProps extends React.InputHTMLAttributes<HTMLInputEleme
   invalid?: boolean;
 
   /**
-   * Width variant for the input
-   * @default undefined (uses default max-width from form-control)
+   * Inline-size variant for the input
+   * @default undefined (uses default max-inline-size from form-control)
    */
-  width?: FormControlWidth;
+  inlineSize?: FormControlInlineSize;
 }
 
 /**
@@ -45,10 +45,10 @@ export interface TextInputProps extends React.InputHTMLAttributes<HTMLInputEleme
  * ```
  */
 export const TextInput = React.forwardRef<HTMLInputElement, TextInputProps>(
-  ({ className, invalid, width, type = 'text', ...props }, ref) => {
+  ({ className, invalid, inlineSize, type = 'text', ...props }, ref) => {
     const classes = classNames(
       'dsn-text-input',
-      width && `dsn-text-input--width-${width}`,
+      inlineSize && `dsn-text-input--inline-size-${inlineSize}`,
       className
     );
 
