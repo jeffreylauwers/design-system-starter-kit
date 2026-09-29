@@ -191,6 +191,79 @@ describe('Popover', () => {
   });
 
   // ===========================
+  // Focusherstel bij sluiten
+  // ===========================
+
+  describe('focus restore on close', () => {
+    // Simuleer het sluiten door de Popover API: beforetoggle vuurt synchroon
+    // vóór het verbergen, toggle erna.
+    function closeNatively(popover: Element) {
+      for (const type of ['beforetoggle', 'toggle']) {
+        const event = Object.assign(new Event(type), { newState: 'closed' });
+        popover.dispatchEvent(event);
+      }
+    }
+
+    function PopoverWithOutsideButton({ onClose }: { onClose?: () => void }) {
+      const triggerRef = React.useRef<HTMLButtonElement>(null);
+      return (
+        <>
+          <button ref={triggerRef} type="button">
+            Trigger
+          </button>
+          <button type="button">Elders</button>
+          <Popover
+            isOpen
+            onClose={onClose}
+            triggerRef={triggerRef}
+            label="Opties"
+          >
+            <PopoverBody>
+              <button type="button">Actie</button>
+            </PopoverBody>
+          </Popover>
+        </>
+      );
+    }
+
+    it('returns focus to the trigger when focus was inside the popover', () => {
+      const { container } = render(<PopoverWithOutsideButton />);
+      const action = screen.getByText('Actie');
+      expect(action).toHaveFocus();
+
+      closeNatively(container.querySelector('.dsn-popover')!);
+
+      expect(screen.getByText('Trigger')).toHaveFocus();
+    });
+
+    it('leaves focus alone when it had already moved outside the popover', () => {
+      const { container } = render(<PopoverWithOutsideButton />);
+      const elsewhere = screen.getByText('Elders');
+      elsewhere.focus();
+
+      closeNatively(container.querySelector('.dsn-popover')!);
+
+      expect(elsewhere).toHaveFocus();
+    });
+
+    it('does not pull focus back to the trigger after a click outside', async () => {
+      const onClose = vi.fn();
+      const { container } = render(
+        <PopoverWithOutsideButton onClose={onClose} />
+      );
+      const elsewhere = screen.getByText('Elders');
+      // De focus staat nog in de popover wanneer de klik begint
+      expect(screen.getByText('Actie')).toHaveFocus();
+
+      await userEvent.click(elsewhere);
+      closeNatively(container.querySelector('.dsn-popover')!);
+
+      expect(onClose).toHaveBeenCalled();
+      expect(elsewhere).toHaveFocus();
+    });
+  });
+
+  // ===========================
   // Sub-components rendering
   // ===========================
 
