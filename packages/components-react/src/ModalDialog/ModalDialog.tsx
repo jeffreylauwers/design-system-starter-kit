@@ -36,7 +36,8 @@ export interface ModalDialogProps extends Omit<
 
   /**
    * Callback die wordt aangeroepen wanneer het dialoogvenster sluit
-   * (sluitknop, Escape-toets of klik buiten het venster).
+   * (sluitknop of Escape-toets). Een klik op de backdrop sluit het venster
+   * bewust niet.
    */
   onClose?: () => void;
 

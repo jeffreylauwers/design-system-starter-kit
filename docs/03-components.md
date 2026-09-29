@@ -1940,13 +1940,13 @@ Brengt consistente verticale ruimte aan tussen directe child-elementen via `flex
 
 **Props (React: ModalDialog):**
 
-| Prop         | Type                                 | Default | Beschrijving                                             |
-| ------------ | ------------------------------------ | ------- | -------------------------------------------------------- |
-| `isOpen`     | `boolean`                            | -       | Bepaalt of het dialoogvenster getoond wordt              |
-| `onClose`    | `() => void`                         | -       | Callback bij sluiten (sluitknop, Escape, buiten klikken) |
-| `triggerRef` | `React.RefObject<HTMLElement\|null>` | -       | Openknop; krijgt `aria-expanded` synchroon met de staat  |
-| `children`   | `React.ReactNode`                    | -       | Sub-componenten: Header, Body, Footer                    |
-| `ref`        | `React.Ref<HTMLDialogElement>`       | -       | Doorgegeven via `React.forwardRef`                       |
+| Prop         | Type                                 | Default | Beschrijving                                            |
+| ------------ | ------------------------------------ | ------- | ------------------------------------------------------- |
+| `isOpen`     | `boolean`                            | -       | Bepaalt of het dialoogvenster getoond wordt             |
+| `onClose`    | `() => void`                         | -       | Callback bij sluiten (sluitknop, Escape)                |
+| `triggerRef` | `React.RefObject<HTMLElement\|null>` | -       | Openknop; krijgt `aria-expanded` synchroon met de staat |
+| `children`   | `React.ReactNode`                    | -       | Sub-componenten: Header, Body, Footer                   |
+| `ref`        | `React.Ref<HTMLDialogElement>`       | -       | Doorgegeven via `React.forwardRef`                      |
 
 **HTML/CSS:**
 
