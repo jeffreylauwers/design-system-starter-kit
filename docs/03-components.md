@@ -2183,7 +2183,7 @@ const [isOpen, setIsOpen] = React.useState(false);
 - Fallback light-dismiss via `pointerdown` op `document` (voor iframe-grenzen en oudere browsers)
 - `placement` prop: `'bottom'` (default), `'top'`, `'end'`, `'start'`: `end`/`start` zijn RTL-bewust
 - `role="dialog"` + `aria-modal="false"`: niet-modaal, geen focus-trap, achtergrond blijft interactief
-- Focus springt bij openen naar het eerste interactieve element in de popover; bij sluiten alleen terug naar de trigger als de focus nog in de popover stond
+- Focus bij openen op de `PopoverHeading` (`tabindex="-1"`), zonder heading op de popover zelf (DR-2026-12); bij sluiten alleen terug naar de trigger als de focus nog in de popover stond
 - `level` prop op `PopoverHeading` (1–6, default `2`): visueel uiterlijk altijd gelijk
 - Reduceer-motie-ondersteuning via `prefers-reduced-motion: reduce`
 
@@ -2236,7 +2236,13 @@ const [isOpen, setIsOpen] = React.useState(false);
     aria-labelledby="popover-filters-heading"
   >
     <div class="dsn-popover__header">
-      <h2 class="dsn-popover-heading" id="popover-filters-heading">Filters</h2>
+      <h2
+        class="dsn-popover-heading"
+        id="popover-filters-heading"
+        tabindex="-1"
+      >
+        Filters
+      </h2>
       <button
         type="button"
         class="dsn-button dsn-button--subtle dsn-button--size-small dsn-button--icon-only"

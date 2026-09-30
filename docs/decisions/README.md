@@ -19,6 +19,7 @@ Een decision record documenteert **waarom** iets is zoals het is — niet alleen
 | [DR-2026-09](DR-2026-09-css-afhankelijkheden-declareren-per-laag.md)    | CSS-afhankelijkheden per laag declareren: `@dsn-depends-on` plus import  | Accepted |
 | [DR-2026-10](DR-2026-10-iconen-inline-in-de-registry.md)                | Iconen inline in de gegenereerde registry, geen `.svg`-imports           | Accepted |
 | [DR-2026-11](DR-2026-11-card-secties-en-dom-volgorde.md)                | Card in vier secties; Header in de DOM vóór de Pre-header                | Accepted |
+| [DR-2026-12](DR-2026-12-dialogs-focus-bij-openen-op-de-heading.md)      | ModalDialog, Drawer en Popover zetten de focus bij openen op de heading  | Accepted |
 
 ## Een nieuw record toevoegen
 

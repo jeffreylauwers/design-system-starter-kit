@@ -100,6 +100,8 @@ De `ModalDialogHeading` heeft `tabindex="-1"` en krijgt bij openen de focus. Zon
 
 Is er geen `ModalDialogHeading`, dan krijgt het `<dialog>` zelf de focus. De focusomtrek op de heading verschijnt alleen bij toetsenbordgebruik, via `:focus-visible`.
 
+Dit wijkt bewust af van het veelgehoorde advies om de focus op het eerste formulierveld of de minst destructieve knop te zetten: het component weet niet wat erin staat, en beide slaan de titel over. Een `autofocus`-attribuut in de inhoud heeft daarom geen effect. De afweging staat in decision record DR-2026-12 (`docs/decisions/DR-2026-12-dialogs-focus-bij-openen-op-de-heading.md`).
+
 ### Focus binnen het venster houden
 
 De toetsenbordfocus blijft binnen het dialoogvenster. Naast de native focus-trap van `.showModal()` zit daar een expliciete trap op: Tab vanaf het laatste element springt naar het eerste, Shift+Tab vanaf het eerste (of vanaf de heading) naar het laatste. Dat is nodig omdat de native trap de focus in een `<iframe>` alsnog naar de omliggende pagina laat ontsnappen, bijvoorbeeld in Safari, in Storybook en in embeds.

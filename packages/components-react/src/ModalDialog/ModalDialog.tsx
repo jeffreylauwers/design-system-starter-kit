@@ -110,6 +110,9 @@ export const ModalDialog = React.forwardRef<
        * als eerste voorgelezen en loopt de leesvolgorde daarna door naar de
        * sluitknop en de inhoud. Dit is het patroon uit de ARIA Authoring
        * Practices, en het houdt DOM-volgorde en visuele volgorde gelijk.
+       *
+       * Waarom niet het eerste veld of de minst destructieve knop: zie
+       * docs/decisions/DR-2026-12-dialogs-focus-bij-openen-op-de-heading.md.
        */
       (headingRef.current ?? dialog).focus();
     } else if (!isOpen && dialog.open) {
