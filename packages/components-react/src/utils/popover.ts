@@ -139,13 +139,24 @@ export interface UsePopoverOptions {
   onClose?: () => void;
   /** Plaatsing ten opzichte van de trigger. */
   placement: PopoverPlacement;
+  /**
+   * Element dat bij openen de focus krijgt. Is de ref leeg, dan krijgt de
+   * popover zelf de focus. Zonder deze optie gaat de focus naar het eerste
+   * interactieve element.
+   *
+   * `Popover` geeft hier de heading mee, net als ModalDialog en Drawer: zie
+   * docs/decisions/DR-2026-12-dialogs-focus-bij-openen-op-de-heading.md.
+   * `PopoverMenu` laat hem weg: dat paneel heeft geen titel.
+   */
+  initialFocusRef?: React.RefObject<HTMLElement | null>;
 }
 
 /**
  * Opent en sluit een element met `popover="auto"` synchroon met `isOpen`,
  * positioneert het bij de trigger en houdt `aria-expanded` op de trigger bij.
  *
- * Bij openen gaat de focus naar het eerste interactieve element. Bij sluiten
+ * Bij openen gaat de focus naar `initialFocusRef` (of de popover zelf als die
+ * ref leeg is), en anders naar het eerste interactieve element. Bij sluiten
  * gaat de focus alleen terug naar de trigger wanneer dat zinvol is: als de
  * focus op dat moment nog in de popover stond (Escape, een sluitknop, een
  * actie in de popover). Klikt de gebruiker ergens anders, dan blijft de focus
@@ -157,6 +168,7 @@ export function usePopover({
   isOpen,
   onClose,
   placement,
+  initialFocusRef,
 }: UsePopoverOptions): void {
   /*
    * `restoreFocusRef` wordt gezet in `beforetoggle`, dat synchroon vóór het
@@ -182,7 +194,11 @@ export function usePopover({
       if (trigger) {
         positionPopover(el, trigger, placement);
       }
-      focusFirstInteractive(el);
+      if (initialFocusRef) {
+        (initialFocusRef.current ?? el).focus();
+      } else {
+        focusFirstInteractive(el);
+      }
     } else {
       // hidePopover gooit een fout als de popover al gesloten is
       try {
@@ -191,7 +207,7 @@ export function usePopover({
         // popover was al gesloten — geen actie nodig
       }
     }
-  }, [isOpen, placement, triggerRef, popoverRef]);
+  }, [isOpen, placement, triggerRef, popoverRef, initialFocusRef]);
 
   // Synchroniseer aria-expanded op het triggerelement
   React.useEffect(() => {

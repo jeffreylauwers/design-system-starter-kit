@@ -191,6 +191,62 @@ describe('Popover', () => {
   });
 
   // ===========================
+  // Focus bij openen (DR-2026-12)
+  // ===========================
+
+  it('gives the heading tabindex="-1" so it can receive focus', () => {
+    render(<DefaultPopover />);
+    expect(screen.getByText('Popover titel')).toHaveAttribute('tabindex', '-1');
+  });
+
+  it('moves focus to the heading when it opens, not to the close button', () => {
+    render(<DefaultPopover />);
+    expect(screen.getByText('Popover titel')).toHaveFocus();
+  });
+
+  it('moves focus to the popover itself when there is no heading', () => {
+    function WithoutHeading() {
+      const triggerRef = React.useRef<HTMLButtonElement>(null);
+      return (
+        <>
+          <button ref={triggerRef} type="button">
+            Trigger
+          </button>
+          <Popover isOpen triggerRef={triggerRef} label="Info">
+            <PopoverBody>
+              <p>Korte tekst.</p>
+            </PopoverBody>
+          </Popover>
+        </>
+      );
+    }
+    const { container } = render(<WithoutHeading />);
+    expect(container.querySelector('.dsn-popover')).toHaveFocus();
+  });
+
+  it('keeps a ref passed to PopoverHeading working', () => {
+    const headingRef = React.createRef<HTMLHeadingElement>();
+    function WithHeadingRef() {
+      const triggerRef = React.useRef<HTMLButtonElement>(null);
+      return (
+        <>
+          <button ref={triggerRef} type="button">
+            Trigger
+          </button>
+          <Popover isOpen triggerRef={triggerRef}>
+            <PopoverHeader>
+              <PopoverHeading ref={headingRef}>Titel</PopoverHeading>
+            </PopoverHeader>
+          </Popover>
+        </>
+      );
+    }
+    render(<WithHeadingRef />);
+    expect(headingRef.current?.tagName).toBe('H2');
+    expect(headingRef.current).toHaveFocus();
+  });
+
+  // ===========================
   // Focusherstel bij sluiten
   // ===========================
 
@@ -228,10 +284,11 @@ describe('Popover', () => {
 
     it('returns focus to the trigger when focus was inside the popover', () => {
       const { container } = render(<PopoverWithOutsideButton />);
-      const action = screen.getByText('Actie');
-      expect(action).toHaveFocus();
+      const popover = container.querySelector<HTMLElement>('.dsn-popover')!;
+      // Zonder heading krijgt de popover zelf de focus bij openen
+      expect(popover).toHaveFocus();
 
-      closeNatively(container.querySelector('.dsn-popover')!);
+      closeNatively(popover);
 
       expect(screen.getByText('Trigger')).toHaveFocus();
     });
@@ -253,7 +310,7 @@ describe('Popover', () => {
       );
       const elsewhere = screen.getByText('Elders');
       // De focus staat nog in de popover wanneer de klik begint
-      expect(screen.getByText('Actie')).toHaveFocus();
+      expect(container.querySelector('.dsn-popover')).toHaveFocus();
 
       await userEvent.click(elsewhere);
       closeNatively(container.querySelector('.dsn-popover')!);

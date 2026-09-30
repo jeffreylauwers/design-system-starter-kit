@@ -38,7 +38,9 @@ const meta: Meta<typeof Popover> = {
     aria-labelledby="popover-filters-heading"
   >
     <div class="dsn-popover__header">
-      <h2 class="dsn-popover-heading" id="popover-filters-heading">Filters</h2>
+      <h2 class="dsn-popover-heading" id="popover-filters-heading" tabindex="-1">
+        Filters
+      </h2>
       <button
         type="button"
         class="dsn-button dsn-button--subtle dsn-button--size-small dsn-button--icon-only"

@@ -11,11 +11,13 @@ import './Popover.css';
 
 interface PopoverContextValue {
   headingId: string;
+  headingRef: React.MutableRefObject<HTMLHeadingElement | null>;
   onClose?: () => void;
 }
 
 const PopoverContext = React.createContext<PopoverContextValue>({
   headingId: '',
+  headingRef: { current: null },
 });
 
 // =============================================================================
@@ -101,8 +103,22 @@ export const Popover = React.forwardRef<HTMLDivElement, PopoverProps>(
     const internalRef = React.useRef<HTMLDivElement>(null);
     const popoverRef = (ref as React.RefObject<HTMLDivElement>) ?? internalRef;
     const headingId = React.useId();
+    const headingRef = React.useRef<HTMLHeadingElement | null>(null);
 
-    usePopover({ popoverRef, triggerRef, isOpen, onClose, placement });
+    /*
+     * Bij openen krijgt de heading de focus, niet de sluitknop: zo wordt de
+     * titel als eerste voorgelezen, net als bij ModalDialog en Drawer. Zonder
+     * heading krijgt de popover zelf de focus (die heeft `tabindex="-1"`).
+     * Zie docs/decisions/DR-2026-12-dialogs-focus-bij-openen-op-de-heading.md.
+     */
+    usePopover({
+      popoverRef,
+      triggerRef,
+      isOpen,
+      onClose,
+      placement,
+      initialFocusRef: headingRef,
+    });
 
     const classes = classNames(
       'dsn-popover',
@@ -115,7 +131,7 @@ export const Popover = React.forwardRef<HTMLDivElement, PopoverProps>(
       : { 'aria-labelledby': headingId };
 
     return (
-      <PopoverContext.Provider value={{ headingId, onClose }}>
+      <PopoverContext.Provider value={{ headingId, headingRef, onClose }}>
         <div
           ref={popoverRef}
           popover="auto"
@@ -199,19 +215,36 @@ export interface PopoverHeadingProps extends React.HTMLAttributes<HTMLHeadingEle
 /**
  * PopoverHeading
  * De heading van de popover. ID wordt automatisch gegenereerd voor aria-labelledby.
+ * Krijgt `tabindex="-1"` zodat de Popover er bij openen de focus op kan zetten.
  */
 export const PopoverHeading = React.forwardRef<
   HTMLHeadingElement,
   PopoverHeadingProps
 >(({ className, level = 2, children, ...props }, ref) => {
-  const { headingId } = React.useContext(PopoverContext);
+  const { headingId, headingRef } = React.useContext(PopoverContext);
   const Tag = `h${level}` as React.ElementType;
+
+  // De Popover heeft de heading nodig om er bij openen de focus op te zetten;
+  // een eventuele meegegeven ref blijft daarnaast gewoon werken.
+  const setRef = React.useCallback(
+    (node: HTMLHeadingElement | null) => {
+      headingRef.current = node;
+      if (typeof ref === 'function') {
+        ref(node);
+      } else if (ref) {
+        (ref as React.MutableRefObject<HTMLHeadingElement | null>).current =
+          node;
+      }
+    },
+    [headingRef, ref]
+  );
 
   return (
     <Tag
-      ref={ref}
+      ref={setRef}
       id={headingId}
       className={classNames('dsn-popover-heading', className)}
+      tabIndex={-1}
       {...props}
     >
       {children}
