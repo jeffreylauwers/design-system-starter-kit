@@ -41,6 +41,7 @@ Het ModalDialog component toont een tijdelijk overlay-venster dat de achtergrond
 - **Escape-toets** sluit het dialoogvenster via het native `cancel`-event.
 - **Primaire actie** (bijv. Bevestigen) sluit het dialoogvenster en voert de actie uit.
 - **Secundaire actie** (bijv. Annuleren) sluit het dialoogvenster zonder actie.
+- **Klik op de backdrop** sluit het dialoogvenster níet. Een modaal venster vraagt om een bewuste keuze, en een misklik naast het venster zou anders ingevulde gegevens of een halve beslissing weggooien. Sluiten gaat daarom altijd expliciet: via de sluitknop, Escape of een actie in de footer. Light dismiss (sluiten bij klikken buiten) hoort bij niet-modale overlays zoals de `Popover`.
 
 ### Actieknoppenorde
 
