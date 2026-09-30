@@ -1,0 +1,9 @@
+/* Afhankelijkheden uit de HTML/CSS-laag, gedeclareerd als
+   @dsn-depends-on in popover-menu.css. Ze staan hier vóór de eigen import,
+   zodat de eigen regels bij gelijke specificiteit winnen. */
+@import '../../../components-html/src/button/button.css';
+@import '../../../components-html/src/menu/menu.css';
+@import '../../../components-html/src/menu-button/menu-button.css';
+@import '../../../components-html/src/menu-link/menu-link.css';
+
+@import '../../../components-html/src/popover-menu/popover-menu.css';

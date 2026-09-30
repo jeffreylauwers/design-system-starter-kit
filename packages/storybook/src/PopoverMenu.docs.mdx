@@ -1,0 +1,56 @@
+import { Meta, Story, Controls, Markdown } from '@storybook/addon-docs/blocks';
+import * as PopoverMenuStories from './PopoverMenu.stories';
+import docs from './PopoverMenu.docs.md?raw';
+import { PreviewFrame, CodeTabs } from './components';
+
+export const [intro, rest] = docs.split('<!-- VOORBEELD -->');
+
+<Meta of={PopoverMenuStories} />
+
+<Markdown>{intro}</Markdown>
+
+## Voorbeeld
+
+<PreviewFrame>
+  <Story of={PopoverMenuStories.Default} />
+</PreviewFrame>
+
+<CodeTabs
+  of={PopoverMenuStories.Default}
+  html={`<button
+  type="button"
+  class="dsn-button dsn-button--subtle dsn-button--size-default"
+  popovertarget="popover-menu-acties"
+  aria-expanded="false"
+>
+  <span class="dsn-button__label">Acties</span>
+</button>
+
+<div
+  id="popover-menu-acties"
+  popover="auto"
+  class="dsn-popover-menu dsn-popover-menu--placement-bottom"
+>
+  <ul class="dsn-menu" role="list">
+    <li class="dsn-menu-button">
+      <button type="button" class="dsn-menu-button__button">
+        <span class="dsn-menu-button__label">Bewerken</span>
+      </button>
+    </li>
+    <li class="dsn-menu-button">
+      <button type="button" class="dsn-menu-button__button">
+        <span class="dsn-menu-button__label">Dupliceren</span>
+      </button>
+    </li>
+    <li class="dsn-menu-button">
+      <button type="button" class="dsn-menu-button__button">
+        <span class="dsn-menu-button__label">Verwijderen</span>
+      </button>
+    </li>
+  </ul>
+</div>`}
+/>
+
+<Controls of={PopoverMenuStories.Default} />
+
+<Markdown>{rest}</Markdown>

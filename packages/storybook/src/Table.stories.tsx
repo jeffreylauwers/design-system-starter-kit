@@ -7,10 +7,8 @@ import {
   Link,
   LinkButton,
   Button,
-  Menu,
   MenuButton,
-  Popover,
-  PopoverBody,
+  PopoverMenu,
 } from '@dsn-starter-kit/components-react';
 import type { TableProps } from '@dsn-starter-kit/components-react';
 import DocsPage from './Table.docs.mdx';
@@ -41,14 +39,13 @@ const SortIcons = () => (
 );
 
 /**
- * Actiemenu per rij: icon-only button die een Popover met een Menu opent.
+ * Actiemenu per rij: icon-only button die een PopoverMenu opent.
  * De productnaam zit visueel verborgen in het label, zodat elke knop een
  * unieke toegankelijke naam heeft.
  */
 const RowActions = ({ productName }: { productName: string }) => {
   const triggerRef = useRef<HTMLButtonElement>(null);
   const [isOpen, setIsOpen] = useState(false);
-  const close = () => setIsOpen(false);
 
   return (
     <>
@@ -63,20 +60,15 @@ const RowActions = ({ productName }: { productName: string }) => {
         Toon acties
         <span className="dsn-visually-hidden"> voor {productName}</span>
       </Button>
-      <Popover
+      <PopoverMenu
         isOpen={isOpen}
-        onClose={close}
+        onClose={() => setIsOpen(false)}
         triggerRef={triggerRef}
-        label={`Acties voor ${productName}`}
       >
-        <PopoverBody>
-          <Menu>
-            <MenuButton onClick={close}>Bewerken</MenuButton>
-            <MenuButton onClick={close}>Dupliceren</MenuButton>
-            <MenuButton onClick={close}>Verwijderen</MenuButton>
-          </Menu>
-        </PopoverBody>
-      </Popover>
+        <MenuButton>Bewerken</MenuButton>
+        <MenuButton>Dupliceren</MenuButton>
+        <MenuButton>Verwijderen</MenuButton>
+      </PopoverMenu>
     </>
   );
 };

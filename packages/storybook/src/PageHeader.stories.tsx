@@ -10,8 +10,7 @@ import {
   MenuLink,
   NumberBadge,
   PageHeader,
-  Popover,
-  PopoverBody,
+  PopoverMenu,
   SearchInput,
 } from '@dsn-starter-kit/components-react';
 import { rtlDecorator } from './story-helpers';
@@ -395,30 +394,25 @@ function LoggedInServiceMenuLarge() {
           J. van Drouwen
         </MenuButton>
       </Menu>
-      <Popover
+      <PopoverMenu
         isOpen={isOpen}
         onClose={() => setIsOpen(false)}
         triggerRef={triggerRef}
-        label="Mijn omgeving"
         placement="bottom"
       >
-        <PopoverBody>
-          <Menu orientation="vertical">
-            <MenuLink href="/overzicht" level={1}>
-              Overzicht
-            </MenuLink>
-            <MenuLink href="/berichten" level={1}>
-              Berichten
-            </MenuLink>
-            <MenuLink href="/gegevens" level={1}>
-              Gegevens
-            </MenuLink>
-            <MenuLink href="/uitloggen" level={1}>
-              Uitloggen
-            </MenuLink>
-          </Menu>
-        </PopoverBody>
-      </Popover>
+        <MenuLink href="/overzicht" level={1}>
+          Overzicht
+        </MenuLink>
+        <MenuLink href="/berichten" level={1}>
+          Berichten
+        </MenuLink>
+        <MenuLink href="/gegevens" level={1}>
+          Gegevens
+        </MenuLink>
+        <MenuLink href="/uitloggen" level={1}>
+          Uitloggen
+        </MenuLink>
+      </PopoverMenu>
     </>
   );
 }
@@ -480,39 +474,34 @@ function NewMessageServiceMenuLarge() {
           <span className="dsn-visually-hidden">, 2 nieuwe berichten</span>
         </MenuButton>
       </Menu>
-      <Popover
+      <PopoverMenu
         isOpen={isOpen}
         onClose={() => setIsOpen(false)}
         triggerRef={triggerRef}
-        label="Mijn omgeving"
         placement="bottom"
       >
-        <PopoverBody>
-          <Menu orientation="vertical">
-            <MenuLink href="/overzicht" level={1}>
-              Overzicht
-            </MenuLink>
-            <MenuLink
-              href="/berichten"
-              level={1}
-              numberBadge={
-                <NumberBadge variant="negative" aria-hidden>
-                  2
-                </NumberBadge>
-              }
-            >
-              Berichten
-              <span className="dsn-visually-hidden"> (2 ongelezen)</span>
-            </MenuLink>
-            <MenuLink href="/gegevens" level={1}>
-              Gegevens
-            </MenuLink>
-            <MenuLink href="/uitloggen" level={1}>
-              Uitloggen
-            </MenuLink>
-          </Menu>
-        </PopoverBody>
-      </Popover>
+        <MenuLink href="/overzicht" level={1}>
+          Overzicht
+        </MenuLink>
+        <MenuLink
+          href="/berichten"
+          level={1}
+          numberBadge={
+            <NumberBadge variant="negative" aria-hidden>
+              2
+            </NumberBadge>
+          }
+        >
+          Berichten
+          <span className="dsn-visually-hidden"> (2 ongelezen)</span>
+        </MenuLink>
+        <MenuLink href="/gegevens" level={1}>
+          Gegevens
+        </MenuLink>
+        <MenuLink href="/uitloggen" level={1}>
+          Uitloggen
+        </MenuLink>
+      </PopoverMenu>
     </>
   );
 }

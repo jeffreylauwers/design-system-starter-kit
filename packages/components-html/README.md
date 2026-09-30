@@ -111,6 +111,7 @@ import '@dsn-starter-kit/components-html/modal-dialog';
 - `./page-layout` — Page layout styles
 - `./paragraph` — Paragraph styles
 - `./popover` — Popover component styles
+- `./popover-menu` — PopoverMenu component styles
 - `./pre-heading` — Pre-heading styles
 - `./progress-bar` — Progress bar styles
 - `./radio` — Radio styles
@@ -223,6 +224,7 @@ component, ordered so that each one comes after what it depends on.
 | PageLayout            | `dsn-page-layout`                                                | `./page-layout`              |
 | Paragraph             | `dsn-paragraph`, `dsn-paragraph--size-{size}`                    | `./paragraph`                |
 | Popover               | `dsn-popover`                                                    | `./popover`                  |
+| PopoverMenu           | `dsn-popover-menu`, `dsn-popover-menu--placement-{placement}`    | `./popover-menu`             |
 | PreHeading            | `dsn-pre-heading`                                                | `./pre-heading`              |
 | ProgressBar           | `dsn-progress-bar`                                               | `./progress-bar`             |
 | Radio                 | `dsn-radio`, `dsn-radio__control`                                | `./radio`                    |

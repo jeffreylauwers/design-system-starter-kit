@@ -7,12 +7,10 @@ import {
   PopoverBody,
   PopoverFooter,
   Button,
-  Menu,
-  MenuButton,
   ActionGroup,
   Paragraph,
 } from '@dsn-starter-kit/components-react';
-import { rtlDecorator } from './story-helpers';
+import { rtlDecorator, TEKST_AR } from './story-helpers';
 
 const meta: Meta<typeof Popover> = {
   title: 'Components/Popover',
@@ -23,40 +21,34 @@ const meta: Meta<typeof Popover> = {
         return `<div class="dsn-popover-wrapper">
   <button
     type="button"
-    class="dsn-button dsn-button--subtle dsn-button--size-default"
-    popovertarget="popover-demo"
+    class="dsn-button dsn-button--default dsn-button--size-default"
+    popovertarget="popover-filters"
     aria-expanded="false"
   >
-    <span class="dsn-button__label">Acties</span>
+    <span class="dsn-button__label">Filters</span>
   </button>
 
   <div
-    id="popover-demo"
+    id="popover-filters"
     popover="auto"
     class="dsn-popover dsn-popover--placement-bottom"
     role="dialog"
     aria-modal="false"
     tabindex="-1"
-    aria-label="Acties"
+    aria-labelledby="popover-filters-heading"
   >
+    <div class="dsn-popover__header">
+      <h2 class="dsn-popover-heading" id="popover-filters-heading">Filters</h2>
+      <button
+        type="button"
+        class="dsn-button dsn-button--subtle dsn-button--size-small dsn-button--icon-only"
+      >
+        <svg class="dsn-icon" aria-hidden="true"><!-- x --></svg>
+        <span class="dsn-button__label">Sluiten</span>
+      </button>
+    </div>
     <div class="dsn-popover__body">
-      <ul class="dsn-menu">
-        <li class="dsn-menu-button">
-          <button type="button" class="dsn-menu-button__button">
-            <span class="dsn-menu-button__label">Bewerken</span>
-          </button>
-        </li>
-        <li class="dsn-menu-button">
-          <button type="button" class="dsn-menu-button__button">
-            <span class="dsn-menu-button__label">Dupliceren</span>
-          </button>
-        </li>
-        <li class="dsn-menu-button">
-          <button type="button" class="dsn-menu-button__button">
-            <span class="dsn-menu-button__label">Verwijderen</span>
-          </button>
-        </li>
-      </ul>
+      <p class="dsn-paragraph">Pas filters toe op de resultaten.</p>
     </div>
   </div>
 </div>`;
@@ -79,53 +71,6 @@ type Story = StoryObj<typeof Popover>;
 // =============================================================================
 
 export const Default: Story = {
-  render: () => {
-    function Demo() {
-      const triggerRef = React.useRef<HTMLButtonElement>(null);
-      const [isOpen, setIsOpen] = React.useState(false);
-      return (
-        <div
-          style={{ padding: '4rem', display: 'flex', justifyContent: 'center' }}
-        >
-          <Button
-            ref={triggerRef}
-            variant="subtle"
-            onClick={() => setIsOpen((prev) => !prev)}
-          >
-            Acties
-          </Button>
-          <Popover
-            isOpen={isOpen}
-            onClose={() => setIsOpen(false)}
-            triggerRef={triggerRef}
-            label="Acties"
-          >
-            <PopoverBody>
-              <Menu>
-                <MenuButton onClick={() => setIsOpen(false)}>
-                  Bewerken
-                </MenuButton>
-                <MenuButton onClick={() => setIsOpen(false)}>
-                  Dupliceren
-                </MenuButton>
-                <MenuButton onClick={() => setIsOpen(false)}>
-                  Verwijderen
-                </MenuButton>
-              </Menu>
-            </PopoverBody>
-          </Popover>
-        </div>
-      );
-    }
-    return <Demo />;
-  },
-};
-
-// =============================================================================
-// VARIANTEN
-// =============================================================================
-
-export const WithHeader: Story = {
   render: () => {
     function Demo() {
       const triggerRef = React.useRef<HTMLButtonElement>(null);
@@ -159,6 +104,10 @@ export const WithHeader: Story = {
     return <Demo />;
   },
 };
+
+// =============================================================================
+// VARIANTEN
+// =============================================================================
 
 export const WithHeaderAndFooter: Story = {
   name: 'With Header and Footer',
@@ -239,13 +188,12 @@ function PlacementDemo({
         onClose={() => setIsOpen(false)}
         triggerRef={triggerRef}
         placement={placement}
-        label={`Popover ${placement}`}
       >
+        <PopoverHeader>
+          <PopoverHeading>Plaatsing: {placement}</PopoverHeading>
+        </PopoverHeader>
         <PopoverBody>
-          <Menu>
-            <MenuButton onClick={() => setIsOpen(false)}>Optie 1</MenuButton>
-            <MenuButton onClick={() => setIsOpen(false)}>Optie 2</MenuButton>
-          </Menu>
+          <Paragraph>Inhoud van de popover.</Paragraph>
         </PopoverBody>
       </Popover>
     </div>
@@ -393,20 +341,19 @@ export const RTL: Story = {
             variant="subtle"
             onClick={() => setIsOpen((prev) => !prev)}
           >
-            إجراءات
+            عوامل التصفية
           </Button>
           <Popover
             isOpen={isOpen}
             onClose={() => setIsOpen(false)}
             triggerRef={triggerRef}
-            label="إجراءات"
             placement="end"
           >
+            <PopoverHeader>
+              <PopoverHeading>عوامل التصفية</PopoverHeading>
+            </PopoverHeader>
             <PopoverBody>
-              <Menu>
-                <MenuButton onClick={() => setIsOpen(false)}>تعديل</MenuButton>
-                <MenuButton onClick={() => setIsOpen(false)}>حذف</MenuButton>
-              </Menu>
+              <Paragraph>{TEKST_AR}</Paragraph>
             </PopoverBody>
           </Popover>
         </div>

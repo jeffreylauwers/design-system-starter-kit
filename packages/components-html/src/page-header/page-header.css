@@ -519,9 +519,11 @@
   );
 }
 
-/* Menu-items en knoppen in een Popover erven de inverse kleuren via CSS-cascading.
-   De Popover heeft altijd een lichte achtergrond — reset naar standaard component-kleuren. */
-.dsn-page-header--inverse .dsn-popover {
+/* Menu-items en knoppen in een Popover of PopoverMenu erven de inverse kleuren via
+   CSS-cascading. Beide panelen hebben altijd een lichte achtergrond: reset naar
+   standaard component-kleuren. */
+.dsn-page-header--inverse .dsn-popover,
+.dsn-page-header--inverse .dsn-popover-menu {
   --dsn-menu-item-color: var(--dsn-color-action-2-color-default);
   --dsn-menu-item-hover-color: var(--dsn-color-action-2-color-hover);
   --dsn-menu-item-hover-background-color: var(--dsn-color-action-2-bg-hover);

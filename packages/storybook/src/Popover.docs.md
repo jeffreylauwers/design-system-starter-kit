@@ -1,6 +1,6 @@
 # Popover
 
-Lichtgewicht, contextgebonden overlay verankerd aan een triggerelement.
+Niet-modaal dialoogvenster verankerd aan een triggerelement.
 
 <!-- VOORBEELD -->
 
@@ -8,19 +8,21 @@ Lichtgewicht, contextgebonden overlay verankerd aan een triggerelement.
 
 Het Popover component toont een zwevend paneel dat verankerd is aan een triggerelement. In tegenstelling tot `ModalDialog` en `Drawer` blokkeert een Popover de rest van de pagina niet: de gebruiker kan op de achtergrond blijven interacteren. De overlay sluit automatisch bij klik buiten de overlay (light-dismiss) of bij Escape.
 
-Het component ondersteunt een composable structuur met `PopoverHeader`, `PopoverBody` en `PopoverFooter`, waardoor willekeurige content: waaronder het `Menu`-component: als slot kan worden meegegeven.
+De Popover is semantisch een niet-modale dialog (`role="dialog"`, `aria-modal="false"`). Het component heeft een composable structuur met `PopoverHeader`, `PopoverBody` en `PopoverFooter`.
 
-**Implementatiekeuze:** De React-implementatie gebruikt de HTML Popover API (`popover="auto"`) voor ingebakken light-dismiss en top-layer gedrag. Positionering vindt plaats via JavaScript (`getBoundingClientRect`).
+Voor een lijst met acties of links is er [PopoverMenu](?path=/docs/components-popovermenu--docs): een lijst is geen dialoogvenster, en een screenreader zou hem in een Popover als "dialoog" aankondigen.
+
+**Implementatiekeuze:** De React-implementatie gebruikt de HTML Popover API (`popover="auto"`) voor ingebakken light-dismiss en top-layer gedrag. Positionering vindt plaats via JavaScript (`getBoundingClientRect`). Dit gedrag deelt de Popover met PopoverMenu.
 
 ## Use when
 
-- Contextmenu's verankerd aan een knop (bijv. een `Menu` met acties voor een tabelrij).
-- Beknopte aanvullende informatie bij een UI-element.
-- Kleine formulieren of keuze-UI's die tijdelijk naast een triggerpunt verschijnen.
-- Navigatie-dropdowns of "quick actions" die vanuit een icon-button openen.
+- Kleine formulieren of keuze-UI's die tijdelijk naast een triggerpunt verschijnen (bijv. filters).
+- Beknopte aanvullende informatie met een heading bij een UI-element.
+- Inhoud waarbij de achtergrond interactief moet blijven.
 
 ## Don't use when
 
+- Het paneel alleen een lijst met acties of links bevat (bijv. acties voor een tabelrij of accountnavigatie): gebruik dan **PopoverMenu**.
 - De content de volledige aandacht van de gebruiker vereist of interactie met de achtergrond niet toegestaan mag zijn: gebruik dan **ModalDialog**.
 - De gebruiker de achtergrondpagina voor context nodig heeft terwijl hij een uitgebreid formulier invult: gebruik dan **Drawer**.
 - De content een volwaardige werkstroom is die een eigen URL rechtvaardigt: gebruik dan een aparte pagina.
@@ -31,7 +33,8 @@ Het component ondersteunt een composable structuur met `PopoverHeader`, `Popover
 
 | Situatie                                            | Component       |
 | --------------------------------------------------- | --------------- |
-| Contextmenu of quick action bij een knop            | **Popover**     |
+| Kleine keuze-UI of filters bij een knop             | **Popover**     |
+| Lijst met acties of links bij een knop              | **PopoverMenu** |
 | Bevestiging of korte gefocuste keuze                | **ModalDialog** |
 | Rij- of itemdetails naast een lijst bekijken        | **Drawer**      |
 | Volledige aandacht vereist, achtergrond geblokkeerd | **ModalDialog** |
@@ -39,7 +42,7 @@ Het component ondersteunt een composable structuur met `PopoverHeader`, `Popover
 ### Toegankelijke naamgeving
 
 - Gebruik `PopoverHeading` + `PopoverHeader` wanneer de popover een duidelijke titel heeft (bijv. "Filters"). De `aria-labelledby` koppeling verloopt automatisch via de context.
-- Gebruik de `label` prop wanneer de popover geen visuele heading heeft (bijv. een acties-menu). Dit stelt `aria-label` op de popover container.
+- Een zichtbare heading heeft de voorkeur. Heeft de popover er geen, gebruik dan de `label` prop; die stelt `aria-label` op de popover container.
 - **Nooit** beide tegelijk gebruiken: kies één van de twee patronen.
 
 ### Plaatsing
@@ -68,7 +71,7 @@ Het triggerelement (bijv. `Button`) krijgt automatisch `aria-expanded="true/fals
 | `--dsn-popover-box-shadow`                 | `{dsn.box-shadow.md}`               | Schaduw (md-elevatie)             |
 | `--dsn-popover-max-width`                  | `25rem`                             | Maximale breedte (400px)          |
 | `--dsn-popover-min-width`                  | `12.5rem`                           | Minimale breedte (200px)          |
-| `--dsn-popover-z-index`                    | `300`                               | Z-index (lager dan modals: 500)   |
+| `--dsn-popover-z-index`                    | `{dsn.z-index.350}`                 | Z-index (lager dan modals: 500)   |
 | `--dsn-popover-heading-font-family`        | `{dsn.heading.font-family}`         | Lettertype heading                |
 | `--dsn-popover-heading-font-weight`        | `{dsn.heading.font-weight}`         | Gewicht heading                   |
 | `--dsn-popover-heading-color`              | `{dsn.heading.color}`               | Kleur heading                     |
@@ -102,5 +105,5 @@ Het triggerelement (bijv. `Button`) krijgt automatisch `aria-expanded="true/fals
 
 ### Schermlezers
 
-- Schermlezers kondigen de dialoogrol aan bij openen: bijv. "Acties, dialoog".
+- Schermlezers kondigen de dialoogrol aan bij openen: bijv. "Filters, dialoog".
 - De sluitknop in `PopoverHeader` gebruikt altijd een `dsn-button__label` span: nooit `aria-label` op de button zelf.

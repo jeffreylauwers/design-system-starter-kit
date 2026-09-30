@@ -1,0 +1,172 @@
+/* @dsn-depends-on: menu, menu-button, menu-link */
+
+/* ===== PopoverMenu ===== */
+
+/*
+ * dsn-popover-menu: lijst met acties of links in een zwevend paneel,
+ * geopend vanuit een triggerknop.
+ *
+ * Anders dan dsn-popover is dit géén dialoogvenster. Het paneel heeft geen
+ * role, geen aria-modal en geen eigen naam; de inhoud is een gewone lijst.
+ * Het uiterlijk is gelijk aan de Popover: alle visuele tokens delegeren naar
+ * --dsn-popover-*.
+ *
+ * Gebruik de HTML Popover API (popover="auto") voor light-dismiss en top-layer gedrag.
+ * Positionering vereist JavaScript (getBoundingClientRect) of CSS Anchor Positioning.
+ *
+ * Toegankelijkheid:
+ * - Geen role="menu"/menuitem: die rollen beloven pijltjesnavigatie en zetten
+ *   screenreaders in een applicatiemodus. Een gewone lijst met knoppen of links
+ *   is hier de juiste semantiek.
+ * - role="list" op de <ul>: .dsn-menu zet list-style: none, en dan laat
+ *   Safari/VoiceOver de lijstaankondiging anders weg.
+ * - aria-expanded op het triggerelement, synchroon met de open-staat. De
+ *   context ("Toon acties voor Laptop Pro") zit in het label van de trigger.
+ *
+ * HTML-structuur:
+ *
+ * <button
+ *   type="button"
+ *   class="dsn-button dsn-button--subtle dsn-button--size-small dsn-button--icon-only"
+ *   popovertarget="acties-laptop-pro"
+ *   aria-expanded="false"
+ * >
+ *   <svg class="dsn-icon" aria-hidden="true"><!-- dots-vertical --></svg>
+ *   <span class="dsn-button__label">Toon acties</span>
+ * </button>
+ *
+ * <div
+ *   id="acties-laptop-pro"
+ *   popover="auto"
+ *   class="dsn-popover-menu dsn-popover-menu--placement-bottom"
+ * >
+ *   <ul class="dsn-menu" role="list">
+ *     <li class="dsn-menu-button">...</li>
+ *     <li class="dsn-menu-button">...</li>
+ *   </ul>
+ * </div>
+ */
+
+/* ===== Wrapper ===== */
+
+/*
+ * Relatief gepositioneerde container voor CSS-only gebruik.
+ * In de React-implementatie wordt positionering via JS afgehandeld.
+ */
+.dsn-popover-menu-wrapper {
+  position: relative;
+  display: inline-block;
+}
+
+/* ===== Paneel ===== */
+
+.dsn-popover-menu {
+  /* Reset UA popover-stijlen */
+  margin: 0;
+  color: inherit;
+
+  /* Ruimte rond de lijst, gelijk aan de body van de Popover */
+  padding-block: var(--dsn-popover-menu-padding-block);
+  padding-inline: var(--dsn-popover-menu-padding-inline);
+
+  /* Visuele stijlen */
+  background: var(--dsn-popover-menu-background-color);
+  border: var(--dsn-popover-menu-border-width) solid
+    var(--dsn-popover-menu-border-color);
+  border-radius: var(--dsn-popover-menu-border-radius);
+  box-shadow: var(--dsn-popover-menu-box-shadow);
+
+  /* Grootte */
+  min-inline-size: var(--dsn-popover-menu-min-width);
+  max-inline-size: min(var(--dsn-popover-menu-max-width), calc(100vw - 1rem));
+  inline-size: max-content;
+
+  /*
+   * Animatietransitie (openen én sluiten), gelijk aan dsn-popover.
+   *
+   * De basis-selector houdt de *gesloten* waarden. Bij het sluiten valt
+   * `:popover-open` weg en animeert het paneel terug naar deze waarden,
+   * terwijl `display`/`overlay` via allow-discrete tot het einde van de
+   * transitie blijven staan.
+   */
+  opacity: 0;
+  transform: scale(0.97) translateY(-0.25rem);
+  transition:
+    opacity var(--dsn-transition-duration-normal)
+      var(--dsn-transition-easing-default),
+    transform var(--dsn-transition-duration-normal)
+      var(--dsn-transition-easing-default),
+    display var(--dsn-transition-duration-normal)
+      var(--dsn-transition-easing-default) allow-discrete,
+    overlay var(--dsn-transition-duration-normal)
+      var(--dsn-transition-easing-default) allow-discrete;
+}
+
+/*
+ * CSS-only fallback (zonder het popover-attribuut).
+ * Er is dan geen :popover-open staat die de zichtbare waarden zet.
+ */
+.dsn-popover-menu:not([popover]) {
+  opacity: 1;
+  transform: scale(1) translateY(0);
+}
+
+/*
+ * Layout en positionering uitsluitend op :popover-open. Zie popover.css voor
+ * waarom display en position niet op de basis-selector staan.
+ */
+.dsn-popover-menu:popover-open {
+  display: block;
+  position: fixed;
+  z-index: var(--dsn-popover-menu-z-index);
+
+  /* Zichtbare eindwaarden van de openingsanimatie */
+  opacity: 1;
+  transform: scale(1) translateY(0);
+}
+
+/* Openingsanimatie: startwaarden voor de :popover-open staat */
+@starting-style {
+  .dsn-popover-menu:popover-open {
+    opacity: 0;
+    transform: scale(0.97) translateY(-0.25rem);
+  }
+}
+
+/* Animatie uitschakelen bij prefers-reduced-motion */
+@media (prefers-reduced-motion: reduce) {
+  .dsn-popover-menu {
+    transition: none;
+  }
+}
+
+/* ===== Placement modifiers (CSS-only / wrapper-based positionering) ===== */
+
+/*
+ * Alleen voor gebruik zonder de Popover API (bijv. pure HTML-demo), binnen
+ * .dsn-popover-menu-wrapper. Met popover="auto" staat het paneel in de top
+ * layer en positioneert JavaScript het.
+ */
+.dsn-popover-menu-wrapper .dsn-popover-menu--placement-bottom {
+  position: absolute;
+  inset-block-start: calc(100% + 0.25rem);
+  inset-inline-start: 0;
+}
+
+.dsn-popover-menu-wrapper .dsn-popover-menu--placement-top {
+  position: absolute;
+  inset-block-end: calc(100% + 0.25rem);
+  inset-inline-start: 0;
+}
+
+.dsn-popover-menu-wrapper .dsn-popover-menu--placement-end {
+  position: absolute;
+  inset-block-start: 0;
+  inset-inline-start: calc(100% + 0.25rem);
+}
+
+.dsn-popover-menu-wrapper .dsn-popover-menu--placement-start {
+  position: absolute;
+  inset-block-start: 0;
+  inset-inline-end: calc(100% + 0.25rem);
+}
