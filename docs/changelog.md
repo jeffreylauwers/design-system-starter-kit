@@ -10,6 +10,10 @@ All notable changes to this project are documented in this file.
 
 Nog niet gepubliceerde wijzigingen. Schrijf nieuwe changelog-entries hieronder; bij de volgende release wordt deze kop gepromoveerd naar het definitieve versienummer.
 
+### Popover: focus alleen terug naar de trigger wanneer dat zinvol is
+
+Bij elke sluiting zette de Popover de focus terug op de trigger, ook na een klik ergens anders op de pagina. Nu gebeurt dat alleen als de focus bij het sluiten nog in de popover stond, zoals bij Escape, de sluitknop of een actie in de popover. Na een klik buiten de popover blijft de focus waar de gebruiker klikte. Geen API-wijziging ([#413](https://github.com/jeffreylauwers/design-system-starter-kit/issues/413)).
+
 ### ModalDialog: docs over sluiten gecorrigeerd
 
 De JSDoc van `onClose` en de props-tabel in `docs/03-components.md` noemden "klik buiten het venster" als manier om te sluiten, maar dat gedrag bestaat niet en is ook niet de bedoeling: een modaal venster sluit expliciet, via de sluitknop, Escape of een actie. De Storybook-docs leggen nu uit waarom een klik op de backdrop niet sluit. Alleen documentatie, geen gedragswijziging ([#412](https://github.com/jeffreylauwers/design-system-starter-kit/issues/412)).

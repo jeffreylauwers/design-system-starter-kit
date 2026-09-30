@@ -95,9 +95,10 @@ Het triggerelement (bijv. `Button`) krijgt automatisch `aria-expanded="true/fals
 ### Toetsenbord
 
 - `Escape` sluit de popover en zet focus terug op het triggerelement.
-- Klik buiten de popover (light-dismiss via Popover API) sluit de popover.
+- Klik buiten de popover (light-dismiss via Popover API) sluit de popover. De focus blijft dan waar de gebruiker klikte en springt niet terug naar de trigger.
 - Bij openen: focus springt naar het eerste interactieve element in de popover.
 - Tab-volgorde blijft lineair: focus mag buiten de popover bewegen (geen focus-trap).
+- Bij sluiten gaat de focus alleen terug naar de trigger als die op dat moment nog in de popover stond (Escape, de sluitknop, een actie in de popover). Stond de focus al ergens anders, dan blijft hij daar.
 
 ### Schermlezers
 

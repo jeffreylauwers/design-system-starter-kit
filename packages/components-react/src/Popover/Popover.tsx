@@ -211,12 +211,27 @@ export const Popover = React.forwardRef<HTMLDivElement, PopoverProps>(
     const popoverRef = (ref as React.RefObject<HTMLDivElement>) ?? internalRef;
     const headingId = React.useId();
 
+    /*
+     * Focus gaat bij sluiten alleen terug naar de trigger wanneer dat zinvol
+     * is: als de focus op dat moment nog in de popover stond (Escape, de
+     * sluitknop, een actie in de popover). Klikt de gebruiker ergens anders,
+     * dan blijft de focus daar; terugspringen naar de trigger zou die klik
+     * tenietdoen.
+     *
+     * `restoreFocusRef` wordt gezet in `beforetoggle`, dat synchroon vóór het
+     * verbergen vuurt. In `toggle` is het te laat om het te meten: de popover
+     * is dan al verborgen en de browser heeft de focus al verplaatst.
+     */
+    const restoreFocusRef = React.useRef(false);
+    const dismissedByPointerRef = React.useRef(false);
+
     // Toon/verberg popover via de Popover API
     React.useEffect(() => {
       const el = popoverRef.current;
       if (!el) return;
 
       if (isOpen) {
+        dismissedByPointerRef.current = false;
         el.showPopover();
         const trigger = triggerRef.current;
         if (trigger) {
@@ -253,16 +268,30 @@ export const Popover = React.forwardRef<HTMLDivElement, PopoverProps>(
       const el = popoverRef.current;
       if (!el) return;
 
+      const handleBeforeToggle = (event: Event) => {
+        const toggleEvent = event as Event & { newState?: string };
+        if (toggleEvent.newState === 'closed') {
+          restoreFocusRef.current =
+            !dismissedByPointerRef.current &&
+            el.contains(document.activeElement);
+        }
+      };
+
       const handleToggle = (event: Event) => {
         const toggleEvent = event as Event & { newState?: string };
         if (toggleEvent.newState === 'closed') {
           onCloseRef.current?.();
-          triggerRef.current?.focus();
+          if (restoreFocusRef.current) {
+            triggerRef.current?.focus();
+          }
+          restoreFocusRef.current = false;
         }
       };
 
+      el.addEventListener('beforetoggle', handleBeforeToggle);
       el.addEventListener('toggle', handleToggle);
       return () => {
+        el.removeEventListener('beforetoggle', handleBeforeToggle);
         el.removeEventListener('toggle', handleToggle);
       };
     }, [triggerRef, popoverRef]);
@@ -279,8 +308,9 @@ export const Popover = React.forwardRef<HTMLDivElement, PopoverProps>(
         const target = event.target as Node;
         // Sluit niet als er op de popover zelf of het triggerelement geklikt wordt
         if (el.contains(target) || triggerRef.current?.contains(target)) return;
+        // Light dismiss: de focus volgt de klik, niet de trigger
+        dismissedByPointerRef.current = true;
         onCloseRef.current?.();
-        triggerRef.current?.focus();
       };
 
       document.addEventListener('pointerdown', handlePointerDown);
