@@ -43,8 +43,11 @@ export interface DrawerProps extends Omit<
    * Modaal of non-modaal gedrag.
    * - `true` (standaard): opent via `.showModal()` — achtergrond geblokkeerd,
    *   focus blijft binnen het paneel, Escape sluit via `cancel`-event.
-   * - `false`: opent via `.show()` — achtergrond blijft interactief en de
-   *   gebruiker kan er met Tab naartoe, Escape sluit via `keydown`-listener.
+   * - `false`: `<dialog popover="manual">`, opent via `.showPopover()` —
+   *   achtergrond blijft interactief en de gebruiker kan er met Tab naartoe,
+   *   Escape sluit via `keydown`-listener. Het paneel staat in de top layer,
+   *   dus een sticky header of een voorouder met `transform` valt er niet
+   *   overheen.
    * @default true
    */
   modal?: boolean;
@@ -116,15 +119,37 @@ export const Drawer = React.forwardRef<HTMLDialogElement, DrawerProps>(
     const headingId = React.useId();
     const headingRef = React.useRef<HTMLHeadingElement | null>(null);
 
+    /*
+     * De non-modale variant is een popover (`popover="manual"`) en geen via
+     * `.show()` geopende dialog. `.show()` laat het paneel in de gewone
+     * stapelvolgorde staan, waar een sticky PageHeader of een voorouder met
+     * `transform` het kan afdekken; `.showPopover()` zet het in de top layer
+     * zonder de rest van de pagina inert te maken.
+     *
+     * Een popover zet geen `open`-attribuut, dus die staat houden we zelf bij.
+     * En anders dan `dialog.close()` herstelt `hidePopover()` de focus hier
+     * niet: die blijft op een verborgen element staan. Daarom onthouden we bij
+     * openen waar de focus stond, en zetten hem daar bij sluiten terug.
+     */
+    const popoverShownRef = React.useRef(false);
+    const previousFocusRef = React.useRef<HTMLElement | null>(null);
+
     React.useEffect(() => {
       const dialog = dialogRef.current;
       if (!dialog) return;
 
-      if (isOpen && !dialog.open) {
+      const isShown = dialog.open || popoverShownRef.current;
+
+      if (isOpen && !isShown) {
         if (modal) {
           dialog.showModal();
         } else {
-          dialog.show();
+          previousFocusRef.current =
+            document.activeElement instanceof HTMLElement
+              ? document.activeElement
+              : null;
+          dialog.showPopover();
+          popoverShownRef.current = true;
         }
 
         /*
@@ -141,8 +166,19 @@ export const Drawer = React.forwardRef<HTMLDialogElement, DrawerProps>(
          * gelijk.
          */
         (headingRef.current ?? dialog).focus();
-      } else if (!isOpen && dialog.open) {
-        dialog.close();
+      } else if (!isOpen && isShown) {
+        if (popoverShownRef.current) {
+          // Alleen terugzetten als de focus nog in het paneel stond; heeft de
+          // gebruiker intussen op de pagina ernaast geklikt, dan blijft hij daar.
+          const focusWasInside = dialog.contains(document.activeElement);
+          dialog.hidePopover();
+          popoverShownRef.current = false;
+          if (focusWasInside) {
+            previousFocusRef.current?.focus();
+          }
+        } else {
+          dialog.close();
+        }
       }
     }, [isOpen, modal, dialogRef]);
 
@@ -200,6 +236,7 @@ export const Drawer = React.forwardRef<HTMLDialogElement, DrawerProps>(
           aria-labelledby={headingId}
           onCancel={handleCancel}
           tabIndex={-1}
+          popover={modal ? undefined : 'manual'}
           {...props}
         >
           {children}

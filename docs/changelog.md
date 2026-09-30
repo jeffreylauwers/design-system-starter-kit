@@ -10,6 +10,12 @@ All notable changes to this project are documented in this file.
 
 Nog niet gepubliceerde wijzigingen. Schrijf nieuwe changelog-entries hieronder; bij de volgende release wordt deze kop gepromoveerd naar het definitieve versienummer.
 
+### Drawer: non-modale variant in de top layer
+
+De non-modale Drawer (`modal={false}`) opende via `dialog.show()`, en bleef daarmee in de gewone stapelvolgorde. Een sticky `PageHeader` kon eroverheen vallen, en een voorouder met `transform` of `filter` brak de `position: fixed`. Het paneel is nu een `<dialog popover="manual">` en opent via `.showPopover()`: het staat in de top layer, net als de modale variant, zonder de pagina inert te maken. De CSS reageert daarvoor naast `[open]` ook op `:popover-open`. Omdat `hidePopover()` de focus niet herstelt, zet de Drawer hem zelf terug naar waar hij vóór het openen stond, als hij nog in het paneel stond. API ongewijzigd ([#411](https://github.com/jeffreylauwers/design-system-starter-kit/issues/411)).
+
+**Voor wie alleen de HTML/CSS-laag gebruikt:** zet `popover="manual"` op de `<dialog>` van een non-modale Drawer en open hem met `.showPopover()` in plaats van `.show()`.
+
 ### PopoverMenu: nieuw component, en de Popover is expliciet een dialog
 
 Nieuw component `PopoverMenu`: een lijst met acties of links in een zwevend paneel, geopend vanuit een triggerknop. Anders dan `Popover` heeft het paneel geen `role="dialog"`: het is een gewone lijst (`<ul class="dsn-menu" role="list">`) met `MenuButton`- en `MenuLink`-items, zodat een screenreader een actielijst niet meer als dialoogvenster aankondigt. Het menu sluit zichzelf zodra een item gekozen is. Nieuwe tokens in `popover-menu.json`; ze delegeren allemaal naar `dsn.popover.*`, ook de padding ([#419](https://github.com/jeffreylauwers/design-system-starter-kit/issues/419)).
