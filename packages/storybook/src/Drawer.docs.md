@@ -39,6 +39,23 @@ Het Drawer component toont een zijpaneel dat over de pagina-inhoud schuift. In t
 - **Modal** (`modal={true}`, standaard): achtergrond geblokkeerd via de native `::backdrop`. Gebruik dit wanneer de gebruiker de subtaak volledig moet afronden voordat hij terugkeert naar de pagina.
 - **Non-modal** (`modal={false}`): achtergrond blijft interactief. Gebruik dit voor filtervensters of infovensters waarbij de gebruiker de pagina naast het paneel wil bedienen.
 
+### Stapelvolgorde
+
+Beide varianten staan in de top layer, boven alle andere inhoud. De modale variant komt daar via `.showModal()`. De non-modale variant is een `<dialog popover="manual">` en opent via `.showPopover()`: zo komt hij in de top layer zonder de rest van de pagina inert te maken.
+
+Daardoor valt een sticky `PageHeader` er niet overheen, en maakt het niet uit waar in de DOM de Drawer staat. Ook een voorouder met `transform` of `filter` breekt de positie niet meer. Een `z-index` is dus niet nodig. Het is `popover="manual"` en niet `"auto"`, omdat een klik op de pagina ernaast het paneel niet hoort te sluiten: die pagina blijft juist bruikbaar.
+
+```html
+<dialog
+  class="dsn-drawer dsn-drawer--side-right"
+  popover="manual"
+  tabindex="-1"
+  aria-labelledby="drawer-title"
+>
+  ...
+</dialog>
+```
+
 ### Status van de trigger
 
 Geef de knop die het zijpaneel opent mee via `triggerRef`. Het zijpaneel zet dan zelf `aria-expanded` op die knop: `false` zolang het paneel dicht is, `true` zodra het open staat. Screenreadergebruikers horen daardoor of het paneel al open is.
@@ -117,6 +134,7 @@ Omdat de open- of dichtstaat al uit `aria-expanded` blijkt, hoeft het woord "ope
 
 - Het zijpaneel gebruikt het native `<dialog>` element met impliciete `role="dialog"` semantiek.
 - `.showModal()` (modal variant) activeert automatisch `aria-modal`-gedrag en het `inert`-attribuut op de achtergrond.
+- De non-modale variant (`popover="manual"`, `.showPopover()`) maakt niets inert. Bij sluiten gaat de focus terug naar waar hij stond vóór het openen, maar alleen als hij nog in het paneel stond.
 - `aria-labelledby` koppelt het zijpaneel automatisch aan de `DrawerHeading`: geen handmatige ID nodig.
 - De sluitknop gebruikt `dsn-button__label` met de tekst "Sluiten": nooit `aria-label`.
 - Escape sluit het zijpaneel (modaal via het native `cancel`-event; non-modaal via `keydown`-listener).

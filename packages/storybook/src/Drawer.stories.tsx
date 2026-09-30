@@ -187,6 +187,66 @@ export const NonModal: Story = {
   ),
 };
 
+/**
+ * De situatie waarin een via `.show()` geopend paneel vroeger onderuit ging:
+ * een sticky balk met een hoge z-index, en de Drawer binnen een voorouder met
+ * `transform`. Die voorouder maakt een eigen stacking context en een nieuw
+ * containing block voor `position: fixed`. In de top layer (`popover="manual"`)
+ * heeft geen van beide nog invloed: het paneel ligt over de balk heen en vult
+ * de hele viewporthoogte.
+ */
+export const NonModalOverStickyContent: Story = {
+  name: 'Non-modal over sticky content',
+  render: () => (
+    <div style={{ minBlockSize: '150vh' }}>
+      <div
+        style={{
+          position: 'sticky',
+          insetBlockStart: 0,
+          zIndex: 900,
+          padding: 'var(--dsn-space-block-xl) var(--dsn-space-inline-xl)',
+          background: 'var(--dsn-color-accent-1-inverse-bg-default)',
+          color: 'var(--dsn-color-accent-1-inverse-color-default)',
+        }}
+      >
+        Sticky balk (z-index 900)
+      </div>
+      <div
+        style={{
+          transform: 'translateZ(0)',
+          padding: 'var(--dsn-space-block-xl) var(--dsn-space-inline-xl)',
+        }}
+      >
+        <DrawerWithTrigger
+          triggerLabel="Non-modal zijpaneel openen"
+          modal={false}
+        >
+          {(close) => (
+            <>
+              <DrawerHeader>
+                <DrawerHeading>Filteropties</DrawerHeading>
+              </DrawerHeader>
+              <DrawerBody>
+                <Paragraph>
+                  Dit paneel staat in een voorouder met transform, onder een
+                  sticky balk met z-index 900, en ligt er toch overheen.
+                </Paragraph>
+              </DrawerBody>
+              <DrawerFooter>
+                <ActionGroup>
+                  <Button variant="strong" onClick={close}>
+                    Filters toepassen
+                  </Button>
+                </ActionGroup>
+              </DrawerFooter>
+            </>
+          )}
+        </DrawerWithTrigger>
+      </div>
+    </div>
+  ),
+};
+
 // =============================================================================
 // SIDE LEFT
 // =============================================================================

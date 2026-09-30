@@ -2035,7 +2035,9 @@ const [isOpen, setIsOpen] = React.useState(false);
 
 **Features:**
 
-- Gebaseerd op het native `<dialog>` element: `modal` prop bepaalt `.showModal()` (focus-trap, backdrop, `aria-modal`) of `.show()` (niet-modaal, achtergrond blijft interactief)
+- Gebaseerd op het native `<dialog>` element: `modal` prop bepaalt `.showModal()` (focus-trap, backdrop, `aria-modal`) of `popover="manual"` + `.showPopover()` (niet-modaal, achtergrond blijft interactief)
+- Beide varianten staan in de top layer: geen `z-index` nodig, en een sticky header of een voorouder met `transform` valt er niet overheen
+- Non-modaal: focus gaat bij sluiten terug naar waar hij vóór het openen stond, alleen als hij nog in het paneel stond (`hidePopover()` doet dat zelf niet)
 - Expliciete focus-trap bij `modal={true}` bovenop de native trap (`utils/focusTrap.ts`); niet-modaal krijgt bewust geen trap
 - Focus gaat bij openen naar de heading (`tabindex="-1"`), zodat screenreaders de titel voorlezen
 - `triggerRef` prop houdt `aria-expanded` op de openknop synchroon met de open-staat

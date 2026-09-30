@@ -5,7 +5,12 @@
  *
  * Gebaseerd op het native <dialog> element.
  * Modaal (modal prop): openen via .showModal(), met focus-trap en ::backdrop.
- * Non-modaal:          openen via .show(), achtergrond blijft interactief.
+ * Non-modaal:          <dialog popover="manual">, openen via .showPopover().
+ *                      De achtergrond blijft interactief, en het paneel staat
+ *                      toch in de top layer: geen z-index nodig, en een
+ *                      voorouder met transform of filter breekt de positie niet.
+ *                      .show() zou het paneel in de gewone stapelvolgorde laten,
+ *                      waar een sticky PageHeader eroverheen kan vallen.
  *
  * Toetsenbord en screenreaders (JS-gedrag, zie components-react/src/Drawer):
  *   - De trigger krijgt aria-expanded="false"/"true", synchroon met de open-staat.
@@ -36,6 +41,15 @@
  *     </div>
  *   </div>
  * </dialog>
+ *
+ * Non-modaal: dezelfde markup, met popover="manual" op de <dialog>:
+ *
+ * <dialog class="dsn-drawer dsn-drawer--side-right" popover="manual" tabindex="-1" aria-labelledby="drawer-title">
+ *   ...
+ * </dialog>
+ *
+ * "manual" en niet "auto": een zijpaneel hoort niet te sluiten bij een klik
+ * op de pagina ernaast, die blijft juist bruikbaar. Escape sluit wel, via JS.
  */
 
 .dsn-drawer {
@@ -94,8 +108,12 @@
  * Flexbox layout alleen bij open staat.
  * Gebruik [open] zodat de UA-stylesheet's display:none van kracht blijft
  * wanneer de drawer gesloten is — anders overschrijft display:flex de UA.
+ *
+ * :popover-open is de open staat van de non-modale variant: .showPopover()
+ * zet geen [open]-attribuut.
  */
-.dsn-drawer[open] {
+.dsn-drawer[open],
+.dsn-drawer:popover-open {
   display: flex;
 
   /* Zichtbare eindwaarden van de openingsanimatie (beide zijden) */
@@ -106,6 +124,15 @@
 /* Backdrop is zichtbaar zolang de drawer open is; fade't uit bij sluiten */
 .dsn-drawer[open]::backdrop {
   opacity: 1;
+}
+
+/*
+ * De non-modale variant heeft geen backdrop. Een popover in de top layer
+ * krijgt er wel een (transparant, zonder pointer-events); de side-modifiers
+ * hieronder zouden die een achtergrondkleur geven.
+ */
+.dsn-drawer[popover]::backdrop {
+  display: none;
 }
 
 /* Animatie uitschakelen bij prefers-reduced-motion */
@@ -131,7 +158,8 @@
 
 /* Openingsanimatie rechts: start buiten beeld rechts */
 @starting-style {
-  .dsn-drawer--side-right[open] {
+  .dsn-drawer--side-right[open],
+  .dsn-drawer--side-right:popover-open {
     opacity: 0;
     transform: translateX(100%);
   }
@@ -181,7 +209,8 @@
 
 /* Openingsanimatie links: start buiten beeld links */
 @starting-style {
-  .dsn-drawer--side-left[open] {
+  .dsn-drawer--side-left[open],
+  .dsn-drawer--side-left:popover-open {
     opacity: 0;
     transform: translateX(-100%);
   }

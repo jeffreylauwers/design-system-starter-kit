@@ -10,12 +10,14 @@ import {
   DrawerFooter,
 } from './Drawer';
 
-// jsdom heeft geen volledige HTMLDialogElement implementatie.
-// Mock showModal, show en close voor alle tests.
+// jsdom heeft geen volledige HTMLDialogElement- en Popover API-implementatie.
+// Mock showModal, show, close, showPopover en hidePopover voor alle tests.
 beforeEach(() => {
   HTMLDialogElement.prototype.showModal = vi.fn();
   HTMLDialogElement.prototype.show = vi.fn();
   HTMLDialogElement.prototype.close = vi.fn();
+  HTMLElement.prototype.showPopover = vi.fn();
+  HTMLElement.prototype.hidePopover = vi.fn();
 });
 
 const DefaultDrawer = ({
@@ -103,25 +105,43 @@ describe('Drawer', () => {
   });
 
   // ===========================
-  // isOpen / showModal / show / close
+  // isOpen / showModal / showPopover / close
   // ===========================
 
   it('calls showModal when isOpen becomes true and modal=true', () => {
     render(<DefaultDrawer isOpen={true} modal={true} />);
     expect(HTMLDialogElement.prototype.showModal).toHaveBeenCalled();
-    expect(HTMLDialogElement.prototype.show).not.toHaveBeenCalled();
+    expect(HTMLElement.prototype.showPopover).not.toHaveBeenCalled();
   });
 
-  it('calls show when isOpen becomes true and modal=false', () => {
+  it('opens the non-modal variant as a popover, not via show()', () => {
     render(<DefaultDrawer isOpen={true} modal={false} />);
-    expect(HTMLDialogElement.prototype.show).toHaveBeenCalled();
+    expect(HTMLElement.prototype.showPopover).toHaveBeenCalled();
+    expect(HTMLDialogElement.prototype.show).not.toHaveBeenCalled();
     expect(HTMLDialogElement.prototype.showModal).not.toHaveBeenCalled();
   });
 
-  it('does not call showModal or show when isOpen is false', () => {
+  it('does not open when isOpen is false', () => {
     render(<DefaultDrawer isOpen={false} />);
     expect(HTMLDialogElement.prototype.showModal).not.toHaveBeenCalled();
-    expect(HTMLDialogElement.prototype.show).not.toHaveBeenCalled();
+    expect(HTMLElement.prototype.showPopover).not.toHaveBeenCalled();
+  });
+
+  it('sets popover="manual" only on the non-modal variant', () => {
+    const { container, rerender } = render(<DefaultDrawer modal={false} />);
+    expect(container.querySelector('dialog')).toHaveAttribute(
+      'popover',
+      'manual'
+    );
+    rerender(<DefaultDrawer isOpen={false} modal={true} />);
+    expect(container.querySelector('dialog')).not.toHaveAttribute('popover');
+  });
+
+  it('closes the non-modal variant with hidePopover', () => {
+    const { rerender } = render(<DefaultDrawer modal={false} />);
+    rerender(<DefaultDrawer isOpen={false} modal={false} />);
+    expect(HTMLElement.prototype.hidePopover).toHaveBeenCalled();
+    expect(HTMLDialogElement.prototype.close).not.toHaveBeenCalled();
   });
 
   // ===========================
@@ -376,5 +396,48 @@ describe('Drawer', () => {
 
     // Zonder trap verplaatst jsdom de focus niet: hij blijft staan waar hij was
     expect(applyButton).toHaveFocus();
+  });
+
+  // ===========================
+  // Focusherstel bij de non-modale variant
+  // ===========================
+
+  describe('focus restore (non-modal)', () => {
+    const NonModalWithTrigger = ({ isOpen }: { isOpen: boolean }) => (
+      <>
+        <button type="button">Zijpaneel</button>
+        <button type="button">Elders</button>
+        <Drawer isOpen={isOpen} modal={false}>
+          <DrawerHeader>
+            <DrawerHeading>Drawertitel</DrawerHeading>
+          </DrawerHeader>
+          <DrawerBody>Inhoud</DrawerBody>
+        </Drawer>
+      </>
+    );
+
+    it('returns focus to where it was before opening', () => {
+      const { rerender } = render(<NonModalWithTrigger isOpen={false} />);
+      const trigger = screen.getByText('Zijpaneel');
+      trigger.focus();
+
+      rerender(<NonModalWithTrigger isOpen={true} />);
+      expect(screen.getByText('Drawertitel')).toHaveFocus();
+
+      rerender(<NonModalWithTrigger isOpen={false} />);
+      expect(trigger).toHaveFocus();
+    });
+
+    it('leaves focus alone when it already moved to the page', () => {
+      const { rerender } = render(<NonModalWithTrigger isOpen={false} />);
+      screen.getByText('Zijpaneel').focus();
+      rerender(<NonModalWithTrigger isOpen={true} />);
+
+      const elsewhere = screen.getByText('Elders');
+      elsewhere.focus();
+      rerender(<NonModalWithTrigger isOpen={false} />);
+
+      expect(elsewhere).toHaveFocus();
+    });
   });
 });
