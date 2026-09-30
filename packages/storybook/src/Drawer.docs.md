@@ -146,13 +146,15 @@ De `DrawerHeading` heeft `tabindex="-1"` en krijgt bij openen de focus. Zonder d
 
 Is er geen `DrawerHeading`, dan krijgt het `<dialog>` zelf de focus. De focusomtrek op de heading verschijnt alleen bij toetsenbordgebruik, via `:focus-visible`.
 
+Dit wijkt bewust af van het veelgehoorde advies om de focus op het eerste formulierveld of de minst destructieve knop te zetten: het component weet niet wat erin staat, en beide slaan de titel over. Een `autofocus`-attribuut in de inhoud heeft daarom geen effect. De afweging staat in decision record DR-2026-12 (`docs/decisions/DR-2026-12-dialogs-focus-bij-openen-op-de-heading.md`).
+
 ### Focus binnen het paneel houden
 
 Bij `modal={true}` blijft de toetsenbordfocus binnen het paneel. Naast de native focus-trap van `.showModal()` zit daar een expliciete trap op: Tab vanaf het laatste element springt naar het eerste, Shift+Tab vanaf het eerste (of vanaf de heading) naar het laatste. Dat is nodig omdat de native trap de focus in een `<iframe>` alsnog naar de omliggende pagina laat ontsnappen, bijvoorbeeld in Safari, in Storybook en in embeds.
 
 Bij `modal={false}` is er bewust geen trap: de gebruiker moet juist tussen het paneel en de achtergrondpagina kunnen tabben. Dat is het hele doel van de non-modale variant. Kies daarom `modal={true}` zodra de gebruiker de subtaak eerst moet afronden.
 
-Bij sluiten keert de focus terug naar het element dat het paneel opende (native browsergedrag).
+Bij sluiten keert de focus terug naar het element dat het paneel opende. Bij `modal={true}` doet de browser dat zelf; bij `modal={false}` doet de Drawer het, omdat `hidePopover()` de focus niet herstelt, en alleen als de focus nog in het paneel stond.
 
 ### Naam, rol en waarde van de trigger
 

@@ -10,6 +10,12 @@ All notable changes to this project are documented in this file.
 
 Nog niet gepubliceerde wijzigingen. Schrijf nieuwe changelog-entries hieronder; bij de volgende release wordt deze kop gepromoveerd naar het definitieve versienummer.
 
+### Focus bij openen: decision record, en de Popover volgt hetzelfde patroon
+
+Nieuw decision record [DR-2026-12](decisions/DR-2026-12-dialogs-focus-bij-openen-op-de-heading.md) legt vast waarom ModalDialog, Drawer en Popover bij openen de focus op de heading zetten, en niet op het eerste formulierveld of de minst destructieve knop. Code-commentaar en de Accessibility-secties verwijzen ernaar. De Drawer-docs beschrijven nu ook correct hoe de focus bij sluiten terugkeert in de non-modale variant ([#414](https://github.com/jeffreylauwers/design-system-starter-kit/issues/414)).
+
+**Gedragswijziging in `Popover`.** De Popover zette de focus bij openen op het eerste interactieve element; met een `PopoverHeader` was dat de sluitknop. Nu krijgt de `PopoverHeading` de focus, en zonder heading de popover zelf. `PopoverHeading` rendert daarvoor `tabindex="-1"`, met een focusomtrek alleen bij toetsenbordgebruik. Wie de HTML/CSS-laag gebruikt: zet `tabindex="-1"` op de `dsn-popover-heading` en focus die bij openen. `PopoverMenu` blijft op het eerste item focussen.
+
 ### Drawer: non-modale variant in de top layer
 
 De non-modale Drawer (`modal={false}`) opende via `dialog.show()`, en bleef daarmee in de gewone stapelvolgorde. Een sticky `PageHeader` kon eroverheen vallen, en een voorouder met `transform` of `filter` brak de `position: fixed`. Het paneel is nu een `<dialog popover="manual">` en opent via `.showPopover()`: het staat in de top layer, net als de modale variant, zonder de pagina inert te maken. De CSS reageert daarvoor naast `[open]` ook op `:popover-open`. Omdat `hidePopover()` de focus niet herstelt, zet de Drawer hem zelf terug naar waar hij vóór het openen stond, als hij nog in het paneel stond. API ongewijzigd ([#411](https://github.com/jeffreylauwers/design-system-starter-kit/issues/411)).
