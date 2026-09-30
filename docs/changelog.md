@@ -14,6 +14,10 @@ Nog niet gepubliceerde wijzigingen. Schrijf nieuwe changelog-entries hieronder; 
 
 Bij elke sluiting zette de Popover de focus terug op de trigger, ook na een klik ergens anders op de pagina. Nu gebeurt dat alleen als de focus bij het sluiten nog in de popover stond, zoals bij Escape, de sluitknop of een actie in de popover. Na een klik buiten de popover blijft de focus waar de gebruiker klikte. Geen API-wijziging ([#413](https://github.com/jeffreylauwers/design-system-starter-kit/issues/413)).
 
+### ModalDialog: docs over sluiten gecorrigeerd
+
+De JSDoc van `onClose` en de props-tabel in `docs/03-components.md` noemden "klik buiten het venster" als manier om te sluiten, maar dat gedrag bestaat niet en is ook niet de bedoeling: een modaal venster sluit expliciet, via de sluitknop, Escape of een actie. De Storybook-docs leggen nu uit waarom een klik op de backdrop niet sluit. Alleen documentatie, geen gedragswijziging ([#412](https://github.com/jeffreylauwers/design-system-starter-kit/issues/412)).
+
 ## Version 4.0.0 (September 26, 2026)
 
 Major release, met twee breaking changes. De Card bestaat nu uit vier secties en de heading staat in de DOM vóór de afbeelding; dat verandert de verplichte HTML-markup en de React-compositie. De maat van invulvelden heet voortaan `inline-size` in plaats van `width`, in tokens, CSS-klassen, de React-prop en het core-type, en TextArea, EmailInput, PasswordInput, TelephoneInput en SearchInput bieden geen `xs` en `sm` meer. Beide secties hieronder hebben een migratietabel. Kleiner, maar ook breaking: `--dsn-menu-link-current-indicator-width` is vervangen door `--dsn-menu-item-indicator-width`. Verder additief: een Popover-actiemenu in Table, de menu-indicator bij hover en active, en een rustiger auto-hide in PageHeader. De `figma-sync`- en `figma-plugin`-wijzigingen tellen niet mee voor de versie, omdat die packages private zijn.
