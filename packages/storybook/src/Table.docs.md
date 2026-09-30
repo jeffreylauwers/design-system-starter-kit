@@ -162,9 +162,9 @@ Gebruik een actiekolom voor acties die op een specifieke rij uitgevoerd worden. 
 </td>
 ```
 
-**Actiemenu (meerdere acties via een Popover):**
+**Actiemenu (meerdere acties via een PopoverMenu):**
 
-De icon-only button opent een [Popover](?path=/docs/components-popover--docs) met een `Menu`. Geef de popover een `aria-label` met dezelfde rij-context als de knop, zodat een screenreader meldt voor welke rij de acties gelden.
+De icon-only button opent een [PopoverMenu](?path=/docs/components-popovermenu--docs). Het menu heeft zelf geen naam en geen rol: de rij-context zit in het label van de knop, zodat een screenreader meldt voor welke rij de acties gelden. Het menu sluit zichzelf zodra een actie gekozen is.
 
 ```html
 <td>
@@ -184,31 +184,25 @@ De icon-only button opent een [Popover](?path=/docs/components-popover--docs) me
   <div
     id="acties-laptop-pro"
     popover="auto"
-    class="dsn-popover dsn-popover--placement-bottom"
-    role="dialog"
-    aria-modal="false"
-    tabindex="-1"
-    aria-label="Acties voor Laptop Pro"
+    class="dsn-popover-menu dsn-popover-menu--placement-bottom"
   >
-    <div class="dsn-popover__body">
-      <ul class="dsn-menu">
-        <li class="dsn-menu-button">
-          <button type="button" class="dsn-menu-button__button">
-            <span class="dsn-menu-button__label">Bewerken</span>
-          </button>
-        </li>
-        <li class="dsn-menu-button">
-          <button type="button" class="dsn-menu-button__button">
-            <span class="dsn-menu-button__label">Dupliceren</span>
-          </button>
-        </li>
-        <li class="dsn-menu-button">
-          <button type="button" class="dsn-menu-button__button">
-            <span class="dsn-menu-button__label">Verwijderen</span>
-          </button>
-        </li>
-      </ul>
-    </div>
+    <ul class="dsn-menu" role="list">
+      <li class="dsn-menu-button">
+        <button type="button" class="dsn-menu-button__button">
+          <span class="dsn-menu-button__label">Bewerken</span>
+        </button>
+      </li>
+      <li class="dsn-menu-button">
+        <button type="button" class="dsn-menu-button__button">
+          <span class="dsn-menu-button__label">Dupliceren</span>
+        </button>
+      </li>
+      <li class="dsn-menu-button">
+        <button type="button" class="dsn-menu-button__button">
+          <span class="dsn-menu-button__label">Verwijderen</span>
+        </button>
+      </li>
+    </ul>
   </div>
 </td>
 ```
@@ -229,20 +223,15 @@ const [isOpen, setIsOpen] = useState(false);
     Toon acties
     <span className="dsn-visually-hidden"> voor Laptop Pro</span>
   </Button>
-  <Popover
+  <PopoverMenu
     isOpen={isOpen}
     onClose={() => setIsOpen(false)}
     triggerRef={triggerRef}
-    label="Acties voor Laptop Pro"
   >
-    <PopoverBody>
-      <Menu>
-        <MenuButton onClick={() => setIsOpen(false)}>Bewerken</MenuButton>
-        <MenuButton onClick={() => setIsOpen(false)}>Dupliceren</MenuButton>
-        <MenuButton onClick={() => setIsOpen(false)}>Verwijderen</MenuButton>
-      </Menu>
-    </PopoverBody>
-  </Popover>
+    <MenuButton onClick={edit}>Bewerken</MenuButton>
+    <MenuButton onClick={duplicate}>Dupliceren</MenuButton>
+    <MenuButton onClick={remove}>Verwijderen</MenuButton>
+  </PopoverMenu>
 </td>;
 ```
 

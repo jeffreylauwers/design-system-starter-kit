@@ -1,0 +1,56 @@
+{
+  "dsn": {
+    "popover-menu": {
+      "background-color": {
+        "$value": "{dsn.popover.background-color}",
+        "$type": "color",
+        "$description": "Achtergrondkleur van het paneel: delegeert naar de Popover, zodat beide panelen gelijk ogen"
+      },
+      "border-width": {
+        "$value": "{dsn.popover.border-width}",
+        "$type": "borderWidth",
+        "$description": "Randbreedte van het paneel: delegeert naar de Popover"
+      },
+      "border-color": {
+        "$value": "{dsn.popover.border-color}",
+        "$type": "color",
+        "$description": "Randkleur van het paneel: delegeert naar de Popover"
+      },
+      "border-radius": {
+        "$value": "{dsn.popover.border-radius}",
+        "$type": "dimension",
+        "$description": "Afgeronde hoeken van het paneel: delegeert naar de Popover"
+      },
+      "box-shadow": {
+        "$value": "{dsn.popover.box-shadow}",
+        "$type": "shadow",
+        "$description": "Schaduw van het paneel: delegeert naar de Popover"
+      },
+      "min-width": {
+        "$value": "{dsn.popover.min-width}",
+        "$type": "dimension",
+        "$description": "Minimale breedte van het paneel: delegeert naar de Popover"
+      },
+      "max-width": {
+        "$value": "{dsn.popover.max-width}",
+        "$type": "dimension",
+        "$description": "Maximale breedte van het paneel: delegeert naar de Popover"
+      },
+      "z-index": {
+        "$value": "{dsn.popover.z-index}",
+        "$type": "number",
+        "$description": "Z-index van het paneel: delegeert naar de Popover"
+      },
+      "padding-block": {
+        "$value": "{dsn.popover.body.padding-block}",
+        "$type": "spacing",
+        "$description": "Verticale padding rond de lijst: delegeert naar de Popover-body, zodat beide panelen dezelfde binnenruimte hebben"
+      },
+      "padding-inline": {
+        "$value": "{dsn.popover.body.padding-inline}",
+        "$type": "spacing",
+        "$description": "Horizontale padding rond de lijst: delegeert naar de Popover-body"
+      }
+    }
+  }
+}

@@ -219,6 +219,10 @@
       "types": "./css.d.ts",
       "default": "./src/popover/popover.css"
     },
+    "./popover-menu": {
+      "types": "./css.d.ts",
+      "default": "./src/popover-menu/popover-menu.css"
+    },
     "./progress-bar": {
       "types": "./css.d.ts",
       "default": "./src/progress-bar/progress-bar.css"

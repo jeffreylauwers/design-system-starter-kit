@@ -70,7 +70,10 @@ import {
   Paragraph,
   PasswordInput,
   Popover,
+  PopoverHeader,
+  PopoverHeading,
   PopoverBody,
+  PopoverMenu,
   ProgressBar,
   Radio,
   RadioGroup,
@@ -293,16 +296,39 @@ function PopoverDemo() {
         isOpen={isOpen}
         onClose={() => setIsOpen(false)}
         triggerRef={triggerRef}
-        label="Tekst"
       >
+        <PopoverHeader>
+          <PopoverHeading>Tekst</PopoverHeading>
+        </PopoverHeader>
         <PopoverBody>
-          <Menu>
-            <MenuButton onClick={() => setIsOpen(false)}>Tekst</MenuButton>
-            <MenuButton onClick={() => setIsOpen(false)}>Tekst</MenuButton>
-            <MenuButton onClick={() => setIsOpen(false)}>Tekst</MenuButton>
-          </Menu>
+          <Paragraph>Tekst</Paragraph>
         </PopoverBody>
       </Popover>
+    </>
+  );
+}
+
+function PopoverMenuDemo() {
+  const triggerRef = React.useRef<HTMLButtonElement>(null);
+  const [isOpen, setIsOpen] = React.useState(false);
+  return (
+    <>
+      <Button
+        ref={triggerRef}
+        variant="subtle"
+        onClick={() => setIsOpen((prev) => !prev)}
+      >
+        Open PopoverMenu
+      </Button>
+      <PopoverMenu
+        isOpen={isOpen}
+        onClose={() => setIsOpen(false)}
+        triggerRef={triggerRef}
+      >
+        <MenuButton>Tekst</MenuButton>
+        <MenuButton>Tekst</MenuButton>
+        <MenuButton>Tekst</MenuButton>
+      </PopoverMenu>
     </>
   );
 }
@@ -1134,6 +1160,14 @@ export const Default: Story = {
                 docPath="?path=/docs/components-popover--docs"
               >
                 <PopoverDemo />
+              </Section>
+
+              {/* PopoverMenu */}
+              <Section
+                name="PopoverMenu"
+                docPath="?path=/docs/components-popovermenu--docs"
+              >
+                <PopoverMenuDemo />
               </Section>
 
               {/* ProgressBar */}

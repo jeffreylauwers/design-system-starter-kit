@@ -20,34 +20,34 @@ export const [intro, rest] = docs.split('<!-- VOORBEELD -->');
   html={`<div class="dsn-popover-wrapper">
   <button
     type="button"
-    class="dsn-button dsn-button--subtle dsn-button--size-medium"
-    popovertarget="popover-acties"
+    class="dsn-button dsn-button--default dsn-button--size-default"
+    popovertarget="popover-filters"
     aria-expanded="false"
   >
-    <span class="dsn-button__label">Acties</span>
+    <span class="dsn-button__label">Filters</span>
   </button>
 
   <div
-    id="popover-acties"
+    id="popover-filters"
     popover="auto"
     class="dsn-popover dsn-popover--placement-bottom"
     role="dialog"
     aria-modal="false"
-    aria-label="Acties"
+    tabindex="-1"
+    aria-labelledby="popover-filters-heading"
   >
+    <div class="dsn-popover__header">
+      <h2 class="dsn-popover-heading" id="popover-filters-heading">Filters</h2>
+      <button
+        type="button"
+        class="dsn-button dsn-button--subtle dsn-button--size-small dsn-button--icon-only"
+      >
+        <svg class="dsn-icon" aria-hidden="true"><!-- x --></svg>
+        <span class="dsn-button__label">Sluiten</span>
+      </button>
+    </div>
     <div class="dsn-popover__body">
-      <ul class="dsn-menu" role="list">
-        <li class="dsn-menu-button">
-          <button type="button" class="dsn-menu-button__button">
-            <span class="dsn-menu-button__label">Bewerken</span>
-          </button>
-        </li>
-        <li class="dsn-menu-button">
-          <button type="button" class="dsn-menu-button__button">
-            <span class="dsn-menu-button__label">Verwijderen</span>
-          </button>
-        </li>
-      </ul>
+      <p class="dsn-paragraph">Pas filters toe op de resultaten.</p>
     </div>
   </div>
 </div>`}

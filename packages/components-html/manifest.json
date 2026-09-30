@@ -456,9 +456,23 @@
       "name": "Popover",
       "cssBlock": "dsn-popover",
       "category": "display-feedback",
-      "purpose": "Lightweight non-modal overlay anchored to a trigger element, light-dismissed via the HTML Popover API.",
+      "purpose": "Non-modal dialog anchored to a trigger element, light-dismissed via the HTML Popover API. For a list of actions or links, use PopoverMenu.",
       "platforms": ["html-css", "react"],
       "primaryProps": []
+    },
+    {
+      "name": "PopoverMenu",
+      "cssBlock": "dsn-popover-menu",
+      "category": "navigation",
+      "purpose": "List of actions or links in a floating panel opened from a trigger button; no dialog role, light-dismissed via the HTML Popover API.",
+      "platforms": ["html-css", "react"],
+      "primaryProps": [
+        {
+          "name": "placement",
+          "values": ["bottom", "top", "start", "end"],
+          "default": "bottom"
+        }
+      ]
     },
     {
       "name": "SummaryList",

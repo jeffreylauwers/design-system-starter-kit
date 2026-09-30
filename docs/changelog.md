@@ -10,6 +10,22 @@ All notable changes to this project are documented in this file.
 
 Nog niet gepubliceerde wijzigingen. Schrijf nieuwe changelog-entries hieronder; bij de volgende release wordt deze kop gepromoveerd naar het definitieve versienummer.
 
+### PopoverMenu: nieuw component, en de Popover is expliciet een dialog
+
+Nieuw component `PopoverMenu`: een lijst met acties of links in een zwevend paneel, geopend vanuit een triggerknop. Anders dan `Popover` heeft het paneel geen `role="dialog"`: het is een gewone lijst (`<ul class="dsn-menu" role="list">`) met `MenuButton`- en `MenuLink`-items, zodat een screenreader een actielijst niet meer als dialoogvenster aankondigt. Het menu sluit zichzelf zodra een item gekozen is. Nieuwe tokens in `popover-menu.json`; ze delegeren allemaal naar `dsn.popover.*`, ook de padding ([#419](https://github.com/jeffreylauwers/design-system-starter-kit/issues/419)).
+
+`Popover` blijft de niet-modale dialog, met dezelfde API; de `label`-prop blijft bestaan. Het gedrag dat beide delen (Popover API, positionering, `aria-expanded`, focusherstel) staat nu in een interne hook ([#410](https://github.com/jeffreylauwers/design-system-starter-kit/issues/410)).
+
+**Migratie (aanbevolen, niet breaking).** Een `Popover` met alleen een `Menu` erin wordt een `PopoverMenu`:
+
+| Voor                                                                                        | Na                                                                                                  |
+| ------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------- |
+| `<Popover label="…"><PopoverBody><Menu>…</Menu></PopoverBody></Popover>`                    | `<PopoverMenu>…</PopoverMenu>`                                                                      |
+| `onClick={close}` op elk item                                                               | weg: het menu sluit zelf; `onClick` alleen voor de actie                                            |
+| `class="dsn-popover" role="dialog" aria-modal="false" aria-label="…"` + `dsn-popover__body` | `class="dsn-popover-menu"`, zonder rol of naam, met `<ul class="dsn-menu" role="list">` direct erin |
+
+Het actiemenu in de Table-docs, de accountmenu's in de PageHeader-stories en de KitchenSink zijn omgezet. In een inverse `PageHeader` krijgt `.dsn-popover-menu` dezelfde kleurreset als `.dsn-popover`.
+
 ### Popover: focus alleen terug naar de trigger wanneer dat zinvol is
 
 Bij elke sluiting zette de Popover de focus terug op de trigger, ook na een klik ergens anders op de pagina. Nu gebeurt dat alleen als de focus bij het sluiten nog in de popover stond, zoals bij Escape, de sluitknop of een actie in de popover. Na een klik buiten de popover blijft de focus waar de gebruiker klikte. Geen API-wijziging ([#413](https://github.com/jeffreylauwers/design-system-starter-kit/issues/413)).

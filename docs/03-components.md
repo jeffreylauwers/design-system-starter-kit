@@ -2171,7 +2171,9 @@ const [isOpen, setIsOpen] = React.useState(false);
 - Positionering via JavaScript (`getBoundingClientRect` + `offsetWidth`/`offsetHeight`): RTL-bewust, automatisch viewport-clamping (8px marge)
 - CSS `max-inline-size: min(var(--dsn-popover-max-width), calc(100vw - 1rem))`: nooit breder dan het viewport op smalle schermen
 - Compound component patroon met React Context: `headingId` en `onClose` automatisch doorgegeven aan sub-componenten
-- `aria-labelledby` automatisch gekoppeld aan `PopoverHeading` via `React.useId()` (popovers met heading); `aria-label` via `label` prop (popovers zonder heading, bijv. contextmenu)
+- `aria-labelledby` automatisch gekoppeld aan `PopoverHeading` via `React.useId()` (popovers met heading); `aria-label` via `label` prop (popovers zonder zichtbare heading)
+- Semantisch een niet-modale dialog. Voor een lijst met acties of links: gebruik `PopoverMenu` (geen dialog-rol)
+- Openen, positioneren, sluiten en focusherstel gedeeld met `PopoverMenu` via de interne hook `usePopover` (`packages/components-react/src/utils/popover.ts`)
 - `aria-expanded` op het triggerelement: synchroon bijgehouden via `triggerRef` prop
 - Sluitknop (`dsn-button--icon-only`) automatisch geïnjecteerd in `PopoverHeader`
 - Open/sluitanimatie via `@starting-style`, `opacity`, `transform: scale` en `allow-discrete` voor `display` en `overlay`
@@ -2179,7 +2181,7 @@ const [isOpen, setIsOpen] = React.useState(false);
 - Fallback light-dismiss via `pointerdown` op `document` (voor iframe-grenzen en oudere browsers)
 - `placement` prop: `'bottom'` (default), `'top'`, `'end'`, `'start'`: `end`/`start` zijn RTL-bewust
 - `role="dialog"` + `aria-modal="false"`: niet-modaal, geen focus-trap, achtergrond blijft interactief
-- Focus springt bij openen naar het eerste interactieve element in de popover
+- Focus springt bij openen naar het eerste interactieve element in de popover; bij sluiten alleen terug naar de trigger als de focus nog in de popover stond
 - `level` prop op `PopoverHeading` (1–6, default `2`): visueel uiterlijk altijd gelijk
 - Reduceer-motie-ondersteuning via `prefers-reduced-motion: reduce`
 
@@ -2215,29 +2217,34 @@ const [isOpen, setIsOpen] = React.useState(false);
 <div class="dsn-popover-wrapper">
   <button
     type="button"
-    class="dsn-button dsn-button--subtle dsn-button--size-medium"
-    popovertarget="popover-demo"
+    class="dsn-button dsn-button--default dsn-button--size-default"
+    popovertarget="popover-filters"
     aria-expanded="false"
   >
-    <span class="dsn-button__label">Acties</span>
+    <span class="dsn-button__label">Filters</span>
   </button>
 
   <div
-    id="popover-demo"
+    id="popover-filters"
     popover="auto"
     class="dsn-popover dsn-popover--placement-bottom"
     role="dialog"
     aria-modal="false"
-    aria-label="Acties"
+    tabindex="-1"
+    aria-labelledby="popover-filters-heading"
   >
+    <div class="dsn-popover__header">
+      <h2 class="dsn-popover-heading" id="popover-filters-heading">Filters</h2>
+      <button
+        type="button"
+        class="dsn-button dsn-button--subtle dsn-button--size-small dsn-button--icon-only"
+      >
+        <svg class="dsn-icon" aria-hidden="true"><!-- x --></svg>
+        <span class="dsn-button__label">Sluiten</span>
+      </button>
+    </div>
     <div class="dsn-popover__body">
-      <ul class="dsn-menu" role="list">
-        <li>
-          <button type="button" class="dsn-menu-button">
-            <span class="dsn-menu-item__label">Bewerken</span>
-          </button>
-        </li>
-      </ul>
+      <p class="dsn-paragraph">Pas filters toe op de resultaten.</p>
     </div>
   </div>
 </div>
@@ -2249,20 +2256,20 @@ const [isOpen, setIsOpen] = React.useState(false);
 const triggerRef = React.useRef<HTMLButtonElement>(null);
 const [isOpen, setIsOpen] = React.useState(false);
 
-<Button ref={triggerRef} variant="subtle" onClick={() => setIsOpen((prev) => !prev)}>
-  Acties
+<Button ref={triggerRef} onClick={() => setIsOpen((prev) => !prev)}>
+  Filters
 </Button>
-<Popover isOpen={isOpen} onClose={() => setIsOpen(false)} triggerRef={triggerRef} label="Acties">
+<Popover isOpen={isOpen} onClose={() => setIsOpen(false)} triggerRef={triggerRef}>
+  <PopoverHeader>
+    <PopoverHeading>Filters</PopoverHeading>
+  </PopoverHeader>
   <PopoverBody>
-    <Menu>
-      <MenuButton onClick={() => setIsOpen(false)}>Bewerken</MenuButton>
-      <MenuButton onClick={() => setIsOpen(false)}>Verwijderen</MenuButton>
-    </Menu>
+    <Paragraph>Pas filters toe op de resultaten.</Paragraph>
   </PopoverBody>
 </Popover>
 ```
 
-**Tests:** React (37 tests)
+**Tests:** React (27 tests)
 
 ---
 
@@ -2573,6 +2580,89 @@ const [isOpen, setIsOpen] = React.useState(false);
 ```
 
 **Tests:** React (13 tests)
+
+---
+
+### PopoverMenu
+
+**Status:** Complete (HTML/CSS, React)
+
+**Location:** `packages/components-html/src/popover-menu/` / `packages/components-react/src/PopoverMenu/`
+
+**Tokens:** `tokens/components/popover-menu.json` (alle tokens delegeren naar `dsn.popover.*`)
+
+**Features:**
+
+- Lijst met acties (`MenuButton`) of links (`MenuLink`) in een zwevend paneel, geopend vanuit een triggerknop
+- Géén dialog: geen `role`, geen `aria-modal`, geen `aria-label` op het paneel. Ook bewust geen `role="menu"`/`menuitem`
+- Rendert zelf `<ul class="dsn-menu" role="list">`; `role="list"` omdat `.dsn-menu` de lijstmarkering verbergt (Safari/VoiceOver)
+- Sluit zichzelf na het activeren van een `MenuButton` of `MenuLink` (roept `onClose` aan, na het eigen `onClick` van het item). De uitklapknop van een `MenuLink` met sub-items sluit niet
+- Gedeeld gedrag met `Popover` via `usePopover`: Popover API, JS-positionering (RTL-bewust, viewport-clamping), `aria-expanded` op de trigger, focus naar het eerste item bij openen, focusherstel alleen als de focus nog in het paneel stond
+- Uiterlijk en binnenruimte gelijk aan `Popover`: alle tokens delegeren naar `dsn.popover.*`
+- Inverse `PageHeader` zet de menu-kleuren in `.dsn-popover-menu` terug naar standaard, net als bij `.dsn-popover`
+
+**CSS klassen:**
+
+| Klasse                                    | Element         | Beschrijving                                             |
+| ----------------------------------------- | --------------- | -------------------------------------------------------- |
+| `dsn-popover-menu-wrapper`                | `<div>`         | Relatief-gepositioneerde container voor CSS-only gebruik |
+| `dsn-popover-menu`                        | `<div popover>` | Paneel: stijl, animatie; geen rol                        |
+| `dsn-popover-menu--placement-{placement}` | `<div popover>` | CSS-only plaatsing: `bottom`, `top`, `end`, `start`      |
+
+**Props (React: PopoverMenu):**
+
+| Prop         | Type                                    | Default    | Beschrijving                                                       |
+| ------------ | --------------------------------------- | ---------- | ------------------------------------------------------------------ |
+| `isOpen`     | `boolean`                               | -          | Bepaalt of het menu getoond wordt                                  |
+| `onClose`    | `() => void`                            | -          | Callback bij sluiten (Escape, klik buiten, activeren van een item) |
+| `triggerRef` | `React.RefObject<HTMLElement>`          | -          | Trigger voor positionering, `aria-expanded` en focusherstel        |
+| `placement`  | `'top' \| 'bottom' \| 'start' \| 'end'` | `'bottom'` | Plaatsing relatief aan de trigger                                  |
+| `iconStart`  | `boolean`                               | `false`    | Doorgegeven aan `Menu`: ruimte voor iconen vóór de labels          |
+| `children`   | `React.ReactNode`                       | -          | `MenuButton`- en/of `MenuLink`-items                               |
+
+**HTML/CSS:**
+
+```html
+<button
+  type="button"
+  class="dsn-button dsn-button--subtle dsn-button--size-default"
+  popovertarget="popover-menu-acties"
+  aria-expanded="false"
+>
+  <span class="dsn-button__label">Acties</span>
+</button>
+
+<div
+  id="popover-menu-acties"
+  popover="auto"
+  class="dsn-popover-menu dsn-popover-menu--placement-bottom"
+>
+  <ul class="dsn-menu" role="list">
+    <li class="dsn-menu-button">
+      <button type="button" class="dsn-menu-button__button">
+        <span class="dsn-menu-button__label">Bewerken</span>
+      </button>
+    </li>
+  </ul>
+</div>
+```
+
+**React:**
+
+```tsx
+const triggerRef = React.useRef<HTMLButtonElement>(null);
+const [isOpen, setIsOpen] = React.useState(false);
+
+<Button ref={triggerRef} variant="subtle" onClick={() => setIsOpen((prev) => !prev)}>
+  Acties
+</Button>
+<PopoverMenu isOpen={isOpen} onClose={() => setIsOpen(false)} triggerRef={triggerRef}>
+  <MenuButton onClick={edit}>Bewerken</MenuButton>
+  <MenuButton onClick={remove}>Verwijderen</MenuButton>
+</PopoverMenu>
+```
+
+**Tests:** React (16 tests)
 
 ---
 
