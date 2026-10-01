@@ -23,7 +23,6 @@ const meta: Meta<typeof Popover> = {
     type="button"
     class="dsn-button dsn-button--default dsn-button--size-default"
     popovertarget="popover-filters"
-    aria-expanded="false"
   >
     <span class="dsn-button__label">Filters</span>
   </button>
@@ -38,12 +37,14 @@ const meta: Meta<typeof Popover> = {
     aria-labelledby="popover-filters-heading"
   >
     <div class="dsn-popover__header">
-      <h2 class="dsn-popover-heading" id="popover-filters-heading" tabindex="-1">
+      <h2 class="dsn-popover-heading" id="popover-filters-heading" tabindex="-1" autofocus>
         Filters
       </h2>
       <button
         type="button"
         class="dsn-button dsn-button--subtle dsn-button--size-small dsn-button--icon-only"
+        popovertarget="popover-filters"
+        popovertargetaction="hide"
       >
         <svg class="dsn-icon" aria-hidden="true"><!-- x --></svg>
         <span class="dsn-button__label">Sluiten</span>

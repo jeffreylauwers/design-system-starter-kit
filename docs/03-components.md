@@ -1928,6 +1928,7 @@ Brengt consistente verticale ruimte aan tussen directe child-elementen via `flex
 - `flex-direction: column` op de basis-selector: voorkomt layout-glitch tijdens sluitanimatie
 - Reduceer-motie-ondersteuning via `prefers-reduced-motion: reduce`
 - `level` prop op `ModalDialogHeading` (1–6, default `2`): visueel uiterlijk altijd gelijk
+- HTML/CSS-laag zonder eigen JavaScript: `commandfor` + `command="show-modal"` / `command="close"`, `autofocus` op de heading (Chrome 135, Firefox 144, Safari 26.2). De React-laag gebruikt invokers bewust niet: daar is `isOpen` de bron van de open-staat
 
 **CSS klassen:**
 
@@ -1957,11 +1958,13 @@ Brengt consistente verticale ruimte aan tussen directe child-elementen via `flex
   type="button"
   class="dsn-button dsn-button--default dsn-button--size-medium"
   aria-expanded="false"
-  onclick="this.nextElementSibling.showModal()"
+  commandfor="dialog"
+  command="show-modal"
 >
   <span class="dsn-button__label">Dialoogvenster</span>
 </button>
 <dialog
+  id="dialog"
   class="dsn-modal-dialog"
   role="alertdialog"
   tabindex="-1"
@@ -1969,13 +1972,19 @@ Brengt consistente verticale ruimte aan tussen directe child-elementen via `flex
   aria-describedby="dialog-body"
 >
   <div class="dsn-modal-dialog__header">
-    <h2 class="dsn-modal-dialog-heading" id="dialog-title" tabindex="-1">
+    <h2
+      class="dsn-modal-dialog-heading"
+      id="dialog-title"
+      tabindex="-1"
+      autofocus
+    >
       Bevestig verwijderen
     </h2>
     <button
       type="button"
       class="dsn-button dsn-button--subtle dsn-button--size-small dsn-button--icon-only"
-      onclick="this.closest('dialog').close()"
+      commandfor="dialog"
+      command="close"
     >
       <svg class="dsn-icon" aria-hidden="true"><!-- x --></svg>
       <span class="dsn-button__label">Sluiten</span>
@@ -1989,14 +1998,16 @@ Brengt consistente verticale ruimte aan tussen directe child-elementen via `flex
       <button
         type="button"
         class="dsn-button dsn-button--strong-negative dsn-button--size-medium"
-        onclick="this.closest('dialog').close()"
+        commandfor="dialog"
+        command="close"
       >
         <span class="dsn-button__label">Verwijderen</span>
       </button>
       <button
         type="button"
         class="dsn-button dsn-button--default dsn-button--size-medium"
-        onclick="this.closest('dialog').close()"
+        commandfor="dialog"
+        command="close"
       >
         <span class="dsn-button__label">Annuleren</span>
       </button>
@@ -2061,6 +2072,8 @@ const [isOpen, setIsOpen] = React.useState(false);
 - `max-width` begrensd via token; `min-gap` garandeert dat de achtergrondpagina zichtbaar blijft
 - Reduceer-motie-ondersteuning via `prefers-reduced-motion: reduce`
 - `level` prop op `DrawerHeading` (1–6, default `2`): visueel uiterlijk altijd gelijk
+- HTML/CSS-laag zonder eigen JavaScript (modaal): `commandfor` + `command="show-modal"` / `command="close"`, `autofocus` op de heading (Chrome 135, Firefox 144, Safari 26.2). De React-laag gebruikt invokers bewust niet: daar is `isOpen` de bron van de open-staat
+- Non-modaal in de HTML/CSS-laag: `popovertarget` openen en sluiten; Escape en het terugzetten van de focus vragen een kort script (manual popover)
 
 **CSS klassen:**
 
@@ -2093,23 +2106,26 @@ const [isOpen, setIsOpen] = React.useState(false);
   type="button"
   class="dsn-button dsn-button--default dsn-button--size-medium"
   aria-expanded="false"
-  onclick="this.nextElementSibling.showModal()"
+  commandfor="drawer"
+  command="show-modal"
 >
   <span class="dsn-button__label">Zijpaneel</span>
 </button>
 <dialog
+  id="drawer"
   class="dsn-drawer dsn-drawer--side-right"
   tabindex="-1"
   aria-labelledby="drawer-title"
 >
   <div class="dsn-drawer__header">
-    <h2 class="dsn-drawer-heading" id="drawer-title" tabindex="-1">
+    <h2 class="dsn-drawer-heading" id="drawer-title" tabindex="-1" autofocus>
       Zijpaneel titel
     </h2>
     <button
       type="button"
       class="dsn-button dsn-button--subtle dsn-button--size-small dsn-button--icon-only"
-      onclick="this.closest('dialog').close()"
+      commandfor="drawer"
+      command="close"
     >
       <svg class="dsn-icon" aria-hidden="true"><!-- x --></svg>
       <span class="dsn-button__label">Sluiten</span>
@@ -2123,14 +2139,16 @@ const [isOpen, setIsOpen] = React.useState(false);
       <button
         type="button"
         class="dsn-button dsn-button--strong dsn-button--size-medium"
-        onclick="this.closest('dialog').close()"
+        commandfor="drawer"
+        command="close"
       >
         <span class="dsn-button__label">Toepassen</span>
       </button>
       <button
         type="button"
         class="dsn-button dsn-button--default dsn-button--size-medium"
-        onclick="this.closest('dialog').close()"
+        commandfor="drawer"
+        command="close"
       >
         <span class="dsn-button__label">Annuleren</span>
       </button>
@@ -2194,6 +2212,7 @@ const [isOpen, setIsOpen] = React.useState(false);
 - Focus bij openen op de `PopoverHeading` (`tabindex="-1"`), zonder heading op de popover zelf (DR-2026-12); bij sluiten alleen terug naar de trigger als de focus nog in de popover stond
 - `level` prop op `PopoverHeading` (1–6, default `2`): visueel uiterlijk altijd gelijk
 - Reduceer-motie-ondersteuning via `prefers-reduced-motion: reduce`
+- HTML/CSS-laag zonder eigen JavaScript: `popovertarget` op de trigger (geen vaste `aria-expanded`, de browser geeft die status zelf door), `popovertargetaction="hide"` op de sluitknop, `autofocus` op de heading. De React-laag gebruikt `popovertarget` bewust niet: daar is `isOpen` de bron van de open-staat, en de positionering vraagt toch JavaScript
 
 **CSS klassen:**
 
@@ -2229,7 +2248,6 @@ const [isOpen, setIsOpen] = React.useState(false);
     type="button"
     class="dsn-button dsn-button--default dsn-button--size-default"
     popovertarget="popover-filters"
-    aria-expanded="false"
   >
     <span class="dsn-button__label">Filters</span>
   </button>
@@ -2248,12 +2266,15 @@ const [isOpen, setIsOpen] = React.useState(false);
         class="dsn-popover-heading"
         id="popover-filters-heading"
         tabindex="-1"
+        autofocus
       >
         Filters
       </h2>
       <button
         type="button"
         class="dsn-button dsn-button--subtle dsn-button--size-small dsn-button--icon-only"
+        popovertarget="popover-filters"
+        popovertargetaction="hide"
       >
         <svg class="dsn-icon" aria-hidden="true"><!-- x --></svg>
         <span class="dsn-button__label">Sluiten</span>
@@ -2616,6 +2637,7 @@ const [isOpen, setIsOpen] = React.useState(false);
 - Gedeeld gedrag met `Popover` via `usePopover`: Popover API, JS-positionering (RTL-bewust, viewport-clamping), `aria-expanded` op de trigger, focus naar het eerste item bij openen, focusherstel alleen als de focus nog in het paneel stond
 - Uiterlijk en binnenruimte gelijk aan `Popover`: alle tokens delegeren naar `dsn.popover.*`
 - Inverse `PageHeader` zet de menu-kleuren in `.dsn-popover-menu` terug naar standaard, net als bij `.dsn-popover`
+- HTML/CSS-laag zonder eigen JavaScript: `popovertarget` op de trigger (geen vaste `aria-expanded`, de browser geeft die status zelf door); na een keuze `hidePopover()` aanroepen. De React-laag gebruikt `popovertarget` bewust niet: daar is `isOpen` de bron van de open-staat, en de positionering vraagt toch JavaScript
 
 **CSS klassen:**
 
@@ -2643,7 +2665,6 @@ const [isOpen, setIsOpen] = React.useState(false);
   type="button"
   class="dsn-button dsn-button--subtle dsn-button--size-default"
   popovertarget="popover-menu-acties"
-  aria-expanded="false"
 >
   <span class="dsn-button__label">Acties</span>
 </button>

@@ -41,7 +41,7 @@ De toegestane, bewuste afwijkingen van de letterlijke render zijn:
 
 1. **Statische id's in plaats van React `useId`-waarden**: `id="dialog-title"` in plaats van `:R2:`. De koppeling (`aria-labelledby` ↔ `id`) moet binnen het voorbeeld kloppen.
 2. **SVG-inhoud als comment**: `<svg class="dsn-icon" aria-hidden="true"><!-- icoon-naam --></svg>` in plaats van de volledige path-data. Het svg-element zelf, inclusief klassen zoals `dsn-icon--xl`, staat wél in het voorbeeld.
-3. **Didactische interactie-attributen voor de HTML/CSS-laag**: `onclick="this.closest('dialog').close()"`, `popovertarget`, `aria-expanded` mogen in het voorbeeld staan waar de React-laag dit via props/refs regelt.
+3. **Didactische interactie-attributen voor de HTML/CSS-laag**: `onclick="this.closest('dialog').close()"`, `popovertarget`, `aria-expanded` mogen in het voorbeeld staan waar de React-laag dit via props/refs regelt. Sinds #416 hebben declaratieve attributen de voorkeur boven `onclick`: `commandfor`/`command` voor dialogs, `popovertarget`/`popovertargetaction` voor popovers, en `autofocus` op de heading voor de focus bij openen. Bij een trigger met `popovertarget` staat geen vaste `aria-expanded`: de browser geeft die status zelf door, en een vaste waarde zou hem overschrijven.
 4. **Story-scaffolding blijft buiten het codeblok**: wrappers, paddings en gesimuleerde paginacontext uit de Default story horen niet in het voorbeeld; alleen de component-markup zelf.
 
 Verificatie gebeurt door de `htmlTemplate`-output te vergelijken met `renderToStaticMarkup` van de component met dezelfde args (zoals uitgevoerd in PR #310, waar 28 afwijkende templates zijn gecorrigeerd en 6 ontbrekende zijn toegevoegd).

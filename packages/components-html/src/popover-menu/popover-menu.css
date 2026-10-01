@@ -20,8 +20,12 @@
  *   is hier de juiste semantiek.
  * - role="list" op de <ul>: .dsn-menu zet list-style: none, en dan laat
  *   Safari/VoiceOver de lijstaankondiging anders weg.
- * - aria-expanded op het triggerelement, synchroon met de open-staat. De
- *   context ("Toon acties voor Laptop Pro") zit in het label van de trigger.
+ * - Uitgevouwen-status op het triggerelement: met popovertarget leidt de
+ *   browser die zelf af, zet dan geen vaste aria-expanded. De context
+ *   ("Toon acties voor Laptop Pro") zit in het label van de trigger.
+ * - Zonder JavaScript sluit het menu niet na een keuze: roep in de
+ *   actie-handler hidePopover() aan. De focus gaat dan vanzelf terug naar
+ *   de trigger (popover="auto").
  *
  * HTML-structuur:
  *
@@ -29,7 +33,6 @@
  *   type="button"
  *   class="dsn-button dsn-button--subtle dsn-button--size-small dsn-button--icon-only"
  *   popovertarget="acties-laptop-pro"
- *   aria-expanded="false"
  * >
  *   <svg class="dsn-icon" aria-hidden="true"><!-- dots-vertical --></svg>
  *   <span class="dsn-button__label">Toon acties</span>

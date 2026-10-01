@@ -10,7 +10,11 @@
  * - role="dialog" aria-modal="false" — niet-modaal: achtergrond blijft interactief
  * - aria-labelledby → .dsn-popover-heading id (via PopoverHeading + context)
  * - aria-label → via `label` prop (popovers zonder heading)
- * - aria-expanded op het triggerelement — synchroon met open-staat
+ * - Uitgevouwen-status op het triggerelement: met popovertarget leidt de
+ *   browser die zelf af, zet dan geen vaste aria-expanded. De React-laag
+ *   zet aria-expanded zelf, omdat die geen popovertarget gebruikt.
+ * - Focus bij openen op de heading via autofocus (tabindex="-1"), sluiten
+ *   via popovertargetaction="hide" op de sluitknop. Geen JavaScript nodig.
  *
  * HTML-structuur (volledig — met header en footer):
  *
@@ -19,7 +23,6 @@
  *     type="button"
  *     class="dsn-button dsn-button--subtle dsn-button--size-small dsn-button--icon-only"
  *     popovertarget="popover-id"
- *     aria-expanded="false"
  *   >
  *     <svg class="dsn-icon" aria-hidden="true"><!-- dots-vertical --></svg>
  *     <span class="dsn-button__label">Acties</span>
@@ -34,8 +37,8 @@
  *     aria-labelledby="popover-heading-id"
  *   >
  *     <div class="dsn-popover__header">
- *       <h2 class="dsn-popover-heading" id="popover-heading-id" tabindex="-1">Titel</h2>
- *       <button type="button" class="dsn-button dsn-button--subtle dsn-button--size-small dsn-button--icon-only">
+ *       <h2 class="dsn-popover-heading" id="popover-heading-id" tabindex="-1" autofocus>Titel</h2>
+ *       <button type="button" class="dsn-button dsn-button--subtle dsn-button--size-small dsn-button--icon-only" popovertarget="popover-id" popovertargetaction="hide">
  *         <svg class="dsn-icon" aria-hidden="true"><!-- x --></svg>
  *         <span class="dsn-button__label">Sluiten</span>
  *       </button>

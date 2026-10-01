@@ -47,10 +47,13 @@ const triggerRef = useRef<HTMLButtonElement>(null);
     </ActionGroup>
   </DrawerFooter>
 </Drawer>`}
-  html={`<dialog class="dsn-drawer dsn-drawer--side-right" open tabindex="-1" aria-labelledby="drawer-title">
+  html={`<button type="button" class="dsn-button dsn-button--default dsn-button--size-default" aria-expanded="false" commandfor="drawer" command="show-modal">
+  <span class="dsn-button__label">Zijpaneel openen</span>
+</button>
+<dialog id="drawer" class="dsn-drawer dsn-drawer--side-right" tabindex="-1" aria-labelledby="drawer-title">
   <div class="dsn-drawer__header">
-    <h2 class="dsn-drawer-heading" id="drawer-title" tabindex="-1">Zijpaneel titel</h2>
-    <button type="button" class="dsn-button dsn-button--subtle dsn-button--size-small dsn-button--icon-only">
+    <h2 class="dsn-drawer-heading" id="drawer-title" tabindex="-1" autofocus>Zijpaneel titel</h2>
+    <button type="button" class="dsn-button dsn-button--subtle dsn-button--size-small dsn-button--icon-only" commandfor="drawer" command="close">
       <svg class="dsn-icon" aria-hidden="true"><!-- x --></svg>
       <span class="dsn-button__label">Sluiten</span>
     </button>
@@ -61,12 +64,12 @@ const triggerRef = useRef<HTMLButtonElement>(null);
   <div class="dsn-drawer__footer">
     <ul class="dsn-action-group" aria-label="Acties">
       <li class="dsn-action-group__item">
-        <button type="button" class="dsn-button dsn-button--strong dsn-button--size-medium">
+        <button type="button" class="dsn-button dsn-button--strong dsn-button--size-default" commandfor="drawer" command="close">
           <span class="dsn-button__label">Toepassen</span>
         </button>
       </li>
       <li class="dsn-action-group__item">
-        <button type="button" class="dsn-button dsn-button--default dsn-button--size-medium">
+        <button type="button" class="dsn-button dsn-button--default dsn-button--size-default" commandfor="drawer" command="close">
           <span class="dsn-button__label">Annuleren</span>
         </button>
       </li>
