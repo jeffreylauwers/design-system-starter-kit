@@ -146,7 +146,7 @@ De `DrawerHeading` heeft `tabindex="-1"` en krijgt bij openen de focus. Zonder d
 
 Is er geen `DrawerHeading`, dan krijgt het `<dialog>` zelf de focus. De focusomtrek op de heading verschijnt alleen bij toetsenbordgebruik, via `:focus-visible`.
 
-Dit wijkt bewust af van het veelgehoorde advies om de focus op het eerste formulierveld of de minst destructieve knop te zetten: het component weet niet wat erin staat, en beide slaan de titel over. Een `autofocus`-attribuut in de inhoud heeft daarom geen effect. De afweging staat in decision record DR-2026-12 (`docs/decisions/DR-2026-12-dialogs-focus-bij-openen-op-de-heading.md`).
+Dit wijkt bewust af van het veelgehoorde advies om de focus op het eerste formulierveld of de minst destructieve knop te zetten: het component weet niet wat erin staat, en beide slaan de titel over. Een `autofocus`-attribuut in de inhoud heeft daarom geen effect.
 
 ### Focus binnen het paneel houden
 

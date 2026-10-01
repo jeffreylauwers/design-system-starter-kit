@@ -99,7 +99,7 @@ Het triggerelement (bijv. `Button`) krijgt automatisch `aria-expanded="true/fals
 
 - `Escape` sluit de popover en zet focus terug op het triggerelement.
 - Klik buiten de popover (light-dismiss via Popover API) sluit de popover. De focus blijft dan waar de gebruiker klikte en springt niet terug naar de trigger.
-- Bij openen krijgt de `PopoverHeading` de focus (die heeft `tabindex="-1"`), niet de sluitknop. Zo wordt de titel als eerste voorgelezen, net als bij ModalDialog en Drawer. Zonder heading krijgt de popover zelf de focus. De focusomtrek op de heading verschijnt alleen bij toetsenbordgebruik. De afweging staat in decision record DR-2026-12 (`docs/decisions/DR-2026-12-dialogs-focus-bij-openen-op-de-heading.md`).
+- Bij openen krijgt de `PopoverHeading` de focus (die heeft `tabindex="-1"`), niet de sluitknop. Zo wordt de titel als eerste voorgelezen, net als bij ModalDialog en Drawer. Zonder heading krijgt de popover zelf de focus. De focusomtrek op de heading verschijnt alleen bij toetsenbordgebruik.
 - Tab-volgorde blijft lineair: focus mag buiten de popover bewegen (geen focus-trap).
 - Bij sluiten gaat de focus alleen terug naar de trigger als die op dat moment nog in de popover stond (Escape, de sluitknop, een actie in de popover). Stond de focus al ergens anders, dan blijft hij daar.
 
