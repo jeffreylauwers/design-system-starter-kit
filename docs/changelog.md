@@ -10,27 +10,9 @@ All notable changes to this project are documented in this file.
 
 Nog niet gepubliceerde wijzigingen. Schrijf nieuwe changelog-entries hieronder; bij de volgende release wordt deze kop gepromoveerd naar het definitieve versienummer.
 
-### HTML/CSS-laag: dialogs en popovers openen zonder eigen JavaScript
+## Version 4.1.0 (October 1, 2026)
 
-De HTML-voorbeelden van ModalDialog, Drawer, Popover en PopoverMenu openen en sluiten nu declaratief, zonder `onclick`. Dialogs gebruiken invoker commands (`commandfor` met `command="show-modal"` en `command="close"`), popovers `popovertarget` en `popovertargetaction="hide"`. De heading krijgt `autofocus`, zodat de focus bij openen op de titel komt, net als in de React-laag. De sluitknop van de Popover deed in pure HTML niets en sluit nu. Triggers met `popovertarget` hebben geen vaste `aria-expanded` meer: de browser geeft die status zelf door. Elke docs-pagina heeft een sectie "Zonder JavaScript" met browserondersteuning (`command`/`commandfor`: Chrome 135, Firefox 144, Safari 26.2) en een terugval met een paar regels JS. De non-modale Drawer heeft een kort script nodig voor Escape en het terugzetten van de focus; de story "Non-modal" toont het. De React-componenten gebruiken invokers bewust niet: daar is `isOpen` de bron van de open-staat. Geen wijziging in de React-API ([#416](https://github.com/jeffreylauwers/design-system-starter-kit/issues/416)).
-
-### ModalDialog: alertdialog-variant
-
-Nieuwe prop `alert` op `ModalDialog` voor dringende meldingen die een reactie vragen, zoals de bevestiging van een destructieve actie. Het `<dialog>` krijgt dan `role="alertdialog"`, en de `ModalDialogBody` wordt via `aria-describedby` gekoppeld, zodat een screenreader bij openen naast de titel ook de boodschap voorleest. De focus blijft op de heading (DR-2026-12). `ModalDialogBody` krijgt daarvoor altijd een automatisch `id`. Geen visuele wijziging en geen nieuwe CSS. Nieuwe story `Alert` ([#415](https://github.com/jeffreylauwers/design-system-starter-kit/issues/415)).
-
-**Voor wie alleen de HTML/CSS-laag gebruikt:** zet `role="alertdialog"` op de `<dialog>`, geef de body een `id` en verwijs ernaar met `aria-describedby`.
-
-### Focus bij openen: decision record, en de Popover volgt hetzelfde patroon
-
-Nieuw decision record [DR-2026-12](decisions/DR-2026-12-dialogs-focus-bij-openen-op-de-heading.md) legt vast waarom ModalDialog, Drawer en Popover bij openen de focus op de heading zetten, en niet op het eerste formulierveld of de minst destructieve knop. Code-commentaar en de Accessibility-secties verwijzen ernaar. De Drawer-docs beschrijven nu ook correct hoe de focus bij sluiten terugkeert in de non-modale variant ([#414](https://github.com/jeffreylauwers/design-system-starter-kit/issues/414)).
-
-**Gedragswijziging in `Popover`.** De Popover zette de focus bij openen op het eerste interactieve element; met een `PopoverHeader` was dat de sluitknop. Nu krijgt de `PopoverHeading` de focus, en zonder heading de popover zelf. `PopoverHeading` rendert daarvoor `tabindex="-1"`, met een focusomtrek alleen bij toetsenbordgebruik. Wie de HTML/CSS-laag gebruikt: zet `tabindex="-1"` op de `dsn-popover-heading` en focus die bij openen. `PopoverMenu` blijft op het eerste item focussen.
-
-### Drawer: non-modale variant in de top layer
-
-De non-modale Drawer (`modal={false}`) opende via `dialog.show()`, en bleef daarmee in de gewone stapelvolgorde. Een sticky `PageHeader` kon eroverheen vallen, en een voorouder met `transform` of `filter` brak de `position: fixed`. Het paneel is nu een `<dialog popover="manual">` en opent via `.showPopover()`: het staat in de top layer, net als de modale variant, zonder de pagina inert te maken. De CSS reageert daarvoor naast `[open]` ook op `:popover-open`. Omdat `hidePopover()` de focus niet herstelt, zet de Drawer hem zelf terug naar waar hij vóór het openen stond, als hij nog in het paneel stond. API ongewijzigd ([#411](https://github.com/jeffreylauwers/design-system-starter-kit/issues/411)).
-
-**Voor wie alleen de HTML/CSS-laag gebruikt:** zet `popover="manual"` op de `<dialog>` van een non-modale Drawer en open hem met `.showPopover()` in plaats van `.show()`.
+Minor release, zonder breaking changes. Aanleiding was een vergelijking van onze overlays met het artikel van Hidde de Vries over dialogs, modaliteit en popovers. Nieuw is het component `PopoverMenu`, een lijst met acties of links zonder dialog-rol, en de prop `alert` op `ModalDialog` voor een alertdialog. De `Popover` is nu expliciet een niet-modale dialog. De niet-modale `Drawer` staat in de top layer, zodat een sticky header er niet meer overheen valt. ModalDialog, Drawer en Popover zetten de focus bij openen op de heading; de Popover deed dat nog niet. Verder geven de HTML-voorbeelden aan hoe je dialogs en popovers zonder eigen JavaScript opent, met `commandfor`/`command` en `popovertarget`. De bestaande markup en API's blijven werken; waar de HTML-laag een nieuwe aanpak aanbeveelt, staat dat bij de entry.
 
 ### PopoverMenu: nieuw component, en de Popover is expliciet een dialog
 
@@ -48,9 +30,31 @@ Nieuw component `PopoverMenu`: een lijst met acties of links in een zwevend pane
 
 Het actiemenu in de Table-docs, de accountmenu's in de PageHeader-stories en de KitchenSink zijn omgezet. In een inverse `PageHeader` krijgt `.dsn-popover-menu` dezelfde kleurreset als `.dsn-popover`.
 
+### ModalDialog: alertdialog-variant
+
+Nieuwe prop `alert` op `ModalDialog` voor dringende meldingen die een reactie vragen, zoals de bevestiging van een destructieve actie. Het `<dialog>` krijgt dan `role="alertdialog"`, en de `ModalDialogBody` wordt via `aria-describedby` gekoppeld, zodat een screenreader bij openen naast de titel ook de boodschap voorleest. De focus blijft op de heading (DR-2026-12). `ModalDialogBody` krijgt daarvoor altijd een automatisch `id`. Geen visuele wijziging en geen nieuwe CSS. Nieuwe story `Alert` ([#415](https://github.com/jeffreylauwers/design-system-starter-kit/issues/415)).
+
+**Voor wie alleen de HTML/CSS-laag gebruikt:** zet `role="alertdialog"` op de `<dialog>`, geef de body een `id` en verwijs ernaar met `aria-describedby`.
+
+### Drawer: non-modale variant in de top layer
+
+De non-modale Drawer (`modal={false}`) opende via `dialog.show()`, en bleef daarmee in de gewone stapelvolgorde. Een sticky `PageHeader` kon eroverheen vallen, en een voorouder met `transform` of `filter` brak de `position: fixed`. Het paneel is nu een `<dialog popover="manual">` en opent via `.showPopover()`: het staat in de top layer, net als de modale variant, zonder de pagina inert te maken. De CSS reageert daarvoor naast `[open]` ook op `:popover-open`. Omdat `hidePopover()` de focus niet herstelt, zet de Drawer hem zelf terug naar waar hij vóór het openen stond, als hij nog in het paneel stond. API ongewijzigd ([#411](https://github.com/jeffreylauwers/design-system-starter-kit/issues/411)).
+
+**Voor wie alleen de HTML/CSS-laag gebruikt:** zet `popover="manual"` op de `<dialog>` van een non-modale Drawer en open hem met `.showPopover()` in plaats van `.show()`.
+
+### Focus bij openen: decision record, en de Popover volgt hetzelfde patroon
+
+Nieuw decision record [DR-2026-12](decisions/DR-2026-12-dialogs-focus-bij-openen-op-de-heading.md) legt vast waarom ModalDialog, Drawer en Popover bij openen de focus op de heading zetten, en niet op het eerste formulierveld of de minst destructieve knop. Code-commentaar en de Accessibility-secties verwijzen ernaar. De Drawer-docs beschrijven nu ook correct hoe de focus bij sluiten terugkeert in de non-modale variant ([#414](https://github.com/jeffreylauwers/design-system-starter-kit/issues/414)).
+
+**Gedragswijziging in `Popover`.** De Popover zette de focus bij openen op het eerste interactieve element; met een `PopoverHeader` was dat de sluitknop. Nu krijgt de `PopoverHeading` de focus, en zonder heading de popover zelf. `PopoverHeading` rendert daarvoor `tabindex="-1"`, met een focusomtrek alleen bij toetsenbordgebruik. Wie de HTML/CSS-laag gebruikt: zet `tabindex="-1"` op de `dsn-popover-heading` en focus die bij openen. `PopoverMenu` blijft op het eerste item focussen.
+
 ### Popover: focus alleen terug naar de trigger wanneer dat zinvol is
 
 Bij elke sluiting zette de Popover de focus terug op de trigger, ook na een klik ergens anders op de pagina. Nu gebeurt dat alleen als de focus bij het sluiten nog in de popover stond, zoals bij Escape, de sluitknop of een actie in de popover. Na een klik buiten de popover blijft de focus waar de gebruiker klikte. Geen API-wijziging ([#413](https://github.com/jeffreylauwers/design-system-starter-kit/issues/413)).
+
+### HTML/CSS-laag: dialogs en popovers openen zonder eigen JavaScript
+
+De HTML-voorbeelden van ModalDialog, Drawer, Popover en PopoverMenu openen en sluiten nu declaratief, zonder `onclick`. Dialogs gebruiken invoker commands (`commandfor` met `command="show-modal"` en `command="close"`), popovers `popovertarget` en `popovertargetaction="hide"`. De heading krijgt `autofocus`, zodat de focus bij openen op de titel komt, net als in de React-laag. De sluitknop van de Popover deed in pure HTML niets en sluit nu. Triggers met `popovertarget` hebben geen vaste `aria-expanded` meer: de browser geeft die status zelf door. Elke docs-pagina heeft een sectie "Zonder JavaScript" met browserondersteuning (`command`/`commandfor`: Chrome 135, Firefox 144, Safari 26.2) en een terugval met een paar regels JS. De non-modale Drawer heeft een kort script nodig voor Escape en het terugzetten van de focus; de story "Non-modal" toont het. De React-componenten gebruiken invokers bewust niet: daar is `isOpen` de bron van de open-staat. Geen wijziging in de React-API ([#416](https://github.com/jeffreylauwers/design-system-starter-kit/issues/416)).
 
 ### ModalDialog: docs over sluiten gecorrigeerd
 
