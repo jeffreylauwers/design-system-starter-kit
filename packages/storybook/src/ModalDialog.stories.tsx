@@ -72,9 +72,11 @@ type Story = StoryObj<typeof ModalDialog>;
 
 function DialogWithTrigger({
   triggerLabel = 'Dialoogvenster openen',
+  alert = false,
   children,
 }: {
   triggerLabel?: string;
+  alert?: boolean;
   children: (close: () => void) => React.ReactNode;
 }) {
   const [isOpen, setIsOpen] = React.useState(false);
@@ -93,6 +95,7 @@ function DialogWithTrigger({
         isOpen={isOpen}
         onClose={() => setIsOpen(false)}
         triggerRef={triggerRef}
+        alert={alert}
       >
         {children(() => setIsOpen(false))}
       </ModalDialog>
@@ -119,6 +122,80 @@ export const Default: Story = {
             <ActionGroup>
               <Button variant="strong" onClick={close}>
                 Bevestigen
+              </Button>
+              <Button variant="default" onClick={close}>
+                Annuleren
+              </Button>
+            </ActionGroup>
+          </ModalDialogFooter>
+        </>
+      )}
+    </DialogWithTrigger>
+  ),
+};
+
+// =============================================================================
+// ALERT
+// =============================================================================
+
+/**
+ * Alertdialog: een dringende melding die een reactie vraagt. `role="alertdialog"`
+ * plus `aria-describedby` naar de body, zodat de boodschap bij openen wordt
+ * voorgelezen. De focus komt net als anders op de heading.
+ */
+export const Alert: Story = {
+  parameters: {
+    dsn: {
+      htmlTemplate: () => {
+        return `<button type="button" class="dsn-button dsn-button--default dsn-button--size-default" aria-expanded="false" onclick="const t = this, d = document.getElementById('dialog-alert'); t.setAttribute('aria-expanded', 'true'); d.addEventListener('close', () => t.setAttribute('aria-expanded', 'false'), { once: true }); d.showModal(); d.querySelector('.dsn-modal-dialog-heading').focus();">
+  <span class="dsn-button__label">Item verwijderen</span>
+</button>
+<dialog id="dialog-alert" class="dsn-modal-dialog" role="alertdialog" tabindex="-1" aria-labelledby="dialog-alert-title" aria-describedby="dialog-alert-body">
+  <div class="dsn-modal-dialog__header">
+    <h2 class="dsn-modal-dialog-heading" id="dialog-alert-title" tabindex="-1">Item verwijderen?</h2>
+    <button type="button" class="dsn-button dsn-button--subtle dsn-button--size-small dsn-button--icon-only" onclick="this.closest('dialog').close()">
+      <svg class="dsn-icon" aria-hidden="true"><!-- x --></svg>
+      <span class="dsn-button__label">Sluiten</span>
+    </button>
+  </div>
+  <div class="dsn-modal-dialog__body" id="dialog-alert-body">
+    <p class="dsn-paragraph">Laptop Pro wordt definitief verwijderd. Dit kan niet ongedaan worden gemaakt.</p>
+  </div>
+  <div class="dsn-modal-dialog__footer">
+    <ul class="dsn-action-group" aria-label="Acties">
+      <li class="dsn-action-group__item">
+        <button type="button" class="dsn-button dsn-button--strong-negative dsn-button--size-default" onclick="this.closest('dialog').close()">
+          <span class="dsn-button__label">Verwijderen</span>
+        </button>
+      </li>
+      <li class="dsn-action-group__item">
+        <button type="button" class="dsn-button dsn-button--default dsn-button--size-default" onclick="this.closest('dialog').close()">
+          <span class="dsn-button__label">Annuleren</span>
+        </button>
+      </li>
+    </ul>
+  </div>
+</dialog>`;
+      },
+    },
+  },
+  render: () => (
+    <DialogWithTrigger triggerLabel="Item verwijderen" alert>
+      {(close) => (
+        <>
+          <ModalDialogHeader>
+            <ModalDialogHeading>Item verwijderen?</ModalDialogHeading>
+          </ModalDialogHeader>
+          <ModalDialogBody>
+            <Paragraph>
+              Laptop Pro wordt definitief verwijderd. Dit kan niet ongedaan
+              worden gemaakt.
+            </Paragraph>
+          </ModalDialogBody>
+          <ModalDialogFooter>
+            <ActionGroup>
+              <Button variant="strong-negative" onClick={close}>
+                Verwijderen
               </Button>
               <Button variant="default" onClick={close}>
                 Annuleren

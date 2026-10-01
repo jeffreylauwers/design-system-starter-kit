@@ -1919,6 +1919,7 @@ Brengt consistente verticale ruimte aan tussen directe child-elementen via `flex
 - `triggerRef` prop houdt `aria-expanded` op de openknop synchroon met de open-staat
 - Compound component patroon met React Context: `headingId` en `onClose` automatisch doorgegeven aan sub-componenten
 - `aria-labelledby` automatisch gekoppeld aan `ModalDialogHeading` via `React.useId()`: geen handmatige ID nodig
+- `alert` prop: `role="alertdialog"` plus `aria-describedby` naar de `ModalDialogBody`, voor dringende meldingen zoals de bevestiging van een destructieve actie. Focus blijft op de heading (DR-2026-12)
 - Sluitknop (`dsn-button--icon-only`) altijd aanwezig in de header: nooit `aria-label`; tekst via `dsn-button__label`
 - Escape sluit via native `cancel`-event (`handleCancel` roept `onClose` aan)
 - Scroll-affordance schaduw in body (Lea Verou verticale techniek)
@@ -1940,13 +1941,14 @@ Brengt consistente verticale ruimte aan tussen directe child-elementen via `flex
 
 **Props (React: ModalDialog):**
 
-| Prop         | Type                                 | Default | Beschrijving                                            |
-| ------------ | ------------------------------------ | ------- | ------------------------------------------------------- |
-| `isOpen`     | `boolean`                            | -       | Bepaalt of het dialoogvenster getoond wordt             |
-| `onClose`    | `() => void`                         | -       | Callback bij sluiten (sluitknop, Escape)                |
-| `triggerRef` | `React.RefObject<HTMLElement\|null>` | -       | Openknop; krijgt `aria-expanded` synchroon met de staat |
-| `children`   | `React.ReactNode`                    | -       | Sub-componenten: Header, Body, Footer                   |
-| `ref`        | `React.Ref<HTMLDialogElement>`       | -       | Doorgegeven via `React.forwardRef`                      |
+| Prop         | Type                                 | Default | Beschrijving                                                        |
+| ------------ | ------------------------------------ | ------- | ------------------------------------------------------------------- |
+| `isOpen`     | `boolean`                            | -       | Bepaalt of het dialoogvenster getoond wordt                         |
+| `onClose`    | `() => void`                         | -       | Callback bij sluiten (sluitknop, Escape)                            |
+| `triggerRef` | `React.RefObject<HTMLElement\|null>` | -       | Openknop; krijgt `aria-expanded` synchroon met de staat             |
+| `alert`      | `boolean`                            | `false` | Alertdialog: `role="alertdialog"` + `aria-describedby` naar de body |
+| `children`   | `React.ReactNode`                    | -       | Sub-componenten: Header, Body, Footer                               |
+| `ref`        | `React.Ref<HTMLDialogElement>`       | -       | Doorgegeven via `React.forwardRef`                                  |
 
 **HTML/CSS:**
 
@@ -1959,7 +1961,13 @@ Brengt consistente verticale ruimte aan tussen directe child-elementen via `flex
 >
   <span class="dsn-button__label">Dialoogvenster</span>
 </button>
-<dialog class="dsn-modal-dialog" tabindex="-1" aria-labelledby="dialog-title">
+<dialog
+  class="dsn-modal-dialog"
+  role="alertdialog"
+  tabindex="-1"
+  aria-labelledby="dialog-title"
+  aria-describedby="dialog-body"
+>
   <div class="dsn-modal-dialog__header">
     <h2 class="dsn-modal-dialog-heading" id="dialog-title" tabindex="-1">
       Bevestig verwijderen
@@ -1973,14 +1981,14 @@ Brengt consistente verticale ruimte aan tussen directe child-elementen via `flex
       <span class="dsn-button__label">Sluiten</span>
     </button>
   </div>
-  <div class="dsn-modal-dialog__body">
+  <div class="dsn-modal-dialog__body" id="dialog-body">
     <p class="dsn-paragraph">Weet u zeker dat u dit item wilt verwijderen?</p>
   </div>
   <div class="dsn-modal-dialog__footer">
     <div class="dsn-action-group">
       <button
         type="button"
-        class="dsn-button dsn-button--strong dsn-button--size-medium"
+        class="dsn-button dsn-button--strong-negative dsn-button--size-medium"
         onclick="this.closest('dialog').close()"
       >
         <span class="dsn-button__label">Verwijderen</span>
@@ -2005,7 +2013,7 @@ const [isOpen, setIsOpen] = React.useState(false);
 <Button variant="default" onClick={() => setIsOpen(true)}>
   Dialoogvenster openen
 </Button>
-<ModalDialog isOpen={isOpen} onClose={() => setIsOpen(false)}>
+<ModalDialog alert isOpen={isOpen} onClose={() => setIsOpen(false)}>
   <ModalDialogHeader>
     <ModalDialogHeading>Bevestig verwijderen</ModalDialogHeading>
   </ModalDialogHeader>
@@ -2014,14 +2022,14 @@ const [isOpen, setIsOpen] = React.useState(false);
   </ModalDialogBody>
   <ModalDialogFooter>
     <ActionGroup>
-      <Button variant="strong" onClick={() => setIsOpen(false)}>Verwijderen</Button>
+      <Button variant="strong-negative" onClick={() => setIsOpen(false)}>Verwijderen</Button>
       <Button variant="default" onClick={() => setIsOpen(false)}>Annuleren</Button>
     </ActionGroup>
   </ModalDialogFooter>
 </ModalDialog>
 ```
 
-**Tests:** React (16 tests)
+**Tests:** React (35 tests)
 
 ### Drawer
 

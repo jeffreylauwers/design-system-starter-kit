@@ -103,18 +103,26 @@ Komt die usecase er wel, dan wordt het een expliciete prop die naar een element 
 
 `.showModal()` respecteert `autofocus` op een element in het venster, maar onze focus op de heading volgt daarna en wint. Dat is bewust, zie deelbesluit 3. Wie `autofocus` in een ModalDialog of Drawer zet, ziet er dus geen effect van.
 
+### 5. Ook de alertdialog focust op de heading
+
+Voor de alertdialog-variant van ModalDialog (`alert`, #415) is de afweging opnieuw gemaakt, omdat het APG-voorbeeld daar de minst destructieve knop focust. De uitkomst is dezelfde: de heading. De bescherming die die knop biedt, tegen een onbedoelde Enter op de destructieve actie, geeft de heading ook, want Enter op een heading doet niets. De boodschap zelf komt via `aria-describedby` naar de body mee. En het component kan nog steeds niet weten welke knop het minst destructief is, dus dat zou een opt-out vragen die deelbesluit 3 juist afwijst.
+
+### Verificatie
+
+Op 30 september 2026 getest met VoiceOver in Safari, het scenario uit #303: met de focus op de heading wordt de titel voorgelezen. Op 1 oktober 2026 ook de alertdialog (story `Alert`): titel en boodschap uit `aria-describedby` worden voorgelezen.
+
 ---
 
 ## Impact
 
-| Dimensie                                    | Browser-standaard (optie 1)     | Heading (gekozen)                       |
-| ------------------------------------------- | ------------------------------- | --------------------------------------- |
-| Eerst voorgelezen                           | "Sluiten, knop"                 | De titel van het venster                |
-| Titel voorgelezen bij openen                | niet in VoiceOver/Safari (#303) | ja, als tekst van het gefocuste element |
-| Tabs tot de sluitknop                       | 0                               | 1                                       |
-| Tabs tot het eerste veld (formulierdialoog) | 1                               | 2                                       |
-| DOM-volgorde = visuele volgorde             | ja                              | ja                                      |
-| Afhankelijk van de inhoud van het venster   | nee                             | nee                                     |
+| Dimensie                                    | Browser-standaard (optie 1)     | Heading (gekozen)                    |
+| ------------------------------------------- | ------------------------------- | ------------------------------------ |
+| Eerst voorgelezen                           | "Sluiten, knop"                 | De titel van het venster             |
+| Titel voorgelezen bij openen                | niet in VoiceOver/Safari (#303) | ja, geverifieerd in VoiceOver/Safari |
+| Tabs tot de sluitknop                       | 0                               | 1                                    |
+| Tabs tot het eerste veld (formulierdialoog) | 1                               | 2                                    |
+| DOM-volgorde = visuele volgorde             | ja                              | ja                                   |
+| Afhankelijk van de inhoud van het venster   | nee                             | nee                                  |
 
 ---
 
@@ -139,13 +147,12 @@ Komt die usecase er wel, dan wordt het een expliciete prop die naar een element 
 
 - `PopoverMenu` zet de focus op het eerste item. Dat is bewust: het is geen dialog en het paneel heeft geen titel, de context zit in het label van de trigger.
 - Het gedeelde gedrag van Popover en PopoverMenu (`usePopover` in `packages/components-react/src/utils/popover.ts`) kent daarom twee standen: met `initialFocusRef` (heading, anders het paneel) of zonder (eerste interactieve element).
-- De alertdialog-variant van ModalDialog (#415) moet deze afweging opnieuw maken. Daar ligt het advies "minst destructieve knop" meer voor de hand.
 
 ---
 
 ## Supersedes / superseded by
 
-Herzie dit record wanneer er een usecase komt voor een andere initiële focus (deelbesluit 3), wanneer de alertdialog-variant (#415) een eigen regel krijgt, of wanneer VoiceOver in Safari `aria-labelledby` bij focus op de sluitknop wel betrouwbaar voorleest.
+Herzie dit record wanneer er een usecase komt voor een andere initiële focus (deelbesluit 3), of wanneer VoiceOver in Safari `aria-labelledby` bij focus op de sluitknop wel betrouwbaar voorleest.
 
 ---
 

@@ -35,6 +35,78 @@ Het ModalDialog component toont een tijdelijk overlay-venster dat de achtergrond
 | Filterpaneel met live-bijwerkende resultaten          | Drawer (non-modal) |
 | Inhoud verdient een eigen URL                         | Aparte pagina      |
 
+### Alertdialog
+
+Zet `alert` op het ModalDialog wanneer het venster een dringende melding is die een reactie vraagt, zoals de bevestiging van een destructieve of onomkeerbare actie. Het venster krijgt dan `role="alertdialog"`, en de `ModalDialogBody` wordt via `aria-describedby` gekoppeld. Een screenreader kondigt het aan als waarschuwing en leest bij openen naast de titel ook de boodschap voor.
+
+Gebruik `alert` wanneer:
+
+- de gebruiker een destructieve of onomkeerbare actie bevestigt ("Item verwijderen?");
+- er een fout of conflict is dat eerst opgelost moet worden voordat de gebruiker verder kan.
+
+Gebruik `alert` niet wanneer:
+
+- het venster een formulier of een gewone keuze bevat: dat is een gewoon dialoogvenster;
+- de melding geen reactie vraagt: gebruik dan een `Alert` of `Note` in de pagina;
+- de body lang is of interactieve inhoud heeft. Via `aria-describedby` wordt de hele body als één tekst voorgelezen, dus houd die kort.
+
+De focus komt bij openen ook bij een alertdialog op de heading, net als bij elk ander dialoogvenster (zie Focus bij openen hieronder). Enter op een heading doet niets, dus een onbedoelde bevestiging kan niet.
+
+```html
+<dialog
+  class="dsn-modal-dialog"
+  role="alertdialog"
+  tabindex="-1"
+  aria-labelledby="dialog-alert-title"
+  aria-describedby="dialog-alert-body"
+>
+  <div class="dsn-modal-dialog__header">
+    <h2 class="dsn-modal-dialog-heading" id="dialog-alert-title" tabindex="-1">
+      Item verwijderen?
+    </h2>
+    <!-- sluitknop -->
+  </div>
+  <div class="dsn-modal-dialog__body" id="dialog-alert-body">
+    <p class="dsn-paragraph">
+      Laptop Pro wordt definitief verwijderd. Dit kan niet ongedaan worden
+      gemaakt.
+    </p>
+  </div>
+  <div class="dsn-modal-dialog__footer">
+    <!-- Verwijderen (strong-negative), Annuleren -->
+  </div>
+</dialog>
+```
+
+```tsx
+<ModalDialog
+  alert
+  isOpen={isOpen}
+  onClose={() => setIsOpen(false)}
+  triggerRef={triggerRef}
+>
+  <ModalDialogHeader>
+    <ModalDialogHeading>Item verwijderen?</ModalDialogHeading>
+  </ModalDialogHeader>
+  <ModalDialogBody>
+    <Paragraph>
+      Laptop Pro wordt definitief verwijderd. Dit kan niet ongedaan worden
+      gemaakt.
+    </Paragraph>
+  </ModalDialogBody>
+  <ModalDialogFooter>
+    <ActionGroup>
+      <Button variant="strong-negative" onClick={remove}>
+        Verwijderen
+      </Button>
+      <Button variant="default" onClick={() => setIsOpen(false)}>
+        Annuleren
+      </Button>
+    </ActionGroup>
+  </ModalDialogFooter>
+</ModalDialog>
+```
+
 ### Sluitgedrag
 
 - **Sluitknop** in de header sluit het dialoogvenster altijd: altijd aanwezig.
@@ -86,7 +158,7 @@ Het ModalDialog component toont een tijdelijk overlay-venster dat de achtergrond
 
 ## Accessibility
 
-- Het dialoogvenster gebruikt het native `<dialog>` element met impliciete `role="dialog"` semantiek.
+- Het dialoogvenster gebruikt het native `<dialog>` element met impliciete `role="dialog"` semantiek. Met `alert` wordt dat `role="alertdialog"`, met `aria-describedby` naar de `ModalDialogBody`.
 - `.showModal()` activeert automatisch `aria-modal`-gedrag en het `inert`-attribuut op de achtergrond.
 - `aria-labelledby` koppelt het dialoogvenster automatisch aan de `ModalDialogHeading`: geen handmatige ID nodig.
 - De sluitknop gebruikt `dsn-button__label` met de tekst "Sluiten": nooit `aria-label`.
@@ -100,7 +172,7 @@ De `ModalDialogHeading` heeft `tabindex="-1"` en krijgt bij openen de focus. Zon
 
 Is er geen `ModalDialogHeading`, dan krijgt het `<dialog>` zelf de focus. De focusomtrek op de heading verschijnt alleen bij toetsenbordgebruik, via `:focus-visible`.
 
-Dit wijkt bewust af van het veelgehoorde advies om de focus op het eerste formulierveld of de minst destructieve knop te zetten: het component weet niet wat erin staat, en beide slaan de titel over. Een `autofocus`-attribuut in de inhoud heeft daarom geen effect. De afweging staat in decision record DR-2026-12 (`docs/decisions/DR-2026-12-dialogs-focus-bij-openen-op-de-heading.md`).
+Dit wijkt bewust af van het veelgehoorde advies om de focus op het eerste formulierveld of de minst destructieve knop te zetten: het component weet niet wat erin staat, en beide slaan de titel over. Een `autofocus`-attribuut in de inhoud heeft daarom geen effect.
 
 ### Focus binnen het venster houden
 
