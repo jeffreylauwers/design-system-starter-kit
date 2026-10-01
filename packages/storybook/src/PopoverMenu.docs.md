@@ -77,6 +77,16 @@ Het menu wordt automatisch binnen het viewport gehouden.
 
 In een inverse `PageHeader` heeft het paneel altijd een lichte achtergrond. De PageHeader zet de menu-kleuren binnen `.dsn-popover-menu` terug naar de standaardkleuren, net als bij `.dsn-popover`.
 
+### Zonder JavaScript (HTML/CSS-laag)
+
+Gebruik je alleen de HTML/CSS-laag, dan opent het menu met `popovertarget="menu-id"` op de trigger. De browser geeft de uitgevouwen-status van die knop zelf door; zet er dus geen vaste `aria-expanded` op. Escape, sluiten bij een klik buiten het menu en het terugzetten van de focus doet de browser ook zelf. Met Tab vanaf de trigger kom je direct bij de items.
+
+Na een keuze sluit het menu niet vanzelf: roep in de actie-handler `hidePopover()` aan op het menu. De focus gaat dan terug naar de trigger. De plaatsing bij de trigger vraagt JavaScript of CSS Anchor Positioning.
+
+`popovertarget` werkt vanaf Chrome 114, Firefox 125 en Safari 17, dezelfde browsers als de Popover API zelf.
+
+**React.** Het React-component gebruikt `popovertarget` bewust niet. De open-staat zit in `isOpen`, en React is daarvan de bron; een invoker zou de browser het menu laten openen of sluiten buiten die staat om. De positionering bij de trigger vraagt bovendien toch JavaScript. Het component regelt hetzelfde gedrag zelf, inclusief `aria-expanded` op de trigger.
+
 ## Design tokens
 
 Alle tokens delegeren naar de Popover, zodat beide panelen gelijk ogen: dezelfde stijl en dezelfde binnenruimte als de body van een Popover.

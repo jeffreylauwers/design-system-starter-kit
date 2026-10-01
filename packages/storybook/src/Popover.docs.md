@@ -60,6 +60,20 @@ De React-implementatie klampt de popover automatisch binnen het viewport bij ove
 
 Het triggerelement (bijv. `Button`) krijgt automatisch `aria-expanded="true/false"` via de `triggerRef` prop. Zorg dat het triggerelement via `ref` beschikbaar is voor de `Popover`.
 
+### Zonder JavaScript (HTML/CSS-laag)
+
+Gebruik je alleen de HTML/CSS-laag, dan opent en sluit de popover zonder eigen JavaScript:
+
+- Trigger: `popovertarget="popover-id"`. De browser geeft de uitgevouwen-status van die knop zelf door; zet er dus geen vaste `aria-expanded` op.
+- Sluitknop: `popovertarget="popover-id" popovertargetaction="hide"`.
+- Heading: `autofocus` naast `tabindex="-1"`, zodat de focus bij openen op de titel komt.
+
+Escape, sluiten bij een klik buiten de popover en het terugzetten van de focus bij sluiten doet de browser zelf. Alleen de plaatsing bij de trigger vraagt JavaScript of CSS Anchor Positioning; zonder blijft de popover gecentreerd.
+
+`popovertarget` werkt vanaf Chrome 114, Firefox 125 en Safari 17, dezelfde browsers als de Popover API zelf. Een terugval met JavaScript levert dus niets op.
+
+**React.** Het React-component gebruikt `popovertarget` bewust niet. De open-staat zit in `isOpen`, en React is daarvan de bron; een invoker zou de browser de popover laten openen of sluiten buiten die staat om. De positionering bij de trigger vraagt bovendien toch JavaScript. Het component regelt hetzelfde gedrag zelf, inclusief `aria-expanded` op de trigger.
+
 ## Design tokens
 
 | Token                                      | Standaardwaarde                     | Beschrijving                      |

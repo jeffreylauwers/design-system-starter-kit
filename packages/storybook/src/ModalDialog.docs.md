@@ -107,6 +107,30 @@ De focus komt bij openen ook bij een alertdialog op de heading, net als bij elk 
 </ModalDialog>
 ```
 
+### Zonder JavaScript (HTML/CSS-laag)
+
+Gebruik je alleen de HTML/CSS-laag, dan opent en sluit het venster zonder eigen JavaScript, met invoker commands:
+
+- Openknop: `commandfor="dialog-id" command="show-modal"`.
+- Sluitknop en de acties in de footer: `commandfor="dialog-id" command="close"`.
+- Heading: `autofocus` naast `tabindex="-1"`, zodat de focus bij openen op de titel komt.
+
+Escape en het terugzetten van de focus bij sluiten doet de browser zelf. De focus-trap is dan alleen de native trap van `.showModal()`; in een `<iframe>` laat Safari de focus daar soms uit ontsnappen. Het HTML-voorbeeld bovenaan deze pagina gebruikt deze opzet.
+
+`command` en `commandfor` werken vanaf Chrome 135, Firefox 144 en Safari 26.2. Moet het ook in oudere browsers werken, gebruik dan een paar regels JavaScript; `autofocus` werkt daar ook:
+
+```html
+<button
+  type="button"
+  onclick="document.getElementById('dialog-id').showModal()"
+>
+  …
+</button>
+<button type="button" onclick="this.closest('dialog').close()">…</button>
+```
+
+**React.** Het React-component gebruikt `command` bewust niet. De open-staat zit in `isOpen`, en React is daarvan de bron. Een invoker zou de browser het venster laten openen of sluiten buiten die staat om. Het component regelt hetzelfde gedrag zelf (focus op de heading, focus terug bij sluiten, `aria-expanded` op de trigger), en werkt daardoor ook in browsers zonder invoker commands.
+
 ### Sluitgedrag
 
 - **Sluitknop** in de header sluit het dialoogvenster altijd: altijd aanwezig.

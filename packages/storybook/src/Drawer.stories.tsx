@@ -24,13 +24,13 @@ const meta: Meta<typeof Drawer> = {
   parameters: {
     dsn: {
       htmlTemplate: () => {
-        return `<button type="button" class="dsn-button dsn-button--default dsn-button--size-default" aria-expanded="false" onclick="const t = this, d = document.getElementById('drawer'); t.setAttribute('aria-expanded', 'true'); d.addEventListener('close', () => t.setAttribute('aria-expanded', 'false'), { once: true }); d.showModal(); d.querySelector('.dsn-drawer-heading').focus();">
+        return `<button type="button" class="dsn-button dsn-button--default dsn-button--size-default" aria-expanded="false" commandfor="drawer" command="show-modal">
   <span class="dsn-button__label">Zijpaneel openen</span>
 </button>
 <dialog id="drawer" class="dsn-drawer dsn-drawer--side-right" tabindex="-1" aria-labelledby="drawer-title">
   <div class="dsn-drawer__header">
-    <h2 class="dsn-drawer-heading" id="drawer-title" tabindex="-1">Zijpaneel titel</h2>
-    <button type="button" class="dsn-button dsn-button--subtle dsn-button--size-small dsn-button--icon-only" onclick="this.closest('dialog').close()">
+    <h2 class="dsn-drawer-heading" id="drawer-title" tabindex="-1" autofocus>Zijpaneel titel</h2>
+    <button type="button" class="dsn-button dsn-button--subtle dsn-button--size-small dsn-button--icon-only" commandfor="drawer" command="close">
       <svg class="dsn-icon" aria-hidden="true"><!-- x --></svg>
       <span class="dsn-button__label">Sluiten</span>
     </button>
@@ -41,12 +41,12 @@ const meta: Meta<typeof Drawer> = {
   <div class="dsn-drawer__footer">
     <ul class="dsn-action-group" aria-label="Acties">
       <li class="dsn-action-group__item">
-        <button type="button" class="dsn-button dsn-button--strong dsn-button--size-default" onclick="this.closest('dialog').close()">
+        <button type="button" class="dsn-button dsn-button--strong dsn-button--size-default" commandfor="drawer" command="close">
           <span class="dsn-button__label">Toepassen</span>
         </button>
       </li>
       <li class="dsn-action-group__item">
-        <button type="button" class="dsn-button dsn-button--default dsn-button--size-default" onclick="this.closest('dialog').close()">
+        <button type="button" class="dsn-button dsn-button--default dsn-button--size-default" commandfor="drawer" command="close">
           <span class="dsn-button__label">Annuleren</span>
         </button>
       </li>
@@ -75,6 +75,41 @@ const meta: Meta<typeof Drawer> = {
 
 export default meta;
 type Story = StoryObj<typeof Drawer>;
+
+/**
+ * HTML-voorbeeld voor de non-modale variant: `<dialog popover="manual">`,
+ * geopend met `popovertarget`. Een manual popover sluit niet op Escape en zet
+ * de focus bij sluiten niet terug, dus die twee regelt een kort script.
+ */
+const nonModalHtmlTemplate =
+  () => `<button type="button" id="drawer-non-modal-trigger" class="dsn-button dsn-button--default dsn-button--size-default" popovertarget="drawer-non-modal">
+  <span class="dsn-button__label">Non-modal zijpaneel openen</span>
+</button>
+<dialog id="drawer-non-modal" class="dsn-drawer dsn-drawer--side-right" popover="manual" tabindex="-1" aria-labelledby="drawer-non-modal-title">
+  <div class="dsn-drawer__header">
+    <h2 class="dsn-drawer-heading" id="drawer-non-modal-title" tabindex="-1" autofocus>Filteropties</h2>
+    <button type="button" class="dsn-button dsn-button--subtle dsn-button--size-small dsn-button--icon-only" popovertarget="drawer-non-modal" popovertargetaction="hide">
+      <svg class="dsn-icon" aria-hidden="true"><!-- x --></svg>
+      <span class="dsn-button__label">Sluiten</span>
+    </button>
+  </div>
+  <div class="dsn-drawer__body">
+    <p class="dsn-paragraph">De achtergrondpagina blijft interactief.</p>
+  </div>
+</dialog>
+<script>
+  // popover="manual" sluit niet op Escape en zet de focus bij sluiten niet terug.
+  const drawer = document.getElementById('drawer-non-modal');
+  const trigger = document.getElementById('drawer-non-modal-trigger');
+  drawer.addEventListener('keydown', (event) => {
+    if (event.key === 'Escape') drawer.hidePopover();
+  });
+  drawer.addEventListener('beforetoggle', (event) => {
+    if (event.newState === 'closed' && drawer.contains(document.activeElement)) {
+      trigger.focus();
+    }
+  });
+</script>`;
 
 // =============================================================================
 // Helper: trigger + drawer wrapper
@@ -157,6 +192,7 @@ export const Default: Story = {
 
 export const NonModal: Story = {
   name: 'Non-modal (achtergrond interactief)',
+  parameters: { dsn: { htmlTemplate: nonModalHtmlTemplate } },
   render: () => (
     <DrawerWithTrigger triggerLabel="Non-modal zijpaneel openen" modal={false}>
       {(close) => (
@@ -197,6 +233,7 @@ export const NonModal: Story = {
  */
 export const NonModalOverStickyContent: Story = {
   name: 'Non-modal over sticky content',
+  parameters: { dsn: { htmlTemplate: nonModalHtmlTemplate } },
   render: () => (
     <div style={{ minBlockSize: '150vh' }}>
       <div

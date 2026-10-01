@@ -106,6 +106,20 @@ Omdat de open- of dichtstaat al uit `aria-expanded` blijkt, hoeft het woord "ope
 - De `DrawerBody` scrollt automatisch bij lange inhoud (scroll-affordance schaduw).
 - Header en footer blijven sticky zichtbaar tijdens scrollen.
 
+### Zonder JavaScript (HTML/CSS-laag)
+
+Gebruik je alleen de HTML/CSS-laag, dan opent en sluit de modale variant zonder eigen JavaScript, met invoker commands:
+
+- Openknop: `commandfor="drawer-id" command="show-modal"`.
+- Sluitknop en de acties in de footer: `commandfor="drawer-id" command="close"`.
+- Heading: `autofocus` naast `tabindex="-1"`, zodat de focus bij openen op de titel komt.
+
+Escape en het terugzetten van de focus bij sluiten doet de browser zelf. `command` en `commandfor` werken vanaf Chrome 135, Firefox 144 en Safari 26.2. Voor oudere browsers: `onclick="document.getElementById('drawer-id').showModal()"` en `onclick="this.closest('dialog').close()"`.
+
+De non-modale variant (`popover="manual"`) opent met `popovertarget="drawer-id"` en sluit met `popovertarget="drawer-id" popovertargetaction="hide"` op de sluitknop. Dat werkt vanaf Chrome 114, Firefox 125 en Safari 17. Een manual popover sluit alleen niet op Escape, en zet de focus bij sluiten niet terug naar de trigger. Die twee vragen een kort script; het HTML-voorbeeld van de story "Non-modal" laat het zien.
+
+**React.** Het React-component gebruikt `command` bewust niet. De open-staat zit in `isOpen`, en React is daarvan de bron. Een invoker zou de browser het venster laten openen of sluiten buiten die staat om. Het component regelt hetzelfde gedrag zelf (focus op de heading, focus terug bij sluiten, `aria-expanded` op de trigger), en werkt daardoor ook in browsers zonder invoker commands.
+
 ## Design tokens
 
 | Token                                     | Beschrijving                                            |

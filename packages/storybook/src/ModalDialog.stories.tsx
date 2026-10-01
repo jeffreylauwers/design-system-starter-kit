@@ -24,13 +24,13 @@ const meta: Meta<typeof ModalDialog> = {
   parameters: {
     dsn: {
       htmlTemplate: () => {
-        return `<button type="button" class="dsn-button dsn-button--default dsn-button--size-default" aria-expanded="false" onclick="const t = this, d = document.getElementById('dialog'); t.setAttribute('aria-expanded', 'true'); d.addEventListener('close', () => t.setAttribute('aria-expanded', 'false'), { once: true }); d.showModal(); d.querySelector('.dsn-modal-dialog-heading').focus();">
+        return `<button type="button" class="dsn-button dsn-button--default dsn-button--size-default" aria-expanded="false" commandfor="dialog" command="show-modal">
   <span class="dsn-button__label">Dialoogvenster openen</span>
 </button>
 <dialog id="dialog" class="dsn-modal-dialog" tabindex="-1" aria-labelledby="dialog-title">
   <div class="dsn-modal-dialog__header">
-    <h2 class="dsn-modal-dialog-heading" id="dialog-title" tabindex="-1">Dialoogvenster titel</h2>
-    <button type="button" class="dsn-button dsn-button--subtle dsn-button--size-small dsn-button--icon-only" onclick="this.closest('dialog').close()">
+    <h2 class="dsn-modal-dialog-heading" id="dialog-title" tabindex="-1" autofocus>Dialoogvenster titel</h2>
+    <button type="button" class="dsn-button dsn-button--subtle dsn-button--size-small dsn-button--icon-only" commandfor="dialog" command="close">
       <svg class="dsn-icon" aria-hidden="true"><!-- x --></svg>
       <span class="dsn-button__label">Sluiten</span>
     </button>
@@ -41,12 +41,12 @@ const meta: Meta<typeof ModalDialog> = {
   <div class="dsn-modal-dialog__footer">
     <ul class="dsn-action-group" aria-label="Acties">
       <li class="dsn-action-group__item">
-        <button type="button" class="dsn-button dsn-button--strong dsn-button--size-default" onclick="this.closest('dialog').close()">
+        <button type="button" class="dsn-button dsn-button--strong dsn-button--size-default" commandfor="dialog" command="close">
           <span class="dsn-button__label">Bevestigen</span>
         </button>
       </li>
       <li class="dsn-action-group__item">
-        <button type="button" class="dsn-button dsn-button--default dsn-button--size-default" onclick="this.closest('dialog').close()">
+        <button type="button" class="dsn-button dsn-button--default dsn-button--size-default" commandfor="dialog" command="close">
           <span class="dsn-button__label">Annuleren</span>
         </button>
       </li>
@@ -147,13 +147,13 @@ export const Alert: Story = {
   parameters: {
     dsn: {
       htmlTemplate: () => {
-        return `<button type="button" class="dsn-button dsn-button--default dsn-button--size-default" aria-expanded="false" onclick="const t = this, d = document.getElementById('dialog-alert'); t.setAttribute('aria-expanded', 'true'); d.addEventListener('close', () => t.setAttribute('aria-expanded', 'false'), { once: true }); d.showModal(); d.querySelector('.dsn-modal-dialog-heading').focus();">
+        return `<button type="button" class="dsn-button dsn-button--default dsn-button--size-default" aria-expanded="false" commandfor="dialog-alert" command="show-modal">
   <span class="dsn-button__label">Item verwijderen</span>
 </button>
 <dialog id="dialog-alert" class="dsn-modal-dialog" role="alertdialog" tabindex="-1" aria-labelledby="dialog-alert-title" aria-describedby="dialog-alert-body">
   <div class="dsn-modal-dialog__header">
-    <h2 class="dsn-modal-dialog-heading" id="dialog-alert-title" tabindex="-1">Item verwijderen?</h2>
-    <button type="button" class="dsn-button dsn-button--subtle dsn-button--size-small dsn-button--icon-only" onclick="this.closest('dialog').close()">
+    <h2 class="dsn-modal-dialog-heading" id="dialog-alert-title" tabindex="-1" autofocus>Item verwijderen?</h2>
+    <button type="button" class="dsn-button dsn-button--subtle dsn-button--size-small dsn-button--icon-only" commandfor="dialog-alert" command="close">
       <svg class="dsn-icon" aria-hidden="true"><!-- x --></svg>
       <span class="dsn-button__label">Sluiten</span>
     </button>
@@ -164,12 +164,12 @@ export const Alert: Story = {
   <div class="dsn-modal-dialog__footer">
     <ul class="dsn-action-group" aria-label="Acties">
       <li class="dsn-action-group__item">
-        <button type="button" class="dsn-button dsn-button--strong-negative dsn-button--size-default" onclick="this.closest('dialog').close()">
+        <button type="button" class="dsn-button dsn-button--strong-negative dsn-button--size-default" commandfor="dialog-alert" command="close">
           <span class="dsn-button__label">Verwijderen</span>
         </button>
       </li>
       <li class="dsn-action-group__item">
-        <button type="button" class="dsn-button dsn-button--default dsn-button--size-default" onclick="this.closest('dialog').close()">
+        <button type="button" class="dsn-button dsn-button--default dsn-button--size-default" commandfor="dialog-alert" command="close">
           <span class="dsn-button__label">Annuleren</span>
         </button>
       </li>

@@ -172,7 +172,6 @@ De icon-only button opent een [PopoverMenu](?path=/docs/components-popovermenu--
     type="button"
     class="dsn-button dsn-button--subtle dsn-button--size-small dsn-button--icon-only"
     popovertarget="acties-laptop-pro"
-    aria-expanded="false"
   >
     <svg class="dsn-icon" aria-hidden="true"><!-- dots-vertical --></svg>
     <span class="dsn-button__label">

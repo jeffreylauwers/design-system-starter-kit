@@ -46,10 +46,13 @@ const triggerRef = useRef<HTMLButtonElement>(null);
     </ActionGroup>
   </ModalDialogFooter>
 </ModalDialog>`}
-  html={`<dialog class="dsn-modal-dialog" open tabindex="-1" aria-labelledby="dialog-title">
+  html={`<button type="button" class="dsn-button dsn-button--default dsn-button--size-default" aria-expanded="false" commandfor="dialog" command="show-modal">
+  <span class="dsn-button__label">Dialoogvenster openen</span>
+</button>
+<dialog id="dialog" class="dsn-modal-dialog" tabindex="-1" aria-labelledby="dialog-title">
   <div class="dsn-modal-dialog__header">
-    <h2 class="dsn-modal-dialog-heading" id="dialog-title" tabindex="-1">Dialoogvenster titel</h2>
-    <button type="button" class="dsn-button dsn-button--subtle dsn-button--size-small dsn-button--icon-only">
+    <h2 class="dsn-modal-dialog-heading" id="dialog-title" tabindex="-1" autofocus>Dialoogvenster titel</h2>
+    <button type="button" class="dsn-button dsn-button--subtle dsn-button--size-small dsn-button--icon-only" commandfor="dialog" command="close">
       <svg class="dsn-icon" aria-hidden="true"><!-- x --></svg>
       <span class="dsn-button__label">Sluiten</span>
     </button>
@@ -60,12 +63,12 @@ const triggerRef = useRef<HTMLButtonElement>(null);
   <div class="dsn-modal-dialog__footer">
     <ul class="dsn-action-group" aria-label="Acties">
       <li class="dsn-action-group__item">
-        <button type="button" class="dsn-button dsn-button--strong dsn-button--size-medium">
+        <button type="button" class="dsn-button dsn-button--strong dsn-button--size-default" commandfor="dialog" command="close">
           <span class="dsn-button__label">Bevestigen</span>
         </button>
       </li>
       <li class="dsn-action-group__item">
-        <button type="button" class="dsn-button dsn-button--default dsn-button--size-medium">
+        <button type="button" class="dsn-button dsn-button--default dsn-button--size-default" commandfor="dialog" command="close">
           <span class="dsn-button__label">Annuleren</span>
         </button>
       </li>

@@ -10,6 +10,10 @@ All notable changes to this project are documented in this file.
 
 Nog niet gepubliceerde wijzigingen. Schrijf nieuwe changelog-entries hieronder; bij de volgende release wordt deze kop gepromoveerd naar het definitieve versienummer.
 
+### HTML/CSS-laag: dialogs en popovers openen zonder eigen JavaScript
+
+De HTML-voorbeelden van ModalDialog, Drawer, Popover en PopoverMenu openen en sluiten nu declaratief, zonder `onclick`. Dialogs gebruiken invoker commands (`commandfor` met `command="show-modal"` en `command="close"`), popovers `popovertarget` en `popovertargetaction="hide"`. De heading krijgt `autofocus`, zodat de focus bij openen op de titel komt, net als in de React-laag. De sluitknop van de Popover deed in pure HTML niets en sluit nu. Triggers met `popovertarget` hebben geen vaste `aria-expanded` meer: de browser geeft die status zelf door. Elke docs-pagina heeft een sectie "Zonder JavaScript" met browserondersteuning (`command`/`commandfor`: Chrome 135, Firefox 144, Safari 26.2) en een terugval met een paar regels JS. De non-modale Drawer heeft een kort script nodig voor Escape en het terugzetten van de focus; de story "Non-modal" toont het. De React-componenten gebruiken invokers bewust niet: daar is `isOpen` de bron van de open-staat. Geen wijziging in de React-API ([#416](https://github.com/jeffreylauwers/design-system-starter-kit/issues/416)).
+
 ### ModalDialog: alertdialog-variant
 
 Nieuwe prop `alert` op `ModalDialog` voor dringende meldingen die een reactie vragen, zoals de bevestiging van een destructieve actie. Het `<dialog>` krijgt dan `role="alertdialog"`, en de `ModalDialogBody` wordt via `aria-describedby` gekoppeld, zodat een screenreader bij openen naast de titel ook de boodschap voorleest. De focus blijft op de heading (DR-2026-12). `ModalDialogBody` krijgt daarvoor altijd een automatisch `id`. Geen visuele wijziging en geen nieuwe CSS. Nieuwe story `Alert` ([#415](https://github.com/jeffreylauwers/design-system-starter-kit/issues/415)).

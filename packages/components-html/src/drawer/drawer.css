@@ -14,6 +14,10 @@
  *
  * Toetsenbord en screenreaders (JS-gedrag, zie components-react/src/Drawer):
  *   - De trigger krijgt aria-expanded="false"/"true", synchroon met de open-staat.
+ *
+ * Zonder JavaScript (HTML/CSS-laag): open met commandfor + command="show-modal",
+ * sluit met command="close", en zet autofocus op de heading. Escape en het
+ * terugzetten van de focus bij sluiten doet de browser zelf.
  *   - De heading heeft tabindex="-1" en krijgt bij openen de focus, zodat de
  *     titel als eerste wordt voorgelezen.
  *   - Bij de modale variant houdt een expliciete focus-trap de focus binnen het
@@ -21,13 +25,13 @@
  *
  * HTML-structuur:
  *
- * <button type="button" class="dsn-button dsn-button--default dsn-button--size-default" aria-expanded="false">
+ * <button type="button" class="dsn-button dsn-button--default dsn-button--size-default" aria-expanded="false" commandfor="drawer" command="show-modal">
  *   <span class="dsn-button__label">Zijpaneel</span>
  * </button>
- * <dialog class="dsn-drawer dsn-drawer--side-right" tabindex="-1" aria-labelledby="drawer-title">
+ * <dialog id="drawer" class="dsn-drawer dsn-drawer--side-right" tabindex="-1" aria-labelledby="drawer-title">
  *   <div class="dsn-drawer__header">
- *     <h2 class="dsn-drawer-heading" id="drawer-title" tabindex="-1">Titel</h2>
- *     <button type="button" class="dsn-button dsn-button--subtle dsn-button--size-small dsn-button--icon-only">
+ *     <h2 class="dsn-drawer-heading" id="drawer-title" tabindex="-1" autofocus>Titel</h2>
+ *     <button type="button" class="dsn-button dsn-button--subtle dsn-button--size-small dsn-button--icon-only" commandfor="drawer" command="close">
  *       <svg class="dsn-icon" aria-hidden="true"><!-- x --></svg>
  *       <span class="dsn-button__label">Sluiten</span>
  *     </button>
@@ -50,6 +54,12 @@
  *
  * "manual" en niet "auto": een zijpaneel hoort niet te sluiten bij een klik
  * op de pagina ernaast, die blijft juist bruikbaar. Escape sluit wel, via JS.
+ *
+ * Zonder JavaScript openen en sluiten kan met popovertarget op de trigger en
+ * popovertarget + popovertargetaction="hide" op de sluitknop. Een manual
+ * popover sluit alleen niet op Escape, en zet de focus bij sluiten niet terug
+ * naar de trigger; die twee vragen een kort script (zie het HTML-voorbeeld van
+ * de story "Non-modal" in Storybook).
  */
 
 .dsn-drawer {

@@ -29,7 +29,6 @@ const meta: Meta<typeof PopoverMenu> = {
   type="button"
   class="dsn-button dsn-button--subtle dsn-button--size-default"
   popovertarget="popover-menu-acties"
-  aria-expanded="false"
 >
   <span class="dsn-button__label">Acties</span>
 </button>
