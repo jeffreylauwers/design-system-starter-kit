@@ -20,11 +20,13 @@ beforeEach(() => {
 const DefaultDialog = ({
   isOpen = true,
   onClose,
+  alert,
 }: {
   isOpen?: boolean;
   onClose?: () => void;
+  alert?: boolean;
 }) => (
-  <ModalDialog isOpen={isOpen} onClose={onClose}>
+  <ModalDialog isOpen={isOpen} onClose={onClose} alert={alert}>
     <ModalDialogHeader>
       <ModalDialogHeading>Dialoogtitel</ModalDialogHeading>
     </ModalDialogHeader>
@@ -92,6 +94,63 @@ describe('ModalDialog', () => {
     const heading = document.getElementById(labelledById!);
     expect(heading).toBeInTheDocument();
     expect(heading).toHaveTextContent('Dialoogtitel');
+  });
+
+  // ===========================
+  // alertdialog
+  // ===========================
+
+  it('has no role and no aria-describedby by default', () => {
+    render(<DefaultDialog />);
+    const dialog = document.querySelector('dialog')!;
+    expect(dialog).not.toHaveAttribute('role');
+    expect(dialog).not.toHaveAttribute('aria-describedby');
+  });
+
+  it('sets role="alertdialog" when alert is true', () => {
+    render(<DefaultDialog alert />);
+    expect(document.querySelector('dialog')).toHaveAttribute(
+      'role',
+      'alertdialog'
+    );
+  });
+
+  it('links the body via aria-describedby when alert is true', () => {
+    render(<DefaultDialog alert />);
+    const dialog = document.querySelector('dialog')!;
+    const describedById = dialog.getAttribute('aria-describedby');
+    expect(describedById).toBeTruthy();
+    const body = document.getElementById(describedById!);
+    expect(body).toHaveClass('dsn-modal-dialog__body');
+    expect(body).toHaveTextContent('Dialooginhoud');
+  });
+
+  it('keeps aria-labelledby on an alertdialog', () => {
+    render(<DefaultDialog alert />);
+    const dialog = document.querySelector('dialog')!;
+    const heading = document.getElementById(
+      dialog.getAttribute('aria-labelledby')!
+    );
+    expect(heading).toHaveTextContent('Dialoogtitel');
+  });
+
+  it('still moves focus to the heading when alert is true', () => {
+    render(<DefaultDialog alert />);
+    expect(screen.getByText('Dialoogtitel')).toHaveFocus();
+  });
+
+  it('lets an explicit aria-describedby win over the body link', () => {
+    render(
+      <ModalDialog isOpen alert aria-describedby="eigen-uitleg">
+        <ModalDialogBody>
+          <p>Inhoud</p>
+        </ModalDialogBody>
+      </ModalDialog>
+    );
+    expect(document.querySelector('dialog')).toHaveAttribute(
+      'aria-describedby',
+      'eigen-uitleg'
+    );
   });
 
   // ===========================

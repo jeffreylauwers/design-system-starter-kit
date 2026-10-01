@@ -39,6 +39,20 @@
  *     </div>
  *   </div>
  * </dialog>
+ *
+ * Alertdialog: een dringende melding die een reactie vraagt, zoals de
+ * bevestiging van een destructieve actie. Zelfde markup, met
+ * role="alertdialog" en aria-describedby naar de body. Geen extra CSS:
+ * het verschil is alleen semantiek.
+ *
+ * <dialog class="dsn-modal-dialog" role="alertdialog" tabindex="-1"
+ *         aria-labelledby="dialog-title" aria-describedby="dialog-body">
+ *   ...
+ *   <div class="dsn-modal-dialog__body" id="dialog-body">
+ *     <p class="dsn-paragraph">Dit kan niet ongedaan worden gemaakt.</p>
+ *   </div>
+ *   ...
+ * </dialog>
  */
 
 .dsn-modal-dialog {

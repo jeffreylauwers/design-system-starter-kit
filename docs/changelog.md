@@ -10,6 +10,12 @@ All notable changes to this project are documented in this file.
 
 Nog niet gepubliceerde wijzigingen. Schrijf nieuwe changelog-entries hieronder; bij de volgende release wordt deze kop gepromoveerd naar het definitieve versienummer.
 
+### ModalDialog: alertdialog-variant
+
+Nieuwe prop `alert` op `ModalDialog` voor dringende meldingen die een reactie vragen, zoals de bevestiging van een destructieve actie. Het `<dialog>` krijgt dan `role="alertdialog"`, en de `ModalDialogBody` wordt via `aria-describedby` gekoppeld, zodat een screenreader bij openen naast de titel ook de boodschap voorleest. De focus blijft op de heading (DR-2026-12). `ModalDialogBody` krijgt daarvoor altijd een automatisch `id`. Geen visuele wijziging en geen nieuwe CSS. Nieuwe story `Alert` ([#415](https://github.com/jeffreylauwers/design-system-starter-kit/issues/415)).
+
+**Voor wie alleen de HTML/CSS-laag gebruikt:** zet `role="alertdialog"` op de `<dialog>`, geef de body een `id` en verwijs ernaar met `aria-describedby`.
+
 ### Focus bij openen: decision record, en de Popover volgt hetzelfde patroon
 
 Nieuw decision record [DR-2026-12](decisions/DR-2026-12-dialogs-focus-bij-openen-op-de-heading.md) legt vast waarom ModalDialog, Drawer en Popover bij openen de focus op de heading zetten, en niet op het eerste formulierveld of de minst destructieve knop. Code-commentaar en de Accessibility-secties verwijzen ernaar. De Drawer-docs beschrijven nu ook correct hoe de focus bij sluiten terugkeert in de non-modale variant ([#414](https://github.com/jeffreylauwers/design-system-starter-kit/issues/414)).

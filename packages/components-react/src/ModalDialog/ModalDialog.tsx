@@ -11,12 +11,14 @@ import './ModalDialog.css';
 
 interface ModalDialogContextValue {
   headingId: string;
+  bodyId: string;
   headingRef: React.MutableRefObject<HTMLHeadingElement | null>;
   onClose?: () => void;
 }
 
 const ModalDialogContext = React.createContext<ModalDialogContextValue>({
   headingId: '',
+  bodyId: '',
   headingRef: { current: null },
 });
 
@@ -50,6 +52,16 @@ export interface ModalDialogProps extends Omit<
   triggerRef?: React.RefObject<HTMLElement | null>;
 
   /**
+   * Markeert het venster als alertdialog: een dringende melding die een
+   * reactie vraagt, zoals de bevestiging van een destructieve actie. Zet
+   * `role="alertdialog"` op het `<dialog>` en koppelt de `ModalDialogBody`
+   * via `aria-describedby`, zodat de boodschap bij openen wordt voorgelezen.
+   * De focus komt net als anders op de heading.
+   * @default false
+   */
+  alert?: boolean;
+
+  /**
    * De subcomponenten van het dialoogvenster:
    * `ModalDialogHeader`, `ModalDialogBody`, `ModalDialogFooter`
    */
@@ -67,7 +79,7 @@ export interface ModalDialogProps extends Omit<
  *
  * @example
  * ```tsx
- * <ModalDialog isOpen={isOpen} onClose={() => setIsOpen(false)}>
+ * <ModalDialog alert isOpen={isOpen} onClose={() => setIsOpen(false)}>
  *   <ModalDialogHeader>
  *     <ModalDialogHeading>Bevestig verwijderen</ModalDialogHeading>
  *   </ModalDialogHeader>
@@ -76,7 +88,7 @@ export interface ModalDialogProps extends Omit<
  *   </ModalDialogBody>
  *   <ModalDialogFooter>
  *     <ActionGroup>
- *       <Button variant="negative" onClick={() => setIsOpen(false)}>Verwijderen</Button>
+ *       <Button variant="strong-negative" onClick={() => setIsOpen(false)}>Verwijderen</Button>
  *       <Button variant="default" onClick={() => setIsOpen(false)}>Annuleren</Button>
  *     </ActionGroup>
  *   </ModalDialogFooter>
@@ -86,78 +98,97 @@ export interface ModalDialogProps extends Omit<
 export const ModalDialog = React.forwardRef<
   HTMLDialogElement,
   ModalDialogProps
->(({ className, isOpen, onClose, triggerRef, children, ...props }, ref) => {
-  const internalRef = React.useRef<HTMLDialogElement>(null);
-  const dialogRef = (ref as React.RefObject<HTMLDialogElement>) ?? internalRef;
-  const headingId = React.useId();
-  const headingRef = React.useRef<HTMLHeadingElement | null>(null);
+>(
+  (
+    {
+      className,
+      isOpen,
+      onClose,
+      triggerRef,
+      alert = false,
+      children,
+      ...props
+    },
+    ref
+  ) => {
+    const internalRef = React.useRef<HTMLDialogElement>(null);
+    const dialogRef =
+      (ref as React.RefObject<HTMLDialogElement>) ?? internalRef;
+    const headingId = React.useId();
+    const bodyId = React.useId();
+    const headingRef = React.useRef<HTMLHeadingElement | null>(null);
 
-  React.useEffect(() => {
-    const dialog = dialogRef.current;
-    if (!dialog) return;
+    React.useEffect(() => {
+      const dialog = dialogRef.current;
+      if (!dialog) return;
 
-    if (isOpen && !dialog.open) {
-      dialog.showModal();
+      if (isOpen && !dialog.open) {
+        dialog.showModal();
 
-      /*
-       * Zet de focus op de heading, niet op de sluitknop. De browser zet de
-       * focus bij het openen zelf op het eerste focusbare element, en dat is
-       * de sluitknop. VoiceOver in Safari leest die knop dan wel voor, maar
-       * niet de titel uit `aria-labelledby`, en omdat de sluitknop na de
-       * titel staat kom je de titel bij verder lezen ook niet meer tegen.
-       *
-       * Met de focus op de heading (die `tabindex="-1"` heeft) wordt de titel
-       * als eerste voorgelezen en loopt de leesvolgorde daarna door naar de
-       * sluitknop en de inhoud. Dit is het patroon uit de ARIA Authoring
-       * Practices, en het houdt DOM-volgorde en visuele volgorde gelijk.
-       *
-       * Waarom niet het eerste veld of de minst destructieve knop: zie
-       * docs/decisions/DR-2026-12-dialogs-focus-bij-openen-op-de-heading.md.
-       */
-      (headingRef.current ?? dialog).focus();
-    } else if (!isOpen && dialog.open) {
-      dialog.close();
-    }
-  }, [isOpen, dialogRef]);
+        /*
+         * Zet de focus op de heading, niet op de sluitknop. De browser zet de
+         * focus bij het openen zelf op het eerste focusbare element, en dat is
+         * de sluitknop. VoiceOver in Safari leest die knop dan wel voor, maar
+         * niet de titel uit `aria-labelledby`, en omdat de sluitknop na de
+         * titel staat kom je de titel bij verder lezen ook niet meer tegen.
+         *
+         * Met de focus op de heading (die `tabindex="-1"` heeft) wordt de titel
+         * als eerste voorgelezen en loopt de leesvolgorde daarna door naar de
+         * sluitknop en de inhoud. Dit is het patroon uit de ARIA Authoring
+         * Practices, en het houdt DOM-volgorde en visuele volgorde gelijk.
+         *
+         * Waarom niet het eerste veld of de minst destructieve knop: zie
+         * docs/decisions/DR-2026-12-dialogs-focus-bij-openen-op-de-heading.md.
+         */
+        (headingRef.current ?? dialog).focus();
+      } else if (!isOpen && dialog.open) {
+        dialog.close();
+      }
+    }, [isOpen, dialogRef]);
 
-  /*
-   * Expliciete focus-trap bovenop de native trap van `.showModal()`.
-   * Zie `utils/focusTrap.ts` voor waarom de native trap niet volstaat.
-   */
-  useFocusTrap(dialogRef, isOpen);
+    /*
+     * Expliciete focus-trap bovenop de native trap van `.showModal()`.
+     * Zie `utils/focusTrap.ts` voor waarom de native trap niet volstaat.
+     */
+    useFocusTrap(dialogRef, isOpen);
 
-  // Synchroniseer aria-expanded op het triggerelement
-  React.useEffect(() => {
-    const trigger = triggerRef?.current;
-    if (!trigger) return;
-    trigger.setAttribute('aria-expanded', isOpen ? 'true' : 'false');
-    return () => {
-      trigger.setAttribute('aria-expanded', 'false');
+    // Synchroniseer aria-expanded op het triggerelement
+    React.useEffect(() => {
+      const trigger = triggerRef?.current;
+      if (!trigger) return;
+      trigger.setAttribute('aria-expanded', isOpen ? 'true' : 'false');
+      return () => {
+        trigger.setAttribute('aria-expanded', 'false');
+      };
+    }, [isOpen, triggerRef]);
+
+    const handleCancel = (event: React.SyntheticEvent<HTMLDialogElement>) => {
+      event.preventDefault();
+      onClose?.();
     };
-  }, [isOpen, triggerRef]);
 
-  const handleCancel = (event: React.SyntheticEvent<HTMLDialogElement>) => {
-    event.preventDefault();
-    onClose?.();
-  };
+    const classes = classNames('dsn-modal-dialog', className);
 
-  const classes = classNames('dsn-modal-dialog', className);
-
-  return (
-    <ModalDialogContext.Provider value={{ headingId, headingRef, onClose }}>
-      <dialog
-        ref={dialogRef}
-        className={classes}
-        aria-labelledby={headingId}
-        onCancel={handleCancel}
-        tabIndex={-1}
-        {...props}
+    return (
+      <ModalDialogContext.Provider
+        value={{ headingId, bodyId, headingRef, onClose }}
       >
-        {children}
-      </dialog>
-    </ModalDialogContext.Provider>
-  );
-});
+        <dialog
+          ref={dialogRef}
+          className={classes}
+          role={alert ? 'alertdialog' : undefined}
+          aria-labelledby={headingId}
+          aria-describedby={alert ? bodyId : undefined}
+          onCancel={handleCancel}
+          tabIndex={-1}
+          {...props}
+        >
+          {children}
+        </dialog>
+      </ModalDialogContext.Provider>
+    );
+  }
+);
 
 ModalDialog.displayName = 'ModalDialog';
 
@@ -282,9 +313,12 @@ export const ModalDialogBody = React.forwardRef<
   HTMLDivElement,
   ModalDialogBodyProps
 >(({ className, children, ...props }, ref) => {
+  const { bodyId } = React.useContext(ModalDialogContext);
+
   return (
     <div
       ref={ref}
+      id={bodyId}
       className={classNames('dsn-modal-dialog__body', className)}
       {...props}
     >
