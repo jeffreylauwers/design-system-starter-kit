@@ -3,154 +3,154 @@
     "color": {
       "neutral": {
         "bg-document": {
-          "$value": "#111111",
+          "$value": "oklch(0.12 0 0)",
           "$type": "color",
           "$description": "Documentachtergrond"
         },
         "bg-elevated": {
-          "$value": "#111111",
+          "$value": "oklch(0.155 0 0)",
           "$type": "color",
           "$description": "Elevated background — for floating layers (modals, popovers, dropdowns)"
         },
         "bg-subtle": {
-          "$value": "#040404",
+          "$value": "oklch(0.175 0 0)",
           "$type": "color",
           "$description": "Subtiele achtergrond"
         },
         "bg-default": {
-          "$value": "#1D1D1D",
+          "$value": "oklch(0.23 0 0)",
           "$type": "color",
           "$description": "Standaard achtergrond"
         },
         "bg-hover": {
-          "$value": "#262626",
+          "$value": "oklch(0.26 0 0)",
           "$type": "color",
           "$description": "Achtergrond in hover state"
         },
         "bg-active": {
-          "$value": "#2E2E2E",
+          "$value": "oklch(0.29 0 0)",
           "$type": "color",
           "$description": "Achtergrond in active state"
         },
         "border-subtle": {
-          "$value": "#3E3E3E",
+          "$value": "oklch(0.38 0 0)",
           "$type": "color",
           "$description": "Subtiele rand"
         },
         "border-default": {
-          "$value": "#686868",
+          "$value": "oklch(0.52 0 0)",
           "$type": "color",
           "$description": "Standaard rand"
         },
         "border-hover": {
-          "$value": "#727272",
+          "$value": "oklch(0.56 0 0)",
           "$type": "color",
           "$description": "Rand in hover state"
         },
         "border-active": {
-          "$value": "#7C7C7C",
+          "$value": "oklch(0.6 0 0)",
           "$type": "color",
           "$description": "Rand in active state"
         },
         "color-default": {
-          "$value": "#ABABAB",
+          "$value": "oklch(0.72 0 0)",
           "$type": "color",
           "$description": "Standaard tekstkleur"
         },
         "color-hover": {
-          "$value": "#BBBBBB",
+          "$value": "oklch(0.76 0 0)",
           "$type": "color",
           "$description": "Tekst in hover state"
         },
         "color-active": {
-          "$value": "#CCCCCC",
+          "$value": "oklch(0.8 0 0)",
           "$type": "color",
           "$description": "Tekst in active state"
         },
         "color-subtle": {
-          "$value": "#8B8B8B",
+          "$value": "oklch(0.68 0 0)",
           "$type": "color",
           "$description": "Subtiele tekstkleur"
         },
         "color-document": {
-          "$value": "#F1F1F1",
+          "$value": "oklch(0.93 0 0)",
           "$type": "color",
           "$description": "Documenttekstkleur"
         }
       },
       "accent-1": {
         "bg-document": {
-          "$value": "#001126",
+          "$value": "oklch(0.12 0.02 255.8)",
           "$type": "color",
           "$description": "Documentachtergrond"
         },
         "bg-elevated": {
-          "$value": "#001126",
+          "$value": "oklch(0.155 0.023 255.8)",
           "$type": "color",
           "$description": "Elevated background — for floating layers (modals, popovers, dropdowns)"
         },
         "bg-subtle": {
-          "$value": "#000409",
+          "$value": "oklch(0.175 0.026 255.8)",
           "$type": "color",
           "$description": "Subtiele achtergrond"
         },
         "bg-default": {
-          "$value": "#001D40",
+          "$value": "oklch(0.23 0.029 255.8)",
           "$type": "color",
           "$description": "Standaard achtergrond"
         },
         "bg-hover": {
-          "$value": "#002551",
+          "$value": "oklch(0.26 0.033 255.8)",
           "$type": "color",
           "$description": "Achtergrond in hover state"
         },
         "bg-active": {
-          "$value": "#002D62",
+          "$value": "oklch(0.29 0.036 255.8)",
           "$type": "color",
           "$description": "Achtergrond in active state"
         },
         "border-subtle": {
-          "$value": "#003B81",
+          "$value": "oklch(0.38 0.073 255.8)",
           "$type": "color",
           "$description": "Subtiele rand"
         },
         "border-default": {
-          "$value": "#3169AD",
+          "$value": "oklch(0.52 0.163 255.8)",
           "$type": "color",
           "$description": "Standaard rand"
         },
         "border-hover": {
-          "$value": "#3F74B2",
+          "$value": "oklch(0.56 0.19 255.8)",
           "$type": "color",
           "$description": "Rand in hover state"
         },
         "border-active": {
-          "$value": "#4E7FB8",
+          "$value": "oklch(0.6 0.203 255.8)",
           "$type": "color",
           "$description": "Rand in active state"
         },
         "color-default": {
-          "$value": "#8FAED2",
+          "$value": "oklch(0.72 0.131 255.8)",
           "$type": "color",
           "$description": "Standaard tekstkleur"
         },
         "color-hover": {
-          "$value": "#A5BEDB",
+          "$value": "oklch(0.76 0.125 255.8)",
           "$type": "color",
           "$description": "Tekst in hover state"
         },
         "color-active": {
-          "$value": "#BBCEE4",
+          "$value": "oklch(0.8 0.102 255.8)",
           "$type": "color",
           "$description": "Tekst in active state"
         },
         "color-subtle": {
-          "$value": "#648EC1",
+          "$value": "oklch(0.68 0.133 255.8)",
           "$type": "color",
           "$description": "Subtiele tekstkleur"
         },
         "color-document": {
-          "$value": "#ECF1F7",
+          "$value": "oklch(0.93 0.024 255.8)",
           "$type": "color",
           "$description": "Documenttekstkleur"
         }
@@ -542,385 +542,385 @@
       },
       "negative": {
         "bg-document": {
-          "$value": "#1C0000",
+          "$value": "oklch(0.12 0.029 29.2)",
           "$type": "color",
           "$description": "Documentachtergrond"
         },
         "bg-elevated": {
-          "$value": "#1C0000",
+          "$value": "oklch(0.155 0.034 29.2)",
           "$type": "color",
           "$description": "Elevated background — for floating layers (modals, popovers, dropdowns)"
         },
         "bg-subtle": {
-          "$value": "#060000",
+          "$value": "oklch(0.175 0.039 29.2)",
           "$type": "color",
           "$description": "Subtiele achtergrond"
         },
         "bg-default": {
-          "$value": "#2E0000",
+          "$value": "oklch(0.23 0.043 29.2)",
           "$type": "color",
           "$description": "Standaard achtergrond"
         },
         "bg-hover": {
-          "$value": "#3D0000",
+          "$value": "oklch(0.26 0.048 29.2)",
           "$type": "color",
           "$description": "Achtergrond in hover state"
         },
         "bg-active": {
-          "$value": "#4C0000",
+          "$value": "oklch(0.29 0.053 29.2)",
           "$type": "color",
           "$description": "Achtergrond in active state"
         },
         "border-subtle": {
-          "$value": "#820000",
+          "$value": "oklch(0.38 0.108 29.2)",
           "$type": "color",
           "$description": "Subtiele rand"
         },
         "border-default": {
-          "$value": "#E74848",
+          "$value": "oklch(0.54 0.222 29.2)",
           "$type": "color",
           "$description": "Standaard rand"
         },
         "border-hover": {
-          "$value": "#EC6D6D",
+          "$value": "oklch(0.58 0.238 29.2)",
           "$type": "color",
           "$description": "Rand in hover state"
         },
         "border-active": {
-          "$value": "#F19191",
+          "$value": "oklch(0.62 0.254 29.2)",
           "$type": "color",
           "$description": "Rand in active state"
         },
         "color-default": {
-          "$value": "#F9B1B1",
+          "$value": "oklch(0.72 0.175 29.2)",
           "$type": "color",
           "$description": "Standaard tekstkleur"
         },
         "color-hover": {
-          "$value": "#FBC3C3",
+          "$value": "oklch(0.76 0.143 29.2)",
           "$type": "color",
           "$description": "Tekst in hover state"
         },
         "color-active": {
-          "$value": "#FCD5D5",
+          "$value": "oklch(0.8 0.115 29.2)",
           "$type": "color",
           "$description": "Tekst in active state"
         },
         "color-subtle": {
-          "$value": "#EB8181",
+          "$value": "oklch(0.68 0.197 29.2)",
           "$type": "color",
           "$description": "Subtiele tekstkleur"
         },
         "color-document": {
-          "$value": "#FEEDED",
+          "$value": "oklch(0.93 0.036 29.2)",
           "$type": "color",
           "$description": "Documenttekstkleur"
         }
       },
       "positive": {
         "bg-document": {
-          "$value": "#001509",
+          "$value": "oklch(0.12 0.019 148.2)",
           "$type": "color",
           "$description": "Documentachtergrond"
         },
         "bg-elevated": {
-          "$value": "#001509",
+          "$value": "oklch(0.155 0.022 148.2)",
           "$type": "color",
           "$description": "Elevated background — for floating layers (modals, popovers, dropdowns)"
         },
         "bg-subtle": {
-          "$value": "#000802",
+          "$value": "oklch(0.175 0.025 148.2)",
           "$type": "color",
           "$description": "Subtiele achtergrond"
         },
         "bg-default": {
-          "$value": "#002312",
+          "$value": "oklch(0.23 0.028 148.2)",
           "$type": "color",
           "$description": "Standaard achtergrond"
         },
         "bg-hover": {
-          "$value": "#003019",
+          "$value": "oklch(0.26 0.031 148.2)",
           "$type": "color",
           "$description": "Achtergrond in hover state"
         },
         "bg-active": {
-          "$value": "#003E1F",
+          "$value": "oklch(0.29 0.034 148.2)",
           "$type": "color",
           "$description": "Achtergrond in active state"
         },
         "border-subtle": {
-          "$value": "#00481B",
+          "$value": "oklch(0.38 0.07 148.2)",
           "$type": "color",
           "$description": "Subtiele rand"
         },
         "border-default": {
-          "$value": "#1BA158",
+          "$value": "oklch(0.52 0.15 148.2)",
           "$type": "color",
           "$description": "Standaard rand"
         },
         "border-hover": {
-          "$value": "#3BB470",
+          "$value": "oklch(0.56 0.161 148.2)",
           "$type": "color",
           "$description": "Rand in hover state"
         },
         "border-active": {
-          "$value": "#5BC788",
+          "$value": "oklch(0.6 0.173 148.2)",
           "$type": "color",
           "$description": "Rand in active state"
         },
         "color-default": {
-          "$value": "#8AD3A6",
+          "$value": "oklch(0.72 0.125 148.2)",
           "$type": "color",
           "$description": "Standaard tekstkleur"
         },
         "color-hover": {
-          "$value": "#A3DCBA",
+          "$value": "oklch(0.76 0.135 148.2)",
           "$type": "color",
           "$description": "Tekst in hover state"
         },
         "color-active": {
-          "$value": "#BCE5CE",
+          "$value": "oklch(0.8 0.145 148.2)",
           "$type": "color",
           "$description": "Tekst in active state"
         },
         "color-subtle": {
-          "$value": "#6AC495",
+          "$value": "oklch(0.68 0.127 148.2)",
           "$type": "color",
           "$description": "Subtiele tekstkleur"
         },
         "color-document": {
-          "$value": "#E4F5EA",
+          "$value": "oklch(0.93 0.023 148.2)",
           "$type": "color",
           "$description": "Documenttekstkleur"
         }
       },
       "warning": {
         "bg-document": {
-          "$value": "#190F04",
+          "$value": "oklch(0.12 0.023 58.3)",
           "$type": "color",
           "$description": "Documentachtergrond"
         },
         "bg-elevated": {
-          "$value": "#190F04",
+          "$value": "oklch(0.155 0.026 58.3)",
           "$type": "color",
           "$description": "Elevated background — for floating layers (modals, popovers, dropdowns)"
         },
         "bg-subtle": {
-          "$value": "#0B0501",
+          "$value": "oklch(0.175 0.03 58.3)",
           "$type": "color",
           "$description": "Subtiele achtergrond"
         },
         "bg-default": {
-          "$value": "#2B1A09",
+          "$value": "oklch(0.23 0.034 58.3)",
           "$type": "color",
           "$description": "Standaard achtergrond"
         },
         "bg-hover": {
-          "$value": "#3C250D",
+          "$value": "oklch(0.26 0.038 58.3)",
           "$type": "color",
           "$description": "Achtergrond in hover state"
         },
         "bg-active": {
-          "$value": "#4D2F10",
+          "$value": "oklch(0.29 0.042 58.3)",
           "$type": "color",
           "$description": "Achtergrond in active state"
         },
         "border-subtle": {
-          "$value": "#5A3511",
+          "$value": "oklch(0.38 0.085 58.3)",
           "$type": "color",
           "$description": "Subtiele rand"
         },
         "border-default": {
-          "$value": "#D37F25",
+          "$value": "oklch(0.525 0.125 58.3)",
           "$type": "color",
           "$description": "Standaard rand"
         },
         "border-hover": {
-          "$value": "#DE9843",
+          "$value": "oklch(0.565 0.135 58.3)",
           "$type": "color",
           "$description": "Rand in hover state"
         },
         "border-active": {
-          "$value": "#E9B062",
+          "$value": "oklch(0.605 0.144 58.3)",
           "$type": "color",
           "$description": "Rand in active state"
         },
         "color-default": {
-          "$value": "#FFB46B",
+          "$value": "oklch(0.72 0.151 58.3)",
           "$type": "color",
           "$description": "Standaard tekstkleur"
         },
         "color-hover": {
-          "$value": "#FFC38B",
+          "$value": "oklch(0.76 0.163 58.3)",
           "$type": "color",
           "$description": "Tekst in hover state"
         },
         "color-active": {
-          "$value": "#FFD2AA",
+          "$value": "oklch(0.8 0.138 58.3)",
           "$type": "color",
           "$description": "Tekst in active state"
         },
         "color-subtle": {
-          "$value": "#F3A453",
+          "$value": "oklch(0.68 0.154 58.3)",
           "$type": "color",
           "$description": "Subtiele tekstkleur"
         },
         "color-document": {
-          "$value": "#FFEEDD",
+          "$value": "oklch(0.93 0.028 58.3)",
           "$type": "color",
           "$description": "Documenttekstkleur"
         }
       },
       "neutral-inverse": {
         "bg-document": {
-          "$value": "#FBFBFB",
+          "$value": "oklch(0.61 0 0)",
           "$type": "color",
           "$description": "Documentachtergrond (inverse)"
         },
         "bg-elevated": {
-          "$value": "#FBFBFB",
+          "$value": "oklch(0.65 0 0)",
           "$type": "color",
           "$description": "Elevated background (inverse) — for floating layers (modals, popovers, dropdowns)"
         },
         "bg-subtle": {
-          "$value": "#F1F1F1",
+          "$value": "oklch(0.64 0 0)",
           "$type": "color",
           "$description": "Subtiele achtergrond (inverse)"
         },
         "bg-default": {
-          "$value": "#ABABAB",
+          "$value": "oklch(0.59 0 0)",
           "$type": "color",
           "$description": "Standaard achtergrond (inverse)"
         },
         "bg-hover": {
-          "$value": "#BBBBBB",
+          "$value": "oklch(0.62 0 0)",
           "$type": "color",
           "$description": "Achtergrond in hover state (inverse)"
         },
         "bg-active": {
-          "$value": "#CCCCCC",
+          "$value": "oklch(0.66 0 0)",
           "$type": "color",
           "$description": "Achtergrond in active state (inverse)"
         },
         "border-subtle": {
-          "$value": "#BFBFBF",
+          "$value": "oklch(0.375 0 0)",
           "$type": "color",
           "$description": "Subtiele rand (inverse)"
         },
         "border-default": {
-          "$value": "#3E3E3E",
+          "$value": "oklch(0.315 0 0)",
           "$type": "color",
           "$description": "Standaard rand (inverse)"
         },
         "border-hover": {
-          "$value": "#2E2E2E",
+          "$value": "oklch(0.275 0 0)",
           "$type": "color",
           "$description": "Rand in hover state (inverse)"
         },
         "border-active": {
-          "$value": "#1D1D1D",
+          "$value": "oklch(0.235 0 0)",
           "$type": "color",
           "$description": "Rand in active state (inverse)"
         },
         "color-default": {
-          "$value": "#000000",
+          "$value": "oklch(0.12 0 0)",
           "$type": "color",
           "$description": "Standaard tekstkleur (inverse)"
         },
         "color-hover": {
-          "$value": "#000000",
+          "$value": "oklch(0.1 0 0)",
           "$type": "color",
           "$description": "Tekst in hover state (inverse)"
         },
         "color-active": {
-          "$value": "#000000",
+          "$value": "oklch(0.08 0 0)",
           "$type": "color",
           "$description": "Tekst in active state (inverse)"
         },
         "color-subtle": {
-          "$value": "#3E3E3E",
+          "$value": "oklch(0.17 0 0)",
           "$type": "color",
           "$description": "Subtiele tekstkleur (inverse)"
         },
         "color-document": {
-          "$value": "#000000",
+          "$value": "oklch(0.12 0 0)",
           "$type": "color",
           "$description": "Documenttekstkleur (inverse)"
         }
       },
       "accent-1-inverse": {
         "bg-document": {
-          "$value": "#DCEBF9",
+          "$value": "oklch(0.61 0.106 255.8)",
           "$type": "color",
           "$description": "Documentachtergrond (inverse)"
         },
         "bg-elevated": {
-          "$value": "#DCEBF9",
+          "$value": "oklch(0.65 0.098 255.8)",
           "$type": "color",
           "$description": "Elevated background (inverse) — for floating layers (modals, popovers, dropdowns)"
         },
         "bg-subtle": {
-          "$value": "#ECF1F7",
+          "$value": "oklch(0.64 0.122 255.8)",
           "$type": "color",
           "$description": "Subtiele achtergrond (inverse)"
         },
         "bg-default": {
-          "$value": "#8FAED2",
+          "$value": "oklch(0.59 0.147 255.8)",
           "$type": "color",
           "$description": "Standaard achtergrond (inverse)"
         },
         "bg-hover": {
-          "$value": "#A5BEDB",
+          "$value": "oklch(0.62 0.176 255.8)",
           "$type": "color",
           "$description": "Achtergrond in hover state (inverse)"
         },
         "bg-active": {
-          "$value": "#BBCEE4",
+          "$value": "oklch(0.66 0.183 255.8)",
           "$type": "color",
           "$description": "Achtergrond in active state (inverse)"
         },
         "border-subtle": {
-          "$value": "#B0C6DF",
+          "$value": "oklch(0.375 0.117 255.8)",
           "$type": "color",
           "$description": "Subtiele rand (inverse)"
         },
         "border-default": {
-          "$value": "#003B81",
+          "$value": "oklch(0.315 0.098 255.8)",
           "$type": "color",
           "$description": "Standaard rand (inverse)"
         },
         "border-hover": {
-          "$value": "#002D62",
+          "$value": "oklch(0.275 0.093 255.8)",
           "$type": "color",
           "$description": "Rand in hover state (inverse)"
         },
         "border-active": {
-          "$value": "#001D40",
+          "$value": "oklch(0.235 0.08 255.8)",
           "$type": "color",
           "$description": "Rand in active state (inverse)"
         },
         "color-default": {
-          "$value": "#000000",
+          "$value": "oklch(0.12 0.02 255.8)",
           "$type": "color",
           "$description": "Standaard tekstkleur (inverse)"
         },
         "color-hover": {
-          "$value": "#000000",
+          "$value": "oklch(0.1 0.02 255.8)",
           "$type": "color",
           "$description": "Tekst in hover state (inverse)"
         },
         "color-active": {
-          "$value": "#000000",
+          "$value": "oklch(0.08 0.02 255.8)",
           "$type": "color",
           "$description": "Tekst in active state (inverse)"
         },
         "color-subtle": {
-          "$value": "#003B81",
+          "$value": "oklch(0.17 0.058 255.8)",
           "$type": "color",
           "$description": "Subtiele tekstkleur (inverse)"
         },
         "color-document": {
-          "$value": "#000000",
+          "$value": "oklch(0.12 0.02 255.8)",
           "$type": "color",
           "$description": "Documenttekstkleur (inverse)"
         }
@@ -1235,308 +1235,308 @@
       },
       "info-inverse": {
         "bg-document": {
-          "$value": "#DCEBF9",
+          "$value": "oklch(0.61 0.106 255.8)",
           "$type": "color",
           "$description": "Documentachtergrond (inverse)"
         },
         "bg-elevated": {
-          "$value": "#DCEBF9",
+          "$value": "oklch(0.65 0.098 255.8)",
           "$type": "color",
           "$description": "Elevated background (inverse) — for floating layers (modals, popovers, dropdowns)"
         },
         "bg-subtle": {
-          "$value": "#ECF1F7",
+          "$value": "oklch(0.64 0.122 255.8)",
           "$type": "color",
           "$description": "Subtiele achtergrond (inverse)"
         },
         "bg-default": {
-          "$value": "#8FAED2",
+          "$value": "oklch(0.59 0.147 255.8)",
           "$type": "color",
           "$description": "Standaard achtergrond (inverse)"
         },
         "bg-hover": {
-          "$value": "#A5BEDB",
+          "$value": "oklch(0.62 0.176 255.8)",
           "$type": "color",
           "$description": "Achtergrond in hover state (inverse)"
         },
         "bg-active": {
-          "$value": "#BBCEE4",
+          "$value": "oklch(0.66 0.183 255.8)",
           "$type": "color",
           "$description": "Achtergrond in active state (inverse)"
         },
         "border-subtle": {
-          "$value": "#B0C6DF",
+          "$value": "oklch(0.375 0.117 255.8)",
           "$type": "color",
           "$description": "Subtiele rand (inverse)"
         },
         "border-default": {
-          "$value": "#003B81",
+          "$value": "oklch(0.315 0.098 255.8)",
           "$type": "color",
           "$description": "Standaard rand (inverse)"
         },
         "border-hover": {
-          "$value": "#002D62",
+          "$value": "oklch(0.275 0.093 255.8)",
           "$type": "color",
           "$description": "Rand in hover state (inverse)"
         },
         "border-active": {
-          "$value": "#001D40",
+          "$value": "oklch(0.235 0.08 255.8)",
           "$type": "color",
           "$description": "Rand in active state (inverse)"
         },
         "color-default": {
-          "$value": "#000000",
+          "$value": "oklch(0.12 0.02 255.8)",
           "$type": "color",
           "$description": "Standaard tekstkleur (inverse)"
         },
         "color-hover": {
-          "$value": "#000000",
+          "$value": "oklch(0.1 0.02 255.8)",
           "$type": "color",
           "$description": "Tekst in hover state (inverse)"
         },
         "color-active": {
-          "$value": "#000000",
+          "$value": "oklch(0.08 0.02 255.8)",
           "$type": "color",
           "$description": "Tekst in active state (inverse)"
         },
         "color-subtle": {
-          "$value": "#003B81",
+          "$value": "oklch(0.17 0.058 255.8)",
           "$type": "color",
           "$description": "Subtiele tekstkleur (inverse)"
         },
         "color-document": {
-          "$value": "#000000",
+          "$value": "oklch(0.12 0.02 255.8)",
           "$type": "color",
           "$description": "Documenttekstkleur (inverse)"
         }
       },
       "negative-inverse": {
         "bg-document": {
-          "$value": "#FCDADA",
+          "$value": "oklch(0.61 0.157 29.2)",
           "$type": "color",
           "$description": "Documentachtergrond (inverse)"
         },
         "bg-elevated": {
-          "$value": "#FCDADA",
+          "$value": "oklch(0.65 0.145 29.2)",
           "$type": "color",
           "$description": "Elevated background (inverse) — for floating layers (modals, popovers, dropdowns)"
         },
         "bg-subtle": {
-          "$value": "#FEEDED",
+          "$value": "oklch(0.64 0.181 29.2)",
           "$type": "color",
           "$description": "Subtiele achtergrond (inverse)"
         },
         "bg-default": {
-          "$value": "#F9B1B1",
+          "$value": "oklch(0.59 0.217 29.2)",
           "$type": "color",
           "$description": "Standaard achtergrond (inverse)"
         },
         "bg-hover": {
-          "$value": "#FBC3C3",
+          "$value": "oklch(0.62 0.254 29.2)",
           "$type": "color",
           "$description": "Achtergrond in hover state (inverse)"
         },
         "bg-active": {
-          "$value": "#FCD5D5",
+          "$value": "oklch(0.66 0.227 29.2)",
           "$type": "color",
           "$description": "Achtergrond in active state (inverse)"
         },
         "border-subtle": {
-          "$value": "#F3ABAB",
+          "$value": "oklch(0.36 0.148 29.2)",
           "$type": "color",
           "$description": "Subtiele rand (inverse)"
         },
         "border-default": {
-          "$value": "#820000",
+          "$value": "oklch(0.3 0.123 29.2)",
           "$type": "color",
           "$description": "Standaard rand (inverse)"
         },
         "border-hover": {
-          "$value": "#4C0000",
+          "$value": "oklch(0.26 0.107 29.2)",
           "$type": "color",
           "$description": "Rand in hover state (inverse)"
         },
         "border-active": {
-          "$value": "#2E0000",
+          "$value": "oklch(0.22 0.09 29.2)",
           "$type": "color",
           "$description": "Rand in active state (inverse)"
         },
         "color-default": {
-          "$value": "#000000",
+          "$value": "oklch(0 0 29.2)",
           "$type": "color",
           "$description": "Standaard tekstkleur (inverse)"
         },
         "color-hover": {
-          "$value": "#000000",
+          "$value": "oklch(0 0 29.2)",
           "$type": "color",
           "$description": "Tekst in hover state (inverse)"
         },
         "color-active": {
-          "$value": "#000000",
+          "$value": "oklch(0 0 29.2)",
           "$type": "color",
           "$description": "Tekst in active state (inverse)"
         },
         "color-subtle": {
-          "$value": "#820000",
+          "$value": "oklch(0.05 0.02 29.2)",
           "$type": "color",
           "$description": "Subtiele tekstkleur (inverse)"
         },
         "color-document": {
-          "$value": "#000000",
+          "$value": "oklch(0 0 29.2)",
           "$type": "color",
           "$description": "Documenttekstkleur (inverse)"
         }
       },
       "positive-inverse": {
         "bg-document": {
-          "$value": "#CCE8D7",
+          "$value": "oklch(0.61 0.101 148.2)",
           "$type": "color",
           "$description": "Documentachtergrond (inverse)"
         },
         "bg-elevated": {
-          "$value": "#CCE8D7",
+          "$value": "oklch(0.65 0.094 148.2)",
           "$type": "color",
           "$description": "Elevated background (inverse) — for floating layers (modals, popovers, dropdowns)"
         },
         "bg-subtle": {
-          "$value": "#E4F5EA",
+          "$value": "oklch(0.64 0.117 148.2)",
           "$type": "color",
           "$description": "Subtiele achtergrond (inverse)"
         },
         "bg-default": {
-          "$value": "#8AD3A6",
+          "$value": "oklch(0.58 0.14 148.2)",
           "$type": "color",
           "$description": "Standaard achtergrond (inverse)"
         },
         "bg-hover": {
-          "$value": "#A3DCBA",
+          "$value": "oklch(0.62 0.168 148.2)",
           "$type": "color",
           "$description": "Achtergrond in hover state (inverse)"
         },
         "bg-active": {
-          "$value": "#BCE5CE",
+          "$value": "oklch(0.66 0.19 148.2)",
           "$type": "color",
           "$description": "Achtergrond in active state (inverse)"
         },
         "border-subtle": {
-          "$value": "#7DCA9E",
+          "$value": "oklch(0.38 0.109 148.2)",
           "$type": "color",
           "$description": "Subtiele rand (inverse)"
         },
         "border-default": {
-          "$value": "#00481B",
+          "$value": "oklch(0.32 0.092 148.2)",
           "$type": "color",
           "$description": "Standaard rand (inverse)"
         },
         "border-hover": {
-          "$value": "#003E1F",
+          "$value": "oklch(0.28 0.081 148.2)",
           "$type": "color",
           "$description": "Rand in hover state (inverse)"
         },
         "border-active": {
-          "$value": "#002312",
+          "$value": "oklch(0.24 0.069 148.2)",
           "$type": "color",
           "$description": "Rand in active state (inverse)"
         },
         "color-default": {
-          "$value": "#000000",
+          "$value": "oklch(0.12 0.019 148.2)",
           "$type": "color",
           "$description": "Standaard tekstkleur (inverse)"
         },
         "color-hover": {
-          "$value": "#000000",
+          "$value": "oklch(0.1 0.019 148.2)",
           "$type": "color",
           "$description": "Tekst in hover state (inverse)"
         },
         "color-active": {
-          "$value": "#000000",
+          "$value": "oklch(0.08 0.019 148.2)",
           "$type": "color",
           "$description": "Tekst in active state (inverse)"
         },
         "color-subtle": {
-          "$value": "#00481B",
+          "$value": "oklch(0.17 0.049 148.2)",
           "$type": "color",
           "$description": "Subtiele tekstkleur (inverse)"
         },
         "color-document": {
-          "$value": "#000000",
+          "$value": "oklch(0.12 0.019 148.2)",
           "$type": "color",
           "$description": "Documenttekstkleur (inverse)"
         }
       },
       "warning-inverse": {
         "bg-document": {
-          "$value": "#FFEAC6",
+          "$value": "oklch(0.696 0.123 58.3)",
           "$type": "color",
           "$description": "Documentachtergrond (inverse)"
         },
         "bg-elevated": {
-          "$value": "#FFEAC6",
+          "$value": "oklch(0.736 0.113 58.3)",
           "$type": "color",
           "$description": "Elevated background (inverse) — for floating layers (modals, popovers, dropdowns)"
         },
         "bg-subtle": {
-          "$value": "#FFEEDD",
+          "$value": "oklch(0.726 0.142 58.3)",
           "$type": "color",
           "$description": "Subtiele achtergrond (inverse)"
         },
         "bg-default": {
-          "$value": "#FFB46B",
+          "$value": "oklch(0.666 0.159 58.3)",
           "$type": "color",
           "$description": "Standaard achtergrond (inverse)"
         },
         "bg-hover": {
-          "$value": "#FFC38B",
+          "$value": "oklch(0.706 0.168 58.3)",
           "$type": "color",
           "$description": "Achtergrond in hover state (inverse)"
         },
         "bg-active": {
-          "$value": "#FFD2AA",
+          "$value": "oklch(0.746 0.178 58.3)",
           "$type": "color",
           "$description": "Achtergrond in active state (inverse)"
         },
         "border-subtle": {
-          "$value": "#FFA754",
+          "$value": "oklch(0.456 0.109 58.3)",
           "$type": "color",
           "$description": "Subtiele rand (inverse)"
         },
         "border-default": {
-          "$value": "#5A3511",
+          "$value": "oklch(0.396 0.094 58.3)",
           "$type": "color",
           "$description": "Standaard rand (inverse)"
         },
         "border-hover": {
-          "$value": "#4D2F10",
+          "$value": "oklch(0.356 0.085 58.3)",
           "$type": "color",
           "$description": "Rand in hover state (inverse)"
         },
         "border-active": {
-          "$value": "#2B1A09",
+          "$value": "oklch(0.316 0.075 58.3)",
           "$type": "color",
           "$description": "Rand in active state (inverse)"
         },
         "color-default": {
-          "$value": "#000000",
+          "$value": "oklch(0.12 0.023 58.3)",
           "$type": "color",
           "$description": "Standaard tekstkleur (inverse)"
         },
         "color-hover": {
-          "$value": "#000000",
+          "$value": "oklch(0.1 0.023 58.3)",
           "$type": "color",
           "$description": "Tekst in hover state (inverse)"
         },
         "color-active": {
-          "$value": "#000000",
+          "$value": "oklch(0.08 0.019 58.3)",
           "$type": "color",
           "$description": "Tekst in active state (inverse)"
         },
         "color-subtle": {
-          "$value": "#5A3511",
+          "$value": "oklch(0.17 0.041 58.3)",
           "$type": "color",
           "$description": "Subtiele tekstkleur (inverse)"
         },
         "color-document": {
-          "$value": "#000000",
+          "$value": "oklch(0.12 0.023 58.3)",
           "$type": "color",
           "$description": "Documenttekstkleur (inverse)"
         }
@@ -1750,7 +1750,7 @@
       "background-color": {
         "$value": "{dsn.color.neutral.bg-document}",
         "$type": "color",
-        "$description": "Achtergrondkleur van de backdrop — altijd donker, ongeacht dark mode. Gebruikt neutral.bg-document (#111111) zodat de overlay donker blijft in dark mode."
+        "$description": "Achtergrondkleur van de backdrop — altijd donker, ongeacht dark mode. Gebruikt neutral.bg-document zodat de overlay donker blijft in dark mode."
       }
     }
   }
