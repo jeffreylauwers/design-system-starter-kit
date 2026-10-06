@@ -37,10 +37,18 @@ export function oklchToHex(color: OklchColor): string {
   return formatHex(clamped) ?? '#000000';
 }
 
+/** Rounds to the precision that oklchToCss writes. */
+export function roundOklch(color: OklchColor): OklchColor {
+  return {
+    mode: 'oklch',
+    l: Math.round(color.l * 1000) / 1000,
+    c: Math.round(color.c * 1000) / 1000,
+    h: Math.round((color.h ?? 0) * 10) / 10,
+  };
+}
+
 export function oklchToCss(color: OklchColor): string {
-  const l = Math.round(color.l * 1000) / 1000;
-  const c = Math.round(color.c * 1000) / 1000;
-  const h = Math.round((color.h ?? 0) * 10) / 10;
+  const { l, c, h } = roundOklch(color);
   return `oklch(${l} ${c} ${h})`;
 }
 

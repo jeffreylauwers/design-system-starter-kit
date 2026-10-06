@@ -10,6 +10,14 @@ All notable changes to this project are documented in this file.
 
 Nog niet gepubliceerde wijzigingen. Schrijf nieuwe changelog-entries hieronder; bij de volgende release wordt deze kop gepromoveerd naar het definitieve versienummer.
 
+### Color-palette-generator: inverse tekst haalt 4,5:1 op elke inverse achtergrond
+
+De generator garandeert nu dat `color-default` en `color-subtle` van een inverse-groep minimaal 4,5:1 halen op alle zes de inverse achtergronden (`bg-document`, `bg-elevated`, `bg-subtle`, `bg-default`, `bg-hover`, `bg-active`), in light en dark. Voorheen werd `color-default` alleen tegen `bg-default` gecontroleerd en `color-subtle` alleen tegen `bg-document`, waardoor een export net onder de grens kon uitkomen.
+
+Haalt een combinatie de grens niet, dan schuift de hele inverse achtergrondreeks in stappen van L 0.005 van de tekst af: lichter in dark mode, donkerder in light mode. De zes achtergronden schuiven samen, dus de volgorde van default, hover en active blijft gelijk. De controle rekent met de sRGB-waarde na gamut-mapping, en ook met de afgeronde waarde die de `oklch()`-export wegschrijft.
+
+Voor het standaardpalet verandert dit in dark mode `bg-default` van `accent-1-inverse` (L 0.58 naar 0.585), `accent-2-inverse` (0.546 naar 0.606), `action-1-inverse` (0.546 naar 0.591) en `negative-inverse` (0.577 naar 0.607), en in light mode die van `action-1-inverse` (0.546 naar 0.536). Bij de drie groepen waar de tekst eerst zwart werd, blijft de tekst nu de gewone donkere tint. Een nieuwe test in `tests/color-palette-generator.test.ts` dwingt de grens af voor het standaardpalet, op zowel de `oklch()`- als de hex-export.
+
 ## Version 4.1.0 (October 1, 2026)
 
 Minor release, zonder breaking changes. Aanleiding was een vergelijking van onze overlays met het artikel van Hidde de Vries over dialogs, modaliteit en popovers. Nieuw is het component `PopoverMenu`, een lijst met acties of links zonder dialog-rol, en de prop `alert` op `ModalDialog` voor een alertdialog. De `Popover` is nu expliciet een niet-modale dialog. De niet-modale `Drawer` staat in de top layer, zodat een sticky header er niet meer overheen valt. ModalDialog, Drawer en Popover zetten de focus bij openen op de heading; de Popover deed dat nog niet. Verder geven de HTML-voorbeelden aan hoe je dialogs en popovers zonder eigen JavaScript opent, met `commandfor`/`command` en `popovertarget`. De bestaande markup en API's blijven werken; waar de HTML-laag een nieuwe aanpak aanbeveelt, staat dat bij de entry.
