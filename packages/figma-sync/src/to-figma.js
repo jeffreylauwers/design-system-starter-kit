@@ -7,14 +7,24 @@
  * laten meeschalen in plaats van een dood, absoluut gepositioneerd blok.
  */
 
+import { parseColor } from '../../design-tokens/src/config/color.js';
 import { bindingsFor, createBindingReport } from './bindings.js';
 
 // =============================================================================
 // WAARDE-CONVERSIE
 // =============================================================================
 
-/** `rgb(27, 89, 164)` of `rgba(0, 0, 0, 0)` -> Figma RGBA (kanalen 0..1). */
+/**
+ * Computed kleur -> Figma RGBA (kanalen 0..1).
+ *
+ * Een browser rekent een kleur niet om naar rgb: wat als `oklch()` is
+ * geschreven komt ook als `oklch()` uit `getComputedStyle`. Die vorm gaat door
+ * dezelfde conversie als de variables-build, zodat de gemeten kleur en de
+ * waarde van het token exact op elkaar uitkomen.
+ */
 export function parseCssColor(input) {
+  if (/^\s*oklch\(/i.test(String(input))) return parseColor(input);
+
   const match = String(input).match(
     /rgba?\(\s*([\d.]+)[,\s]+([\d.]+)[,\s]+([\d.]+)(?:[,\s/]+([\d.%]+))?\s*\)/i
   );
