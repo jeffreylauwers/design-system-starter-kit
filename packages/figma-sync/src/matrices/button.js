@@ -36,7 +36,7 @@ export default {
    * De naam moet overeenkomen met een font dat ook in Figma beschikbaar is.
    */
   fonts: [
-    'https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;700&display=swap',
+    'https://fonts.googleapis.com/css2?family=Fira+Sans:wght@400;700&display=swap',
   ],
 
   /** CSS die geladen moet zijn voordat de computed styles kloppen. */

@@ -33,29 +33,29 @@ De Heading component biedt een consistente, toegankelijke manier om koppen weer 
 
 ## Design tokens
 
-| Token                                    | Beschrijving                                         |
-| ---------------------------------------- | ---------------------------------------------------- |
-| `--dsn-heading-color`                    | Tekstkleur voor alle headings                        |
-| `--dsn-heading-font-family`              | Lettertypefamilie voor alle headings (IBM Plex Sans) |
-| `--dsn-heading-font-weight`              | Font weight voor alle headings (700 - bold)          |
-| `--dsn-heading-level-1-font-size`        | Font size heading 1 (3xl - 40px-53px fluid)          |
-| `--dsn-heading-level-1-line-height`      | Line height heading 1                                |
-| `--dsn-heading-level-1-margin-block-end` | Bottom margin heading 1                              |
-| `--dsn-heading-level-2-font-size`        | Font size heading 2 (2xl - 32px-41px fluid)          |
-| `--dsn-heading-level-2-line-height`      | Line height heading 2                                |
-| `--dsn-heading-level-2-margin-block-end` | Bottom margin heading 2                              |
-| `--dsn-heading-level-3-font-size`        | Font size heading 3 (xl - 24px-31px fluid)           |
-| `--dsn-heading-level-3-line-height`      | Line height heading 3                                |
-| `--dsn-heading-level-3-margin-block-end` | Bottom margin heading 3                              |
-| `--dsn-heading-level-4-font-size`        | Font size heading 4 (lg - 20px-24.5px fluid)         |
-| `--dsn-heading-level-4-line-height`      | Line height heading 4                                |
-| `--dsn-heading-level-4-margin-block-end` | Bottom margin heading 4                              |
-| `--dsn-heading-level-5-font-size`        | Font size heading 5 (md - 16px-20.5px fluid)         |
-| `--dsn-heading-level-5-line-height`      | Line height heading 5                                |
-| `--dsn-heading-level-5-margin-block-end` | Bottom margin heading 5                              |
-| `--dsn-heading-level-6-font-size`        | Font size heading 6 (sm - 14px-17px fluid)           |
-| `--dsn-heading-level-6-line-height`      | Line height heading 6                                |
-| `--dsn-heading-level-6-margin-block-end` | Bottom margin heading 6                              |
+| Token                                    | Beschrijving                                     |
+| ---------------------------------------- | ------------------------------------------------ |
+| `--dsn-heading-color`                    | Tekstkleur voor alle headings                    |
+| `--dsn-heading-font-family`              | Lettertypefamilie voor alle headings (Fira Sans) |
+| `--dsn-heading-font-weight`              | Font weight voor alle headings (700 - bold)      |
+| `--dsn-heading-level-1-font-size`        | Font size heading 1 (3xl - 40px-53px fluid)      |
+| `--dsn-heading-level-1-line-height`      | Line height heading 1                            |
+| `--dsn-heading-level-1-margin-block-end` | Bottom margin heading 1                          |
+| `--dsn-heading-level-2-font-size`        | Font size heading 2 (2xl - 32px-41px fluid)      |
+| `--dsn-heading-level-2-line-height`      | Line height heading 2                            |
+| `--dsn-heading-level-2-margin-block-end` | Bottom margin heading 2                          |
+| `--dsn-heading-level-3-font-size`        | Font size heading 3 (xl - 24px-31px fluid)       |
+| `--dsn-heading-level-3-line-height`      | Line height heading 3                            |
+| `--dsn-heading-level-3-margin-block-end` | Bottom margin heading 3                          |
+| `--dsn-heading-level-4-font-size`        | Font size heading 4 (lg - 20px-24.5px fluid)     |
+| `--dsn-heading-level-4-line-height`      | Line height heading 4                            |
+| `--dsn-heading-level-4-margin-block-end` | Bottom margin heading 4                          |
+| `--dsn-heading-level-5-font-size`        | Font size heading 5 (md - 16px-20.5px fluid)     |
+| `--dsn-heading-level-5-line-height`      | Line height heading 5                            |
+| `--dsn-heading-level-5-margin-block-end` | Bottom margin heading 5                          |
+| `--dsn-heading-level-6-font-size`        | Font size heading 6 (sm - 14px-17px fluid)       |
+| `--dsn-heading-level-6-line-height`      | Line height heading 6                            |
+| `--dsn-heading-level-6-margin-block-end` | Bottom margin heading 6                          |
 
 ## Accessibility
 

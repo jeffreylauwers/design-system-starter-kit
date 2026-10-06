@@ -23,7 +23,7 @@ export default {
   component: 'PageHeader',
 
   fonts: [
-    'https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;700&display=swap',
+    'https://fonts.googleapis.com/css2?family=Fira+Sans:wght@400;700&display=swap',
   ],
 
   css: [

@@ -242,7 +242,7 @@ For existing consumers, these aliases are maintained:
 
 ### Start Theme
 
-- **Font**: IBM Plex Sans / IBM Plex Mono
+- **Font**: Fira Sans / Fira Mono
 - **Border radius**: 4px (sm), 8px (md), 16px (lg)
 - **Colors**: Full brand palette with blues, greens, reds, oranges
 - **Focus**: Yellow background with dashed outline (GOV.UK style)

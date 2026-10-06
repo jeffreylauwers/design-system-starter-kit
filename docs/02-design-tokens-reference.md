@@ -32,12 +32,12 @@ Complete reference for all design tokens in the Design System Starter Kit.
   "dsn": {
     "text": {
       "font-family": {
-        "default": "IBM Plex Sans, sans-serif",
-        "monospace": "IBM Plex Mono, monospace"
+        "default": "Fira Sans, sans-serif",
+        "monospace": "Fira Mono, monospace"
       }
     },
     "heading": {
-      "font-family": "IBM Plex Sans, sans-serif"
+      "font-family": "Fira Sans, sans-serif"
     }
   }
 }
