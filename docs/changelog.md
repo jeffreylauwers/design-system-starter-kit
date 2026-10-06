@@ -10,6 +10,18 @@ All notable changes to this project are documented in this file.
 
 Nog niet gepubliceerde wijzigingen. Schrijf nieuwe changelog-entries hieronder; bij de volgende release wordt deze kop gepromoveerd naar het definitieve versienummer.
 
+### Kleurtokens mogen in OKLCH staan
+
+De token-build en de Figma-route begrijpen nu `oklch()` als kleurwaarde. CSS, SCSS en JS krijgen de waarde ongewijzigd. Voor Figma, dat alleen sRGB kent, zet een gedeelde conversie (`packages/design-tokens/src/config/color.js`) de waarde om: zowel voor de variables in `variables.json` als voor de gemeten kleuren in de component-specs van `figma-sync`, zodat bindingen blijven kloppen. Kleuren buiten sRGB worden in chroma teruggebracht, gelijk aan de hex-voorvertoning van de color-palette-generator.
+
+### Start-thema: nieuw kleurenpalet in OKLCH
+
+De kleuren van het Start-thema (light en dark) zijn opnieuw gegenereerd met de color-palette-generator en staan nu als `oklch()` in `themes/start/colors-light.json` en `colors-dark.json`. De token-namen en de verwijzingen tussen groepen (`accent-2`, `accent-3`, `action-1` en `action-2` naar `accent-1`) zijn ongewijzigd; alleen de waardes veranderen. Het Wireframe-thema blijft op hex.
+
+Zichtbare verschuivingen: tekst- en randkleuren zijn in light mode donkerder, de gekleurde achtergronden zijn minder verzadigd, en de inverse-groepen in dark mode zijn een middentoon in plaats van een lichte tint. `neutral-inverse.bg-document` gaat in light mode van `#242424` naar ongeveer `#4e4e4e`, waardoor ook de backdrop lichter wordt.
+
+Drie waardes wijken bewust af van de generator, zodat `color-default` en `color-subtle` op elke inverse achtergrond 4,5:1 halen. In dark mode is `bg-default` van `neutral-inverse`, `accent-1-inverse` (en `info-inverse`) en `negative-inverse` één stap lichter: L 0.59 in plaats van 0.58.
+
 ### Color-palette-generator: inverse tekst haalt 4,5:1 op elke inverse achtergrond
 
 De generator garandeert nu dat `color-default` en `color-subtle` van een inverse-groep minimaal 4,5:1 halen op alle zes de inverse achtergronden (`bg-document`, `bg-elevated`, `bg-subtle`, `bg-default`, `bg-hover`, `bg-active`), in light en dark. Voorheen werd `color-default` alleen tegen `bg-default` gecontroleerd en `color-subtle` alleen tegen `bg-document`, waardoor een export net onder de grens kon uitkomen.

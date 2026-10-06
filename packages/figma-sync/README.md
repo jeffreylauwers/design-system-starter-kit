@@ -13,13 +13,34 @@ gaat reviewbaar in een PR.
 
 | Bestand                                   | Wordt gegenereerd door        | Bevat                                    |
 | ----------------------------------------- | ----------------------------- | ---------------------------------------- |
-| `design-tokens/dist/figma/variables.json` | `pnpm build:tokens`           | Variable collections, modes en aliassen  |
+| `design-tokens/dist/figma/variables.json` | `pnpm build:figma-variables`  | Variable collections, modes en aliassen  |
 | `figma-sync/dist/icons.json`              | `pnpm build:figma-icons`      | Eén node spec per SVG uit de assets-map  |
 | `figma-sync/dist/{component}.json`        | `pnpm build:figma-components` | Node specs per variant van een component |
 
 Naast `variables.json` komt `variables-report.json` te staan met alles wat
 níet naar een variable te vertalen was, inclusief reden. Lees dat bestand bij
 elke review: het is de plek waar drift zichtbaar wordt.
+
+## Kleuren: OKLCH in de tokens, sRGB in Figma
+
+De kleurtokens mogen in `oklch()` staan. CSS, SCSS en JS krijgen die waarde
+ongewijzigd; Figma niet, want een variable is daar altijd sRGB. De vertaling
+gebeurt op één plek, `design-tokens/src/config/color.js`, en wordt op twee
+momenten gebruikt:
+
+- **Variables.** `figma.js` zet elke `oklch()`-waarde (en hex) om naar het
+  RGBA-object dat in `variables.json` komt.
+- **Component-specs.** Een browser rekent `oklch()` niet om naar `rgb()`:
+  `getComputedStyle` geeft de waarde terug zoals hij geschreven is. De gemeten
+  kleur gaat daarom door dezelfde functie, zodat hij exact uitkomt op de waarde
+  van het token en de verificatie van de binding slaagt.
+
+Valt een kleur buiten sRGB, dan wordt de chroma teruggebracht tot hij past, bij
+gelijke lichtheid en tint. Dat is dezelfde keuze als de hex-voorvertoning in de
+color-palette-generator, dus Figma toont de kleur die de generator liet zien
+(bij kleuren op de rand van het gamut hooguit één stap van 1/255 verschil). Een
+browser op een scherm met een groter gamut (P3) kan zo'n kleur wél verzadigder
+tonen dan Figma.
 
 ## Fluid typografie
 
