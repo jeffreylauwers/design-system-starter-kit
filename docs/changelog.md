@@ -10,6 +10,14 @@ All notable changes to this project are documented in this file.
 
 Nog niet gepubliceerde wijzigingen. Schrijf nieuwe changelog-entries hieronder; bij de volgende release wordt deze kop gepromoveerd naar het definitieve versienummer.
 
+### Start-thema: Fira Sans en Fira Mono als lettertype
+
+Het Start-thema gebruikt nu Fira Sans in plaats van IBM Plex Sans voor bodytekst en koppen: `dsn.text.font-family.default` en `dsn.heading.font-family` in `themes/start/base.json`. Alle component-tokens delegeren daarnaar en volgen vanzelf. Het monospace-lettertype (`dsn.text.font-family.monospace`) gaat van IBM Plex Mono naar Fira Mono. Het Wireframe-thema is ongewijzigd.
+
+`reset.css` in `core` laadt Fira Sans (400 en 700) en Fira Mono (400) van Google Fonts. IBM Plex Sans en IBM Plex Mono worden niet meer geladen. Wie de lettertypes zelf host, moet Fira Sans en Fira Mono aanbieden.
+
+De matrices van `figma-sync` meten met Fira Sans, en de variables-export zet `Fira Sans` en `Fira Mono` in de font-family-variables. In Figma is er geen terugval: beide moeten op de machine van de designer geïnstalleerd zijn.
+
 ### Kleurtokens mogen in OKLCH staan
 
 De token-build en de Figma-route begrijpen nu `oklch()` als kleurwaarde. CSS, SCSS en JS krijgen de waarde ongewijzigd. Voor Figma, dat alleen sRGB kent, zet een gedeelde conversie (`packages/design-tokens/src/config/color.js`) de waarde om: zowel voor de variables in `variables.json` als voor de gemeten kleuren in de component-specs van `figma-sync`, zodat bindingen blijven kloppen. Kleuren buiten sRGB worden in chroma teruggebracht, gelijk aan de hex-voorvertoning van de color-palette-generator.

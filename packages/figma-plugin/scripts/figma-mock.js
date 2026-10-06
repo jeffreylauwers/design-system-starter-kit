@@ -862,7 +862,7 @@ export const figma = {
 
   async loadFontAsync(font) {
     // Alleen fonts die Figma standaard heeft plus het font van dit systeem.
-    const known = ['Inter', 'IBM Plex Sans', 'IBM Plex Mono', 'Roboto'];
+    const known = ['Inter', 'Fira Sans', 'Fira Mono', 'Roboto'];
     if (!known.includes(font.family)) {
       throw new Error(`font ${font.family} niet beschikbaar`);
     }

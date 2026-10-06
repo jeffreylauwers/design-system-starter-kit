@@ -209,8 +209,8 @@ Wat er gebonden wordt:
 | `fontWeight`                                 | `font-weight`                                            |
 
 Een font-family-variable is in Figma één familienaam, geen stack:
-`IBM Plex Sans, sans-serif` bestaat daar niet als lettertype. De
-variables-export zet er daarom de eerste echte familie in (`IBM Plex Sans`),
+`Fira Sans, sans-serif` bestaat daar niet als lettertype. De
+variables-export zet er daarom de eerste echte familie in (`Fira Sans`),
 zonder quotes en zonder generieke sleutelwoorden als `sans-serif` of
 `ui-monospace`. In Figma is er geen terugval, dus die familie moet op de machine
 van de designer geïnstalleerd zijn, ook `Comic Sans MS` voor `wireframe`.
@@ -617,9 +617,7 @@ zijn losse voorbeelden, een component set heeft een volledige matrix nodig.
 ```js
 export default {
   component: 'Badge',
-  fonts: [
-    'https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;700',
-  ],
+  fonts: ['https://fonts.googleapis.com/css2?family=Fira+Sans:wght@400;700'],
   css: [
     '@dsn-starter-kit/design-tokens/dist/css/start-light-default.css',
     '@dsn-starter-kit/components-html/src/badge/badge.css',

@@ -3,11 +3,11 @@
     "text": {
       "font-family": {
         "default": {
-          "$value": "IBM Plex Sans, sans-serif",
+          "$value": "Fira Sans, sans-serif",
           "$description": "Standaard lettertype voor bodytekst"
         },
         "monospace": {
-          "$value": "IBM Plex Mono, monospace",
+          "$value": "Fira Mono, monospace",
           "$description": "Monospace lettertype voor code"
         }
       },
@@ -59,7 +59,7 @@
     },
     "heading": {
       "font-family": {
-        "$value": "IBM Plex Sans, sans-serif",
+        "$value": "Fira Sans, sans-serif",
         "$description": "Lettertype voor koppen"
       },
       "font-weight": {

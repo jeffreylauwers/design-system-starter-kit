@@ -233,7 +233,7 @@ const GENERIC_FONT_FAMILIES = new Set([
  * De ene familienaam die Figma kan gebruiken, uit een CSS font-stack.
  *
  * Een Figma-variable voor `fontFamily` is één familienaam, geen stack:
- * `IBM Plex Sans, sans-serif` bestaat in Figma niet als lettertype. Dat is de
+ * `Fira Sans, sans-serif` bestaat in Figma niet als lettertype. Dat is de
  * eerste echte familie uit de stack, zonder quotes. De fallbacks erachter zijn
  * voor de browser; in Figma is er geen terugval.
  */
