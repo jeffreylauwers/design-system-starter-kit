@@ -15,6 +15,8 @@
  * wordt overgeslagen en verantwoord in het report-bestand.
  */
 
+import { parseColor } from './color.js';
+
 // =============================================================================
 // CONSTANTEN
 // =============================================================================
@@ -49,33 +51,6 @@ export const COLLECTIONS = {
 // =============================================================================
 // WAARDE-CONVERSIE
 // =============================================================================
-
-/**
- * Zet een hex-kleur om naar Figma's RGBA-object (kanalen 0..1).
- * Ondersteunt #RGB, #RGBA, #RRGGBB en #RRGGBBAA.
- */
-function parseColor(input) {
-  const value = String(input).trim();
-  if (!value.startsWith('#')) return null;
-
-  let hex = value.slice(1);
-  if (hex.length === 3 || hex.length === 4) {
-    hex = hex
-      .split('')
-      .map((char) => char + char)
-      .join('');
-  }
-  if (hex.length !== 6 && hex.length !== 8) return null;
-  if (!/^[0-9a-fA-F]+$/.test(hex)) return null;
-
-  const channel = (offset) => parseInt(hex.slice(offset, offset + 2), 16) / 255;
-  return {
-    r: channel(0),
-    g: channel(2),
-    b: channel(4),
-    a: hex.length === 8 ? channel(6) : 1,
-  };
-}
 
 /**
  * Vervangt CSS-eenheden door pixelwaarden zodat de rest een kale som wordt.
@@ -299,11 +274,15 @@ export function mapTokenValue(token, pixelsByCssName, viewport) {
     return { skip: `"${unsupported}" heeft geen Figma-variable equivalent` };
   }
 
-  if (type === 'color' || (typeof raw === 'string' && raw.startsWith('#'))) {
+  // Niet elk kleurtoken draagt `$type: color`; de waarde zelf verraadt het dan.
+  if (
+    type === 'color' ||
+    (typeof raw === 'string' && /^(#|oklch\()/i.test(raw))
+  ) {
     const color = parseColor(raw);
     if (!color) {
       return {
-        skip: `kleurwaarde "${raw}" is geen hex (color-mix of keyword)`,
+        skip: `kleurwaarde "${raw}" is geen hex of oklch (color-mix of keyword)`,
       };
     }
     return { figmaType: 'COLOR', value: color };
