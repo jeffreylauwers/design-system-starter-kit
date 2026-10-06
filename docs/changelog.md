@@ -10,6 +10,10 @@ All notable changes to this project are documented in this file.
 
 Nog niet gepubliceerde wijzigingen. Schrijf nieuwe changelog-entries hieronder; bij de volgende release wordt deze kop gepromoveerd naar het definitieve versienummer.
 
+## Version 4.2.0 (October 6, 2026)
+
+Minor release, zonder breaking changes. Het Start-thema heeft een nieuw uiterlijk: een opnieuw gegenereerd kleurenpalet in OKLCH en Fira Sans met Fira Mono als lettertype. Token-namen, markup en API's zijn ongewijzigd; alleen waardes veranderen. Wie de lettertypes zelf host, moet Fira Sans en Fira Mono aanbieden in plaats van IBM Plex. De kleurtokens van het Start-thema staan nu als `oklch()` in de CSS-, SCSS- en JS-output, dus een toolchain die kleurwaardes zelf parset moet die notatie aankunnen.
+
 ### Start-thema: Fira Sans en Fira Mono als lettertype
 
 Het Start-thema gebruikt nu Fira Sans in plaats van IBM Plex Sans voor bodytekst en koppen: `dsn.text.font-family.default` en `dsn.heading.font-family` in `themes/start/base.json`. Alle component-tokens delegeren daarnaar en volgen vanzelf. Het monospace-lettertype (`dsn.text.font-family.monospace`) gaat van IBM Plex Mono naar Fira Mono. Het Wireframe-thema is ongewijzigd.
