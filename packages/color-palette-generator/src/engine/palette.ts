@@ -4,12 +4,14 @@ import {
   clampToSRGB,
   oklchToHex,
   contrastRatio,
+  roundOklch,
 } from './oklch';
 import type {
   OklchColor,
   SwatchData,
   TokenMap,
   InverseTokenMap,
+  InverseTokenStep,
   ColorGroup,
   ColorMode,
 } from '../types';
@@ -38,6 +40,65 @@ function swatch(
     contrastPass,
     isFallback,
   };
+}
+
+const INVERSE_TEXT_STEPS: InverseTokenStep[] = [
+  'inverse-color-default',
+  'inverse-color-subtle',
+];
+
+const INVERSE_BG_STEPS: InverseTokenStep[] = [
+  'inverse-bg-document',
+  'inverse-bg-elevated',
+  'inverse-bg-subtle',
+  'inverse-bg-default',
+  'inverse-bg-hover',
+  'inverse-bg-active',
+];
+
+const INVERSE_TEXT_MIN_CONTRAST = 4.5;
+const INVERSE_SHIFT_STEP = 0.005;
+const INVERSE_SHIFT_MAX_STEPS = 100;
+
+/**
+ * True when inverse color-default and color-subtle both reach 4.5:1 on every
+ * inverse background. Checked on the swatch as generated and on the rounded
+ * value that the oklch() export writes, so the export cannot round a pair
+ * below the threshold.
+ */
+export function inverseTextIsReadable(inverse: InverseTokenMap): boolean {
+  return INVERSE_TEXT_STEPS.every((textStep) =>
+    INVERSE_BG_STEPS.every((bgStep) => {
+      const text = inverse[textStep].oklch;
+      const bg = inverse[bgStep].oklch;
+      return (
+        contrastRatio(text, bg) >= INVERSE_TEXT_MIN_CONTRAST &&
+        contrastRatio(roundOklch(text), roundOklch(bg)) >=
+          INVERSE_TEXT_MIN_CONTRAST
+      );
+    })
+  );
+}
+
+/**
+ * Moves the inverse background ramp away from the text, one step at a time,
+ * until the text is readable on all six backgrounds. Text is only adjusted
+ * inside buildInverse; once it is at its darkest (or lightest) the background
+ * is the only thing left to move. The six backgrounds shift together, so the
+ * order of default, hover and active stays as it was.
+ */
+function settleInverse(
+  buildInverse: (shift: number) => InverseTokenMap
+): InverseTokenMap {
+  let inverse = buildInverse(0);
+  for (
+    let i = 1;
+    i <= INVERSE_SHIFT_MAX_STEPS && !inverseTextIsReadable(inverse);
+    i++
+  ) {
+    inverse = buildInverse(i * INVERSE_SHIFT_STEP);
+  }
+  return inverse;
 }
 
 export function generatePalette(
@@ -107,87 +168,119 @@ function generateLightPalette(
   let colorDocument = makeOklch(0.18, C(baseC * 0.6), H);
   colorDocument = adjustLForContrast(colorDocument, bgSubtle, 4.5, 'darken');
 
-  // Inverse track: dark backgrounds
-  let invBgDefault = makeOklch(base.l, C(baseC), H);
-  invBgDefault = adjustLForContrast(invBgDefault, bgDefault, 3, 'darken');
-  // Ensure inverse-bg-default is sufficiently dark to look "inverse"
-  if (invBgDefault.l > 0.55) invBgDefault = makeOklch(0.45, C(baseC * 0.85), H);
+  // Inverse track: dark backgrounds. `shift` darkens the whole background
+  // ramp; see settleInverse.
+  const buildInverse = (shift: number): InverseTokenMap => {
+    let invBgDefault = makeOklch(base.l, C(baseC), H);
+    invBgDefault = adjustLForContrast(invBgDefault, bgDefault, 3, 'darken');
+    // Ensure inverse-bg-default is sufficiently dark to look "inverse"
+    if (invBgDefault.l > 0.55)
+      invBgDefault = makeOklch(0.45, C(baseC * 0.85), H);
+    invBgDefault = makeOklch(invBgDefault.l - shift, invBgDefault.c, H);
 
-  const invBgSubtle = makeOklch(invBgDefault.l - 0.08, C(baseC * 0.7), H);
-  const invBgDocument = makeOklch(invBgSubtle.l + 0.04, C(baseC * 0.6), H);
-  const invBgElevated = invBgDocument;
-  const invBgHover = makeOklch(
-    invBgDefault.l - 0.04,
-    C(invBgDefault.c * 1.0),
-    H
-  );
-  const invBgActive = makeOklch(invBgHover.l - 0.04, C(invBgHover.c * 1.0), H);
+    const invBgSubtle = makeOklch(invBgDefault.l - 0.08, C(baseC * 0.7), H);
+    const invBgDocument = makeOklch(invBgSubtle.l + 0.04, C(baseC * 0.6), H);
+    const invBgElevated = invBgDocument;
+    const invBgHover = makeOklch(
+      invBgDefault.l - 0.04,
+      C(invBgDefault.c * 1.0),
+      H
+    );
+    const invBgActive = makeOklch(
+      invBgHover.l - 0.04,
+      C(invBgHover.c * 1.0),
+      H
+    );
 
-  // Inverse borders (lighter = more visible on dark bg)
-  let invBorderDefault = makeOklch(invBgDefault.l + 0.25, C(baseC * 0.55), H);
-  invBorderDefault = adjustLForContrast(
-    invBorderDefault,
-    invBgDefault,
-    3,
-    'lighten'
-  );
-  const invBorderSubtle = makeOklch(
-    invBorderDefault.l - 0.08,
-    C(invBorderDefault.c),
-    H
-  );
-  let invBorderHover = makeOklch(
-    invBorderDefault.l + 0.05,
-    C(invBorderDefault.c),
-    H
-  );
-  invBorderHover = adjustLForContrast(invBorderHover, invBgHover, 3, 'lighten');
-  let invBorderActive = makeOklch(
-    invBorderHover.l + 0.05,
-    C(invBorderHover.c),
-    H
-  );
-  invBorderActive = adjustLForContrast(
-    invBorderActive,
-    invBgActive,
-    3,
-    'lighten'
-  );
+    // Inverse borders (lighter = more visible on dark bg)
+    let invBorderDefault = makeOklch(invBgDefault.l + 0.25, C(baseC * 0.55), H);
+    invBorderDefault = adjustLForContrast(
+      invBorderDefault,
+      invBgDefault,
+      3,
+      'lighten'
+    );
+    const invBorderSubtle = makeOklch(
+      invBorderDefault.l - 0.08,
+      C(invBorderDefault.c),
+      H
+    );
+    let invBorderHover = makeOklch(
+      invBorderDefault.l + 0.05,
+      C(invBorderDefault.c),
+      H
+    );
+    invBorderHover = adjustLForContrast(
+      invBorderHover,
+      invBgHover,
+      3,
+      'lighten'
+    );
+    let invBorderActive = makeOklch(
+      invBorderHover.l + 0.05,
+      C(invBorderHover.c),
+      H
+    );
+    invBorderActive = adjustLForContrast(
+      invBorderActive,
+      invBgActive,
+      3,
+      'lighten'
+    );
 
-  // Inverse text: try bg-document value; fall back to white
-  const bgDocumentAsText = clampToSRGB(bgDocument);
-  let invColorDefault: OklchColor;
-  if (contrastRatio(bgDocumentAsText, invBgDefault) >= 4.5) {
-    invColorDefault = bgDocumentAsText;
-  } else {
-    invColorDefault = makeOklch(0.99, 0, H);
-  }
+    // Inverse text: try bg-document value; fall back to white
+    const bgDocumentAsText = clampToSRGB(bgDocument);
+    let invColorDefault: OklchColor;
+    if (contrastRatio(bgDocumentAsText, invBgDefault) >= 4.5) {
+      invColorDefault = bgDocumentAsText;
+    } else {
+      invColorDefault = makeOklch(0.99, 0, H);
+    }
 
-  let invColorHover: OklchColor;
-  if (contrastRatio(bgDocumentAsText, invBgHover) >= 4.5) {
-    invColorHover = bgDocumentAsText;
-  } else {
-    invColorHover = makeOklch(0.99, 0, H);
-  }
+    let invColorHover: OklchColor;
+    if (contrastRatio(bgDocumentAsText, invBgHover) >= 4.5) {
+      invColorHover = bgDocumentAsText;
+    } else {
+      invColorHover = makeOklch(0.99, 0, H);
+    }
 
-  let invColorActive: OklchColor;
-  if (contrastRatio(bgDocumentAsText, invBgActive) >= 4.5) {
-    invColorActive = bgDocumentAsText;
-  } else {
-    invColorActive = makeOklch(0.99, 0, H);
-  }
+    let invColorActive: OklchColor;
+    if (contrastRatio(bgDocumentAsText, invBgActive) >= 4.5) {
+      invColorActive = bgDocumentAsText;
+    } else {
+      invColorActive = makeOklch(0.99, 0, H);
+    }
 
-  let invColorSubtle = makeOklch(invColorDefault.l - 0.05, C(baseC * 0.4), H);
-  if (contrastRatio(invColorSubtle, invBgDocument) < 4.5) {
-    invColorSubtle = invColorDefault;
-  }
+    let invColorSubtle = makeOklch(invColorDefault.l - 0.05, C(baseC * 0.4), H);
+    if (contrastRatio(invColorSubtle, invBgDocument) < 4.5) {
+      invColorSubtle = invColorDefault;
+    }
 
-  let invColorDocument: OklchColor;
-  if (contrastRatio(bgDocumentAsText, invBgDefault) >= 4.5) {
-    invColorDocument = bgDocumentAsText;
-  } else {
-    invColorDocument = makeOklch(0.99, 0, H);
-  }
+    let invColorDocument: OklchColor;
+    if (contrastRatio(bgDocumentAsText, invBgDefault) >= 4.5) {
+      invColorDocument = bgDocumentAsText;
+    } else {
+      invColorDocument = makeOklch(0.99, 0, H);
+    }
+
+    return {
+      'inverse-bg-document': swatch(invBgDocument),
+      'inverse-bg-elevated': swatch(invBgElevated),
+      'inverse-bg-subtle': swatch(invBgSubtle),
+      'inverse-bg-default': swatch(invBgDefault, bgDefault, 3),
+      'inverse-bg-hover': swatch(invBgHover),
+      'inverse-bg-active': swatch(invBgActive),
+      'inverse-border-subtle': swatch(invBorderSubtle),
+      'inverse-border-default': swatch(invBorderDefault, invBgDefault, 3),
+      'inverse-border-hover': swatch(invBorderHover, invBgHover, 3),
+      'inverse-border-active': swatch(invBorderActive, invBgActive, 3),
+      'inverse-color-subtle': swatch(invColorSubtle, invBgDocument, 4.5),
+      'inverse-color-default': swatch(invColorDefault, invBgDefault, 4.5),
+      'inverse-color-hover': swatch(invColorHover, invBgHover, 4.5),
+      'inverse-color-active': swatch(invColorActive, invBgActive, 4.5),
+      'inverse-color-document': swatch(invColorDocument, invBgDefault, 4.5),
+    };
+  };
 
   return {
     tokens: {
@@ -207,23 +300,7 @@ function generateLightPalette(
       'color-active': swatch(colorActive, bgActive, 4.5),
       'color-document': swatch(colorDocument, bgSubtle, 4.5),
     },
-    inverseTokens: {
-      'inverse-bg-document': swatch(invBgDocument),
-      'inverse-bg-elevated': swatch(invBgElevated),
-      'inverse-bg-subtle': swatch(invBgSubtle),
-      'inverse-bg-default': swatch(invBgDefault, bgDefault, 3),
-      'inverse-bg-hover': swatch(invBgHover),
-      'inverse-bg-active': swatch(invBgActive),
-      'inverse-border-subtle': swatch(invBorderSubtle),
-      'inverse-border-default': swatch(invBorderDefault, invBgDefault, 3),
-      'inverse-border-hover': swatch(invBorderHover, invBgHover, 3),
-      'inverse-border-active': swatch(invBorderActive, invBgActive, 3),
-      'inverse-color-subtle': swatch(invColorSubtle, invBgDocument, 4.5),
-      'inverse-color-default': swatch(invColorDefault, invBgDefault, 4.5),
-      'inverse-color-hover': swatch(invColorHover, invBgHover, 4.5),
-      'inverse-color-active': swatch(invColorActive, invBgActive, 4.5),
-      'inverse-color-document': swatch(invColorDocument, invBgDefault, 4.5),
-    },
+    inverseTokens: settleInverse(buildInverse),
   };
 }
 
@@ -276,77 +353,108 @@ function generateDarkPalette(
   let colorDocument = makeOklch(0.93, C(baseC * 0.15), H);
   colorDocument = adjustLForContrast(colorDocument, bgSubtle, 4.5, 'lighten');
 
-  // Dark mode inverse: light backgrounds (flipped from light mode)
-  let invBgDefault = makeOklch(base.l, C(baseC), H);
-  if (invBgDefault.l < 0.5) invBgDefault = makeOklch(0.58, C(baseC * 0.9), H);
-  invBgDefault = adjustLForContrast(invBgDefault, bgDefault, 3, 'lighten');
+  // Dark mode inverse: light backgrounds (flipped from light mode). `shift`
+  // lightens the whole background ramp; see settleInverse.
+  const buildInverse = (shift: number): InverseTokenMap => {
+    let invBgDefault = makeOklch(base.l, C(baseC), H);
+    if (invBgDefault.l < 0.5) invBgDefault = makeOklch(0.58, C(baseC * 0.9), H);
+    invBgDefault = adjustLForContrast(invBgDefault, bgDefault, 3, 'lighten');
+    invBgDefault = makeOklch(invBgDefault.l + shift, invBgDefault.c, H);
 
-  const invBgSubtle = makeOklch(invBgDefault.l + 0.06, C(baseC * 0.75), H);
-  const invBgDocument = makeOklch(invBgSubtle.l - 0.03, C(baseC * 0.65), H);
-  const invBgElevated = makeOklch(invBgDocument.l + 0.04, C(baseC * 0.6), H);
-  const invBgHover = makeOklch(invBgDefault.l + 0.04, C(invBgDefault.c), H);
-  const invBgActive = makeOklch(invBgHover.l + 0.04, C(invBgHover.c), H);
+    const invBgSubtle = makeOklch(invBgDefault.l + 0.06, C(baseC * 0.75), H);
+    const invBgDocument = makeOklch(invBgSubtle.l - 0.03, C(baseC * 0.65), H);
+    const invBgElevated = makeOklch(invBgDocument.l + 0.04, C(baseC * 0.6), H);
+    const invBgHover = makeOklch(invBgDefault.l + 0.04, C(invBgDefault.c), H);
+    const invBgActive = makeOklch(invBgHover.l + 0.04, C(invBgHover.c), H);
 
-  // Inverse borders on light inverse backgrounds
-  let invBorderDefault = makeOklch(invBgDefault.l - 0.25, C(baseC * 0.6), H);
-  invBorderDefault = adjustLForContrast(
-    invBorderDefault,
-    invBgDefault,
-    3,
-    'darken'
-  );
-  const invBorderSubtle = makeOklch(
-    invBorderDefault.l + 0.06,
-    C(invBorderDefault.c),
-    H
-  );
-  let invBorderHover = makeOklch(
-    invBorderDefault.l - 0.04,
-    C(invBorderDefault.c),
-    H
-  );
-  invBorderHover = adjustLForContrast(invBorderHover, invBgHover, 3, 'darken');
-  let invBorderActive = makeOklch(
-    invBorderHover.l - 0.04,
-    C(invBorderHover.c),
-    H
-  );
-  invBorderActive = adjustLForContrast(
-    invBorderActive,
-    invBgActive,
-    3,
-    'darken'
-  );
-
-  // Inverse text on light inverse backgrounds: dark text
-  let invColorDefault = makeOklch(bgDocument.l, bgDocument.c, H);
-  if (contrastRatio(invColorDefault, invBgDefault) < 4.5) {
-    invColorDefault = makeOklch(0.15, C(baseC * 0.3), H);
-    invColorDefault = adjustLForContrast(
-      invColorDefault,
+    // Inverse borders on light inverse backgrounds
+    let invBorderDefault = makeOklch(invBgDefault.l - 0.25, C(baseC * 0.6), H);
+    invBorderDefault = adjustLForContrast(
+      invBorderDefault,
       invBgDefault,
-      4.5,
+      3,
       'darken'
     );
-  }
+    const invBorderSubtle = makeOklch(
+      invBorderDefault.l + 0.06,
+      C(invBorderDefault.c),
+      H
+    );
+    let invBorderHover = makeOklch(
+      invBorderDefault.l - 0.04,
+      C(invBorderDefault.c),
+      H
+    );
+    invBorderHover = adjustLForContrast(
+      invBorderHover,
+      invBgHover,
+      3,
+      'darken'
+    );
+    let invBorderActive = makeOklch(
+      invBorderHover.l - 0.04,
+      C(invBorderHover.c),
+      H
+    );
+    invBorderActive = adjustLForContrast(
+      invBorderActive,
+      invBgActive,
+      3,
+      'darken'
+    );
 
-  let invColorHover = makeOklch(invColorDefault.l - 0.02, invColorDefault.c, H);
-  if (contrastRatio(invColorHover, invBgHover) < 4.5)
-    invColorHover = invColorDefault;
+    // Inverse text on light inverse backgrounds: dark text
+    let invColorDefault = makeOklch(bgDocument.l, bgDocument.c, H);
+    if (contrastRatio(invColorDefault, invBgDefault) < 4.5) {
+      invColorDefault = makeOklch(0.15, C(baseC * 0.3), H);
+      invColorDefault = adjustLForContrast(
+        invColorDefault,
+        invBgDefault,
+        4.5,
+        'darken'
+      );
+    }
 
-  let invColorActive = makeOklch(
-    invColorDefault.l - 0.04,
-    invColorDefault.c,
-    H
-  );
-  if (contrastRatio(invColorActive, invBgActive) < 4.5)
-    invColorActive = invColorDefault;
+    let invColorHover = makeOklch(
+      invColorDefault.l - 0.02,
+      invColorDefault.c,
+      H
+    );
+    if (contrastRatio(invColorHover, invBgHover) < 4.5)
+      invColorHover = invColorDefault;
 
-  let invColorSubtle = makeOklch(invColorDefault.l + 0.05, C(baseC * 0.4), H);
-  if (contrastRatio(invColorSubtle, invBgDocument) < 4.5)
-    invColorSubtle = invColorDefault;
+    let invColorActive = makeOklch(
+      invColorDefault.l - 0.04,
+      invColorDefault.c,
+      H
+    );
+    if (contrastRatio(invColorActive, invBgActive) < 4.5)
+      invColorActive = invColorDefault;
 
-  const invColorDocument = invColorDefault;
+    let invColorSubtle = makeOklch(invColorDefault.l + 0.05, C(baseC * 0.4), H);
+    if (contrastRatio(invColorSubtle, invBgDocument) < 4.5)
+      invColorSubtle = invColorDefault;
+
+    const invColorDocument = invColorDefault;
+
+    return {
+      'inverse-bg-document': swatch(invBgDocument),
+      'inverse-bg-elevated': swatch(invBgElevated),
+      'inverse-bg-subtle': swatch(invBgSubtle),
+      'inverse-bg-default': swatch(invBgDefault, bgDefault, 3),
+      'inverse-bg-hover': swatch(invBgHover),
+      'inverse-bg-active': swatch(invBgActive),
+      'inverse-border-subtle': swatch(invBorderSubtle),
+      'inverse-border-default': swatch(invBorderDefault, invBgDefault, 3),
+      'inverse-border-hover': swatch(invBorderHover, invBgHover, 3),
+      'inverse-border-active': swatch(invBorderActive, invBgActive, 3),
+      'inverse-color-subtle': swatch(invColorSubtle, invBgDocument, 4.5),
+      'inverse-color-default': swatch(invColorDefault, invBgDefault, 4.5),
+      'inverse-color-hover': swatch(invColorHover, invBgHover, 4.5),
+      'inverse-color-active': swatch(invColorActive, invBgActive, 4.5),
+      'inverse-color-document': swatch(invColorDocument, invBgDefault, 4.5),
+    };
+  };
 
   return {
     tokens: {
@@ -366,23 +474,7 @@ function generateDarkPalette(
       'color-active': swatch(colorActive, bgActive, 4.5),
       'color-document': swatch(colorDocument, bgSubtle, 4.5),
     },
-    inverseTokens: {
-      'inverse-bg-document': swatch(invBgDocument),
-      'inverse-bg-elevated': swatch(invBgElevated),
-      'inverse-bg-subtle': swatch(invBgSubtle),
-      'inverse-bg-default': swatch(invBgDefault, bgDefault, 3),
-      'inverse-bg-hover': swatch(invBgHover),
-      'inverse-bg-active': swatch(invBgActive),
-      'inverse-border-subtle': swatch(invBorderSubtle),
-      'inverse-border-default': swatch(invBorderDefault, invBgDefault, 3),
-      'inverse-border-hover': swatch(invBorderHover, invBgHover, 3),
-      'inverse-border-active': swatch(invBorderActive, invBgActive, 3),
-      'inverse-color-subtle': swatch(invColorSubtle, invBgDocument, 4.5),
-      'inverse-color-default': swatch(invColorDefault, invBgDefault, 4.5),
-      'inverse-color-hover': swatch(invColorHover, invBgHover, 4.5),
-      'inverse-color-active': swatch(invColorActive, invBgActive, 4.5),
-      'inverse-color-document': swatch(invColorDocument, invBgDefault, 4.5),
-    },
+    inverseTokens: settleInverse(buildInverse),
   };
 }
 

@@ -773,52 +773,52 @@
       },
       "neutral-inverse": {
         "bg-document": {
-          "$value": "oklch(0.61 0 0)",
+          "$value": "oklch(0.615 0 0)",
           "$type": "color",
           "$description": "Documentachtergrond (inverse)"
         },
         "bg-elevated": {
-          "$value": "oklch(0.65 0 0)",
+          "$value": "oklch(0.655 0 0)",
           "$type": "color",
           "$description": "Elevated background (inverse) — for floating layers (modals, popovers, dropdowns)"
         },
         "bg-subtle": {
-          "$value": "oklch(0.64 0 0)",
+          "$value": "oklch(0.645 0 0)",
           "$type": "color",
           "$description": "Subtiele achtergrond (inverse)"
         },
         "bg-default": {
-          "$value": "oklch(0.59 0 0)",
+          "$value": "oklch(0.585 0 0)",
           "$type": "color",
           "$description": "Standaard achtergrond (inverse)"
         },
         "bg-hover": {
-          "$value": "oklch(0.62 0 0)",
+          "$value": "oklch(0.625 0 0)",
           "$type": "color",
           "$description": "Achtergrond in hover state (inverse)"
         },
         "bg-active": {
-          "$value": "oklch(0.66 0 0)",
+          "$value": "oklch(0.665 0 0)",
           "$type": "color",
           "$description": "Achtergrond in active state (inverse)"
         },
         "border-subtle": {
-          "$value": "oklch(0.375 0 0)",
+          "$value": "oklch(0.38 0 0)",
           "$type": "color",
           "$description": "Subtiele rand (inverse)"
         },
         "border-default": {
-          "$value": "oklch(0.315 0 0)",
+          "$value": "oklch(0.32 0 0)",
           "$type": "color",
           "$description": "Standaard rand (inverse)"
         },
         "border-hover": {
-          "$value": "oklch(0.275 0 0)",
+          "$value": "oklch(0.28 0 0)",
           "$type": "color",
           "$description": "Rand in hover state (inverse)"
         },
         "border-active": {
-          "$value": "oklch(0.235 0 0)",
+          "$value": "oklch(0.24 0 0)",
           "$type": "color",
           "$description": "Rand in active state (inverse)"
         },
@@ -850,52 +850,52 @@
       },
       "accent-1-inverse": {
         "bg-document": {
-          "$value": "oklch(0.61 0.106 255.8)",
+          "$value": "oklch(0.615 0.106 255.8)",
           "$type": "color",
           "$description": "Documentachtergrond (inverse)"
         },
         "bg-elevated": {
-          "$value": "oklch(0.65 0.098 255.8)",
+          "$value": "oklch(0.655 0.098 255.8)",
           "$type": "color",
           "$description": "Elevated background (inverse) — for floating layers (modals, popovers, dropdowns)"
         },
         "bg-subtle": {
-          "$value": "oklch(0.64 0.122 255.8)",
+          "$value": "oklch(0.645 0.122 255.8)",
           "$type": "color",
           "$description": "Subtiele achtergrond (inverse)"
         },
         "bg-default": {
-          "$value": "oklch(0.59 0.147 255.8)",
+          "$value": "oklch(0.585 0.147 255.8)",
           "$type": "color",
           "$description": "Standaard achtergrond (inverse)"
         },
         "bg-hover": {
-          "$value": "oklch(0.62 0.176 255.8)",
+          "$value": "oklch(0.625 0.176 255.8)",
           "$type": "color",
           "$description": "Achtergrond in hover state (inverse)"
         },
         "bg-active": {
-          "$value": "oklch(0.66 0.183 255.8)",
+          "$value": "oklch(0.665 0.18 255.8)",
           "$type": "color",
           "$description": "Achtergrond in active state (inverse)"
         },
         "border-subtle": {
-          "$value": "oklch(0.375 0.117 255.8)",
+          "$value": "oklch(0.38 0.117 255.8)",
           "$type": "color",
           "$description": "Subtiele rand (inverse)"
         },
         "border-default": {
-          "$value": "oklch(0.315 0.098 255.8)",
+          "$value": "oklch(0.32 0.098 255.8)",
           "$type": "color",
           "$description": "Standaard rand (inverse)"
         },
         "border-hover": {
-          "$value": "oklch(0.275 0.093 255.8)",
+          "$value": "oklch(0.28 0.095 255.8)",
           "$type": "color",
           "$description": "Rand in hover state (inverse)"
         },
         "border-active": {
-          "$value": "oklch(0.235 0.08 255.8)",
+          "$value": "oklch(0.24 0.081 255.8)",
           "$type": "color",
           "$description": "Rand in active state (inverse)"
         },
@@ -1235,52 +1235,52 @@
       },
       "info-inverse": {
         "bg-document": {
-          "$value": "oklch(0.61 0.106 255.8)",
+          "$value": "oklch(0.615 0.106 255.8)",
           "$type": "color",
           "$description": "Documentachtergrond (inverse)"
         },
         "bg-elevated": {
-          "$value": "oklch(0.65 0.098 255.8)",
+          "$value": "oklch(0.655 0.098 255.8)",
           "$type": "color",
           "$description": "Elevated background (inverse) — for floating layers (modals, popovers, dropdowns)"
         },
         "bg-subtle": {
-          "$value": "oklch(0.64 0.122 255.8)",
+          "$value": "oklch(0.645 0.122 255.8)",
           "$type": "color",
           "$description": "Subtiele achtergrond (inverse)"
         },
         "bg-default": {
-          "$value": "oklch(0.59 0.147 255.8)",
+          "$value": "oklch(0.585 0.147 255.8)",
           "$type": "color",
           "$description": "Standaard achtergrond (inverse)"
         },
         "bg-hover": {
-          "$value": "oklch(0.62 0.176 255.8)",
+          "$value": "oklch(0.625 0.176 255.8)",
           "$type": "color",
           "$description": "Achtergrond in hover state (inverse)"
         },
         "bg-active": {
-          "$value": "oklch(0.66 0.183 255.8)",
+          "$value": "oklch(0.665 0.18 255.8)",
           "$type": "color",
           "$description": "Achtergrond in active state (inverse)"
         },
         "border-subtle": {
-          "$value": "oklch(0.375 0.117 255.8)",
+          "$value": "oklch(0.38 0.117 255.8)",
           "$type": "color",
           "$description": "Subtiele rand (inverse)"
         },
         "border-default": {
-          "$value": "oklch(0.315 0.098 255.8)",
+          "$value": "oklch(0.32 0.098 255.8)",
           "$type": "color",
           "$description": "Standaard rand (inverse)"
         },
         "border-hover": {
-          "$value": "oklch(0.275 0.093 255.8)",
+          "$value": "oklch(0.28 0.095 255.8)",
           "$type": "color",
           "$description": "Rand in hover state (inverse)"
         },
         "border-active": {
-          "$value": "oklch(0.235 0.08 255.8)",
+          "$value": "oklch(0.24 0.081 255.8)",
           "$type": "color",
           "$description": "Rand in active state (inverse)"
         },
@@ -1312,77 +1312,77 @@
       },
       "negative-inverse": {
         "bg-document": {
-          "$value": "oklch(0.61 0.157 29.2)",
+          "$value": "oklch(0.635 0.157 29.2)",
           "$type": "color",
           "$description": "Documentachtergrond (inverse)"
         },
         "bg-elevated": {
-          "$value": "oklch(0.65 0.145 29.2)",
+          "$value": "oklch(0.675 0.145 29.2)",
           "$type": "color",
           "$description": "Elevated background (inverse) — for floating layers (modals, popovers, dropdowns)"
         },
         "bg-subtle": {
-          "$value": "oklch(0.64 0.181 29.2)",
+          "$value": "oklch(0.665 0.181 29.2)",
           "$type": "color",
           "$description": "Subtiele achtergrond (inverse)"
         },
         "bg-default": {
-          "$value": "oklch(0.59 0.217 29.2)",
+          "$value": "oklch(0.605 0.217 29.2)",
           "$type": "color",
           "$description": "Standaard achtergrond (inverse)"
         },
         "bg-hover": {
-          "$value": "oklch(0.62 0.254 29.2)",
+          "$value": "oklch(0.645 0.241 29.2)",
           "$type": "color",
           "$description": "Achtergrond in hover state (inverse)"
         },
         "bg-active": {
-          "$value": "oklch(0.66 0.227 29.2)",
+          "$value": "oklch(0.685 0.204 29.2)",
           "$type": "color",
           "$description": "Achtergrond in active state (inverse)"
         },
         "border-subtle": {
-          "$value": "oklch(0.36 0.148 29.2)",
+          "$value": "oklch(0.39 0.16 29.2)",
           "$type": "color",
           "$description": "Subtiele rand (inverse)"
         },
         "border-default": {
-          "$value": "oklch(0.3 0.123 29.2)",
+          "$value": "oklch(0.33 0.135 29.2)",
           "$type": "color",
           "$description": "Standaard rand (inverse)"
         },
         "border-hover": {
-          "$value": "oklch(0.26 0.107 29.2)",
+          "$value": "oklch(0.29 0.119 29.2)",
           "$type": "color",
           "$description": "Rand in hover state (inverse)"
         },
         "border-active": {
-          "$value": "oklch(0.22 0.09 29.2)",
+          "$value": "oklch(0.25 0.103 29.2)",
           "$type": "color",
           "$description": "Rand in active state (inverse)"
         },
         "color-default": {
-          "$value": "oklch(0 0 29.2)",
+          "$value": "oklch(0.12 0.029 29.2)",
           "$type": "color",
           "$description": "Standaard tekstkleur (inverse)"
         },
         "color-hover": {
-          "$value": "oklch(0 0 29.2)",
+          "$value": "oklch(0.1 0.029 29.2)",
           "$type": "color",
           "$description": "Tekst in hover state (inverse)"
         },
         "color-active": {
-          "$value": "oklch(0 0 29.2)",
+          "$value": "oklch(0.08 0.029 29.2)",
           "$type": "color",
           "$description": "Tekst in active state (inverse)"
         },
         "color-subtle": {
-          "$value": "oklch(0.05 0.02 29.2)",
+          "$value": "oklch(0.17 0.07 29.2)",
           "$type": "color",
           "$description": "Subtiele tekstkleur (inverse)"
         },
         "color-document": {
-          "$value": "oklch(0 0 29.2)",
+          "$value": "oklch(0.12 0.029 29.2)",
           "$type": "color",
           "$description": "Documenttekstkleur (inverse)"
         }

@@ -20,7 +20,15 @@ De kleuren van het Start-thema (light en dark) zijn opnieuw gegenereerd met de c
 
 Zichtbare verschuivingen: tekst- en randkleuren zijn in light mode donkerder, de gekleurde achtergronden zijn minder verzadigd, en de inverse-groepen in dark mode zijn een middentoon in plaats van een lichte tint. `neutral-inverse.bg-document` gaat in light mode van `#242424` naar ongeveer `#4e4e4e`, waardoor ook de backdrop lichter wordt.
 
-Drie waardes wijken bewust af van de generator, zodat `color-default` en `color-subtle` op elke inverse achtergrond 4,5:1 halen. In dark mode is `bg-default` van `neutral-inverse`, `accent-1-inverse` (en `info-inverse`) en `negative-inverse` één stap lichter: L 0.59 in plaats van 0.58.
+De inverse-groepen komen ongewijzigd uit de generator, die zelf afdwingt dat `color-default` en `color-subtle` op elke inverse achtergrond 4,5:1 halen (zie de entry hieronder). In dark mode staat `bg-default` daardoor op L 0.585 bij `neutral-inverse` en `accent-1-inverse` (en `info-inverse`) en op L 0.605 bij `negative-inverse`; de overige inverse achtergronden en randen van die groepen schuiven mee. De tekst van `negative-inverse` is de gewone donkere tint in plaats van zwart.
+
+### Color-palette-generator: inverse tekst haalt 4,5:1 op elke inverse achtergrond
+
+De generator garandeert nu dat `color-default` en `color-subtle` van een inverse-groep minimaal 4,5:1 halen op alle zes de inverse achtergronden (`bg-document`, `bg-elevated`, `bg-subtle`, `bg-default`, `bg-hover`, `bg-active`), in light en dark. Voorheen werd `color-default` alleen tegen `bg-default` gecontroleerd en `color-subtle` alleen tegen `bg-document`, waardoor een export net onder de grens kon uitkomen.
+
+Haalt een combinatie de grens niet, dan schuift de hele inverse achtergrondreeks in stappen van L 0.005 van de tekst af: lichter in dark mode, donkerder in light mode. De zes achtergronden schuiven samen, dus de volgorde van default, hover en active blijft gelijk. De controle rekent met de sRGB-waarde na gamut-mapping, en ook met de afgeronde waarde die de `oklch()`-export wegschrijft.
+
+Voor het standaardpalet verandert dit in dark mode `bg-default` van `accent-1-inverse` (L 0.58 naar 0.585), `accent-2-inverse` (0.546 naar 0.606), `action-1-inverse` (0.546 naar 0.591) en `negative-inverse` (0.577 naar 0.607), en in light mode die van `action-1-inverse` (0.546 naar 0.536). Bij de drie groepen waar de tekst eerst zwart werd, blijft de tekst nu de gewone donkere tint. Een nieuwe test in `tests/color-palette-generator.test.ts` dwingt de grens af voor het standaardpalet, op zowel de `oklch()`- als de hex-export.
 
 ## Version 4.1.0 (October 1, 2026)
 
