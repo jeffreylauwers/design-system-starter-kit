@@ -4,10 +4,17 @@
  * Het label met een optioneel suffix ("(optioneel)"), dat een eigen kleur en
  * gewicht heeft en dus een eigen laag met een eigen binding wordt.
  *
+ * Het suffix staat altijd in de markup en is in Figma een BOOLEAN-property,
+ * net als de iconen van Button. Dat is de enige opzet waarin een designer
+ * zowel het suffix aan en uit kan zetten als zijn tekst kan typen: een
+ * TEXT-property moet in élke variant een laag hebben, en op een as met
+ * `false` zou die laag er niet zijn. Figma toont een BOOLEAN net zo als een
+ * as met twee waarden, namelijk als schakelaar, dus in het panel is het
+ * verschil er niet.
+ *
  * De marge onder het label verschilt met `:has(+ .dsn-form-field-description)`:
- * staat er een beschrijving achter, dan is de marge kleiner. Dat is een gemeten
- * verschil, dus het staat op een as en niet op een boolean. In Figma zelf zie
- * je die marge niet (een component set draagt geen marges naar buiten), maar de
+ * staat er een beschrijving achter, dan is de marge kleiner. In Figma zie je
+ * die marge niet (een component set draagt geen marges naar buiten), maar de
  * binding legt wel vast wélk token het is.
  */
 
@@ -28,20 +35,22 @@ export default {
   wrapperStyle: 'width: 343px;',
 
   axes: {
-    suffix: ['with-suffix', 'no-suffix'],
+    appearance: ['default'],
   },
 
-  componentProperties: [{ name: 'label', type: 'TEXT', slot: 'label' }],
+  // Twee properties op dezelfde laag: de boolean zet hem aan en uit, de
+  // TEXT-property vult zijn tekst. Dezelfde opzet als `showIconStart` en
+  // `iconStart` bij Button.
+  componentProperties: [
+    { name: 'label', type: 'TEXT', slot: 'label' },
+    { name: 'showSuffix', type: 'BOOLEAN', slot: 'suffix', default: false },
+    { name: 'suffix', type: 'TEXT', slot: 'suffix' },
+  ],
 
-  render({ suffix }) {
-    const suffixMarkup =
-      suffix === 'with-suffix'
-        ? `<span class="dsn-form-field-label-suffix">(optioneel)</span>`
-        : '';
-
+  render() {
     return `<label class="dsn-form-field-label" data-figma-root>
       <span data-figma-slot="label">${TEKST}</span>
-      ${suffixMarkup}
+      <span class="dsn-form-field-label-suffix" data-figma-slot="suffix">(optioneel)</span>
     </label>`;
   },
 };
