@@ -130,6 +130,8 @@ function propertyNameOf(key) {
 const VARIANT_NAME = /^[^=,]+=[^=,]*(, [^=,]+=[^=,]*)*$/;
 
 const loadedFonts = new Set();
+// Alleen fonts die Figma standaard heeft plus de fonts van dit systeem.
+const KNOWN_FONT_FAMILIES = ['Inter', 'Fira Sans', 'Fira Mono', 'Roboto'];
 
 class Node {
   constructor(type) {
@@ -766,6 +768,18 @@ class Variable {
 
   setValueForMode(modeId, value) {
     if (!modeId) throw new Error(`onbekende modeId voor ${this.name}`);
+    // Figma zet tekstlagen die aan een font-family-variable hangen direct om,
+    // en weigert dat met "unloaded font" zolang het lettertype niet geladen is.
+    if (
+      this.resolvedType === 'STRING' &&
+      /(^|\/)font-family(\/|$)/.test(this.name) &&
+      KNOWN_FONT_FAMILIES.includes(value) &&
+      ![...loadedFonts].some((font) => font.startsWith(`${value}|`))
+    ) {
+      throw new Error(
+        `in setValueForMode: unloaded font "${value} Regular". Please call figma.loadFontAsync({ family: "${value}", style: "Regular" }) and await the returned promise first.`
+      );
+    }
     this.valuesByMode[modeId] = value;
   }
 
@@ -860,10 +874,14 @@ export const figma = {
     },
   },
 
+  async listAvailableFontsAsync() {
+    return KNOWN_FONT_FAMILIES.flatMap((family) =>
+      ['Regular', 'Bold'].map((style) => ({ fontName: { family, style } }))
+    );
+  },
+
   async loadFontAsync(font) {
-    // Alleen fonts die Figma standaard heeft plus het font van dit systeem.
-    const known = ['Inter', 'Fira Sans', 'Fira Mono', 'Roboto'];
-    if (!known.includes(font.family)) {
+    if (!KNOWN_FONT_FAMILIES.includes(font.family)) {
       throw new Error(`font ${font.family} niet beschikbaar`);
     }
     loadedFonts.add(`${font.family}|${font.style}`);

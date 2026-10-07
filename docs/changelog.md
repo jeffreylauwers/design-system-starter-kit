@@ -10,6 +10,10 @@ All notable changes to this project are documented in this file.
 
 Nog niet gepubliceerde wijzigingen. Schrijf nieuwe changelog-entries hieronder; bij de volgende release wordt deze kop gepromoveerd naar het definitieve versienummer.
 
+### Figma-plugin: lettertypes laden vóór de variables
+
+Een wissel van lettertype in een bestaande Figma-bibliotheek brak de variables-import af met "unloaded font". Een font-family-variable die al aan tekstlagen hangt, zet die lagen bij een nieuwe waarde direct om, en Figma weigert dat zolang het lettertype niet geladen is. De plugin laadt nu eerst elke familie uit de font-family-variables, in al haar stijlen, en schrijft daarna de waardes. Een familie die Figma niet kent levert een waarschuwing op in plaats van een fout. De mock van de smoke test stelt dezelfde eis.
+
 ## Version 4.2.0 (October 6, 2026)
 
 Minor release, zonder breaking changes. Het Start-thema heeft een nieuw uiterlijk: een opnieuw gegenereerd kleurenpalet in OKLCH en Fira Sans met Fira Mono als lettertype. Token-namen, markup en API's zijn ongewijzigd; alleen waardes veranderen. Wie de lettertypes zelf host, moet Fira Sans en Fira Mono aanbieden in plaats van IBM Plex. De kleurtokens van het Start-thema staan nu als `oklch()` in de CSS-, SCSS- en JS-output, dus een toolchain die kleurwaardes zelf parset moet die notatie aankunnen.
