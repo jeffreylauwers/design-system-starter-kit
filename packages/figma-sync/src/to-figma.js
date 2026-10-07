@@ -703,6 +703,34 @@ function convertNode(
   return converted;
 }
 
+/**
+ * Laat rijen aan het eind van een grid weg waar geen enkele laag in staat.
+ *
+ * Een Note zonder kop houdt twee rijen over terwijl er maar één gevuld is. In
+ * de computed `grid-template-rows` staan ze er allebei: het icoon spant met
+ * `grid-row: 1 / span 2` in de tweede, en bij de varianten met een voorlees-
+ * label staat dat visueel verborgen spanje er ook nog in. Dat label haalt de
+ * walker eruit (het is in Figma geen laag), maar de rij bleef staan, en in het
+ * grid van Figma is dat een lege track.
+ *
+ * Alleen aan het eind: een lege rij tussen twee gevulde in houdt de nummering
+ * overeind, en de kinderen dragen hun eigen rijnummer.
+ */
+function trimEmptyTrailingRows(frame) {
+  const rows = frame.gridRowSizes;
+  if (!rows || rows.length < 2) return;
+
+  const used = (frame.children ?? []).reduce((max, child) => {
+    if (child.gridRowAnchorIndex === undefined) return max;
+    return Math.max(max, child.gridRowAnchorIndex + (child.gridRowSpan ?? 1));
+  }, 0);
+
+  if (used < 1 || used >= rows.length) return;
+
+  frame.gridRowSizes = rows.slice(0, used);
+  frame.gridRowCount = frame.gridRowSizes.length;
+}
+
 function convertElement(
   node,
   wideNode,
@@ -939,6 +967,9 @@ function convertElement(
   figmaNode.layoutSizingHorizontal =
     canHug && shrinkWraps && !fixedWidth ? 'HUG' : 'FIXED';
   figmaNode.layoutSizingVertical = canHug && !fixedHeight ? 'HUG' : 'FIXED';
+
+  // Pas als de kinderen omgezet zijn is te zien welke grid-rijen gevuld zijn.
+  if (figmaNode.layoutMode === 'GRID') trimEmptyTrailingRows(figmaNode);
 
   // Als laatste: de bindingen worden geverifieerd tegen de waarden die
   // hierboven in de spec terecht zijn gekomen.
