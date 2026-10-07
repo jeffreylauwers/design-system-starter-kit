@@ -795,6 +795,28 @@ oude `state`-as was.
 Dit geldt voor Button, Link, de zeven formuliervelden, FormField,
 DateInputGroup, OptionLabel, Checkbox, Radio, CheckboxOption en RadioOption.
 
+### Een blok dat met zijn eigen inhoud meegroeit
+
+Een component dat in CSS een blok is pakt de volle breedte van de meetwrapper.
+Die breedte is `wrapperStyle` en zegt niets over het component, maar in Figma
+staat het frame er wel op vast: 343px, ook als er "Tekst" in staat.
+
+`hugRoot: true` op de matrix zet de root in de breedte op HUG. Het frame groeit
+dan mee met de tekst die de designer zelf typt. Een kind dat de wrapperbreedte
+precies vulde stond op FILL, en FILL in een HUG-ouder weigert Figma; die
+kinderen gaan mee naar HUG.
+
+Daarmee vervalt ook de reden voor een as op de tekstlengte. CheckboxOption,
+RadioOption, FormFieldDescription en FormFieldErrorMessage hadden een
+`length`-as met een korte en een lange variant; die laten op HUG hetzelfde zien
+met één variant. NumberBadge had om dezelfde reden een `count`-as: het frame
+hugt om zijn tekst en houdt zijn `minWidth`, dus wie "99+" typt ziet de pilvorm
+in dezelfde variant.
+
+Een root die tot één tekstlaag inklapt (FormFieldDescription) groeit al met zijn
+inhoud mee; daar doet de vlag niets. Een root zonder auto layout kan niet huggen
+en levert een waarschuwing op.
+
 ### Een veld met een icoon wordt één frame
 
 In de DOM is een SearchInput een wrapper met een absoluut geplaatst icoon en

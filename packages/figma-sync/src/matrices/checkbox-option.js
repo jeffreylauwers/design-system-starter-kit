@@ -3,14 +3,18 @@
  *
  * Checkbox en label naast elkaar in één klikbaar `<label>`. De uitlijning is
  * `align-items: flex-start`, zodat het vakje bij de eerste tekstregel blijft
- * staan als het label afbreekt; de variant met veel tekst staat er daarom in.
+ * staan als het label afbreekt.
+ *
+ * De tekstlengte is geen as: het frame staat op HUG (`hugRoot`) en groeit mee
+ * met het label dat de designer zelf typt. Een tweede variant met veel tekst
+ * voegde daar niets aan toe behalve varianten om door te klikken.
  *
  * De checkbox hierin is een gemeten laag en geen instance van de Checkbox-set.
  * Zie issue #369.
  */
 
 import { icon } from '../icons.js';
-import { TEKST, VEEL_TEKST } from '../text.js';
+import { TEKST } from '../text.js';
 
 import { FLAG } from '../flags.js';
 
@@ -34,10 +38,11 @@ export default {
   axes: {
     state: ['unchecked', 'checked'],
     disabled: FLAG,
-    length: ['short-text', 'long-text'],
   },
 
-  render({ state, length, disabled: isDisabled }) {
+  hugRoot: true,
+
+  render({ state, disabled: isDisabled }) {
     const checked = state === 'checked' ? ' checked' : '';
     const disabled = isDisabled === 'true' ? ' disabled' : '';
     const labelClasses = [
@@ -46,7 +51,6 @@ export default {
     ]
       .filter(Boolean)
       .join(' ');
-    const text = length === 'short-text' ? TEKST : VEEL_TEKST;
 
     return `<label class="dsn-checkbox-option" data-figma-root>
       <span class="dsn-checkbox">
@@ -55,7 +59,7 @@ export default {
           ${icon('check', { className: 'dsn-checkbox__icon' })}
         </span>
       </span>
-      <span class="${labelClasses}">${text}</span>
+      <span class="${labelClasses}">${TEKST}</span>
     </label>`;
   },
 };
