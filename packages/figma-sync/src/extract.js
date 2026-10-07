@@ -169,6 +169,10 @@ const CAPTURED_PROPERTIES = [
   'boxShadow',
   'position',
   'overflow',
+  // `transform` wordt alleen gelezen om er een rotatie uit te halen, zoals de
+  // chevron van Details die omklapt zodra het paneel open staat. Zie
+  // `rotationFrom` in to-figma.js.
+  'transform',
 ];
 
 /**
@@ -341,6 +345,23 @@ function domWalker([properties, hiddenClass]) {
       // `visibility: hidden` neemt wél ruimte in maar tekent niets. Een laag
       // die alleen ruimte bezet is in Figma geen laag maar padding.
       if (childStyles.visibility === 'hidden') continue;
+      // Een dichte `<details>` verbergt zijn inhoud niet met `display: none`
+      // maar in een slot die de browser niet rendert: de computed display
+      // blijft `block` en de drie regels hierboven vangen hem dus niet. Zonder
+      // deze regel komt die inhoud als 0x0-frame in Figma terecht, en omdat
+      // zo'n frame op HUG om zijn tekst heen groeit, ziet de dichte stand er
+      // in Figma open uit.
+      //
+      // Dit staat met opzet op de tag en niet op "rect is 0x0": een `<option>`
+      // in een `<select>` heeft ook geen box, en díe draagt wel de tekst en de
+      // slot-markering van Select.
+      if (
+        element.tagName === 'DETAILS' &&
+        !element.open &&
+        child.tagName !== 'SUMMARY'
+      ) {
+        continue;
+      }
       node.children.push(visit(child));
     }
 
