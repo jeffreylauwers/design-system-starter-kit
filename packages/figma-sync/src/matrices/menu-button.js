@@ -27,10 +27,10 @@ export default {
 
   axes: {
     icon: ['with-icon', 'no-icon'],
-    state: ['default', 'hover'],
+    state: ['default', 'hover', 'active'],
   },
 
-  pseudoStates: { hover: 'hover' },
+  pseudoStates: { hover: 'hover', active: 'active' },
 
   componentProperties: [{ name: 'label', type: 'TEXT', slot: 'label' }],
 

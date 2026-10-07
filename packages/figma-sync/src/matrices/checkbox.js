@@ -37,16 +37,20 @@ export default {
 
   axes: {
     state: ['unchecked', 'checked', 'indeterminate'],
-    interaction: ['default', 'hover'],
+    interaction: ['default', 'hover', 'active'],
     disabled: FLAG,
+    invalid: FLAG,
   },
 
+  // `invalid` staat net als `disabled` alleen op de rustende stand: de CSS
+  // heeft geen eigen stijl voor invalid én hover, dus een extra combinatie zou
+  // dezelfde variant twee keer opleveren.
   skipVariant: skipFlagCombinations({
-    flags: ['disabled'],
+    flags: ['disabled', 'invalid'],
     base: { interaction: 'default' },
   }),
 
-  pseudoStates: { hover: 'hover' },
+  pseudoStates: { hover: 'hover', active: 'active' },
 
   /**
    * `:indeterminate` is geen attribuut maar een DOM-property, dus die is niet
@@ -58,15 +62,21 @@ export default {
     }
   `,
 
-  render({ state, disabled: isDisabled }) {
+  render({ state, disabled: isDisabled, invalid }) {
     const checked = state === 'checked' ? ' checked' : '';
     const disabled = isDisabled === 'true' ? ' disabled' : '';
+    const inputClasses = [
+      'dsn-checkbox__input',
+      invalid === 'true' && 'dsn-checkbox__input--invalid',
+    ]
+      .filter(Boolean)
+      .join(' ');
     const iconName = state === 'indeterminate' ? 'minus' : 'check';
     const indeterminate =
       state === 'indeterminate' ? ' data-indeterminate' : '';
 
     return `<div class="dsn-checkbox" data-figma-root>
-      <input type="checkbox" class="dsn-checkbox__input"${checked}${disabled}${indeterminate}>
+      <input type="checkbox" class="${inputClasses}"${checked}${disabled}${indeterminate}>
       <span class="dsn-checkbox__control" aria-hidden="true">
         ${icon(iconName, { className: 'dsn-checkbox__icon' })}
       </span>

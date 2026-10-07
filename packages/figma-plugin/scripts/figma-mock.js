@@ -571,6 +571,20 @@ class Node {
     };
   }
 
+  // Figma draait om het midden van de node en weigert alles wat geen getal is.
+  // Gemodelleerd omdat een rotatie die stil niet aankomt buiten Figma
+  // onzichtbaar is: de chevron van Details wijst dan in beide varianten
+  // dezelfde kant op.
+  set rotation(value) {
+    if (typeof value !== 'number' || !Number.isFinite(value)) {
+      throw new Error(`rotation verwacht een getal, kreeg ${value}`);
+    }
+    this._rotation = value;
+  }
+  get rotation() {
+    return this._rotation ?? 0;
+  }
+
   set layoutSizingHorizontal(value) {
     this.#assertSizing('layoutSizingHorizontal', value);
     this._layoutSizingHorizontal = value;

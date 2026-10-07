@@ -69,7 +69,7 @@ export default {
       'subtle-positive',
     ],
     size: ['small', 'default', 'large'],
-    state: ['default', 'hover'],
+    state: ['default', 'hover', 'active'],
     disabled: FLAG,
   },
 
@@ -82,7 +82,7 @@ export default {
     base: { state: 'default' },
   }),
 
-  pseudoStates: { hover: 'hover' },
+  pseudoStates: { hover: 'hover', active: 'active' },
 
   /**
    * De component properties van de set, in de volgorde waarin Figma ze toont.

@@ -208,6 +208,24 @@ function applyPlacement(node, spec, log) {
   }
 }
 
+/**
+ * Rotatie, ná de sizing.
+ *
+ * `resize` rekent langs de assen van de node zelf, dus een node die al gedraaid
+ * staat krijgt zijn gemeten maat op de verkeerde as. De chevron van Details
+ * staat 180 graden gedraaid zodra het paneel open is.
+ */
+function applyRotation(node, spec, log) {
+  if (!spec.rotation) return;
+  try {
+    node.rotation = spec.rotation;
+  } catch (error) {
+    log.warn(
+      `${spec.name ?? spec.type}: rotatie van ${spec.rotation} graden kon niet gezet worden: ${error.message}`
+    );
+  }
+}
+
 /** Sizing als laatste: HUG vereist een eigen layoutMode, FILL een auto-layout ouder. */
 function applySizing(node, spec, log) {
   for (const axis of ['layoutSizingHorizontal', 'layoutSizingVertical']) {
@@ -382,6 +400,7 @@ function buildNode(spec, parent, context) {
     applyBindings(text, spec, context);
     applyPlacement(text, spec, log);
     applySizing(text, spec, log);
+    applyRotation(text, spec, log);
     registerSlot(text, spec, context);
     registerColorCheck(text, spec, context);
     return text;
@@ -401,6 +420,7 @@ function buildNode(spec, parent, context) {
     recolorVectors(node.children ?? [], paints);
     context.recolors.push({ node, paints, name: spec.name, spec });
     applyPlacement(node, spec, log);
+    applyRotation(node, spec, log);
     registerSlot(node, spec, context);
     registerColorCheck(node, spec, context);
     return node;
@@ -412,6 +432,7 @@ function buildNode(spec, parent, context) {
 
   applyPlacement(frame, spec, log);
   applySizing(frame, spec, log);
+  applyRotation(frame, spec, log);
   registerSlot(frame, spec, context);
   return frame;
 }

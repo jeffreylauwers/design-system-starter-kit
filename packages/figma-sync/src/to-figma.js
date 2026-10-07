@@ -731,6 +731,57 @@ function trimEmptyTrailingRows(frame) {
   frame.gridRowCount = frame.gridRowSizes.length;
 }
 
+/**
+ * De rotatie uit een CSS-transform, in graden voor Figma.
+ *
+ * Alleen een rotatie wordt overgenomen. Dat is wat er in het design system
+ * gebruikt wordt: de chevron van Details klapt om met
+ * `transform: rotate(180deg)` zodra het paneel open staat, en zonder deze stap
+ * wijzen beide varianten in Figma dezelfde kant op.
+ *
+ * De browser geeft een matrix terug, niet de geschreven functie. Uit
+ * `matrix(a, b, c, d, e, f)` is de hoek `atan2(b, a)`, en die draait met de
+ * klok mee omdat de y-as van het scherm omlaag loopt; Figma rekent de andere
+ * kant op, dus het teken klapt. Zit er schaal of skew in de matrix, dan is er
+ * meer aan de hand dan een rotatie en komt er een waarschuwing: stil de helft
+ * overnemen is erger dan het melden.
+ */
+function rotationFrom(transform, warnings, label) {
+  if (!transform || transform === 'none') return 0;
+
+  const values = transform
+    .match(/^matrix\(([^)]+)\)$/)?.[1]
+    .split(',')
+    .map((value) => Number.parseFloat(value));
+
+  if (!values || values.length !== 6) {
+    warnings.push(`${label}: transform "${transform}" is niet overgenomen`);
+    return 0;
+  }
+
+  const [a, b, c, d] = values;
+  const scale = Math.hypot(a, b);
+  const pureRotation =
+    Math.abs(scale - 1) < 0.01 &&
+    Math.abs(Math.hypot(c, d) - 1) < 0.01 &&
+    Math.abs(a - d) < 0.01 &&
+    Math.abs(b + c) < 0.01;
+
+  if (!pureRotation) {
+    warnings.push(
+      `${label}: transform "${transform}" bevat meer dan een rotatie en is niet overgenomen`
+    );
+    return 0;
+  }
+
+  const degrees = (-Math.atan2(b, a) * 180) / Math.PI;
+  if (Math.abs(degrees) < 0.01) return 0;
+  // Een halve draai komt uit atan2 als -180. Dat is in Figma hetzelfde als
+  // 180, en 180 is wat een designer in het panel verwacht te lezen.
+  if (Math.abs(degrees + 180) < 0.01) return 180;
+  return Math.round(degrees * 100) / 100;
+}
+
 function convertElement(
   node,
   wideNode,
@@ -758,6 +809,12 @@ function convertElement(
       svg: node.svg,
       fills: paintFrom(node.styles.color),
     };
+    const vectorRotation = rotationFrom(
+      node.styles.transform,
+      warnings,
+      pathLabel
+    );
+    if (vectorRotation) vector.rotation = vectorRotation;
     vector.boundVariables = bindVariables(vector, node.tokens, bindings);
     return vector;
   }
@@ -970,6 +1027,9 @@ function convertElement(
 
   // Pas als de kinderen omgezet zijn is te zien welke grid-rijen gevuld zijn.
   if (figmaNode.layoutMode === 'GRID') trimEmptyTrailingRows(figmaNode);
+
+  const rotation = rotationFrom(styles.transform, warnings, pathLabel);
+  if (rotation) figmaNode.rotation = rotation;
 
   // Als laatste: de bindingen worden geverifieerd tegen de waarden die
   // hierboven in de spec terecht zijn gekomen.
@@ -1312,6 +1372,36 @@ function summariseWarnings(warnings) {
  * Een kind dat die wrapperbreedte precies vulde staat op FILL, en FILL in een
  * HUG-ouder weigert Figma. Die kinderen gaan daarom mee naar HUG.
  */
+/**
+ * Zet de directe kinderen van de root op FILL in de breedte.
+ *
+ * Bij Details rekt in Figma niets mee: de summary is in CSS
+ * `width: fit-content` en de content houdt een eigen `margin-inline-start`,
+ * dus beide komen op een vaste breedte in de spec. Een designer die het
+ * component breder trekt houdt dan een summary van 88px en een content van
+ * 332px over.
+ *
+ * Dit is bewust geen nageleefde CSS maar een keuze voor de bibliotheek. De
+ * marge van de content kan niet mee: een auto-layout kind heeft in Figma geen
+ * marges, dus de randlijn van de content staat op de linkerrand van het
+ * component en niet onder het midden van de chevron.
+ */
+function fillRootChildren(node, warnings, label) {
+  if (!node.layoutMode || node.layoutMode === 'NONE') {
+    warnings.push(
+      `${label}: fillRootChildren kan niet, de root heeft geen auto layout`
+    );
+    return;
+  }
+
+  for (const child of node.children ?? []) {
+    // Een absoluut kind staat buiten de stroom: FILL en ABSOLUTE zijn in Figma
+    // tegenstrijdig.
+    if (child.layoutPositioning === 'ABSOLUTE') continue;
+    child.layoutSizingHorizontal = 'FILL';
+  }
+}
+
 function hugRootWidth(node, warnings, label) {
   // Een root die tot één tekstlaag inklapt groeit al met zijn inhoud mee; daar
   // is geen frame om op HUG te zetten.
@@ -1354,6 +1444,11 @@ export function toComponentSet(matrix, extracted, variableIndex) {
     // `hugRootWidth`.
     if (matrix.hugRoot) {
       hugRootWidth(node, warnings, pathLabel);
+    }
+    // Kinderen die met de breedte van het component mee moeten rekken, zie
+    // `fillRootChildren`.
+    if (matrix.fillRootChildren) {
+      fillRootChildren(node, warnings, pathLabel);
     }
     // Een component dat in zijn geheel tot tekst inklapt heeft geen ouder die
     // de binding voor hem kan leggen.
