@@ -16,7 +16,7 @@
 import { icon } from '../icons.js';
 import { TEKST } from '../text.js';
 
-import { FLAG } from '../flags.js';
+import { FLAG, skipFlagCombinations } from '../flags.js';
 
 export default {
   component: 'CheckboxOption',
@@ -37,8 +37,20 @@ export default {
 
   axes: {
     state: ['unchecked', 'checked'],
+    interaction: ['default', 'hover', 'active'],
     disabled: FLAG,
   },
+
+  skipVariant: skipFlagCombinations({
+    flags: ['disabled'],
+    base: { interaction: 'default' },
+  }),
+
+  pseudoStates: { hover: 'hover', active: 'active' },
+
+  // De hover- en active-stijlen hangen aan het `<input>`, niet aan het label:
+  // het midden van de root valt in de tekst en raakt de input niet.
+  pseudoTarget: '.dsn-checkbox__input',
 
   hugRoot: true,
 

@@ -11,7 +11,7 @@
 
 import { TEKST } from '../text.js';
 
-import { FLAG } from '../flags.js';
+import { FLAG, skipFlagCombinations } from '../flags.js';
 
 export default {
   component: 'RadioOption',
@@ -31,8 +31,19 @@ export default {
 
   axes: {
     state: ['unchecked', 'checked'],
+    interaction: ['default', 'hover', 'active'],
     disabled: FLAG,
   },
+
+  skipVariant: skipFlagCombinations({
+    flags: ['disabled'],
+    base: { interaction: 'default' },
+  }),
+
+  pseudoStates: { hover: 'hover', active: 'active' },
+
+  // Zie CheckboxOption: het mikpunt is de input, niet het midden van het label.
+  pseudoTarget: '.dsn-radio__input',
 
   hugRoot: true,
 

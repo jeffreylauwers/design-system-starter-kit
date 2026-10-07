@@ -533,12 +533,13 @@ lettertype, en meet je Times.
 ### Pseudo-toestanden
 
 `pseudoStates` koppelt een as-waarde aan een toestand die niet in markup uit te
-drukken is. Er zijn er twee:
+drukken is. Er zijn er drie:
 
-| Waarde  | Wat de extractor doet                    |
-| ------- | ---------------------------------------- |
-| `hover` | de muis over `[data-figma-root]` bewegen |
-| `focus` | één keer Tab indrukken                   |
+| Waarde   | Wat de extractor doet                                 |
+| -------- | ----------------------------------------------------- |
+| `hover`  | de muis over het mikpunt bewegen                      |
+| `focus`  | één keer Tab indrukken                                |
+| `active` | de muis over het mikpunt bewegen en de knop indrukken |
 
 Bij `focus` is dat bewust een echte toetsaanslag en geen `.focus()`: Chromium
 zet `:focus-visible` alleen bij toetsenbordfocus, en juist die selector draagt
@@ -546,6 +547,22 @@ de focusstijl. Tab landt op het eerste focusbare element van de pagina, dus een
 matrix met een focus-as hoort er precies één te renderen. SkipLink is daar het
 voorbeeld van: die is standaard weggeklipt en krijgt zijn hele verschijning pas
 op `:focus-visible`.
+
+Bij `active` moet er echt een muisknop ingedrukt staan; `:active` is niet te
+zetten. Daar horen twee dingen bij. De knop gaat na de meting weer los, want
+een ingedrukte knop blijft tussen varianten staan, net als de cursorpositie.
+En in de browser geldt tijdens het indrukken ook `:hover`: de CSS rekent
+daarop (eerst de hover-regel, daarna de active-regel), dus de active-variant
+is precies wat een gebruiker tijdens het klikken ziet.
+
+Het mikpunt is standaard het midden van `[data-figma-root]`, en dat werkt
+zolang de root zelf de stijl draagt. Bij CheckboxOption niet: de hover- en
+active-stijlen hangen aan het `<input>`, dat over de control heen ligt, terwijl
+het midden van de root in de labeltekst valt. Een input is een sibling van de
+control en geen ancestor, dus hoveren op de tekst levert daar geen enkele
+toestand op. `pseudoTarget: '.dsn-checkbox__input'` op de matrix richt de muis
+dan op de laag die de toestand wél heeft. Bij Checkbox zelf is dat niet nodig:
+de root is 24x24 en het midden daarvan is de input.
 
 ### `color: inherit` is geen waarde
 
