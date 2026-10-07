@@ -73,6 +73,58 @@ function ensureVariable(name, collection, resolvedType, index, log) {
   return created;
 }
 
+/** Een font-family-variable, in welke collection dan ook. */
+function isFontFamilyVariable(spec) {
+  return spec.type === 'STRING' && /(^|\/)font-family(\/|$)/.test(spec.name);
+}
+
+/**
+ * Laadt elke familie die in een font-family-variable staat, in al haar stijlen.
+ *
+ * Een font-family-variable die al aan tekstlagen hangt, zet bij een nieuwe
+ * waarde die lagen direct om naar het nieuwe lettertype. Figma weigert dat
+ * zolang het font niet geladen is: `setValueForMode` gooit dan "unloaded font".
+ * Bij een eerste import in een leeg bestand speelt dat niet, bij een wissel van
+ * lettertype in een bestaande bibliotheek wel. Welke stijlen de gebonden lagen
+ * gebruiken is hier niet bekend, dus alle stijlen van de familie gaan mee.
+ */
+async function loadVariableFonts(payload, log) {
+  const families = new Set();
+  for (const collection of payload.collections) {
+    for (const spec of collection.variables) {
+      if (!isFontFamilyVariable(spec) || !spec.valuesByMode) continue;
+      for (const value of Object.values(spec.valuesByMode)) families.add(value);
+    }
+  }
+  if (families.size === 0) return;
+
+  log.progress?.('lettertypes laden');
+  const available = await figma.listAvailableFontsAsync();
+
+  for (const family of families) {
+    const fonts = available
+      .map((entry) => entry.fontName)
+      .filter((fontName) => fontName.family === family);
+
+    if (fonts.length === 0) {
+      log.warn(
+        `Lettertype "${family}" is niet beschikbaar in Figma; installeer het, anders vallen tekstlagen die eraan gebonden zijn terug op een ander font`
+      );
+      continue;
+    }
+
+    for (const fontName of fonts) {
+      try {
+        await figma.loadFontAsync(fontName);
+      } catch (error) {
+        log.warn(
+          `Lettertype "${fontName.family} ${fontName.style}" laadt niet: ${error.message}`
+        );
+      }
+    }
+  }
+}
+
 /**
  * @param {object} payload de inhoud van variables.json
  * @param {object} log verzamelaar met .info/.warn/.error
@@ -85,6 +137,8 @@ export async function importVariables(payload, log) {
   }
 
   const state = new Map();
+
+  await loadVariableFonts(payload, log);
 
   // ---------------------------------------------------------------------------
   // Pass 1: collections, modes en alle variables met hun letterlijke waarde.
