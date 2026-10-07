@@ -834,6 +834,35 @@ Een root die tot één tekstlaag inklapt (FormFieldDescription) groeit al met zi
 inhoud mee; daar doet de vlag niets. Een root zonder auto layout kan niet huggen
 en levert een waarschuwing op.
 
+### Een rotatie uit de CSS
+
+Een `transform: rotate()` werd niet gemeten, dus de chevron van Details wees in
+de open en de dichte variant dezelfde kant op. De extractor leest `transform`
+nu mee en `rotationFrom` haalt er de hoek uit.
+
+De browser geeft een matrix terug en niet de geschreven functie. Uit
+`matrix(a, b, c, d, e, f)` is de hoek `atan2(b, a)`, met de klok mee omdat de
+y-as van het scherm omlaag loopt; Figma rekent de andere kant op, dus het teken
+klapt, en een halve draai wordt 180 in plaats van -180. Zit er schaal of skew
+in de matrix, dan komt er een waarschuwing in plaats van een halve vertaling.
+
+De plugin zet de rotatie ná de sizing: `resize` rekent langs de assen van de
+node zelf, dus een node die al gedraaid staat krijgt zijn gemeten maat op de
+verkeerde as.
+
+### Kinderen die met het component meerekken
+
+`fillRootChildren: true` zet de directe kinderen van de root in de breedte op
+FILL. Bij Details rekt anders niets mee: de summary is in CSS
+`width: fit-content` en de content houdt een eigen `margin-inline-start`, dus
+beide komen op een vaste breedte in de spec en een designer die het component
+breder trekt houdt een summary van 88px over.
+
+Dat is bewust geen nageleefde CSS maar een keuze voor de bibliotheek, en er
+hangt een prijs aan: een auto-layout kind heeft in Figma geen marges, dus de
+randlijn van de content staat op de linkerrand van het component en niet onder
+het midden van de chevron.
+
 ### Een veld met een icoon wordt één frame
 
 In de DOM is een SearchInput een wrapper met een absoluut geplaatst icoon en

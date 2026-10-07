@@ -749,6 +749,31 @@ for (const file of componentFiles) {
   payload.componentSet.components.forEach((component, index) =>
     checkFixedSizes(built(index), component.node)
   );
+  // Een rotatie uit de CSS (`transform: rotate()`) hoort op de laag te landen.
+  // Zonder deze controle wijst de chevron van Details in de open en de dichte
+  // variant dezelfde kant op, en dat is in de spec niet te zien.
+  const missingRotations = [];
+  const checkRotation = (node, spec) => {
+    if (spec?.rotation && node?.rotation !== spec.rotation) {
+      missingRotations.push(
+        `${spec.name}: ${node?.rotation} i.p.v. ${spec.rotation}`
+      );
+    }
+    (spec?.children ?? []).forEach((childSpec, index) =>
+      checkRotation(node?.children?.[index], childSpec)
+    );
+  };
+  payload.componentSet.components.forEach((component, index) =>
+    checkRotation(built(index), component.node)
+  );
+  check(
+    'een gedraaide laag staat gedraaid',
+    missingRotations.length === 0,
+    missingRotations.length
+      ? `${missingRotations.length}x, o.a. ${missingRotations[0]}`
+      : ''
+  );
+
   check(
     'een FIXED as houdt de gemeten maat',
     wrongSizes.length === 0,

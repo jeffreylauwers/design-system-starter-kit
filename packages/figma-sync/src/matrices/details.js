@@ -3,7 +3,10 @@
  *
  * Een native `<details>` met een eigen chevron. De open en dichte stand zijn
  * echt verschillend gemeten: dicht is de inhoud er niet, en het icoon staat
- * 180 graden gedraaid zodra `[open]` geldt.
+ * 180 graden gedraaid zodra `[open]` geldt. Dat die twee dingen ook in Figma
+ * te zien zijn is nieuw: een dichte `<details>` verbergt zijn inhoud in een
+ * slot die de browser niet rendert (zie de walker in extract.js), en een
+ * `transform: rotate()` werd niet overgenomen (zie `rotationFrom`).
  *
  * De native driehoek van de browser is `::-webkit-details-marker` en
  * `list-style` op de `<summary>`. Allebei pseudo-elementen, dus onbereikbaar
@@ -33,6 +36,12 @@ export default {
   axes: {
     state: ['closed', 'open'],
   },
+
+  // De summary en de content rekken mee met de breedte van het component. In
+  // CSS doen ze dat niet (de summary is `width: fit-content`, de content heeft
+  // een eigen marge), maar een vaste breedte laat een designer met een
+  // component zitten dat niet schaalt. Zie `fillRootChildren` in to-figma.js.
+  fillRootChildren: true,
 
   componentProperties: [{ name: 'summary', type: 'TEXT', slot: 'summary' }],
 
