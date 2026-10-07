@@ -508,19 +508,46 @@ export async function extractMatrix(matrix) {
     const pseudo = Object.values(combination)
       .map((value) => matrix.pseudoStates?.[value])
       .find(Boolean);
-    if (pseudo === 'hover') await page.hover('[data-figma-root]');
+
+    // Waar de muis heen moet. Standaard het midden van de root, en dat werkt
+    // zolang de root zelf de stijl draagt. Bij CheckboxOption niet: de
+    // hover-stijl hangt aan het `<input>`, dat over de control heen ligt,
+    // terwijl het midden van de root in de labeltekst valt. Een input is een
+    // sibling van de control en geen ancestor, dus hoveren op de tekst levert
+    // daar helemaal geen toestand op. `pseudoTarget` richt de muis dan op de
+    // laag die de toestand wél heeft.
+    const target = matrix.pseudoTarget
+      ? `[data-figma-root] ${matrix.pseudoTarget}`
+      : '[data-figma-root]';
+
+    if (pseudo === 'hover') await page.hover(target);
     // `:focus-visible` ontstaat alleen bij toetsenbordfocus; een
     // programmatische `.focus()` zet hem in Chromium niet. Tab landt op het
     // eerste focusbare element, dus een matrix met een focus-as hoort er maar
     // één te renderen.
     if (pseudo === 'focus') await page.keyboard.press('Tab');
+    // `:active` is geen toestand die je kunt zetten: er moet een muisknop
+    // ingedrukt staan boven het element. In de browser geldt dan ook `:hover`,
+    // en de CSS rekent daarop (`:hover` eerst, `:active` erna), dus dit is
+    // precies wat een gebruiker ziet tijdens het klikken.
+    if (pseudo === 'active') {
+      await page.hover(target);
+      await page.mouse.down();
+    }
 
     await page.evaluate(installTokenReader);
 
-    return page.evaluate(domWalker, [
+    const tree = await page.evaluate(domWalker, [
       CAPTURED_PROPERTIES,
       VISUALLY_HIDDEN_CLASS,
     ]);
+
+    // De knop weer los. Een ingedrukte muisknop blijft tussen varianten staan,
+    // net als de cursorpositie, en dan meet alles na een active-variant ook
+    // als active.
+    if (pseudo === 'active') await page.mouse.up();
+
+    return tree;
   };
 
   const hasGrid = (node) =>
