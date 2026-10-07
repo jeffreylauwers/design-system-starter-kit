@@ -4,9 +4,12 @@
  * Zelfde opbouw als CheckboxOption, met een radio in plaats van een checkbox.
  * De radio hierin is een gemeten laag en geen instance van de Radio-set; zie
  * issue #369.
+ *
+ * De tekstlengte is geen as: het frame staat op HUG (`hugRoot`) en groeit mee
+ * met het label dat de designer zelf typt.
  */
 
-import { TEKST, VEEL_TEKST } from '../text.js';
+import { TEKST } from '../text.js';
 
 import { FLAG } from '../flags.js';
 
@@ -29,10 +32,11 @@ export default {
   axes: {
     state: ['unchecked', 'checked'],
     disabled: FLAG,
-    length: ['short-text', 'long-text'],
   },
 
-  render({ state, length, disabled: isDisabled }) {
+  hugRoot: true,
+
+  render({ state, disabled: isDisabled }) {
     const checked = state === 'checked' ? ' checked' : '';
     const disabled = isDisabled === 'true' ? ' disabled' : '';
     const labelClasses = [
@@ -41,7 +45,6 @@ export default {
     ]
       .filter(Boolean)
       .join(' ');
-    const text = length === 'short-text' ? TEKST : VEEL_TEKST;
 
     return `<label class="dsn-radio-option" data-figma-root>
       <span class="dsn-radio">
@@ -50,7 +53,7 @@ export default {
           <span class="dsn-radio__inner-circle"></span>
         </span>
       </span>
-      <span class="${labelClasses}">${text}</span>
+      <span class="${labelClasses}">${TEKST}</span>
     </label>`;
   },
 };

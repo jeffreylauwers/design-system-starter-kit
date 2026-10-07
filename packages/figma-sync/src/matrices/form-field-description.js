@@ -4,11 +4,12 @@
  * Uitleg onder een label. Bewust één laag zonder opsmuk: uit toegankelijkheids-
  * onderzoek met VoiceOver volgde dat er geen lijst en geen link in een
  * description hoort, dus die staan hier ook niet in de matrix. Wat er wel in
- * mag is een regelafbreking, en die tweede regel staat er daarom in: zo is in
- * Figma te zien hoe de regelhoogte uitpakt.
+ * mag is een regelafbreking, maar daarvoor is geen eigen variant nodig: de
+ * laag staat op HUG en groeit mee met de tekst die de designer typt, dus de
+ * regelhoogte is op elke lengte te zien.
  */
 
-import { TEKST, VEEL_TEKST } from '../text.js';
+import { TEKST } from '../text.js';
 
 export default {
   component: 'FormFieldDescription',
@@ -25,13 +26,14 @@ export default {
   wrapperStyle: 'width: 343px;',
 
   axes: {
-    length: ['short-text', 'long-text'],
+    appearance: ['default'],
   },
+
+  hugRoot: true,
 
   componentProperties: [{ name: 'label', type: 'TEXT', slot: 'label' }],
 
-  render({ length }) {
-    const text = length === 'short-text' ? TEKST : VEEL_TEKST;
-    return `<p class="dsn-form-field-description" data-figma-root data-figma-slot="label">${text}</p>`;
+  render() {
+    return `<p class="dsn-form-field-description" data-figma-root data-figma-slot="label">${TEKST}</p>`;
   },
 };

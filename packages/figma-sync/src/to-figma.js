@@ -1268,6 +1268,38 @@ function summariseWarnings(warnings) {
  * @param {object} [variableIndex] uit variable-index.js. Ontbreekt hij, dan
  *   worden er geen variables gebonden en houdt alles zijn vaste waarde.
  */
+/**
+ * Zet de root van een variant op HUG in de breedte.
+ *
+ * Een component dat in CSS een blok is pakt de volle breedte van de
+ * meetwrapper, en die breedte zegt niets over het component zelf: hij is
+ * `wrapperStyle`. In Figma is zo'n frame handiger op HUG, want dan groeit het
+ * mee met de tekst die de designer er zelf in typt. Dat is de reden dat de
+ * tekstlengte bij deze componenten ook geen as meer is: één variant plus HUG
+ * dekt wat twee varianten eerder lieten zien.
+ *
+ * Een kind dat die wrapperbreedte precies vulde staat op FILL, en FILL in een
+ * HUG-ouder weigert Figma. Die kinderen gaan daarom mee naar HUG.
+ */
+function hugRootWidth(node, warnings, label) {
+  // Een root die tot één tekstlaag inklapt groeit al met zijn inhoud mee; daar
+  // is geen frame om op HUG te zetten.
+  if (node.type === 'TEXT') return;
+
+  if (!node.layoutMode || node.layoutMode === 'NONE') {
+    warnings.push(`${label}: hugRoot kan niet, de root heeft geen auto layout`);
+    return;
+  }
+
+  node.layoutSizingHorizontal = 'HUG';
+
+  for (const child of node.children ?? []) {
+    if (child.layoutSizingHorizontal === 'FILL') {
+      child.layoutSizingHorizontal = 'HUG';
+    }
+  }
+}
+
 export function toComponentSet(matrix, extracted, variableIndex) {
   const warnings = [];
   const report = createBindingReport();
@@ -1286,6 +1318,11 @@ export function toComponentSet(matrix, extracted, variableIndex) {
     // `mergeAdornments`.
     if (matrix.mergeAdornments) {
       node = mergeAdornments(node, tree, warnings, pathLabel);
+    }
+    // Een blok dat in Figma met zijn eigen inhoud moet meegroeien, zie
+    // `hugRootWidth`.
+    if (matrix.hugRoot) {
+      hugRootWidth(node, warnings, pathLabel);
     }
     // Een component dat in zijn geheel tot tekst inklapt heeft geen ouder die
     // de binding voor hem kan leggen.

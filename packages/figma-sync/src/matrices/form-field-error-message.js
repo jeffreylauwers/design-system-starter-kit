@@ -6,10 +6,13 @@
  * uitgebreid is: `inherit` is een verwijzing en geen waarde, dus zonder
  * doorlopen naar de ouder zou het icoon een vaste kleur krijgen en de
  * theme-schakelaar niet volgen.
+ *
+ * De tekstlengte is geen as: het frame staat op HUG (`hugRoot`) en groeit mee
+ * met de foutmelding die de designer zelf typt.
  */
 
 import { icon } from '../icons.js';
-import { TEKST, VEEL_TEKST } from '../text.js';
+import { TEKST } from '../text.js';
 
 export default {
   component: 'FormFieldErrorMessage',
@@ -27,17 +30,17 @@ export default {
   wrapperStyle: 'width: 343px;',
 
   axes: {
-    length: ['short-text', 'long-text'],
+    appearance: ['default'],
   },
+
+  hugRoot: true,
 
   componentProperties: [{ name: 'label', type: 'TEXT', slot: 'label' }],
 
-  render({ length }) {
-    const text = length === 'short-text' ? TEKST : VEEL_TEKST;
-
+  render() {
     return `<p class="dsn-form-field-error-message" data-figma-root>
       ${icon('exclamation-circle')}
-      <span data-figma-slot="label">${text}</span>
+      <span data-figma-slot="label">${TEKST}</span>
     </p>`;
   },
 };
