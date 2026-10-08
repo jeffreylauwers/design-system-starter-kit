@@ -161,6 +161,14 @@ keer in een bredere wrapper: een track die meegroeit was flexibel.
 Rijen worden `HUG`. CSS-gridrijen zijn standaard `auto`, en een vaste
 rijhoogte zou betekenen dat het component niet meegroeit als tekst afbreekt.
 
+Rijen aan het eind waar geen enkele laag in staat gaan eraf. Een Note zonder
+kop houdt in de computed waarde twee rijen over terwijl er één gevuld is: het
+icoon spant met `grid-row: 1 / span 2` in de tweede, en bij de varianten met
+een voorleeslabel staat dat visueel verborgen spanje er ook nog in. Dat label
+is in Figma geen laag, maar de rij bleef wel staan als lege track. Alleen aan
+het eind: een lege rij tussen twee gevulde in houdt de nummering van de cellen
+overeind.
+
 De plaatsing per cel gaat via `setGridChildPosition(rowIndex, columnIndex)`;
 `gridColumnAnchorIndex` is read-only. De trackmaten horen in `gridColumnSizes`
 en `gridRowSizes`, niet in `gridAutoTracks` (dat gaat over automatisch rijen
