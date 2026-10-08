@@ -470,7 +470,7 @@ export async function extractMatrix(matrix) {
 
   // `skipVariant` laat combinaties weg die niets betekenen: een uitgeschakelde
   // knop heeft geen hover. Zie `flags.js`.
-  const combinations = cartesian(matrix.axes).filter(
+  const combinations = cartesian(matrix.axes ?? {}).filter(
     (combination) => !matrix.skipVariant?.(combination)
   );
   const results = [];

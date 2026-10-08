@@ -29,10 +29,9 @@ export default {
 
   wrapperStyle: 'width: 343px;',
 
-  axes: {
-    appearance: ['default'],
-  },
-
+  // Geen assen: dit component heeft niets dat per variant verschilt. Een
+  // component set in Figma moet een as hebben, dus dit wordt geen set maar een
+  // los component. Zie "Een matrix zonder assen" in de README.
   hugRoot: true,
 
   componentProperties: [{ name: 'label', type: 'TEXT', slot: 'label' }],

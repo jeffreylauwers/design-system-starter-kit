@@ -307,6 +307,10 @@ class Node {
     if (this.parent) {
       this.parent.children = this.parent.children.filter((c) => c !== this);
     }
+    // Zoals in Figma: een verwijderde node hangt nergens meer in. Zonder dit
+    // zou een controle op `node.parent` na een remove nog de oude ouder zien
+    // en blind zijn voor het verschil tussen weggegooid en behouden.
+    this.parent = null;
   }
 
   /**
@@ -398,17 +402,30 @@ class Node {
         );
       }
 
+      // De properties horen bij de naaste component set, of, als deze laag in
+      // een los component hangt, bij dat component zelf. Dat tweede geval is
+      // een matrix zonder assen: een set in Figma moet een as hebben, dus zo'n
+      // component staat er los, met zijn properties op zichzelf.
       let ancestor = this.parent;
-      while (ancestor && ancestor.type !== 'COMPONENT_SET') {
+      while (
+        ancestor &&
+        ancestor.type !== 'COMPONENT_SET' &&
+        !(
+          ancestor.type === 'COMPONENT' &&
+          ancestor.parent?.type !== 'COMPONENT_SET'
+        )
+      ) {
         ancestor = ancestor.parent;
       }
       if (!ancestor) {
         throw new Error(
-          `${field}: deze laag hangt niet in een component set, dus er is geen property om naar te wijzen`
+          `${field}: deze laag hangt niet in een component set of een los component, dus er is geen property om naar te wijzen`
         );
       }
       if (!ancestor.componentPropertyDefinitions?.[propertyId]) {
-        throw new Error(`property ${propertyId} bestaat niet op de set`);
+        throw new Error(
+          `property ${propertyId} bestaat niet op ${ancestor.type === 'COMPONENT_SET' ? 'de set' : 'het component'}`
+        );
       }
       if (field === 'mainComponent') {
         // Zoals in Figma: het mainComponent van deze laag komt vanaf nu uit de

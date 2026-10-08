@@ -441,10 +441,20 @@ for (const file of componentFiles) {
   const componentPage = state.root.children.find(
     (page) => page.name === payload.componentSet.page
   );
+  // Een matrix zonder assen levert geen component set op maar een los
+  // component in een canvasframe met dezelfde naam. Een set in Figma moet een
+  // as hebben, en een as met één waarde is een property waar een designer
+  // niets aan heeft.
+  const single =
+    payload.componentSet.components.length === 1 &&
+    Object.keys(payload.componentSet.components[0].variantProperties ?? {})
+      .length === 0;
+
   const setsHere = () =>
     (componentPage?.children ?? []).filter(
       (node) =>
-        node.type === 'COMPONENT_SET' && node.name === payload.componentSet.name
+        node.type === (single ? 'FRAME' : 'COMPONENT_SET') &&
+        node.name === payload.componentSet.name
     );
   const firstSet = setsHere()[0];
   const idsAfterFirst = new Map(
@@ -458,12 +468,20 @@ for (const file of componentFiles) {
     imported.variants === payload.componentSet.components.length,
     `${imported.variants}/${payload.componentSet.components.length}`
   );
-  check('component set gecombineerd', imported.combined === true);
+  check(
+    single ? 'als los component geïmporteerd' : 'component set gecombineerd',
+    single
+      ? imported.single === true &&
+          setsHere()[0]?.children[0]?.type === 'COMPONENT'
+      : imported.combined === true
+  );
 
   // Elk component krijgt zijn eigen pagina. Zonder die scheiding groeit één
   // pagina met 73 component sets dicht en is er niets meer terug te vinden.
   check(
-    'er staat precies één set met deze naam op zijn eigen pagina',
+    single
+      ? 'er staat precies één canvasframe met deze naam op zijn eigen pagina'
+      : 'er staat precies één set met deze naam op zijn eigen pagina',
     setsHere().length === 1,
     `${setsHere().length}x op ${payload.componentSet.page}`
   );
@@ -808,7 +826,9 @@ for (const file of componentFiles) {
   // Component properties
   // ---------------------------------------------------------------------------
 
-  const set = setNode;
+  // Bij een los component horen de properties op het component zelf; het
+  // canvasframe eromheen is geen component en kan ze niet dragen.
+  const set = single ? setNode.children[0] : setNode;
   const definitions = set.componentPropertyDefinitions ?? {};
   const declaredHere = payload.componentSet.componentProperties ?? [];
 
@@ -842,7 +862,10 @@ for (const file of componentFiles) {
     for (const property of declaredHere) {
       const definition = byName.get(property.name);
       if (!definition) continue;
-      const linked = set.children.filter((variant) => {
+      // Bij een los component is er één "variant", namelijk het component
+      // zelf; `set.children` zijn daar zijn eigen lagen.
+      const hosts = single ? [set] : set.children;
+      const linked = hosts.filter((variant) => {
         const find = (node) =>
           node.componentPropertyReferences?.[FIELD[property.type]] ===
           definition.propertyId
@@ -860,7 +883,7 @@ for (const file of componentFiles) {
         ? payload.componentSet.components.filter((component) =>
             hasSlot(component.node)
           ).length
-        : set.children.length;
+        : hosts.length;
       if (linked.length !== expected) {
         unlinked.push(
           `${property.name} in ${linked.length} van de verwachte ${expected} varianten`
@@ -1009,9 +1032,18 @@ const placedOn = setBefore.children[0];
 // Een variant die wel in Figma staat maar niet meer in de spec. Verwijderen
 // zou elke instance ervan detachen, dus die hoort te blijven staan en gemeld te
 // worden.
+// Een variant die uit de spec valt maar wél alle assen draagt, zoals na een
+// wijziging in `skipVariant`. Die hoort te blijven staan.
 const ghost = figma.createComponent();
-ghost.name = 'variant=ghost, size=small, state=default';
+ghost.name = 'variant=ghost, size=small, state=default, disabled=false';
 setBefore.appendChild(ghost);
+
+// Een variant uit een oudere as-indeling. Die kan niet blijven staan: Figma
+// eist dat elk kind dezelfde variant-properties draagt, en anders mislukken de
+// component properties van de hele set.
+const staleAxisVariant = figma.createComponent();
+staleAxisVariant.name = 'appearance=default';
+setBefore.appendChild(staleAxisVariant);
 
 const beforeRerunProblems = problems.length;
 const editsBeforeRerun = state.propertyEdits;
@@ -1081,6 +1113,18 @@ check(
         problem.level === 'warn' && problem.message.includes(ghost.name)
     ),
   ghost.parent === setAfter ? 'gemeld en behouden' : 'weggegooid'
+);
+
+check(
+  'een variant met andere assen wordt verwijderd en gemeld',
+  staleAxisVariant.parent === null &&
+    rerunProblems.some(
+      (problem) =>
+        problem.level === 'warn' &&
+        problem.message.includes('appearance=default') &&
+        problem.message.includes('verwijderd')
+    ),
+  staleAxisVariant.parent === null ? 'verwijderd en gemeld' : 'blijft staan'
 );
 
 // Een property opnieuw aanmaken levert een nieuwe property-id op, en Figma

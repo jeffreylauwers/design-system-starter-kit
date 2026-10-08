@@ -1035,6 +1035,33 @@ function applyComponentProperties(set, properties, variants, context) {
 }
 
 /**
+ * Het canvasframe van een los component, opgezocht of aangemaakt.
+ *
+ * Een component set is zelf de plaat waar zijn varianten op staan. Een los
+ * component (een matrix zonder assen) heeft die plaat niet, en zonder frame
+ * eromheen staat hij in `start-dark` onleesbaar op het grijs van Figma. Het
+ * frame draagt dezelfde naam als het component, net zoals een set dat doet.
+ */
+function axesOf(variantName) {
+  return variantName
+    .split(',')
+    .map((part) => part.split('=')[0].trim())
+    .filter(Boolean);
+}
+
+function findOrCreateCanvasFrame(page, name) {
+  const existing = page.children.find(
+    (node) => node.type === 'FRAME' && node.name === name
+  );
+  if (existing) return existing;
+
+  const frame = figma.createFrame();
+  frame.name = name;
+  page.appendChild(frame);
+  return frame;
+}
+
+/**
  * De opmaak van de component set zelf: de plaat waar de varianten op staan.
  *
  * Varianten onder elkaar met lucht ertussen, op de documentachtergrond van het
@@ -1137,22 +1164,46 @@ export async function importComponentSet(payload, log, options = {}) {
     : figma.currentPage;
   await openPage(page);
 
+  // Een matrix zonder assen levert één component zonder variant-properties op.
+  // Een component set in Figma móet een as hebben, dus zo'n component wordt
+  // geen set: het is een los component in een eigen canvasframe.
+  const single =
+    spec.components.length === 1 &&
+    Object.keys(spec.components[0].variantProperties ?? {}).length === 0;
+
   // Een bestaande set wordt bijgewerkt, niet vervangen. Elke geplaatste
   // instance hangt aan de node-id van zijn variant; een nieuwe variant met
   // dezelfde naam is voor Figma een ander component en laat elke instance los.
   const existingSets = page.children.filter(
     (node) => node.type === 'COMPONENT_SET' && node.name === spec.name
   );
-  const target = existingSets[0] ?? null;
 
-  if (existingSets.length > 1) {
+  // Een set die een los component is geworden kan niet bijgewerkt worden: het
+  // node-type verschilt. Hij gaat weg, en dat laat de instances die eraan
+  // hingen los. Daarom staat het er met zoveel woorden in de log.
+  if (single && existingSets.length) {
+    for (const stale of existingSets) stale.remove();
+    log.warn(
+      `"${spec.name}" was een component set met een kunstmatige as en is nu een los component. De oude set is verwijderd; instances die je ervan had geplaatst zijn losgelaten en moeten opnieuw.`
+    );
+  }
+
+  const target = single ? null : (existingSets[0] ?? null);
+
+  if (!single && existingSets.length > 1) {
     log.warn(
       `Er staan ${existingSets.length} sets "${spec.name}" op ${page.name}; alleen de bovenste is bijgewerkt. De rest komt uit een oudere plugin-versie en kan weg zodra de instances zijn overgezet.`
     );
   }
 
+  // Het canvasframe van een los component. Een set is zelf de plaat waar zijn
+  // varianten op staan; een los component heeft daar een frame om zich heen
+  // voor nodig, anders staat hij in `start-dark` onleesbaar op het grijs van
+  // Figma.
+  const canvasFrame = single ? findOrCreateCanvasFrame(page, spec.name) : null;
+
   const knownVariants = new Map(
-    (target?.children ?? [])
+    ((single ? canvasFrame : target)?.children ?? [])
       .filter((node) => node.type === 'COMPONENT')
       .map((node) => [node.name, node])
   );
@@ -1163,6 +1214,7 @@ export async function importComponentSet(payload, log, options = {}) {
   // de pagina staat, en dan zou een tweede import iets anders opleveren dan de
   // eerste. `applyCanvas` zet de stapeling verderop terug.
   if (target) target.layoutMode = 'NONE';
+  if (canvasFrame) canvasFrame.layoutMode = 'NONE';
 
   const components = [];
   const variantSlots = [];
@@ -1199,7 +1251,7 @@ export async function importComponentSet(payload, log, options = {}) {
       // Een nieuwe variant hangt meteen in de set als die er al is; anders op
       // de pagina, waar `combineAsVariants` hem straks ophaalt. De naam staat
       // er al op, want een set met een ongeldig genoemd kind is stuk.
-      (target ?? page).appendChild(wrapper);
+      (target ?? canvasFrame ?? page).appendChild(wrapper);
       created += 1;
     }
 
@@ -1230,7 +1282,7 @@ export async function importComponentSet(payload, log, options = {}) {
     // Alleen bij een verse import: varianten naast elkaar leggen zodat
     // combineAsVariants ze kan ophalen. Zit de variant al in een set, dan
     // bepaalt de auto layout van die set zijn plek.
-    if (!target) {
+    if (!target && !single) {
       wrapper.x = cursorX;
       wrapper.y = 0;
       cursorX += wrapper.width + 40;
@@ -1249,7 +1301,10 @@ export async function importComponentSet(payload, log, options = {}) {
   }
 
   let set = target;
-  if (!set) {
+  if (single) {
+    // Niets te combineren: het component staat al in zijn canvasframe.
+    set = null;
+  } else if (!set) {
     try {
       set = figma.combineAsVariants(components, page);
       set.name = spec.name;
@@ -1272,9 +1327,31 @@ export async function importComponentSet(payload, log, options = {}) {
   // Varianten die uit de spec verdwenen zijn blijven staan. Ze automatisch
   // verwijderen zou elke instance ervan detachen, en dat is een beslissing van
   // een mens. Dezelfde afweging als bij een icoon dat uit de assets-map valt.
+  //
+  // Eén uitzondering: een variant die andere assen draagt dan de spec. Figma
+  // eist dat elk kind van een set precies dezelfde variant-properties heeft;
+  // een kind met een as die niet meer bestaat, of zonder een as die erbij
+  // gekomen is, zet de set in een fouttoestand. Dan gooit
+  // `componentPropertyDefinitions` eruit en komt er van de hele import niets
+  // terecht. Zo'n variant laten staan is dus geen voorzichtige keuze maar een
+  // kapotte set. Zichtbaar geweest bij FormFieldLabel, toen de as `suffix`
+  // verdween: twee oude varianten hielden de set stuk en de properties konden
+  // die ronde niet gelegd worden.
+  const specAxes = Object.keys(spec.variantAxes ?? {})
+    .sort()
+    .join('|');
   const inSpec = new Set(spec.components.map((component) => component.name));
-  const orphans = [...knownVariants.keys()].filter((name) => !inSpec.has(name));
-  for (const name of orphans) {
+  const leftovers = [...knownVariants].filter(([name]) => !inSpec.has(name));
+  const orphans = [];
+  for (const [name, node] of leftovers) {
+    if (axesOf(name).sort().join('|') !== specAxes) {
+      node.remove();
+      log.warn(
+        `Variant "${name}" is verwijderd: hij draagt andere assen dan de spec (${specAxes.split('|').join(', ')}). Een set waarin de kinderen verschillende assen dragen is voor Figma een set met fouten, en dan mislukken de component properties.`
+      );
+      continue;
+    }
+    orphans.push(name);
     log.warn(
       `Variant "${name}" staat wel in ${spec.name} in Figma maar niet meer in de spec; handmatig verwijderen als dat de bedoeling is`
     );
@@ -1285,22 +1362,31 @@ export async function importComponentSet(payload, log, options = {}) {
   // teruggezette `state=hover` onderaan de plaat in plaats van bij zijn eigen
   // maat. Varianten die niet meer in de spec staan schuiven daarmee naar
   // achteren, en dat is precies waar ze horen.
+  // De plaat waar het resultaat op staat: de set zelf, of het canvasframe van
+  // een los component.
+  const canvasNode = single ? canvasFrame : set;
+
   components.forEach((variant, index) => {
-    if (set.children[index] !== variant) set.insertChild(index, variant);
+    if (canvasNode.children[index] !== variant) {
+      canvasNode.insertChild(index, variant);
+    }
   });
 
-  applyCanvas(set, spec.canvas, context);
+  applyCanvas(canvasNode, spec.canvas, context);
 
   log.info(
-    `${spec.name}: ${components.length} varianten (${created} nieuw, ${updated} bijgewerkt)`
+    single
+      ? `${spec.name}: los component (${created} nieuw, ${updated} bijgewerkt)`
+      : `${spec.name}: ${components.length} varianten (${created} nieuw, ${updated} bijgewerkt)`
   );
   reportBindings(payload, stats, log);
 
   // Na combineAsVariants: component properties horen op de set, niet op de
-  // losse varianten.
+  // losse varianten. Bij een los component horen ze op het component zelf; het
+  // canvasframe eromheen is geen component en kan ze niet dragen.
   log.progress?.(`${spec.name}: properties leggen`);
   const properties = applyComponentProperties(
-    set,
+    single ? components[0] : set,
     spec.componentProperties,
     variantSlots,
     context
@@ -1326,8 +1412,8 @@ export async function importComponentSet(payload, log, options = {}) {
   log.progress?.("pagina's sorteren");
   await sortManagedPages();
 
-  figma.currentPage.selection = [set];
-  figma.viewport.scrollAndZoomIntoView([set]);
+  figma.currentPage.selection = [canvasNode];
+  figma.viewport.scrollAndZoomIntoView([canvasNode]);
 
   return {
     name: spec.name,
@@ -1339,7 +1425,8 @@ export async function importComponentSet(payload, log, options = {}) {
     recolored,
     lostColors,
     diagnosis,
-    combined: true,
+    combined: !single,
+    single,
     bindings: { ...stats, missing: [...stats.missing] },
     properties,
   };

@@ -820,6 +820,41 @@ oude `state`-as was.
 Dit geldt voor Button, Link, de zeven formuliervelden, FormField,
 DateInputGroup, OptionLabel, Checkbox, Radio, CheckboxOption en RadioOption.
 
+### Een matrix zonder assen
+
+Een component set in Figma moet minstens één variant-as hebben. Een component
+dat niets heeft dat per variant verschilt kreeg daarom een kunstmatige as
+(`appearance: ['default']`), en die stond in het panel als een keuzelijst met
+één optie: een property waar een designer niets aan kan doen.
+
+Zo'n matrix laat `axes` nu gewoon weg. De spec levert dan één component zonder
+variant-properties, en de plugin maakt daar geen set van maar een los
+component. Het staat in een frame met dezelfde naam, want een set is zelf de
+plaat waar zijn varianten op staan en een los component heeft die plaat nodig
+om in `start-dark` niet onleesbaar op het grijs van Figma te vallen. De
+component properties hangen aan het component zelf; het frame eromheen is geen
+component en kan ze niet dragen.
+
+Dit geldt voor PreHeading, Logo, FormFieldLabel, FormFieldDescription en
+FormFieldErrorMessage. De omschakeling kost eenmalig de instances van die vijf:
+een set en een component zijn in Figma verschillende node-types, dus de oude
+set kan niet bijgewerkt worden en wordt verwijderd. De plugin meldt dat met
+zoveel woorden.
+
+### Een variant met andere assen wordt verwijderd
+
+Varianten die uit de spec verdwijnen blijven staan, met een waarschuwing: ze
+weggooien detacht elke instance ervan, en dat is een beslissing van een mens.
+
+Op één geval geldt dat niet, en dat is geen voorzichtigheid maar een kapotte
+set: een variant die andere assen draagt dan de spec. Figma eist dat elk kind
+van een set precies dezelfde variant-properties heeft. Een kind met een as die
+niet meer bestaat, of zonder een as die erbij gekomen is, zet de set in een
+fouttoestand, en dan gooit `componentPropertyDefinitions` eruit en komen de
+component properties er die import niet op. Zichtbaar geweest bij
+FormFieldLabel: na het verdwijnen van de as `suffix` hielden twee oude
+varianten de set stuk.
+
 ### Een blok dat met zijn eigen inhoud meegroeit
 
 Een component dat in CSS een blok is pakt de volle breedte van de meetwrapper.

@@ -1,7 +1,7 @@
 /**
  * Variant-matrix voor FormFieldLabel.
  *
- * Het label met een optioneel suffix ("(optioneel)"), dat een eigen kleur en
+ * Het label met een optioneel suffix ("(niet verplicht)"), dat een eigen kleur en
  * gewicht heeft en dus een eigen laag met een eigen binding wordt.
  *
  * Het suffix staat altijd in de markup en is in Figma een BOOLEAN-property,
@@ -34,10 +34,9 @@ export default {
 
   wrapperStyle: 'width: 343px;',
 
-  axes: {
-    appearance: ['default'],
-  },
-
+  // Geen assen: dit component heeft niets dat per variant verschilt. Een
+  // component set in Figma moet een as hebben, dus dit wordt geen set maar een
+  // los component. Zie "Een matrix zonder assen" in de README.
   // Twee properties op dezelfde laag: de boolean zet hem aan en uit, de
   // TEXT-property vult zijn tekst. Dezelfde opzet als `showIconStart` en
   // `iconStart` bij Button.
@@ -50,7 +49,7 @@ export default {
   render() {
     return `<label class="dsn-form-field-label" data-figma-root>
       <span data-figma-slot="label">${TEKST}</span>
-      <span class="dsn-form-field-label-suffix" data-figma-slot="suffix">(optioneel)</span>
+      <span class="dsn-form-field-label-suffix" data-figma-slot="suffix">(niet verplicht)</span>
     </label>`;
   },
 };

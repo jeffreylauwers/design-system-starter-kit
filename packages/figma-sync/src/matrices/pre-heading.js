@@ -21,10 +21,9 @@ export default {
     '@dsn-starter-kit/components-html/src/pre-heading/pre-heading.css',
   ],
 
-  axes: {
-    appearance: ['default'],
-  },
-
+  // Geen assen: dit component heeft niets dat per variant verschilt. Een
+  // component set in Figma moet een as hebben, dus dit wordt geen set maar een
+  // los component. Zie "Een matrix zonder assen" in de README.
   componentProperties: [{ name: 'label', type: 'TEXT', slot: 'label' }],
 
   render() {
