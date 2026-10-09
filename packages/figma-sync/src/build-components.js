@@ -102,15 +102,32 @@ async function main() {
 
   for (const { key, matrix } of matrices) {
     const started = Date.now();
-    const variableIndex = variablesPayload
-      ? createVariableIndex(
-          variablesPayload,
-          modesForMatrix(matrix, variablesPayload.collections)
+    // Eén index per gemeten breedte. De modes van `dsn/Density` hangen aan die
+    // breedte, en de verificatie van een binding eist dat het token de gemeten
+    // waarde reproduceert in dezelfde theme-, mode- en viewportstand. Een
+    // matrix met varianten op twee viewports heeft dus twee indexen, en elke
+    // variant wordt tegen die van zijn eigen breedte geverifieerd.
+    const widths = matrix.viewports
+      ? [
+          ...new Set(
+            Object.values(matrix.viewports).map((entry) => entry.width)
+          ),
+        ]
+      : [matrix.viewport?.width ?? 375];
+    const variableIndexes = variablesPayload
+      ? new Map(
+          widths.map((width) => [
+            width,
+            createVariableIndex(
+              variablesPayload,
+              modesForMatrix(matrix, variablesPayload.collections, width)
+            ),
+          ])
         )
       : undefined;
 
     const extracted = await extractMatrix(matrix);
-    const spec = toComponentSet(matrix, extracted, variableIndex);
+    const spec = toComponentSet(matrix, extracted, variableIndexes);
 
     const destination = path.join(outputDir, `${key}.json`);
     fs.writeFileSync(destination, `${JSON.stringify(spec, null, 2)}\n`);

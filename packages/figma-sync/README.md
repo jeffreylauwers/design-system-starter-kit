@@ -150,6 +150,50 @@ op. De gemeten typografie komt daarmee exact overeen met de `default-mobile`
 mode van de `dsn/Density`-collection, dus component en variable zeggen
 hetzelfde. Per matrix te overschrijven met `viewport`.
 
+### Een viewport per variant
+
+Een component met layouts die elkaar per viewport aflossen is op één breedte
+niet te meten. De large- en compact-layout van PageHeader zijn onder 64em
+`display: none`, en de extractor slaat die over: op 375px komt uitsluitend de
+mobiele balk mee.
+
+Zo'n matrix zet daarom `viewports` neer en wijst met `viewportAxis` de as aan
+die ertussen kiest:
+
+```js
+  axes: {
+    layout: ['default', 'compact'],
+    colorScheme: ['default', 'inverse'],
+    viewport: ['small', 'large'],
+  },
+
+  viewportAxis: 'viewport',
+  viewports: {
+    small: { width: 375, wrapperStyle: 'width: 375px;' },
+    large: { width: 1440, wrapperStyle: 'width: 1440px;' },
+  },
+```
+
+De assen volgen de props van Storybook, zodat een designer dezelfde knoppen
+ziet als een developer. Een header loopt van rand tot rand en zet zijn eigen
+padding, dus de wrapper is daar net zo breed als de viewport en niet 343.
+
+Belangrijker dan de breedte zijn de modes. `modesForMatrix` leidt uit de
+gemeten breedte af welke mode van `dsn/Density` geldt, en die modeset bepaalt
+waar de verificatie van een binding tegen afrekent. Er is daarom een
+variable-index per gemeten breedte, en elke variant wordt tegen de index van
+zijn eigen breedte geverifieerd: de small-varianten tegen `default-mobile`, de
+large-varianten tegen `default-desktop`. Dat houdt de eigenschap uit DR-2026-06
+intact. Een token moet de gemeten waarde reproduceren in dezelfde theme-,
+mode- en viewportstand voordat er gebonden wordt, dus een misrekening kan een
+binding missen maar nooit een verkeerde leggen. `bindings.modes` in de spec
+vermeldt bij zo'n matrix per breedte welke modes het waren.
+
+Op `viewport=small` is er tussen `layout=default` en `layout=compact` geen
+verschil te zien, precies zoals in de browser: beide layouts zijn daar
+verborgen. Die varianten zijn met opzet gelijk en niet weggelaten, want de as
+hoort bij de prop en niet bij de viewport.
+
 ### CSS Grid
 
 `grid-template-columns: <maat> 1fr` wordt in Figma `FIXED` + `FLEX`, waarbij

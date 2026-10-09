@@ -1356,8 +1356,10 @@ function summariseWarnings(warnings) {
  *
  * @param {object} matrix de matrixdefinitie
  * @param {Array<{variant: object, tree: object}>} extracted
- * @param {object} [variableIndex] uit variable-index.js. Ontbreekt hij, dan
- *   worden er geen variables gebonden en houdt alles zijn vaste waarde.
+ * @param {Map<number, object>|object} [variableIndexes] een index per gemeten
+ *   breedte, uit variable-index.js, of één index die voor elke variant geldt.
+ *   Ontbreken ze, dan worden er geen variables gebonden en houdt alles zijn
+ *   vaste waarde.
  */
 /**
  * Zet de root van een variant op HUG in de breedte.
@@ -1421,10 +1423,19 @@ function hugRootWidth(node, warnings, label) {
   }
 }
 
-export function toComponentSet(matrix, extracted, variableIndex) {
+export function toComponentSet(matrix, extracted, variableIndexes) {
   const warnings = [];
   const report = createBindingReport();
-  const bindings = variableIndex ? { index: variableIndex, report } : undefined;
+
+  // Een index per gemeten breedte; zie `build-components.js`. Eén index blijft
+  // werken, en dan geldt die voor elke variant.
+  const indexes =
+    variableIndexes instanceof Map
+      ? variableIndexes
+      : variableIndexes
+        ? new Map([[null, variableIndexes]])
+        : undefined;
+  const defaultIndex = indexes ? [...indexes.values()][0] : undefined;
 
   const rootClass = extracted[0]?.tree.classes?.[0];
 
@@ -1445,42 +1456,51 @@ export function toComponentSet(matrix, extracted, variableIndex) {
     matrix.setName ??
     (rootClass?.startsWith('dsn-') ? rootClass : matrix.component);
 
-  const components = extracted.map(({ variant, tree, wideTree }) => {
-    const axisLabel = Object.entries(variant)
-      .map(([axis, value]) => `${axis}=${value}`)
-      .join(', ');
-    // Een matrix zonder assen levert één component op. Dat is in Figma geen
-    // set maar een los component, en het heet naar het component zelf.
-    const label = axisLabel || setName;
-    const pathLabel = axisLabel
-      ? `${matrix.component}[${axisLabel}]`
-      : matrix.component;
-    let node = convertNode(tree, wideTree, warnings, pathLabel, bindings, {
-      root: true,
-    });
+  const components = extracted.map(
+    ({ variant, tree, wideTree, viewportWidth }) => {
+      // De bindingen van deze variant gaan tegen de index van zijn eigen
+      // breedte: een variant die op 1440 gemeten is hoort tegen de
+      // desktop-modes van `dsn/Density` geverifieerd te worden, niet tegen de
+      // mobiele.
+      const index = indexes?.get(viewportWidth) ?? defaultIndex;
+      const bindings = index ? { index, report } : undefined;
 
-    // Een veld met een icoon of knop ernaast wordt één frame, zie
-    // `mergeAdornments`.
-    if (matrix.mergeAdornments) {
-      node = mergeAdornments(node, tree, warnings, pathLabel);
+      const axisLabel = Object.entries(variant)
+        .map(([axis, value]) => `${axis}=${value}`)
+        .join(', ');
+      // Een matrix zonder assen levert één component op. Dat is in Figma geen
+      // set maar een los component, en het heet naar het component zelf.
+      const label = axisLabel || setName;
+      const pathLabel = axisLabel
+        ? `${matrix.component}[${axisLabel}]`
+        : matrix.component;
+      let node = convertNode(tree, wideTree, warnings, pathLabel, bindings, {
+        root: true,
+      });
+
+      // Een veld met een icoon of knop ernaast wordt één frame, zie
+      // `mergeAdornments`.
+      if (matrix.mergeAdornments) {
+        node = mergeAdornments(node, tree, warnings, pathLabel);
+      }
+      // Een blok dat in Figma met zijn eigen inhoud moet meegroeien, zie
+      // `hugRootWidth`.
+      if (matrix.hugRoot) {
+        hugRootWidth(node, warnings, pathLabel);
+      }
+      // Kinderen die met de breedte van het component mee moeten rekken, zie
+      // `fillRootChildren`.
+      if (matrix.fillRootChildren) {
+        fillRootChildren(node, warnings, pathLabel);
+      }
+      // Een component dat in zijn geheel tot tekst inklapt heeft geen ouder die
+      // de binding voor hem kan leggen.
+      if (node.type === 'TEXT') {
+        node.boundVariables = bindVariables(node, tree.tokens, bindings);
+      }
+      return { name: label, variantProperties: variant, node };
     }
-    // Een blok dat in Figma met zijn eigen inhoud moet meegroeien, zie
-    // `hugRootWidth`.
-    if (matrix.hugRoot) {
-      hugRootWidth(node, warnings, pathLabel);
-    }
-    // Kinderen die met de breedte van het component mee moeten rekken, zie
-    // `fillRootChildren`.
-    if (matrix.fillRootChildren) {
-      fillRootChildren(node, warnings, pathLabel);
-    }
-    // Een component dat in zijn geheel tot tekst inklapt heeft geen ouder die
-    // de binding voor hem kan leggen.
-    if (node.type === 'TEXT') {
-      node.boundVariables = bindVariables(node, tree.tokens, bindings);
-    }
-    return { name: label, variantProperties: variant, node };
-  });
+  );
 
   // Wat er werkelijk in de boom staat. Het rapport telt tijdens het omzetten,
   // en `mergeAdornments` gooit daarna een laag weg (de wrapper) en laat een
@@ -1494,7 +1514,7 @@ export function toComponentSet(matrix, extracted, variableIndex) {
     );
 
   // Vóór report.summary(): de achtergrondbinding telt mee in hetzelfde rapport.
-  const canvas = canvasFor(variableIndex, report);
+  const canvas = canvasFor(defaultIndex, report);
 
   return {
     $schema: 'dsn-figma-components/1',
@@ -1530,7 +1550,14 @@ export function toComponentSet(matrix, extracted, variableIndex) {
           (total, component) => total + countBindings(component.node),
           0
         ) + countBindings(canvas),
-      modes: variableIndex?.modes,
+      // Welke modes de verificatie gebruikt heeft. Bij een matrix met varianten
+      // op verschillende viewports is dat er één set per gemeten breedte.
+      modes:
+        indexes && indexes.size > 1
+          ? Object.fromEntries(
+              [...indexes].map(([width, index]) => [width, index.modes])
+            )
+          : defaultIndex?.modes,
     },
   };
 }
