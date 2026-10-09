@@ -460,6 +460,36 @@ export async function extractMatrix(matrix) {
 
   const viewport = matrix.viewport ?? DEFAULT_VIEWPORT;
 
+  /**
+   * De meetviewport van één variant.
+   *
+   * Normaal geldt `matrix.viewport` voor de hele matrix. Een component met
+   * layouts die elkaar per viewport aflossen heeft dat niet genoeg: de
+   * large-layout van PageHeader is onder 64em `display: none` en levert op 375
+   * niets op om te meten. Zo'n matrix zet `viewports` neer en wijst met
+   * `viewportAxis` de as aan die ertussen kiest, en dan meet elke variant op
+   * zijn eigen breedte.
+   */
+  const viewportFor = (combination) => {
+    if (!matrix.viewports) {
+      return { ...viewport, wrapperStyle: matrix.wrapperStyle };
+    }
+
+    const key = combination[matrix.viewportAxis];
+    const entry = matrix.viewports[key];
+    if (!entry) {
+      throw new Error(
+        `${matrix.component}: geen viewport voor ${matrix.viewportAxis}=${key}; bekende waarden: ${Object.keys(matrix.viewports).join(', ')}`
+      );
+    }
+
+    return {
+      width: entry.width,
+      height: entry.height ?? viewport.height,
+      wrapperStyle: entry.wrapperStyle ?? matrix.wrapperStyle,
+    };
+  };
+
   const browser = await chromium.launch();
   const page = await browser.newPage({ viewport });
 
@@ -501,9 +531,24 @@ export async function extractMatrix(matrix) {
    * fluid typografie op de meetviewport vastgeprikt blijft.
    */
   const render = async (combination, extraWidth) => {
+    const variantViewport = viewportFor(combination);
+
+    // Alleen zetten als hij verandert: elke setViewportSize dwingt een
+    // herberekening van de layout af.
+    const current = page.viewportSize();
+    if (
+      current.width !== variantViewport.width ||
+      current.height !== variantViewport.height
+    ) {
+      await page.setViewportSize({
+        width: variantViewport.width,
+        height: variantViewport.height,
+      });
+    }
+
     const wrapperStyle = extraWidth
-      ? `${matrix.wrapperStyle ?? ''};width:${viewport.width + extraWidth}px`
-      : (matrix.wrapperStyle ?? '');
+      ? `${variantViewport.wrapperStyle ?? ''};width:${variantViewport.width + extraWidth}px`
+      : (variantViewport.wrapperStyle ?? '');
 
     await page.setContent(documentFor(combination, wrapperStyle), {
       waitUntil: 'load',
@@ -585,7 +630,14 @@ export async function extractMatrix(matrix) {
         ? await render(combination, GRID_PROBE_DELTA)
         : undefined;
 
-      results.push({ variant: combination, tree, wideTree });
+      results.push({
+        variant: combination,
+        tree,
+        wideTree,
+        // Welke index de bindingen van deze variant moeten gebruiken: de modes
+        // van `dsn/Density` hangen aan de gemeten breedte.
+        viewportWidth: viewportFor(combination).width,
+      });
     }
   } finally {
     await browser.close();

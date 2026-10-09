@@ -40,7 +40,7 @@ export function cssNameFor(variableName) {
  * (`start-light-default.css`) en op welke breedte (375px), en dat is precies
  * genoeg om de modes te kiezen.
  */
-export function modesForMatrix(matrix, collections) {
+export function modesForMatrix(matrix, collections, width) {
   const source = (matrix.css ?? []).find((file) =>
     /dist\/css\/[a-z0-9-]+\.css$/.test(file)
   );
@@ -53,8 +53,12 @@ export function modesForMatrix(matrix, collections) {
 
   // De Density-collection krijgt een mode per viewport zodra een project-type
   // fluid is; is het dat niet, dan is er maar één mode met de kale naam.
-  const width = matrix.viewport?.width ?? 375;
-  const viewport = width > 375 ? 'desktop' : 'mobile';
+  //
+  // De breedte komt als argument binnen, want een matrix kan varianten op
+  // verschillende viewports hebben (PageHeader meet small op 375 en large op
+  // 1440). Zonder argument geldt de viewport van de matrix als geheel.
+  const measured = width ?? matrix.viewport?.width ?? 375;
+  const viewport = measured > 375 ? 'desktop' : 'mobile';
 
   const modesOf = (name) =>
     collections.find((collection) => collection.name === name)?.modes ?? [];
