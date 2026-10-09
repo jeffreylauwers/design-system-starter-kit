@@ -594,6 +594,31 @@ for (const file of componentFiles) {
   for (const [index, component] of payload.componentSet.components.entries()) {
     checkGrid(built(index), component.node);
   }
+  // Een span zonder anchor komt van autoplaatsing (`grid-column: span N`). Die
+  // hoort op de laag te landen, anders is een GridItem van twaalf kolommen in
+  // Figma één kolom breed.
+  const spanMismatch = [];
+  const checkSpan = (node, spec) => {
+    if (spec?.gridColumnSpan && node?.gridColumnSpan !== spec.gridColumnSpan) {
+      spanMismatch.push(
+        `${spec.name}: ${node?.gridColumnSpan} i.p.v. ${spec.gridColumnSpan}`
+      );
+    }
+    (spec?.children ?? []).forEach((childSpec, index) =>
+      checkSpan(node?.children?.[index], childSpec)
+    );
+  };
+  for (const [index, component] of payload.componentSet.components.entries()) {
+    checkSpan(built(index), component.node);
+  }
+  check(
+    'grid-spans toegepast',
+    spanMismatch.length === 0,
+    spanMismatch.length
+      ? `${spanMismatch.length}x, o.a. ${spanMismatch[0]}`
+      : ''
+  );
+
   check(
     'grid-tracks toegepast',
     gridMismatch.length === 0,
