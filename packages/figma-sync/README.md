@@ -213,6 +213,20 @@ is in Figma geen laag, maar de rij bleef wel staan als lege track. Alleen aan
 het eind: een lege rij tussen twee gevulde in houdt de nummering van de cellen
 overeind.
 
+Een kind zonder expliciete cel maar mét een span is autoplaatsing. `grid-column:
+span 3` komt uit de browser als `grid-column-start: "span 3"` met
+`grid-column-end: "auto"`, dus er is geen cel om te noemen. Zo werken de
+GridItems van PageFooter (`colSpan=12`, `colSpanLg=3`). De span gaat dan op het
+kind en de ouder krijgt `gridItemsPositioning: 'AUTO'`, zodat Figma zelf
+plaatst in dezelfde leesvolgorde als `grid-auto-flow: row`. Zulke kinderen
+krijgen FILL en niet hun gemeten breedte: een grid-kind rekt in CSS standaard
+op tot zijn cel (`justify-items: stretch`), en de gemeten breedte hoort bij de
+viewport waarop gemeten is.
+
+In de plugin staat de span los van de plaatsing: zonder anchor wordt er niets
+gepositioneerd, maar de span hoort er wél op, anders is een GridItem van twaalf
+kolommen in Figma één kolom breed.
+
 De plaatsing per cel gaat via `setGridChildPosition(rowIndex, columnIndex)`;
 `gridColumnAnchorIndex` is read-only. De trackmaten horen in `gridColumnSizes`
 en `gridRowSizes`, niet in `gridAutoTracks` (dat gaat over automatisch rijen

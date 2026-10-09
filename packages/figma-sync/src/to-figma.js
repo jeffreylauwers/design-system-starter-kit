@@ -625,6 +625,22 @@ function applyChildPlacement(
   const rowStart = Number.parseInt(styles.gridRowStart, 10);
 
   if (!Number.isFinite(columnStart) || !Number.isFinite(rowStart)) {
+    // Een kind zonder expliciete cel maar mét een span is autoplaatsing:
+    // `grid-column: span 3` komt uit de browser als
+    // `grid-column-start: "span 3"` met `grid-column-end: "auto"`. Dat is hoe
+    // de GridItems van PageFooter werken (`colSpan=12`, `colSpanLg=3`), en
+    // Figma kan dat ook: de span gaat op het kind en de ouder plaatst zelf, in
+    // dezelfde leesvolgorde als `grid-auto-flow: row`.
+    const autoSpan = /^span (\d+)$/.exec(styles.gridColumnStart ?? '');
+    if (autoSpan) {
+      converted.gridColumnSpan = Number.parseInt(autoSpan[1], 10);
+      // Een grid-kind rekt in CSS standaard op tot zijn cel
+      // (`justify-items: stretch`), dus FILL en niet de gemeten breedte: die
+      // hoort bij de viewport waarop gemeten is, niet bij het component.
+      converted.layoutSizingHorizontal = 'FILL';
+      return;
+    }
+
     warnings.push(
       `${label}: geen expliciete grid-cel, Figma plaatst dit kind zelf in leesvolgorde`
     );
@@ -1027,6 +1043,20 @@ function convertElement(
 
   // Pas als de kinderen omgezet zijn is te zien welke grid-rijen gevuld zijn.
   if (figmaNode.layoutMode === 'GRID') trimEmptyTrailingRows(figmaNode);
+
+  // En of de kinderen hun eigen cel dragen. Doet geen enkel kind dat, terwijl
+  // ze wel een span hebben, dan is het autoplaatsing en moet Figma zelf
+  // plaatsen; met MANUAL zou elk kind in cel 1 belanden.
+  if (figmaNode.layoutMode === 'GRID') {
+    const children = figmaNode.children ?? [];
+    const anchored = children.some(
+      (child) => child.gridColumnAnchorIndex !== undefined
+    );
+    const spanned = children.some(
+      (child) => child.gridColumnSpan !== undefined
+    );
+    if (!anchored && spanned) figmaNode.gridItemsPositioning = 'AUTO';
+  }
 
   const rotation = rotationFrom(styles.transform, warnings, pathLabel);
   if (rotation) figmaNode.rotation = rotation;

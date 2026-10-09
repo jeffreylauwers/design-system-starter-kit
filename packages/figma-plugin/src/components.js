@@ -199,9 +199,13 @@ function applyPlacement(node, spec, log) {
         spec.gridRowAnchorIndex,
         spec.gridColumnAnchorIndex
       );
-      if (spec.gridColumnSpan) node.gridColumnSpan = spec.gridColumnSpan;
-      if (spec.gridRowSpan) node.gridRowSpan = spec.gridRowSpan;
     }
+    // De span hoort er ook op zonder anchor. Bij autoplaatsing
+    // (`gridItemsPositioning: 'AUTO'`) kiest Figma de cel, maar de span is wat
+    // het kind over meerdere kolommen trekt: zonder dit zou een GridItem van
+    // PageFooter met `colSpan=12` één kolom breed worden.
+    if (spec.gridColumnSpan) node.gridColumnSpan = spec.gridColumnSpan;
+    if (spec.gridRowSpan) node.gridRowSpan = spec.gridRowSpan;
     if (spec.layoutAlign) node.layoutAlign = spec.layoutAlign;
   } catch (error) {
     log.warn(`${spec.name ?? spec.type}: plaatsing mislukt: ${error.message}`);

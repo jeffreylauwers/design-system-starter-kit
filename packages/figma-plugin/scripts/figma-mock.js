@@ -289,6 +289,29 @@ class Node {
     return this._gridAutoTracks;
   }
 
+  // Een span bestaat alleen in een grid en past binnen het aantal kolommen.
+  // Gemodelleerd omdat een span die stil niet aankomt buiten Figma onzichtbaar
+  // is: de vier slots van PageFooter zouden dan elk één kolom breed worden.
+  set gridColumnSpan(value) {
+    if (!this.parent || this.parent.layoutMode !== 'GRID') {
+      throw new Error('gridColumnSpan bestaat alleen in een GRID-ouder');
+    }
+    if (!Number.isInteger(value) || value < 1) {
+      throw new Error(
+        `gridColumnSpan verwacht een positief geheel getal, kreeg ${value}`
+      );
+    }
+    if (value > (this.parent.gridColumnCount ?? 1)) {
+      throw new Error(
+        `gridColumnSpan ${value} past niet in een grid van ${this.parent.gridColumnCount ?? 1} kolommen`
+      );
+    }
+    this._gridColumnSpan = value;
+  }
+  get gridColumnSpan() {
+    return this._gridColumnSpan ?? 1;
+  }
+
   setGridChildPosition(rowIndex, columnIndex) {
     if (!this.parent || this.parent.layoutMode !== 'GRID') {
       throw new Error('setGridChildPosition vereist een GRID-ouder');
