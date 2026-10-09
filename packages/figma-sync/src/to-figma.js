@@ -1426,11 +1426,35 @@ export function toComponentSet(matrix, extracted, variableIndex) {
   const report = createBindingReport();
   const bindings = variableIndex ? { index: variableIndex, report } : undefined;
 
+  const rootClass = extracted[0]?.tree.classes?.[0];
+
+  // De naam die een designer in Figma terugvindt is de CSS-klasse, niet de
+  // matrixnaam: `dsn-button` is waar hij in de code op zoekt. Klapt de root om
+  // welke reden dan ook niet naar een `dsn-`-element, dan blijft de matrixnaam
+  // over.
+  //
+  // `setName` overschrijft dat. Nodig zodra de root meerdere blokklassen
+  // draagt: HeadingGroup is `class="dsn-heading dsn-heading--2
+  // dsn-heading-group"`, en de eerste klasse wint, dus zonder override zouden
+  // Heading en HeadingGroup allebei `dsn-heading` heten. Twee sets met dezelfde
+  // naam is voor een designer die op de klasse zoekt geen keuze maar een gok.
+  //
+  // De klasse komt uit de DOM en niet uit de laagnaam van de root: een root die
+  // tot tekst inklapt (Heading, Paragraph) heet als laag "Tekst".
+  const setName =
+    matrix.setName ??
+    (rootClass?.startsWith('dsn-') ? rootClass : matrix.component);
+
   const components = extracted.map(({ variant, tree, wideTree }) => {
-    const label = Object.entries(variant)
+    const axisLabel = Object.entries(variant)
       .map(([axis, value]) => `${axis}=${value}`)
       .join(', ');
-    const pathLabel = `${matrix.component}[${label}]`;
+    // Een matrix zonder assen levert één component op. Dat is in Figma geen
+    // set maar een los component, en het heet naar het component zelf.
+    const label = axisLabel || setName;
+    const pathLabel = axisLabel
+      ? `${matrix.component}[${axisLabel}]`
+      : matrix.component;
     let node = convertNode(tree, wideTree, warnings, pathLabel, bindings, {
       root: true,
     });
@@ -1458,8 +1482,6 @@ export function toComponentSet(matrix, extracted, variableIndex) {
     return { name: label, variantProperties: variant, node };
   });
 
-  const rootClass = extracted[0]?.tree.classes?.[0];
-
   // Wat er werkelijk in de boom staat. Het rapport telt tijdens het omzetten,
   // en `mergeAdornments` gooit daarna een laag weg (de wrapper) en laat een
   // padding-binding los. De plugin controleert zijn eigen aantal tegen dit
@@ -1482,24 +1504,8 @@ export function toComponentSet(matrix, extracted, variableIndex) {
       // `dsn/`-pagina's daarna alfabetisch.
       page: pageNameFor(matrix.component),
       canvas,
-      // De naam die een designer in Figma terugvindt is de CSS-klasse, niet de
-      // matrixnaam: `dsn-button` is waar hij in de code op zoekt. Klapt de root
-      // om welke reden dan ook niet naar een `dsn-`-element, dan blijft de
-      // matrixnaam over.
-      //
-      // `setName` overschrijft dat. Nodig zodra de root meerdere blokklassen
-      // draagt: HeadingGroup is `class="dsn-heading dsn-heading--2
-      // dsn-heading-group"`, en de eerste klasse wint, dus zonder override
-      // zouden Heading en HeadingGroup allebei `dsn-heading` heten. Twee sets
-      // met dezelfde naam is voor een designer die op de klasse zoekt geen
-      // keuze maar een gok.
-      //
-      // De klasse komt uit de DOM en niet uit de laagnaam van de root: een root
-      // die tot tekst inklapt (Heading, Paragraph) heet als laag "Tekst".
-      name:
-        matrix.setName ??
-        (rootClass?.startsWith('dsn-') ? rootClass : matrix.component),
-      variantAxes: matrix.axes,
+      name: setName,
+      variantAxes: matrix.axes ?? {},
       componentProperties: checkComponentProperties(
         matrix.componentProperties,
         components,

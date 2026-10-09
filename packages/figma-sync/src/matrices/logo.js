@@ -22,10 +22,9 @@ export default {
     '@dsn-starter-kit/components-html/src/logo/logo.css',
   ],
 
-  axes: {
-    appearance: ['default'],
-  },
-
+  // Geen assen: dit component heeft niets dat per variant verschilt. Een
+  // component set in Figma moet een as hebben, dus dit wordt geen set maar een
+  // los component. Zie "Een matrix zonder assen" in de README.
   render() {
     return `<svg class="dsn-logo" xmlns="http://www.w3.org/2000/svg" width="186" height="48" viewBox="0 0 186 48" fill="none" role="img" aria-label="Starter Kit" data-figma-root>
       <path class="dsn-logo__primary" d="M0 0h185.491v48H0z"/>
