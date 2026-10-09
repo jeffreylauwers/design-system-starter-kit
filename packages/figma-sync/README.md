@@ -213,6 +213,25 @@ is in Figma geen laag, maar de rij bleef wel staan als lege track. Alleen aan
 het eind: een lege rij tussen twee gevulde in houdt de nummering van de cellen
 overeind.
 
+**Figma kent geen subgrid.** Een rij die in CSS de kolommen van zijn ouder
+overneemt (`grid-template-columns: subgrid`, zoals de rij van SummaryList in de
+brede weergave) geeft uit de browser geen pixelmaten terug maar het woord
+`subgrid`: gemeten is dat `subgrid [] [] [] []`, en daar is niets uit te lezen.
+Zo'n laag wordt gemarkeerd en krijgt na het omzetten van de kinderen de tracks
+van zijn ouder opgelegd. De sizing van de kinderen in die rij wordt dan
+opnieuw bepaald, want die is eerst beslist toen de tracks nog leeg waren.
+
+**Een negatieve gridlijn telt van achteren.** `-1` is de laatste lijn, dus in
+een grid van drie kolommen is dat lijn 4 en spant `grid-column: 1 / -1` over
+alles. Zonder die omrekening werd zo'n kind één kolom breed.
+
+**Een expliciete kolom zonder expliciete rij** komt in twee vormen voor. Heeft
+het grid precies één rij, dan is die rij de plek: zo staan de key, de value en
+de acties in de rij van SummaryList (`grid-column: 1|2|3` zonder `grid-row`).
+Zijn er meer rijen en pakt het kind alle kolommen, dan is het autoplaatsing
+over de rijen, zoals de rijen van SummaryList zelf, en gaat het via de span
+hieronder.
+
 Een kind zonder expliciete cel maar mét een span is autoplaatsing. `grid-column:
 span 3` komt uit de browser als `grid-column-start: "span 3"` met
 `grid-column-end: "auto"`, dus er is geen cel om te noemen. Zo werken de
