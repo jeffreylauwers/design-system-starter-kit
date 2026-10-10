@@ -289,6 +289,25 @@ class Node {
     return this._gridAutoTracks;
   }
 
+  // Figma kent twee standen en weigert al het andere. Gemodelleerd omdat een
+  // verzonnen waarde ('AUTO') de echte import liet afbreken na de eerste
+  // variant, terwijl de mock hem zonder setter stilzwijgend aannam en de smoke
+  // test groen bleef.
+  set gridItemsPositioning(value) {
+    if (this.layoutMode !== 'GRID') {
+      throw new Error('gridItemsPositioning bestaat alleen op een GRID-frame');
+    }
+    if (value !== 'MANUAL' && value !== 'ROW_AUTO_FLOW') {
+      throw new Error(
+        `Property "gridItemsPositioning" failed validation: Invalid enum value. Expected 'MANUAL' | 'ROW_AUTO_FLOW', received '${value}'`
+      );
+    }
+    this._gridItemsPositioning = value;
+  }
+  get gridItemsPositioning() {
+    return this._gridItemsPositioning ?? 'MANUAL';
+  }
+
   // Een span bestaat alleen in een grid en past binnen het aantal kolommen.
   // Gemodelleerd omdat een span die stil niet aankomt buiten Figma onzichtbaar
   // is: de vier slots van PageFooter zouden dan elk één kolom breed worden.

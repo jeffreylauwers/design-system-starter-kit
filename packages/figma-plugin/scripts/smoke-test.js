@@ -594,6 +594,35 @@ for (const file of componentFiles) {
   for (const [index, component] of payload.componentSet.components.entries()) {
     checkGrid(built(index), component.node);
   }
+  // De plaatsingsstand van een grid hoort op de node te landen. Zonder deze
+  // controle zou een waarde die Figma weigert alleen een waarschuwing geven
+  // (de plugin breekt er niet meer op af) en zou de set er in Figma stil
+  // anders uitzien dan de spec vraagt. Zo kwam 'AUTO' door de mock heen.
+  const positioningMismatch = [];
+  const checkPositioning = (node, spec) => {
+    if (
+      spec?.gridItemsPositioning &&
+      node?.gridItemsPositioning !== spec.gridItemsPositioning
+    ) {
+      positioningMismatch.push(
+        `${spec.name}: ${node?.gridItemsPositioning} i.p.v. ${spec.gridItemsPositioning}`
+      );
+    }
+    (spec?.children ?? []).forEach((childSpec, index) =>
+      checkPositioning(node?.children?.[index], childSpec)
+    );
+  };
+  for (const [index, component] of payload.componentSet.components.entries()) {
+    checkPositioning(built(index), component.node);
+  }
+  check(
+    'de plaatsingsstand van een grid is toegepast',
+    positioningMismatch.length === 0,
+    positioningMismatch.length
+      ? `${positioningMismatch.length}x, o.a. ${positioningMismatch[0]}`
+      : ''
+  );
+
   // Een span zonder anchor komt van autoplaatsing (`grid-column: span N`). Die
   // hoort op de laag te landen, anders is een GridItem van twaalf kolommen in
   // Figma één kolom breed.
@@ -1139,6 +1168,26 @@ check(
     ),
   ghost.parent === setAfter ? 'gemeld en behouden' : 'weggegooid'
 );
+
+// Een losse component op de pagina, buiten de set: wat er overblijft als een
+// import halverwege afbreekt. Die hoort gemeld te worden, niet weggegooid.
+const strayBefore = figma.createComponent();
+strayBefore.name = 'dsn-button-restant';
+buttonPage.appendChild(strayBefore);
+const strayRun = await importComponentSet(rerunPayload, log);
+check(
+  'een los component buiten de set wordt gemeld en blijft staan',
+  strayBefore.parent === buttonPage &&
+    problems.some(
+      (problem) =>
+        problem.level === 'warn' &&
+        problem.message.includes('dsn-button-restant') &&
+        problem.message.includes('buiten de set')
+    ),
+  strayBefore.parent === buttonPage ? 'gemeld en behouden' : 'weggegooid'
+);
+strayBefore.remove();
+void strayRun;
 
 check(
   'een variant met andere assen wordt verwijderd en gemeld',

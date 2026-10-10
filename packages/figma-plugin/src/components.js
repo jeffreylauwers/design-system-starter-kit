@@ -125,7 +125,7 @@ function applyCorners(target, spec) {
   }
 }
 
-function applyAutoLayout(frame, spec) {
+function applyAutoLayout(frame, spec, log) {
   if (!spec.layoutMode || spec.layoutMode === 'NONE') return;
   frame.layoutMode = spec.layoutMode;
 
@@ -136,7 +136,16 @@ function applyAutoLayout(frame, spec) {
       frame.gridColumnGap = spec.gridColumnGap;
     if (spec.gridRowGap !== undefined) frame.gridRowGap = spec.gridRowGap;
     if (spec.gridItemsPositioning) {
-      frame.gridItemsPositioning = spec.gridItemsPositioning;
+      // Een waarde die Figma niet kent gooit, en dat brak de hele import af:
+      // bij PageFooter bleef er één variant van de acht staan. Eén geweigerde
+      // eigenschap hoort een melding te zijn, niet het einde van de set.
+      try {
+        frame.gridItemsPositioning = spec.gridItemsPositioning;
+      } catch (error) {
+        log?.warn(
+          `${spec.name ?? spec.type}: gridItemsPositioning=${spec.gridItemsPositioning} is niet toegestaan (${error.message})`
+        );
+      }
     }
     // Zonder deze twee blijft Figma bij zijn eigen standaard (alle tracks
     // FLEX) en worden alle kolommen even breed, ongeacht de CSS.
@@ -486,7 +495,7 @@ function applyFrame(frame, spec, context, name = spec.name ?? 'Frame') {
   if (spec.clipsContent !== undefined) frame.clipsContent = spec.clipsContent;
   if (spec.width && spec.height) frame.resize(spec.width, spec.height);
 
-  applyAutoLayout(frame, spec);
+  applyAutoLayout(frame, spec, context.log);
   // Na applyAutoLayout: padding, itemSpacing en de minimum-maten bestaan pas
   // als het frame een layoutMode heeft.
   applyMinimumSizes(frame, spec, context.log);
@@ -1377,6 +1386,24 @@ export async function importComponentSet(payload, log, options = {}) {
   });
 
   applyCanvas(canvasNode, spec.canvas, context);
+
+  // Losse componenten op de pagina, buiten de set of het canvasframe. Die
+  // blijven over als een import halverwege afbreekt: de varianten zijn dan al
+  // gebouwd maar nooit gecombineerd. Ze zien eruit als het component en zijn
+  // het niet, dus ze horen gemeld te worden. Weggooien doet de plugin niet;
+  // het kan ook werk van een designer zijn.
+  const loose = page.children.filter(
+    (node) => node.type === 'COMPONENT' && node !== canvasNode
+  );
+  if (loose.length) {
+    const names = loose
+      .slice(0, 3)
+      .map((node) => `"${node.name}"`)
+      .join(', ');
+    log.warn(
+      `Er ${loose.length === 1 ? 'staat 1 los component' : `staan ${loose.length} losse componenten`} op ${page.name}, buiten de set: ${names}${loose.length > 3 ? ', ...' : ''}. Dat blijft over als een import halverwege afbreekt; verwijder het met de hand.`
+    );
+  }
 
   log.info(
     single
