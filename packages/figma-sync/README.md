@@ -194,6 +194,14 @@ verschil te zien, precies zoals in de browser: beide layouts zijn daar
 verborgen. Die varianten zijn met opzet gelijk en niet weggelaten, want de as
 hoort bij de prop en niet bij de viewport.
 
+**Ook een container query volgt deze as.** De compacte BreadcrumbNavigation
+klapt in zolang het component zelf 32rem of smaller is; dat hangt aan de
+wrapper en niet aan de viewport. De viewport schuift toch mee, want een
+breadcrumb van 1168px staat in werkelijkheid op een desktoppagina. Zou hij op
+375 blijven, dan leverde dat een variant op die in de browser niet bestaat:
+desktopbreedte met mobiele typografie. Meetbaar verschil: de tekst gaat van 14
+naar 15,6px, en de bindingen gaan van `default-mobile` naar `default-desktop`.
+
 ### CSS Grid
 
 `grid-template-columns: <maat> 1fr` wordt in Figma `FIXED` + `FLEX`, waarbij
