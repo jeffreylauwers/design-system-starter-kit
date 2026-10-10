@@ -236,7 +236,7 @@ Een kind zonder expliciete cel maar mét een span is autoplaatsing. `grid-column
 span 3` komt uit de browser als `grid-column-start: "span 3"` met
 `grid-column-end: "auto"`, dus er is geen cel om te noemen. Zo werken de
 GridItems van PageFooter (`colSpan=12`, `colSpanLg=3`). De span gaat dan op het
-kind en de ouder krijgt `gridItemsPositioning: 'AUTO'`, zodat Figma zelf
+kind en de ouder krijgt `gridItemsPositioning: 'ROW_AUTO_FLOW'`, zodat Figma zelf
 plaatst in dezelfde leesvolgorde als `grid-auto-flow: row`. Zulke kinderen
 krijgen FILL en niet hun gemeten breedte: een grid-kind rekt in CSS standaard
 op tot zijn cel (`justify-items: stretch`), en de gemeten breedte hoort bij de
@@ -953,6 +953,16 @@ in dezelfde variant.
 Een root die tot één tekstlaag inklapt (FormFieldDescription) groeit al met zijn
 inhoud mee; daar doet de vlag niets. Een root zonder auto layout kan niet huggen
 en levert een waarschuwing op.
+
+### De plaatsingsstand van een grid heet ROW_AUTO_FLOW
+
+Figma's `gridItemsPositioning` kent precies twee waarden: `MANUAL` en
+`ROW_AUTO_FLOW`. Die laatste doet wat `grid-auto-flow: row` doet. Een andere
+waarde (`AUTO` leek logisch) wordt door de API geweigerd, en dat gooit tijdens
+het bouwen: bij PageFooter bleef er één variant van de vier staan en bij
+SummaryList een halve set. De mock dwingt de enum nu af, de plugin maakt er een
+waarschuwing van in plaats van het einde van de import, en de smoke test
+controleert dat de stand ook echt op de node landt.
 
 ### Een rotatie uit de CSS
 

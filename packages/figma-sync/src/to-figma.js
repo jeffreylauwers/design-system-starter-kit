@@ -1160,7 +1160,11 @@ function convertElement(
     const spanned = children.some(
       (child) => child.gridColumnSpan !== undefined
     );
-    if (!anchored && spanned) figmaNode.gridItemsPositioning = 'AUTO';
+    // `ROW_AUTO_FLOW` is wat Figma kent; de API accepteert alleen 'MANUAL' en
+    // 'ROW_AUTO_FLOW'. Het staat voor hetzelfde als `grid-auto-flow: row`.
+    if (!anchored && spanned) {
+      figmaNode.gridItemsPositioning = 'ROW_AUTO_FLOW';
+    }
   }
 
   const rotation = rotationFrom(styles.transform, warnings, pathLabel);
