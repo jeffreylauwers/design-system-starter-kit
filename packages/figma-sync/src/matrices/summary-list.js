@@ -4,10 +4,16 @@
  * Een `<dl>` met per rij een key, een value en optioneel een actie. De termen
  * heten in de docs bewust key en value, niet sleutelcel en waardecel.
  *
- * Let op de meetviewport: vanaf een bredere viewport zet de CSS de rij op
- * `display: grid` met `grid-template-columns: subgrid`. Wij meten mobile-first
- * op 375px, dus wat in Figma landt is de gestapelde flex-variant. De
- * kolomindeling van de desktopweergave zit er dus niet in.
+ * Twee weergaven, en ze staan allebei in Figma. Onder 44em is de rij een
+ * gestapelde flexkolom; vanaf 44em zet de CSS de lijst op `display: grid` met
+ * drie kolommen en de rij op `grid-template-columns: subgrid`. De `viewport`-as
+ * kiest de meetbreedte: `small` op 375px met een wrapper van 343, `large` op
+ * 1440px met een wrapper van 1168. Die 1168 is waar SummaryList in een pagina
+ * staat: `--dsn-page-max-inline-size` (75rem) min twee keer
+ * `--dsn-page-body-padding-inline` (16px).
+ *
+ * Figma kent geen subgrid. De rij krijgt daarom de tracks van de lijst
+ * opgelegd; zie `resolveSubgrid` in to-figma.js.
  */
 
 import { TEKST } from '../text.js';
@@ -25,15 +31,20 @@ export default {
     '@dsn-starter-kit/components-html/src/summary-list/summary-list.css',
   ],
 
-  wrapperStyle: 'width: 343px;',
-
-  warnings: [
-    'gemeten op 375px, dus dit is de gestapelde weergave. Vanaf een bredere viewport zet de CSS de rij op `display: grid` met `subgrid`, en die kolomindeling zit hier niet in.',
-  ],
-
   axes: {
     border: ['with-border', 'no-border'],
     actions: ['with-actions', 'no-actions'],
+    viewport: ['small', 'large'],
+  },
+
+  // SummaryList staat binnen `dsn-page-body__inner`, dus de brede meting is de
+  // inhoudsbreedte van een desktoppagina: `--dsn-page-max-inline-size` (75rem)
+  // min twee keer `--dsn-page-body-padding-inline` (16px). De viewport zelf
+  // moet wel 1440 zijn, want de layout-switch is een media query op 44em.
+  viewportAxis: 'viewport',
+  viewports: {
+    small: { width: 375, wrapperStyle: 'width: 343px;' },
+    large: { width: 1440, wrapperStyle: 'width: 1168px;' },
   },
 
   render({ border, actions }) {

@@ -115,10 +115,20 @@ function trackSizesFrom(template, wideTemplate, fallbackType = 'FIXED') {
  * Dat past op een grid met expliciete `grid-column` / `grid-row`, zoals Alert.
  */
 function gridLayoutFrom(styles, wideStyles, warnings, pathLabel) {
-  const columns = trackSizesFrom(
-    styles.gridTemplateColumns,
-    wideStyles?.gridTemplateColumns
-  );
+  // Figma kent geen subgrid. Een rij die zijn kolommen van de lijst overneemt
+  // (`grid-template-columns: subgrid`, zoals de rij van SummaryList in de
+  // brede weergave) geeft uit de browser geen pixelmaten terug maar het woord
+  // `subgrid`, en daar is niets uit te lezen. De laag wordt daarom gemarkeerd
+  // en de ouder zet zijn eigen tracks erop zodra die bekend zijn; zie
+  // `resolveSubgrid`.
+  const subgridColumns = /^subgrid\b/.test(styles.gridTemplateColumns ?? '');
+
+  const columns = subgridColumns
+    ? []
+    : trackSizesFrom(
+        styles.gridTemplateColumns,
+        wideStyles?.gridTemplateColumns
+      );
   // Rijen in CSS Grid zijn standaard `auto`, dus inhoudsgestuurd. Uit de
   // computed waarde is dat niet te zien (die is altijd een pixelmaat), maar
   // een vaste rijhoogte zou betekenen dat het component niet meegroeit als
@@ -129,7 +139,7 @@ function gridLayoutFrom(styles, wideStyles, warnings, pathLabel) {
     'HUG'
   );
 
-  if (columns.length > 1 && !wideStyles) {
+  if (!subgridColumns && columns.length > 1 && !wideStyles) {
     warnings.push(
       `${pathLabel}: geen tweede meting beschikbaar, alle grid-tracks zijn vast; controleer in Figma welke flexibel moet zijn`
     );
@@ -145,6 +155,7 @@ function gridLayoutFrom(styles, wideStyles, warnings, pathLabel) {
     // toevoegen). De maten van de tracks zelf horen hier.
     gridColumnSizes: columns,
     gridRowSizes: rows,
+    ...(subgridColumns ? { subgridColumns: true } : {}),
     // De kinderen dragen hun eigen cel, dus Figma moet niet zelf plaatsen.
     gridItemsPositioning: 'MANUAL',
     paddingTop: px(styles.paddingTop),
@@ -631,6 +642,52 @@ function applyChildPlacement(
     // de GridItems van PageFooter werken (`colSpan=12`, `colSpanLg=3`), en
     // Figma kan dat ook: de span gaat op het kind en de ouder plaatst zelf, in
     // dezelfde leesvolgorde als `grid-auto-flow: row`.
+    // Een expliciete kolom zonder expliciete rij. Zo staan de key, de value en
+    // de acties in de rij van SummaryList: `grid-column: 1|2|3` zonder
+    // `grid-row`, want de rij heeft er maar één. Heeft het grid precies één
+    // rij, dan is die rij de plek; anders zou CSS-autoplaatsing nagebootst
+    // moeten worden en dat is het niet waard.
+    if (Number.isFinite(columnStart) && !Number.isFinite(rowStart)) {
+      const columns = parentLayout.gridColumnCount ?? 1;
+      const end = Number.parseInt(styles.gridColumnEnd, 10);
+      const columnEnd = Number.isFinite(end)
+        ? end < 0
+          ? columns + 2 + end
+          : end
+        : undefined;
+      const span =
+        columnEnd !== undefined && columnEnd - columnStart > 1
+          ? columnEnd - columnStart
+          : 1;
+
+      // Eén rij in het grid: dan is die rij de plek. Zo staan de key, de value
+      // en de acties in de rij van SummaryList (`grid-column: 1|2|3` zonder
+      // `grid-row`, want de rij heeft er maar één).
+      if ((parentLayout.gridRowCount ?? 1) === 1) {
+        converted.gridColumnAnchorIndex = columnStart - 1;
+        converted.gridRowAnchorIndex = 0;
+        if (span > 1) converted.gridColumnSpan = span;
+        const tracks = (parentLayout.gridColumnSizes ?? []).slice(
+          columnStart - 1,
+          columnStart - 1 + span
+        );
+        if (tracks.some((track) => track.type === 'FLEX')) {
+          converted.layoutSizingHorizontal = 'FILL';
+        }
+        return;
+      }
+
+      // Meer rijen, en dit kind pakt ze allemaal in de breedte: dat is
+      // autoplaatsing over de rijen, zoals de rijen van SummaryList met
+      // `grid-column: 1 / -1`. De span gaat mee en de ouder plaatst zelf, net
+      // als bij een kind met alleen een span.
+      if (span === columns) {
+        converted.gridColumnSpan = span;
+        converted.layoutSizingHorizontal = 'FILL';
+        return;
+      }
+    }
+
     const autoSpan = /^span (\d+)$/.exec(styles.gridColumnStart ?? '');
     if (autoSpan) {
       converted.gridColumnSpan = Number.parseInt(autoSpan[1], 10);
@@ -651,14 +708,26 @@ function applyChildPlacement(
   converted.gridColumnAnchorIndex = columnStart - 1;
   converted.gridRowAnchorIndex = rowStart - 1;
 
-  const columnEnd = Number.parseInt(styles.gridColumnEnd, 10);
-  const rowEnd = Number.parseInt(styles.gridRowEnd, 10);
+  // Een negatieve lijn telt van achteren: `-1` is de laatste lijn, dus in een
+  // grid van drie kolommen is dat lijn 4. `grid-column: 1 / -1` (de rij van
+  // SummaryList, de inhoud van Note) spant daarmee over alles.
+  const lineOf = (value, count) => {
+    const line = Number.parseInt(value, 10);
+    if (!Number.isFinite(line)) return undefined;
+    return line < 0 ? count + 2 + line : line;
+  };
+
+  const columnEnd = lineOf(
+    styles.gridColumnEnd,
+    parentLayout.gridColumnCount ?? 1
+  );
+  const rowEnd = lineOf(styles.gridRowEnd, parentLayout.gridRowCount ?? 1);
   const columnSpan =
-    Number.isFinite(columnEnd) && columnEnd - columnStart > 1
+    columnEnd !== undefined && columnEnd - columnStart > 1
       ? columnEnd - columnStart
       : 1;
   if (columnSpan > 1) converted.gridColumnSpan = columnSpan;
-  if (Number.isFinite(rowEnd) && rowEnd - rowStart > 1) {
+  if (rowEnd !== undefined && rowEnd - rowStart > 1) {
     converted.gridRowSpan = rowEnd - rowStart;
   }
 
@@ -732,6 +801,38 @@ function convertNode(
  * Alleen aan het eind: een lege rij tussen twee gevulde in houdt de nummering
  * overeind, en de kinderen dragen hun eigen rijnummer.
  */
+/**
+ * Geeft een subgrid-rij de kolommen van zijn ouder.
+ *
+ * Figma kent geen subgrid: een rij die in CSS de kolommen van de lijst
+ * overneemt moet in Figma dezelfde tracks zelf dragen. De ouder is de enige
+ * die ze kent, en pas nadat zijn eigen tracks bepaald zijn, dus dit gebeurt na
+ * het omzetten van de kinderen.
+ *
+ * De kinderen van die rij hebben hun cel al gekregen, maar hun sizing is
+ * bepaald toen de tracks nog leeg waren. Een kind in een flexibele track hoort
+ * mee te groeien, dus die beslissing wordt hier opnieuw genomen.
+ */
+function resolveSubgrid(frame) {
+  for (const child of frame.children ?? []) {
+    if (!child.subgridColumns) continue;
+
+    delete child.subgridColumns;
+    child.gridColumnSizes = frame.gridColumnSizes;
+    child.gridColumnCount = frame.gridColumnCount;
+
+    for (const grandchild of child.children ?? []) {
+      const anchor = grandchild.gridColumnAnchorIndex;
+      if (anchor === undefined) continue;
+      const span = grandchild.gridColumnSpan ?? 1;
+      const tracks = child.gridColumnSizes.slice(anchor, anchor + span);
+      if (tracks.some((track) => track.type === 'FLEX')) {
+        grandchild.layoutSizingHorizontal = 'FILL';
+      }
+    }
+  }
+}
+
 function trimEmptyTrailingRows(frame) {
   const rows = frame.gridRowSizes;
   if (!rows || rows.length < 2) return;
@@ -1041,8 +1142,12 @@ function convertElement(
     canHug && shrinkWraps && !fixedWidth ? 'HUG' : 'FIXED';
   figmaNode.layoutSizingVertical = canHug && !fixedHeight ? 'HUG' : 'FIXED';
 
-  // Pas als de kinderen omgezet zijn is te zien welke grid-rijen gevuld zijn.
-  if (figmaNode.layoutMode === 'GRID') trimEmptyTrailingRows(figmaNode);
+  // Pas als de kinderen omgezet zijn is te zien welke grid-rijen gevuld zijn,
+  // en kan een subgrid-rij de tracks van zijn ouder krijgen.
+  if (figmaNode.layoutMode === 'GRID') {
+    resolveSubgrid(figmaNode);
+    trimEmptyTrailingRows(figmaNode);
+  }
 
   // En of de kinderen hun eigen cel dragen. Doet geen enkel kind dat, terwijl
   // ze wel een span hebben, dan is het autoplaatsing en moet Figma zelf
