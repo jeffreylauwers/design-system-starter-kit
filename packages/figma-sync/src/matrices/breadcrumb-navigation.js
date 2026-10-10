@@ -5,11 +5,17 @@
  * item zonder link. De scheiding staat achter élk item; de CSS verbergt hem bij
  * het laatste, en de extractor slaat een verborgen element over.
  *
- * De compacte variant is een container query, geen andere markup: hij verbergt
- * alle items en toont alleen `:nth-last-child(2)`, het bovenliggende niveau,
- * met een pijl terug. Beide varianten renderen daarom dezelfde volledige lijst
- * en de CSS bepaalt wat er zichtbaar is. Met één item in de markup matcht die
- * selector niets en blijft het hele component leeg.
+ * De compacte variant is een container query, geen andere markup: onder 32rem
+ * verbergt hij alle items en toont alleen `:nth-last-child(2)`, het
+ * bovenliggende niveau, met een pijl terug. Boven die breedte toont hij
+ * hetzelfde volledige kruimelpad als de default-variant. Beide varianten
+ * renderen daarom dezelfde volledige lijst en de CSS bepaalt wat er zichtbaar
+ * is. Met één item in de markup matcht die selector niets en blijft het hele
+ * component leeg.
+ *
+ * Daarom staat die breedte op een as. Op `viewport=small` is de compacte
+ * variant ingeklapt, op `large` niet; de default-variant verschilt tussen de
+ * twee in breedte en in de fluid typografie.
  *
  * Het terug-icoon staat in élk item; het is standaard `display: none` en de
  * container query zet het alleen in het ouder-item aan. De extractor slaat een
@@ -33,10 +39,22 @@ export default {
     '@dsn-starter-kit/components-html/src/breadcrumb-navigation/breadcrumb-navigation.css',
   ],
 
-  wrapperStyle: 'width: 343px;',
-
   axes: {
     appearance: ['default', 'compact'],
+    viewport: ['small', 'large'],
+  },
+
+  // De compacte variant klapt in zolang het component zelf 32rem (512px) of
+  // smaller is, en dat hangt aan de wrapper en niet aan de viewport: het is een
+  // container query. De viewport schuift toch mee, want een breadcrumb van
+  // 1168px staat in werkelijkheid op een desktoppagina, en daar staat de fluid
+  // typografie op haar bovengrens en `dsn/Density` op `default-desktop`. Zou de
+  // viewport op 375 blijven, dan kwam er een variant uit die in de browser niet
+  // bestaat: desktopbreedte met mobiele typografie.
+  viewportAxis: 'viewport',
+  viewports: {
+    small: { width: 375, wrapperStyle: 'width: 343px;' },
+    large: { width: 1440, wrapperStyle: 'width: 1168px;' },
   },
 
   render({ appearance }) {
