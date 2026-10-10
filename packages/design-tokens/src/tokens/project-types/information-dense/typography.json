@@ -3,32 +3,32 @@
     "text": {
       "font-size": {
         "sm": {
-          "$value": "0.875rem",
-          "$description": "Small text - 14px (fixed)"
+          "$value": "{dsn.text.font-size.min.sm}",
+          "$description": "14px (vast)"
         },
         "md": {
-          "$value": "1rem",
-          "$description": "Medium text - 16px (fixed)"
+          "$value": "{dsn.text.font-size.min.md}",
+          "$description": "16px (vast)"
         },
         "lg": {
-          "$value": "1.25rem",
-          "$description": "Large text - 20px (fixed)"
+          "$value": "{dsn.text.font-size.min.lg}",
+          "$description": "20px (vast)"
         },
         "xl": {
-          "$value": "1.5rem",
-          "$description": "Extra large text - 24px (fixed)"
+          "$value": "{dsn.text.font-size.min.xl}",
+          "$description": "24px (vast)"
         },
         "2xl": {
-          "$value": "2rem",
-          "$description": "2XL text - 32px (fixed)"
+          "$value": "{dsn.text.font-size.min.2xl}",
+          "$description": "32px (vast)"
         },
         "3xl": {
-          "$value": "2.5rem",
-          "$description": "3XL text - 40px (fixed)"
+          "$value": "{dsn.text.font-size.min.3xl}",
+          "$description": "40px (vast)"
         },
         "4xl": {
-          "$value": "3rem",
-          "$description": "4XL text - 48px (fixed)"
+          "$value": "{dsn.text.font-size.min.4xl}",
+          "$description": "48px (vast)"
         }
       }
     }

@@ -1,6 +1,9 @@
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Comic+Neue:ital,wght@0,300;0,400;0,700;1,300;1,400;1,700&display=swap" rel="stylesheet">
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link
+  href="https://fonts.googleapis.com/css2?family=Comic+Neue:ital,wght@0,300;0,400;0,700;1,300;1,400;1,700&display=swap"
+  rel="stylesheet"
+/>
 <script>
   // Dynamische token-loader voor de Storybook preview-iframe.
   //
@@ -14,11 +17,9 @@
   // lokaal draait Storybook op base '/', op GitHub Pages op
   // '/design-system-starter-kit/' (STORYBOOK_BASE_PATH in build:gh-pages).
   // Een absoluut pad negeert die base en levert daar 404's op.
-  (function() {
-    const CONFIG_BASE_URL = new URL(
-      'design-tokens/dist/css/',
-      document.baseURI
-    ).href;
+  (function () {
+    const CONFIG_BASE_URL = new URL('design-tokens/dist/css/', document.baseURI)
+      .href;
 
     let currentConfigName = null;
     let styleElement = null;
@@ -34,7 +35,7 @@
       const globalsParam = url.searchParams.get('globals') || '';
       const globals = {};
 
-      globalsParam.split(';').forEach(pair => {
+      globalsParam.split(';').forEach((pair) => {
         const [key, value] = pair.split(':');
         if (key && value) {
           globals[key] = value;
@@ -44,7 +45,7 @@
       return {
         theme: globals.theme || 'start',
         mode: globals.mode || 'light',
-        projectType: globals.projectType || 'default'
+        projectType: globals.projectType || 'default',
       };
     }
 
@@ -62,11 +63,11 @@
 
       pendingConfigName = configName;
       pendingPromise = fetch(url)
-        .then(response => {
+        .then((response) => {
           if (!response.ok) throw new Error('Failed to load: ' + url);
           return response.text();
         })
-        .then(cssText => {
+        .then((cssText) => {
           // Remove existing dynamic style if it exists
           if (styleElement && styleElement.parentNode) {
             styleElement.remove();
@@ -83,11 +84,13 @@
           currentConfigName = configName;
 
           // Dispatch event for TokenTable components
-          window.dispatchEvent(new CustomEvent('storybook-globals-updated', {
-            detail: { configName }
-          }));
+          window.dispatchEvent(
+            new CustomEvent('storybook-globals-updated', {
+              detail: { configName },
+            })
+          );
         })
-        .catch(err => console.error('Token config load error:', err))
+        .catch((err) => console.error('Token config load error:', err))
         .finally(() => {
           if (pendingConfigName === configName) {
             pendingConfigName = null;
@@ -103,11 +106,25 @@
     function applyBodyClasses(theme, mode, projectType) {
       if (!document.body) return;
 
-      const densityClass = projectType === 'information-dense' ? 'dense' : 'default';
-      const existingClasses = document.body.className.split(' ').filter(c =>
-        c && !c.startsWith('dsn-theme-') && !c.startsWith('dsn-mode-') && !c.startsWith('dsn-density-')
-      );
-      document.body.className = [...existingClasses, `dsn-theme-${theme}`, `dsn-mode-${mode}`, `dsn-density-${densityClass}`].join(' ');
+      const densityClass =
+        { 'information-dense': 'dense', 'default-fixed-space': 'fixed-space' }[
+          projectType
+        ] || 'default';
+      const existingClasses = document.body.className
+        .split(' ')
+        .filter(
+          (c) =>
+            c &&
+            !c.startsWith('dsn-theme-') &&
+            !c.startsWith('dsn-mode-') &&
+            !c.startsWith('dsn-density-')
+        );
+      document.body.className = [
+        ...existingClasses,
+        `dsn-theme-${theme}`,
+        `dsn-mode-${mode}`,
+        `dsn-density-${densityClass}`,
+      ].join(' ');
     }
 
     function updateTokens() {
@@ -122,7 +139,7 @@
       configUrl,
       load: loadTokenConfig,
       applyBodyClasses,
-      getCurrentConfigName: () => currentConfigName
+      getCurrentConfigName: () => currentConfigName,
     };
 
     // Ensure our style stays at the end of head (highest priority)
@@ -142,7 +159,10 @@
       for (const mutation of mutations) {
         if (mutation.type === 'childList' && mutation.addedNodes.length > 0) {
           for (const node of mutation.addedNodes) {
-            if (node instanceof HTMLStyleElement || node instanceof HTMLLinkElement) {
+            if (
+              node instanceof HTMLStyleElement ||
+              node instanceof HTMLLinkElement
+            ) {
               if (node !== styleElement) {
                 needsReposition = true;
               }

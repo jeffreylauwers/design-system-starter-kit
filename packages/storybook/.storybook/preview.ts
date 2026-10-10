@@ -60,15 +60,20 @@ const preview: Preview = {
         dynamicTitle: true,
       },
     },
-    // Project type selector (affects only font-sizes)
+    // Project type selector (welke schalen fluid meegroeien met de viewport)
     projectType: {
       name: 'Density',
-      description: 'Typography density (affects font-sizes)',
+      description: 'Density (fluid or fixed font-sizes and spacing)',
       defaultValue: 'default',
       toolbar: {
         icon: 'listunordered',
         items: [
           { value: 'default', title: 'Default (Fluid)', icon: 'expand' },
+          {
+            value: 'default-fixed-space',
+            title: 'Default (Fluid text, fixed space)',
+            icon: 'expandalt',
+          },
           {
             value: 'information-dense',
             title: 'Information Dense (Fixed)',

@@ -1,4 +1,143 @@
 import StyleDictionary from 'style-dictionary';
+import fs from 'fs';
+import path from 'path';
+import { fileURLToPath } from 'url';
+
+const packageRoot = path.join(
+  path.dirname(fileURLToPath(import.meta.url)),
+  '..',
+  '..'
+);
+
+// =============================================================================
+// FLUID SCALE
+// =============================================================================
+
+// Een fluid token schrijf je in JSON als `fluid({min-token}, {max-token})`.
+// Style Dictionary lost de twee referenties op, waarna de transform hieronder
+// er een clamp() van maakt: de min-waarde op de kleinste viewport, de
+// max-waarde op de grootste, en daartussen een rechte lijn.
+//
+// We rekenen dit tijdens de build uit en niet in de browser (zoals met de
+// tan(atan2())-truc kan): het resultaat is hetzelfde, maar een gewone clamp()
+// kan de Figma-export omrekenen naar vaste waarden per viewport.
+const FLUID_PATTERN = /^fluid\((.*)\)$/s;
+const ROOT_FONT_SIZE = 16;
+
+function isFluid(token) {
+  const original = token.original?.$value ?? token.original?.value;
+  return typeof original === 'string' && FLUID_PATTERN.test(original.trim());
+}
+
+// Splitst op komma's die niet binnen haakjes staan: `calc(a, b), c` -> 2 delen.
+function splitTopLevel(input) {
+  const parts = [];
+  let depth = 0;
+  let current = '';
+  for (const char of input) {
+    if (char === '(') depth++;
+    if (char === ')') depth--;
+    if (char === ',' && depth === 0) {
+      parts.push(current.trim());
+      current = '';
+    } else {
+      current += char;
+    }
+  }
+  parts.push(current.trim());
+  return parts;
+}
+
+// Rekent een waarde als `1rem`, `8px` of `calc(0.5rem * 1.5 * 1.25)` om naar
+// pixels. Meer dan vermenigvuldigen en delen is voor de schaal niet nodig.
+function toPx(value) {
+  const expression = String(value)
+    .trim()
+    .replace(/^calc\((.*)\)$/s, '$1');
+  const terms = expression.split(/\s*([*/])\s*/);
+  let result = null;
+  let unit = null;
+  for (let index = 0; index < terms.length; index += 2) {
+    const match = terms[index].match(/^(-?[\d.]+)(rem|px)?$/);
+    if (!match) {
+      throw new Error(`fluid(): kan "${value}" niet omrekenen naar px`);
+    }
+    let number = Number(match[1]);
+    if (match[2]) {
+      if (unit) throw new Error(`fluid(): "${value}" heeft twee eenheden`);
+      unit = match[2];
+      if (unit === 'rem') number *= ROOT_FONT_SIZE;
+    }
+    const operator = terms[index - 1];
+    if (result === null) result = number;
+    else if (operator === '*') result *= number;
+    else result /= number;
+  }
+  if (!unit) throw new Error(`fluid(): "${value}" heeft geen eenheid`);
+  return result;
+}
+
+const round = (number) => Number(number.toFixed(5));
+
+/**
+ * Leest het viewport-bereik van de fluid schaal uit het thema.
+ * Deze tokens moeten vaste px-waarden zijn: de build rekent ermee.
+ */
+function readFluidViewport(theme) {
+  const file = path.join(packageRoot, `src/tokens/themes/${theme}/base.json`);
+  const viewport = JSON.parse(fs.readFileSync(file, 'utf8')).dsn.viewport;
+  const min = toPx(viewport['min-inline-size'].$value);
+  const max = toPx(viewport['max-inline-size'].$value);
+  if (!(max > min)) {
+    throw new Error(
+      `${theme}: dsn.viewport.max-inline-size moet groter zijn dan min-inline-size`
+    );
+  }
+  return { min, max };
+}
+
+StyleDictionary.registerTransform({
+  name: 'dsn/fluid',
+  type: 'value',
+  transitive: true,
+  filter: isFluid,
+  transform: (token, platform) => {
+    const value = String(token.$value ?? token.value).trim();
+    const [minValue, maxValue, ...rest] = splitTopLevel(
+      value.match(FLUID_PATTERN)[1]
+    );
+    if (!maxValue || rest.length) {
+      throw new Error(`${token.name}: fluid() verwacht precies twee waarden`);
+    }
+    const viewport = platform.fluidViewport;
+    if (!viewport) {
+      throw new Error(`${token.name}: platform mist fluidViewport`);
+    }
+
+    const min = toPx(minValue);
+    const max = toPx(maxValue);
+    // Gelijke min en max: niets om te schalen, de waarde blijft zoals hij is.
+    if (min === max) return minValue;
+
+    const slope = (max - min) / (viewport.max - viewport.min);
+    const intercept = min - slope * viewport.min;
+    const lower = Math.min(min, max) / ROOT_FONT_SIZE;
+    const upper = Math.max(min, max) / ROOT_FONT_SIZE;
+    return `clamp(${round(lower)}rem, ${round(intercept / ROOT_FONT_SIZE)}rem + ${round(slope * 100)}vw, ${round(upper)}rem)`;
+  },
+});
+
+// De standaardgroepen plus de fluid transform.
+for (const group of ['css', 'scss', 'js']) {
+  StyleDictionary.registerTransformGroup({
+    name: `dsn/${group}`,
+    transforms: [...StyleDictionary.hooks.transformGroups[group], 'dsn/fluid'],
+  });
+}
+
+// Een fluid token houdt in de CSS geen var()-referenties: de clamp() is het
+// resultaat, de min- en max-tokens staan er als losse custom properties naast.
+const outputReferences = (token) => !isFluid(token);
 
 // =============================================================================
 // CUSTOM FORMATS
@@ -19,7 +158,11 @@ StyleDictionary.registerFormat({
 
       // If outputReferences is enabled and the original value had references,
       // convert them to CSS custom property references
-      if (outputReferences && token.original && token.original.$value) {
+      const keepReferences =
+        typeof outputReferences === 'function'
+          ? outputReferences(token)
+          : outputReferences;
+      if (keepReferences && token.original && token.original.$value) {
         const originalValue = token.original.$value;
         // Check if the original value contains Style Dictionary references like {dsn.color.x}
         if (typeof originalValue === 'string' && originalValue.includes('{')) {
@@ -105,8 +248,26 @@ const themes = ['start', 'wireframe'];
 // Available modes (light/dark - affects only colors)
 const modes = ['light', 'dark'];
 
-// Available project types (typography density)
-const projectTypes = ['default', 'information-dense'];
+// Available project types (density: welke schalen meegroeien met de viewport)
+// - default:             fluid tekst + fluid ruimte
+// - default-fixed-space: fluid tekst, vaste ruimte (de min-waarden)
+// - information-dense:   vaste tekst en vaste ruimte (de min-waarden)
+const projectTypes = ['default', 'default-fixed-space', 'information-dense'];
+
+// Bronbestanden per project type. default-fixed-space is default zonder
+// space.json, zodat de ruimte terugvalt op de vaste waarden uit het thema.
+const projectTypeSources = {
+  default: ['src/tokens/project-types/default/*.json'],
+  'default-fixed-space': ['src/tokens/project-types/default/typography.json'],
+  'information-dense': ['src/tokens/project-types/information-dense/*.json'],
+};
+
+// Klasse waarmee een density op runtime gekozen wordt (zie createProjectTypeScopedConfig).
+const densitySelectors = {
+  default: ':root',
+  'default-fixed-space': '.dsn-density-fixed-space',
+  'information-dense': '.dsn-density-dense',
+};
 
 // =============================================================================
 // CONFIGURATION GENERATORS
@@ -117,6 +278,7 @@ const projectTypes = ['default', 'information-dense'];
  */
 function createFullConfig(theme, mode, projectType) {
   const configName = `${theme}-${mode}-${projectType}`;
+  const fluidViewport = readFluidViewport(theme);
 
   return {
     source: [
@@ -126,35 +288,38 @@ function createFullConfig(theme, mode, projectType) {
       `src/tokens/themes/${theme}/colors-${mode}.json`,
       // Component tokens (reference core tokens)
       'src/tokens/components/*.json',
-      // Project type overrides (typography font-sizes + component overrides, e.g. grid gutter)
+      // Project type overrides (font-sizes, fluid spacing + component overrides, e.g. grid gutter)
       // Must come AFTER components so project-type values win over component defaults
-      `src/tokens/project-types/${projectType}/*.json`,
+      ...projectTypeSources[projectType],
     ],
     platforms: {
       css: {
-        transformGroup: 'css',
+        transformGroup: 'dsn/css',
+        fluidViewport,
         buildPath: 'dist/css/',
         files: [
           {
             destination: `${configName}.css`,
             format: 'css/variables',
-            options: { outputReferences: true },
+            options: { outputReferences },
           },
         ],
       },
       scss: {
-        transformGroup: 'scss',
+        transformGroup: 'dsn/scss',
+        fluidViewport,
         buildPath: 'dist/scss/',
         files: [
           {
             destination: `_${configName}.scss`,
             format: 'scss/variables',
-            options: { outputReferences: true },
+            options: { outputReferences },
           },
         ],
       },
       js: {
-        transformGroup: 'js',
+        transformGroup: 'dsn/js',
+        fluidViewport,
         buildPath: 'dist/js/',
         files: [
           {
@@ -168,7 +333,8 @@ function createFullConfig(theme, mode, projectType) {
         ],
       },
       json: {
-        transformGroup: 'js',
+        transformGroup: 'dsn/js',
+        fluidViewport,
         buildPath: 'dist/json/',
         files: [
           {
@@ -216,23 +382,52 @@ function createModeScopedConfig(theme, mode) {
 
 /**
  * Creates a scoped CSS configuration for project type switching
- * These files contain ONLY typography overrides for class-based density switching.
- * They use outputReferences to keep CSS custom property references intact.
+ * Deze bestanden bevatten alleen de schalen die per density verschillen: de
+ * font-sizes, de spacing-maten en de overrides uit de project-type map.
+ *
+ * Het start-thema zit in de source zodat de referenties naar min/max-tokens
+ * oplossen (de kleuren alleen omdat base.json ernaar verwijst), maar alleen
+ * bovenstaande tokens komen in de output. Het viewport-bereik komt ook uit
+ * het start-thema.
  */
+function isScaleToken(token) {
+  const [, group, category, size] = token.path;
+  if (group === 'text')
+    return (
+      category === 'font-size' &&
+      token.path.length === 4 &&
+      size !== 'min' &&
+      size !== 'max'
+    );
+  return (
+    group === 'space' &&
+    token.path.length === 4 &&
+    size !== 'min' &&
+    size !== 'max'
+  );
+}
+
 function createProjectTypeScopedConfig(projectType) {
-  const selector = projectType === 'default' ? ':root' : '.dsn-density-dense';
+  const selector = densitySelectors[projectType];
 
   return {
-    source: [`src/tokens/project-types/${projectType}/*.json`],
+    source: [
+      'src/tokens/themes/start/base.json',
+      'src/tokens/themes/start/colors-light.json',
+      ...projectTypeSources[projectType],
+    ],
     platforms: {
       css: {
-        transformGroup: 'css',
+        transformGroup: 'dsn/css',
+        fluidViewport: readFluidViewport('start'),
         buildPath: 'dist/css/scoped/',
         files: [
           {
             destination: `density-${projectType}.css`,
             format: 'css/variables-scoped',
-            options: { selector, outputReferences: true },
+            filter: (token) =>
+              isScaleToken(token) || token.filePath.includes('/project-types/'),
+            options: { selector, outputReferences },
           },
         ],
       },
@@ -283,11 +478,12 @@ function createHeroImageForceLightConfigForTheme(theme) {
       `src/tokens/themes/${theme}/base.json`,
       `src/tokens/themes/${theme}/colors-light.json`,
       'src/tokens/components/*.json',
-      'src/tokens/project-types/default/*.json',
+      ...projectTypeSources.default,
     ],
     platforms: {
       css: {
-        transformGroup: 'css',
+        transformGroup: 'dsn/css',
+        fluidViewport: readFluidViewport(theme),
         buildPath: 'dist/css/scoped/',
         files: [
           {
@@ -348,13 +544,13 @@ themes.forEach((theme) => {
 // Generate scoped configurations for runtime switching
 // Note: Some scoped configs have cross-file token references that prevent standalone building.
 // Currently working scoped configs:
-// - density configs (font-size only, no cross-references)
+// - density configs (font-sizes + spacing, referenties naar het start-thema)
 // - wireframe color configs (simple aliases)
 // Non-working due to cross-references:
 // - theme-base configs (icon.size references font-size from typography)
 // - start color configs (form-control.read-only.border-color references dsn.color.transparent from base)
 const scopedConfigs = {
-  // Density configs work - they only contain font-size tokens with no external references
+  // Density configs: font-sizes en spacing per project type
   ...Object.fromEntries(
     projectTypes.map((pt) => [
       `density-${pt}`,
@@ -376,6 +572,8 @@ export {
   themes,
   modes,
   projectTypes,
+  projectTypeSources,
+  readFluidViewport,
 
   // All configurations
   fullConfigs,

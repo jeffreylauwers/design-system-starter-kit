@@ -30,10 +30,10 @@ const ROOT_FONT_SIZE = 16;
  * Een Figma-variable is statisch, dus een clamp() moet op een breedte worden
  * vastgeprikt. In plaats van één willekeurige breedte te kiezen krijgt de
  * typografieschaal een mode per viewport: de designer schakelt het artboard en
- * de hele schaal volgt. 375px valt onder elke clamp-ondergrens, dus die mode
- * bevat exact de ontworpen min-waarden.
+ * de hele schaal volgt. De twee breedtes zijn gelijk aan dsn.viewport.min- en
+ * max-inline-size, dus de modes bevatten exact de ontworpen min- en max-waarden.
  */
-export const VIEWPORTS = { mobile: 375, desktop: 1440 };
+export const VIEWPORTS = { mobile: 360, desktop: 1440 };
 
 /**
  * Viewport voor waarden buiten de typografieschaal. Die zitten in collections

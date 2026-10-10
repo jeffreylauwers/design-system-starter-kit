@@ -75,6 +75,10 @@
       "types": "./css.d.ts",
       "default": "./dist/css/scoped/density-default.css"
     },
+    "./css/scoped/density-default-fixed-space": {
+      "types": "./css.d.ts",
+      "default": "./dist/css/scoped/density-default-fixed-space.css"
+    },
     "./css/scoped/density-information-dense": {
       "types": "./css.d.ts",
       "default": "./dist/css/scoped/density-information-dense.css"

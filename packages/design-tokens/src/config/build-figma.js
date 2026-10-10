@@ -10,7 +10,13 @@ import fs from 'fs';
 import path from 'path';
 import { fileURLToPath } from 'url';
 
-import { themes, modes, projectTypes } from './config.js';
+import {
+  themes,
+  modes,
+  projectTypes,
+  projectTypeSources,
+  readFluidViewport,
+} from './config.js';
 import { buildFigmaVariables } from './figma.js';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
@@ -28,9 +34,14 @@ async function loadTokens(theme, mode, projectType) {
         `src/tokens/themes/${theme}/base.json`,
         `src/tokens/themes/${theme}/colors-${mode}.json`,
         'src/tokens/components/*.json',
-        `src/tokens/project-types/${projectType}/*.json`,
+        ...projectTypeSources[projectType],
       ],
-      platforms: { js: { transformGroup: 'js' } },
+      platforms: {
+        js: {
+          transformGroup: 'dsn/js',
+          fluidViewport: readFluidViewport(theme),
+        },
+      },
       log: { verbosity: 'silent', warnings: 'disabled' },
     },
     { init: false }

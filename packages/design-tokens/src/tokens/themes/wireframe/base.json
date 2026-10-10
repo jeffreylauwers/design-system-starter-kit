@@ -55,6 +55,68 @@
         "$value": "65ch",
         "$type": "sizing",
         "$description": "Maximale regellengte voor leesbare bodytekst (paragrafen, lijsten)"
+      },
+      "font-size": {
+        "min": {
+          "sm": {
+            "$value": "0.875rem",
+            "$description": "14px op de kleinste viewport"
+          },
+          "md": {
+            "$value": "1rem",
+            "$description": "16px op de kleinste viewport"
+          },
+          "lg": {
+            "$value": "1.25rem",
+            "$description": "20px op de kleinste viewport"
+          },
+          "xl": {
+            "$value": "1.5rem",
+            "$description": "24px op de kleinste viewport"
+          },
+          "2xl": {
+            "$value": "2rem",
+            "$description": "32px op de kleinste viewport"
+          },
+          "3xl": {
+            "$value": "2.5rem",
+            "$description": "40px op de kleinste viewport"
+          },
+          "4xl": {
+            "$value": "3rem",
+            "$description": "48px op de kleinste viewport"
+          }
+        },
+        "max": {
+          "sm": {
+            "$value": "calc(0.875rem * 1.25)",
+            "$description": "17.5px op de grootste viewport"
+          },
+          "md": {
+            "$value": "calc(1rem * 1.25)",
+            "$description": "20px op de grootste viewport"
+          },
+          "lg": {
+            "$value": "calc(1.25rem * 1.25)",
+            "$description": "25px op de grootste viewport"
+          },
+          "xl": {
+            "$value": "calc(1.5rem * 1.25)",
+            "$description": "30px op de grootste viewport"
+          },
+          "2xl": {
+            "$value": "calc(2rem * 1.25)",
+            "$description": "40px op de grootste viewport"
+          },
+          "3xl": {
+            "$value": "calc(2.5rem * 1.25)",
+            "$description": "50px op de grootste viewport"
+          },
+          "4xl": {
+            "$value": "calc(3rem * 1.25)",
+            "$description": "60px op de grootste viewport"
+          }
+        }
       }
     },
     "heading": {
@@ -78,225 +140,681 @@
       },
       "block": {
         "2xs": {
-          "$value": "calc(0.5rem * 0.125)",
-          "$description": "1px - Verticale ruimte binnen componenten"
+          "$value": "{dsn.space.block.min.2xs}",
+          "$description": "1px vast - Verticale ruimte binnen componenten. Project-type default maakt deze fluid."
         },
         "xs": {
-          "$value": "calc(0.5rem * 0.25)",
-          "$description": "2px - Verticale ruimte binnen componenten"
+          "$value": "{dsn.space.block.min.xs}",
+          "$description": "2px vast - Verticale ruimte binnen componenten. Project-type default maakt deze fluid."
         },
         "sm": {
-          "$value": "calc(0.5rem * 0.5)",
-          "$description": "4px - Verticale ruimte binnen componenten"
+          "$value": "{dsn.space.block.min.sm}",
+          "$description": "4px vast - Verticale ruimte binnen componenten. Project-type default maakt deze fluid."
         },
         "md": {
-          "$value": "calc(0.5rem * 1)",
-          "$description": "8px - Verticale ruimte binnen componenten"
+          "$value": "{dsn.space.block.min.md}",
+          "$description": "8px vast - Verticale ruimte binnen componenten. Project-type default maakt deze fluid."
         },
         "lg": {
-          "$value": "calc(0.5rem * 1.5)",
-          "$description": "12px - Verticale ruimte binnen componenten"
+          "$value": "{dsn.space.block.min.lg}",
+          "$description": "12px vast - Verticale ruimte binnen componenten. Project-type default maakt deze fluid."
         },
         "xl": {
-          "$value": "calc(0.5rem * 2)",
-          "$description": "16px - Verticale ruimte binnen componenten"
+          "$value": "{dsn.space.block.min.xl}",
+          "$description": "16px vast - Verticale ruimte binnen componenten. Project-type default maakt deze fluid."
         },
         "2xl": {
-          "$value": "calc(0.5rem * 2.5)",
-          "$description": "20px - Verticale ruimte binnen componenten"
+          "$value": "{dsn.space.block.min.2xl}",
+          "$description": "20px vast - Verticale ruimte binnen componenten. Project-type default maakt deze fluid."
         },
         "3xl": {
-          "$value": "calc(0.5rem * 3)",
-          "$description": "24px - Verticale ruimte binnen componenten"
+          "$value": "{dsn.space.block.min.3xl}",
+          "$description": "24px vast - Verticale ruimte binnen componenten. Project-type default maakt deze fluid."
         },
         "4xl": {
-          "$value": "calc(0.5rem * 4)",
-          "$description": "32px - Verticale ruimte binnen componenten"
+          "$value": "{dsn.space.block.min.4xl}",
+          "$description": "32px vast - Verticale ruimte binnen componenten. Project-type default maakt deze fluid."
         },
         "5xl": {
-          "$value": "calc(0.5rem * 6)",
-          "$description": "48px - Verticale ruimte binnen componenten"
+          "$value": "{dsn.space.block.min.5xl}",
+          "$description": "48px vast - Verticale ruimte binnen componenten. Project-type default maakt deze fluid."
         },
         "6xl": {
-          "$value": "calc(0.5rem * 8)",
-          "$description": "64px - Verticale ruimte binnen componenten"
+          "$value": "{dsn.space.block.min.6xl}",
+          "$description": "64px vast - Verticale ruimte binnen componenten. Project-type default maakt deze fluid."
+        },
+        "min": {
+          "2xs": {
+            "$value": "calc(0.5rem * 0.125)",
+            "$description": "1px op de kleinste viewport - Verticale ruimte binnen componenten"
+          },
+          "xs": {
+            "$value": "calc(0.5rem * 0.25)",
+            "$description": "2px op de kleinste viewport - Verticale ruimte binnen componenten"
+          },
+          "sm": {
+            "$value": "calc(0.5rem * 0.5)",
+            "$description": "4px op de kleinste viewport - Verticale ruimte binnen componenten"
+          },
+          "md": {
+            "$value": "calc(0.5rem * 1)",
+            "$description": "8px op de kleinste viewport - Verticale ruimte binnen componenten"
+          },
+          "lg": {
+            "$value": "calc(0.5rem * 1.5)",
+            "$description": "12px op de kleinste viewport - Verticale ruimte binnen componenten"
+          },
+          "xl": {
+            "$value": "calc(0.5rem * 2)",
+            "$description": "16px op de kleinste viewport - Verticale ruimte binnen componenten"
+          },
+          "2xl": {
+            "$value": "calc(0.5rem * 2.5)",
+            "$description": "20px op de kleinste viewport - Verticale ruimte binnen componenten"
+          },
+          "3xl": {
+            "$value": "calc(0.5rem * 3)",
+            "$description": "24px op de kleinste viewport - Verticale ruimte binnen componenten"
+          },
+          "4xl": {
+            "$value": "calc(0.5rem * 4)",
+            "$description": "32px op de kleinste viewport - Verticale ruimte binnen componenten"
+          },
+          "5xl": {
+            "$value": "calc(0.5rem * 6)",
+            "$description": "48px op de kleinste viewport - Verticale ruimte binnen componenten"
+          },
+          "6xl": {
+            "$value": "calc(0.5rem * 8)",
+            "$description": "64px op de kleinste viewport - Verticale ruimte binnen componenten"
+          }
+        },
+        "max": {
+          "2xs": {
+            "$value": "calc(0.5rem * 0.125)",
+            "$description": "1px op de grootste viewport - schaalt bewust niet mee (te klein om te vergroten)"
+          },
+          "xs": {
+            "$value": "calc(0.5rem * 0.25)",
+            "$description": "2px op de grootste viewport - schaalt bewust niet mee (te klein om te vergroten)"
+          },
+          "sm": {
+            "$value": "calc(0.5rem * 0.5 * 1.25)",
+            "$description": "5px op de grootste viewport - Verticale ruimte binnen componenten"
+          },
+          "md": {
+            "$value": "calc(0.5rem * 1 * 1.25)",
+            "$description": "10px op de grootste viewport - Verticale ruimte binnen componenten"
+          },
+          "lg": {
+            "$value": "calc(0.5rem * 1.5 * 1.25)",
+            "$description": "15px op de grootste viewport - Verticale ruimte binnen componenten"
+          },
+          "xl": {
+            "$value": "calc(0.5rem * 2 * 1.25)",
+            "$description": "20px op de grootste viewport - Verticale ruimte binnen componenten"
+          },
+          "2xl": {
+            "$value": "calc(0.5rem * 2.5 * 1.25)",
+            "$description": "25px op de grootste viewport - Verticale ruimte binnen componenten"
+          },
+          "3xl": {
+            "$value": "calc(0.5rem * 3 * 1.25)",
+            "$description": "30px op de grootste viewport - Verticale ruimte binnen componenten"
+          },
+          "4xl": {
+            "$value": "calc(0.5rem * 4 * 1.25)",
+            "$description": "40px op de grootste viewport - Verticale ruimte binnen componenten"
+          },
+          "5xl": {
+            "$value": "calc(0.5rem * 6 * 1.25)",
+            "$description": "60px op de grootste viewport - Verticale ruimte binnen componenten"
+          },
+          "6xl": {
+            "$value": "calc(0.5rem * 8 * 1.25)",
+            "$description": "80px op de grootste viewport - Verticale ruimte binnen componenten"
+          }
         }
       },
       "inline": {
         "2xs": {
-          "$value": "calc(0.5rem * 0.125)",
-          "$description": "1px - Horizontale ruimte binnen componenten"
+          "$value": "{dsn.space.inline.min.2xs}",
+          "$description": "1px vast - Horizontale ruimte binnen componenten. Project-type default maakt deze fluid."
         },
         "xs": {
-          "$value": "calc(0.5rem * 0.25)",
-          "$description": "2px - Horizontale ruimte binnen componenten"
+          "$value": "{dsn.space.inline.min.xs}",
+          "$description": "2px vast - Horizontale ruimte binnen componenten. Project-type default maakt deze fluid."
         },
         "sm": {
-          "$value": "calc(0.5rem * 0.5)",
-          "$description": "4px - Horizontale ruimte binnen componenten"
+          "$value": "{dsn.space.inline.min.sm}",
+          "$description": "4px vast - Horizontale ruimte binnen componenten. Project-type default maakt deze fluid."
         },
         "md": {
-          "$value": "calc(0.5rem * 1)",
-          "$description": "8px - Horizontale ruimte binnen componenten"
+          "$value": "{dsn.space.inline.min.md}",
+          "$description": "8px vast - Horizontale ruimte binnen componenten. Project-type default maakt deze fluid."
         },
         "lg": {
-          "$value": "calc(0.5rem * 1.5)",
-          "$description": "12px - Horizontale ruimte binnen componenten"
+          "$value": "{dsn.space.inline.min.lg}",
+          "$description": "12px vast - Horizontale ruimte binnen componenten. Project-type default maakt deze fluid."
         },
         "xl": {
-          "$value": "calc(0.5rem * 2)",
-          "$description": "16px - Horizontale ruimte binnen componenten"
+          "$value": "{dsn.space.inline.min.xl}",
+          "$description": "16px vast - Horizontale ruimte binnen componenten. Project-type default maakt deze fluid."
         },
         "2xl": {
-          "$value": "calc(0.5rem * 2.5)",
-          "$description": "20px - Horizontale ruimte binnen componenten"
+          "$value": "{dsn.space.inline.min.2xl}",
+          "$description": "20px vast - Horizontale ruimte binnen componenten. Project-type default maakt deze fluid."
         },
         "3xl": {
-          "$value": "calc(0.5rem * 3)",
-          "$description": "24px - Horizontale ruimte binnen componenten"
+          "$value": "{dsn.space.inline.min.3xl}",
+          "$description": "24px vast - Horizontale ruimte binnen componenten. Project-type default maakt deze fluid."
         },
         "4xl": {
-          "$value": "calc(0.5rem * 4)",
-          "$description": "32px - Horizontale ruimte binnen componenten"
+          "$value": "{dsn.space.inline.min.4xl}",
+          "$description": "32px vast - Horizontale ruimte binnen componenten. Project-type default maakt deze fluid."
         },
         "5xl": {
-          "$value": "calc(0.5rem * 6)",
-          "$description": "48px - Horizontale ruimte binnen componenten"
+          "$value": "{dsn.space.inline.min.5xl}",
+          "$description": "48px vast - Horizontale ruimte binnen componenten. Project-type default maakt deze fluid."
         },
         "6xl": {
-          "$value": "calc(0.5rem * 8)",
-          "$description": "64px - Horizontale ruimte binnen componenten"
+          "$value": "{dsn.space.inline.min.6xl}",
+          "$description": "64px vast - Horizontale ruimte binnen componenten. Project-type default maakt deze fluid."
+        },
+        "min": {
+          "2xs": {
+            "$value": "calc(0.5rem * 0.125)",
+            "$description": "1px op de kleinste viewport - Horizontale ruimte binnen componenten"
+          },
+          "xs": {
+            "$value": "calc(0.5rem * 0.25)",
+            "$description": "2px op de kleinste viewport - Horizontale ruimte binnen componenten"
+          },
+          "sm": {
+            "$value": "calc(0.5rem * 0.5)",
+            "$description": "4px op de kleinste viewport - Horizontale ruimte binnen componenten"
+          },
+          "md": {
+            "$value": "calc(0.5rem * 1)",
+            "$description": "8px op de kleinste viewport - Horizontale ruimte binnen componenten"
+          },
+          "lg": {
+            "$value": "calc(0.5rem * 1.5)",
+            "$description": "12px op de kleinste viewport - Horizontale ruimte binnen componenten"
+          },
+          "xl": {
+            "$value": "calc(0.5rem * 2)",
+            "$description": "16px op de kleinste viewport - Horizontale ruimte binnen componenten"
+          },
+          "2xl": {
+            "$value": "calc(0.5rem * 2.5)",
+            "$description": "20px op de kleinste viewport - Horizontale ruimte binnen componenten"
+          },
+          "3xl": {
+            "$value": "calc(0.5rem * 3)",
+            "$description": "24px op de kleinste viewport - Horizontale ruimte binnen componenten"
+          },
+          "4xl": {
+            "$value": "calc(0.5rem * 4)",
+            "$description": "32px op de kleinste viewport - Horizontale ruimte binnen componenten"
+          },
+          "5xl": {
+            "$value": "calc(0.5rem * 6)",
+            "$description": "48px op de kleinste viewport - Horizontale ruimte binnen componenten"
+          },
+          "6xl": {
+            "$value": "calc(0.5rem * 8)",
+            "$description": "64px op de kleinste viewport - Horizontale ruimte binnen componenten"
+          }
+        },
+        "max": {
+          "2xs": {
+            "$value": "calc(0.5rem * 0.125)",
+            "$description": "1px op de grootste viewport - schaalt bewust niet mee (te klein om te vergroten)"
+          },
+          "xs": {
+            "$value": "calc(0.5rem * 0.25)",
+            "$description": "2px op de grootste viewport - schaalt bewust niet mee (te klein om te vergroten)"
+          },
+          "sm": {
+            "$value": "calc(0.5rem * 0.5 * 1.25)",
+            "$description": "5px op de grootste viewport - Horizontale ruimte binnen componenten"
+          },
+          "md": {
+            "$value": "calc(0.5rem * 1 * 1.25)",
+            "$description": "10px op de grootste viewport - Horizontale ruimte binnen componenten"
+          },
+          "lg": {
+            "$value": "calc(0.5rem * 1.5 * 1.25)",
+            "$description": "15px op de grootste viewport - Horizontale ruimte binnen componenten"
+          },
+          "xl": {
+            "$value": "calc(0.5rem * 2 * 1.25)",
+            "$description": "20px op de grootste viewport - Horizontale ruimte binnen componenten"
+          },
+          "2xl": {
+            "$value": "calc(0.5rem * 2.5 * 1.25)",
+            "$description": "25px op de grootste viewport - Horizontale ruimte binnen componenten"
+          },
+          "3xl": {
+            "$value": "calc(0.5rem * 3 * 1.25)",
+            "$description": "30px op de grootste viewport - Horizontale ruimte binnen componenten"
+          },
+          "4xl": {
+            "$value": "calc(0.5rem * 4 * 1.25)",
+            "$description": "40px op de grootste viewport - Horizontale ruimte binnen componenten"
+          },
+          "5xl": {
+            "$value": "calc(0.5rem * 6 * 1.25)",
+            "$description": "60px op de grootste viewport - Horizontale ruimte binnen componenten"
+          },
+          "6xl": {
+            "$value": "calc(0.5rem * 8 * 1.25)",
+            "$description": "80px op de grootste viewport - Horizontale ruimte binnen componenten"
+          }
         }
       },
       "text": {
         "3xs": {
-          "$value": "calc(0.5rem * 0.125)",
-          "$description": "1px - Ruimte tussen tekst en iconen"
+          "$value": "{dsn.space.text.min.3xs}",
+          "$description": "1px vast - Ruimte tussen tekst en iconen. Project-type default maakt deze fluid."
         },
         "2xs": {
-          "$value": "calc(0.5rem * 0.25)",
-          "$description": "2px - Ruimte tussen tekst en iconen"
+          "$value": "{dsn.space.text.min.2xs}",
+          "$description": "2px vast - Ruimte tussen tekst en iconen. Project-type default maakt deze fluid."
         },
         "xs": {
-          "$value": "calc(0.5rem * 0.25)",
-          "$description": "2px - Ruimte tussen tekst en iconen"
+          "$value": "{dsn.space.text.min.xs}",
+          "$description": "2px vast - Ruimte tussen tekst en iconen. Project-type default maakt deze fluid."
         },
         "sm": {
-          "$value": "calc(0.5rem * 0.5)",
-          "$description": "4px - Ruimte tussen tekst en iconen"
+          "$value": "{dsn.space.text.min.sm}",
+          "$description": "4px vast - Ruimte tussen tekst en iconen. Project-type default maakt deze fluid."
         },
         "md": {
-          "$value": "calc(0.5rem * 1)",
-          "$description": "8px - Ruimte tussen tekst en iconen"
+          "$value": "{dsn.space.text.min.md}",
+          "$description": "8px vast - Ruimte tussen tekst en iconen. Project-type default maakt deze fluid."
         },
         "lg": {
-          "$value": "calc(0.5rem * 1.5)",
-          "$description": "12px - Ruimte tussen tekst en iconen"
+          "$value": "{dsn.space.text.min.lg}",
+          "$description": "12px vast - Ruimte tussen tekst en iconen. Project-type default maakt deze fluid."
         },
         "xl": {
-          "$value": "calc(0.5rem * 2)",
-          "$description": "16px - Ruimte tussen tekst en iconen"
+          "$value": "{dsn.space.text.min.xl}",
+          "$description": "16px vast - Ruimte tussen tekst en iconen. Project-type default maakt deze fluid."
         },
         "2xl": {
-          "$value": "calc(0.5rem * 2.5)",
-          "$description": "20px - Ruimte tussen tekst en iconen"
+          "$value": "{dsn.space.text.min.2xl}",
+          "$description": "20px vast - Ruimte tussen tekst en iconen. Project-type default maakt deze fluid."
         },
         "3xl": {
-          "$value": "calc(0.5rem * 3)",
-          "$description": "24px - Ruimte tussen tekst en iconen"
+          "$value": "{dsn.space.text.min.3xl}",
+          "$description": "24px vast - Ruimte tussen tekst en iconen. Project-type default maakt deze fluid."
+        },
+        "min": {
+          "3xs": {
+            "$value": "calc(0.5rem * 0.125)",
+            "$description": "1px op de kleinste viewport - Ruimte tussen tekst en iconen"
+          },
+          "2xs": {
+            "$value": "calc(0.5rem * 0.25)",
+            "$description": "2px op de kleinste viewport - Ruimte tussen tekst en iconen"
+          },
+          "xs": {
+            "$value": "calc(0.5rem * 0.25)",
+            "$description": "2px op de kleinste viewport - Ruimte tussen tekst en iconen"
+          },
+          "sm": {
+            "$value": "calc(0.5rem * 0.5)",
+            "$description": "4px op de kleinste viewport - Ruimte tussen tekst en iconen"
+          },
+          "md": {
+            "$value": "calc(0.5rem * 1)",
+            "$description": "8px op de kleinste viewport - Ruimte tussen tekst en iconen"
+          },
+          "lg": {
+            "$value": "calc(0.5rem * 1.5)",
+            "$description": "12px op de kleinste viewport - Ruimte tussen tekst en iconen"
+          },
+          "xl": {
+            "$value": "calc(0.5rem * 2)",
+            "$description": "16px op de kleinste viewport - Ruimte tussen tekst en iconen"
+          },
+          "2xl": {
+            "$value": "calc(0.5rem * 2.5)",
+            "$description": "20px op de kleinste viewport - Ruimte tussen tekst en iconen"
+          },
+          "3xl": {
+            "$value": "calc(0.5rem * 3)",
+            "$description": "24px op de kleinste viewport - Ruimte tussen tekst en iconen"
+          }
+        },
+        "max": {
+          "3xs": {
+            "$value": "calc(0.5rem * 0.125)",
+            "$description": "1px op de grootste viewport - schaalt bewust niet mee (te klein om te vergroten)"
+          },
+          "2xs": {
+            "$value": "calc(0.5rem * 0.25)",
+            "$description": "2px op de grootste viewport - schaalt bewust niet mee (te klein om te vergroten)"
+          },
+          "xs": {
+            "$value": "calc(0.5rem * 0.25)",
+            "$description": "2px op de grootste viewport - schaalt bewust niet mee (te klein om te vergroten)"
+          },
+          "sm": {
+            "$value": "calc(0.5rem * 0.5 * 1.25)",
+            "$description": "5px op de grootste viewport - Ruimte tussen tekst en iconen"
+          },
+          "md": {
+            "$value": "calc(0.5rem * 1 * 1.25)",
+            "$description": "10px op de grootste viewport - Ruimte tussen tekst en iconen"
+          },
+          "lg": {
+            "$value": "calc(0.5rem * 1.5 * 1.25)",
+            "$description": "15px op de grootste viewport - Ruimte tussen tekst en iconen"
+          },
+          "xl": {
+            "$value": "calc(0.5rem * 2 * 1.25)",
+            "$description": "20px op de grootste viewport - Ruimte tussen tekst en iconen"
+          },
+          "2xl": {
+            "$value": "calc(0.5rem * 2.5 * 1.25)",
+            "$description": "25px op de grootste viewport - Ruimte tussen tekst en iconen"
+          },
+          "3xl": {
+            "$value": "calc(0.5rem * 3 * 1.25)",
+            "$description": "30px op de grootste viewport - Ruimte tussen tekst en iconen"
+          }
         }
       },
       "column": {
         "2xs": {
-          "$value": "calc(0.5rem * 0.125)",
-          "$description": "1px - Horizontale ruimte tussen componenten"
+          "$value": "{dsn.space.column.min.2xs}",
+          "$description": "1px vast - Horizontale ruimte tussen componenten. Project-type default maakt deze fluid."
         },
         "xs": {
-          "$value": "calc(0.5rem * 0.25)",
-          "$description": "2px - Horizontale ruimte tussen componenten"
+          "$value": "{dsn.space.column.min.xs}",
+          "$description": "2px vast - Horizontale ruimte tussen componenten. Project-type default maakt deze fluid."
         },
         "sm": {
-          "$value": "calc(0.5rem * 0.5)",
-          "$description": "4px - Horizontale ruimte tussen componenten"
+          "$value": "{dsn.space.column.min.sm}",
+          "$description": "4px vast - Horizontale ruimte tussen componenten. Project-type default maakt deze fluid."
         },
         "md": {
-          "$value": "calc(0.5rem * 1)",
-          "$description": "8px - Horizontale ruimte tussen componenten"
+          "$value": "{dsn.space.column.min.md}",
+          "$description": "8px vast - Horizontale ruimte tussen componenten. Project-type default maakt deze fluid."
         },
         "lg": {
-          "$value": "calc(0.5rem * 1.5)",
-          "$description": "12px - Horizontale ruimte tussen componenten"
+          "$value": "{dsn.space.column.min.lg}",
+          "$description": "12px vast - Horizontale ruimte tussen componenten. Project-type default maakt deze fluid."
         },
         "xl": {
-          "$value": "calc(0.5rem * 2)",
-          "$description": "16px - Horizontale ruimte tussen componenten"
+          "$value": "{dsn.space.column.min.xl}",
+          "$description": "16px vast - Horizontale ruimte tussen componenten. Project-type default maakt deze fluid."
         },
         "2xl": {
-          "$value": "calc(0.5rem * 2.5)",
-          "$description": "20px - Horizontale ruimte tussen componenten"
+          "$value": "{dsn.space.column.min.2xl}",
+          "$description": "20px vast - Horizontale ruimte tussen componenten. Project-type default maakt deze fluid."
         },
         "3xl": {
-          "$value": "calc(0.5rem * 3)",
-          "$description": "24px - Horizontale ruimte tussen componenten"
+          "$value": "{dsn.space.column.min.3xl}",
+          "$description": "24px vast - Horizontale ruimte tussen componenten. Project-type default maakt deze fluid."
         },
         "4xl": {
-          "$value": "calc(0.5rem * 4)",
-          "$description": "32px - Horizontale ruimte tussen componenten"
+          "$value": "{dsn.space.column.min.4xl}",
+          "$description": "32px vast - Horizontale ruimte tussen componenten. Project-type default maakt deze fluid."
         },
         "5xl": {
-          "$value": "calc(0.5rem * 8)",
-          "$description": "64px - Horizontale ruimte tussen componenten"
+          "$value": "{dsn.space.column.min.5xl}",
+          "$description": "64px vast - Horizontale ruimte tussen componenten. Project-type default maakt deze fluid."
         },
         "6xl": {
-          "$value": "calc(0.5rem * 20)",
-          "$description": "160px - Horizontale ruimte tussen componenten"
+          "$value": "{dsn.space.column.min.6xl}",
+          "$description": "160px vast - Horizontale ruimte tussen componenten. Project-type default maakt deze fluid."
+        },
+        "min": {
+          "2xs": {
+            "$value": "calc(0.5rem * 0.125)",
+            "$description": "1px op de kleinste viewport - Horizontale ruimte tussen componenten"
+          },
+          "xs": {
+            "$value": "calc(0.5rem * 0.25)",
+            "$description": "2px op de kleinste viewport - Horizontale ruimte tussen componenten"
+          },
+          "sm": {
+            "$value": "calc(0.5rem * 0.5)",
+            "$description": "4px op de kleinste viewport - Horizontale ruimte tussen componenten"
+          },
+          "md": {
+            "$value": "calc(0.5rem * 1)",
+            "$description": "8px op de kleinste viewport - Horizontale ruimte tussen componenten"
+          },
+          "lg": {
+            "$value": "calc(0.5rem * 1.5)",
+            "$description": "12px op de kleinste viewport - Horizontale ruimte tussen componenten"
+          },
+          "xl": {
+            "$value": "calc(0.5rem * 2)",
+            "$description": "16px op de kleinste viewport - Horizontale ruimte tussen componenten"
+          },
+          "2xl": {
+            "$value": "calc(0.5rem * 2.5)",
+            "$description": "20px op de kleinste viewport - Horizontale ruimte tussen componenten"
+          },
+          "3xl": {
+            "$value": "calc(0.5rem * 3)",
+            "$description": "24px op de kleinste viewport - Horizontale ruimte tussen componenten"
+          },
+          "4xl": {
+            "$value": "calc(0.5rem * 4)",
+            "$description": "32px op de kleinste viewport - Horizontale ruimte tussen componenten"
+          },
+          "5xl": {
+            "$value": "calc(0.5rem * 8)",
+            "$description": "64px op de kleinste viewport - Horizontale ruimte tussen componenten"
+          },
+          "6xl": {
+            "$value": "calc(0.5rem * 20)",
+            "$description": "160px op de kleinste viewport - Horizontale ruimte tussen componenten"
+          }
+        },
+        "max": {
+          "2xs": {
+            "$value": "calc(0.5rem * 0.125)",
+            "$description": "1px op de grootste viewport - schaalt bewust niet mee (te klein om te vergroten)"
+          },
+          "xs": {
+            "$value": "calc(0.5rem * 0.25)",
+            "$description": "2px op de grootste viewport - schaalt bewust niet mee (te klein om te vergroten)"
+          },
+          "sm": {
+            "$value": "calc(0.5rem * 0.5 * 1.25)",
+            "$description": "5px op de grootste viewport - Horizontale ruimte tussen componenten"
+          },
+          "md": {
+            "$value": "calc(0.5rem * 1 * 1.25)",
+            "$description": "10px op de grootste viewport - Horizontale ruimte tussen componenten"
+          },
+          "lg": {
+            "$value": "calc(0.5rem * 1.5 * 1.25)",
+            "$description": "15px op de grootste viewport - Horizontale ruimte tussen componenten"
+          },
+          "xl": {
+            "$value": "calc(0.5rem * 2 * 1.25)",
+            "$description": "20px op de grootste viewport - Horizontale ruimte tussen componenten"
+          },
+          "2xl": {
+            "$value": "calc(0.5rem * 2.5 * 1.25)",
+            "$description": "25px op de grootste viewport - Horizontale ruimte tussen componenten"
+          },
+          "3xl": {
+            "$value": "calc(0.5rem * 3 * 1.25)",
+            "$description": "30px op de grootste viewport - Horizontale ruimte tussen componenten"
+          },
+          "4xl": {
+            "$value": "calc(0.5rem * 4 * 1.25)",
+            "$description": "40px op de grootste viewport - Horizontale ruimte tussen componenten"
+          },
+          "5xl": {
+            "$value": "calc(0.5rem * 8 * 1.25)",
+            "$description": "80px op de grootste viewport - Horizontale ruimte tussen componenten"
+          },
+          "6xl": {
+            "$value": "calc(0.5rem * 20 * 1.25)",
+            "$description": "200px op de grootste viewport - Horizontale ruimte tussen componenten"
+          }
         }
       },
       "row": {
         "2xs": {
-          "$value": "calc(0.5rem * 0.125)",
-          "$description": "1px - Verticale ruimte tussen componenten"
+          "$value": "{dsn.space.row.min.2xs}",
+          "$description": "1px vast - Verticale ruimte tussen componenten. Project-type default maakt deze fluid."
         },
         "xs": {
-          "$value": "calc(0.5rem * 0.25)",
-          "$description": "2px - Verticale ruimte tussen componenten"
+          "$value": "{dsn.space.row.min.xs}",
+          "$description": "2px vast - Verticale ruimte tussen componenten. Project-type default maakt deze fluid."
         },
         "sm": {
-          "$value": "calc(0.5rem * 0.5)",
-          "$description": "4px - Verticale ruimte tussen componenten"
+          "$value": "{dsn.space.row.min.sm}",
+          "$description": "4px vast - Verticale ruimte tussen componenten. Project-type default maakt deze fluid."
         },
         "md": {
-          "$value": "calc(0.5rem * 1)",
-          "$description": "8px - Verticale ruimte tussen componenten"
+          "$value": "{dsn.space.row.min.md}",
+          "$description": "8px vast - Verticale ruimte tussen componenten. Project-type default maakt deze fluid."
         },
         "lg": {
-          "$value": "calc(0.5rem * 1.5)",
-          "$description": "12px - Verticale ruimte tussen componenten"
+          "$value": "{dsn.space.row.min.lg}",
+          "$description": "12px vast - Verticale ruimte tussen componenten. Project-type default maakt deze fluid."
         },
         "xl": {
-          "$value": "calc(0.5rem * 2)",
-          "$description": "16px - Verticale ruimte tussen componenten"
+          "$value": "{dsn.space.row.min.xl}",
+          "$description": "16px vast - Verticale ruimte tussen componenten. Project-type default maakt deze fluid."
         },
         "2xl": {
-          "$value": "calc(0.5rem * 2.5)",
-          "$description": "20px - Verticale ruimte tussen componenten"
+          "$value": "{dsn.space.row.min.2xl}",
+          "$description": "20px vast - Verticale ruimte tussen componenten. Project-type default maakt deze fluid."
         },
         "3xl": {
-          "$value": "calc(0.5rem * 3)",
-          "$description": "24px - Verticale ruimte tussen componenten"
+          "$value": "{dsn.space.row.min.3xl}",
+          "$description": "24px vast - Verticale ruimte tussen componenten. Project-type default maakt deze fluid."
         },
         "4xl": {
-          "$value": "calc(0.5rem * 4)",
-          "$description": "32px - Verticale ruimte tussen componenten"
+          "$value": "{dsn.space.row.min.4xl}",
+          "$description": "32px vast - Verticale ruimte tussen componenten. Project-type default maakt deze fluid."
         },
         "5xl": {
-          "$value": "calc(0.5rem * 8)",
-          "$description": "64px - Verticale ruimte tussen componenten"
+          "$value": "{dsn.space.row.min.5xl}",
+          "$description": "64px vast - Verticale ruimte tussen componenten. Project-type default maakt deze fluid."
         },
         "6xl": {
-          "$value": "calc(0.5rem * 20)",
-          "$description": "160px - Verticale ruimte tussen componenten"
+          "$value": "{dsn.space.row.min.6xl}",
+          "$description": "160px vast - Verticale ruimte tussen componenten. Project-type default maakt deze fluid."
+        },
+        "min": {
+          "2xs": {
+            "$value": "calc(0.5rem * 0.125)",
+            "$description": "1px op de kleinste viewport - Verticale ruimte tussen componenten"
+          },
+          "xs": {
+            "$value": "calc(0.5rem * 0.25)",
+            "$description": "2px op de kleinste viewport - Verticale ruimte tussen componenten"
+          },
+          "sm": {
+            "$value": "calc(0.5rem * 0.5)",
+            "$description": "4px op de kleinste viewport - Verticale ruimte tussen componenten"
+          },
+          "md": {
+            "$value": "calc(0.5rem * 1)",
+            "$description": "8px op de kleinste viewport - Verticale ruimte tussen componenten"
+          },
+          "lg": {
+            "$value": "calc(0.5rem * 1.5)",
+            "$description": "12px op de kleinste viewport - Verticale ruimte tussen componenten"
+          },
+          "xl": {
+            "$value": "calc(0.5rem * 2)",
+            "$description": "16px op de kleinste viewport - Verticale ruimte tussen componenten"
+          },
+          "2xl": {
+            "$value": "calc(0.5rem * 2.5)",
+            "$description": "20px op de kleinste viewport - Verticale ruimte tussen componenten"
+          },
+          "3xl": {
+            "$value": "calc(0.5rem * 3)",
+            "$description": "24px op de kleinste viewport - Verticale ruimte tussen componenten"
+          },
+          "4xl": {
+            "$value": "calc(0.5rem * 4)",
+            "$description": "32px op de kleinste viewport - Verticale ruimte tussen componenten"
+          },
+          "5xl": {
+            "$value": "calc(0.5rem * 8)",
+            "$description": "64px op de kleinste viewport - Verticale ruimte tussen componenten"
+          },
+          "6xl": {
+            "$value": "calc(0.5rem * 20)",
+            "$description": "160px op de kleinste viewport - Verticale ruimte tussen componenten"
+          }
+        },
+        "max": {
+          "2xs": {
+            "$value": "calc(0.5rem * 0.125)",
+            "$description": "1px op de grootste viewport - schaalt bewust niet mee (te klein om te vergroten)"
+          },
+          "xs": {
+            "$value": "calc(0.5rem * 0.25)",
+            "$description": "2px op de grootste viewport - schaalt bewust niet mee (te klein om te vergroten)"
+          },
+          "sm": {
+            "$value": "calc(0.5rem * 0.5 * 1.25)",
+            "$description": "5px op de grootste viewport - Verticale ruimte tussen componenten"
+          },
+          "md": {
+            "$value": "calc(0.5rem * 1 * 1.25)",
+            "$description": "10px op de grootste viewport - Verticale ruimte tussen componenten"
+          },
+          "lg": {
+            "$value": "calc(0.5rem * 1.5 * 1.25)",
+            "$description": "15px op de grootste viewport - Verticale ruimte tussen componenten"
+          },
+          "xl": {
+            "$value": "calc(0.5rem * 2 * 1.25)",
+            "$description": "20px op de grootste viewport - Verticale ruimte tussen componenten"
+          },
+          "2xl": {
+            "$value": "calc(0.5rem * 2.5 * 1.25)",
+            "$description": "25px op de grootste viewport - Verticale ruimte tussen componenten"
+          },
+          "3xl": {
+            "$value": "calc(0.5rem * 3 * 1.25)",
+            "$description": "30px op de grootste viewport - Verticale ruimte tussen componenten"
+          },
+          "4xl": {
+            "$value": "calc(0.5rem * 4 * 1.25)",
+            "$description": "40px op de grootste viewport - Verticale ruimte tussen componenten"
+          },
+          "5xl": {
+            "$value": "calc(0.5rem * 8 * 1.25)",
+            "$description": "80px op de grootste viewport - Verticale ruimte tussen componenten"
+          },
+          "6xl": {
+            "$value": "calc(0.5rem * 20 * 1.25)",
+            "$description": "200px op de grootste viewport - Verticale ruimte tussen componenten"
+          }
         }
+      }
+    },
+    "viewport": {
+      "min-inline-size": {
+        "$value": "360px",
+        "$type": "dimension",
+        "$description": "Kleinste viewport van de fluid schaal. Hieronder blijven tekst en ruimte op hun min-waarde."
+      },
+      "max-inline-size": {
+        "$value": "1440px",
+        "$type": "dimension",
+        "$description": "Grootste viewport van de fluid schaal. Hierboven blijven tekst en ruimte op hun max-waarde. 1440 / 360 = 4, gelijk aan de 400% zoom uit WCAG 1.4.10."
       }
     },
     "icon": {

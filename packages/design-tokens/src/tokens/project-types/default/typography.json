@@ -3,32 +3,32 @@
     "text": {
       "font-size": {
         "sm": {
-          "$value": "clamp(0.875rem, 0.75rem + 0.25vw, 1.0625rem)",
-          "$description": "Small text - 14px to 17px (fluid)"
+          "$value": "fluid({dsn.text.font-size.min.sm}, {dsn.text.font-size.max.sm})",
+          "$description": "14px tot 17.5px (fluid tussen de kleinste en grootste viewport)"
         },
         "md": {
-          "$value": "clamp(1rem, 0.875rem + 0.375vw, 1.28125rem)",
-          "$description": "Medium text - 16px to 20.5px (fluid)"
+          "$value": "fluid({dsn.text.font-size.min.md}, {dsn.text.font-size.max.md})",
+          "$description": "16px tot 20px (fluid tussen de kleinste en grootste viewport)"
         },
         "lg": {
-          "$value": "clamp(1.25rem, 1.125rem + 0.375vw, 1.53125rem)",
-          "$description": "Large text - 20px to 24.5px (fluid)"
+          "$value": "fluid({dsn.text.font-size.min.lg}, {dsn.text.font-size.max.lg})",
+          "$description": "20px tot 25px (fluid tussen de kleinste en grootste viewport)"
         },
         "xl": {
-          "$value": "clamp(1.5rem, 1.25rem + 0.625vw, 1.9375rem)",
-          "$description": "Extra large text - 24px to 31px (fluid)"
+          "$value": "fluid({dsn.text.font-size.min.xl}, {dsn.text.font-size.max.xl})",
+          "$description": "24px tot 30px (fluid tussen de kleinste en grootste viewport)"
         },
         "2xl": {
-          "$value": "clamp(2rem, 1.75rem + 0.75vw, 2.5625rem)",
-          "$description": "2XL text - 32px to 41px (fluid)"
+          "$value": "fluid({dsn.text.font-size.min.2xl}, {dsn.text.font-size.max.2xl})",
+          "$description": "32px tot 40px (fluid tussen de kleinste en grootste viewport)"
         },
         "3xl": {
-          "$value": "clamp(2.5rem, 2.125rem + 1.125vw, 3.3125rem)",
-          "$description": "3XL text - 40px to 53px (fluid)"
+          "$value": "fluid({dsn.text.font-size.min.3xl}, {dsn.text.font-size.max.3xl})",
+          "$description": "40px tot 50px (fluid tussen de kleinste en grootste viewport)"
         },
         "4xl": {
-          "$value": "clamp(3rem, 2.5rem + 1.5vw, 4.125rem)",
-          "$description": "4XL text - 48px to 66px (fluid)"
+          "$value": "fluid({dsn.text.font-size.min.4xl}, {dsn.text.font-size.max.4xl})",
+          "$description": "48px tot 60px (fluid tussen de kleinste en grootste viewport)"
         }
       }
     }

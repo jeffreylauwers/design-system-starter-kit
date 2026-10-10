@@ -1,0 +1,228 @@
+{
+  "dsn": {
+    "space": {
+      "block": {
+        "2xs": {
+          "$value": "fluid({dsn.space.block.min.2xs}, {dsn.space.block.max.2xs})",
+          "$description": "1px (min en max gelijk, schaalt niet mee)"
+        },
+        "xs": {
+          "$value": "fluid({dsn.space.block.min.xs}, {dsn.space.block.max.xs})",
+          "$description": "2px (min en max gelijk, schaalt niet mee)"
+        },
+        "sm": {
+          "$value": "fluid({dsn.space.block.min.sm}, {dsn.space.block.max.sm})",
+          "$description": "4px tot 5px (fluid tussen de kleinste en grootste viewport)"
+        },
+        "md": {
+          "$value": "fluid({dsn.space.block.min.md}, {dsn.space.block.max.md})",
+          "$description": "8px tot 10px (fluid tussen de kleinste en grootste viewport)"
+        },
+        "lg": {
+          "$value": "fluid({dsn.space.block.min.lg}, {dsn.space.block.max.lg})",
+          "$description": "12px tot 15px (fluid tussen de kleinste en grootste viewport)"
+        },
+        "xl": {
+          "$value": "fluid({dsn.space.block.min.xl}, {dsn.space.block.max.xl})",
+          "$description": "16px tot 20px (fluid tussen de kleinste en grootste viewport)"
+        },
+        "2xl": {
+          "$value": "fluid({dsn.space.block.min.2xl}, {dsn.space.block.max.2xl})",
+          "$description": "20px tot 25px (fluid tussen de kleinste en grootste viewport)"
+        },
+        "3xl": {
+          "$value": "fluid({dsn.space.block.min.3xl}, {dsn.space.block.max.3xl})",
+          "$description": "24px tot 30px (fluid tussen de kleinste en grootste viewport)"
+        },
+        "4xl": {
+          "$value": "fluid({dsn.space.block.min.4xl}, {dsn.space.block.max.4xl})",
+          "$description": "32px tot 40px (fluid tussen de kleinste en grootste viewport)"
+        },
+        "5xl": {
+          "$value": "fluid({dsn.space.block.min.5xl}, {dsn.space.block.max.5xl})",
+          "$description": "48px tot 60px (fluid tussen de kleinste en grootste viewport)"
+        },
+        "6xl": {
+          "$value": "fluid({dsn.space.block.min.6xl}, {dsn.space.block.max.6xl})",
+          "$description": "64px tot 80px (fluid tussen de kleinste en grootste viewport)"
+        }
+      },
+      "inline": {
+        "2xs": {
+          "$value": "fluid({dsn.space.inline.min.2xs}, {dsn.space.inline.max.2xs})",
+          "$description": "1px (min en max gelijk, schaalt niet mee)"
+        },
+        "xs": {
+          "$value": "fluid({dsn.space.inline.min.xs}, {dsn.space.inline.max.xs})",
+          "$description": "2px (min en max gelijk, schaalt niet mee)"
+        },
+        "sm": {
+          "$value": "fluid({dsn.space.inline.min.sm}, {dsn.space.inline.max.sm})",
+          "$description": "4px tot 5px (fluid tussen de kleinste en grootste viewport)"
+        },
+        "md": {
+          "$value": "fluid({dsn.space.inline.min.md}, {dsn.space.inline.max.md})",
+          "$description": "8px tot 10px (fluid tussen de kleinste en grootste viewport)"
+        },
+        "lg": {
+          "$value": "fluid({dsn.space.inline.min.lg}, {dsn.space.inline.max.lg})",
+          "$description": "12px tot 15px (fluid tussen de kleinste en grootste viewport)"
+        },
+        "xl": {
+          "$value": "fluid({dsn.space.inline.min.xl}, {dsn.space.inline.max.xl})",
+          "$description": "16px tot 20px (fluid tussen de kleinste en grootste viewport)"
+        },
+        "2xl": {
+          "$value": "fluid({dsn.space.inline.min.2xl}, {dsn.space.inline.max.2xl})",
+          "$description": "20px tot 25px (fluid tussen de kleinste en grootste viewport)"
+        },
+        "3xl": {
+          "$value": "fluid({dsn.space.inline.min.3xl}, {dsn.space.inline.max.3xl})",
+          "$description": "24px tot 30px (fluid tussen de kleinste en grootste viewport)"
+        },
+        "4xl": {
+          "$value": "fluid({dsn.space.inline.min.4xl}, {dsn.space.inline.max.4xl})",
+          "$description": "32px tot 40px (fluid tussen de kleinste en grootste viewport)"
+        },
+        "5xl": {
+          "$value": "fluid({dsn.space.inline.min.5xl}, {dsn.space.inline.max.5xl})",
+          "$description": "48px tot 60px (fluid tussen de kleinste en grootste viewport)"
+        },
+        "6xl": {
+          "$value": "fluid({dsn.space.inline.min.6xl}, {dsn.space.inline.max.6xl})",
+          "$description": "64px tot 80px (fluid tussen de kleinste en grootste viewport)"
+        }
+      },
+      "text": {
+        "3xs": {
+          "$value": "fluid({dsn.space.text.min.3xs}, {dsn.space.text.max.3xs})",
+          "$description": "1px (min en max gelijk, schaalt niet mee)"
+        },
+        "2xs": {
+          "$value": "fluid({dsn.space.text.min.2xs}, {dsn.space.text.max.2xs})",
+          "$description": "2px (min en max gelijk, schaalt niet mee)"
+        },
+        "xs": {
+          "$value": "fluid({dsn.space.text.min.xs}, {dsn.space.text.max.xs})",
+          "$description": "2px (min en max gelijk, schaalt niet mee)"
+        },
+        "sm": {
+          "$value": "fluid({dsn.space.text.min.sm}, {dsn.space.text.max.sm})",
+          "$description": "4px tot 5px (fluid tussen de kleinste en grootste viewport)"
+        },
+        "md": {
+          "$value": "fluid({dsn.space.text.min.md}, {dsn.space.text.max.md})",
+          "$description": "8px tot 10px (fluid tussen de kleinste en grootste viewport)"
+        },
+        "lg": {
+          "$value": "fluid({dsn.space.text.min.lg}, {dsn.space.text.max.lg})",
+          "$description": "12px tot 15px (fluid tussen de kleinste en grootste viewport)"
+        },
+        "xl": {
+          "$value": "fluid({dsn.space.text.min.xl}, {dsn.space.text.max.xl})",
+          "$description": "16px tot 20px (fluid tussen de kleinste en grootste viewport)"
+        },
+        "2xl": {
+          "$value": "fluid({dsn.space.text.min.2xl}, {dsn.space.text.max.2xl})",
+          "$description": "20px tot 25px (fluid tussen de kleinste en grootste viewport)"
+        },
+        "3xl": {
+          "$value": "fluid({dsn.space.text.min.3xl}, {dsn.space.text.max.3xl})",
+          "$description": "24px tot 30px (fluid tussen de kleinste en grootste viewport)"
+        }
+      },
+      "column": {
+        "2xs": {
+          "$value": "fluid({dsn.space.column.min.2xs}, {dsn.space.column.max.2xs})",
+          "$description": "1px (min en max gelijk, schaalt niet mee)"
+        },
+        "xs": {
+          "$value": "fluid({dsn.space.column.min.xs}, {dsn.space.column.max.xs})",
+          "$description": "2px (min en max gelijk, schaalt niet mee)"
+        },
+        "sm": {
+          "$value": "fluid({dsn.space.column.min.sm}, {dsn.space.column.max.sm})",
+          "$description": "4px tot 5px (fluid tussen de kleinste en grootste viewport)"
+        },
+        "md": {
+          "$value": "fluid({dsn.space.column.min.md}, {dsn.space.column.max.md})",
+          "$description": "8px tot 10px (fluid tussen de kleinste en grootste viewport)"
+        },
+        "lg": {
+          "$value": "fluid({dsn.space.column.min.lg}, {dsn.space.column.max.lg})",
+          "$description": "12px tot 15px (fluid tussen de kleinste en grootste viewport)"
+        },
+        "xl": {
+          "$value": "fluid({dsn.space.column.min.xl}, {dsn.space.column.max.xl})",
+          "$description": "16px tot 20px (fluid tussen de kleinste en grootste viewport)"
+        },
+        "2xl": {
+          "$value": "fluid({dsn.space.column.min.2xl}, {dsn.space.column.max.2xl})",
+          "$description": "20px tot 25px (fluid tussen de kleinste en grootste viewport)"
+        },
+        "3xl": {
+          "$value": "fluid({dsn.space.column.min.3xl}, {dsn.space.column.max.3xl})",
+          "$description": "24px tot 30px (fluid tussen de kleinste en grootste viewport)"
+        },
+        "4xl": {
+          "$value": "fluid({dsn.space.column.min.4xl}, {dsn.space.column.max.4xl})",
+          "$description": "32px tot 40px (fluid tussen de kleinste en grootste viewport)"
+        },
+        "5xl": {
+          "$value": "fluid({dsn.space.column.min.5xl}, {dsn.space.column.max.5xl})",
+          "$description": "64px tot 80px (fluid tussen de kleinste en grootste viewport)"
+        },
+        "6xl": {
+          "$value": "fluid({dsn.space.column.min.6xl}, {dsn.space.column.max.6xl})",
+          "$description": "160px tot 200px (fluid tussen de kleinste en grootste viewport)"
+        }
+      },
+      "row": {
+        "2xs": {
+          "$value": "fluid({dsn.space.row.min.2xs}, {dsn.space.row.max.2xs})",
+          "$description": "1px (min en max gelijk, schaalt niet mee)"
+        },
+        "xs": {
+          "$value": "fluid({dsn.space.row.min.xs}, {dsn.space.row.max.xs})",
+          "$description": "2px (min en max gelijk, schaalt niet mee)"
+        },
+        "sm": {
+          "$value": "fluid({dsn.space.row.min.sm}, {dsn.space.row.max.sm})",
+          "$description": "4px tot 5px (fluid tussen de kleinste en grootste viewport)"
+        },
+        "md": {
+          "$value": "fluid({dsn.space.row.min.md}, {dsn.space.row.max.md})",
+          "$description": "8px tot 10px (fluid tussen de kleinste en grootste viewport)"
+        },
+        "lg": {
+          "$value": "fluid({dsn.space.row.min.lg}, {dsn.space.row.max.lg})",
+          "$description": "12px tot 15px (fluid tussen de kleinste en grootste viewport)"
+        },
+        "xl": {
+          "$value": "fluid({dsn.space.row.min.xl}, {dsn.space.row.max.xl})",
+          "$description": "16px tot 20px (fluid tussen de kleinste en grootste viewport)"
+        },
+        "2xl": {
+          "$value": "fluid({dsn.space.row.min.2xl}, {dsn.space.row.max.2xl})",
+          "$description": "20px tot 25px (fluid tussen de kleinste en grootste viewport)"
+        },
+        "3xl": {
+          "$value": "fluid({dsn.space.row.min.3xl}, {dsn.space.row.max.3xl})",
+          "$description": "24px tot 30px (fluid tussen de kleinste en grootste viewport)"
+        },
+        "4xl": {
+          "$value": "fluid({dsn.space.row.min.4xl}, {dsn.space.row.max.4xl})",
+          "$description": "32px tot 40px (fluid tussen de kleinste en grootste viewport)"
+        },
+        "5xl": {
+          "$value": "fluid({dsn.space.row.min.5xl}, {dsn.space.row.max.5xl})",
+          "$description": "64px tot 80px (fluid tussen de kleinste en grootste viewport)"
+        },
+        "6xl": {
+          "$value": "fluid({dsn.space.row.min.6xl}, {dsn.space.row.max.6xl})",
+          "$description": "160px tot 200px (fluid tussen de kleinste en grootste viewport)"
+        }
+      }
+    }
+  }
+}

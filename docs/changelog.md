@@ -10,6 +10,18 @@ All notable changes to this project are documented in this file.
 
 Nog niet gepubliceerde wijzigingen. Schrijf nieuwe changelog-entries hieronder; bij de volgende release wordt deze kop gepromoveerd naar het definitieve versienummer.
 
+### Fluid spacing naast de fluid type scale
+
+Ruimte groeit nu mee met de viewport, net als tekst. Elke maat heeft in het thema een min-waarde (op 360px) en een max-waarde (op 1440px): `dsn.text.font-size.min.*` / `max.*` en `dsn.space.{block,inline,text,column,row}.min.*` / `max.*`. Het bereik zelf staat in `dsn.viewport.min-inline-size` en `max-inline-size`. Standaard is elke max de min × 1.25. Maten van 1px en 2px schalen niet mee, en het klikdoel (`dsn.pointer-target`, 3rem) blijft vast.
+
+Een project-type kiest per maat met `fluid({min}, {max})` of hij meegroeit. De build maakt daar een `clamp()` van. Er zijn nu drie densities:
+
+- `default`: fluid tekst en fluid ruimte. Dit is nieuw, en daardoor groeit de spacing in bestaande projecten op `default` mee.
+- `default-fixed-space`: fluid tekst met vaste ruimte. Dit is het oude gedrag van `default`.
+- `information-dense`: tekst en ruimte zijn vast.
+
+Ook voor tekst verandert er iets. Medium gaat nu van 16px naar 20px tussen 360px en 1440px. Eerder was dat 16px naar 20,5px tot ongeveer 1730px. Icons, checkboxes en radio's volgen de font-size, dus die schalen vanzelf mee. In de Figma-export staat de spacing nu in de `dsn/Density`-collection, met een mobile- en een desktop-mode op 360px en 1440px.
+
 ### Figma-plugin: lettertypes laden vóór de variables
 
 Een wissel van lettertype in een bestaande Figma-bibliotheek brak de variables-import af met "unloaded font". Een font-family-variable die al aan tekstlagen hangt, zet die lagen bij een nieuwe waarde direct om, en Figma weigert dat zolang het lettertype niet geladen is. De plugin laadt nu eerst elke familie uit de font-family-variables, in al haar stijlen, en schrijft daarna de waardes. Een familie die Figma niet kent levert een waarschuwing op in plaats van een fout. De mock van de smoke test stelt dezelfde eis.

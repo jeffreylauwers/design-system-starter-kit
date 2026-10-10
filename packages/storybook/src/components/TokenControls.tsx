@@ -171,6 +171,7 @@ export function TokenControls({ onRefresh }: TokenControlsProps) {
           }}
         >
           <option value="default">Default</option>
+          <option value="default-fixed-space">Default (fixed space)</option>
           <option value="information-dense">Information Dense</option>
         </select>
       </div>
