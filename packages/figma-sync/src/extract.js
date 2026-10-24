@@ -193,13 +193,360 @@ const VISUALLY_HIDDEN_CLASS = 'dsn-visually-hidden';
 function domWalker([properties, hiddenClass]) {
   const root = document.querySelector('[data-figma-root]');
   if (!root) throw new Error('geen [data-figma-root] gevonden');
-  const origin = root.getBoundingClientRect();
 
   const readStyles = (element, pseudo = null) => {
     const computed = getComputedStyle(element, pseudo);
     const result = {};
     for (const property of properties) result[property] = computed[property];
     return result;
+  };
+
+  const px = (value) => Number.parseFloat(value) || 0;
+  const round = (value) => Math.round(value * 100) / 100;
+
+  // ---------------------------------------------------------------------------
+  // Markers van lijsten
+  //
+  // `::marker` is een pseudo-element en dus geen DOM-node, maar wel een stuk
+  // van wat de gebruiker ziet. Hier wordt het een laag: het list item wordt een
+  // rij met een markerkolom en de tekst ernaast. Die kolom staat in de browser
+  // in de `padding-inline-start` van de lijst, dus die padding verhuist naar
+  // het item, als `minWidth` van de kolom en met hetzelfde token.
+  // ---------------------------------------------------------------------------
+
+  // `list-style-type` -> het teken dat de browser zet. Alleen wat het design
+  // system gebruikt plus de gangbare buren; iets anders levert een melding op
+  // in plaats van een verzonnen teken.
+  const SYMBOLS = { disc: '•', circle: '◦', square: '▪' };
+  const roman = (value) => {
+    const table = [
+      [1000, 'm'],
+      [900, 'cm'],
+      [500, 'd'],
+      [400, 'cd'],
+      [100, 'c'],
+      [90, 'xc'],
+      [50, 'l'],
+      [40, 'xl'],
+      [10, 'x'],
+      [9, 'ix'],
+      [5, 'v'],
+      [4, 'iv'],
+      [1, 'i'],
+    ];
+    let rest = value;
+    let out = '';
+    for (const [amount, letters] of table) {
+      while (rest >= amount) {
+        out += letters;
+        rest -= amount;
+      }
+    }
+    return out;
+  };
+  const alpha = (value) => {
+    let rest = value;
+    let out = '';
+    while (rest > 0) {
+      rest -= 1;
+      out = String.fromCharCode(97 + (rest % 26)) + out;
+      rest = Math.floor(rest / 26);
+    }
+    return out;
+  };
+  const ORDINALS = {
+    decimal: (n) => `${n}`,
+    'decimal-leading-zero': (n) => (n < 10 && n >= 0 ? `0${n}` : `${n}`),
+    'lower-roman': roman,
+    'upper-roman': (n) => roman(n).toUpperCase(),
+    'lower-alpha': alpha,
+    'lower-latin': alpha,
+    'upper-alpha': (n) => alpha(n).toUpperCase(),
+    'upper-latin': (n) => alpha(n).toUpperCase(),
+  };
+
+  const isListItem = (element) =>
+    element?.nodeType === Node.ELEMENT_NODE &&
+    getComputedStyle(element).display === 'list-item';
+
+  // Een marker die we tekenen: een list item met een teken buiten de tekst.
+  // `inside` en `list-style-image` horen bij de tekst zelf en blijven buiten
+  // beschouwing; die zijn in dit design system ook niet in gebruik.
+  const hasOutsideMarker = (element) => {
+    if (!isListItem(element)) return false;
+    const computed = getComputedStyle(element);
+    return (
+      computed.listStyleType !== 'none' &&
+      computed.listStylePosition === 'outside' &&
+      computed.listStyleImage === 'none'
+    );
+  };
+
+  // Het rangnummer zoals de browser het telt: `start` en `reversed` op de
+  // lijst, `value` op een item. De computed style geeft de teller niet prijs.
+  const ordinalOf = (element) => {
+    const list = element.parentElement;
+    const items = Array.from(list?.children ?? []).filter(isListItem);
+    const reversed = list?.tagName === 'OL' && list.reversed;
+    const start =
+      list?.tagName === 'OL' && list.hasAttribute('start')
+        ? list.start
+        : reversed
+          ? items.length
+          : 1;
+    let value = start;
+    for (const [index, item] of items.entries()) {
+      if (item.hasAttribute('value'))
+        value = Number(item.getAttribute('value'));
+      else if (index > 0) value += reversed ? -1 : 1;
+      if (item === element) return value;
+    }
+    return start;
+  };
+
+  const markerTextOf = (element) => {
+    const type = getComputedStyle(element).listStyleType;
+    if (SYMBOLS[type]) return SYMBOLS[type];
+    const format = ORDINALS[type];
+    return format ? `${format(ordinalOf(element))}.` : null;
+  };
+
+  // Breedte van een stuk tekst in de stijl van de marker. Een spatie telt
+  // alleen mee met `white-space: pre`.
+  const textWidth = (element, text) => {
+    const probe = document.createElement('span');
+    const marker = getComputedStyle(element, '::marker');
+    probe.style.cssText = `position:absolute;visibility:hidden;white-space:pre;font-family:${marker.fontFamily};font-size:${marker.fontSize};font-weight:${marker.fontWeight};font-style:${marker.fontStyle};letter-spacing:${marker.letterSpacing}`;
+    probe.textContent = text;
+    document.body.appendChild(probe);
+    const width = probe.getBoundingClientRect().width;
+    probe.remove();
+    return width;
+  };
+
+  // De inspringing waar de marker van een item in staat: de padding aan de
+  // inline-start van zijn lijst.
+  const indentOf = (element) =>
+    px(getComputedStyle(element.parentElement).paddingLeft);
+
+  // De lijsten waar de root van de matrix in genest staat. Een item op het
+  // tweede niveau staat in de markerkolom van het item erboven; dat is de
+  // inspringing die het geneste item in Figma zelf moet dragen.
+  const ancestorItems = (element) => {
+    const found = [];
+    for (
+      let node = element.parentElement;
+      node && node !== document.body;
+      node = node.parentElement
+    ) {
+      if (hasOutsideMarker(node)) found.unshift(node);
+    }
+    return found;
+  };
+
+  const rootIndents =
+    hasOutsideMarker(root) && getComputedStyle(root).direction === 'ltr'
+      ? [...ancestorItems(root), root].map(indentOf)
+      : [];
+
+  // De root begint in Figma waar zijn markerkolom begint, dus de oorsprong
+  // schuift mee naar links.
+  const rootRect = root.getBoundingClientRect();
+  const origin = {
+    x: rootRect.x - rootIndents.reduce((sum, value) => sum + value, 0),
+    y: rootRect.y,
+  };
+
+  // Stijlen voor een laag die de walker zelf maakt: alles neutraal, behalve
+  // wat de laag moet doen.
+  const neutralStyles = (base, overrides) => ({
+    ...base,
+    display: 'block',
+    flexDirection: 'row',
+    flexWrap: 'nowrap',
+    gap: '0px',
+    rowGap: '0px',
+    columnGap: '0px',
+    alignItems: 'normal',
+    justifyContent: 'normal',
+    alignSelf: 'auto',
+    flexGrow: '0',
+    paddingTop: '0px',
+    paddingRight: '0px',
+    paddingBottom: '0px',
+    paddingLeft: '0px',
+    minWidth: 'auto',
+    minHeight: 'auto',
+    backgroundColor: 'rgba(0, 0, 0, 0)',
+    borderTopWidth: '0px',
+    borderRightWidth: '0px',
+    borderBottomWidth: '0px',
+    borderLeftWidth: '0px',
+    borderTopStyle: 'none',
+    borderRightStyle: 'none',
+    borderBottomStyle: 'none',
+    borderLeftStyle: 'none',
+    borderTopLeftRadius: '0px',
+    borderTopRightRadius: '0px',
+    borderBottomLeftRadius: '0px',
+    borderBottomRightRadius: '0px',
+    opacity: '1',
+    boxShadow: 'none',
+    position: 'static',
+    overflow: 'visible',
+    transform: 'none',
+    ...overrides,
+  });
+
+  /**
+   * Maakt van een list item een rij: [inspringing...] [marker] [inhoud].
+   *
+   * Werkt op de al gemeten node. De markerkolom is precies de inspringing van
+   * de lijst breed (een `minWidth` met het token van die padding), de marker
+   * staat er rechts in, met de ruimte van een spatie tot de tekst. Zo zet de
+   * browser hem ook: het teken plus een spatie, tegen de tekst aan.
+   */
+  const withMarker = (element, node, indents) => {
+    const text = markerTextOf(element);
+    if (text === null) {
+      node.notes = [
+        ...(node.notes ?? []),
+        `list-style-type ${getComputedStyle(element).listStyleType} kent de generator niet, de marker is weggelaten`,
+      ];
+      return;
+    }
+    if (getComputedStyle(element).direction !== 'ltr') {
+      node.notes = [
+        ...(node.notes ?? []),
+        'een marker in een rechts-naar-links lijst wordt nog niet getekend',
+      ];
+      return;
+    }
+
+    const own = indents[indents.length - 1];
+    const before = indents.slice(0, -1);
+    const total = indents.reduce((sum, value) => sum + value, 0);
+    const lineHeight =
+      px(node.styles.lineHeight) || px(node.styles.fontSize) * 1.2;
+    // Los gemeten en niet als verschil tussen "1. " en "1.": dat verschil
+    // hangt van de kerning met het teken ervoor af, en dan zou elk item een
+    // net iets andere padding krijgen en elke instance een override.
+    const space = round(textWidth(element, ' '));
+
+    const markerStyles = readStyles(element, '::marker');
+    const parentTokens = window.__dsnReadTokenSources(element.parentElement);
+
+    const x = node.rect.x - total;
+    const indentNodes = before.map((width, index) => {
+      // De lijst waar dit niveau in staat; zijn padding is de inspringing.
+      const level = ancestorItems(element)[index];
+      const tokens = window.__dsnReadTokenSources(level.parentElement);
+      const start = x + before.slice(0, index).reduce((s, v) => s + v, 0);
+      return {
+        tag: 'indent',
+        classes: [],
+        synthetic: 'indent',
+        rect: {
+          x: round(start),
+          y: node.rect.y,
+          width: round(width),
+          height: 0,
+        },
+        styles: neutralStyles(node.styles, {
+          display: 'inline-block',
+          paddingLeft: `${width}px`,
+        }),
+        tokens: tokens['padding-left']
+          ? { 'padding-left': tokens['padding-left'] }
+          : {},
+        slot: null,
+        instance: null,
+        instanceVariant: null,
+        children: [],
+      };
+    });
+
+    const marker = {
+      tag: 'marker',
+      classes: [],
+      synthetic: 'marker',
+      rect: {
+        x: round(x + before.reduce((s, v) => s + v, 0)),
+        y: node.rect.y,
+        width: round(Math.max(own, textWidth(element, `${text} `))),
+        height: round(lineHeight),
+      },
+      styles: neutralStyles(node.styles, {
+        display: 'inline-flex',
+        alignItems: 'flex-start',
+        justifyContent: 'flex-end',
+        paddingRight: `${space}px`,
+        minWidth: `${own}px`,
+      }),
+      tokens: parentTokens['padding-left']
+        ? { 'min-width': parentTokens['padding-left'] }
+        : {},
+      slot: null,
+      instance: null,
+      instanceVariant: null,
+      children: [
+        {
+          kind: 'text',
+          text,
+          slot: element.dataset.figmaMarkerSlot || null,
+          textStyles: {
+            ...node.styles,
+            ...markerStyles,
+            lineHeight:
+              markerStyles.lineHeight === 'normal'
+                ? node.styles.lineHeight
+                : markerStyles.lineHeight,
+            textAlign: 'right',
+          },
+          textTokens: window.__dsnReadTokenSources(element, '::marker'),
+        },
+      ],
+    };
+
+    // Meer dan één kind (tekst met een link erin, een geneste lijst) gaat in
+    // een eigen blok naast de marker, zodat het samen afbreekt en de marker bij
+    // de eerste regel blijft.
+    const content =
+      node.children.length > 1
+        ? [
+            {
+              tag: 'content',
+              classes: [],
+              synthetic: 'content',
+              rect: { ...node.rect },
+              styles: neutralStyles(node.styles, { flexGrow: '1' }),
+              tokens: node.tokens,
+              slot: null,
+              instance: null,
+              instanceVariant: null,
+              children: node.children,
+            },
+          ]
+        : node.children;
+
+    node.styles = {
+      ...node.styles,
+      display: 'flex',
+      flexDirection: 'row',
+      flexWrap: 'nowrap',
+      alignItems: 'flex-start',
+      justifyContent: 'flex-start',
+      gap: '0px',
+      rowGap: '0px',
+      columnGap: '0px',
+    };
+    node.rect = {
+      ...node.rect,
+      x: round(x),
+      width: round(node.rect.width + total),
+    };
+    node.children = [...indentNodes, marker, ...content];
+    node.drawsMarker = true;
   };
 
   // Alleen deze velden tekenen een `::placeholder`. Een `type="date"` of
@@ -372,6 +719,21 @@ function domWalker([properties, hiddenClass]) {
         continue;
       }
       node.children.push(visit(child));
+    }
+
+    if (hasOutsideMarker(element)) {
+      withMarker(
+        element,
+        node,
+        element === root ? rootIndents : [indentOf(element)]
+      );
+    }
+
+    // De inspringing van deze lijst staat nu in de markerkolom van zijn items.
+    // Liet de lijst hem ook staan, dan sprong alles twee keer in.
+    if (node.children.some((child) => child.drawsMarker)) {
+      node.styles = { ...node.styles, paddingLeft: '0px' };
+      if (node.tokens) delete node.tokens['padding-left'];
     }
 
     return node;

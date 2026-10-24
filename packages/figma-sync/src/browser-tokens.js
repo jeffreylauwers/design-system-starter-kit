@@ -444,7 +444,7 @@ export function createTokenReader(trackedProperties) {
    * (`element.matches` gooit er zelfs een fout op), dus die wordt apart gelezen:
    * het pseudo-deel eraf, en de rest tegen het element houden.
    */
-  const PSEUDO_ELEMENTS = new Set(['::placeholder']);
+  const PSEUDO_ELEMENTS = new Set(['::placeholder', '::marker']);
 
   /**
    * De winnende declaratie per longhand voor één element.
@@ -510,6 +510,11 @@ export function createTokenReader(trackedProperties) {
           // Alleen regels voor dit pseudo-element, en dan zonder dat deel.
           if (!trimmed.endsWith(pseudo)) continue;
           target = trimmed.slice(0, -pseudo.length);
+          // `.dsn-unordered-list ::marker` heeft een spatie voor het
+          // pseudo-deel: dat is `.dsn-unordered-list *::marker`, de marker van
+          // elk element erbinnen. Zonder de `*` matcht de rest op de lijst
+          // zelf, en krijgt het item de markerkleur niet.
+          if (!target.trim() || /[\s>+~]$/.test(target)) target += '*';
         }
         try {
           if (!element.matches(target)) continue;

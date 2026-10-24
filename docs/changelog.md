@@ -25,6 +25,14 @@ Het component is een key-value lijst op basis van `<dl>` en wordt breder gebruik
 
 In Figma maakt de eerstvolgende import een nieuwe component set `DataList` aan. De bestaande set `SummaryList` blijft staan en moet met de hand worden opgeruimd of vooraf hernoemd.
 
+### figma-sync: lijsten uit list items, met bolletjes en nummers (#401, #373)
+
+UnorderedList, OrderedList en IconList bestaan in Figma nu uit 10 instances van één list item: `dsn-unordered-list-item`, `dsn-ordered-list-item` en `dsn-icon-list-item`. De tekst van elk item staat in het properties panel (`label`), en wie minder items nodig heeft zet er zelf een paar uit. Later vult een slot de lijst met dezelfde items (#450).
+
+De bolletjes en nummers zijn er nu ook. `::marker` is een pseudo-element en kwam daarom nooit mee; de extractor tekent het teken nu zelf als laag, met de markerkleur gebonden aan `--dsn-unordered-list-marker-color` en `--dsn-ordered-list-marker-color`. De items van UnorderedList en OrderedList hebben een `level`-as (1, 2, 3) voor de geneste weergave. Het nummer van een OrderedList-item is een TEXT-property `number`; het icoon van een IconList-item is een instance swap. TableOfContents en PageFooter krijgen er hun bolletjes door.
+
+In Figma vervallen de `length`-as van UnorderedList en OrderedList en de `icon`-as van IconList, waardoor de drie lijsten geen component set meer zijn maar een los component. De eerstvolgende import verwijdert de oude set en meldt dat in de log. Instances die van die set geplaatst waren, raken los en moeten opnieuw uit de bibliotheek worden gekozen. Importeer de drie item-sets samen met de lijsten: de plugin zet de items dan vanzelf eerst.
+
 ## Version 4.3.0 (October 12, 2026)
 
 Minor release. Spacing groeit nu mee met de viewport, net als tekst. Token-namen, markup en API's blijven gelijk. Wel veranderen er waardes: projecten op de density `default` krijgen op brede schermen meer ruimte. Buttons en formuliervelden worden daar 52px hoog in plaats van 48px, en 48px blijft het minimum. Wie het oude gedrag wil houden, kiest de nieuwe density `default-fixed-space`. Daarnaast meet figma-sync meer componenten in hun desktopstand, en zijn een paar sets in Figma eenvoudiger geworden.

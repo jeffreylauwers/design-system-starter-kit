@@ -808,8 +808,8 @@ worden:
 
 Dat staat ook in de spec, als `instanceCandidates`. Zo kan het patroon per
 component aan, en is in Figma te bevestigen dat het werkt voordat de hele
-bibliotheek omgaat. HeadingGroup, Alert, Note, FormField, ModalDialog en de
-ketens van Checkbox en Radio (Option en Group) staan erop.
+bibliotheek omgaat. HeadingGroup, Alert, Note, FormField, ModalDialog, de
+drie lijsten en de ketens van Checkbox en Radio (Option en Group) staan erop.
 
 **De matrix rendert de opbouw van het component, niet een kortere versie.**
 FormFieldLabel heeft in zijn eigen set een suffix-laag die via `showSuffix`
@@ -932,10 +932,13 @@ dsn-heading-group"`, dus zonder override zouden Heading en HeadingGroup
 - **`instances: true`** maakt van geneste componenten instances in plaats van
   gemeten lagen; zie "Geneste componenten worden instances".
 - **`warnings`** zet een vaste waarschuwing in de spec, voor een beperking die
-  de generator zelf niet kán zien. `::marker` is het voorbeeld: de bolletjes van
-  een UnorderedList zijn een pseudo-element en dus geen DOM-node, dus er valt
-  niets te meten en niets in de meting valt daarover op te merken. Wat er wél
-  in Figma landt is de typografie, de inspringing en de afstand tussen items.
+  de generator zelf niet kán zien. `::file-selector-button` is het voorbeeld:
+  de knop van FileInput is een pseudo-element en dus geen DOM-node, dus er valt
+  niets te meten en niets in de meting valt daarover op te merken.
+- **`data-figma-marker-slot`** op een list item hangt een component property
+  aan de markerlaag die de extractor tekent. Die laag heeft geen element in de
+  markup, dus `data-figma-slot` kan er niet op. OrderedListItem gebruikt het
+  voor `number`; zie "Markers van lijsten".
 
 ## Component properties
 
@@ -1042,20 +1045,91 @@ padding-left  de waarde van het token (55) wijkt af van de gemeten 44 (search-in
 Dit hoort bij issue #328. Zolang die openstaat is het geen regressie maar een
 bekende post.
 
-### Pseudo-elementen komen nooit mee
+### Pseudo-elementen komen niet mee, op `::marker` na
 
-De extractor loopt de DOM af, en een pseudo-element is geen DOM-node. Dat raakt
-drie plekken, en op alle drie staat het als vaste `warnings`-regel in de matrix
-in plaats van dat het stil blijft:
+De extractor loopt de DOM af, en een pseudo-element is geen DOM-node. Op twee
+plekken staat dat als vaste `warnings`-regel in de matrix, in plaats van dat
+het stil blijft:
 
-| Pseudo-element           | Component                  | Wat ontbreekt             |
-| ------------------------ | -------------------------- | ------------------------- |
-| `::marker`               | UnorderedList, OrderedList | bolletjes en nummers      |
-| `::file-selector-button` | FileInput                  | de knop "Bestand kiezen"  |
-| `::backdrop`             | ModalDialog, Drawer        | de verduistering erachter |
+| Pseudo-element           | Component           | Wat ontbreekt             |
+| ------------------------ | ------------------- | ------------------------- |
+| `::file-selector-button` | FileInput           | de knop "Bestand kiezen"  |
+| `::backdrop`             | ModalDialog, Drawer | de verduistering erachter |
 
-`IconList` laat zien wat het alternatief is: die zet `list-style: none` en
-tekent zijn markering met een echt `<svg>`, en komt daardoor wel volledig over.
+`::marker` was de derde. Die tekent de extractor nu zelf als laag, omdat een
+marker één teken is dat uit de computed style en de positie van het item volgt;
+zie "Markers van lijsten". Een knop met een eigen rand en padding of een
+verduistering over het hele viewport valt zo niet na te tekenen.
+
+### Markers van lijsten
+
+Een `<li>` met een bolletje of nummer heeft in de DOM geen element voor dat
+teken: het is `::marker`. `getComputedStyle(li, '::marker')` geeft wel de kleur
+en de maat, en de tokenlezer kent de regel `.dsn-unordered-list ::marker`. De
+extractor maakt daaruit een laag, en het item wordt in Figma een rij:
+
+```
+li                    HORIZONTAL
+├── marker            HUG, minWidth = inspringing van de lijst, rechts uitgelijnd
+│   └── Tekst "1."    kleur gebonden aan ordered-list/marker-color
+└── Tekst "Tekst"     FILL
+```
+
+- **De inspringing verhuist naar het item.** In de browser staat de marker in
+  de `padding-inline-start` van de lijst. In Figma is die padding de `minWidth`
+  van de markerkolom, met hetzelfde token, en heeft de lijst zelf geen padding
+  meer. Anders sprong alles twee keer in.
+- **Het teken komt uit `list-style-type`.** `content` geeft voor een marker
+  alleen `normal` terug. `disc` wordt `•`, `decimal` het rangnummer met een
+  punt, en `start`, `reversed` en `value` tellen mee zoals in de browser. Een
+  type dat de generator niet kent levert een melding op, geen verzonnen teken.
+- **De spatie na het teken is padding.** De browser zet het teken plus een
+  spatie tegen de tekst. Die spatie is de `paddingRight` van de kolom, los
+  gemeten, zodat elk item dezelfde waarde heeft en een instance geen override
+  krijgt alleen omdat "1." en "2." anders kernen.
+- **Een genest item draagt de inspringing van de lijsten erboven.** Een matrix
+  die een geneste lijst rendert en het diepste item meet, krijgt per niveau
+  een lege laag `indent` vóór de marker, met het padding-token van die lijst.
+  Zo'n laag hugt om zijn padding, dus hij volgt het token. Zo komt `level` bij
+  UnorderedListItem en OrderedListItem tot stand.
+
+Dit geldt voor elke `<li>` met een marker, niet alleen voor de lijsten zelf:
+TableOfContents en PageFooter hebben er ook bolletjes door gekregen.
+
+`IconList` gebruikt dit niet. Die zet `list-style: none` en tekent zijn
+markering met een echt `<svg>`.
+
+#### Lijsten bestaan uit list items
+
+UnorderedList, OrderedList en IconList zijn elk 10 instances van één list
+item: `dsn-unordered-list-item`, `dsn-ordered-list-item` en
+`dsn-icon-list-item`. De tekst staat per item in het paneel (`label`, exposed),
+en een designer zet zelf de items uit die hij niet nodig heeft; booleans per
+item zijn er bewust niet. Straks vult een slot de lijst met dezelfde items
+(issue
+[#450](https://github.com/jeffreylauwers/design-system-starter-kit/issues/450)).
+
+| Item                      | Varianten       | Properties             |
+| ------------------------- | --------------- | ---------------------- |
+| `dsn-unordered-list-item` | `level` 1, 2, 3 | `label`                |
+| `dsn-ordered-list-item`   | `level` 1, 2, 3 | `label`, `number`      |
+| `dsn-icon-list-item`      | geen            | `label`, `icon` (swap) |
+
+- **Het nummer is een property.** In de browser volgt het uit de plek van het
+  item; een instance weet niet waar hij staat. De OrderedList zet 1 tot en met
+  10 neer, als override op de markerlaag. Wie een item uitzet, nummert zelf
+  door.
+- **Het icoon van IconList is een swap, geen as.** Welk icoon er staat
+  verandert geen token, alleen welke laag er staat. De `icon`-as die IconList
+  had is daarmee weg.
+- **Een geneste OrderedList begint weer bij 1.** Zo zet de CSS het: elk niveau
+  heeft zijn eigen `decimal`-teller. `level` verandert dus alleen de
+  inspringing, ook bij UnorderedList, waar het bolletje op elk niveau `disc`
+  blijft.
+
+Een item is geen `cssBlock` uit de manifest (een kale `<li>`, of bij IconList
+het BEM-element `dsn-icon-list__item`), dus de generator herkent hem niet
+vanzelf. `data-figma-instance` wijst hem aan.
 
 ### Disabled en invalid zijn eigen assen
 
@@ -1253,6 +1327,12 @@ staan.
 
 Een component overslaan is een besluit en geen achterstand, dus het staat hier
 met naam en reden.
+
+Andersom kan ook: een matrix voor iets dat in code geen eigen component is.
+Dat zijn de list items (`UnorderedListItem`, `OrderedListItem`,
+`IconListItem`). In code is een lijst een `<ul>` met kale `<li>`-elementen; in
+Figma moet hij uit instances van één item bestaan, en daar is een set voor
+nodig. Zo'n matrix draagt een `setName` en heeft geen entry in de manifest.
 
 ### Layoutcomponenten
 

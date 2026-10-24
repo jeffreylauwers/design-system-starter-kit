@@ -1,21 +1,29 @@
 /**
  * Variant-matrix voor UnorderedList.
  *
- * Let op de beperking hieronder: de bolletjes komen niet mee. `::marker` is
- * een pseudo-element en dus geen DOM-node, terwijl de extractor de DOM
- * afloopt. Wat er wél in Figma landt is alles wat het component verder is:
- * typografie, kleur, de inspringing (`padding-inline-start`) en de afstand
- * tussen items.
+ * Een lijst van 10 instances van `dsn-unordered-list-item`, alle tien op
+ * hetzelfde item. Een designer vult de tekst per item in het paneel in en zet
+ * de items uit die hij niet nodig heeft; booleans per item zijn er bewust niet.
+ * Straks bepaalt een slot het aantal (issue #450), en dan vult de designer dat
+ * slot met dezelfde items.
  *
- * Toch genereren en niet overslaan: die tokens zijn het component, en een
- * designer die de lijst in Figma nabouwt heeft ze nodig. Het bolletje zet hij
- * er met een Figma-lijststijl bij.
+ * Het bolletje komt uit `::marker`, dat de extractor als laag tekent. De
+ * inspringing van de lijst staat daardoor niet meer op de lijst maar in de
+ * markerkolom van elk item, met hetzelfde token. Zie "Markers van lijsten" in
+ * de README.
+ *
+ * Een item is geen `cssBlock` uit de manifest (het is een kale `<li>`), dus
+ * de generator herkent hem niet vanzelf; `data-figma-instance` wijst hem aan.
  */
 
 import { TEKST } from '../text.js';
 
+export const ITEM_COUNT = 10;
+
 export default {
   component: 'UnorderedList',
+
+  instances: true,
 
   fonts: [
     'https://fonts.googleapis.com/css2?family=Fira+Sans:wght@400;700&display=swap',
@@ -28,20 +36,13 @@ export default {
 
   wrapperStyle: 'width: 328px;',
 
-  warnings: [
-    'de bolletjes ontbreken: `::marker` is een pseudo-element en geen DOM-node, dus er valt niets te meten. De inspringing en de afstand tussen items komen wel mee; zet het bolletje in Figma met een lijststijl.',
-  ],
+  render() {
+    const items = Array.from(
+      { length: ITEM_COUNT },
+      () =>
+        `<li data-figma-instance="dsn-unordered-list-item"><span data-figma-slot="label">${TEKST}</span></li>`
+    ).join('');
 
-  axes: {
-    length: ['single-item', 'multiple-items'],
-  },
-
-  render({ length }) {
-    const items =
-      length === 'single-item' ? [TEKST] : [TEKST, `${TEKST} ${TEKST}`, TEKST];
-
-    return `<ul class="dsn-unordered-list" data-figma-root>
-      ${items.map((item) => `<li>${item}</li>`).join('')}
-    </ul>`;
+    return `<ul class="dsn-unordered-list" data-figma-root>${items}</ul>`;
   },
 };

@@ -951,6 +951,16 @@ for (const file of componentFiles) {
             `${spec.name} > ${override.path}: ${layer.layoutSizingHorizontal} i.p.v. ${override.layoutSizingHorizontal}`
           );
         }
+        // Een andere tekst in de instance, zoals het nummer van elk item in
+        // een OrderedList. Die moet op de laag staan, niet alleen in de spec.
+        if (
+          override.characters !== undefined &&
+          layer.characters !== override.characters
+        ) {
+          wrongOverrides.push(
+            `${spec.name} > ${override.path}: tekst "${layer.characters}" i.p.v. "${override.characters}"`
+          );
+        }
         for (const [field, reference] of Object.entries(
           override.boundVariables ?? {}
         )) {

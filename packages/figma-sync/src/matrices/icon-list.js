@@ -1,22 +1,24 @@
 /**
  * Variant-matrix voor IconList.
  *
- * De enige lijst die wél volledig overkomt. IconList zet `list-style: none` en
- * tekent zijn markering met een echt `<svg>`-element in plaats van met
- * `::marker`, dus er valt hier wel iets te meten. Dat is meteen het verschil
- * dat de twee andere lijsten laat zien: een marker die een element is komt in
- * Figma aan, een pseudo-element niet.
+ * 10 instances van `dsn-icon-list-item`. Het icoon is in het item een
+ * instance swap, dus kiest een designer het per item; de `icon`-as die hier
+ * eerder stond is daarmee naar het item verhuisd en deze set heeft geen assen.
  *
- * Elk item is een flexrij met het icoon op `align-items: flex-start`, zodat
- * het icoon bij de eerste tekstregel blijft staan als de tekst afbreekt. Het
- * item met twee regels staat er daarom bewust in.
+ * IconList tekent zijn markering met een echt `<svg>` in plaats van met
+ * `::marker`, en springt niet in. Het item is het BEM-element
+ * `dsn-icon-list__item` en geen `cssBlock`, dus `data-figma-instance` wijst
+ * het aan.
  */
 
 import { icon } from '../icons.js';
 import { TEKST } from '../text.js';
+import { ITEM_COUNT } from './unordered-list.js';
 
 export default {
   component: 'IconList',
+
+  instances: true,
 
   fonts: [
     'https://fonts.googleapis.com/css2?family=Fira+Sans:wght@400;700&display=swap',
@@ -30,20 +32,16 @@ export default {
 
   wrapperStyle: 'width: 328px;',
 
-  axes: {
-    icon: ['check', 'circle-check', 'x'],
-  },
+  render() {
+    const items = Array.from(
+      { length: ITEM_COUNT },
+      () =>
+        `<li class="dsn-icon-list__item" data-figma-instance="dsn-icon-list-item">
+           ${icon('check', { className: 'dsn-icon-list__icon', slot: 'icon' })}
+           <span data-figma-slot="label">${TEKST}</span>
+         </li>`
+    ).join('');
 
-  render({ icon: iconName }) {
-    const item = (text) =>
-      `<li class="dsn-icon-list__item">
-         ${icon(iconName, { className: 'dsn-icon-list__icon' })}
-         <span>${text}</span>
-       </li>`;
-
-    return `<ul class="dsn-icon-list" role="list" data-figma-root>
-      ${item(TEKST)}
-      ${item(`${TEKST} ${TEKST} ${TEKST} ${TEKST} ${TEKST} ${TEKST} ${TEKST}`)}
-    </ul>`;
+    return `<ul class="dsn-icon-list" role="list" data-figma-root>${items}</ul>`;
   },
 };

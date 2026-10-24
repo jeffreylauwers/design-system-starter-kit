@@ -6,8 +6,8 @@
  * Het attribuut staat er daarom altijd op, en `state` gaat over wat er ín de
  * dialoog staat, niet over open of dicht.
  *
- * De `::backdrop` komt niet mee. Dat is een pseudo-element, net als `::marker`
- * en `::file-selector-button`, en het is bovendien Backdrop, dat volgens de
+ * De `::backdrop` komt niet mee. Dat is een pseudo-element, net als
+ * `::file-selector-button`, en het is bovendien Backdrop, dat volgens de
  * README bewust geen eigen component in Figma is.
  */
 

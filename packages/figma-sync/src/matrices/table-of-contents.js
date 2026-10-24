@@ -5,8 +5,8 @@
  * kleurverschil maar een ander kopniveau (heading-5 in plaats van heading-3) en
  * een ander kader, dus een echte as.
  *
- * Zelfde `::marker`-beperking als bij UnorderedList: de bolletjes zijn een
- * pseudo-element en komen niet mee. Zie issue #373.
+ * De bolletjes van de lijst komen uit `::marker`, dat de extractor als eigen
+ * laag tekent; zie "Markers van lijsten" in de README.
  */
 
 import { HEADING, TEKST } from '../text.js';
@@ -27,10 +27,6 @@ export default {
   ],
 
   wrapperStyle: 'width: 328px;',
-
-  warnings: [
-    'de bolletjes van de lijst ontbreken: `::marker` is een pseudo-element en dus geen DOM-node. Zie issue #373.',
-  ],
 
   axes: {
     appearance: ['default', 'plain'],

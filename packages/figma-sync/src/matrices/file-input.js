@@ -6,8 +6,9 @@
  * aparte laag terug. Wat er wel overkomt is het veld eromheen met zijn randen
  * en padding.
  *
- * Zelfde soort beperking als `::marker` bij de lijsten, en om dezelfde reden
- * expliciet gemeld in plaats van stil gelaten.
+ * Anders dan `::marker` bij de lijsten is er geen laag van te maken: de knop
+ * heeft een eigen rand, padding en tekst, en die zijn niet als één teken na
+ * te tekenen. Daarom expliciet gemeld in plaats van stil gelaten.
  */
 
 import { FLAG, skipFlagCombinations } from '../flags.js';

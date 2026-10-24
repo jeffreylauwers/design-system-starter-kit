@@ -956,6 +956,11 @@ function convertElement(
   }
 
   const { styles } = node;
+
+  // Wat de walker niet kon tekenen, zoals een marker in een lijststijl die de
+  // generator niet kent. Hoort in de build, niet stil weg.
+  for (const note of node.notes ?? []) warnings.push(`${pathLabel}: ${note}`);
+
   const layout = autoLayoutFrom(
     node,
     styles,
@@ -975,7 +980,10 @@ function convertElement(
     !strokes &&
     px(styles.borderTopLeftRadius) === 0;
 
-  if (onlyChildIsText && drawsNothing) {
+  // De markerkolom van een list item is de uitzondering: die tekent niets,
+  // maar zijn breedte is de inspringing van de lijst. Ingeklapt tot tekst
+  // zou hij die maat en zijn token verliezen.
+  if (onlyChildIsText && drawsNothing && node.synthetic !== 'marker') {
     // Bewust zonder bindingen: de ouder overschrijft de tekststijl zo meteen
     // met de zijne, en dan zou een hier gelegde binding een andere waarde
     // aanwijzen dan er in de spec staat. De ouder legt ze.
@@ -1173,7 +1181,12 @@ function convertElement(
 
   // HUG zonder iets om naar te huggen klapt in tot 0. Een DotBadge is een lege
   // stip, en de wrapper van Popover heeft alleen een absoluut kind.
-  const canHug = hasAutoLayout && lastInFlowIndex >= 0;
+  //
+  // Behalve de inspringing van een genest list item: dat is een lege laag
+  // waarvan de breedte de padding ís. Op HUG volgt hij het token; op een vaste
+  // breedte niet.
+  const canHug =
+    hasAutoLayout && (lastInFlowIndex >= 0 || node.synthetic === 'indent');
 
   figmaNode.layoutSizingHorizontal =
     canHug && shrinkWraps && !fixedWidth ? 'HUG' : 'FIXED';
