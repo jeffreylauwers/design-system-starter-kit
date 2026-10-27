@@ -1,11 +1,10 @@
 /**
  * Variant-matrix voor UnorderedList.
  *
- * Een lijst van 10 instances van `__item` (`dsn-unordered-list__item`), alle
- * tien op hetzelfde item. Een designer vult de tekst per item in het paneel in en zet
- * de items uit die hij niet nodig heeft; booleans per item zijn er bewust niet.
- * Straks bepaalt een slot het aantal (issue #450), en dan vult de designer dat
- * slot met dezelfde items.
+ * De items staan in een slot (`data-figma-children`, issue #450): een
+ * designer zet er zelf items bij of haalt ze weg, in de instance, zonder te
+ * detachen. De standaardinhoud is 3 instances van `__item`
+ * (`dsn-unordered-list__item`). Zie "Slots" in de README.
  *
  * Het bolletje komt uit `::marker`, dat de extractor als laag tekent. De
  * inspringing van de lijst staat daardoor niet meer op de lijst maar in de
@@ -18,7 +17,7 @@
 
 import { TEKST } from '../text.js';
 
-export const ITEM_COUNT = 10;
+export const ITEM_COUNT = 3;
 
 export default {
   component: 'UnorderedList',
@@ -43,6 +42,6 @@ export default {
         `<li data-figma-instance="dsn-unordered-list__item"><span data-figma-slot="label">${TEKST}</span></li>`
     ).join('');
 
-    return `<ul class="dsn-unordered-list" data-figma-root>${items}</ul>`;
+    return `<ul class="dsn-unordered-list" data-figma-root data-figma-children="slot">${items}</ul>`;
   },
 };

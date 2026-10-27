@@ -1,11 +1,11 @@
 /**
  * Variant-matrix voor OrderedList.
  *
- * Zelfde opbouw als UnorderedList: 10 instances van `__item`
- * (`dsn-ordered-list__item`).
- * Het nummer is in het item een TEXT-property (`number`), en de lijst zet 1
- * tot en met 10 neer. Een instance weet niet op welke plek hij staat, dus wie
- * een item uitzet nummert zelf door; zie de toelichting bij het item.
+ * Zelfde opbouw als UnorderedList: een slot met 3 instances van `__item`
+ * (`dsn-ordered-list__item`) als standaardinhoud. Het nummer is in het item
+ * een TEXT-property (`number`), en de lijst zet 1 tot en met 3 neer. Een
+ * instance weet niet op welke plek hij staat, dus wie een item toevoegt of
+ * weghaalt nummert zelf door; zie de toelichting bij het item.
  */
 
 import { TEKST } from '../text.js';
@@ -34,6 +34,6 @@ export default {
         `<li data-figma-instance="dsn-ordered-list__item" data-figma-marker-slot="number"><span data-figma-slot="label">${TEKST}</span></li>`
     ).join('');
 
-    return `<ol class="dsn-ordered-list" data-figma-root>${items}</ol>`;
+    return `<ol class="dsn-ordered-list" data-figma-root data-figma-children="slot">${items}</ol>`;
   },
 };

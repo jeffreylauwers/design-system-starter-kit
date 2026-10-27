@@ -2,7 +2,8 @@
  * Variant-matrix voor RadioGroup.
  *
  * Zelfde afweging als CheckboxGroup: één gap-token, maar wel een ontwerpbesluit
- * dat in Figma afleesbaar hoort te zijn.
+ * dat in Figma afleesbaar hoort te zijn. En net als daar staan de opties in
+ * een slot, met drie RadioOptions als standaardinhoud.
  */
 
 import { TEKST } from '../text.js';
@@ -31,12 +32,10 @@ export default {
 
   wrapperStyle: 'width: 328px;',
 
-  axes: {
-    options: ['two-options', 'three-options'],
-  },
-
-  render({ options }) {
-    const count = options === 'two-options' ? 2 : 3;
+  render() {
+    // De opties staan in een slot; een designer zet er zelf opties bij of
+    // haalt ze weg. Drie is de standaardinhoud.
+    const count = 3;
 
     const option = (checked) =>
       `<label class="dsn-radio-option">
@@ -53,6 +52,6 @@ export default {
       option(index === 0)
     ).join('');
 
-    return `<div class="dsn-radio-group" role="radiogroup" data-figma-root>${items}</div>`;
+    return `<div class="dsn-radio-group" role="radiogroup" data-figma-root data-figma-children="slot">${items}</div>`;
   },
 };

@@ -25,6 +25,14 @@ Het component is een key-value lijst op basis van `<dl>` en wordt breder gebruik
 
 In Figma maakt de eerstvolgende import een nieuwe component set `DataList` aan. De bestaande set `SummaryList` blijft staan en moet met de hand worden opgeruimd of vooraf hernoemd.
 
+### figma-sync: slots voor lijsten, groepen en de footer van ModalDialog (#450)
+
+De items van UnorderedList, OrderedList en IconList, de opties van CheckboxGroup en RadioGroup, en de knoppen in de footer van ModalDialog staan in Figma nu in een slot. Een designer zet er in een instance zelf items, opties of knoppen bij of haalt ze weg, zonder te detachen. De standaardinhoud is drie items of drie opties; de footer heeft zijn twee knoppen.
+
+Een matrix wijst een slot aan met `data-figma-children`. Het slot hangt altijd direct onder de root: alleen dan blijft wat een designer erin zette een volgende import staan. Dat is eerst gemeten in Figma Desktop. Verdwijnt een slot uit de spec, dan verwijdert de plugin het slot met zijn property.
+
+In Figma vervallen de `options`-as van CheckboxGroup en RadioGroup en de `footer`-as van ModalDialog. Die drie worden daardoor een los component in plaats van een set: de eerstvolgende import verwijdert de oude set en meldt dat, en geplaatste instances ervan raken los. Een item of optie in een slot kan in Figma niet exposed zijn, dus de tekst van een item zet je in het paneel van dat item en niet in dat van de lijst.
+
 ### figma-sync: lijsten uit list items, met bolletjes en nummers (#401, #373)
 
 UnorderedList, OrderedList en IconList bestaan in Figma nu uit 10 instances van één list item. Dat item heet `__item` en staat op de pagina van zijn lijst, links ervan. Door de underscore publiceert Figma het niet naar de bibliotheek: afnemers zien alleen de hele lijst. Een matrix maakt zo'n onderdeel met `partOf`. De tekst van elk item staat in het properties panel (`label`), en wie minder items nodig heeft zet er zelf een paar uit. Later vult een slot de lijst met dezelfde items (#450).
