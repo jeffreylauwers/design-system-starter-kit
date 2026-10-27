@@ -1426,8 +1426,11 @@ en daar volgt de opbouw uit:
   root (de lijsten, CheckboxGroup, RadioGroup), dan komt er binnen de root een
   frame `slot`. Dat neemt de richting en de tussenruimte van de root over,
   met de binding; de root houdt zijn padding.
-- **Een kind van de root kan zelf het slot zijn.** Zo is de footer van
-  ModalDialog het slot `footer`, met zijn eigen padding en de lijn erboven.
+- **Een kind van de root kan zelf het slot zijn.** Zo zijn de body en de
+  footer van ModalDialog de slots `body` en `footer`, elk met hun eigen
+  padding; de footer houdt ook de lijn erboven. De header is bewust geen
+  slot: in code zet ModalDialogHeader de sluitknop er altijd zelf in, en een
+  slot zou toelaten dat een designer die weghaalt.
 - **Dieper niet.** Bij een tweede import bouwt de plugin een variant van
   binnen opnieuw op. Wat een designer in het slot van een instance zette
   blijft alleen staan als het slot zelf blijft staan, en een slot in een frame

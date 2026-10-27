@@ -25,9 +25,9 @@ Het component is een key-value lijst op basis van `<dl>` en wordt breder gebruik
 
 In Figma maakt de eerstvolgende import een nieuwe component set `DataList` aan. De bestaande set `SummaryList` blijft staan en moet met de hand worden opgeruimd of vooraf hernoemd.
 
-### figma-sync: slots voor lijsten, groepen en de footer van ModalDialog (#450)
+### figma-sync: slots voor lijsten, groepen en de body en footer van ModalDialog (#450)
 
-De items van UnorderedList, OrderedList en IconList, de opties van CheckboxGroup en RadioGroup, en de knoppen in de footer van ModalDialog staan in Figma nu in een slot. Een designer zet er in een instance zelf items, opties of knoppen bij of haalt ze weg, zonder te detachen. De standaardinhoud is drie items of drie opties; de footer heeft zijn twee knoppen.
+De items van UnorderedList, OrderedList en IconList, de opties van CheckboxGroup en RadioGroup, en de inhoud van de body en de footer van ModalDialog staan in Figma nu in een slot. Een designer zet er in een instance zelf items, opties of knoppen bij of haalt ze weg, zonder te detachen. De standaardinhoud is drie items of drie opties; de body heeft een Paragraph en de footer zijn twee knoppen. De header is geen slot, omdat de sluitknop er in code altijd in staat.
 
 Een matrix wijst een slot aan met `data-figma-children`. Het slot hangt altijd direct onder de root: alleen dan blijft wat een designer erin zette een volgende import staan. Dat is eerst gemeten in Figma Desktop. Verdwijnt een slot uit de spec, dan verwijdert de plugin het slot met zijn property.
 

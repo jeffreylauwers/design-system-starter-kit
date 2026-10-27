@@ -6,7 +6,13 @@
  * Het attribuut staat er daarom altijd op, en `state` gaat over wat er ín de
  * dialoog staat, niet over open of dicht.
  *
- * De footer is een slot (`data-figma-children="footer"`, issue #450), met de
+ * De body is een slot (`data-figma-children="body"`, issue #450), met de
+ * Paragraph als standaardinhoud: in code is ModalDialogBody een houder voor
+ * willekeurige inhoud. De header is bewust geen slot. ModalDialogHeader zet de
+ * sluitknop er in code altijd zelf in, en een slot laat een designer die
+ * weghalen.
+ *
+ * De footer is ook een slot (`data-figma-children="footer"`), met de
  * twee knoppen in hun ActionGroup als standaardinhoud. Een designer haalt de
  * knoppen er zelf uit of zet er een bij; de `footer`-as die dat eerder deed
  * is weg, en daarmee is ModalDialog een los component. De footer zelf is het
@@ -76,7 +82,7 @@ export default {
           <span class="dsn-button__label">Sluiten</span>
         </button>
       </div>
-      <div class="dsn-modal-dialog__body">
+      <div class="dsn-modal-dialog__body" data-figma-children="body">
         <p class="dsn-paragraph">${TEKST}</p>
       </div>
       ${footerMarkup}
