@@ -9,7 +9,6 @@
 import { importVariables } from './variables.js';
 import { importComponentSet } from './components.js';
 import { importIconSet } from './icons.js';
-import { probeSlots } from './slot-probe.js';
 
 figma.showUI(__html__, { width: 420, height: 520 });
 
@@ -80,36 +79,9 @@ async function handleImport(message) {
  */
 let queue = Promise.resolve();
 
-/**
- * De slotmeting uit issue #450. Een meting en geen import: hij bouwt op een
- * eigen pagina en raakt de bibliotheek niet aan. Zie `slot-probe.js`.
- */
-async function handleSlotProbe() {
-  const log = createLog();
-  try {
-    const { passed, failed } = await probeSlots(log);
-    figma.ui.postMessage({
-      type: 'done',
-      ok: true,
-      summary: `slotmeting klaar: ${passed} stappen gelukt, ${failed} niet. Kopieer de log en deel hem.`,
-    });
-  } catch (error) {
-    log.error(error.message);
-    figma.ui.postMessage({
-      type: 'done',
-      ok: false,
-      summary: `slotmeting afgebroken: ${error.message}`,
-    });
-  }
-}
-
 figma.ui.onmessage = (message) => {
   if (message.type === 'import') {
     queue = queue.then(() => handleImport(message));
-    return queue;
-  }
-  if (message.type === 'probe-slots') {
-    queue = queue.then(handleSlotProbe);
     return queue;
   }
   if (message.type === 'close') return figma.closePlugin();
