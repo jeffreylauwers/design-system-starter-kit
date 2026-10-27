@@ -1219,7 +1219,112 @@ function convertElement(
   // hierboven in de spec terecht zijn gekomen.
   figmaNode.boundVariables = bindVariables(figmaNode, node.tokens, bindings);
 
+  if (node.contentSlot) {
+    return withContentSlot(figmaNode, node.contentSlot, root, pathLabel);
+  }
   return figmaNode;
+}
+
+/**
+ * Zet de kinderen van een frame in een Figma-slot (`data-figma-children`).
+ *
+ * Een slot laat een designer zelf items of opties toevoegen en weghalen in een
+ * instance, zonder te detachen. Gemeten in Figma (issue #450):
+ *
+ * - de root van een component kan zelf geen slot zijn;
+ * - een slot kan auto layout dragen, maar geen grid;
+ * - een instance in een slot kan niet exposed zijn;
+ * - wat een designer in een slot zette blijft een tweede import alleen
+ *   staan als het slot zelf blijft staan.
+ *
+ * Daarom twee vormen. Staat de markering op de root (een lijst, een groep),
+ * dan komt er binnen de root een frame `slot` met de richting en de
+ * tussenruimte van de root, inclusief de binding; de root houdt zijn padding.
+ * Staat hij op een kind van de root (de footer van ModalDialog), dan wórdt dat
+ * kind het slot, met zijn eigen padding en rand. Dieper mag niet; zie
+ * `checkSlotDepth`.
+ */
+function withContentSlot(frame, name, root, label) {
+  if (frame.layoutMode === 'GRID') {
+    throw new Error(
+      `${label}: data-figma-children op een grid. Een slot kan in Figma geen grid zijn.`
+    );
+  }
+  if (!frame.layoutMode || frame.layoutMode === 'NONE') {
+    throw new Error(
+      `${label}: data-figma-children op een element zonder auto layout. Een slot moet zijn items zelf onder of naast elkaar zetten.`
+    );
+  }
+
+  // Figma weigert een exposed instance in een slot, ook dieper erin (de
+  // knoppen in de ActionGroup van de footer van ModalDialog).
+  const notExposed = (node) =>
+    node.type === 'INSTANCE'
+      ? { ...node, exposed: false }
+      : node.children
+        ? { ...node, children: node.children.map(notExposed) }
+        : node;
+  const children = (frame.children ?? []).map(notExposed);
+
+  if (!root) return { ...frame, type: 'SLOT', name, children };
+
+  const { itemSpacing: spacingBinding, ...rootBindings } =
+    frame.boundVariables ?? {};
+
+  const slot = {
+    type: 'SLOT',
+    name,
+    width: frame.width - (frame.paddingLeft ?? 0) - (frame.paddingRight ?? 0),
+    height: frame.height - (frame.paddingTop ?? 0) - (frame.paddingBottom ?? 0),
+    x: frame.paddingLeft ?? 0,
+    y: frame.paddingTop ?? 0,
+    layoutMode: frame.layoutMode,
+    layoutWrap: frame.layoutWrap,
+    itemSpacing: frame.itemSpacing,
+    itemReverseZIndex: false,
+    paddingTop: 0,
+    paddingRight: 0,
+    paddingBottom: 0,
+    paddingLeft: 0,
+    primaryAxisAlignItems: frame.primaryAxisAlignItems,
+    counterAxisAlignItems: frame.counterAxisAlignItems,
+    cornerRadius: 0,
+    fills: [],
+    clipsContent: false,
+    children,
+    layoutSizingHorizontal: 'FILL',
+    layoutSizingVertical: 'HUG',
+    ...(spacingBinding
+      ? { boundVariables: { itemSpacing: spacingBinding } }
+      : {}),
+  };
+
+  return {
+    ...frame,
+    itemSpacing: 0,
+    boundVariables: Object.keys(rootBindings).length ? rootBindings : undefined,
+    children: [slot],
+  };
+}
+
+/**
+ * Een slot hoort direct onder de root te hangen.
+ *
+ * Bij een tweede import bouwt de plugin een variant van binnen opnieuw op, en
+ * alleen een slot dat zelf blijft staan houdt de inhoud die een designer erin
+ * zette. Een slot in een frame dat opnieuw wordt opgebouwd krijgt een ander
+ * pad, en daar raakt Figma een override op kwijt; zo verloren de iconen eerder
+ * hun kleur (issue #388).
+ */
+function checkSlotDepth(node, label, depth = 0) {
+  for (const child of node.children ?? []) {
+    if (child.type === 'SLOT' && depth > 0) {
+      throw new Error(
+        `${label}: het slot "${child.name}" hangt niet direct onder de root. Zet data-figma-children op de root of op een kind ervan.`
+      );
+    }
+    if (child.type !== 'INSTANCE') checkSlotDepth(child, label, depth + 1);
+  }
 }
 
 /** Wikkel zodat convertNode niets van de vorm van het bindings-object hoeft te weten. */
@@ -1585,6 +1690,8 @@ function fillRootChildren(node, warnings, label) {
     // tegenstrijdig.
     if (child.layoutPositioning === 'ABSOLUTE') continue;
     child.layoutSizingHorizontal = 'FILL';
+    // De opties van een groep staan in zijn slot; die horen ook te vullen.
+    if (child.type === 'SLOT') fillRootChildren(child, warnings, label);
   }
 }
 
@@ -1753,6 +1860,7 @@ export function toComponentSet(
       if (node.type === 'TEXT') {
         node.boundVariables = bindVariables(node, tree.tokens, bindings);
       }
+      checkSlotDepth(node, pathLabel);
       return { name: label, variantProperties: variant, node };
     }
   );

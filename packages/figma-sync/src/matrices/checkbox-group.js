@@ -9,6 +9,11 @@
  * ontwerpbesluit dat je in Figma moet kunnen aflezen, en anders dan bij Stack
  * of Grid staat hier vast wát erin zit. Een designer die drie opties onder
  * elkaar zet moet niet zelf hoeven raden hoeveel ruimte ertussen hoort.
+ *
+ * De opties staan in een slot (`data-figma-children`, issue #450), met drie
+ * CheckboxOptions als standaardinhoud. Het aantal was eerder een as
+ * (`options`); een designer zet er nu zelf opties bij of haalt ze weg. De gap
+ * hangt aan het slot, zodat een toegevoegde optie dezelfde ruimte krijgt.
  */
 
 import { icon } from '../icons.js';
@@ -41,12 +46,10 @@ export default {
 
   wrapperStyle: 'width: 328px;',
 
-  axes: {
-    options: ['two-options', 'three-options'],
-  },
-
-  render({ options }) {
-    const count = options === 'two-options' ? 2 : 3;
+  render() {
+    // De opties staan in een slot; een designer zet er zelf opties bij of
+    // haalt ze weg. Drie is de standaardinhoud.
+    const count = 3;
 
     const option = (checked) =>
       `<label class="dsn-checkbox-option">
@@ -63,6 +66,6 @@ export default {
       option(index === 0)
     ).join('');
 
-    return `<div class="dsn-checkbox-group" role="group" data-figma-root>${items}</div>`;
+    return `<div class="dsn-checkbox-group" role="group" data-figma-root data-figma-children="slot">${items}</div>`;
   },
 };

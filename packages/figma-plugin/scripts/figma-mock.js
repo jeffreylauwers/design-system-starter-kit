@@ -21,6 +21,9 @@
  *    eronder heeft geen `name`; een botsende naam wordt hernoemd, niet
  *    geweigerd
  * 9. een kind van een component set draagt een geldige, unieke variantnaam
+ * 10. slots zoals gemeten in Figma bij issue #450: alleen via `createSlot()`
+ *     op een component, met een SLOT-property die naar het slot heet; geen
+ *     grid; geen exposed instance erin; weghalen laat de property staan
  */
 
 /**
@@ -153,8 +156,10 @@ class Node {
   }
 
   set name(value) {
+    const previous = this._name;
     this._name = value;
     this.#assertVariantName();
+    if (this._slotPropertyId && previous !== value) renameSlotProperty(this);
   }
   get name() {
     return this._name;
@@ -180,6 +185,19 @@ class Node {
     if (twin) {
       throw new Error(`twee varianten in dezelfde set heten "${this._name}"`);
     }
+  }
+
+  set layoutMode(value) {
+    // Gemeten in Figma: "GRID layoutMode cannot be applied to Slot frames".
+    if (this.type === 'SLOT' && value === 'GRID') {
+      throw new Error(
+        'in set_layoutMode: GRID layoutMode cannot be applied to Slot frames'
+      );
+    }
+    this._layoutMode = value;
+  }
+  get layoutMode() {
+    return this._layoutMode;
   }
 
   appendChild(child) {
@@ -440,6 +458,12 @@ class Node {
     }
     let ancestor = this.parent;
     while (ancestor && ancestor.type !== 'COMPONENT') {
+      // Gemeten in Figma bij issue #450.
+      if (ancestor.type === 'SLOT') {
+        throw new Error(
+          'in set_isExposedInstance: Cannot expose instances within slots.'
+        );
+      }
       if (ancestor.type === 'INSTANCE') {
         throw new Error(
           'een instance binnen een andere instance kan niet exposed worden'
@@ -770,6 +794,72 @@ class ComponentNode extends Node {
     this._instances.push(instance);
     return instance;
   }
+
+  /**
+   * Zoals gemeten in Figma: een SLOT-kind met de naam "Slot" en een
+   * SLOT-property die naar het slot heet. De property staat op de set als het
+   * component in een set hangt, anders op het component zelf.
+   */
+  createSlot() {
+    const slot = new Node('SLOT');
+    slot._name = 'Slot';
+    this.appendChild(slot);
+    slot._slotPropertyId = attachSlotProperty(slotOwnerOf(this), 'Slot');
+    return slot;
+  }
+}
+
+/** Waar de SLOT-property van een component hoort: de set, of het component. */
+function slotOwnerOf(component) {
+  return component.parent?.type === 'COMPONENT_SET'
+    ? component.parent
+    : component;
+}
+
+/**
+ * Een SLOT-property met deze naam op `owner`. Bestaat er al een, dan delen ze
+ * hem: zo levert een set met een slot "slot" in elke variant één property op
+ * (gemeten in Figma bij issue #450).
+ */
+function attachSlotProperty(owner, name) {
+  owner.componentPropertyDefinitions = owner.componentPropertyDefinitions ?? {};
+  const shared = Object.keys(owner.componentPropertyDefinitions).find(
+    (key) =>
+      owner.componentPropertyDefinitions[key].type === 'SLOT' &&
+      propertyNameOf(key) === name
+  );
+  if (shared) return shared;
+  const key = `${name}#${id('PROP')}`;
+  owner.componentPropertyDefinitions[key] = {
+    type: 'SLOT',
+    defaultValue: undefined,
+    description: '',
+    preferredValues: [],
+  };
+  return key;
+}
+
+/** Een slot hernoemen hernoemt zijn property, zoals in Figma. */
+function renameSlotProperty(slot) {
+  let component = slot.parent;
+  while (component && component.type !== 'COMPONENT') {
+    component = component.parent;
+  }
+  if (!component) return;
+  const owner = slotOwnerOf(component);
+  const definitions = owner.componentPropertyDefinitions ?? {};
+  const old = slot._slotPropertyId;
+  const stillUsed = (key) => {
+    const walk = (node) =>
+      (node.children ?? []).some(
+        (child) =>
+          (child !== slot && child._slotPropertyId === key) || walk(child)
+      );
+    return walk(owner);
+  };
+  const definition = definitions[old];
+  if (definition && !stillUsed(old)) delete definitions[old];
+  slot._slotPropertyId = attachSlotProperty(owner, slot._name);
 }
 
 /**
@@ -1112,6 +1202,20 @@ export const figma = {
     const set = new Node('COMPONENT_SET');
     parent.appendChild(set);
     for (const component of components) set.appendChild(component);
+    // De SLOT-properties van de varianten gaan naar de set, en varianten met
+    // een slot van dezelfde naam delen er één (gemeten bij #450).
+    for (const component of components) {
+      for (const [key, definition] of Object.entries(
+        component.componentPropertyDefinitions ?? {}
+      )) {
+        if (definition.type !== 'SLOT') continue;
+        delete component.componentPropertyDefinitions[key];
+        const shared = attachSlotProperty(set, propertyNameOf(key));
+        for (const child of component.children) {
+          if (child._slotPropertyId === key) child._slotPropertyId = shared;
+        }
+      }
+    }
     return set;
   },
 };

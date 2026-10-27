@@ -452,7 +452,9 @@ function buildInstance(spec, parent, context, parentSpec) {
   // "Exposed": de properties van het geneste component (de `label` van een
   // Heading) staan dan in het paneel van de host, zonder dat de host ze
   // opnieuw hoeft te declareren.
-  if (spec.exposed) {
+  // In een slot kan dat niet, ook niet dieper erin (gemeten bij #450); de
+  // generator zet het daar al uit.
+  if (spec.exposed && !insideContentSlot(parent)) {
     try {
       instance.isExposedInstance = true;
     } catch (error) {
@@ -514,6 +516,10 @@ function buildNode(spec, parent, context, parentSpec) {
     return buildInstance(spec, parent, context, parentSpec);
   }
 
+  if (spec.type === 'SLOT') {
+    return buildContentSlot(spec, parent, context, parentSpec);
+  }
+
   if (spec.type === 'VECTOR') {
     const node = buildIcon(spec, parent, context);
     // De kleur zit op de vectoren binnenin, niet op het frame eromheen, dus de
@@ -543,6 +549,97 @@ function buildNode(spec, parent, context, parentSpec) {
   applyRotation(frame, spec, log);
   registerSlot(frame, spec, context);
   return frame;
+}
+
+/**
+ * Een Figma-slot: de plek in een component waar een designer zelf items of
+ * opties toevoegt en weghaalt (`data-figma-children` in de matrix).
+ *
+ * Niet te verwarren met `registerSlot` hieronder: dat gaat over de lagen waar
+ * een component property aan hangt. Vandaar `contentSlot` in de namen.
+ *
+ * Gemeten in Figma (issue #450): wat een designer in het slot van een instance
+ * zette, blijft een tweede import alleen staan als het slot zelf blijft
+ * staan. Een slot weggooien en opnieuw maken zet elke instance terug op de
+ * standaardinhoud, en laat bovendien de oude property als wees achter. Een
+ * bestaand slot wordt daarom hergebruikt (zie `resetVariant`): alleen zijn
+ * standaardinhoud en zijn layout worden vervangen.
+ *
+ * Een nieuw slot kan alleen via `createSlot()` op het component zelf. Dat legt
+ * meteen een SLOT-property aan die naar het slot heet; de naam uit de spec
+ * hernoemt hem. Varianten met een slot van dezelfde naam delen in de set één
+ * property.
+ */
+function buildContentSlot(spec, parent, context, parentSpec) {
+  let slot = context.reusableSlots?.get(spec.name);
+  if (slot) {
+    context.reusableSlots.delete(spec.name);
+    // Alles behalve de instances in de pool: die haalt het bouwen hieronder
+    // weer op, en wat er niet opgehaald wordt ruimt `dropUnusedIcons` op.
+    for (const child of [...slot.children]) {
+      if (!context.pooled?.has(child)) child.remove();
+    }
+    clearBoundVariables(slot);
+    parent.appendChild(slot);
+  } else {
+    const component = context.component;
+    if (typeof component?.createSlot !== 'function') {
+      throw new Error(
+        `Slot "${spec.name}": deze Figma kent geen slots (createSlot ontbreekt). Werk Figma bij.`
+      );
+    }
+    slot = component.createSlot();
+    if (slot.parent !== parent) parent.appendChild(slot);
+  }
+
+  applyFrame(slot, spec, context);
+  applyPlacement(slot, spec, context.log, parentSpec);
+  applySizing(slot, spec, context.log);
+  registerSlot(slot, spec, context);
+  return slot;
+}
+
+/** Hangt deze laag ergens in een slot, binnen zijn component? */
+function insideContentSlot(node) {
+  for (let current = node; current; current = current.parent) {
+    if (current.type === 'SLOT') return true;
+    if (current.type === 'COMPONENT') return false;
+  }
+  return false;
+}
+
+/**
+ * Ruimt slots op die niet meer in de spec staan, met hun property.
+ *
+ * Figma laat de SLOT-property staan als het slot weggaat (gemeten bij #450).
+ * Zonder deze stap houdt de set een knop in het paneel die nergens meer naar
+ * wijst. Alleen als geen enkele variant nog een slot met die naam heeft: in een
+ * set delen de varianten er één.
+ */
+function dropStaleContentSlots(owner, names, log) {
+  if (!owner || !names.size) return;
+
+  const remaining = new Set();
+  const walk = (node) => {
+    for (const child of node.children ?? []) {
+      if (child.type === 'SLOT') remaining.add(child.name);
+      if (child.type !== 'INSTANCE') walk(child);
+    }
+  };
+  walk(owner);
+
+  for (const name of names) {
+    if (remaining.has(name)) continue;
+    const key = Object.keys(owner.componentPropertyDefinitions ?? {}).find(
+      (propertyId) =>
+        owner.componentPropertyDefinitions[propertyId].type === 'SLOT' &&
+        propertyNameOf(propertyId) === name
+    );
+    if (key) owner.deleteComponentProperty(key);
+    log.warn(
+      `Slot "${name}" staat niet meer in de spec en is verwijderd, met zijn property. Wat designers erin hadden gezet, is weg.`
+    );
+  }
 }
 
 /**
@@ -663,6 +760,16 @@ async function resetVariant(component, context, { keepText = false } = {}) {
   context.reusable = new Map();
   context.reusableText = null;
 
+  // Een slot blijft staan; zie `buildContentSlot`. Het hangt altijd direct
+  // onder de variant (de generator weigert het dieper), dus hier zoeken is
+  // genoeg. Zijn standaardinhoud gaat er bij het bouwen uit.
+  context.reusableSlots = new Map(
+    component.children
+      .filter((child) => child.type === 'SLOT')
+      .map((slot) => [slot.name, slot])
+  );
+  const keptSlots = new Set(context.reusableSlots.values());
+
   // Een component dat in zijn geheel tot één tekstlaag inklapt (Heading,
   // Paragraph, PreHeading) houdt die laag, in plaats van hem weg te gooien en
   // opnieuw te maken. Elke instance ervan in een andere set (een Heading in
@@ -701,15 +808,21 @@ async function resetVariant(component, context, { keepText = false } = {}) {
     // lezen, vandaar dat de pool hier wordt opgebouwd en niet in `buildIcon`.
     const main = await mainComponentOf(instance, context);
     if (!main) continue;
-    if (instance.parent !== component) component.appendChild(instance);
+    // De standaardinhoud van een slot blijft in zijn slot: dat blijft staan,
+    // dus daar verdwijnt hij niet mee.
+    if (instance.parent !== component && instance.parent?.type !== 'SLOT') {
+      component.appendChild(instance);
+    }
     const pool = context.reusable.get(main.id) ?? [];
     pool.push(instance);
     context.reusable.set(main.id, pool);
     pooled.add(instance);
   }
+  context.pooled = pooled;
 
   for (const child of [...component.children]) {
-    if (!pooled.has(child) && child !== context.reusableText) child.remove();
+    if (pooled.has(child) || keptSlots.has(child)) continue;
+    if (child !== context.reusableText) child.remove();
   }
 
   clearBoundVariables(component);
@@ -881,7 +994,9 @@ function existingProperties(set) {
   for (const [propertyId, definition] of Object.entries(
     set.componentPropertyDefinitions ?? {}
   )) {
-    if (definition.type === 'VARIANT') continue;
+    // Een SLOT-property hoort bij zijn slot en wordt daar beheerd; zie
+    // `buildContentSlot` en `dropStaleContentSlots`.
+    if (definition.type === 'VARIANT' || definition.type === 'SLOT') continue;
     byName.set(propertyNameOf(propertyId), { propertyId, ...definition });
   }
   return byName;
@@ -1329,6 +1444,12 @@ export async function importComponentSet(payload, log, options = {}) {
     reusable: new Map(),
     // Per variant opnieuw gevuld; zie de bouwlus hieronder.
     slots: new Map(),
+    // Het component dat nu gebouwd wordt: alleen daarop bestaat `createSlot`.
+    component: null,
+    // De slots van de vorige import, op naam; zie `buildContentSlot`.
+    reusableSlots: new Map(),
+    // Namen van slots die uit de spec verdwenen; zie `dropStaleContentSlots`.
+    staleSlots: new Set(),
   };
 
   // Eén pagina per component. `createNodeFromSvg` (voor de ingebakken iconen)
@@ -1426,6 +1547,7 @@ export async function importComponentSet(payload, log, options = {}) {
       // variant in deze belanden.
       context.reusable = new Map();
       context.reusableText = null;
+      context.reusableSlots = new Map();
       // Een nieuwe variant hangt meteen in de set als die er al is; anders op
       // de pagina, waar `combineAsVariants` hem straks ophaalt. De naam staat
       // er al op, want een set met een ongeldig genoemd kind is stuk.
@@ -1435,6 +1557,7 @@ export async function importComponentSet(payload, log, options = {}) {
 
     // Elke variant heeft zijn eigen lagen, dus ook zijn eigen slots.
     context.slots = new Map();
+    context.component = wrapper;
 
     // Waar de lagen van deze variant in `colorChecks` beginnen. De meting leest
     // een laag terug via zijn pad vanaf de variant, en dat pad is er niet
@@ -1469,6 +1592,11 @@ export async function importComponentSet(payload, log, options = {}) {
 
     // Wat er niet uit de pool is opgehaald hoort niet meer bij deze variant.
     dropUnusedIcons(context);
+    for (const [name, slot] of context.reusableSlots) {
+      slot.remove();
+      context.staleSlots.add(name);
+    }
+    context.reusableSlots = new Map();
 
     for (const check of context.colorChecks.slice(checksBefore)) {
       check.variant = wrapper;
@@ -1588,6 +1716,8 @@ export async function importComponentSet(payload, log, options = {}) {
     variantSlots,
     context
   );
+
+  dropStaleContentSlots(single ? components[0] : set, context.staleSlots, log);
 
   // Als allerlaatste, ná het koppelen van de properties: zie `recolorIcons`.
   log.progress?.(`${spec.name}: kleuren zetten`);

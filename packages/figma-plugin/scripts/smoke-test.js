@@ -884,6 +884,49 @@ for (const file of componentFiles) {
   );
 
   // ---------------------------------------------------------------------------
+  // Slots
+  // ---------------------------------------------------------------------------
+
+  const slotSpecs = payload.componentSet.components.flatMap(
+    (component, index) =>
+      (component.node.children ?? [])
+        .map((child, position) => ({ child, position, index }))
+        .filter(({ child }) => child.type === 'SLOT')
+  );
+  if (slotSpecs.length) {
+    const wrongSlots = slotSpecs.filter(({ child, position, index }) => {
+      const node = built(index)?.children?.[position];
+      return (
+        node?.type !== 'SLOT' ||
+        node.name !== child.name ||
+        node.children.length !== (child.children ?? []).length
+      );
+    });
+    check(
+      'elk slot uit de spec is een SLOT-node met zijn standaardinhoud',
+      wrongSlots.length === 0,
+      wrongSlots.length
+        ? `${wrongSlots.length}x, o.a. "${wrongSlots[0].child.name}"`
+        : `${slotSpecs.length} slots`
+    );
+
+    // Varianten met een slot van dezelfde naam delen één property, en een
+    // tweede import maakt er geen "slot 2" bij.
+    const owner = single ? built(0) : setNode;
+    const slotProperties = Object.entries(
+      owner?.componentPropertyDefinitions ?? {}
+    )
+      .filter(([, definition]) => definition.type === 'SLOT')
+      .map(([key]) => propertyNameOf(key));
+    const slotNames = [...new Set(slotSpecs.map(({ child }) => child.name))];
+    check(
+      'precies één SLOT-property per slot',
+      slotProperties.slice().sort().join('|') === slotNames.sort().join('|'),
+      slotProperties.join(', ')
+    );
+  }
+
+  // ---------------------------------------------------------------------------
   // Geneste componenten
   // ---------------------------------------------------------------------------
 
@@ -1343,6 +1386,79 @@ for (const composed of allComposed) {
 // =============================================================================
 // Paginavolgorde
 // =============================================================================
+
+// =============================================================================
+// Slots: wat een designer erin zette, overleeft een tweede import
+// =============================================================================
+
+// Gemeten in Figma bij issue #450: zolang het slot zelf blijft staan, houdt een
+// geplaatste instance de items die een designer erin zette. Een slot dat weg
+// en opnieuw gemaakt wordt zet hem terug op de standaardinhoud.
+console.log('\n=== slots bij een tweede import ===');
+{
+  const listFile = 'unordered-list.json';
+  const listPayload = read(`packages/figma-sync/dist/${listFile}`);
+  const listPage = state.root.children.find(
+    (page) => page.name === listPayload.componentSet.page
+  );
+  const canvas = listPage.children.find(
+    (node) => node.name === listPayload.componentSet.name
+  );
+  const list = canvas?.children.find((node) => node.type === 'COMPONENT');
+  const itemSet = listPage.children.find((node) => node.name === '__item');
+  const item = itemSet?.children?.[0];
+  const slotOf = (node) =>
+    node?.children.find((child) => child.type === 'SLOT');
+
+  const placed = list.createInstance();
+  state.page.appendChild(placed);
+  slotOf(placed).appendChild(item.createInstance());
+  const designerCount = slotOf(placed).children.length;
+  const slotBefore = slotOf(list);
+
+  await importComponentSet(read(`packages/figma-sync/dist/${listFile}`), log);
+  list.instances; // de spiegel bijwerken, zoals Figma dat vanzelf doet
+
+  check(
+    'het slot in het component blijft dezelfde node',
+    slotOf(list) === slotBefore,
+    slotOf(list)?.id
+  );
+  check(
+    'de items die een designer in het slot zette blijven staan',
+    slotOf(placed)?.children.length === designerCount,
+    `${slotOf(placed)?.children.length} items, verwacht ${designerCount}`
+  );
+
+  // Een slot dat uit de spec verdwijnt gaat weg, met zijn property: Figma laat
+  // die zelf als wees staan.
+  const withoutSlot = read(`packages/figma-sync/dist/${listFile}`);
+  for (const component of withoutSlot.componentSet.components) {
+    for (const child of component.node.children ?? []) {
+      if (child.type === 'SLOT') child.type = 'FRAME';
+    }
+  }
+  const warnsBefore = problems.length;
+  await importComponentSet(withoutSlot, log);
+  const slotPropertiesLeft = Object.values(
+    list.componentPropertyDefinitions ?? {}
+  ).filter((definition) => definition.type === 'SLOT').length;
+  check(
+    'een slot dat uit de spec verdwijnt neemt zijn property mee',
+    slotPropertiesLeft === 0 && !slotOf(list),
+    `${slotPropertiesLeft} SLOT-properties over`
+  );
+  check(
+    'dat wordt gemeld',
+    problems
+      .slice(warnsBefore)
+      .some((problem) => /staat niet meer in de spec/.test(problem.message)),
+    ''
+  );
+
+  // En terug, zodat de rest van de test de lijst weer met slot ziet.
+  await importComponentSet(read(`packages/figma-sync/dist/${listFile}`), log);
+}
 
 console.log('\n=== paginavolgorde ===');
 

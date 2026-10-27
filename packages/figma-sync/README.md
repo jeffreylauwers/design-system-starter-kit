@@ -938,6 +938,9 @@ dsn-heading-group"`, dus zonder override zouden Heading en HeadingGroup
   een laag heeft een fout.
 - **`instances: true`** maakt van geneste componenten instances in plaats van
   gemeten lagen; zie "Geneste componenten worden instances".
+- **`data-figma-children="slot"`** zet de kinderen van een element in een
+  Figma-slot, zodat een designer er zelf items of opties bij zet of uit haalt;
+  zie "Slots".
 - **`warnings`** zet een vaste waarschuwing in de spec, voor een beperking die
   de generator zelf niet kán zien. `::file-selector-button` is het voorbeeld:
   de knop van FileInput is een pseudo-element en dus geen DOM-node, dus er valt
@@ -1122,13 +1125,11 @@ markering met een echt `<svg>`.
 
 #### Lijsten bestaan uit list items
 
-UnorderedList, OrderedList en IconList zijn elk 10 instances van één list
+UnorderedList, OrderedList en IconList bestaan uit instances van één list
 item, dat in Figma `__item` heet en op de pagina van zijn lijst staat (zie
-"Onderdelen van een component"). De tekst staat per item in het paneel (`label`, exposed),
-en een designer zet zelf de items uit die hij niet nodig heeft; booleans per
-item zijn er bewust niet. Straks vult een slot de lijst met dezelfde items
-(issue
-[#450](https://github.com/jeffreylauwers/design-system-starter-kit/issues/450)).
+"Onderdelen van een component"). De items staan in een slot, met drie als
+standaardinhoud; een designer zet er zelf items bij of haalt ze weg (zie
+"Slots"). De tekst zet hij per item in het paneel van dat item.
 
 | Item                                                    | Varianten       | Properties             |
 | ------------------------------------------------------- | --------------- | ---------------------- |
@@ -1138,8 +1139,8 @@ item zijn er bewust niet. Straks vult een slot de lijst met dezelfde items
 
 - **Het nummer is een property.** In de browser volgt het uit de plek van het
   item; een instance weet niet waar hij staat. De OrderedList zet 1 tot en met
-  10 neer, als override op de markerlaag. Wie een item uitzet, nummert zelf
-  door.
+  3 neer, als override op de markerlaag. Wie een item toevoegt of weghaalt,
+  nummert zelf door.
 - **Het icoon van IconList is een swap, geen as.** Welk icoon er staat
   verandert geen token, alleen welke laag er staat. De `icon`-as die IconList
   had is daarmee weg.
@@ -1398,6 +1399,52 @@ een eigen verschijning.
   componenten.
 - **Box shadows.** Die horen Figma effect styles te worden, geen variables.
   Ze staan daarom in het skip-report.
+
+## Slots
+
+Een slot is de plek in een Figma-component waar een designer zelf lagen bij
+zet of uit haalt, in een instance, zonder te detachen. Voor een lijst of een
+groep is dat precies wat een variant-as niet kan: hoeveel items of opties er
+staan, is geen keuze uit een vast rijtje.
+
+De matrix wijst het aan met `data-figma-children`, op het element waarvan de
+kinderen in het slot horen. De waarde is de naam van het slot, en daarmee van
+de property in het paneel. `data-figma-slot` was al bezet: dat wijst de laag
+aan waar een component property aan hangt.
+
+```html
+<ul class="dsn-unordered-list" data-figma-root data-figma-children="slot">
+  <li data-figma-instance="dsn-unordered-list__item">…</li>
+</ul>
+```
+
+Wat er in Figma mee kan en niet kan, is eerst gemeten in Figma Desktop (issue
+[#450](https://github.com/jeffreylauwers/design-system-starter-kit/issues/450)),
+en daar volgt de opbouw uit:
+
+- **De root van een component kan geen slot zijn.** Staat de markering op de
+  root (de lijsten, CheckboxGroup, RadioGroup), dan komt er binnen de root een
+  frame `slot`. Dat neemt de richting en de tussenruimte van de root over,
+  met de binding; de root houdt zijn padding.
+- **Een kind van de root kan zelf het slot zijn.** Zo zijn de body en de
+  footer van ModalDialog de slots `body` en `footer`, elk met hun eigen
+  padding; de footer houdt ook de lijn erboven. De header is bewust geen
+  slot: in code zet ModalDialogHeader de sluitknop er altijd zelf in, en een
+  slot zou toelaten dat een designer die weghaalt.
+- **Dieper niet.** Bij een tweede import bouwt de plugin een variant van
+  binnen opnieuw op. Wat een designer in het slot van een instance zette
+  blijft alleen staan als het slot zelf blijft staan, en een slot in een frame
+  dat opnieuw wordt opgebouwd krijgt een ander pad. De generator weigert een
+  dieper slot daarom met een fout.
+- **Geen grid.** Figma weigert een slot met grid-layout, en de generator ook.
+- **Geen exposed instances.** Een instance in een slot kan in Figma niet
+  exposed zijn. De `label` van een item staat dus niet in het paneel van de
+  lijst maar in dat van het item zelf. Een bewuste prijs: het slot is meer
+  waard dan het doorzetten van de tekst.
+
+Met een slot vervalt de as die het aantal regelde: `options` bij CheckboxGroup
+en RadioGroup, `footer` bij ModalDialog. Die drie zijn daarmee een los
+component, net als de lijsten.
 
 ## Onderdelen van een component
 

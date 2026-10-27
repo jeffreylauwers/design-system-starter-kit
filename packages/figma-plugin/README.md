@@ -264,7 +264,8 @@ Daarna:
    van de tekstlagen in elk doelcomponent worden daarom aan het begin geladen.
 4. **Exposed.** Heeft de doelset eigen component properties, dan staat de
    instance op `isExposedInstance`. De `label` van de Heading staat dan in het
-   paneel van de HeadingGroup.
+   paneel van de HeadingGroup. Binnen een slot kan dat in Figma niet; daar
+   blijft het uit.
 
 Bij een tweede import wordt de instance hergebruikt, net als een icoon, en
 eerst teruggezet met `resetOverrides()` zodat een override die uit de spec is
@@ -329,6 +330,30 @@ dupliceren zou de bindingen en de instances verbreken die designers al gelegd
 hebben. De smoke test controleert dit expliciet door élke import twee keer te
 draaien en de node-ids te vergelijken.
 
+### Slots
+
+Een `SLOT` in de spec (`data-figma-children` in de matrix) wordt een Figma-slot.
+Een nieuw slot kan alleen via `createSlot()` op het component zelf; dat legt
+meteen een SLOT-property aan die naar het slot heet, en de naam uit de spec
+hernoemt hem. Varianten met een slot van dezelfde naam delen in de set één
+property.
+
+Gemeten in Figma Desktop (issue #450), en daar is het bijwerken op gebouwd:
+
+- **Een slot dat blijft staan, houdt wat een designer erin zette.** Bij een
+  tweede import blijft het slot daarom staan (`resetVariant`): alleen zijn
+  layout en zijn standaardinhoud worden vervangen. De instances in die
+  standaardinhoud worden hergebruikt, net als elke andere geneste instance.
+- **Een slot weggooien en opnieuw maken** zet elke geplaatste instance terug
+  op de standaardinhoud. Dat doet de plugin dus nooit.
+- **Figma laat de property staan als het slot weggaat.** Verdwijnt een slot uit
+  de spec, dan verwijdert de plugin het slot én zijn property, en meldt dat:
+  wat designers erin hadden gezet, is dan weg.
+
+De mock bootst dit na (`createSlot`, de gedeelde property, geen grid, geen
+exposed instance in een slot, de wees-property), en de smoke test vult een
+geplaatste lijst zoals een designer dat doet en importeert hem opnieuw.
+
 ### Hoe een component set wordt bijgewerkt
 
 De plugin zoekt op de pagina van het component een set met dezelfde naam. Staat
@@ -343,6 +368,8 @@ die er, dan wordt hij bijgewerkt in plaats van dat er een tweede naast komt:
 | Een waarde is een eigen as geworden          | `state=disabled` gaat over in `state=default` plus `disabled=true`, met dezelfde node-id                   |
 | Property staat in de spec en op de set       | Wordt bijgewerkt, houdt zijn property-id                                                                   |
 | Property staat op de set, niet in de spec    | Blijft staan, met een melding in de log                                                                    |
+| Slot staat in de spec en in Figma            | Het slot blijft, zijn standaardinhoud wordt vervangen; wat designers erin zetten blijft staan              |
+| Slot staat in Figma, niet meer in de spec    | Wordt verwijderd met zijn property, met een melding in de log                                              |
 
 Het hergebruiken van het component zélf is de kern. Elke geplaatste instance
 hangt aan de **node-id** van zijn variant; een nieuw component met dezelfde naam
