@@ -9,6 +9,7 @@
 import { importVariables } from './variables.js';
 import { importComponentSet } from './components.js';
 import { importIconSet } from './icons.js';
+import { probeActionGroup } from './action-group-probe.js';
 
 figma.showUI(__html__, { width: 420, height: 520 });
 
@@ -79,9 +80,37 @@ async function handleImport(message) {
  */
 let queue = Promise.resolve();
 
+/**
+ * Tijdelijk: de meting voor ActionGroup als component met een slot. Een
+ * meting en geen import: hij bouwt op een eigen pagina en raakt de
+ * bibliotheek niet aan. Zie `action-group-probe.js`.
+ */
+async function handleActionGroupProbe() {
+  const log = createLog();
+  try {
+    const { passed, failed } = await probeActionGroup(log);
+    figma.ui.postMessage({
+      type: 'done',
+      ok: true,
+      summary: `meting klaar: ${passed} stappen gelukt, ${failed} niet. Kopieer de log en deel hem.`,
+    });
+  } catch (error) {
+    log.error(error.message);
+    figma.ui.postMessage({
+      type: 'done',
+      ok: false,
+      summary: `meting afgebroken: ${error.message}`,
+    });
+  }
+}
+
 figma.ui.onmessage = (message) => {
   if (message.type === 'import') {
     queue = queue.then(() => handleImport(message));
+    return queue;
+  }
+  if (message.type === 'probe-action-group') {
+    queue = queue.then(handleActionGroupProbe);
     return queue;
   }
   if (message.type === 'close') return figma.closePlugin();
