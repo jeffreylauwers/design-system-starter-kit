@@ -125,6 +125,9 @@
   <input type="file" id="file" accept="application/json,.json" multiple />
 </label>
 
+<!-- Tijdelijk, voor issue #450: meet in Figma wat slots doen. Zie slot-probe.js. -->
+<button type="button" id="probe-slots">Slots meten</button>
+
 <div class="progress" id="progress" hidden>
   <span class="spinner" aria-hidden="true"></span>
   <span id="progress-label"></span>
@@ -278,6 +281,12 @@
     // doet, want dezelfde JSON opnieuw importeren is nu de normale gang.
     fileInput.value = '';
     handleFiles(chosen);
+  });
+
+  document.getElementById('probe-slots').addEventListener('click', () => {
+    write('> slotmeting op de pagina dsn-meting/Slots');
+    showProgress('slots meten');
+    parent.postMessage({ pluginMessage: { type: 'probe-slots' } }, '*');
   });
 
   onmessage = (event) => {
