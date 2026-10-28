@@ -562,7 +562,7 @@ goed, op één geplaatste instance) is de controle daarop.
   volgen per matrix met `instances: true`.
 - **Effect styles.** Box shadows staan in het skip-report en moeten nog
   Figma-effectstijlen worden.
-- **Booleans die tokens veranderen.** `iconOnly`, `loading` en `fullWidth` bij
-  Button hebben eigen tokens en horen daarom op een variant-as, niet op een
-  property; zie de README van `figma-sync`.
+- **Booleans die tokens veranderen.** `loading` en `fullWidth` bij Button
+  hebben eigen tokens en horen daarom op een variant-as, niet op een
+  property, net als `iconOnly`; zie de README van `figma-sync`.
 - **Thumbnails.** De thumbnail van een component set blijft handwerk.

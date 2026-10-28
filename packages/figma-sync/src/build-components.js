@@ -87,6 +87,13 @@ function targetFrom(spec) {
     components: set.components,
     wrapped: set.components[0]?.node.type !== 'FRAME',
     exposed: (set.componentProperties ?? []).length > 0,
+    // Van slot naar property, voor de iconen die een instance swap zijn: een
+    // ander icoon daar is een property op de instance en geen andere opbouw.
+    swaps: new Map(
+      (set.componentProperties ?? [])
+        .filter((property) => property.type === 'INSTANCE_SWAP')
+        .map((property) => [property.slot, property.name])
+    ),
   };
 }
 

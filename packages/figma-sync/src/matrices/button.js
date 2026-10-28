@@ -9,6 +9,7 @@
 
 import { icon } from '../icons.js';
 import { TEKST } from '../text.js';
+import { FLAG, skipFlagCombinations } from '../flags.js';
 
 /**
  * De twee icoonslots.
@@ -25,7 +26,28 @@ import { TEKST } from '../text.js';
 const ICON_START = icon('chevron-left', { slot: 'icon-start' });
 const ICON_END = icon('chevron-right', { slot: 'icon-end' });
 
-import { FLAG, skipFlagCombinations } from '../flags.js';
+/**
+ * Het icoon van een icon-only knop: een eigen slot, en niet `icon-start`.
+ *
+ * De standaardwaarde van een BOOLEAN-property geldt voor de hele set. Hing
+ * het icoon van een icon-only knop aan `showIconStart`, dan was elke nieuwe
+ * icon-only instance leeg, want die staat standaard uit. Dit slot heeft geen
+ * boolean: het icoon staat er altijd. `settings` als standaard, net als het
+ * voorbeeld in CLAUDE.md.
+ */
+const ICON = icon('settings', { slot: 'icon' });
+
+/**
+ * Icon-only bestaat alleen voor de drie nadrukken zonder sentiment. Een
+ * knop met alleen een icoon is zelden negatief of positief, en zo groeit de
+ * set met 36 varianten in plaats van 108.
+ */
+const ICON_ONLY_VARIANTS = new Set(['strong', 'default', 'subtle']);
+
+const skipFlags = skipFlagCombinations({
+  flags: ['disabled'],
+  base: { state: 'default' },
+});
 
 export default {
   component: 'Button',
@@ -71,16 +93,20 @@ export default {
     size: ['small', 'default', 'large'],
     state: ['default', 'hover', 'active'],
     disabled: FLAG,
+    // Een as en geen BOOLEAN: icon-only heeft eigen padding-tokens
+    // (`button/size/*/icon-only-padding`), en een boolean kan alleen een
+    // laag aan- of uitzetten binnen dezelfde meting. Zie issue #451.
+    iconOnly: FLAG,
   },
 
   /**
    * Toestanden die in de browser via een pseudo-klasse ontstaan en dus door
    * Playwright nagebootst moeten worden in plaats van via een class.
    */
-  skipVariant: skipFlagCombinations({
-    flags: ['disabled'],
-    base: { state: 'default' },
-  }),
+  skipVariant: (combination) =>
+    skipFlags(combination) ||
+    (combination.iconOnly === 'true' &&
+      !ICON_ONLY_VARIANTS.has(combination.variant)),
 
   pseudoStates: { hover: 'hover', active: 'active' },
 
@@ -93,49 +119,76 @@ export default {
    * uitzet krijgt daarom `show`-ervoor; twee properties kunnen in Figma niet
    * dezelfde naam dragen.
    *
-   * Bewust nog niet hier: `iconOnly`, `loading` en `fullWidth`. Dat zijn
-   * losse booleans met eigen tokens en eigen vragen, zie issue #323.
+   * De vier icoon-properties horen bij de varianten met tekst, `icon` bij de
+   * icon-only varianten; daarom zijn ze `optional`. Het label blijft ook in
+   * een icon-only knop: daar is het de toegankelijke naam, als verborgen
+   * laag met dezelfde TEXT-property.
+   *
+   * Bewust nog niet hier: `loading` en `fullWidth`. Die hebben eigen tokens
+   * en eigen vragen, zie issue #323.
    */
   componentProperties: [
     { name: 'label', type: 'TEXT', slot: 'label' },
     {
       name: 'showIconStart',
+      optional: true,
       type: 'BOOLEAN',
       slot: 'icon-start',
       default: false,
     },
     {
       name: 'iconStart',
+      optional: true,
       type: 'INSTANCE_SWAP',
       slot: 'icon-start',
       default: 'chevron-left',
     },
     {
       name: 'showIconEnd',
+      optional: true,
       type: 'BOOLEAN',
       slot: 'icon-end',
       default: false,
     },
     {
       name: 'iconEnd',
+      optional: true,
       type: 'INSTANCE_SWAP',
       slot: 'icon-end',
       default: 'chevron-right',
     },
+    {
+      name: 'icon',
+      type: 'INSTANCE_SWAP',
+      slot: 'icon',
+      optional: true,
+      default: 'settings',
+    },
   ],
 
   /** Bouwt de markup voor één cel van de matrix. */
-  render({ variant, size, disabled: isDisabled }) {
+  render({ variant, size, disabled: isDisabled, iconOnly }) {
     const classes = [
       'dsn-button',
       `dsn-button--${variant}`,
       `dsn-button--size-${size}`,
-    ].join(' ');
+      iconOnly === 'true' && 'dsn-button--icon-only',
+    ]
+      .filter(Boolean)
+      .join(' ');
     const disabled = isDisabled === 'true' ? ' disabled' : '';
+    const label = `<span class="dsn-button__label" data-figma-slot="label">${TEKST}</span>`;
+
+    if (iconOnly === 'true') {
+      return `<button type="button" class="${classes}"${disabled} data-figma-root>
+        ${ICON}
+        ${label}
+      </button>`;
+    }
 
     return `<button type="button" class="${classes}"${disabled} data-figma-root>
       ${ICON_START}
-      <span class="dsn-button__label" data-figma-slot="label">${TEKST}</span>
+      ${label}
       ${ICON_END}
     </button>`;
   },
