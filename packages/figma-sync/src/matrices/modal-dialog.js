@@ -12,10 +12,11 @@
  * sluitknop er in code altijd zelf in, en een slot laat een designer die
  * weghalen.
  *
- * De footer is ook een slot (`data-figma-children="footer"`), met de
- * twee knoppen in hun ActionGroup als standaardinhoud. Een designer haalt de
- * knoppen er zelf uit of zet er een bij; de `footer`-as die dat eerder deed
- * is weg, en daarmee is ModalDialog een los component. De footer zelf is het
+ * De footer is ook een slot (`data-figma-children="footer"`), met een
+ * instance van ActionGroup als standaardinhoud. Een designer past de knoppen
+ * aan in het slot van die ActionGroup, of zet iets anders in de footer. De
+ * `footer`-as die het aantal knoppen eerder regelde is weg, en daarmee is
+ * ModalDialog een los component. De footer zelf is het
  * slot, en niet een frame erin: hij hangt direct onder de root, en alleen
  * daar blijft de inhoud van een designer een tweede import staan. Zijn
  * padding en de scheidingslijn erboven horen bij het slot.
@@ -31,10 +32,10 @@ import { HEADING, TEKST } from '../text.js';
 export default {
   component: 'ModalDialog',
 
-  // De Paragraph en de footerknoppen zijn instances van hun eigen sets. De
-  // knoppen renderen daarvoor dezelfde opbouw als de Button-set, met een
-  // chevron aan weerszijden: die staan in de instance uit via `showIconStart`
-  // en `showIconEnd`, net als in de losse set.
+  // De Paragraph en de ActionGroup in de footer zijn instances van hun eigen
+  // sets. De knoppen in de ActionGroup renderen dezelfde opbouw als de
+  // ActionGroup-set, zodat die instance geen overrides nodig heeft: de
+  // knoppen pas je aan in het slot van de geneste ActionGroup.
   //
   // De sluitknop blijft een gemeten laag. Hij is icon-only, en daar heeft de
   // Button-set nog geen variant voor: zie issue #451.
@@ -59,19 +60,20 @@ export default {
   ],
 
   render() {
+    const button = (variant) =>
+      `<li class="dsn-action-group__item" data-figma-unwrap>
+         <button type="button" class="dsn-button dsn-button--${variant} dsn-button--size-default">
+           ${icon('chevron-left')}
+           <span class="dsn-button__label">${TEKST}</span>
+           ${icon('chevron-right')}
+         </button>
+       </li>`;
+
     const footerMarkup = `<div class="dsn-modal-dialog__footer" data-figma-children="footer">
-             <div class="dsn-action-group">
-               <button type="button" class="dsn-button dsn-button--strong dsn-button--size-default">
-                 ${icon('chevron-left')}
-                 <span class="dsn-button__label">${TEKST}</span>
-                 ${icon('chevron-right')}
-               </button>
-               <button type="button" class="dsn-button dsn-button--subtle dsn-button--size-default">
-                 ${icon('chevron-left')}
-                 <span class="dsn-button__label">${TEKST}</span>
-                 ${icon('chevron-right')}
-               </button>
-             </div>
+             <ul class="dsn-action-group" aria-label="Acties">
+               ${button('strong')}
+               ${button('subtle')}
+             </ul>
            </div>`;
 
     return `<dialog class="dsn-modal-dialog" open data-figma-root>

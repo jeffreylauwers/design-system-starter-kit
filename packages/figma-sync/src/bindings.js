@@ -136,7 +136,8 @@ function unavailableReason(spec, field) {
   const needsAutoLayout =
     field.startsWith('padding') ||
     field.startsWith('min') ||
-    field === 'itemSpacing';
+    field === 'itemSpacing' ||
+    field === 'counterAxisSpacing';
   if (!needsAutoLayout) return null;
   if (spec.layoutMode && spec.layoutMode !== 'NONE') return null;
   return `de node heeft geen auto layout, dus Figma kent hier geen ${field}`;
@@ -311,6 +312,14 @@ export function bindingsFor(spec, sources, index, report) {
       property: spec.layoutMode === 'VERTICAL' ? 'row-gap' : 'column-gap',
       kind: 'number',
     });
+    // De gap tussen de rijen (of kolommen) als de auto layout afbreekt.
+    if (spec.layoutWrap === 'WRAP') {
+      consider({
+        field: 'counterAxisSpacing',
+        property: spec.layoutMode === 'VERTICAL' ? 'column-gap' : 'row-gap',
+        kind: 'number',
+      });
+    }
   }
 
   return Object.keys(bound).length ? bound : undefined;

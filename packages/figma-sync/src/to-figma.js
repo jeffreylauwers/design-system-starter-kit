@@ -312,10 +312,23 @@ function autoLayoutFrom(node, styles, wideStyles, warnings, pathLabel) {
     0
   );
 
+  // Bij afbreken is er een tweede gap, tussen de rijen (of kolommen). Figma
+  // heet die counterAxisSpacing; zonder afbreken bestaat hij niet.
+  const wraps = styles.flexWrap === 'wrap';
+  const crossGap = wraps
+    ? px(
+        vertical
+          ? (styles.columnGap ?? styles.gap)
+          : (styles.rowGap ?? styles.gap),
+        0
+      )
+    : undefined;
+
   return {
     layoutMode: vertical ? 'VERTICAL' : 'HORIZONTAL',
-    layoutWrap: styles.flexWrap === 'wrap' ? 'WRAP' : 'NO_WRAP',
+    layoutWrap: wraps ? 'WRAP' : 'NO_WRAP',
     itemSpacing: gap,
+    ...(wraps ? { counterAxisSpacing: crossGap } : {}),
     itemReverseZIndex: false,
     ...paddingFrom(styles),
     primaryAxisAlignItems: PRIMARY_AXIS_ALIGN[styles.justifyContent] ?? 'MIN',
@@ -1268,8 +1281,15 @@ function withContentSlot(frame, name, root, label) {
 
   if (!root) return { ...frame, type: 'SLOT', name, children };
 
-  const { itemSpacing: spacingBinding, ...rootBindings } =
-    frame.boundVariables ?? {};
+  const {
+    itemSpacing: spacingBinding,
+    counterAxisSpacing: crossBinding,
+    ...rootBindings
+  } = frame.boundVariables ?? {};
+  const slotBindings = {
+    ...(spacingBinding ? { itemSpacing: spacingBinding } : {}),
+    ...(crossBinding ? { counterAxisSpacing: crossBinding } : {}),
+  };
 
   const slot = {
     type: 'SLOT',
@@ -1281,6 +1301,9 @@ function withContentSlot(frame, name, root, label) {
     layoutMode: frame.layoutMode,
     layoutWrap: frame.layoutWrap,
     itemSpacing: frame.itemSpacing,
+    ...(frame.layoutWrap === 'WRAP'
+      ? { counterAxisSpacing: frame.counterAxisSpacing }
+      : {}),
     itemReverseZIndex: false,
     paddingTop: 0,
     paddingRight: 0,
@@ -1294,13 +1317,17 @@ function withContentSlot(frame, name, root, label) {
     children,
     layoutSizingHorizontal: 'FILL',
     layoutSizingVertical: 'HUG',
-    ...(spacingBinding
-      ? { boundVariables: { itemSpacing: spacingBinding } }
+    ...(Object.keys(slotBindings).length
+      ? { boundVariables: slotBindings }
       : {}),
   };
 
+  // Het afbreken en de gaps zitten nu in het slot; de root heeft één kind.
+  const rootFrame = { ...frame };
+  delete rootFrame.counterAxisSpacing;
   return {
-    ...frame,
+    ...rootFrame,
+    layoutWrap: 'NO_WRAP',
     itemSpacing: 0,
     boundVariables: Object.keys(rootBindings).length ? rootBindings : undefined,
     children: [slot],
@@ -1325,6 +1352,14 @@ function checkSlotDepth(node, label, depth = 0) {
     }
     if (child.type !== 'INSTANCE') checkSlotDepth(child, label, depth + 1);
   }
+}
+
+/** De naam van het slot op de root van een doelset, of `null`. */
+function targetRootSlot(target) {
+  const children = target.components?.[0]?.node?.children ?? [];
+  return children.length === 1 && children[0].type === 'SLOT'
+    ? children[0].name
+    : null;
 }
 
 /** Wikkel zodat convertNode niets van de vorm van het bindings-object hoeft te weten. */
@@ -1795,7 +1830,17 @@ export function toComponentSet(
       return converted;
     }
 
-    return toInstance(converted, node, target, label);
+    // Een doelset met een slot op de root (ActionGroup) heeft in Figma een
+    // laag `slot` tussen de root en zijn inhoud. De markup in de host heeft
+    // die niet, dus de gemeten subboom krijgt eerst dezelfde vorm; anders
+    // lijkt geen enkele variant op de meting.
+    const rootSlot = targetRootSlot(target);
+    const comparable =
+      rootSlot && !converted.children?.some((child) => child.type === 'SLOT')
+        ? withContentSlot(converted, rootSlot, true, label)
+        : converted;
+
+    return toInstance(comparable, node, target, label);
   };
 
   // Een index per gemeten breedte; zie `build-components.js`. Eén index blijft

@@ -125,9 +125,6 @@
   <input type="file" id="file" accept="application/json,.json" multiple />
 </label>
 
-<!-- Tijdelijk: meet ActionGroup als component met een slot. Zie action-group-probe.js. -->
-<button type="button" id="probe-action-group">ActionGroup meten</button>
-
 <div class="progress" id="progress" hidden>
   <span class="spinner" aria-hidden="true"></span>
   <span id="progress-label"></span>
@@ -282,17 +279,6 @@
     fileInput.value = '';
     handleFiles(chosen);
   });
-
-  document
-    .getElementById('probe-action-group')
-    .addEventListener('click', () => {
-      write('> meting op de pagina dsn-meting/ActionGroup');
-      showProgress('ActionGroup meten');
-      parent.postMessage(
-        { pluginMessage: { type: 'probe-action-group' } },
-        '*'
-      );
-    });
 
   onmessage = (event) => {
     const message = event.data.pluginMessage;

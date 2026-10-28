@@ -166,6 +166,10 @@ function applyAutoLayout(frame, spec, log) {
     // uitlijning die in de nieuwe spec niet meer staat.
     frame.itemSpacing = spec.itemSpacing ?? 0;
     frame.layoutWrap = spec.layoutWrap ?? 'NO_WRAP';
+    // Bestaat alleen bij afbreken: de gap tussen de rijen.
+    if (frame.layoutWrap === 'WRAP') {
+      frame.counterAxisSpacing = spec.counterAxisSpacing ?? 0;
+    }
     frame.primaryAxisAlignItems = spec.primaryAxisAlignItems ?? 'MIN';
     frame.counterAxisAlignItems = spec.counterAxisAlignItems ?? 'MIN';
   }
