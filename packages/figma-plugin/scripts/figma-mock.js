@@ -136,10 +136,14 @@ const loadedFonts = new Set();
 // Alleen fonts die Figma standaard heeft plus de fonts van dit systeem.
 const KNOWN_FONT_FAMILIES = ['Inter', 'Fira Sans', 'Fira Mono', 'Roboto'];
 
+/** Elke node op id, zoals `figma.getNodeById`. Voor `setProperties`. */
+const nodesById = new Map();
+
 class Node {
   constructor(type) {
     this.type = type;
     this.id = id(type);
+    nodesById.set(this.id, this);
     this._name = undefined;
     this.children = [];
     this.parent = null;
@@ -484,11 +488,71 @@ class Node {
 
   #resetOverrides() {
     if (this.type !== 'INSTANCE' || !this.mainComponent) return;
+    this._properties = undefined;
     for (const child of [...this.children]) child.remove();
     for (const child of this.mainComponent.children) {
       const mirror = cloneNode(child);
       mirror._source = child;
       this.appendChild(mirror);
+    }
+  }
+
+  /** De set of het losse component waar de properties van een instance op staan. */
+  #propertyOwner() {
+    const main = this.mainComponent;
+    return main?.parent?.type === 'COMPONENT_SET' ? main.parent : main;
+  }
+
+  /**
+   * Zoals in Figma: per property het type en de waarde in deze instance. Een
+   * property die niet gezet is, heeft de standaardwaarde.
+   */
+  get componentProperties() {
+    if (this.type !== 'INSTANCE') return undefined;
+    const definitions = this.#propertyOwner()?.componentPropertyDefinitions;
+    return Object.fromEntries(
+      Object.entries(definitions ?? {}).map(([key, definition]) => [
+        key,
+        {
+          type: definition.type,
+          value: this._properties?.[key] ?? definition.defaultValue,
+        },
+      ])
+    );
+  }
+
+  /**
+   * Zoals in Figma: alleen bestaande properties, en bij een instance swap het
+   * id van een component. De laag die aan die property hangt krijgt dat
+   * component als mainComponent.
+   */
+  setProperties(values) {
+    if (this.type !== 'INSTANCE') {
+      throw new Error(`setProperties bestaat alleen op een instance`);
+    }
+    const definitions =
+      this.#propertyOwner()?.componentPropertyDefinitions ?? {};
+    for (const [key, value] of Object.entries(values)) {
+      const definition = definitions[key];
+      if (!definition) {
+        throw new Error(`property ${key} bestaat niet op dit component`);
+      }
+      if (definition.type === 'INSTANCE_SWAP') {
+        const component = nodesById.get(value);
+        if (component?.type !== 'COMPONENT') {
+          throw new Error(`${value} is geen component-id`);
+        }
+        const swap = (node) => {
+          if (
+            node._source?.componentPropertyReferences?.mainComponent === key
+          ) {
+            node.mainComponent = component;
+          }
+          for (const child of node.children) swap(child);
+        };
+        swap(this);
+      }
+      this._properties = { ...this._properties, [key]: value };
     }
   }
 

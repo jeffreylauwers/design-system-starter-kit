@@ -25,6 +25,12 @@ Het component is een key-value lijst op basis van `<dl>` en wordt breder gebruik
 
 In Figma maakt de eerstvolgende import een nieuwe component set `DataList` aan. De bestaande set `SummaryList` blijft staan en moet met de hand worden opgeruimd of vooraf hernoemd.
 
+### figma-sync: icon-only Button (#451)
+
+De Button-set in Figma heeft een `iconOnly`-as. Icon-only bestaat alleen voor `strong`, `default` en `subtle`, dus de set groeit van 108 naar 144 varianten. Een icon-only variant bindt aan de eigen `icon-only-padding`-tokens en heeft één icoon in een eigen instance swap `icon`. Het label blijft als verborgen laag in de knop, met de TEXT-property `label`: dat is de toegankelijke naam. Bestaande varianten gaan bij de volgende import over naar `iconOnly=false`, zodat geplaatste instances aan hun variant blijven hangen.
+
+De sluitknop van ModalDialog is nu een instance van de icon-only Button, met `x` als icoon. Daarvoor kan de generator een ander icoon in een geneste instance doorgeven als property (`setProperties`), in plaats van te stoppen omdat de opbouw anders is. Hij herkent ook de visually-hidden techniek en zet zo'n laag in Figma op verborgen.
+
 ### figma-sync: ActionGroup als component met een slot
 
 ActionGroup krijgt in Figma een eigen set, met een `direction`-as (horizontal, vertical). De knoppen staan in een slot met twee Buttons als standaardinhoud. Het slot breekt af naar een nieuwe regel en draagt beide gaps, gebonden aan `action-group/column-gap` en `action-group/row-gap`. Een knop die een designer erin sleept, krijgt zo vanzelf dezelfde ruimte. De `<li>`'s komen niet mee: met de nieuwe markering `data-figma-unwrap` staan de knoppen direct in het slot.

@@ -451,6 +451,7 @@ function buildInstance(spec, parent, context, parentSpec) {
       current,
   });
 
+  applyInstanceProperties(instance, spec, context);
   applyRotation(instance, spec, context.log);
 
   // "Exposed": de properties van het geneste component (de `label` van een
@@ -470,6 +471,45 @@ function buildInstance(spec, parent, context, parentSpec) {
 
   registerSlot(instance, spec, context);
   return instance;
+}
+
+/**
+ * Zet de properties die de generator voor deze instance meegeeft: een ander
+ * icoon via een instance swap, zoals `x` op de sluitknop van ModalDialog
+ * (issue #451). De waarde is de naam van het icoon; Figma wil het id van het
+ * icooncomponent.
+ *
+ * Na `applyOverrides`: een hergebruikte instance is daar met
+ * `resetOverrides` teruggezet, en dat zet ook zijn properties terug.
+ */
+function applyInstanceProperties(instance, spec, context) {
+  const { log } = context;
+  for (const [name, iconName] of Object.entries(spec.properties ?? {})) {
+    const label = `${spec.name} > ${name}`;
+    const current = instance.componentProperties ?? {};
+    const key = Object.keys(current).find(
+      (candidate) => propertyNameOf(candidate) === name
+    );
+    if (!key) {
+      log.error(
+        `${label}: ${spec.component} heeft geen property "${name}"; het icoon ${iconName} is niet gezet. Importeer ${spec.component} opnieuw.`
+      );
+      continue;
+    }
+    const icon = context.icons.get(iconName);
+    if (!icon) {
+      log.error(
+        `${label}: icoon "${iconName}" staat niet op de pagina ${ICON_PAGE}; importeer eerst icons.json`
+      );
+      continue;
+    }
+    if (current[key].value === icon.id) continue;
+    try {
+      instance.setProperties({ [key]: icon.id });
+    } catch (error) {
+      log.error(`${label}: icoon ${iconName} niet gezet: ${error.message}`);
+    }
+  }
 }
 
 /**
@@ -506,6 +546,9 @@ function buildNode(spec, parent, context, parentSpec) {
     if (spec.textCase) text.textCase = spec.textCase;
     if (spec.fills) text.fills = spec.fills;
     text.name = spec.name ?? spec.characters ?? 'Text';
+    // Ook terugzetten: een hergebruikte tekstlaag houdt anders een
+    // verborgen stand die in de nieuwe spec niet meer staat.
+    text.visible = spec.visible ?? true;
 
     applyBindings(text, spec, context);
     applyPlacement(text, spec, log, parentSpec);

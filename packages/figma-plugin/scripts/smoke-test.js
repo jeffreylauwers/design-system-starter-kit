@@ -1402,6 +1402,54 @@ for (const composed of allComposed) {
 // Slots: wat een designer erin zette, overleeft een tweede import
 // =============================================================================
 
+// Issue #451: een icon-only Button houdt zijn label als verborgen laag (de
+// toegankelijke naam), en een Button met een ander icoon in een host is een
+// instance met dat icoon via de instance swap.
+console.log('\n=== icon-only Button ===');
+{
+  const pageOf = (name) =>
+    state.root.children.find((page) => page.name === name);
+  const buttonSet = pageOf('dsn/Button')?.children.find(
+    (node) => node.type === 'COMPONENT_SET' && node.name === 'dsn-button'
+  );
+  const iconOnly = buttonSet?.children.find((variant) =>
+    variant.name.endsWith('iconOnly=true')
+  );
+  const label = iconOnly?.children.find((child) => child.type === 'TEXT');
+  check(
+    'een icon-only variant heeft zijn label als verborgen laag',
+    label &&
+      label.visible === false &&
+      label.componentPropertyReferences?.characters,
+    label ? `visible=${label.visible}` : 'geen tekstlaag'
+  );
+
+  const dialog = pageOf('dsn/ModalDialog')
+    ?.children.flatMap((node) => [node, ...(node.children ?? [])])
+    .find(
+      (node) => node.type === 'COMPONENT' && node.name === 'dsn-modal-dialog'
+    );
+  const walk = (node) => [node, ...(node?.children ?? []).flatMap(walk)];
+  const close = dialog
+    ? walk(dialog).find(
+        (node) =>
+          node.type === 'INSTANCE' &&
+          node.mainComponent?.name.endsWith('iconOnly=true')
+      )
+    : undefined;
+  const closeIcon = close?.children.find((child) => child.type === 'INSTANCE');
+  check(
+    'de sluitknop van ModalDialog is een instance van de icon-only Button',
+    Boolean(close),
+    close?.mainComponent?.name ?? 'niet gevonden'
+  );
+  check(
+    'de sluitknop toont het icoon x via de instance swap',
+    closeIcon?.mainComponent?.name === 'x',
+    closeIcon?.mainComponent?.name ?? 'geen icoon'
+  );
+}
+
 // Gemeten in Figma bij issue #450: zolang het slot zelf blijft staan, houdt een
 // geplaatste instance de items die een designer erin zette. Een slot dat weg
 // en opnieuw gemaakt wordt zet hem terug op de standaardinhoud.
@@ -1566,7 +1614,12 @@ const placedOn = setBefore.children[0];
 // Een variant die uit de spec valt maar wél alle assen draagt, zoals na een
 // wijziging in `skipVariant`. Die hoort te blijven staan.
 const ghost = figma.createComponent();
-ghost.name = 'variant=ghost, size=small, state=default, disabled=false';
+// Dezelfde assen als de echte varianten, met een waarde die niet in de spec
+// staat. Zo blijft het een wees en geen variant uit een andere as-indeling.
+ghost.name = rerunPayload.componentSet.components[0].name.replace(
+  /variant=[^,]+/,
+  'variant=ghost'
+);
 setBefore.appendChild(ghost);
 
 // Een variant uit een oudere as-indeling. Die kan niet blijven staan: Figma
@@ -1773,8 +1826,16 @@ const measured = await importComponentSet(rerunPayload, log, {
 });
 const diagnosis = measured.diagnosis;
 
-// Drie gebonden kleurlagen per variant: twee iconen en de tekst.
-const expectedProbes = rerunPayload.componentSet.components.length * 3;
+// De gebonden kleurlagen: per variant de iconen en de tekst. Een variant met
+// tekst heeft er drie, een icon-only variant twee.
+const expectedProbes = rerunPayload.componentSet.components.reduce(
+  (total, component) =>
+    total +
+    component.node.children.filter(
+      (child) => child.type === 'VECTOR' || child.type === 'TEXT'
+    ).length,
+  0
+);
 check(
   'de meting pakt elke gebonden kleurlaag, iconen én tekst',
   diagnosis?.probes === expectedProbes,

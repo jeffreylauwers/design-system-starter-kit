@@ -172,6 +172,9 @@ const CAPTURED_PROPERTIES = [
   'boxShadow',
   'position',
   'overflow',
+  // Alleen gelezen om de visually-hidden techniek te herkennen, zoals het
+  // label van een icon-only Button. Zie `isVisuallyHidden` in to-figma.js.
+  'clipPath',
   // `transform` wordt alleen gelezen om er een rotatie uit te halen, zoals de
   // chevron van Details die omklapt zodra het paneel open staat. Zie
   // `rotationFrom` in to-figma.js.

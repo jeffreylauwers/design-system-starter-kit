@@ -648,6 +648,15 @@ function applyChildPlacement(
     converted.layoutSizingHorizontal = 'FILL';
   }
 
+  // Visually hidden: in de browser onzichtbaar maar er wel, voor
+  // screenreaders. In Figma een verborgen laag in de stroom; een verborgen
+  // laag neemt in auto layout geen ruimte in. Zo blijft het label van een
+  // icon-only Button aan zijn TEXT-property hangen, als toegankelijke naam.
+  if (isVisuallyHidden(styles)) {
+    converted.visible = false;
+    return;
+  }
+
   if (styles.position === 'absolute' || styles.position === 'fixed') {
     // Een absoluut kind valt buiten de stroom; Figma houdt het op zijn plek
     // ten opzichte van de ouder in plaats van het mee te laten stromen.
@@ -1352,6 +1361,19 @@ function checkSlotDepth(node, label, depth = 0) {
     }
     if (child.type !== 'INSTANCE') checkSlotDepth(child, label, depth + 1);
   }
+}
+
+/**
+ * De visually-hidden techniek: absoluut, en weggeknipt met `clip-path`. Zo
+ * verbergen `dsn-visually-hidden` en het label van een icon-only Button hun
+ * tekst. `dsn-visually-hidden` zelf slaat de extractie al over; dit vangt de
+ * plekken waar dezelfde techniek op een eigen klasse staat.
+ */
+function isVisuallyHidden(styles) {
+  return (
+    styles.position === 'absolute' &&
+    /^inset\(50%\)$/.test(styles.clipPath ?? '')
+  );
 }
 
 /** De naam van het slot op de root van een doelset, of `null`. */

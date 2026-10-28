@@ -37,8 +37,8 @@ export default {
   // ActionGroup-set, zodat die instance geen overrides nodig heeft: de
   // knoppen pas je aan in het slot van de geneste ActionGroup.
   //
-  // De sluitknop blijft een gemeten laag. Hij is icon-only, en daar heeft de
-  // Button-set nog geen variant voor: zie issue #451.
+  // De sluitknop is een instance van de icon-only Button, met `x` via de
+  // instance swap `icon` (issue #451).
   instances: true,
 
   fonts: [
@@ -79,7 +79,7 @@ export default {
     return `<dialog class="dsn-modal-dialog" open data-figma-root>
       <div class="dsn-modal-dialog__header">
         <h2 class="dsn-modal-dialog-heading">${HEADING}</h2>
-        <button type="button" class="dsn-button dsn-button--subtle dsn-button--size-small dsn-button--icon-only" data-figma-instance="none">
+        <button type="button" class="dsn-button dsn-button--subtle dsn-button--size-small dsn-button--icon-only">
           ${icon('x')}
           <span class="dsn-button__label">Sluiten</span>
         </button>

@@ -206,12 +206,20 @@ function sameReference(a, b) {
  * Een opbouw die niet als override uit te drukken is: een ander aantal lagen,
  * een ander type laag, of een ander icoon. Figma zoekt overrides terug via het
  * laagpad, dus zodra dat pad verschilt is er niets om op te leggen.
+ *
+ * Behalve een ander icoon op een laag die aan een instance swap hangt (het
+ * `x` van een sluitknop in de Button-set): dat is een property op de
+ * instance. Zie `collectSwaps`. `swaps` wijst van slot naar property.
  */
-function structuralDifference(measured, target, label) {
+function structuralDifference(measured, target, label, swaps = new Map()) {
   if (measured.type !== target.type) {
     return `${label}: ${measured.type} tegenover ${target.type}`;
   }
-  if (measured.type === 'VECTOR' && measured.name !== target.name) {
+  if (
+    measured.type === 'VECTOR' &&
+    measured.name !== target.name &&
+    !swaps.has(target.componentSlot)
+  ) {
     return `${label}: icoon ${measured.name} tegenover ${target.name}`;
   }
   if (measured.type === 'INSTANCE') {
@@ -240,7 +248,8 @@ function structuralDifference(measured, target, label) {
     const difference = structuralDifference(
       child,
       b[index],
-      `${label} > ${index}`
+      `${label} > ${index}`,
+      swaps
     );
     if (difference) return difference;
   }
@@ -332,6 +341,28 @@ function collectDifferences(
       into,
       tally
     )
+  );
+  return into;
+}
+
+/**
+ * De iconen die via een instance swap anders zijn dan in de doelset, als
+ * `{ property: icoonnaam }`. De plugin zet ze met `setProperties`.
+ *
+ * Niet dieper dan een geneste instance: die heeft zijn eigen properties, en
+ * een verschil daar is al als opbouw afgewezen.
+ */
+function collectSwaps(measured, target, swaps, into = {}) {
+  if (
+    measured.type === 'VECTOR' &&
+    measured.name !== target.name &&
+    swaps.has(target.componentSlot)
+  ) {
+    into[swaps.get(target.componentSlot)] = measured.name;
+  }
+  if (measured.type === 'INSTANCE') return into;
+  (measured.children ?? []).forEach((child, index) =>
+    collectSwaps(child, target.children[index], swaps, into)
   );
   return into;
 }
@@ -438,7 +469,12 @@ function chooseVariant(measured, target, explicit, label) {
   const scored = [];
   const rejected = [];
   for (const component of candidates) {
-    const difference = structuralDifference(measured, component.node, label);
+    const difference = structuralDifference(
+      measured,
+      component.node,
+      label,
+      target.swaps
+    );
     if (difference) {
       rejected.push(`${component.name}: ${difference}`);
       continue;
@@ -451,7 +487,13 @@ function chooseVariant(measured, target, explicit, label) {
       [],
       tally
     );
-    scored.push({ component, overrides, score: score(tally) });
+    const properties = target.swaps?.size
+      ? collectSwaps(measured, component.node, target.swaps)
+      : {};
+    // Een ander icoon telt als verschil, zodat een variant met het juiste
+    // standaardicoon wint van een variant waar het geswapt moet worden.
+    tally.values += Object.keys(properties).length;
+    scored.push({ component, overrides, properties, score: score(tally) });
   }
 
   if (!scored.length) {
@@ -509,7 +551,7 @@ const PLACEMENT_FIELDS = [
  *   exposed }`
  */
 export function toInstance(measured, node, target, label) {
-  const { component, overrides } = chooseVariant(
+  const { component, overrides, properties } = chooseVariant(
     measured,
     target,
     node.instanceVariant,
@@ -558,6 +600,7 @@ export function toInstance(measured, node, target, label) {
   }
 
   if (overrides.length) instance.overrides = overrides;
+  if (Object.keys(properties ?? {}).length) instance.properties = properties;
   // Een instance van een component met eigen properties wordt "exposed": dan
   // staan de label en de opties van de Heading gewoon in het paneel van de
   // HeadingGroup, zonder dat de host ze opnieuw hoeft te declareren.

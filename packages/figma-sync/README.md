@@ -756,6 +756,14 @@ dat is een gok, en die hoort niet stil in een library te belanden. Een
 subboom met een andere opbouw dan elke variant (een ander aantal lagen,
 een ander icoon) stopt de build ook, want daar is geen override op te leggen.
 
+**Behalve een ander icoon op een instance swap.** Hangt de icoonlaag in de
+doelset aan een INSTANCE_SWAP-property, dan is een ander icoon geen andere
+opbouw maar een property op de instance: de spec krijgt
+`properties: { icon: 'x' }`, en de plugin zet dat icoon met `setProperties`.
+Zo is de sluitknop van ModalDialog een instance van de icon-only Button met
+`x`. Een ander icoon telt bij het kiezen als één verschil, zodat een variant
+met het juiste standaardicoon wint.
+
 Dat vergelijken is de reden dat de build nu eerst álle matrices meet en pas
 daarna omzet: een samenstelling heeft de spec van zijn doelsets nodig, en
 welke dat zijn blijkt pas uit de meting.
@@ -772,10 +780,6 @@ ander token. Een kop met eigen tokens die op de maat van `heading-4`
 uitkomen, hoort bij `heading-4`, niet bij een variant die net zo veel tokens
 deelt maar een andere maat heeft. De eigen tokens gaan dan als override mee,
 zodat de laag aan het token van de host blijft hangen.
-
-**Wat (nog) geen variant heeft, blijft gemeten.** De sluitknop van ModalDialog
-is icon-only, en daar heeft de Button-set geen variant voor (issue #451). Hij
-draagt `data-figma-instance="none"`.
 
 **3. Overrides.** Wat na die keuze nog verschilt, gaat als override mee: per
 laag, met het pad zoals het in Figma staat. Een component dat tot één
@@ -1016,14 +1020,26 @@ padding en kleuren. Een property zet alleen een laag aan of uit binnen een
 bestaande meting; verandert die stand ook de tokens, dan blijft de padding van
 de andere stand staan en klopt het component niet meer.
 
-Daarom is `iconOnly` bij Button géén property: `dsn-button--icon-only` heeft
-eigen `padding-inline`-tokens, dus als boolean zou de knop de padding van de
-tekstvariant houden. Als as zou hij de set verdrievoudigen. Zolang geen van
-beide bevalt is niets doen het eerlijkste antwoord; zie issue
+Daarom is `iconOnly` bij Button een as en géén property
+([#451](https://github.com/jeffreylauwers/design-system-starter-kit/issues/451)):
+`dsn-button--icon-only` heeft eigen `padding-inline`-tokens, dus als boolean
+zou de knop de padding van de tekstvariant houden. Om de set niet te
+verdubbelen bestaat `iconOnly=true` alleen voor `strong`, `default` en
+`subtle`: 144 varianten in plaats van 216. Een knop met alleen een icoon is
+zelden negatief of positief.
+
+Een icon-only variant heeft één icoon, in een eigen slot `icon` met een eigen
+instance swap, en niet in `icon-start`. De standaardwaarde van een
+BOOLEAN-property geldt voor de hele set, dus aan `showIconStart` gehangen zou
+elke nieuwe icon-only knop leeg zijn. De vier icoon-properties van de
+tekstvarianten en `icon` zijn daarom `optional`. Het label blijft in een
+icon-only knop staan, als verborgen laag aan dezelfde TEXT-property: daar is
+het de toegankelijke naam. De generator herkent de visually-hidden techniek
+(absoluut, met `clip-path: inset(50%)`) en zet zo'n laag op `visible: false`.
+
+`loading` en `fullWidth` hebben hetzelfde probleem en blijven voorlopig
+buiten de set; zie
 [#323](https://github.com/jeffreylauwers/design-system-starter-kit/issues/323).
-Een `iconOnly`-as staat nu als
-[#451](https://github.com/jeffreylauwers/design-system-starter-kit/issues/451)
-op de backlog.
 
 ### Naamgeving
 
@@ -1505,5 +1521,5 @@ Daaruit volgt de rest:
 
 ## Wat de generator niet levert
 
-Thumbnails, en de booleans die gemeten tokens veranderen (`iconOnly`, `loading`,
+Thumbnails, en de booleans die gemeten tokens veranderen (`loading` en
 `fullWidth` bij Button). Die blijven handwerk in Figma.
