@@ -1260,6 +1260,31 @@ function convertElement(
     canHug && shrinkWraps && !fixedWidth ? 'HUG' : 'FIXED';
   figmaNode.layoutSizingVertical = canHug && !fixedHeight ? 'HUG' : 'FIXED';
 
+  // `flex-grow` in een kolom is in Figma FILL in de hoogte: het kind neemt de
+  // hoogte die over is. De body van Drawer is `flex: 1` tussen een header en
+  // een footer in een drawer van vaste hoogte. Alleen in een ouder met een
+  // vaste hoogte: in een ouder die hugt is er geen hoogte over, en dan blijft
+  // het kind op HUG. Zo houdt de body van ModalDialog, ook `flex: 1 1 auto`,
+  // zijn HUG.
+  if (
+    figmaNode.layoutMode === 'VERTICAL' &&
+    figmaNode.layoutSizingVertical === 'FIXED'
+  ) {
+    children.forEach(({ child }, index) => {
+      const converted = figmaNode.children[index];
+      const outOfFlow =
+        child.styles?.position === 'absolute' ||
+        child.styles?.position === 'fixed';
+      if (
+        converted &&
+        !outOfFlow &&
+        Number.parseFloat(child.styles?.flexGrow) > 0
+      ) {
+        converted.layoutSizingVertical = 'FILL';
+      }
+    });
+  }
+
   // Pas als de kinderen omgezet zijn is te zien welke grid-rijen gevuld zijn,
   // en kan een subgrid-rij de tracks van zijn ouder krijgen.
   if (figmaNode.layoutMode === 'GRID') {

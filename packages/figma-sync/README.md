@@ -146,6 +146,13 @@ zichzelf, zoals de uitklapknop van MenuLink, dan krijgt de ouder
 ene kind staat in het midden. Willen kinderen verschillende kanten op, dan kan
 dat in Figma niet, en meldt de build het.
 
+`flex-grow` op een kind is in Figma FILL op de hoofdas: het kind neemt de
+ruimte die over is. In een rij altijd (de kop in de header van ModalDialog), in
+een kolom alleen als de ouder een vaste hoogte heeft. De body van Drawer vult
+zo de hoogte tussen header en footer. De body van ModalDialog is ook
+`flex: 1 1 auto`, maar de dialog hugt, dus daar is geen hoogte over en blijft
+de body op HUG.
+
 Een element dat alleen tekst bevat en zelf niets tekent, wordt één TEXT-node in
 plaats van een frame met een tekstnode erin. Zonder die stap krijgt elke `<span>`
 een eigen frame en ontstaat de diepe nesting die een Figma-library onwerkbaar

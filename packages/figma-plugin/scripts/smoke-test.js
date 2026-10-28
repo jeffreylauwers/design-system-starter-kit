@@ -2072,6 +2072,42 @@ console.log('\n=== een as erbij (TextInput) ===');
   );
 }
 
+console.log('\n=== absolute knop en vullende body ===');
+{
+  const walk = (node) => [node, ...(node?.children ?? []).flatMap(walk)];
+
+  await importComponentSet(
+    read('packages/figma-sync/dist/date-input.json'),
+    log
+  );
+  const dateSet = state.root.children
+    .find((page) => page.name === 'dsn/DateInput')
+    ?.children.find((node) => node.type === 'COMPONENT_SET');
+  const knop = walk(dateSet?.children[0]).find(
+    (node) => node.type === 'INSTANCE' && node.name === 'dsn-button'
+  );
+  check(
+    'de knop van DateInput staat absoluut en hangt rechts en in het midden',
+    knop?.layoutPositioning === 'ABSOLUTE' &&
+      knop.constraints?.horizontal === 'MAX' &&
+      knop.constraints?.vertical === 'CENTER',
+    JSON.stringify(knop?.constraints ?? null)
+  );
+
+  await importComponentSet(read('packages/figma-sync/dist/drawer.json'), log);
+  const drawerSet = state.root.children
+    .find((page) => page.name === 'dsn/Drawer')
+    ?.children.find((node) => node.type === 'COMPONENT_SET');
+  const body = walk(drawerSet?.children[0]).find(
+    (node) => node.type === 'SLOT' && node.name === 'body'
+  );
+  check(
+    'de body van Drawer vult de hoogte',
+    body?.layoutSizingVertical === 'FILL',
+    `layoutSizingVertical=${body?.layoutSizingVertical}`
+  );
+}
+
 console.log('\n=== een as eraf (Drawer) ===');
 {
   const nieuw = read('packages/figma-sync/dist/drawer.json');
