@@ -248,6 +248,7 @@ class Node {
 
     const hugs = (axis) =>
       this[`_${axis}`] === 'HUG' || this[`_${axis}`] === undefined;
+    const before = { width: this.width, height: this.height };
 
     if (hugs('layoutSizingHorizontal')) {
       this.width =
@@ -261,6 +262,7 @@ class Node {
         (this.paddingTop ?? 0) +
         (this.paddingBottom ?? 0);
     }
+    this.shiftPinned(before);
 
     this.parent?.recomputeFromChildren?.();
   }
@@ -280,9 +282,43 @@ class Node {
     this.children.splice(index, 0, child);
   }
 
+  /**
+   * Zoals in Figma: een kind dat ABSOLUTE wordt, telt niet meer mee voor de
+   * maat van een ouder die hugt, en die rekent zich meteen opnieuw uit.
+   */
+  set layoutPositioning(value) {
+    this._layoutPositioning = value;
+    this.parent?.recomputeFromChildren?.();
+  }
+  get layoutPositioning() {
+    return this._layoutPositioning;
+  }
+
   resize(width, height) {
+    const before = { width: this.width, height: this.height };
     this.width = width;
     this.height = height;
+    this.shiftPinned(before);
+  }
+
+  /**
+   * Zoals in Figma: verandert een frame van maat, dan schuift een absoluut
+   * kind mee volgens zijn constraints. MAX houdt de afstand tot de rechter- of
+   * onderrand vast, CENTER schuift de helft mee. Zo kwam de knop van DateInput
+   * buiten het veld te staan, toen zijn constraint gezet werd vóór het veld
+   * zijn gemeten breedte kreeg.
+   */
+  shiftPinned(before) {
+    const dx = this.width - before.width;
+    const dy = this.height - before.height;
+    if (!dx && !dy) return;
+    const shift = { MAX: 1, CENTER: 0.5 };
+    for (const child of this.children) {
+      if (child.layoutPositioning !== 'ABSOLUTE' || !child.constraints)
+        continue;
+      child.x += dx * (shift[child.constraints.horizontal] ?? 0);
+      child.y += dy * (shift[child.constraints.vertical] ?? 0);
+    }
   }
 
   // Read-only in de echte API: eraan toewijzen geeft "no setter for property".

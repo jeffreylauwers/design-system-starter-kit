@@ -2075,17 +2075,41 @@ console.log('\n=== een as erbij (TextInput) ===');
 console.log('\n=== absolute knop en vullende body ===');
 {
   const walk = (node) => [node, ...(node?.children ?? []).flatMap(walk)];
+  // Een eigen kopie op een eigen pagina: de echte DateInput is eerder in
+  // deze test al twee keer geïmporteerd, en de fout zat in de eerste.
+  const spec = read('packages/figma-sync/dist/date-input.json');
+  spec.componentSet.name = 'dsn-date-input-knop';
+  spec.componentSet.page = 'dsn/DateInputKnop';
+  const knopSpec = walk(spec.componentSet.components[0].node).find(
+    (node) => node.type === 'INSTANCE'
+  );
+  const knopIn = () =>
+    walk(
+      state.root.children
+        .find((page) => page.name === spec.componentSet.page)
+        ?.children.find((node) => node.type === 'COMPONENT_SET')?.children[0]
+    ).find((node) => node.type === 'INSTANCE' && node.name === 'dsn-button');
 
-  await importComponentSet(
-    read('packages/figma-sync/dist/date-input.json'),
-    log
+  // De constraint mag de knop niet verschuiven. Het veld krijgt zijn maat pas
+  // ná zijn kinderen, en met MAX schoof de knop dan buiten het veld. Bij de
+  // eerste import, want bij een tweede is het veld al breed genoeg.
+  await importComponentSet(spec, log);
+  const opPlek = (knop) =>
+    knop?.x === knopSpec.x &&
+    knop.y === knopSpec.y &&
+    knop.x + knop.width <= knop.parent.width;
+  const plek = (knop) =>
+    `x=${knop?.x} (spec ${knopSpec.x}), veld ${knop?.parent?.width} breed`;
+
+  const eerste = knopIn();
+  check(
+    'de knop van DateInput staat na de eerste import binnen het veld',
+    opPlek(eerste),
+    plek(eerste)
   );
-  const dateSet = state.root.children
-    .find((page) => page.name === 'dsn/DateInput')
-    ?.children.find((node) => node.type === 'COMPONENT_SET');
-  const knop = walk(dateSet?.children[0]).find(
-    (node) => node.type === 'INSTANCE' && node.name === 'dsn-button'
-  );
+
+  await importComponentSet(spec, log);
+  const knop = knopIn();
   check(
     'de knop van DateInput staat absoluut en hangt rechts en in het midden',
     knop?.layoutPositioning === 'ABSOLUTE' &&
@@ -2093,6 +2117,7 @@ console.log('\n=== absolute knop en vullende body ===');
       knop.constraints?.vertical === 'CENTER',
     JSON.stringify(knop?.constraints ?? null)
   );
+  check('en na een tweede import ook', opPlek(knop), plek(knop));
 
   await importComponentSet(read('packages/figma-sync/dist/drawer.json'), log);
   const drawerSet = state.root.children

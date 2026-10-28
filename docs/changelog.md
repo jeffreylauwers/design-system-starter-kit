@@ -36,7 +36,7 @@ Popover is nu één component met de popover zelf als root, en hangt niet meer a
 Verder:
 
 - **MenuLink:** de uitklapknop staat verticaal gecentreerd. De generator vertaalt `align-self` nu naar de uitlijning van de ouder, zodat een kind dat zichzelf centreert niet meer meerekt.
-- **DateInput en TimeInput:** de knop staat absoluut, rechts en verticaal gecentreerd, met constraints, zodat hij rechts blijft als het veld breder wordt. Het veld blijft een gemeten laag. De variant met `showValue=true` én `showPlaceholder=true` is weg: die toonde een datum en was gelijk aan de variant met alleen de waarde. Beide sets gaan van 20 naar 15 varianten.
+- **DateInput en TimeInput:** de knop staat absoluut, rechts en verticaal gecentreerd, met constraints, zodat hij rechts blijft als het veld breder wordt. De plugin zet die constraints pas aan het eind van de import, als alle maten vastliggen: anders schuift Figma de knop mee met de resize van het veld, en kwam hij buiten het veld te staan. Het veld blijft een gemeten laag. De variant met `showValue=true` én `showPlaceholder=true` is weg: die toonde een datum en was gelijk aan de variant met alleen de waarde. Beide sets gaan van 20 naar 15 varianten.
 
 ### figma-sync: icon-only Button (#451)
 
