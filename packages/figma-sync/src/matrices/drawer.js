@@ -8,6 +8,12 @@
  *
  * De drawer is `position: fixed`, dus zijn maat komt uit zijn insets en niet
  * uit zijn inhoud. Daarom blijft hij in Figma FIXED en niet HUG.
+ *
+ * De body en de footer zijn slots, net als bij ModalDialog: de body met de
+ * Paragraph als standaardinhoud, de footer met een instance van ActionGroup.
+ * De header is bewust geen slot, want daar zet DrawerHeader in code altijd
+ * zelf de sluitknop in. De `footer`-as is daarmee weg: wil een designer geen
+ * footer, dan zet hij het slot uit.
  */
 
 import { icon } from '../icons.js';
@@ -15,6 +21,13 @@ import { HEADING, TEKST } from '../text.js';
 
 export default {
   component: 'Drawer',
+
+  // De sluitknop is een instance van de icon-only Button, met `x` via de
+  // instance swap `icon`. De Paragraph en de ActionGroup in de slots zijn
+  // instances van hun eigen sets; de knoppen in de ActionGroup renderen
+  // dezelfde opbouw als de ActionGroup-set, zodat die geen overrides nodig
+  // heeft.
+  instances: true,
 
   fonts: [
     'https://fonts.googleapis.com/css2?family=Fira+Sans:wght@400;700&display=swap',
@@ -26,6 +39,7 @@ export default {
     '@dsn-starter-kit/components-html/src/button/button.css',
     '@dsn-starter-kit/components-html/src/heading/heading.css',
     '@dsn-starter-kit/components-html/src/paragraph/paragraph.css',
+    '@dsn-starter-kit/components-html/src/action-group/action-group.css',
     '@dsn-starter-kit/components-html/src/drawer/drawer.css',
   ],
 
@@ -35,18 +49,17 @@ export default {
 
   axes: {
     side: ['left', 'right'],
-    footer: ['with-footer', 'no-footer'],
   },
 
-  render({ side, footer }) {
-    const footerMarkup =
-      footer === 'with-footer'
-        ? `<div class="dsn-drawer__footer">
-             <button type="button" class="dsn-button dsn-button--strong dsn-button--size-default">
-               <span class="dsn-button__label">${TEKST}</span>
-             </button>
-           </div>`
-        : '';
+  render({ side }) {
+    const button = (variant) =>
+      `<li class="dsn-action-group__item" data-figma-unwrap>
+         <button type="button" class="dsn-button dsn-button--${variant} dsn-button--size-default">
+           ${icon('chevron-left')}
+           <span class="dsn-button__label">${TEKST}</span>
+           ${icon('chevron-right')}
+         </button>
+       </li>`;
 
     return `<dialog class="dsn-drawer dsn-drawer--side-${side}" open data-figma-root>
       <div class="dsn-drawer__header">
@@ -56,10 +69,15 @@ export default {
           <span class="dsn-button__label">Sluiten</span>
         </button>
       </div>
-      <div class="dsn-drawer__body">
+      <div class="dsn-drawer__body" data-figma-children="body">
         <p class="dsn-paragraph">${TEKST}</p>
       </div>
-      ${footerMarkup}
+      <div class="dsn-drawer__footer" data-figma-children="footer">
+        <ul class="dsn-action-group" aria-label="Acties">
+          ${button('strong')}
+          ${button('subtle')}
+        </ul>
+      </div>
     </dialog>`;
   },
 };

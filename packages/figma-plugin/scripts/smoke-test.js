@@ -2072,6 +2072,122 @@ console.log('\n=== een as erbij (TextInput) ===');
   );
 }
 
+console.log('\n=== absolute knop en vullende body ===');
+{
+  const walk = (node) => [node, ...(node?.children ?? []).flatMap(walk)];
+  // Een eigen kopie op een eigen pagina: de echte DateInput is eerder in
+  // deze test al twee keer geïmporteerd, en de fout zat in de eerste.
+  const spec = read('packages/figma-sync/dist/date-input.json');
+  spec.componentSet.name = 'dsn-date-input-knop';
+  spec.componentSet.page = 'dsn/DateInputKnop';
+  const knopSpec = walk(spec.componentSet.components[0].node).find(
+    (node) => node.type === 'INSTANCE'
+  );
+  const knopIn = () =>
+    walk(
+      state.root.children
+        .find((page) => page.name === spec.componentSet.page)
+        ?.children.find((node) => node.type === 'COMPONENT_SET')?.children[0]
+    ).find((node) => node.type === 'INSTANCE' && node.name === 'dsn-button');
+
+  // De constraint mag de knop niet verschuiven. Het veld krijgt zijn maat pas
+  // ná zijn kinderen, en met MAX schoof de knop dan buiten het veld. Bij de
+  // eerste import, want bij een tweede is het veld al breed genoeg.
+  await importComponentSet(spec, log);
+  const opPlek = (knop) =>
+    knop?.x === knopSpec.x &&
+    knop.y === knopSpec.y &&
+    knop.x + knop.width <= knop.parent.width;
+  const plek = (knop) =>
+    `x=${knop?.x} (spec ${knopSpec.x}), veld ${knop?.parent?.width} breed`;
+
+  const eerste = knopIn();
+  check(
+    'de knop van DateInput staat na de eerste import binnen het veld',
+    opPlek(eerste),
+    plek(eerste)
+  );
+
+  await importComponentSet(spec, log);
+  const knop = knopIn();
+  check(
+    'de knop van DateInput staat absoluut en hangt rechts en in het midden',
+    knop?.layoutPositioning === 'ABSOLUTE' &&
+      knop.constraints?.horizontal === 'MAX' &&
+      knop.constraints?.vertical === 'CENTER',
+    JSON.stringify(knop?.constraints ?? null)
+  );
+  check('en na een tweede import ook', opPlek(knop), plek(knop));
+
+  await importComponentSet(read('packages/figma-sync/dist/drawer.json'), log);
+  const drawerSet = state.root.children
+    .find((page) => page.name === 'dsn/Drawer')
+    ?.children.find((node) => node.type === 'COMPONENT_SET');
+  const body = walk(drawerSet?.children[0]).find(
+    (node) => node.type === 'SLOT' && node.name === 'body'
+  );
+  check(
+    'de body van Drawer vult de hoogte',
+    body?.layoutSizingVertical === 'FILL',
+    `layoutSizingVertical=${body?.layoutSizingVertical}`
+  );
+}
+
+console.log('\n=== een as eraf (Drawer) ===');
+{
+  const nieuw = read('packages/figma-sync/dist/drawer.json');
+  const test = structuredClone(nieuw);
+  test.componentSet.name = 'dsn-drawer-as-eraf';
+  test.componentSet.page = 'dsn/DrawerAsEraf';
+
+  // De set zoals hij stond toen de footer nog een as was, en nog geen slot.
+  const oud = structuredClone(test);
+  oud.componentSet.variantAxes = {
+    ...oud.componentSet.variantAxes,
+    footer: ['with-footer', 'no-footer'],
+  };
+  oud.componentSet.components = oud.componentSet.components.flatMap(
+    (component) =>
+      ['with-footer', 'no-footer'].map((footer) => ({
+        ...structuredClone(component),
+        name: `${component.name}, footer=${footer}`,
+        variantProperties: { ...component.variantProperties, footer },
+      }))
+  );
+
+  await importComponentSet(oud, log);
+  const page = state.root.children.find(
+    (node) => node.name === test.componentSet.page
+  );
+  const set = () =>
+    page.children.find(
+      (node) =>
+        node.type === 'COMPONENT_SET' && node.name === test.componentSet.name
+    );
+  const metFooter = set().children.find(
+    (node) => node.name === 'side=right, footer=with-footer'
+  );
+  const idVoor = metFooter.id;
+  const instance = metFooter.createInstance();
+
+  const resultaat = await importComponentSet(test, log);
+
+  check(
+    'de varianten met footer worden overgenomen, niet opnieuw gemaakt',
+    resultaat.updated === test.componentSet.components.length &&
+      resultaat.created === 0,
+    `${resultaat.updated} bijgewerkt, ${resultaat.created} nieuw`
+  );
+  check(
+    'een oude variant heet nu naar de overgebleven as, met dezelfde node-id',
+    set().children.find((node) => node.id === idVoor)?.name === 'side=right'
+  );
+  check(
+    'een geplaatste instance hangt nog aan dezelfde variant',
+    instance.mainComponent?.id === idVoor
+  );
+}
+
 console.log(
   `\n${process.exitCode ? '✗ smoke test gefaald' : '✓ smoke test geslaagd'}\n`
 );

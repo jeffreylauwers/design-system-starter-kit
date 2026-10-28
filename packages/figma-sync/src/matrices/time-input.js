@@ -24,8 +24,19 @@ import {
 
 import { FLAG, skipFlagCombinations } from '../flags.js';
 
+const skipFlags = skipFlagCombinations({
+  flags: ['disabled', 'invalid'],
+  base: { state: 'default' },
+});
+
 export default {
   component: 'TimeInput',
+
+  // De knop is een instance van de icon-only Button, met `clock` via de
+  // instance swap `icon`. Het veld blijft gemeten (`data-figma-instance="none"`):
+  // `mergeAdornments` voegt veld en knop samen tot één frame, en dat kan niet
+  // met een instance van TextInput als veld.
+  instances: true,
 
   fonts: [
     'https://fonts.googleapis.com/css2?family=Fira+Sans:wght@400;700&display=swap',
@@ -46,6 +57,11 @@ export default {
   // Het veld en zijn icoon worden in Figma één frame, zie `mergeAdornments`.
   mergeAdornments: true,
 
+  // De knop blijft absoluut, zoals in de CSS: rechts in het veld en verticaal
+  // gecentreerd. Met deze constraints blijft hij daar ook als een designer het
+  // veld breder maakt.
+  absoluteAdornments: { horizontal: 'MAX', vertical: 'CENTER' },
+
   setName: 'dsn-time-input',
 
   axes: {
@@ -57,10 +73,13 @@ export default {
 
   componentProperties: FIELD_TEXT_PROPERTIES,
 
-  skipVariant: skipFlagCombinations({
-    flags: ['disabled', 'invalid'],
-    base: { state: 'default' },
-  }),
+  // Een datum- of tijdveld toont leeg altijd zijn formaat, en met een waarde
+  // de waarde. Waarde én placeholder tegelijk is dus geen stand die bestaat;
+  // in de browser wint de waarde, en dan was de variant gelijk aan
+  // `showValue=true, showPlaceholder=false`.
+  skipVariant: (variant) =>
+    skipFlags(variant) ||
+    (variant.showValue === 'true' && variant.showPlaceholder === 'true'),
 
   pseudoStates: { hover: 'hover', focus: 'focus' },
 
@@ -76,7 +95,7 @@ export default {
          </button>`;
 
     return `<div class="dsn-time-input-wrapper" data-figma-root>
-      <input type="time" class="dsn-text-input dsn-time-input"${fieldTextAttributes(variant, { value: '09:00', placeholder: '--:--', native: false })}${disabled ? ' disabled' : ''}${invalid}>
+      <input type="time" class="dsn-text-input dsn-time-input" data-figma-instance="none"${fieldTextAttributes(variant, { value: '09:00', placeholder: '--:--', native: false })}${disabled ? ' disabled' : ''}${invalid}>
       ${button}
     </div>`;
   },

@@ -359,17 +359,18 @@ geplaatste lijst zoals een designer dat doet en importeert hem opnieuw.
 De plugin zoekt op de pagina van het component een set met dezelfde naam. Staat
 die er, dan wordt hij bijgewerkt in plaats van dat er een tweede naast komt:
 
-| Wat                                          | Wat er gebeurt                                                                                             |
-| -------------------------------------------- | ---------------------------------------------------------------------------------------------------------- |
-| Variant staat in de spec en in Figma         | Het component blijft, zijn inhoud wordt vervangen                                                          |
-| Variant staat in de spec, nog niet in Figma  | Wordt toegevoegd aan de bestaande set                                                                      |
-| Variant staat in Figma, niet meer in de spec | Blijft staan, met een melding in de log                                                                    |
-| De set heeft een as bij gekregen             | De oude variant gaat over in de nieuwe variant met dezelfde waarden, en de eerste waarde op elke nieuwe as |
-| Een waarde is een eigen as geworden          | `state=disabled` gaat over in `state=default` plus `disabled=true`, met dezelfde node-id                   |
-| Property staat in de spec en op de set       | Wordt bijgewerkt, houdt zijn property-id                                                                   |
-| Property staat op de set, niet in de spec    | Blijft staan, met een melding in de log                                                                    |
-| Slot staat in de spec en in Figma            | Het slot blijft, zijn standaardinhoud wordt vervangen; wat designers erin zetten blijft staan              |
-| Slot staat in Figma, niet meer in de spec    | Wordt verwijderd met zijn property, met een melding in de log                                              |
+| Wat                                          | Wat er gebeurt                                                                                                                                           |
+| -------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Variant staat in de spec en in Figma         | Het component blijft, zijn inhoud wordt vervangen                                                                                                        |
+| Variant staat in de spec, nog niet in Figma  | Wordt toegevoegd aan de bestaande set                                                                                                                    |
+| Variant staat in Figma, niet meer in de spec | Blijft staan, met een melding in de log                                                                                                                  |
+| De set heeft een as bij gekregen             | De oude variant gaat over in de nieuwe variant met dezelfde waarden, en de eerste waarde op elke nieuwe as                                               |
+| Een as is uit de spec verdwenen              | De eerste oude variant die op de overgebleven assen past gaat over in de nieuwe: `side=left, footer=with-footer` wordt `side=left`, met dezelfde node-id |
+| Een waarde is een eigen as geworden          | `state=disabled` gaat over in `state=default` plus `disabled=true`, met dezelfde node-id                                                                 |
+| Property staat in de spec en op de set       | Wordt bijgewerkt, houdt zijn property-id                                                                                                                 |
+| Property staat op de set, niet in de spec    | Blijft staan, met een melding in de log                                                                                                                  |
+| Slot staat in de spec en in Figma            | Het slot blijft, zijn standaardinhoud wordt vervangen; wat designers erin zetten blijft staan                                                            |
+| Slot staat in Figma, niet meer in de spec    | Wordt verwijderd met zijn property, met een melding in de log                                                                                            |
 
 Het hergebruiken van het component zélf is de kern. Elke geplaatste instance
 hangt aan de **node-id** van zijn variant; een nieuw component met dezelfde naam
@@ -557,7 +558,8 @@ goed, op één geplaatste instance) is de controle daarop.
   zou veranderen voordat hij het doet.
 - **Geneste componenten overal.** Het mechanisme staat (zie "Geneste
   componenten"), en staat aan voor HeadingGroup, Alert, Note, FormField,
-  ModalDialog en de ketens van Checkbox en Radio. De andere sets die er
+  ModalDialog, Drawer, Popover, MenuLink, DateInput, TimeInput, Table en de
+  ketens van Checkbox en Radio. De andere sets die er
   baat bij hebben (zie `nog gemeten, kan instance worden` in de build)
   volgen per matrix met `instances: true`.
 - **Effect styles.** Box shadows staan in het skip-report en moeten nog

@@ -205,12 +205,16 @@ function applyMinimumSizes(frame, spec, log) {
 }
 
 /** Plaatsing van een kind binnen zijn ouder: absoluut of in een gridcel. */
-function applyPlacement(node, spec, log, parentSpec) {
+function applyPlacement(node, spec, log, parentSpec, pinned) {
   try {
     if (spec.layoutPositioning === 'ABSOLUTE') {
       node.layoutPositioning = 'ABSOLUTE';
       if (spec.x !== undefined) node.x = spec.x;
       if (spec.y !== undefined) node.y = spec.y;
+      // Aan welke rand van de ouder het kind blijft hangen als die van maat
+      // verandert, zoals de knop rechts in DateInput. Pas aan het eind van de
+      // import, zie `pinAbsolute`.
+      if (spec.constraints) pinned?.push({ node, spec });
       return;
     }
     // Een ouder zonder auto layout plaatst niets zelf: zonder deze stap komt
@@ -440,7 +444,7 @@ function buildInstance(spec, parent, context, parentSpec) {
   // hugt, en een instance erft de HUG van zijn component tot hij hier een
   // eigen maat krijgt. Een CheckboxOption in een CheckboxGroup is daar het
   // voorbeeld van: in de groep vult zijn label de breedte.
-  applyPlacement(instance, spec, context.log, parentSpec);
+  applyPlacement(instance, spec, context.log, parentSpec, context.pinned);
   applySizing(instance, spec, context.log);
 
   applyOverrides(instance, spec, context, {
@@ -551,7 +555,7 @@ function buildNode(spec, parent, context, parentSpec) {
     text.visible = spec.visible ?? true;
 
     applyBindings(text, spec, context);
-    applyPlacement(text, spec, log, parentSpec);
+    applyPlacement(text, spec, log, parentSpec, context.pinned);
     applySizing(text, spec, log);
     applyRotation(text, spec, log);
     registerSlot(text, spec, context);
@@ -580,7 +584,7 @@ function buildNode(spec, parent, context, parentSpec) {
     const paints = paintsForVector(spec, context);
     recolorVectors(node.children ?? [], paints);
     context.recolors.push({ node, paints, name: spec.name, spec });
-    applyPlacement(node, spec, log, parentSpec);
+    applyPlacement(node, spec, log, parentSpec, context.pinned);
     applyRotation(node, spec, log);
     registerSlot(node, spec, context);
     registerColorCheck(node, spec, context);
@@ -591,7 +595,7 @@ function buildNode(spec, parent, context, parentSpec) {
   parent.appendChild(frame);
   applyFrame(frame, spec, context);
 
-  applyPlacement(frame, spec, log, parentSpec);
+  applyPlacement(frame, spec, log, parentSpec, context.pinned);
   applySizing(frame, spec, log);
   applyRotation(frame, spec, log);
   registerSlot(frame, spec, context);
@@ -640,7 +644,7 @@ function buildContentSlot(spec, parent, context, parentSpec) {
   }
 
   applyFrame(slot, spec, context);
-  applyPlacement(slot, spec, context.log, parentSpec);
+  applyPlacement(slot, spec, context.log, parentSpec, context.pinned);
   applySizing(slot, spec, context.log);
   registerSlot(slot, spec, context);
   return slot;
@@ -911,6 +915,30 @@ async function resetVariant(component, context, { keepText = false } = {}) {
  * `node.children` wordt hier opnieuw gelezen en niet hergebruikt: na een
  * verwisseling zijn het andere lagen dan tijdens de bouw.
  */
+/**
+ * Zet de constraints van absolute lagen, als alle maten vastliggen.
+ *
+ * Een frame krijgt zijn gemeten maat pas ná zijn kinderen (`applySizing`). Een
+ * kind dat dan al aan de rechterrand hangt, schuift bij die resize mee: de knop
+ * van DateInput kwam zo buiten het veld te staan, precies het verschil tussen
+ * de breedte waarmee het frame begon en de gemeten breedte. Bij een tweede
+ * import draagt een hergebruikte laag zijn constraints al, dus de plek gaat
+ * hier ook opnieuw mee.
+ */
+function pinAbsolute(context) {
+  for (const { node, spec } of context.pinned) {
+    try {
+      if (spec.x !== undefined) node.x = spec.x;
+      if (spec.y !== undefined) node.y = spec.y;
+      node.constraints = spec.constraints;
+    } catch (error) {
+      context.log.warn(
+        `${spec.name ?? spec.type}: constraints niet toegestaan (${error.message})`
+      );
+    }
+  }
+}
+
 function recolorIcons(context) {
   for (const job of context.recolors) {
     recolorVectors(job.node.children ?? [], job.paints);
@@ -1198,9 +1226,18 @@ function variantFinder(knownVariants, axes) {
       // Een waarde kan ook een eigen as zijn geworden: `state=disabled` werd
       // `state=default` plus `disabled=true`. De oude variant hoort dan bij de
       // nieuwe variant waarin die as aan staat.
+      // Een as die uit de spec verdwenen is, zoals `footer` bij Drawer sinds
+      // de footer een slot is, telt niet mee. De eerste oude variant die
+      // verder past wordt de nieuwe; dat is die met de eerste waarde van die
+      // as, want de varianten staan in de volgorde van de spec.
+      const dropped = [];
       const promoted = [];
       for (const [key, value] of Object.entries(properties)) {
         if (wanted[key] === value) continue;
+        if (axes && !(key in axes)) {
+          dropped.push(key);
+          continue;
+        }
         if (wanted[value] === 'true' && wanted[key] === base(key)) {
           promoted.push(value);
           continue;
@@ -1209,7 +1246,7 @@ function variantFinder(knownVariants, axes) {
       }
 
       const newKeys = Object.keys(wanted).filter((key) => !(key in properties));
-      if (!newKeys.length && !promoted.length) return false;
+      if (!newKeys.length && !promoted.length && !dropped.length) return false;
       return newKeys.every(
         (key) => promoted.includes(key) || base(key) === wanted[key]
       );
@@ -1485,6 +1522,8 @@ export async function importComponentSet(payload, log, options = {}) {
     inlinedIcons: new Set(),
     // Per icoonlaag de paints die eroverheen moeten; aan het eind herhaald.
     recolors: [],
+    // Absolute lagen met constraints; aan het eind gezet, zie `pinAbsolute`.
+    pinned: [],
     // Elke laag met een kleur-variable, iconen én tekst; zie `diagnoseColors`.
     colorChecks: [],
     // De geneste instances van de variant die nu gebouwd wordt, op component-id.
@@ -1765,6 +1804,8 @@ export async function importComponentSet(payload, log, options = {}) {
   );
 
   dropStaleContentSlots(single ? components[0] : set, context.staleSlots, log);
+
+  pinAbsolute(context);
 
   // Als allerlaatste, ná het koppelen van de properties: zie `recolorIcons`.
   log.progress?.(`${spec.name}: kleuren zetten`);

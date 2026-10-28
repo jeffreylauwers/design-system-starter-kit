@@ -15,6 +15,10 @@ import { TEKST } from '../text.js';
 export default {
   component: 'MenuLink',
 
+  // De uitklapknop is een instance van de icon-only Button, met
+  // `chevron-down` via de instance swap `icon`.
+  instances: true,
+
   fonts: [
     'https://fonts.googleapis.com/css2?family=Fira+Sans:wght@400;700&display=swap',
   ],

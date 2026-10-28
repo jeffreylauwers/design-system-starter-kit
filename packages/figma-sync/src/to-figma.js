@@ -72,6 +72,46 @@ const COUNTER_AXIS_ALIGN = {
   stretch: 'MIN',
 };
 
+/** Heeft dit kind een eigen `align-self`, los van zijn ouder? */
+const ownAlignment = (child) => {
+  const value = child.styles?.alignSelf;
+  return Boolean(value) && value !== 'auto' && value !== 'normal';
+};
+
+/**
+ * Een kind met een eigen `align-self` in een ouder die uitrekt.
+ *
+ * Figma kent geen `align-self`: de uitlijning op de kruisas zit op de ouder,
+ * en een kind kan alleen uitrekken (`layoutAlign: STRETCH`) of de ouder volgen.
+ * In een ouder die uitrekt staat die uitlijning op MIN, want de kinderen
+ * rekken toch. Centreert één kind zichzelf, zoals de uitklapknop van MenuLink,
+ * dan krijgt de ouder die uitlijning: de andere kinderen rekken nog steeds, en
+ * het ene kind volgt de ouder. Willen kinderen verschillende kanten op, dan is
+ * dat in Figma niet te maken en blijft de ouder staan.
+ */
+function selfAlignment(figmaNode, children, stretchChildren, warnings, label) {
+  if (!stretchChildren) return;
+  const wanted = new Set(
+    children
+      .map(({ child }) => child)
+      .filter(
+        (child) =>
+          ownAlignment(child) &&
+          child.styles.alignSelf !== 'stretch' &&
+          child.styles.position !== 'absolute' &&
+          child.styles.position !== 'fixed'
+      )
+      .map((child) => COUNTER_AXIS_ALIGN[child.styles.alignSelf] ?? 'MIN')
+  );
+  if (wanted.size === 1) {
+    figmaNode.counterAxisAlignItems = [...wanted][0];
+  } else if (wanted.size > 1) {
+    warnings.push(
+      `${label}: kinderen met verschillende align-self (${[...wanted].join(', ')}); Figma kent maar één uitlijning per ouder, dus die blijft MIN`
+    );
+  }
+}
+
 // =============================================================================
 // NODE-CONVERSIE
 // =============================================================================
@@ -1121,7 +1161,16 @@ function convertElement(
           bindings
         );
       }
-      if (stretchChildren) converted.layoutAlign = 'STRETCH';
+      // `align-self` op het kind gaat voor `align-items` van de ouder. Een
+      // kind dat zichzelf centreert rekt dus niet mee, ook niet in een ouder
+      // die uitrekt; zie `selfAlignment` hieronder.
+      if (
+        ownAlignment(child)
+          ? child.styles.alignSelf === 'stretch'
+          : stretchChildren
+      ) {
+        converted.layoutAlign = 'STRETCH';
+      }
       applyChildPlacement(
         converted,
         child,
@@ -1154,6 +1203,8 @@ function convertElement(
       return converted;
     }),
   };
+
+  selfAlignment(figmaNode, children, stretchChildren, warnings, pathLabel);
 
   // HUG kan Figma alleen op een node met een eigen layoutMode; zonder
   // auto layout is er niets om naar te huggen en weigert de API het.
@@ -1208,6 +1259,31 @@ function convertElement(
   figmaNode.layoutSizingHorizontal =
     canHug && shrinkWraps && !fixedWidth ? 'HUG' : 'FIXED';
   figmaNode.layoutSizingVertical = canHug && !fixedHeight ? 'HUG' : 'FIXED';
+
+  // `flex-grow` in een kolom is in Figma FILL in de hoogte: het kind neemt de
+  // hoogte die over is. De body van Drawer is `flex: 1` tussen een header en
+  // een footer in een drawer van vaste hoogte. Alleen in een ouder met een
+  // vaste hoogte: in een ouder die hugt is er geen hoogte over, en dan blijft
+  // het kind op HUG. Zo houdt de body van ModalDialog, ook `flex: 1 1 auto`,
+  // zijn HUG.
+  if (
+    figmaNode.layoutMode === 'VERTICAL' &&
+    figmaNode.layoutSizingVertical === 'FIXED'
+  ) {
+    children.forEach(({ child }, index) => {
+      const converted = figmaNode.children[index];
+      const outOfFlow =
+        child.styles?.position === 'absolute' ||
+        child.styles?.position === 'fixed';
+      if (
+        converted &&
+        !outOfFlow &&
+        Number.parseFloat(child.styles?.flexGrow) > 0
+      ) {
+        converted.layoutSizingVertical = 'FILL';
+      }
+    });
+  }
 
   // Pas als de kinderen omgezet zijn is te zien welke grid-rijen gevuld zijn,
   // en kan een subgrid-rij de tracks van zijn ouder krijgen.
@@ -1457,7 +1533,7 @@ function checkComponentProperties(declared, components, warnings) {
  * DateInput), zodat die rechts uitlijnt. Staat de versiering ervoor
  * (SearchInput), dan hugt de tekst, net als in een gewoon tekstveld.
  */
-function mergeAdornments(root, tree, warnings, label) {
+function mergeAdornments(root, tree, warnings, label, pinned) {
   const domChildren = tree.children ?? [];
   const outOfFlow = (node) =>
     node.styles?.position === 'absolute' || node.styles?.position === 'fixed';
@@ -1465,9 +1541,20 @@ function mergeAdornments(root, tree, warnings, label) {
     (child) => child.kind !== 'text' && !outOfFlow(child)
   );
   const field = root.children?.[fieldIndex];
-  const adornments = (root.children ?? [])
+  const allAdornments = (root.children ?? [])
     .map((spec, index) => ({ spec, dom: domChildren[index] }))
     .filter(({ dom }, index) => index !== fieldIndex && dom?.rect);
+
+  // Versiering die absoluut blijft (`absoluteAdornments`), zoals de knop van
+  // DateInput: die staat buiten de stroom, op zijn gemeten plek, en blijft
+  // met constraints aan de rand van het veld hangen als dat breder wordt.
+  const isPinned = ({ dom }) => Boolean(pinned) && outOfFlow(dom);
+  const adornments = allAdornments.filter((item) => !isPinned(item));
+  const pinnedChildren = allAdornments.filter(isPinned).map(({ spec }) => ({
+    ...spec,
+    layoutPositioning: 'ABSOLUTE',
+    constraints: pinned,
+  }));
 
   if (!field) {
     warnings.push(
@@ -1484,6 +1571,7 @@ function mergeAdornments(root, tree, warnings, label) {
   if (!adornments.length) {
     return {
       ...field,
+      children: [...(field.children ?? []), ...pinnedChildren],
       name: naam,
       width: root.width,
       height: root.height,
@@ -1561,16 +1649,18 @@ function mergeAdornments(root, tree, warnings, label) {
     clipsContent: true,
     layoutSizingHorizontal: 'FIXED',
     layoutSizingVertical: field.layoutSizingVertical ?? 'HUG',
-    children: items.map(({ spec, isText }, index) => {
-      const child = { ...spec };
-      delete child.layoutPositioning;
-      if (isText) {
-        // Staat er versiering áchter de tekst, dan duwt FILL die naar rechts.
-        child.layoutSizingHorizontal =
-          index < items.length - 1 ? 'FILL' : 'HUG';
-      }
-      return child;
-    }),
+    children: items
+      .map(({ spec, isText }, index) => {
+        const child = { ...spec };
+        delete child.layoutPositioning;
+        if (isText) {
+          // Staat er versiering áchter de tekst, dan duwt FILL die naar rechts.
+          child.layoutSizingHorizontal =
+            index < items.length - 1 ? 'FILL' : 'HUG';
+        }
+        return child;
+      })
+      .concat(pinnedChildren),
   };
 
   // De padding aan een zijde met versiering is herrekend en is dus niet meer
@@ -1910,7 +2000,13 @@ export function toComponentSet(
       // Een veld met een icoon of knop ernaast wordt één frame, zie
       // `mergeAdornments`.
       if (matrix.mergeAdornments) {
-        node = mergeAdornments(node, tree, warnings, pathLabel);
+        node = mergeAdornments(
+          node,
+          tree,
+          warnings,
+          pathLabel,
+          matrix.absoluteAdornments
+        );
       }
       // Een blok dat in Figma met zijn eigen inhoud moet meegroeien, zie
       // `hugRootWidth`.

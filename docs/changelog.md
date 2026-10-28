@@ -25,6 +25,19 @@ Het component is een key-value lijst op basis van `<dl>` en wordt breder gebruik
 
 In Figma maakt de eerstvolgende import een nieuwe component set `DataList` aan. De bestaande set `SummaryList` blijft staan en moet met de hand worden opgeruimd of vooraf hernoemd.
 
+### figma-sync: icon-only knoppen als instance, en Drawer en Popover met slots
+
+De icon-only knoppen in Drawer, Popover, MenuLink, DateInput, TimeInput en Table zijn in Figma nu instances van de icon-only Button, net als de sluitknop van ModalDialog. Elke knop krijgt zijn eigen icoon via de instance swap `icon` (`x`, `chevron-down`, `calendar-event`, `clock`, en per sorteerstand `arrows-sort` of `sort-ascending`) en zijn label als verborgen laag. Een wijziging aan Button werkt daardoor ook in die zes door.
+
+Drawer en Popover zijn opgebouwd zoals ModalDialog. De body en de footer zijn slots, met een Paragraph en een instance van ActionGroup als standaardinhoud. De `footer`-as is weg: wil een designer geen footer, dan zet hij het slot uit. Drawer houdt zijn `side`-as, en zijn body vult de hoogte tussen header en footer (`flex-grow` in een kolom met vaste hoogte wordt FILL). Bestaande varianten met footer gaan over naar de nieuwe naam, zodat geplaatste instances aan hun variant blijven hangen; die zonder footer schuiven naar achteren en zijn met de hand op te ruimen.
+
+Popover is nu één component met de popover zelf als root, en hangt niet meer absoluut aan een lege wrapper. De set heet daardoor `dsn-popover` en komt als nieuwe set naast de oude `dsn-popover-wrapper`, die met de hand op te ruimen is.
+
+Verder:
+
+- **MenuLink:** de uitklapknop staat verticaal gecentreerd. De generator vertaalt `align-self` nu naar de uitlijning van de ouder, zodat een kind dat zichzelf centreert niet meer meerekt.
+- **DateInput en TimeInput:** de knop staat absoluut, rechts en verticaal gecentreerd, met constraints, zodat hij rechts blijft als het veld breder wordt. De plugin zet die constraints pas aan het eind van de import, als alle maten vastliggen: anders schuift Figma de knop mee met de resize van het veld, en kwam hij buiten het veld te staan. Het veld blijft een gemeten laag. De variant met `showValue=true` én `showPlaceholder=true` is weg: die toonde een datum en was gelijk aan de variant met alleen de waarde. Beide sets gaan van 20 naar 15 varianten.
+
 ### figma-sync: icon-only Button (#451)
 
 De Button-set in Figma heeft een `iconOnly`-as. Icon-only bestaat alleen voor `strong`, `default` en `subtle`, dus de set groeit van 108 naar 144 varianten. Een icon-only variant bindt aan de eigen `icon-only-padding`-tokens en heeft één icoon in een eigen instance swap `icon`. Het label blijft als verborgen laag in de knop, met de TEXT-property `label`: dat is de toegankelijke naam. Bestaande varianten gaan bij de volgende import over naar `iconOnly=false`, zodat geplaatste instances aan hun variant blijven hangen.
