@@ -16,6 +16,12 @@ import { HEADING, TEKST } from '../text.js';
 export default {
   component: 'Popover',
 
+  // De sluitknop is een instance van de icon-only Button, met `x` via de
+  // instance swap `icon`. De knop in de footer rendert dezelfde opbouw als de
+  // Button-set, met een chevron aan weerszijden: die staan in de instance uit
+  // via `showIconStart` en `showIconEnd`, net als in de losse set.
+  instances: true,
+
   fonts: [
     'https://fonts.googleapis.com/css2?family=Fira+Sans:wght@400;700&display=swap',
   ],
@@ -50,7 +56,9 @@ export default {
       footer === 'with-footer'
         ? `<div class="dsn-popover__footer">
              <button type="button" class="dsn-button dsn-button--subtle dsn-button--size-small">
+               ${icon('chevron-left')}
                <span class="dsn-button__label">${TEKST}</span>
+               ${icon('chevron-right')}
              </button>
            </div>`
         : '';

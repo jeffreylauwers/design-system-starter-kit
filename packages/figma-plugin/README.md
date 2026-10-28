@@ -557,7 +557,8 @@ goed, op één geplaatste instance) is de controle daarop.
   zou veranderen voordat hij het doet.
 - **Geneste componenten overal.** Het mechanisme staat (zie "Geneste
   componenten"), en staat aan voor HeadingGroup, Alert, Note, FormField,
-  ModalDialog en de ketens van Checkbox en Radio. De andere sets die er
+  ModalDialog, Drawer, Popover, MenuLink, DateInput, TimeInput, Table en de
+  ketens van Checkbox en Radio. De andere sets die er
   baat bij hebben (zie `nog gemeten, kan instance worden` in de build)
   volgen per matrix met `instances: true`.
 - **Effect styles.** Box shadows staan in het skip-report en moeten nog

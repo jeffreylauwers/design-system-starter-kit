@@ -761,8 +761,15 @@ doelset aan een INSTANCE_SWAP-property, dan is een ander icoon geen andere
 opbouw maar een property op de instance: de spec krijgt
 `properties: { icon: 'x' }`, en de plugin zet dat icoon met `setProperties`.
 Zo is de sluitknop van ModalDialog een instance van de icon-only Button met
-`x`. Een ander icoon telt bij het kiezen als één verschil, zodat een variant
-met het juiste standaardicoon wint.
+`x`, en zo zijn de icon-only knoppen in Drawer, Popover, MenuLink, DateInput,
+TimeInput en Table het ook, elk met hun eigen icoon. Een ander icoon telt bij
+het kiezen als één verschil, zodat een variant met het juiste standaardicoon
+wint.
+
+De sorteerknop van Table bevat in de markup drie iconen, waarvan de CSS er
+één toont. De twee met `display: none` worden niet gemeten, dus de knop heeft
+dezelfde opbouw als de icon-only Button, met per stand van de `sort`-as het
+zichtbare icoon als property.
 
 Dat vergelijken is de reden dat de build nu eerst álle matrices meet en pas
 daarna omzet: een samenstelling heeft de spec van zijn doelsets nodig, en
@@ -820,8 +827,14 @@ worden:
 
 Dat staat ook in de spec, als `instanceCandidates`. Zo kan het patroon per
 component aan, en is in Figma te bevestigen dat het werkt voordat de hele
-bibliotheek omgaat. HeadingGroup, Alert, Note, FormField, ModalDialog, de
-drie lijsten en de ketens van Checkbox en Radio (Option en Group) staan erop.
+bibliotheek omgaat. HeadingGroup, Alert, Note, FormField, ModalDialog,
+Drawer, Popover, MenuLink, DateInput, TimeInput, Table, de drie lijsten en de
+ketens van Checkbox en Radio (Option en Group) staan erop.
+
+In DateInput en TimeInput is alleen de knop een instance. Het veld draagt
+`data-figma-instance="none"`: `mergeAdornments` voegt het veld en de knop
+samen tot één frame, en dat kan niet met een instance van TextInput als
+veld.
 
 **De matrix rendert de opbouw van het component, niet een kortere versie.**
 FormFieldLabel heeft in zijn eigen set een suffix-laag die via `showSuffix`

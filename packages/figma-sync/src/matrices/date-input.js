@@ -27,6 +27,12 @@ import { FLAG, skipFlagCombinations } from '../flags.js';
 export default {
   component: 'DateInput',
 
+  // De knop is een instance van de icon-only Button, met `calendar-event` via de
+  // instance swap `icon`. Het veld blijft gemeten (`data-figma-instance="none"`):
+  // `mergeAdornments` voegt veld en knop samen tot één frame, en dat kan niet
+  // met een instance van TextInput als veld.
+  instances: true,
+
   fonts: [
     'https://fonts.googleapis.com/css2?family=Fira+Sans:wght@400;700&display=swap',
   ],
@@ -76,7 +82,7 @@ export default {
          </button>`;
 
     return `<div class="dsn-date-input-wrapper" data-figma-root>
-      <input type="date" class="dsn-text-input dsn-date-input"${fieldTextAttributes(variant, { value: '01-01-2026', placeholder: 'dd-mm-jjjj', native: false })}${disabled ? ' disabled' : ''}${invalid}>
+      <input type="date" class="dsn-text-input dsn-date-input" data-figma-instance="none"${fieldTextAttributes(variant, { value: '01-01-2026', placeholder: 'dd-mm-jjjj', native: false })}${disabled ? ' disabled' : ''}${invalid}>
       ${button}
     </div>`;
   },

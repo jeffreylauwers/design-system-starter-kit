@@ -23,6 +23,11 @@ import { TEKST } from '../text.js';
 export default {
   component: 'Table',
 
+  // De sorteerknop is een instance van de icon-only Button. Van de drie
+  // iconen wordt alleen het zichtbare gemeten, en dat gaat als instance swap
+  // `icon` mee.
+  instances: true,
+
   fonts: [
     'https://fonts.googleapis.com/css2?family=Fira+Sans:wght@400;700&display=swap',
   ],

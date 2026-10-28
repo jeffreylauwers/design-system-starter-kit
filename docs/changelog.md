@@ -25,6 +25,12 @@ Het component is een key-value lijst op basis van `<dl>` en wordt breder gebruik
 
 In Figma maakt de eerstvolgende import een nieuwe component set `DataList` aan. De bestaande set `SummaryList` blijft staan en moet met de hand worden opgeruimd of vooraf hernoemd.
 
+### figma-sync: icon-only knoppen als instance in zes componenten
+
+De icon-only knoppen in Drawer, Popover, MenuLink, DateInput, TimeInput en Table zijn in Figma nu instances van de icon-only Button, net als de sluitknop van ModalDialog. Elke knop krijgt zijn eigen icoon via de instance swap `icon` (`x`, `chevron-down`, `calendar-event`, `clock`, en per sorteerstand `arrows-sort` of `sort-ascending`) en zijn label als verborgen laag. Een wijziging aan Button werkt daardoor ook in die zes door.
+
+In Drawer en Popover zijn ook de knop in de footer en de Paragraph in de body instances. In DateInput en TimeInput blijft het veld een gemeten laag, omdat het veld en de knop daar één frame vormen.
+
 ### figma-sync: icon-only Button (#451)
 
 De Button-set in Figma heeft een `iconOnly`-as. Icon-only bestaat alleen voor `strong`, `default` en `subtle`, dus de set groeit van 108 naar 144 varianten. Een icon-only variant bindt aan de eigen `icon-only-padding`-tokens en heeft één icoon in een eigen instance swap `icon`. Het label blijft als verborgen laag in de knop, met de TEXT-property `label`: dat is de toegankelijke naam. Bestaande varianten gaan bij de volgende import over naar `iconOnly=false`, zodat geplaatste instances aan hun variant blijven hangen.
