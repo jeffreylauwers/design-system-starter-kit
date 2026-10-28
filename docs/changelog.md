@@ -25,6 +25,14 @@ Het component is een key-value lijst op basis van `<dl>` en wordt breder gebruik
 
 In Figma maakt de eerstvolgende import een nieuwe component set `DataList` aan. De bestaande set `SummaryList` blijft staan en moet met de hand worden opgeruimd of vooraf hernoemd.
 
+### figma-sync: ActionGroup als component met een slot
+
+ActionGroup krijgt in Figma een eigen set, met een `direction`-as (horizontal, vertical). De knoppen staan in een slot met twee Buttons als standaardinhoud. Het slot breekt af naar een nieuwe regel en draagt beide gaps, gebonden aan `action-group/column-gap` en `action-group/row-gap`. Een knop die een designer erin sleept, krijgt zo vanzelf dezelfde ruimte. De `<li>`'s komen niet mee: met de nieuwe markering `data-figma-unwrap` staan de knoppen direct in het slot.
+
+De footer van ModalDialog bevat nu een instance van ActionGroup, en de matrix gebruikt daarvoor de huidige markup (`<ul>` met `<li>`'s, sinds #295). Een designer past de knoppen aan in het slot van die geneste ActionGroup. Dat werkt ook in een geplaatste dialog en blijft staan na een volgende import, gemeten in Figma Desktop.
+
+De generator meet nu ook de gap tussen rijen van een auto layout die afbreekt (`counterAxisSpacing`) en bindt die aan zijn token. Dat geldt voor elk frame dat afbreekt, niet alleen voor slots.
+
 ### figma-sync: slots voor lijsten, groepen en de body en footer van ModalDialog (#450)
 
 De items van UnorderedList, OrderedList en IconList, de opties van CheckboxGroup en RadioGroup, en de inhoud van de body en de footer van ModalDialog staan in Figma nu in een slot. Een designer zet er in een instance zelf items, opties of knoppen bij of haalt ze weg, zonder te detachen. De standaardinhoud is drie items of drie opties; de body heeft een Paragraph en de footer zijn twee knoppen. De header is geen slot, omdat de sluitknop er in code altijd in staat.

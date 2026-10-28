@@ -481,7 +481,18 @@ check(
 const allComposed = componentFiles
   .map((file) => ({ file, payload: read(`packages/figma-sync/dist/${file}`) }))
   .filter(({ payload }) => (payload.componentSet.dependsOn ?? []).length);
-const composed = allComposed[0];
+// Een set waarvan geen doelset al in het bestand staat. De Button-set is
+// hierboven al geïmporteerd (zonder iconen), dus ActionGroup telt niet.
+const present = new Set(
+  state.root.children.flatMap((page) =>
+    page.children.map((node) => `${page.name}|${node.name}`)
+  )
+);
+const composed = allComposed.find(({ payload }) =>
+  payload.componentSet.dependsOn.every(
+    ({ name, page }) => !present.has(`${page}|${name}`)
+  )
+);
 
 check(
   'er is minstens één set met instances van een andere set',

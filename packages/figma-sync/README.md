@@ -295,17 +295,18 @@ binding missen, maar geen verkeerde binding leggen. Zie
 
 Wat er gebonden wordt:
 
-| Figma-veld                                   | Uit                                                      |
-| -------------------------------------------- | -------------------------------------------------------- |
-| `fills`                                      | `background-color`, of `color` bij tekst en iconen       |
-| `strokes`                                    | `border-*-color` van de zijde die de rand tekent         |
-| `strokeWeight`, of `stroke*Weight` per zijde | `border-*-width` van diezelfde zijde                     |
-| `topLeftRadius` en de drie andere hoeken     | `border-*-radius`                                        |
-| `paddingTop` / `Right` / `Bottom` / `Left`   | `padding-*`                                              |
-| `itemSpacing`                                | `row-gap` of `column-gap`, naar de as van de auto layout |
-| `fontSize`                                   | `font-size`                                              |
-| `fontFamily`                                 | `font-family`                                            |
-| `fontWeight`                                 | `font-weight`                                            |
+| Figma-veld                                   | Uit                                                       |
+| -------------------------------------------- | --------------------------------------------------------- |
+| `fills`                                      | `background-color`, of `color` bij tekst en iconen        |
+| `strokes`                                    | `border-*-color` van de zijde die de rand tekent          |
+| `strokeWeight`, of `stroke*Weight` per zijde | `border-*-width` van diezelfde zijde                      |
+| `topLeftRadius` en de drie andere hoeken     | `border-*-radius`                                         |
+| `paddingTop` / `Right` / `Bottom` / `Left`   | `padding-*`                                               |
+| `itemSpacing`                                | `row-gap` of `column-gap`, naar de as van de auto layout  |
+| `counterAxisSpacing`                         | de andere van de twee, alleen als de auto layout afbreekt |
+| `fontSize`                                   | `font-size`                                               |
+| `fontFamily`                                 | `font-family`                                             |
+| `fontWeight`                                 | `font-weight`                                             |
 
 Een font-family-variable is in Figma één familienaam, geen stack:
 `Fira Sans, sans-serif` bestaat daar niet als lettertype. De
@@ -941,6 +942,11 @@ dsn-heading-group"`, dus zonder override zouden Heading en HeadingGroup
 - **`data-figma-children="slot"`** zet de kinderen van een element in een
   Figma-slot, zodat een designer er zelf items of opties bij zet of uit haalt;
   zie "Slots".
+- **`data-figma-unwrap`** laat een element weg uit Figma; zijn kinderen
+  schuiven een niveau op. Voor een wrapper die alleen voor de semantiek
+  bestaat, zoals de `<li>` om een knop in ActionGroup. Tekent het element zelf
+  iets (padding, marge, rand of achtergrond), dan stopt de build: weglaten zou
+  dat uit Figma halen.
 - **`warnings`** zet een vaste waarschuwing in de spec, voor een beperking die
   de generator zelf niet kán zien. `::file-selector-button` is het voorbeeld:
   de knop van FileInput is een pseudo-element en dus geen DOM-node, dus er valt
@@ -1355,13 +1361,20 @@ Dat zijn de list items; zie "Onderdelen van een component".
 
 ### Layoutcomponenten
 
-`ActionGroup`, `BreakoutSection`, `Container`, `Grid`, `PageBody`,
-`PageLayout`, `Stack`.
+`BreakoutSection`, `Container`, `Grid`, `PageBody`, `PageLayout`, `Stack`.
 
 Layoutgedrag zonder eigen visuele identiteit: ze tekenen niets, ze plaatsen
 alleen wat erin zit. Een designer gebruikt daar Figma auto layout voor, en een
 gegenereerd "Stack-component" is een anti-patroon: het levert een lege laag op
 die precies doet wat het frame eromheen ook al kan.
+
+**ActionGroup is de uitzondering.** Hij tekent ook niets, maar met een slot
+(zie "Slots") draagt hij wat een designer anders zelf moet nabouwen: de
+richting, het afbreken naar een nieuwe regel en de gap tussen kolommen en
+rijen, aan hun variables gebonden. Een knop die een designer erin sleept,
+krijgt vanzelf dezelfde ruimte. En als instance in de footer van ModalDialog
+blijft hij die ruimte volgen. Een layoutcomponent dat zo een matrix heeft,
+wordt in een andere set ook een instance.
 
 ### Componenten die het canvas zelf zijn
 
@@ -1437,6 +1450,13 @@ en daar volgt de opbouw uit:
   dat opnieuw wordt opgebouwd krijgt een ander pad. De generator weigert een
   dieper slot daarom met een fout.
 - **Geen grid.** Figma weigert een slot met grid-layout, en de generator ook.
+- **Afbreken mag wel.** Een slot draagt `layoutWrap: WRAP` en de gap tussen
+  de rijen (`counterAxisSpacing`), beide aan hun variable gebonden. Gemeten
+  bij ActionGroup.
+- **Slot in slot werkt.** De footer van ModalDialog is een slot met een
+  ActionGroup-instance erin, en die heeft zijn eigen slot. In een geplaatste
+  dialog past een designer de knoppen in dat binnenste slot aan, en dat
+  blijft staan na een tweede import van beide sets.
 - **Geen exposed instances.** Een instance in een slot kan in Figma niet
   exposed zijn. De `label` van een item staat dus niet in het paneel van de
   lijst maar in dat van het item zelf. Een bewuste prijs: het slot is meer
@@ -1445,6 +1465,10 @@ en daar volgt de opbouw uit:
 Met een slot vervalt de as die het aantal regelde: `options` bij CheckboxGroup
 en RadioGroup, `footer` bij ModalDialog. Die drie zijn daarmee een los
 component, net als de lijsten.
+
+Een instance van een set met een slot op de root (ActionGroup) wordt
+vergeleken alsof de markup in de host dat slot ook had. In Figma zit er een
+laag `slot` tussen de root en de knoppen, in de `<ul>` in de footer niet.
 
 ## Onderdelen van een component
 

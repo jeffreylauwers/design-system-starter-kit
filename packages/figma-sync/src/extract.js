@@ -744,6 +744,42 @@ function domWalker([properties, hiddenClass]) {
       ) {
         continue;
       }
+      // `data-figma-unwrap`: dit element komt niet als laag in Figma, zijn
+      // kinderen schuiven een niveau op. Voor een wrapper die alleen voor de
+      // semantiek bestaat, zoals de `<li>` om een knop in ActionGroup: in een
+      // slot sleept een designer een Button, geen `<li>` met een Button erin.
+      // Alleen als het element zelf niets tekent of ruimte inneemt, anders
+      // verdwijnt er iets zichtbaars.
+      if (child.dataset.figmaUnwrap !== undefined) {
+        const drawn = [
+          'paddingTop',
+          'paddingRight',
+          'paddingBottom',
+          'paddingLeft',
+          'marginTop',
+          'marginRight',
+          'marginBottom',
+          'marginLeft',
+          'borderTopWidth',
+          'borderRightWidth',
+          'borderBottomWidth',
+          'borderLeftWidth',
+        ].filter((field) => Number.parseFloat(childStyles[field]) !== 0);
+        const background = childStyles.backgroundColor;
+        if (background !== 'rgba(0, 0, 0, 0)' && background !== 'transparent') {
+          drawn.push('backgroundColor');
+        }
+        if (childStyles.backgroundImage !== 'none') {
+          drawn.push('backgroundImage');
+        }
+        if (drawn.length) {
+          throw new Error(
+            `data-figma-unwrap op .${child.classList[0] ?? child.tagName.toLowerCase()}, maar dat element tekent zelf iets (${drawn.join(', ')}). Weglaten zou dat uit Figma halen.`
+          );
+        }
+        node.children.push(...visit(child).children);
+        continue;
+      }
       node.children.push(visit(child));
     }
 

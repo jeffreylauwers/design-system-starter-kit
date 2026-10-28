@@ -44,12 +44,20 @@ const MANIFEST = path.resolve(
  * Blokken die nooit een instance worden.
  *
  * De layoutcomponenten tekenen niets en hebben bewust geen set (zie "Welke
- * componenten wel en niet een matrix krijgen" in de README). `dsn-icon` heeft
+ * componenten wel en niet een matrix krijgen" in de README). Behalve een
+ * layoutcomponent dat toch een matrix heeft: ActionGroup, waarvan de knoppen
+ * in een slot staan. Dat is dan een set, en dus een instance. `dsn-icon` heeft
  * zijn eigen route: een `<svg>` wordt een instance van de iconset via
  * `data-icon`.
  */
 const SKIPPED_CATEGORIES = new Set(['layout']);
 const SKIPPED_BLOCKS = new Set(['dsn-icon', 'dsn-body']);
+
+const MATRICES = path.resolve(__dirname, 'matrices');
+
+/** Heeft dit blok een eigen matrix, en dus een set in Figma? */
+const hasMatrix = (block) =>
+  fs.existsSync(path.join(MATRICES, `${block.replace(/^dsn-/, '')}.js`));
 
 /** De opt-out in de markup: `data-figma-instance="none"`. */
 const OPT_OUT = 'none';
@@ -62,7 +70,11 @@ export function instanceBlocks() {
     const { components } = JSON.parse(fs.readFileSync(MANIFEST, 'utf8'));
     manifestBlocks = new Set(
       components
-        .filter((component) => !SKIPPED_CATEGORIES.has(component.category))
+        .filter(
+          (component) =>
+            !SKIPPED_CATEGORIES.has(component.category) ||
+            (component.cssBlock && hasMatrix(component.cssBlock))
+        )
         .map((component) => component.cssBlock)
         .filter((block) => block && !SKIPPED_BLOCKS.has(block))
     );
