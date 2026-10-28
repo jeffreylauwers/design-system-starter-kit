@@ -24,6 +24,11 @@ import {
 
 import { FLAG, skipFlagCombinations } from '../flags.js';
 
+const skipFlags = skipFlagCombinations({
+  flags: ['disabled', 'invalid'],
+  base: { state: 'default' },
+});
+
 export default {
   component: 'TimeInput',
 
@@ -52,6 +57,11 @@ export default {
   // Het veld en zijn icoon worden in Figma één frame, zie `mergeAdornments`.
   mergeAdornments: true,
 
+  // De knop blijft absoluut, zoals in de CSS: rechts in het veld en verticaal
+  // gecentreerd. Met deze constraints blijft hij daar ook als een designer het
+  // veld breder maakt.
+  absoluteAdornments: { horizontal: 'MAX', vertical: 'CENTER' },
+
   setName: 'dsn-time-input',
 
   axes: {
@@ -63,10 +73,13 @@ export default {
 
   componentProperties: FIELD_TEXT_PROPERTIES,
 
-  skipVariant: skipFlagCombinations({
-    flags: ['disabled', 'invalid'],
-    base: { state: 'default' },
-  }),
+  // Een datum- of tijdveld toont leeg altijd zijn formaat, en met een waarde
+  // de waarde. Waarde én placeholder tegelijk is dus geen stand die bestaat;
+  // in de browser wint de waarde, en dan was de variant gelijk aan
+  // `showValue=true, showPlaceholder=false`.
+  skipVariant: (variant) =>
+    skipFlags(variant) ||
+    (variant.showValue === 'true' && variant.showPlaceholder === 'true'),
 
   pseudoStates: { hover: 'hover', focus: 'focus' },
 

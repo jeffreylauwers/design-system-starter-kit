@@ -2072,6 +2072,61 @@ console.log('\n=== een as erbij (TextInput) ===');
   );
 }
 
+console.log('\n=== een as eraf (Drawer) ===');
+{
+  const nieuw = read('packages/figma-sync/dist/drawer.json');
+  const test = structuredClone(nieuw);
+  test.componentSet.name = 'dsn-drawer-as-eraf';
+  test.componentSet.page = 'dsn/DrawerAsEraf';
+
+  // De set zoals hij stond toen de footer nog een as was, en nog geen slot.
+  const oud = structuredClone(test);
+  oud.componentSet.variantAxes = {
+    ...oud.componentSet.variantAxes,
+    footer: ['with-footer', 'no-footer'],
+  };
+  oud.componentSet.components = oud.componentSet.components.flatMap(
+    (component) =>
+      ['with-footer', 'no-footer'].map((footer) => ({
+        ...structuredClone(component),
+        name: `${component.name}, footer=${footer}`,
+        variantProperties: { ...component.variantProperties, footer },
+      }))
+  );
+
+  await importComponentSet(oud, log);
+  const page = state.root.children.find(
+    (node) => node.name === test.componentSet.page
+  );
+  const set = () =>
+    page.children.find(
+      (node) =>
+        node.type === 'COMPONENT_SET' && node.name === test.componentSet.name
+    );
+  const metFooter = set().children.find(
+    (node) => node.name === 'side=right, footer=with-footer'
+  );
+  const idVoor = metFooter.id;
+  const instance = metFooter.createInstance();
+
+  const resultaat = await importComponentSet(test, log);
+
+  check(
+    'de varianten met footer worden overgenomen, niet opnieuw gemaakt',
+    resultaat.updated === test.componentSet.components.length &&
+      resultaat.created === 0,
+    `${resultaat.updated} bijgewerkt, ${resultaat.created} nieuw`
+  );
+  check(
+    'een oude variant heet nu naar de overgebleven as, met dezelfde node-id',
+    set().children.find((node) => node.id === idVoor)?.name === 'side=right'
+  );
+  check(
+    'een geplaatste instance hangt nog aan dezelfde variant',
+    instance.mainComponent?.id === idVoor
+  );
+}
+
 console.log(
   `\n${process.exitCode ? '✗ smoke test gefaald' : '✓ smoke test geslaagd'}\n`
 );

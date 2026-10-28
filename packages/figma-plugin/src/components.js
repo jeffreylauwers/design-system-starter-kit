@@ -211,6 +211,9 @@ function applyPlacement(node, spec, log, parentSpec) {
       node.layoutPositioning = 'ABSOLUTE';
       if (spec.x !== undefined) node.x = spec.x;
       if (spec.y !== undefined) node.y = spec.y;
+      // Aan welke rand van de ouder het kind blijft hangen als die van maat
+      // verandert, zoals de knop rechts in DateInput.
+      if (spec.constraints) node.constraints = spec.constraints;
       return;
     }
     // Een ouder zonder auto layout plaatst niets zelf: zonder deze stap komt
@@ -1198,9 +1201,18 @@ function variantFinder(knownVariants, axes) {
       // Een waarde kan ook een eigen as zijn geworden: `state=disabled` werd
       // `state=default` plus `disabled=true`. De oude variant hoort dan bij de
       // nieuwe variant waarin die as aan staat.
+      // Een as die uit de spec verdwenen is, zoals `footer` bij Drawer sinds
+      // de footer een slot is, telt niet mee. De eerste oude variant die
+      // verder past wordt de nieuwe; dat is die met de eerste waarde van die
+      // as, want de varianten staan in de volgorde van de spec.
+      const dropped = [];
       const promoted = [];
       for (const [key, value] of Object.entries(properties)) {
         if (wanted[key] === value) continue;
+        if (axes && !(key in axes)) {
+          dropped.push(key);
+          continue;
+        }
         if (wanted[value] === 'true' && wanted[key] === base(key)) {
           promoted.push(value);
           continue;
@@ -1209,7 +1221,7 @@ function variantFinder(knownVariants, axes) {
       }
 
       const newKeys = Object.keys(wanted).filter((key) => !(key in properties));
-      if (!newKeys.length && !promoted.length) return false;
+      if (!newKeys.length && !promoted.length && !dropped.length) return false;
       return newKeys.every(
         (key) => promoted.includes(key) || base(key) === wanted[key]
       );

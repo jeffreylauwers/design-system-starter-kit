@@ -124,17 +124,27 @@ rendert `extract.js` elke variant in een echte browser en leest de _computed_
 styles uit. Dat levert meteen de flexbox-informatie op die vrijwel 1-op-1 op
 Figma auto layout past:
 
-| CSS                                  | Figma                               |
-| ------------------------------------ | ----------------------------------- |
-| `display: flex` + `flex-direction`   | `layoutMode` HORIZONTAL / VERTICAL  |
-| `gap`                                | `itemSpacing`                       |
-| `padding-*`                          | `padding*`                          |
-| `justify-content` / `align-items`    | `primary` / `counterAxisAlignItems` |
-| `display: inline-flex`               | `layoutSizingHorizontal: HUG`       |
-| `display: grid` + `grid-column`      | `layoutMode: GRID` + grid anchors   |
-| `position: absolute`                 | `layoutPositioning: ABSOLUTE`       |
-| `min-block-size` / `min-inline-size` | `minHeight` / `minWidth`            |
-| kind vult de binnenbreedte           | `layoutSizingHorizontal: FILL`      |
+| CSS                                  | Figma                                 |
+| ------------------------------------ | ------------------------------------- |
+| `display: flex` + `flex-direction`   | `layoutMode` HORIZONTAL / VERTICAL    |
+| `gap`                                | `itemSpacing`                         |
+| `padding-*`                          | `padding*`                            |
+| `justify-content` / `align-items`    | `primary` / `counterAxisAlignItems`   |
+| `align-items: stretch`               | `layoutAlign: STRETCH` op de kinderen |
+| `align-self` op een kind             | zie hieronder                         |
+| `display: inline-flex`               | `layoutSizingHorizontal: HUG`         |
+| `display: grid` + `grid-column`      | `layoutMode: GRID` + grid anchors     |
+| `position: absolute`                 | `layoutPositioning: ABSOLUTE`         |
+| `min-block-size` / `min-inline-size` | `minHeight` / `minWidth`              |
+| kind vult de binnenbreedte           | `layoutSizingHorizontal: FILL`        |
+
+Figma kent geen `align-self`: de uitlijning op de kruisas staat op de ouder,
+en een kind kan alleen uitrekken of die uitlijning volgen. Een kind met een
+eigen `align-self` rekt dus niet mee met een ouder die uitrekt. Centreert het
+zichzelf, zoals de uitklapknop van MenuLink, dan krijgt de ouder
+`counterAxisAlignItems: CENTER`: de andere kinderen rekken nog steeds, en het
+ene kind staat in het midden. Willen kinderen verschillende kanten op, dan kan
+dat in Figma niet, en meldt de build het.
 
 Een element dat alleen tekst bevat en zelf niets tekent, wordt één TEXT-node in
 plaats van een frame met een tekstnode erin. Zonder die stap krijgt elke `<span>`
@@ -472,8 +482,7 @@ Een node blijft daarom FIXED wanneer:
   `block-size`;
 - de node absoluut gepositioneerd is, en zijn maat dus uit zijn insets haalt;
 - de node geen kinderen heeft die meestromen. HUG zonder inhoud klapt in tot de
-  padding: een `<input>`, een lege DotBadge, de wrapper van Popover met alleen
-  een absoluut kind.
+  padding: een `<input>` of een lege DotBadge.
 
 `fit-content`, `max-content`, `min-content` en `auto` tellen daarbij niet als
 maat: dat is een instructie om om de inhoud te krimpen, het tegendeel van
@@ -1320,11 +1329,20 @@ komen uit de meting: de padding is de afstand van de rand tot het eerste kind,
 `itemSpacing` de afstand ertussen. Alleen de zijde met versiering wordt
 herrekend; de andere houdt de padding van het veld, en daarmee zijn binding.
 
-Staat de versiering achter de tekst (Select, DateInput, TimeInput), dan vult de
-tekst de rij en lijnt de versiering rechts uit. Staat hij ervoor (SearchInput),
+Staat de versiering achter de tekst (Select), dan vult de tekst de rij en
+lijnt de versiering rechts uit. Staat hij ervoor (SearchInput),
 dan hugt de tekst. Een variant zonder versiering, zoals de disabled-stand van
 Select, wordt hetzelfde frame zonder die laag, zodat alle varianten dezelfde
 opbouw houden.
+
+Met `absoluteAdornments` blijft absolute versiering absoluut, zoals de knop van
+DateInput en TimeInput. De waarde zijn de constraints van die laag:
+`{ horizontal: 'MAX', vertical: 'CENTER' }` houdt de knop rechts in het veld
+en verticaal gecentreerd, ook als een designer het veld breder maakt. De
+constraints staan in de matrix en niet in de meting: de browser geeft
+`top: 50%` terug als pixels, en daaraan is niet te zien of de knop aan de
+rand of in het midden hangt. De tekst blijft dan het laatste kind in de rij
+en hugt; de padding aan de rechterkant is die van het veld.
 
 De set heet in die gevallen naar het component en niet naar de wrapper-div:
 `setName: 'dsn-select'` in plaats van `dsn-select-wrapper`.
@@ -1352,6 +1370,12 @@ extractor maakt daar een tekstlaag van in het contentvlak:
 | `showValue=true`       | de waarde, in de stijl en met de tokens van het veld             |
 | `showPlaceholder=true` | de placeholder, in de stijl en met de tokens van `::placeholder` |
 | beide `true`           | de waarde, want in de browser verbergt een waarde de placeholder |
+
+DateInput en TimeInput hebben die laatste variant niet. Een leeg datum- of
+tijdveld toont altijd zijn formaat, en een gevuld veld zijn waarde, dus
+"waarde én placeholder" is daar geen stand. Die variant was gelijk aan
+`showValue=true, showPlaceholder=false`, en stond in Figma als tweede
+`showPlaceholder=true` met een datum erin.
 
 Om de placeholder te binden leest de cascade-lezer ook regels voor
 `::placeholder`. DateInput en TimeInput hebben geen placeholder die de browser
@@ -1469,10 +1493,11 @@ en daar volgt de opbouw uit:
   frame `slot`. Dat neemt de richting en de tussenruimte van de root over,
   met de binding; de root houdt zijn padding.
 - **Een kind van de root kan zelf het slot zijn.** Zo zijn de body en de
-  footer van ModalDialog de slots `body` en `footer`, elk met hun eigen
-  padding; de footer houdt ook de lijn erboven. De header is bewust geen
-  slot: in code zet ModalDialogHeader de sluitknop er altijd zelf in, en een
-  slot zou toelaten dat een designer die weghaalt.
+  footer van ModalDialog, Drawer en Popover de slots `body` en `footer`, elk
+  met hun eigen padding; de footer houdt ook de lijn erboven, en heeft een
+  instance van ActionGroup als standaardinhoud. De header is bewust geen
+  slot: in code zet de header de sluitknop er altijd zelf in, en een slot zou
+  toelaten dat een designer die weghaalt.
 - **Dieper niet.** Bij een tweede import bouwt de plugin een variant van
   binnen opnieuw op. Wat een designer in het slot van een instance zette
   blijft alleen staan als het slot zelf blijft staan, en een slot in een frame
@@ -1492,8 +1517,23 @@ en daar volgt de opbouw uit:
   waard dan het doorzetten van de tekst.
 
 Met een slot vervalt de as die het aantal regelde: `options` bij CheckboxGroup
-en RadioGroup, `footer` bij ModalDialog. Die drie zijn daarmee een los
-component, net als de lijsten.
+en RadioGroup, `footer` bij ModalDialog, Drawer en Popover. Wil een designer
+geen footer, dan zet hij het slot uit. Op Drawer na (die houdt `side`) zijn ze
+daarmee een los component, net als de lijsten. Bij een volgende import gaat
+de oude variant met footer over naar de nieuwe naam (`side=left, footer=with-footer`
+wordt `side=left`), zodat geplaatste instances eraan blijven hangen; de
+varianten zonder footer schuiven naar achteren en ruimt een designer zelf op.
+
+De root van Popover is de popover zelf, niet `dsn-popover-wrapper`. Die wrapper
+plaatst de popover in CSS-only gebruik naast zijn trigger, en meet zonder
+trigger 0x0, met de popover er absoluut aan, buiten beeld. Een designer zet
+hem zelf op zijn plek. De set heet daardoor `dsn-popover`: een nieuwe set in
+Figma, naast de oude `dsn-popover-wrapper`.
+
+In de footer van Popover staan de knoppen op de standaardmaat, de
+standaardinhoud van ActionGroup. In code zijn ze daar vaak `small`, maar een
+andere maat is een andere opbouw dan de ActionGroup-set, en dan kan hij geen
+instance zijn. Een designer zet ze in het slot op `small`.
 
 Een instance van een set met een slot op de root (ActionGroup) wordt
 vergeleken alsof de markup in de host dat slot ook had. In Figma zit er een
