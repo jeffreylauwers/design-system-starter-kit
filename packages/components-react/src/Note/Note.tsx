@@ -5,11 +5,7 @@ import { Heading } from '../Heading';
 import './Note.css';
 
 export type NoteVariant =
-  | 'neutral'
-  | 'info'
-  | 'positive'
-  | 'negative'
-  | 'warning';
+  'neutral' | 'info' | 'positive' | 'negative' | 'warning';
 export type NoteAs = 'div' | 'aside' | 'nav' | 'section';
 
 const PREFERRED_ICONS: Record<NoteVariant, string> = {

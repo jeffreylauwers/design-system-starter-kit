@@ -34,11 +34,7 @@ import {
 // =============================================================================
 
 type CurrentPage =
-  | 'homepage'
-  | 'level-1a'
-  | 'level-2a'
-  | 'level-3a'
-  | 'level-4a';
+  'homepage' | 'level-1a' | 'level-2a' | 'level-3a' | 'level-4a';
 
 // =============================================================================
 // GEDEELDE CONTENT
