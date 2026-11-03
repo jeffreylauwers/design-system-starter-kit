@@ -10,6 +10,16 @@ All notable changes to this project are documented in this file.
 
 Nog niet gepubliceerde wijzigingen. Schrijf nieuwe changelog-entries hieronder; bij de volgende release wordt deze kop gepromoveerd naar het definitieve versienummer.
 
+### Dev-dependencies naar de nieuwste majors
+
+De hele toolchain is bijgewerkt. Voor wie de packages gebruikt verandert er weinig; de punten die je kunt merken staan bovenaan.
+
+- **Tokens:** duur-tokens met `$type: "duration"` komen in CSS en SCSS nu in seconden. `--dsn-dot-badge-pulse-duration` is `1.5s` in plaats van `1500ms`, `--dsn-spinner-duration` is `0.8s` in plaats van `800ms`. De waarde is gelijk; dit is de standaardtransform van Style Dictionary 5. De JS-export heeft per token een extra veld `key` met de referentienaam (`{dsn.text.font-family.default}`).
+- **React-types:** `triggerRef` van `Popover` en `PopoverMenu` accepteert nu `RefObject<HTMLElement | null>`. In React 19 geeft `useRef(null)` precies dat type terug; met React 18 werkt het zoals voorheen. De gebouwde types breiden de React-module niet meer uit met het `popover`-attribuut, omdat React 19 dat zelf kent en de dubbele declaratie botste.
+- **Node:** de ontwikkelomgeving vraagt nu Node `^22.22.2`, `^24.15.0` of `>=26` (de minimumversies van jsdom, lint-staged en tsdown).
+
+Bijgewerkt: React 19, Vite 8, Vitest 5, jsdom 30, TypeScript 6.0, ESLint 10 met flat config (`eslint.config.mjs`), Style Dictionary 5, Husky 9, lint-staged 17, tsdown 0.23, eslint-config-prettier 10, eslint-plugin-react-hooks 7 en @testing-library/jest-dom 7. `eslint-plugin-react` wordt sinds april 2025 niet meer onderhouden en is vervangen door `@eslint-react/eslint-plugin`. TypeScript blijft op 6.0, omdat typescript-eslint en de docgen van Storybook TypeScript 7 nog niet ondersteunen.
+
 ### SummaryList heet nu DataList (breaking)
 
 Het component is een key-value lijst op basis van `<dl>` en wordt breder gebruikt dan alleen voor de samenvatting van een formulier. De naam volgt nu wat het is in plaats van één toepassing. Gedrag, markup-structuur, props en tokenwaardes zijn ongewijzigd: alleen de namen veranderen. Er is geen alias voor de oude namen, dus een zoek-en-vervang is nodig.

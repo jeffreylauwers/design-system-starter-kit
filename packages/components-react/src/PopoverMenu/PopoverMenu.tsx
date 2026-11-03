@@ -30,7 +30,7 @@ export interface PopoverMenuProps extends Omit<
    * Referentie naar het triggerelement voor positionering, `aria-expanded`
    * en focusherstel.
    */
-  triggerRef: React.RefObject<HTMLElement>;
+  triggerRef: React.RefObject<HTMLElement | null>;
 
   /**
    * Gewenste plaatsing relatief aan het triggerelement.

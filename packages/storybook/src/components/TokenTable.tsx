@@ -238,44 +238,47 @@ function Preview({ type, cssVar }: { type: PreviewType; cssVar: string }) {
  * Hook to get the computed CSS value for a CSS variable.
  * Automatically updates when theme/mode/density changes in Storybook.
  */
+function readCssValue(cssVar: string): string {
+  if (typeof window === 'undefined') return '';
+
+  const computed = getComputedStyle(document.documentElement).getPropertyValue(
+    cssVar
+  );
+  return computed.trim() || '(not defined)';
+}
+
 function useComputedCssValue(cssVar: string): string {
-  const [value, setValue] = useState<string>('');
-  const [updateTrigger, setUpdateTrigger] = useState(0);
+  const [value, setValue] = useState<string>(() => readCssValue(cssVar));
 
   const updateValue = useCallback(() => {
-    if (typeof window === 'undefined') return;
-
-    const computed = getComputedStyle(
-      document.documentElement
-    ).getPropertyValue(cssVar);
-    setValue(computed.trim() || '(not defined)');
+    setValue(readCssValue(cssVar));
   }, [cssVar]);
 
-  // Force re-computation when updateTrigger changes
-  useEffect(() => {
-    updateValue();
-  }, [updateValue, updateTrigger]);
-
   useEffect(() => {
     if (typeof window === 'undefined') return;
 
-    // Initial computation
-    updateValue();
+    // Herbereken na de eerste paint, en opnieuw zodra cssVar verandert.
+    const initialFrame = requestAnimationFrame(updateValue);
+
+    // Alle listeners en timers worden bij unmount opgeruimd
+    const listeners = new AbortController();
+    const timeouts = new Set<ReturnType<typeof setTimeout>>();
+    const schedule = (delay: number) => {
+      const id = setTimeout(() => {
+        timeouts.delete(id);
+        updateValue();
+      }, delay);
+      timeouts.add(id);
+    };
 
     // Function to trigger update with delay (to allow styles to be applied)
     const triggerUpdate = () => {
       // Use multiple delayed updates to catch async stylesheet loading
-      requestAnimationFrame(() => {
-        setUpdateTrigger((t) => t + 1);
-      });
+      schedule(0);
       // Also update after a short delay for slower stylesheet loads
-      setTimeout(() => {
-        setUpdateTrigger((t) => t + 1);
-      }, 100);
+      schedule(100);
       // And once more for safety
-      setTimeout(() => {
-        setUpdateTrigger((t) => t + 1);
-      }, 300);
+      schedule(300);
     };
 
     // Observe changes to document.head for new stylesheets
@@ -286,7 +289,9 @@ function useComputedCssValue(cssVar: string): string {
           mutation.addedNodes.forEach((node) => {
             if (node instanceof HTMLLinkElement && node.rel === 'stylesheet') {
               // Wait for stylesheet to load
-              node.addEventListener('load', triggerUpdate);
+              node.addEventListener('load', triggerUpdate, {
+                signal: listeners.signal,
+              });
               // Also trigger immediately in case it's cached
               triggerUpdate();
             }
@@ -330,7 +335,9 @@ function useComputedCssValue(cssVar: string): string {
 
     // Listen for existing stylesheet load events (in case they haven't loaded yet)
     document.querySelectorAll('link[rel="stylesheet"]').forEach((link) => {
-      link.addEventListener('load', triggerUpdate);
+      link.addEventListener('load', triggerUpdate, {
+        signal: listeners.signal,
+      });
     });
 
     // Also listen for Storybook globals change event (custom event)
@@ -363,6 +370,9 @@ function useComputedCssValue(cssVar: string): string {
     }, 500);
 
     return () => {
+      cancelAnimationFrame(initialFrame);
+      listeners.abort();
+      timeouts.forEach(clearTimeout);
       headObserver.disconnect();
       bodyObserver.disconnect();
       htmlObserver.disconnect();

@@ -142,7 +142,7 @@ design-system-starter-kit/
 │   ├── 05-storybook-configuration.md
 │   ├── decisions/               # Decision records (DR-YYYY-NN)
 │   └── changelog.md
-├── .eslintrc.js                 # ESLint config (ignores *.generated.*)
+├── eslint.config.mjs            # ESLint flat config (ignores *.generated.*)
 ├── tsconfig.json                # Root TypeScript config
 ├── vitest.config.ts             # Test configuration
 ├── package.json

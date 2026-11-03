@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 
 import { fromConfigName, getTokenLoader, toConfigName } from '../token-loader';
 
@@ -6,21 +6,19 @@ interface TokenControlsProps {
   onRefresh?: () => void;
 }
 
+function readCurrentConfig() {
+  const currentConfig = getTokenLoader()?.getCurrentConfigName();
+  return currentConfig ? fromConfigName(currentConfig) : undefined;
+}
+
 export function TokenControls({ onRefresh }: TokenControlsProps) {
-  const [theme, setTheme] = useState('start');
-  const [mode, setMode] = useState('light');
-  const [projectType, setProjectType] = useState('default');
-
-  // Load current values on mount
-  useEffect(() => {
-    const currentConfig = getTokenLoader()?.getCurrentConfigName();
-    if (!currentConfig) return;
-
-    const current = fromConfigName(currentConfig);
-    setTheme(current.theme);
-    setMode(current.mode);
-    setProjectType(current.projectType);
-  }, []);
+  // Start met de configuratie die de loader al heeft geladen
+  const [initialConfig] = useState(readCurrentConfig);
+  const [theme, setTheme] = useState(initialConfig?.theme ?? 'start');
+  const [mode, setMode] = useState(initialConfig?.mode ?? 'light');
+  const [projectType, setProjectType] = useState(
+    initialConfig?.projectType ?? 'default'
+  );
 
   const applyTokens = (
     newTheme: string,
