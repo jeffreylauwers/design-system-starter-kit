@@ -3,11 +3,7 @@ import { classNames } from '@dsn-starter-kit/core';
 import './NumberBadge.css';
 
 export type NumberBadgeVariant =
-  | 'negative'
-  | 'positive'
-  | 'warning'
-  | 'info'
-  | 'neutral';
+  'negative' | 'positive' | 'warning' | 'info' | 'neutral';
 
 export interface NumberBadgeProps extends React.HTMLAttributes<HTMLSpanElement> {
   /**

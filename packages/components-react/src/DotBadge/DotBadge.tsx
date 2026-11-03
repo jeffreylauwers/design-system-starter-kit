@@ -3,11 +3,7 @@ import { classNames } from '@dsn-starter-kit/core';
 import './DotBadge.css';
 
 export type DotBadgeVariant =
-  | 'negative'
-  | 'positive'
-  | 'warning'
-  | 'info'
-  | 'neutral';
+  'negative' | 'positive' | 'warning' | 'info' | 'neutral';
 
 export interface DotBadgeProps extends React.HTMLAttributes<HTMLSpanElement> {
   /**

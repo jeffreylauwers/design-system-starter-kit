@@ -3,11 +3,7 @@ import { classNames } from '@dsn-starter-kit/core';
 import './StatusBadge.css';
 
 export type StatusBadgeVariant =
-  | 'neutral'
-  | 'positive'
-  | 'negative'
-  | 'warning'
-  | 'info';
+  'neutral' | 'positive' | 'negative' | 'warning' | 'info';
 
 export interface StatusBadgeProps extends React.HTMLAttributes<HTMLElement> {
   /**
