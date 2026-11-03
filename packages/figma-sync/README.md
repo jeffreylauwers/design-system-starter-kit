@@ -763,6 +763,16 @@ HeadingGroup is het voorbeeld van de eerste. De Heading is daar de root zelf
 die `<h2>`; er is geen kind met `dsn-heading` om te herkennen. De matrix zet
 daarom `data-figma-instance` op een span om de tekst.
 
+**Een as uit de tag.** Heading heeft een `level`-as die niets aan de meting
+verandert: zes varianten per appearance zien er hetzelfde uit. Vergelijken
+kiest daar niet, en tussen identieke varianten pakt de build stil de eerste.
+De Heading-matrix zegt daarom met `variantFromTag` welke as uit de tag van het
+element volgt: een `<h3 class="dsn-heading …">` in Note wordt een instance met
+`level=3`, en de meting kiest daarbinnen de appearance. Is het element geen
+`<h*>`, zoals de span in HeadingGroup, dan stopt de build tot de host het level
+aanwijst met `data-figma-variant="level=2"`. Een `data-figma-variant` die de
+as zelf al noemt, wint van de tag.
+
 **2. De variant kiezen.** Uit de klassen is die niet altijd af te lezen: of een
 Checkbox aangevinkt is zit in het `<input>`, en hover is een pseudo-toestand.
 De subboom wordt daarom gewoon gemeten, en daarna vergeleken met elke variant
@@ -972,6 +982,11 @@ dsn-heading-group"`, dus zonder override zouden Heading en HeadingGroup
   een laag heeft een fout.
 - **`instances: true`** maakt van geneste componenten instances in plaats van
   gemeten lagen; zie "Geneste componenten worden instances".
+- **`variantFromTag: { axis, tags }`** zegt welke as van deze set uit de tag
+  van het element volgt als hij als instance in een andere set staat. Heading:
+  `{ axis: 'level', tags: { h1: '1', … } }`. De build controleert dat de as en
+  de waarden bestaan. Zie "Een as uit de tag" onder "Geneste componenten
+  worden instances".
 - **`data-figma-children="slot"`** zet de kinderen van een element in een
   Figma-slot, zodat een designer er zelf items of opties bij zet of uit haalt;
   zie "Slots".
@@ -1069,6 +1084,16 @@ het de toegankelijke naam. De generator herkent de visually-hidden techniek
 `loading` en `fullWidth` hebben hetzelfde probleem en blijven voorlopig
 buiten de set; zie
 [#323](https://github.com/jeffreylauwers/design-system-starter-kit/issues/323).
+
+Eén bewuste uitzondering: `level` bij Heading is een as, al verandert hij
+geen token
+([#400](https://github.com/jeffreylauwers/design-system-starter-kit/issues/400)).
+Figma kent naast varianten geen keuzelijst, en een level dat alleen in een
+laagnaam staat ziet een designer niet in het paneel. Dat kost 36 varianten in
+plaats van 6, waarvan er per appearance zes hetzelfde zijn. Welk icoon er staat
+blijft wel een property: MenuButton heeft `showIconStart`, `iconStart`,
+`showIconEnd` en `iconEnd` zoals Button, en het icoon van een IconList-item is
+een instance swap.
 
 ### Naamgeving
 

@@ -5,6 +5,14 @@
  * van een `<a>`: voor een actie die geen navigatie is. Anders dan bij
  * ButtonLink en LinkButton is dit géén doublure, want MenuButton heeft eigen
  * klassen en eigen tokens.
+ *
+ * De iconen werken zoals bij Button: twee slots die altijd gerenderd worden,
+ * elk met een boolean die ze aanzet en een instance swap die het icoon kiest.
+ * Dezelfde namen als de props `iconStart` en `iconEnd` in React. Een icoon is
+ * geen as: welk icoon er staat, of dat er een staat, verandert geen gemeten
+ * token. Zie issue #400.
+ *
+ * Bewust nog niet hier: `dotBadge`.
  */
 
 import { icon } from '../icons.js';
@@ -26,21 +34,50 @@ export default {
   wrapperStyle: 'width: 328px;',
 
   axes: {
-    icon: ['with-icon', 'no-icon'],
     state: ['default', 'hover', 'active'],
   },
 
   pseudoStates: { hover: 'hover', active: 'active' },
 
-  componentProperties: [{ name: 'label', type: 'TEXT', slot: 'label' }],
+  /**
+   * `showIconStart` staat standaard aan, anders dan bij Button: de oude
+   * standaardvariant van deze set had een icoon, en een menu-item heeft er
+   * vaker een dan een knop.
+   */
+  componentProperties: [
+    { name: 'label', type: 'TEXT', slot: 'label' },
+    {
+      name: 'showIconStart',
+      type: 'BOOLEAN',
+      slot: 'icon-start',
+      default: true,
+    },
+    {
+      name: 'iconStart',
+      type: 'INSTANCE_SWAP',
+      slot: 'icon-start',
+      default: 'settings',
+    },
+    {
+      name: 'showIconEnd',
+      type: 'BOOLEAN',
+      slot: 'icon-end',
+      default: false,
+    },
+    {
+      name: 'iconEnd',
+      type: 'INSTANCE_SWAP',
+      slot: 'icon-end',
+      default: 'chevron-right',
+    },
+  ],
 
-  render({ icon: iconAxis }) {
-    const iconMarkup = iconAxis === 'with-icon' ? icon('settings') : '';
-
+  render() {
     return `<li class="dsn-menu-button" data-figma-root>
       <button type="button" class="dsn-menu-button__button">
-        ${iconMarkup}
+        ${icon('settings', { slot: 'icon-start' })}
         <span class="dsn-menu-button__label" data-figma-slot="label">${TEKST}</span>
+        ${icon('chevron-right', { slot: 'icon-end' })}
       </button>
     </li>`;
   },

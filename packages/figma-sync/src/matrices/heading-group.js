@@ -16,7 +16,10 @@
  * eigen nagebouwde typografie. De PreHeading herkent de generator aan zijn
  * klasse. De Heading niet, want die is hier de root zelf en geen kind: de
  * tekst hangt direct in de `<h2>`. Vandaar `data-figma-instance` op de span
- * eromheen; de variant zoekt de generator zelf uit door te vergelijken.
+ * eromheen. De appearance zoekt de generator zelf uit door te vergelijken. Het
+ * level niet: dat haalt de Heading uit de tag, en de span is geen `<h*>`. Het
+ * level is dat van de `<h2>` eromheen, dus `data-figma-variant="level=2"`. Een
+ * designer zet het in het paneel om, want de Heading is exposed.
  *
  * Geen eigen component properties meer. Beide instances zijn "exposed", dus
  * de `label` van de Heading en die van de PreHeading staan gewoon in het
@@ -51,7 +54,7 @@ export default {
   render({ appearance }) {
     return `<h2 class="dsn-heading dsn-heading--${appearance} dsn-heading-group" data-figma-root>
       <span class="dsn-pre-heading">${TEKST}</span>
-      <span data-figma-instance="dsn-heading">${HEADING}</span>
+      <span data-figma-instance="dsn-heading" data-figma-variant="level=2">${HEADING}</span>
     </h2>`;
   },
 };

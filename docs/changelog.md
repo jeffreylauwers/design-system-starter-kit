@@ -35,6 +35,14 @@ Het component is een key-value lijst op basis van `<dl>` en wordt breder gebruik
 
 In Figma maakt de eerstvolgende import een nieuwe component set `DataList` aan. De bestaande set `SummaryList` blijft staan en moet met de hand worden opgeruimd of vooraf hernoemd.
 
+### figma-sync: Heading met een level-as, MenuButton met icoon-properties
+
+De Heading-set heeft naast `appearance` nu een as `level` (1 t/m 6), net als de twee props in React: 36 varianten, waarvan er per appearance zes hetzelfde zijn. Elke variant bindt aan de tokens van zijn appearance. Als instance in een andere set volgt het level uit de tag: de kop in Alert is `level=2`, die in Note `level=3`. Een matrix legt dat vast met de nieuwe optie `variantFromTag`; HeadingGroup wijst `level=2` aan met `data-figma-variant`, omdat de Heading daar een span is.
+
+MenuButton heeft geen `icon`-as meer. De iconen werken nu zoals bij Button: `showIconStart` (standaard aan), `iconStart`, `showIconEnd` en `iconEnd`. Bij de volgende import gaat de oude variant `icon=with-icon` over in de nieuwe en houden instances daarvan hun koppeling. Instances van `icon=no-icon` raken los, want die varianten worden verwijderd; zet daar `showIconStart` uit. IconList had zijn `icon`-as al niet meer: het icoon van een item is een instance swap ([#400](https://github.com/jeffreylauwers/design-system-starter-kit/issues/400)).
+
+Fix in de plugin: een tweede import van een set met een grid (Alert, Note, File) brak af met `Cannot set grid row count: Cannot delete occupied row/column`. De hergebruikte instances (Heading, Paragraph) werden tijdelijk direct in het grid gehangen; in een vol grid maakte Figma daar een rij voor bij, en daarna mocht de variant niet meer van layout wisselen. Omdat de bindingen op dat moment al losgemaakt waren, hield de variant vaste waarden: geen variables op kleur, padding of randen, en dus geen dark mode. Een variant houdt bij een herimport nu zijn layout, en hergebruikte instances en slots staan buiten de layout tot ze hun plek krijgen. De mock van de smoke test kent nu de gridregels van Figma (een nieuw kind krijgt de eerste vrije cel, een bezette rij kan niet weg), en de smoke test controleert na elke import of elk grid-kind op zijn cel staat.
+
 ### figma-sync: icon-only knoppen als instance, en Drawer en Popover met slots
 
 De icon-only knoppen in Drawer, Popover, MenuLink, DateInput, TimeInput en Table zijn in Figma nu instances van de icon-only Button, net als de sluitknop van ModalDialog. Elke knop krijgt zijn eigen icoon via de instance swap `icon` (`x`, `chevron-down`, `calendar-event`, `clock`, en per sorteerstand `arrows-sort` of `sort-ascending`) en zijn label als verborgen laag. Een wijziging aan Button werkt daardoor ook in die zes door.
