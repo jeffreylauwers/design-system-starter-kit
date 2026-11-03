@@ -1,4 +1,4 @@
-import type { StoryFn } from '@storybook/react';
+import type { Decorator } from '@storybook/react';
 
 // =============================================================================
 // CANONICAL TEKSTEN
@@ -25,7 +25,7 @@ export const VEEL_TEKST_AR =
  * Simuleert right-to-left tekstrichting (bijv. Arabisch).
  * Voeg toe aan een story via: decorators: [rtlDecorator]
  */
-export const rtlDecorator = (Story: StoryFn) => (
+export const rtlDecorator: Decorator = (Story) => (
   <div dir="rtl" lang="ar" style={{ textAlign: 'start' }}>
     <Story />
   </div>

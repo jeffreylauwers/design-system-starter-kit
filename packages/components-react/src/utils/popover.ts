@@ -9,30 +9,6 @@ import React from 'react';
  * plek. Deze module wordt niet geëxporteerd uit het package.
  */
 
-/*
- * React 18 ondersteunt het `popover`-attribuut en `onToggle` niet natively in de
- * JSX-types. Module-uitbreiding voegt de ontbrekende types toe.
- */
-declare module 'react' {
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  interface HTMLAttributes<T> {
-    popover?: 'auto' | 'manual' | '' | undefined;
-    popoverTarget?: string | undefined;
-    popoverTargetAction?: 'hide' | 'show' | 'toggle' | undefined;
-  }
-}
-
-/*
- * HTMLElement.showPopover / hidePopover zijn nog niet in alle TypeScript DOM-libs.
- * Declaratie toegevoegd voor veilig gebruik.
- */
-declare global {
-  interface HTMLElement {
-    showPopover(): void;
-    hidePopover(): void;
-  }
-}
-
 // =============================================================================
 // Types
 // =============================================================================
@@ -180,7 +156,9 @@ export function usePopover({
 
   // Gebruik een ref voor onClose zodat de listeners stabiel blijven en nooit stale zijn.
   const onCloseRef = React.useRef(onClose);
-  onCloseRef.current = onClose;
+  React.useEffect(() => {
+    onCloseRef.current = onClose;
+  }, [onClose]);
 
   // Toon/verberg de popover via de Popover API
   React.useEffect(() => {

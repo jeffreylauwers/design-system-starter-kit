@@ -9,12 +9,12 @@ import {
   ModalDialogBody,
   ModalDialogFooter,
 } from './ModalDialog';
+import { mockDialogApi } from '../test-utils/dialogMocks';
 
 // jsdom heeft geen volledige HTMLDialogElement implementatie.
 // Mock showModal en close voor alle tests.
 beforeEach(() => {
-  HTMLDialogElement.prototype.showModal = vi.fn();
-  HTMLDialogElement.prototype.close = vi.fn();
+  mockDialogApi();
 });
 
 const DefaultDialog = ({

@@ -729,9 +729,9 @@ The project uses Husky + lint-staged to run checks before commits:
 
 ### ESLint Configuration
 
-- **Config file:** `.eslintrc.js`
-- **Ignored patterns:** `*.generated.*` files
-- **Rules:** Standard TypeScript + React rules
+- **Config file:** `eslint.config.mjs` (flat config, ESLint 10)
+- **Ignored patterns:** `dist`, `build`, `*.generated.*` files
+- **Rules:** `@eslint/js` recommended, `typescript-eslint` recommended, `@eslint-react/eslint-plugin` (recommended-typescript), `eslint-plugin-react-hooks` (inclusief de React Compiler-regels) en `eslint-plugin-storybook`
 
 ### TypeScript
 

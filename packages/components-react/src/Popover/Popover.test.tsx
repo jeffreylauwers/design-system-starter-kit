@@ -9,12 +9,12 @@ import {
   PopoverBody,
   PopoverFooter,
 } from './Popover';
+import { mockPopoverApi } from '../test-utils/dialogMocks';
 
 // jsdom heeft geen volledige Popover API implementatie.
 // Mock showPopover, hidePopover en het popover attribuut voor alle tests.
 beforeEach(() => {
-  HTMLElement.prototype.showPopover = vi.fn();
-  HTMLElement.prototype.hidePopover = vi.fn();
+  mockPopoverApi();
 });
 
 // Helper: standaard popover met alle subcomponenten

@@ -9,15 +9,13 @@ import {
   DrawerBody,
   DrawerFooter,
 } from './Drawer';
+import { mockDialogApi, mockPopoverApi } from '../test-utils/dialogMocks';
 
 // jsdom heeft geen volledige HTMLDialogElement- en Popover API-implementatie.
 // Mock showModal, show, close, showPopover en hidePopover voor alle tests.
 beforeEach(() => {
-  HTMLDialogElement.prototype.showModal = vi.fn();
-  HTMLDialogElement.prototype.show = vi.fn();
-  HTMLDialogElement.prototype.close = vi.fn();
-  HTMLElement.prototype.showPopover = vi.fn();
-  HTMLElement.prototype.hidePopover = vi.fn();
+  mockDialogApi();
+  mockPopoverApi();
 });
 
 const DefaultDrawer = ({

@@ -5,12 +5,12 @@ import React from 'react';
 import { PopoverMenu } from './PopoverMenu';
 import { MenuButton } from '../MenuButton';
 import { MenuLink } from '../MenuLink';
+import { mockPopoverApi } from '../test-utils/dialogMocks';
 
 // jsdom heeft geen volledige Popover API implementatie.
 // Mock showPopover en hidePopover voor alle tests.
 beforeEach(() => {
-  HTMLElement.prototype.showPopover = vi.fn();
-  HTMLElement.prototype.hidePopover = vi.fn();
+  mockPopoverApi();
 });
 
 // Simuleer het sluiten door de Popover API: beforetoggle vuurt synchroon

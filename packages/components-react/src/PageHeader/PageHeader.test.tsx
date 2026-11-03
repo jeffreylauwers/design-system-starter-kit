@@ -1,13 +1,12 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest';
 import { render, screen, fireEvent } from '@testing-library/react';
 import { PageHeader } from './PageHeader';
+import { mockDialogApi } from '../test-utils/dialogMocks';
 
 // De menuknop opent een Drawer, en jsdom heeft geen volledige
 // HTMLDialogElement implementatie. Mock showModal, show en close.
 beforeEach(() => {
-  HTMLDialogElement.prototype.showModal = vi.fn();
-  HTMLDialogElement.prototype.show = vi.fn();
-  HTMLDialogElement.prototype.close = vi.fn();
+  mockDialogApi();
 });
 
 const defaultLogo = (
