@@ -526,6 +526,31 @@ function chooseVariant(measured, target, explicit, label) {
   return best;
 }
 
+/**
+ * De variant die de markup al vastlegt, voordat er gemeten wordt.
+ *
+ * Meestal alleen `data-figma-variant`. Een set met `variantFromTag` (Heading)
+ * haalt daarnaast een as uit de tag: zes levels van dezelfde appearance zien
+ * er hetzelfde uit, dus de meting kan er niet tussen kiezen en pakt anders
+ * stil de eerste. Een `<h2>` wordt `level=2`; de meting kiest dan alleen nog
+ * de appearance. Wijst `data-figma-variant` die as zelf aan, dan wint dat.
+ */
+function variantHint(node, target, label) {
+  const explicit = node.instanceVariant;
+  const rule = target.variantFromTag;
+  if (!rule || (explicit && rule.axis in parseVariant(explicit))) {
+    return explicit;
+  }
+
+  const value = rule.tags[node.tag];
+  if (!value) {
+    throw new Error(
+      `${label}: ${target.name} haalt zijn ${rule.axis} uit de tag (${Object.keys(rule.tags).join(', ')}), maar dit element is een <${node.tag}>. Wijs het aan met data-figma-variant="${rule.axis}=...".`
+    );
+  }
+  return [explicit, `${rule.axis}=${value}`].filter(Boolean).join(', ');
+}
+
 /** De velden die over de plek van de instance in de host gaan. */
 const PLACEMENT_FIELDS = [
   'x',
@@ -554,7 +579,7 @@ export function toInstance(measured, node, target, label) {
   const { component, overrides, properties } = chooseVariant(
     measured,
     target,
-    node.instanceVariant,
+    variantHint(node, target, label),
     label
   );
 

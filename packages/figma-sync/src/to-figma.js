@@ -1902,6 +1902,30 @@ export function figmaNameFor(matrix, setName) {
   return `__${element}`;
 }
 
+/**
+ * Een `variantFromTag` moet een bestaande as aanwijzen, met alleen waarden die
+ * op die as bestaan. Anders kiest een instance straks een variant die er niet
+ * is, en dat valt pas op in de host.
+ */
+function checkVariantFromTag(matrix) {
+  const { axis, tags } = matrix.variantFromTag;
+  const values = matrix.axes?.[axis];
+  if (!values) {
+    throw new Error(
+      `${matrix.component}: variantFromTag wijst naar de as "${axis}", maar die staat niet in axes`
+    );
+  }
+  const unknown = Object.values(tags).filter(
+    (value) => !values.includes(value)
+  );
+  if (unknown.length) {
+    throw new Error(
+      `${matrix.component}: variantFromTag noemt waarden die niet op de as "${axis}" staan: ${unknown.join(', ')}`
+    );
+  }
+  return { axis, tags };
+}
+
 export function setNameFor(matrix, extracted) {
   const rootClass = extracted[0]?.tree.classes?.[0];
   return (
@@ -2085,6 +2109,11 @@ export function toComponentSet(
       // de doelen van zijn instances. De plugin weigert zonder.
       ...(dependsOn.size ? { dependsOn: [...dependsOn.values()] } : {}),
       variantAxes: matrix.axes ?? {},
+      // Voor een instance van deze set in een andere: welke as uit de tag van
+      // het element volgt. Zie `variantFromTag` in de README.
+      ...(matrix.variantFromTag
+        ? { variantFromTag: checkVariantFromTag(matrix) }
+        : {}),
       componentProperties: checkComponentProperties(
         matrix.componentProperties,
         components,
