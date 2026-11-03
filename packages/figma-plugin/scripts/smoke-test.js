@@ -753,6 +753,44 @@ for (const file of componentFiles) {
       : ''
   );
 
+  // Elk kind op de cel uit de spec, en geen rij erbij. Bij een tweede import
+  // van Note en Alert kwamen het icoon en de Paragraph in een derde rij, omdat
+  // de hergebruikte instances de cellen al bezet hielden.
+  const cellMismatch = [];
+  const checkCells = (node, spec) => {
+    if (
+      spec?.layoutMode === 'GRID' &&
+      spec.gridRowCount &&
+      node?.gridRowCount !== spec.gridRowCount
+    ) {
+      cellMismatch.push(
+        `${spec.name}: ${node?.gridRowCount} rijen i.p.v. ${spec.gridRowCount}`
+      );
+    }
+    if (
+      spec?.gridRowAnchorIndex !== undefined &&
+      (node?.gridRowAnchorIndex !== spec.gridRowAnchorIndex ||
+        node?.gridColumnAnchorIndex !== spec.gridColumnAnchorIndex)
+    ) {
+      cellMismatch.push(
+        `${spec.name}: cel (${node?.gridRowAnchorIndex}, ${node?.gridColumnAnchorIndex}) i.p.v. (${spec.gridRowAnchorIndex}, ${spec.gridColumnAnchorIndex})`
+      );
+    }
+    (spec?.children ?? []).forEach((childSpec, index) =>
+      checkCells(node?.children?.[index], childSpec)
+    );
+  };
+  for (const [index, component] of payload.componentSet.components.entries()) {
+    checkCells(built(index), component.node);
+  }
+  check(
+    'grid-kinderen staan op hun cel',
+    cellMismatch.length === 0,
+    cellMismatch.length
+      ? `${cellMismatch.length}x, o.a. ${cellMismatch[0]}`
+      : ''
+  );
+
   check(
     'grid-tracks toegepast',
     gridMismatch.length === 0,

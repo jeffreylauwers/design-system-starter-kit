@@ -24,6 +24,10 @@
  * 10. slots zoals gemeten in Figma bij issue #450: alleen via `createSlot()`
  *     op een component, met een SLOT-property die naar het slot heet; geen
  *     grid; geen exposed instance erin; weghalen laat de property staan
+ * 11. een kind dat in een grid komt (erin gehangen, of de ouder wordt een
+ *     grid) krijgt meteen de eerste vrije cel, en een cel die al bezet is kan
+ *     een ander kind niet krijgen. Zo ging de tweede import van Note en Alert
+ *     mis: de hergebruikte Heading en Paragraph hielden cellen bezet
  */
 
 /**
@@ -198,7 +202,91 @@ class Node {
         'in set_layoutMode: GRID layoutMode cannot be applied to Slot frames'
       );
     }
+    const becomesGrid = value === 'GRID' && this._layoutMode !== 'GRID';
+    // Gemeten in Figma: een grid verlaten met kinderen in zijn cellen gaat
+    // niet. Zo brak de tweede import van Note en Alert af, midden in het
+    // terugzetten van de variant.
+    if (this._layoutMode === 'GRID' && value !== 'GRID') {
+      const inCells = this.occupiedCells(null);
+      if (inCells.size) {
+        throw new Error(
+          'in set_layoutMode: Cannot set grid row count: Cannot delete occupied row/column'
+        );
+      }
+    }
     this._layoutMode = value;
+    // Zoals in Figma: de kinderen die er al in hangen krijgen elk een cel.
+    if (becomesGrid) {
+      for (const child of this.children ?? []) {
+        child._gridRowAnchorIndex = undefined;
+        child._gridColumnAnchorIndex = undefined;
+      }
+      for (const child of this.children ?? []) this.placeInFreeCell(child);
+    }
+  }
+
+  // Een rij of kolom met een kind erin kan niet weg.
+  set gridRowCount(value) {
+    for (const key of this.occupiedCells?.(null)?.keys() ?? []) {
+      if (Number(key.split(',')[0]) >= value) {
+        throw new Error(
+          'Cannot set grid row count: Cannot delete occupied row/column'
+        );
+      }
+    }
+    this._gridRowCount = value;
+  }
+  get gridRowCount() {
+    return this._gridRowCount;
+  }
+  set gridColumnCount(value) {
+    for (const key of this.occupiedCells?.(null)?.keys() ?? []) {
+      if (Number(key.split(',')[1]) >= value) {
+        throw new Error(
+          'Cannot set grid column count: Cannot delete occupied row/column'
+        );
+      }
+    }
+    this._gridColumnCount = value;
+  }
+  get gridColumnCount() {
+    return this._gridColumnCount;
+  }
+
+  /** De cellen die de andere kinderen in dit grid bezet houden. */
+  occupiedCells(except) {
+    const cells = new Map();
+    for (const child of this.children ?? []) {
+      if (child === except || child.layoutPositioning === 'ABSOLUTE') continue;
+      if (child._gridRowAnchorIndex === undefined) continue;
+      cells.set(
+        `${child._gridRowAnchorIndex},${child._gridColumnAnchorIndex}`,
+        child
+      );
+    }
+    return cells;
+  }
+
+  /**
+   * Zoals in Figma: een kind dat in de stroom van een grid komt, krijgt de
+   * eerste vrije cel, rij voor rij. Is er geen vrije cel, dan komt er een rij
+   * bij.
+   */
+  placeInFreeCell(child) {
+    if (this.layoutMode !== 'GRID' || child.layoutPositioning === 'ABSOLUTE') {
+      return;
+    }
+    const columns = this.gridColumnCount ?? 1;
+    const occupied = this.occupiedCells(child);
+    for (let row = 0; ; row += 1) {
+      for (let column = 0; column < columns; column += 1) {
+        if (occupied.has(`${row},${column}`)) continue;
+        child._gridRowAnchorIndex = row;
+        child._gridColumnAnchorIndex = column;
+        if (row >= (this.gridRowCount ?? 1)) this.gridRowCount = row + 1;
+        return;
+      }
+    }
   }
   get layoutMode() {
     return this._layoutMode;
@@ -210,6 +298,10 @@ class Node {
     }
     child.parent = this;
     this.children.push(child);
+    // Een plek in een vorig grid geldt hier niet; in een grid komt een nieuwe.
+    child._gridRowAnchorIndex = undefined;
+    child._gridColumnAnchorIndex = undefined;
+    this.placeInFreeCell(child);
     child.#assertVariantName();
     this.recomputeFromChildren();
   }
@@ -287,7 +379,11 @@ class Node {
    * maat van een ouder die hugt, en die rekent zich meteen opnieuw uit.
    */
   set layoutPositioning(value) {
+    const rejoins =
+      value !== 'ABSOLUTE' && this._layoutPositioning === 'ABSOLUTE';
     this._layoutPositioning = value;
+    // Terug in de stroom van een grid: dan heeft het kind weer een cel nodig.
+    if (rejoins) this.parent?.placeInFreeCell?.(this);
     this.parent?.recomputeFromChildren?.();
   }
   get layoutPositioning() {
@@ -398,6 +494,16 @@ class Node {
     }
     if (columnIndex >= (this.parent.gridColumnCount ?? 1)) {
       throw new Error(`kolomindex ${columnIndex} valt buiten het grid`);
+    }
+    if (this.parent.gridItemsPositioning === 'MANUAL') {
+      const taken = this.parent
+        .occupiedCells(this)
+        .get(`${rowIndex},${columnIndex}`);
+      if (taken) {
+        throw new Error(
+          `cel (${rowIndex}, ${columnIndex}) is al bezet door "${taken.name}"`
+        );
+      }
     }
     this._gridRowAnchorIndex = rowIndex;
     this._gridColumnAnchorIndex = columnIndex;

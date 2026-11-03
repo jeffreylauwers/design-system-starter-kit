@@ -133,9 +133,19 @@ function applyCorners(target, spec) {
   }
 }
 
-function applyAutoLayout(frame, spec, log) {
-  if (!spec.layoutMode || spec.layoutMode === 'NONE') return;
-  frame.layoutMode = spec.layoutMode;
+function applyAutoLayout(frame, spec, log, context) {
+  if (!spec.layoutMode || spec.layoutMode === 'NONE') {
+    // Een hergebruikte variant houdt zijn layout tot hier (zie
+    // `resetVariant`); vraagt de spec er geen, dan gaat hij nu pas uit.
+    if (frame.layoutMode && frame.layoutMode !== 'NONE') {
+      frame.layoutMode = 'NONE';
+    }
+    return;
+  }
+  if (frame.layoutMode !== spec.layoutMode) {
+    frame.layoutMode = spec.layoutMode;
+  }
+  releasePooled(frame, context);
 
   if (spec.layoutMode === 'GRID') {
     if (spec.gridColumnCount) frame.gridColumnCount = spec.gridColumnCount;
@@ -182,6 +192,52 @@ function applyAutoLayout(frame, spec, log) {
   ]) {
     frame[side] = spec[side] ?? 0;
   }
+}
+
+/**
+ * Haalt de hergebruikte instances die in dit frame wachten uit de stroom.
+ *
+ * Bij een tweede import hangt `resetVariant` de geneste instances (de Heading
+ * en Paragraph van een Note) direct onder de variant, zodat hun node-id blijft
+ * bestaan. Zodra de variant weer een grid wordt, geeft Figma ze elk een cel,
+ * en die cellen zijn dan bezet voordat het icoon en de inhoud hun plek
+ * krijgen: in Figma kwamen het icoon en de Paragraph in een derde rij terecht.
+ * Absoluut tellen ze niet mee. `rejoinFlow` haalt ze terug zodra ze hun
+ * nieuwe plek krijgen.
+ */
+function releasePooled(frame, context) {
+  for (const child of frame.children ?? []) {
+    if (context?.pooled?.has(child) || context?.keptSlots?.has(child)) {
+      stepAside(child, context.log);
+    }
+  }
+}
+
+/** Haalt een laag uit de stroom van zijn ouder, als die auto layout heeft. */
+function stepAside(node, log) {
+  const layout = node.parent?.layoutMode;
+  if (!layout || layout === 'NONE' || node.layoutPositioning === 'ABSOLUTE') {
+    return;
+  }
+  try {
+    node.layoutPositioning = 'ABSOLUTE';
+  } catch (error) {
+    log.warn(
+      `${node.name}: kon niet tijdelijk uit de layout van ${node.parent.name} gehaald worden (${error.message}); hij kan een plek van een ander kind bezet houden`
+    );
+  }
+}
+
+/**
+ * Zet een hergebruikte instance terug in de stroom van zijn nieuwe ouder. In
+ * een grid krijgt hij daarmee een vrije cel; `applyPlacement` zet hem daarna
+ * op de cel uit de spec, of weer absoluut als de spec dat vraagt.
+ */
+function rejoinFlow(node) {
+  if (node.layoutPositioning !== 'ABSOLUTE') return;
+  const layout = node.parent?.layoutMode;
+  if (!layout || layout === 'NONE') return;
+  node.layoutPositioning = 'AUTO';
 }
 
 /**
@@ -385,6 +441,7 @@ function buildIcon(spec, parent, context) {
     const instance =
       takeReusable(context, component) ?? component.createInstance();
     parent.appendChild(instance);
+    rejoinFlow(instance);
     instance.name = spec.name;
     if (spec.width && spec.height) instance.resize(spec.width, spec.height);
     return instance;
@@ -434,6 +491,7 @@ function buildInstance(spec, parent, context, parentSpec) {
   const reused = takeReusable(context, component);
   const instance = reused ?? component.createInstance();
   parent.appendChild(instance);
+  if (reused) rejoinFlow(instance);
   if (reused && typeof instance.resetOverrides === 'function') {
     instance.resetOverrides();
   }
@@ -632,6 +690,7 @@ function buildContentSlot(spec, parent, context, parentSpec) {
     }
     clearBoundVariables(slot);
     parent.appendChild(slot);
+    rejoinFlow(slot);
   } else {
     const component = context.component;
     if (typeof component?.createSlot !== 'function') {
@@ -738,7 +797,7 @@ function applyFrame(frame, spec, context, name = spec.name ?? 'Frame') {
   if (spec.clipsContent !== undefined) frame.clipsContent = spec.clipsContent;
   if (spec.width && spec.height) frame.resize(spec.width, spec.height);
 
-  applyAutoLayout(frame, spec, context.log);
+  applyAutoLayout(frame, spec, context.log, context);
   // Na applyAutoLayout: padding, itemSpacing en de minimum-maten bestaan pas
   // als het frame een layoutMode heeft.
   applyMinimumSizes(frame, spec, context.log);
@@ -820,6 +879,9 @@ async function resetVariant(component, context, { keepText = false } = {}) {
       .map((slot) => [slot.name, slot])
   );
   const keptSlots = new Set(context.reusableSlots.values());
+  context.keptSlots = keptSlots;
+  // Een slot dat blijft staan houdt anders zijn cel bezet; zie `stepAside`.
+  for (const slot of keptSlots) stepAside(slot, context.log);
 
   // Een component dat in zijn geheel tot één tekstlaag inklapt (Heading,
   // Paragraph, PreHeading) houdt die laag, in plaats van hem weg te gooien en
@@ -864,6 +926,11 @@ async function resetVariant(component, context, { keepText = false } = {}) {
     if (instance.parent !== component && instance.parent?.type !== 'SLOT') {
       component.appendChild(instance);
     }
+    // Uit de stroom, zodat hij geen cel of plek bezet houdt terwijl de
+    // variant opnieuw wordt opgebouwd. Een volle grid maakt voor een
+    // instance die erbij komt anders een rij bij, en die rij kon daarna niet
+    // meer weg: "Cannot delete occupied row/column".
+    if (instance.parent === component) stepAside(instance, context.log);
     const pool = context.reusable.get(main.id) ?? [];
     pool.push(instance);
     context.reusable.set(main.id, pool);
@@ -879,8 +946,8 @@ async function resetVariant(component, context, { keepText = false } = {}) {
   clearBoundVariables(component);
   component.componentPropertyReferences = {};
 
-  // Vóór het weghalen van de auto layout: minWidth en minHeight bestaan
-  // daarzonder niet, dus daarna zijn ze niet meer los te maken.
+  // Zoals een vers frame: geen minimum-maat. Zet de spec er een, dan komt
+  // die terug in `applyMinimumSizes`.
   for (const field of ['minWidth', 'minHeight']) {
     try {
       component[field] = null;
@@ -889,7 +956,10 @@ async function resetVariant(component, context, { keepText = false } = {}) {
     }
   }
 
-  component.layoutMode = 'NONE';
+  // De layout blijft staan. Wisselen van layout gaat in Figma mis zodra er
+  // nog een kind in een gridcel staat: dan breekt de import hier af, nadat
+  // de bindingen al losgemaakt zijn, en houdt de variant vaste waarden.
+  // `applyAutoLayout` zet de layout uit de spec, en elk veld ervan expliciet.
   component.fills = [];
   component.strokes = [];
   component.dashPattern = [];
@@ -1634,6 +1704,8 @@ export async function importComponentSet(payload, log, options = {}) {
       context.reusable = new Map();
       context.reusableText = null;
       context.reusableSlots = new Map();
+      context.pooled = new Set();
+      context.keptSlots = new Set();
       // Een nieuwe variant hangt meteen in de set als die er al is; anders op
       // de pagina, waar `combineAsVariants` hem straks ophaalt. De naam staat
       // er al op, want een set met een ongeldig genoemd kind is stuk.
