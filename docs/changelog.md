@@ -10,6 +10,10 @@ All notable changes to this project are documented in this file.
 
 Nog niet gepubliceerde wijzigingen. Schrijf nieuwe changelog-entries hieronder; bij de volgende release wordt deze kop gepromoveerd naar het definitieve versienummer.
 
+## Version 5.0.0 (November 4, 2026)
+
+Major release. SummaryList heet nu DataList: React-componenten, CSS-klassen, custom properties, tokens en het CSS-exportpad krijgen een nieuwe naam, zonder alias voor de oude. Gedrag en markup-structuur blijven gelijk, dus een zoek-en-vervang is genoeg. Daarnaast is de hele toolchain naar de nieuwste majors gebracht (React 19, TypeScript 6.0, ESLint 10, Style Dictionary 5), wat voor afnemers vooral de types van `triggerRef` en de notatie van duur-tokens raakt. In Figma bouwt figma-sync meer componenten op uit instances en slots.
+
 ### Dev-dependencies naar de nieuwste majors
 
 De hele toolchain is bijgewerkt. Voor wie de packages gebruikt verandert er weinig; de punten die je kunt merken staan bovenaan.
