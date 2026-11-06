@@ -11,8 +11,8 @@
  * header loopt daar van rand tot rand, dus de wrapper is net zo breed als de
  * viewport) en `large` op 1440px. `modesForMatrix` leidt uit die breedte af
  * welke mode van `dsn/Density` geldt, dus de bindingen van de small-varianten
- * worden tegen `default-mobile` geverifieerd en die van de large-varianten
- * tegen `default-desktop`.
+ * worden tegen `start-default-vp-small` geverifieerd en die van de large-varianten
+ * tegen `start-default-vp-large`.
  *
  * De assen volgen de props van Storybook, zodat een designer dezelfde knoppen
  * ziet als een developer: `layout` (default/compact) en `colorScheme`

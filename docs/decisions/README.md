@@ -21,6 +21,7 @@ Een decision record documenteert **waarom** iets is zoals het is — niet alleen
 | [DR-2026-11](DR-2026-11-card-secties-en-dom-volgorde.md)                | Card in vier secties; Header in de DOM vóór de Pre-header                | Accepted |
 | [DR-2026-12](DR-2026-12-dialogs-focus-bij-openen-op-de-heading.md)      | ModalDialog, Drawer en Popover zetten de focus bij openen op de heading  | Accepted |
 | [DR-2026-13](DR-2026-13-fluid-schaal-met-min-max-per-maat.md)           | Fluid schaal met een min- en max-token per maat, uitgerekend in de build | Accepted |
+| [DR-2026-14](DR-2026-14-density-collection-draagt-de-theme-as.md)       | De Density-collection in Figma draagt ook de theme-as                    | Accepted |
 
 ## Een nieuw record toevoegen
 

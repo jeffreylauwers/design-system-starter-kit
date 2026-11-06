@@ -33,14 +33,37 @@ const ROOT_FONT_SIZE = 16;
  * de hele schaal volgt. De twee breedtes zijn gelijk aan dsn.viewport.min- en
  * max-inline-size, dus de modes bevatten exact de ontworpen min- en max-waarden.
  */
-export const VIEWPORTS = { mobile: 360, desktop: 1440 };
+export const VIEWPORTS = { 'vp-small': 360, 'vp-large': 1440 };
 
 /**
- * Viewport voor waarden buiten de typografieschaal. Die zitten in collections
- * met een andere mode-as (theme, light/dark) en kunnen er dus geen viewport-as
- * bij hebben. Wat hierdoor wordt vastgeprikt komt in het report te staan.
+ * Hoe de viewports in de mode-namen heetten vóór #328. Alleen nodig om modes in
+ * een bestaand Figma-bestand te hernoemen (zie `renamedModes`).
  */
-const DEFAULT_VIEWPORT = VIEWPORTS.desktop;
+const LEGACY_VIEWPORT_NAMES = {
+  'vp-small': 'mobile',
+  'vp-large': 'desktop',
+};
+
+/**
+ * Viewport voor waarden buiten de Density-collection. Die zitten in collections
+ * zonder viewport-as. Elke fluid waarde hoort in Density te belanden; wat toch
+ * hierop wordt vastgeprikt komt als `viewportPinned` in het report te staan.
+ */
+const DEFAULT_VIEWPORT = VIEWPORTS['vp-large'];
+
+/**
+ * Maximum aantal modes per collection op Figma Professional. Daarboven weigert
+ * Figma `addMode`, en een half geïmporteerde collection is erger dan een build
+ * die stopt.
+ */
+export const FIGMA_MODE_LIMIT = 10;
+
+/**
+ * Maximale lengte van een mode-naam in Figma. Een langere naam weigert Figma
+ * bij `addMode` en `renameMode`; de plugin meldt dat pas tijdens de import.
+ * `wireframe-default-fixed-space-viewport-large` (44) liep hier tegenaan.
+ */
+export const FIGMA_MODE_NAME_LIMIT = 40;
 
 export const COLLECTIONS = {
   primitives: 'dsn/Primitives',
@@ -426,15 +449,10 @@ export async function buildFigmaVariables({
     skipped.push({ token: token.path.join('.'), reason });
   };
 
-  // Fluid waarden die ook per theme verschillen. Die passen niet in de
-  // Density-collection (geen theme-as) en ook niet in Primitives (geen
-  // viewport-as). Ze worden op DEFAULT_VIEWPORT vastgeprikt en hier verantwoord.
+  // Fluid waarden die toch buiten Density belanden, bijvoorbeeld omdat ze niet
+  // in elke combinatie als getal te meten zijn. Ze worden op DEFAULT_VIEWPORT
+  // vastgeprikt en hier verantwoord.
   const viewportPinned = [];
-
-  // Per variable alle waarden over theme x light/dark, op DEFAULT_VIEWPORT.
-  // Een fluid waarde die hier maar één waarde heeft hangt alleen van de
-  // viewport en de density af, en kan dus naar de Density-collection.
-  const valuesAcrossThemes = new Map();
 
   // ---------------------------------------------------------------------------
   // 1. Primitives: een mode per theme x light/dark combinatie.
@@ -453,16 +471,10 @@ export async function buildFigmaVariables({
         const collection = collectionForToken(token);
         if (collection === COLLECTIONS.density) continue;
 
+        if (collection !== COLLECTIONS.primitives) continue;
+
         const mapped = mapTokenValue(token, pixels);
         const name = toVariableName(token);
-        if (!mapped.skip) {
-          if (!valuesAcrossThemes.has(name)) {
-            valuesAcrossThemes.set(name, new Set());
-          }
-          valuesAcrossThemes.get(name).add(mapped.value);
-        }
-
-        if (collection !== COLLECTIONS.primitives) continue;
         if (mapped.skip) {
           if (modeName === primitiveModes[0]) noteSkip(token, mapped.skip);
           continue;
@@ -483,61 +495,94 @@ export async function buildFigmaVariables({
   }
 
   // ---------------------------------------------------------------------------
-  // 2. Density: een mode per project-type (typografieschaal en overrides).
+  // 2. Density: een mode per theme x project-type x viewport.
+  //
+  // Fluid maten hangen van drie assen af. Een icoongrootte is de fluid
+  // font-size (viewport, density) maal de line-height van het theme, en
+  // form-control/padding-block-* verwijst per theme naar een andere
+  // spacing-maat. Een Figma-variable varieert alleen over de modes van zijn
+  // eigen collection, dus deze collection draagt het hele kruisproduct. De
+  // theme-as staat daardoor op twee plekken (hier en in Primitives); dat is de
+  // prijs voor waarden die op elk artboard kloppen (#328).
   // ---------------------------------------------------------------------------
   const density = new Map();
   const densityModes = [];
   const viewportNames = Object.keys(VIEWPORTS);
 
-  // Per project-type x viewport de hele tokenset uitrekenen. We houden alle
-  // waarden bij, niet alleen die van de Density-collection: een token als
+  // Per theme x project-type x viewport de hele tokenset uitrekenen. We houden
+  // alle waarden bij, niet alleen die van de Density-collection: een token als
   // dsn.grid.gutter komt in het ene project-type uit een override en in het
   // andere uit het component-bestand. Zonder de volledige set zou het in de
   // default-modes geen waarde krijgen.
   const measured = new Map();
   const densityNames = new Set();
+  const keyOf = (theme, densityName, viewportName) =>
+    `${theme}|${densityName}|${viewportName}`;
 
-  for (const densityName of densities) {
-    for (const viewportName of viewportNames) {
-      const tokens = await loadTokens(themes[0], modes[0], densityName);
-      const viewport = VIEWPORTS[viewportName];
-      const pixels = buildPixelLookup(tokens, viewport);
-      const values = new Map();
+  for (const theme of themes) {
+    for (const densityName of densities) {
+      const tokens = await loadTokens(theme, modes[0], densityName);
+      for (const viewportName of viewportNames) {
+        const viewport = VIEWPORTS[viewportName];
+        const pixels = buildPixelLookup(tokens, viewport);
+        const values = new Map();
 
-      for (const token of tokens) {
-        const isDensityToken =
-          collectionForToken(token) === COLLECTIONS.density;
-        const mapped = mapTokenValue(token, pixels, viewport);
-        const name = toVariableName(token);
+        for (const token of tokens) {
+          const isDensityToken =
+            collectionForToken(token) === COLLECTIONS.density;
+          const mapped = mapTokenValue(token, pixels, viewport);
+          const name = toVariableName(token);
 
-        if (mapped.skip) {
-          if (
-            isDensityToken &&
-            densityName === densities[0] &&
-            viewportName === viewportNames[0]
-          ) {
-            noteSkip(token, mapped.skip);
+          if (mapped.skip) {
+            if (
+              isDensityToken &&
+              theme === themes[0] &&
+              densityName === densities[0] &&
+              viewportName === viewportNames[0]
+            ) {
+              noteSkip(token, mapped.skip);
+            }
+            continue;
           }
-          continue;
+
+          if (isDensityToken) densityNames.add(name);
+          values.set(name, { token, mapped });
         }
 
-        if (isDensityToken) densityNames.add(name);
-        values.set(name, { token, mapped });
+        measured.set(keyOf(theme, densityName, viewportName), values);
       }
-
-      measured.set(`${densityName}|${viewportName}`, values);
     }
   }
 
   // Fluid waarden buiten de project-types, zoals form-control/padding-* (via
-  // space) en form-control/font-size. Hangen ze niet van het theme af, dan
-  // krijgen ze in Density een waarde per viewport in plaats van een vastgeprikte
-  // waarde in Primitives of Components. Een component-token dat al als alias
-  // naar een fluid variable wijst blijft waar het is: de alias volgt de mode al.
-  const baseValues = measured.get(`${densities[0]}|${viewportNames[0]}`);
+  // space), de icon-sizes (via de typografieschaal) en component-tokens die
+  // daarmee rekenen. Ze krijgen in Density een waarde per mode in plaats van
+  // een vastgeprikte waarde in Primitives of Components. Een component-token
+  // dat al als alias naar een fluid variable wijst blijft waar het is: de alias
+  // volgt de mode al.
+  const baseValues = measured.get(
+    keyOf(themes[0], densities[0], viewportNames[0])
+  );
+  // Fluid is een waarde die tussen de viewports verschilt, in welk theme of
+  // project-type dan ook. Aan de tekst valt het niet altijd te zien:
+  // `checkbox/size` schrijft `calc(var(--dsn-text-font-size-md) * ...)`, zonder
+  // clamp of vw, en bleef daardoor ongemerkt op 1440px staan.
+  const variesWithViewport = (name) =>
+    themes.some((theme) =>
+      densities.some((densityName) => {
+        const values = viewportNames.map(
+          (viewportName) =>
+            measured.get(keyOf(theme, densityName, viewportName)).get(name)
+              ?.mapped.value
+        );
+        return values.some((value) => value !== values[0]);
+      })
+    );
+
   const movedToDensity = new Set();
   for (const [name, { token, mapped }] of baseValues) {
-    if (densityNames.has(name) || !mapped.fluidSource) continue;
+    if (densityNames.has(name)) continue;
+    if (!mapped.fluidSource && !variesWithViewport(name)) continue;
     const collection = collectionForToken(token);
     if (
       collection === COLLECTIONS.components &&
@@ -548,7 +593,7 @@ export async function buildFigmaVariables({
     const measuredEverywhere = [...measured.values()].every(
       (values) => values.get(name)?.mapped.figmaType === 'FLOAT'
     );
-    if (valuesAcrossThemes.get(name)?.size === 1 && measuredEverywhere) {
+    if (measuredEverywhere) {
       movedToDensity.add(name);
       densityNames.add(name);
     }
@@ -564,57 +609,94 @@ export async function buildFigmaVariables({
     });
   }
 
-  for (const densityName of densities) {
-    const valuesFor = (viewportName) =>
-      measured.get(`${densityName}|${viewportName}`);
-
-    // Levert elke viewport identieke waarden op? Dan is dit project-type niet
-    // fluid en zou een mode per viewport alleen maar ruis toevoegen.
-    const [first, ...rest] = viewportNames;
-    const isFluid = rest.some((viewportName) =>
-      [...densityNames].some(
-        (name) =>
-          valuesFor(viewportName).get(name)?.mapped.value !==
-          valuesFor(first).get(name)?.mapped.value
+  // Levert elke viewport in elk theme identieke waarden op? Dan is het
+  // project-type niet fluid en zou een mode per viewport alleen ruis toevoegen.
+  // Per project-type over alle themes beslist, zodat elk theme dezelfde rij
+  // modes krijgt.
+  const [firstViewport, ...otherViewports] = viewportNames;
+  const isFluid = (densityName) =>
+    themes.some((theme) =>
+      otherViewports.some((viewportName) =>
+        [...densityNames].some(
+          (name) =>
+            measured.get(keyOf(theme, densityName, viewportName)).get(name)
+              ?.mapped.value !==
+            measured.get(keyOf(theme, densityName, firstViewport)).get(name)
+              ?.mapped.value
+        )
       )
     );
 
-    const modesForDensity = isFluid
-      ? viewportNames.map((viewportName) => ({
-          mode: `${densityName}-${viewportName}`,
-          viewportName,
-        }))
-      : [{ mode: densityName, viewportName: first }];
+  // De modes heetten vóór #328 zonder theme en met `mobile`/`desktop`
+  // (`default-mobile`). Die waarden waren die van het eerste theme, dus een
+  // bestaande mode wordt hernoemd naar zijn tegenhanger in dat theme
+  // (`start-default-vp-small`). De plugin hernoemt in plaats van toevoegen:
+  // de modeId blijft, en daarmee de mode die een designer op een frame koos.
+  const renamedModes = {};
 
-    for (const { mode, viewportName } of modesForDensity) {
-      densityModes.push(mode);
-      for (const name of densityNames) {
-        const entry = valuesFor(viewportName).get(name);
-        if (!entry) continue;
+  for (const theme of themes) {
+    for (const densityName of densities) {
+      const modesForDensity = isFluid(densityName)
+        ? viewportNames.map((viewportName) => ({
+            suffix: `${densityName}-${viewportName}`,
+            legacy: `${densityName}-${LEGACY_VIEWPORT_NAMES[viewportName]}`,
+            viewportName,
+          }))
+        : [
+            {
+              suffix: densityName,
+              legacy: densityName,
+              viewportName: firstViewport,
+            },
+          ];
 
-        if (!density.has(name)) {
-          density.set(name, {
-            name,
-            type: entry.mapped.figmaType,
-            description: entry.token.$description ?? entry.token.comment ?? '',
-            fluidSource: entry.mapped.fluidSource,
-            valuesByMode: {},
-          });
+      for (const { suffix, legacy, viewportName } of modesForDensity) {
+        const mode = `${theme}-${suffix}`;
+        densityModes.push(mode);
+        if (theme === themes[0]) renamedModes[legacy] = mode;
+
+        const values = measured.get(keyOf(theme, densityName, viewportName));
+        for (const name of densityNames) {
+          const entry = values.get(name);
+          if (!entry) continue;
+
+          if (!density.has(name)) {
+            density.set(name, {
+              name,
+              type: entry.mapped.figmaType,
+              description:
+                entry.token.$description ?? entry.token.comment ?? '',
+              fluidSource: entry.mapped.fluidSource,
+              valuesByMode: {},
+            });
+          }
+          density.get(name).valuesByMode[mode] = entry.mapped.value;
         }
-        density.get(name).valuesByMode[mode] = entry.mapped.value;
       }
     }
   }
 
   // Een verplaatst token dat in de bron naar een ander Density-token verwijst
-  // (form-control/padding-block-start -> space/block/md) wordt een alias, zodat
-  // de delegatieketen in Figma intact blijft.
+  // (form-control/padding-inline-start -> space/inline/lg) wordt een alias,
+  // zodat de delegatieketen in Figma intact blijft. Alleen als elk theme naar
+  // hetzelfde token verwijst: een alias geldt voor alle modes tegelijk, en
+  // form-control/padding-block-* wijst in Start en Wireframe naar een andere
+  // maat. Die houden hun eigen waarden.
   for (const name of movedToDensity) {
     const variable = density.get(name);
     if (!variable) continue;
-    const reference = referenceToVariableName(
-      baseValues.get(name).token.original.$value
+    const references = new Set(
+      themes.map((theme) => {
+        const entry = measured
+          .get(keyOf(theme, densities[0], firstViewport))
+          .get(name);
+        return entry
+          ? referenceToVariableName(entry.token.original.$value)
+          : null;
+      })
     );
+    if (references.size !== 1) continue;
+    const [reference] = references;
     if (!reference || reference === name || !density.has(reference)) continue;
     delete variable.valuesByMode;
     variable.alias = { collection: COLLECTIONS.density, name: reference };
@@ -741,6 +823,27 @@ export async function buildFigmaVariables({
     });
   }
 
+  for (const [name, modeNames] of [
+    [COLLECTIONS.primitives, primitiveModes],
+    [COLLECTIONS.density, densityModes],
+  ]) {
+    if (modeNames.length > FIGMA_MODE_LIMIT) {
+      throw new Error(
+        `${name} krijgt ${modeNames.length} modes, Figma Professional staat er ${FIGMA_MODE_LIMIT} toe: ${modeNames.join(', ')}`
+      );
+    }
+    const tooLong = modeNames.filter(
+      (modeName) => modeName.length > FIGMA_MODE_NAME_LIMIT
+    );
+    if (tooLong.length) {
+      throw new Error(
+        `${name}: mode-namen langer dan ${FIGMA_MODE_NAME_LIMIT} tekens weigert Figma: ${tooLong
+          .map((modeName) => `${modeName} (${modeName.length})`)
+          .join(', ')}`
+      );
+    }
+  }
+
   return {
     $schema: 'dsn-figma-variables/1',
     generatedAt: new Date().toISOString(),
@@ -757,6 +860,7 @@ export async function buildFigmaVariables({
       {
         name: COLLECTIONS.density,
         modes: densityModes,
+        renamedModes,
         variables: [...density.values()],
       },
       {

@@ -96,6 +96,36 @@ export function applyBindings(node, spec, context) {
   }
 }
 
+/** De velden die een maat binden; zie `applySizeBindings`. */
+const SIZE_FIELDS = ['width', 'height'];
+
+/**
+ * Legt de bindingen op `width` en `height` (opnieuw).
+ *
+ * `resize()` zet een vaste waarde op de node, en daarmee raakt een binding op
+ * diezelfde maat los. De plugin zet de gemeten maat in `applySizing` als
+ * laatste terug, dus de maatbindingen moeten daarna nog een keer gelegd
+ * worden. Bij een herhaling telt de binding niet opnieuw mee
+ * (`count: false`); bij een icoon, waar `applyBindings` niet langskomt, wel.
+ */
+export function applySizeBindings(node, spec, context, { count = false } = {}) {
+  for (const field of SIZE_FIELDS) {
+    const reference = spec.boundVariables?.[field];
+    if (!reference) continue;
+    const variable = variableFor(reference, context);
+    if (!variable) continue;
+    try {
+      node.setBoundVariable(field, variable);
+      if (count) context.stats.bound += 1;
+    } catch (error) {
+      if (count) context.stats.failed += 1;
+      context.log.warn(
+        `${spec.name ?? spec.type}: ${field} kon niet aan ${reference.name} gebonden worden: ${error.message}`
+      );
+    }
+  }
+}
+
 /**
  * De paints voor een icoon, met de kleur-variable eraan gebonden.
  * Een icoon is in Figma een frame met vectoren erin; de kleur hoort op die

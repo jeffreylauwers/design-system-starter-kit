@@ -128,7 +128,7 @@ export async function buildFigma() {
   console.log(summarise(payload));
   console.log(
     `\n   ${payload.skipped.length} tokens overgeslagen, ` +
-      `${payload.viewportPinned.length} fluid waarden vastgeprikt op ${payload.meta.viewports.desktop}px`
+      `${payload.viewportPinned.length} fluid waarden vastgeprikt op ${payload.meta.viewports['vp-large']}px`
   );
   if (payload.incomplete.length) {
     console.log(

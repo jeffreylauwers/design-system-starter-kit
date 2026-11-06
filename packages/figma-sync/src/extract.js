@@ -833,7 +833,7 @@ const BODY_CLASS = 'dsn-body';
 /**
  * Meetviewport. Mobile-first: een small-viewport ontwerp is 360px breed, en
  * daar lossen de fluid clamps op hun ondergrens op. De gemeten typografie komt
- * daarmee overeen met de `default-mobile` mode van de Density-collection.
+ * daarmee overeen met de `start-default-vp-small` mode van de Density-collection.
  */
 const DEFAULT_VIEWPORT = { width: 360, height: 900 };
 

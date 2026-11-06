@@ -18,6 +18,24 @@ async function ensureCollection(name) {
 }
 
 /**
+ * Hernoemt modes met een oude naam naar hun nieuwe naam (`{ oud: nieuw }`).
+ *
+ * Hernoemen houdt de modeId, en daarmee de mode die een designer al op een
+ * frame of pagina koos. Verwijderen en opnieuw toevoegen zou die keuze laten
+ * terugvallen op de eerste mode, zonder dat iemand het merkt. Het telt ook mee
+ * voor de mode-limiet: de oude mode verdwijnt in plaats van te blijven staan.
+ */
+function renameLegacyModes(collection, renamedModes = {}, log) {
+  for (const [from, to] of Object.entries(renamedModes)) {
+    const legacy = collection.modes.find((mode) => mode.name === from);
+    if (!legacy) continue;
+    if (collection.modes.some((mode) => mode.name === to)) continue;
+    collection.renameMode(legacy.modeId, to);
+    log.info(`${collection.name}: mode "${from}" heet nu "${to}"`);
+  }
+}
+
+/**
  * Zorgt dat de collection precies de gevraagde modes heeft.
  * De eerste mode bestaat altijd al (Figma maakt hem aan met de collection),
  * dus die wordt hernoemd in plaats van toegevoegd.
@@ -148,6 +166,7 @@ export async function importVariables(payload, log) {
       `${spec.name}: ${spec.variables.length} variables schrijven`
     );
     const collection = await ensureCollection(spec.name);
+    renameLegacyModes(collection, spec.renamedModes, log);
     const modeIds = ensureModes(collection, spec.modes, log);
 
     const allVariables = await figma.variables.getLocalVariablesAsync();

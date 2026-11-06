@@ -51,14 +51,15 @@ export function modesForMatrix(matrix, collections, width) {
   const [, theme = 'start', appearance = 'light', density = 'default'] =
     parsed ?? [];
 
-  // De Density-collection krijgt een mode per viewport zodra een project-type
-  // fluid is; is het dat niet, dan is er maar één mode met de kale naam.
+  // De Density-collection heeft een mode per theme x project-type, plus een
+  // viewport-achtervoegsel zodra een project-type fluid is (#328). Is het dat
+  // niet, dan is er één mode zonder viewport.
   //
   // De breedte komt als argument binnen, want een matrix kan varianten op
   // verschillende viewports hebben (PageHeader meet small op 360 en large op
   // 1440). Zonder argument geldt de viewport van de matrix als geheel.
   const measured = width ?? matrix.viewport?.width ?? 360;
-  const viewport = measured > 360 ? 'desktop' : 'mobile';
+  const viewport = measured > 360 ? 'vp-large' : 'vp-small';
 
   const modesOf = (name) =>
     collections.find((collection) => collection.name === name)?.modes ?? [];
@@ -69,7 +70,11 @@ export function modesForMatrix(matrix, collections, width) {
 
   return {
     'dsn/Primitives': pick('dsn/Primitives', `${theme}-${appearance}`),
-    'dsn/Density': pick('dsn/Density', `${density}-${viewport}`, density),
+    'dsn/Density': pick(
+      'dsn/Density',
+      `${theme}-${density}-${viewport}`,
+      `${theme}-${density}`
+    ),
     'dsn/Components': pick('dsn/Components', 'default'),
   };
 }

@@ -159,6 +159,24 @@ console.log('\n=== variables.json ===');
 const variablesPayload = read(
   'packages/design-tokens/dist/figma/variables.json'
 );
+
+// Een bestand van vóór #328: Density had modes zonder theme. Die moeten
+// hernoemd worden en niet blijven staan, anders telt de collection 15 modes
+// en verliest elk frame waar een designer een mode op koos die keuze.
+const legacyDensity = figma.variables.createVariableCollection('dsn/Density');
+const legacyModeNames = Object.keys(
+  variablesPayload.collections.find((c) => c.name === 'dsn/Density')
+    .renamedModes ?? {}
+);
+legacyModeNames.forEach((name, index) => {
+  if (index === 0)
+    legacyDensity.renameMode(legacyDensity.modes[0].modeId, name);
+  else legacyDensity.addMode(name);
+});
+const legacyModeIds = Object.fromEntries(
+  legacyDensity.modes.map((mode) => [mode.name, mode.modeId])
+);
+
 const result = await importVariables(variablesPayload, log);
 
 const expectedVariables = variablesPayload.collections.reduce(
@@ -178,12 +196,26 @@ check(
 );
 
 const density = state.collections.find((c) => c.name === 'dsn/Density');
-// default en default-fixed-space zijn fluid (een mode per viewport),
-// information-dense is vast (één mode).
+// Per theme: default en default-fixed-space zijn fluid (een mode per
+// viewport), information-dense is vast (één mode). Twee themes maal vijf.
 check(
-  'Density heeft 5 modes',
-  density && density.modes.length === 5,
+  'Density heeft 10 modes',
+  density && density.modes.length === 10,
   density ? density.modes.map((m) => m.name).join(', ') : 'ontbreekt'
+);
+
+const renamedModes =
+  variablesPayload.collections.find((c) => c.name === 'dsn/Density')
+    .renamedModes ?? {};
+const keptIds = Object.entries(renamedModes).filter(
+  ([from, to]) =>
+    density?.modes.find((mode) => mode.name === to)?.modeId ===
+    legacyModeIds[from]
+);
+check(
+  'oude Density-modes hernoemd met behoud van modeId',
+  legacyModeNames.length === 5 && keptIds.length === legacyModeNames.length,
+  `${keptIds.length}/${legacyModeNames.length}`
 );
 
 // Elke variable moet voor elke mode van zijn collection een waarde hebben.
@@ -1973,6 +2005,103 @@ check(
   Boolean(iconLight) && JSON.stringify(iconLight) !== JSON.stringify(iconDark),
   `${iconReference?.name}: light ${channels(iconLight)} vs dark ${channels(iconDark)}`
 );
+
+// Een maat die van theme én viewport afhangt (#328). De padding naast het
+// chevron-icoon van Select is icoongrootte (viewport x line-height van het
+// theme) plus ruimte; hij moet dus per viewport en per theme verschillen. Vóór
+// #328 stond hij vastgeprikt op 1440px en werd de binding geweigerd.
+const selectPayload = read('packages/figma-sync/dist/select.json');
+const paddingReference = selectPayload.componentSet.components.find(
+  (component) => component.node.boundVariables?.paddingRight
+)?.node.boundVariables.paddingRight;
+const paddingVariable = state.variables.find(
+  (variable) =>
+    variable.name === paddingReference?.name &&
+    collectionOf(variable).name === paddingReference.collection
+);
+const paddingIn = (mode) => resolveInMode(paddingVariable, mode);
+const paddings = [
+  'start-default-vp-small',
+  'start-default-vp-large',
+  'wireframe-default-vp-small',
+].map(paddingIn);
+
+// De maat van een checkbox komt uit `calc(var(--dsn-text-font-size-md) * ...)`.
+// Zonder `width`-binding (of met een binding die `resize()` weer losmaakte)
+// bleef hij in Figma op elk artboard 24px.
+const checkboxPayload = read('packages/figma-sync/dist/checkbox.json');
+const findBound = (node, field) =>
+  node?.boundVariables?.[field]
+    ? node
+    : (node?.children ?? [])
+        .map((child) => findBound(child, field))
+        .find(Boolean);
+const sizedSpec = findBound(
+  checkboxPayload.componentSet.components[0].node,
+  'width'
+);
+const sizeVariable = state.variables.find(
+  (variable) =>
+    variable.name === sizedSpec?.boundVariables.width.name &&
+    collectionOf(variable).name === sizedSpec.boundVariables.width.collection
+);
+const sizes = [
+  'start-default-vp-small',
+  'start-default-vp-large',
+  'wireframe-default-vp-small',
+].map((mode) => resolveInMode(sizeVariable, mode));
+check(
+  'de maat van Checkbox volgt viewport én theme',
+  sizes.every((value) => typeof value === 'number') &&
+    new Set(sizes).size === sizes.length,
+  `${sizedSpec?.boundVariables.width.name}: ${sizes.join(' / ')}`
+);
+
+check(
+  'de padding naast het icoon van Select volgt viewport én theme',
+  paddings.every((value) => typeof value === 'number') &&
+    new Set(paddings).size === paddings.length,
+  `${paddingReference?.name}: ${paddings.join(' / ')}`
+);
+
+// Lagen binnen een component die met de maat mee moeten. Het icoon in Alert
+// en Note stond op FILL en verloor zo zijn breedtebinding; de control van
+// Checkbox en Radio (`inset: 0`) had geen eigen token en bleef 24 bij 24.
+{
+  const walk = (node) => [node, ...(node?.children ?? []).flatMap(walk)];
+  const layersIn = (page, name) =>
+    walk(state.root.children.find((p) => p.name === page)).filter(
+      (node) => node.name === name
+    );
+  const sized = (nodes) =>
+    nodes.length > 0 &&
+    nodes.every(
+      (node) => node.boundVariables?.width && node.boundVariables?.height
+    );
+  for (const [page, layer] of [
+    ['dsn/Checkbox', 'dsn-checkbox__control'],
+    ['dsn/Radio', 'dsn-radio__control'],
+    ['dsn/Alert', 'info-circle'],
+    ['dsn/Note', 'info-circle'],
+  ]) {
+    const nodes = layersIn(page, layer);
+    check(
+      `${layer} in ${page} is in breedte én hoogte aan een variable gebonden`,
+      sized(nodes),
+      `${nodes.length} lagen, ${nodes.filter((node) => node.boundVariables?.width).length} met breedte`
+    );
+  }
+
+  // `border-radius: 50%` moet rond blijven als de maat meeschaalt. Omgerekend
+  // naar de gemeten 12px werd de Radio op `vp-large` (30px) een afgeronde
+  // rechthoek.
+  const radios = layersIn('dsn/Radio', 'dsn-radio__control');
+  check(
+    'de Radio blijft rond op elke maat',
+    radios.length > 0 && radios.every((node) => node.cornerRadius >= 999),
+    `cornerRadius ${[...new Set(radios.map((node) => node.cornerRadius))].join(', ')}`
+  );
+}
 
 // =============================================================================
 // Een as erbij
