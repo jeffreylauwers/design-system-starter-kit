@@ -10,6 +10,16 @@ All notable changes to this project are documented in this file.
 
 Nog niet gepubliceerde wijzigingen. Schrijf nieuwe changelog-entries hieronder; bij de volgende release wordt deze kop gepromoveerd naar het definitieve versienummer.
 
+### Figma: fluid maten volgen theme én viewport (#328)
+
+De `dsn/Density`-collection in Figma heeft nu een mode per theme × project-type × viewport (10 modes: `start-default-vp-small` tot en met `wireframe-information-dense`). De viewports heten in de mode-namen `vp-small` (360px) en `vp-large` (1440px) in plaats van `mobile` en `desktop`. Vijftien fluid waarden die van het theme afhangen, zoals de icon-sizes, `form-control/padding-block-*` en de padding naast het icoon in DateInput, TimeInput, SearchInput en Select, stonden vastgeprikt op 1440px en volgen nu de artboard-schakelaar. Daardoor binden die paddings in Figma weer aan een variable in plaats van een vaste waarde.
+
+- **Voor designers:** zet het theme in `dsn/Primitives` en in `dsn/Density` gelijk (`start-light` hoort bij `start-default-…`).
+- **Bestaande Figma-bestanden:** de plugin hernoemt de oude modes (`default-mobile` wordt `start-default-vp-small`) met behoud van hun id, dus een gekozen mode op een frame blijft staan.
+- **Maten meegebonden:** een `width` of `height` die uit een token komt wordt nu aan de variable gebonden, zodat checkboxes, radio's en iconen op een `vp-large`-artboard meeschalen. Alleen op een vaste as; een grid-kolom die precies zijn icoon omvat (Alert, Note) hugt nu om dat icoon. Het icoon zelf schaalt in Alert en Note in beide richtingen mee, en de control van Checkbox en Radio (`inset: 0`, zonder eigen token) neemt de maatbinding van zijn ouder over. `border-radius: 50%` wordt in Figma 999 in plaats van de helft van de gemeten maat, zodat de Radio ook op 30px rond blijft.
+- **Fluid herkend door te meten:** een token is fluid als zijn waarde tussen de viewports verschilt. `checkbox/size` en `radio/size` (een `calc()` met `var()`, zonder `clamp`) stonden daardoor eerder ongemerkt op 1440px.
+- Zie [DR-2026-14](decisions/DR-2026-14-density-collection-draagt-de-theme-as.md).
+
 ### Dev-dependencies naar de nieuwste majors
 
 De hele toolchain is bijgewerkt. Voor wie de packages gebruikt verandert er weinig; de punten die je kunt merken staan bovenaan.

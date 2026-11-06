@@ -15,6 +15,7 @@
 
 import {
   applyBindings,
+  applySizeBindings,
   createStats,
   loadVariableIndex,
   paintsForVector,
@@ -322,8 +323,17 @@ function applyRotation(node, spec, log) {
   }
 }
 
-/** Sizing als laatste: HUG vereist een eigen layoutMode, FILL een auto-layout ouder. */
-function applySizing(node, spec, log) {
+/**
+ * Sizing als laatste: HUG vereist een eigen layoutMode, FILL een auto-layout
+ * ouder. Met `context` worden daarna de maatbindingen opnieuw gelegd, want de
+ * `resize()` hieronder maakt ze los.
+ */
+function applySizing(node, spec, log, context) {
+  applyMeasuredSize(node, spec, log);
+  if (context) applySizeBindings(node, spec, context);
+}
+
+function applyMeasuredSize(node, spec, log) {
   for (const axis of ['layoutSizingHorizontal', 'layoutSizingVertical']) {
     const value = spec[axis];
     if (!value) continue;
@@ -503,7 +513,7 @@ function buildInstance(spec, parent, context, parentSpec) {
   // eigen maat krijgt. Een CheckboxOption in een CheckboxGroup is daar het
   // voorbeeld van: in de groep vult zijn label de breedte.
   applyPlacement(instance, spec, context.log, parentSpec, context.pinned);
-  applySizing(instance, spec, context.log);
+  applySizing(instance, spec, context.log, context);
 
   applyOverrides(instance, spec, context, {
     applyBindings,
@@ -643,6 +653,9 @@ function buildNode(spec, parent, context, parentSpec) {
     recolorVectors(node.children ?? [], paints);
     context.recolors.push({ node, paints, name: spec.name, spec });
     applyPlacement(node, spec, log, parentSpec, context.pinned);
+    // Een icoon komt niet langs applyBindings of applySizing; zijn maat (de
+    // fluid icon-size) wordt hier gebonden, ná de resize in buildIcon.
+    applySizeBindings(node, spec, context, { count: true });
     applyRotation(node, spec, log);
     registerSlot(node, spec, context);
     registerColorCheck(node, spec, context);
@@ -654,7 +667,7 @@ function buildNode(spec, parent, context, parentSpec) {
   applyFrame(frame, spec, context);
 
   applyPlacement(frame, spec, log, parentSpec, context.pinned);
-  applySizing(frame, spec, log);
+  applySizing(frame, spec, log, context);
   applyRotation(frame, spec, log);
   registerSlot(frame, spec, context);
   return frame;
@@ -704,7 +717,7 @@ function buildContentSlot(spec, parent, context, parentSpec) {
 
   applyFrame(slot, spec, context);
   applyPlacement(slot, spec, context.log, parentSpec, context.pinned);
-  applySizing(slot, spec, context.log);
+  applySizing(slot, spec, context.log, context);
   registerSlot(slot, spec, context);
   return slot;
 }
@@ -1727,7 +1740,7 @@ export async function importComponentSet(payload, log, options = {}) {
     // nesting die een Figma-library onwerkbaar maakt.
     if (component.node.type === 'FRAME') {
       applyFrame(wrapper, component.node, context, component.name);
-      applySizing(wrapper, component.node, log);
+      applySizing(wrapper, component.node, log, context);
     } else {
       // Een component dat in zijn geheel tot tekst of een vector inklapt kan
       // zichzelf niet zijn; die krijgt wel een frame om zich heen.

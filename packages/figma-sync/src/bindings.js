@@ -17,6 +17,24 @@ const NUMBER_TOLERANCE = 0.05;
 const CHANNEL_TOLERANCE = 0.005;
 
 /**
+ * De maat van een node, als de CSS die vastzet (`inline-size:
+ * var(--dsn-checkbox-size)`). Zonder binding houdt een checkbox of icoon in
+ * Figma de gemeten maat van één viewport en schaalt hij niet mee met de
+ * artboard-schakelaar.
+ *
+ * `optional`: een `width: fit-content` of `auto` is geen token maar een
+ * instructie, en dat is geen gemiste binding. Alleen een maat die wél uit een
+ * token komt maar niet klopt wordt gemeld. Of de as in Figma vast is, beslist
+ * `dropUnfixedSizeBindings` pas als de boom af is.
+ */
+function sizeFields() {
+  return [
+    { field: 'width', property: 'width', kind: 'number', optional: true },
+    { field: 'height', property: 'height', kind: 'number', optional: true },
+  ];
+}
+
+/**
  * Velden die Figma aan een variable laat binden, met de CSS-longhand die de
  * waarde leverde.
  *
@@ -55,6 +73,7 @@ const FRAME_FIELDS = [
     property: 'border-bottom-left-radius',
     kind: 'number',
   },
+  ...sizeFields(),
   { field: 'minWidth', property: 'min-width', kind: 'number' },
   { field: 'minHeight', property: 'min-height', kind: 'number' },
   { field: 'paddingTop', property: 'padding-top', kind: 'number' },
@@ -103,6 +122,7 @@ const TEXT_FIELDS = [
 
 const VECTOR_FIELDS = [
   { field: 'fills', property: 'color', kind: 'paint', materialise: true },
+  ...sizeFields(),
 ];
 
 /** De gemeten waarde die bij een veld hoort, uit de al opgebouwde node spec. */
@@ -261,6 +281,7 @@ export function bindingsFor(spec, sources, index, report) {
     if (!source) return;
 
     if (!source.chain.length) {
+      if (entry.optional) return;
       report.miss(property, 'de waarde komt niet uit één token', source.value);
       return;
     }
@@ -323,6 +344,31 @@ export function bindingsFor(spec, sources, index, report) {
   }
 
   return Object.keys(bound).length ? bound : undefined;
+}
+
+/**
+ * Haalt `width`- en `height`-bindingen weg op een as die in Figma niet vast is.
+ *
+ * Een binding op de breedte maakt die as in Figma vast. Bij een node die met
+ * zijn inhoud meegroeit (HUG) of zijn ouder vult (FILL) zou dat de layout
+ * breken, ook al zet de CSS een maat: het icoon van Alert vult zijn kolom. Pas
+ * als de hele boom af is staat de sizing vast, want een ouder zet die van zijn
+ * kinderen vaak achteraf. Een as zonder sizing is in Figma FIXED.
+ */
+export function dropUnfixedSizeBindings(node) {
+  const axes = {
+    width: 'layoutSizingHorizontal',
+    height: 'layoutSizingVertical',
+  };
+  if (node.boundVariables) {
+    for (const [field, axis] of Object.entries(axes)) {
+      if (!node.boundVariables[field]) continue;
+      if ((node[axis] ?? 'FIXED') === 'FIXED') continue;
+      delete node.boundVariables[field];
+    }
+    if (!Object.keys(node.boundVariables).length) delete node.boundVariables;
+  }
+  for (const child of node.children ?? []) dropUnfixedSizeBindings(child);
 }
 
 /** Verzamelt hoeveel er gebonden is en wat er is blijven liggen. */

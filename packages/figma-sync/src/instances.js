@@ -615,6 +615,18 @@ export function toInstance(measured, node, target, label) {
     ? 'HUG'
     : (measured.layoutSizingVertical ?? 'HUG');
 
+  // Hetzelfde voor de hoogte. Een absoluut geplaatste instance (de knop in
+  // DateInput) staat in de host altijd vast, maar met precies de hoogte van
+  // het component. Vast zou hem op `vp-large` op de gemeten 40px houden,
+  // terwijl de Button zelf daar meegroeit met zijn gebonden icon-size (#328).
+  if (
+    instance.layoutSizingVertical === 'FIXED' &&
+    component.node.layoutSizingVertical === 'HUG' &&
+    Math.abs((measured.height ?? 0) - (component.node.height ?? -1)) < 0.5
+  ) {
+    instance.layoutSizingVertical = 'HUG';
+  }
+
   // De tekst binnen zo'n instance moet meerekken, anders breekt hij niet af
   // als de instance in de host de breedte vult. Dat is een override op de
   // geneste laag, en een van de dingen die in Figma zelf te bevestigen zijn.

@@ -47,34 +47,60 @@ tonen dan Figma.
 Een Figma-variable is statisch, dus een `clamp()` moet op een viewport worden
 vastgeprikt. In plaats van één willekeurige breedte te kiezen krijgt de
 `dsn/Density`-collection een mode per viewport, op de grenzen van de fluid
-schaal (`dsn.viewport.min-inline-size` en `max-inline-size`):
+schaal (`dsn.viewport.min-inline-size` en `max-inline-size`). Fluid maten hangen
+daarnaast van het theme af, dus elke mode bestaat per theme (zie
+[DR-2026-14](../../docs/decisions/DR-2026-14-density-collection-draagt-de-theme-as.md)):
 
-| mode                          | viewport | `text/font-size/md` | `space/block/md` |
-| ----------------------------- | -------- | ------------------- | ---------------- |
-| `default-mobile`              | 360px    | 16px                | 8px              |
-| `default-desktop`             | 1440px   | 20px                | 10px             |
-| `default-fixed-space-mobile`  | 360px    | 16px                | 8px              |
-| `default-fixed-space-desktop` | 1440px   | 20px                | 8px              |
-| `information-dense`           | n.v.t.   | 16px                | 8px              |
+| mode (Start)                         | viewport | `text/font-size/md` | `space/block/md` | `icon/size/md` |
+| ------------------------------------ | -------- | ------------------- | ---------------- | -------------- |
+| `start-default-vp-small`             | 360px    | 16px                | 8px              | 24px           |
+| `start-default-vp-large`             | 1440px   | 20px                | 10px             | 30px           |
+| `start-default-fixed-space-vp-small` | 360px    | 16px                | 8px              | 24px           |
+| `start-default-fixed-space-vp-large` | 1440px   | 20px                | 8px              | 30px           |
+| `start-information-dense`            | n.v.t.   | 16px                | 8px              | 24px           |
+
+Wireframe heeft dezelfde vijf modes met `wireframe-` ervoor. Samen zijn dat 10
+modes, precies het maximum van Figma Professional. De build stopt met een
+foutmelding zodra een collection er meer zou krijgen, of zodra een mode-naam
+langer wordt dan 40 tekens: dat weigert Figma. Daarom heten de viewports kort
+`vp-small` en `vp-large`; de langste naam,
+`wireframe-default-fixed-space-vp-large`, is 38 tekens.
 
 De twee viewports vallen precies op de grenzen van elke clamp, dus de modes
 bevatten exact de ontworpen min- en max-waarden. Een project-type dat niet
 fluid is krijgt automatisch één mode in plaats van een mode per viewport, zoals
 `information-dense` hierboven.
 
-Naast de font-sizes en de spacing-maten komen ook afgeleide fluid waarden in
-deze collection, zolang ze niet per theme verschillen: `form-control/font-size`
-en `form-control/padding-inline-*` (als alias naar `text/font-size/md` en
-`space/inline/lg`) en `icon/size/4xl`. Component-variables die als alias naar
-deze collection wijzen blijven in `dsn/Components`, dus het schakelen van het
-artboard laat typografie en ruimte meebewegen zonder dat er iets opnieuw
-gebonden hoeft te worden.
+Naast de font-sizes en de spacing-maten komen alle afgeleide fluid waarden in
+deze collection. Fluid betekent hier: de waarde verschilt tussen de twee
+viewports, in welk theme of project-type dan ook. Dat wordt gemeten, want aan
+een token als `checkbox/size` (`calc(var(--dsn-text-font-size-md) * ...)`) is
+het niet te zien. Voorbeelden: `form-control/font-size` en `form-control/padding-*`, de
+icon-sizes, en component-tokens die ermee rekenen zoals
+`select/padding-inline-end-with-icon` en `spinner/size-large`. Waar de bron in
+elk theme naar hetzelfde Density-token verwijst wordt het een alias
+(`form-control/padding-inline-start` naar `space/inline/lg`); waar de themes
+naar een andere maat verwijzen (`form-control/padding-block-*`) krijgt de
+variable eigen waarden. Component-variables die als alias naar deze collection
+wijzen blijven in `dsn/Components`, dus het schakelen van het artboard laat
+typografie en ruimte meebewegen zonder dat er iets opnieuw gebonden hoeft te
+worden.
 
-Vijftien fluid waarden hangen van theme én viewport af: de icon-sizes sm t/m 3xl
-(via de line-height van het theme), `form-control/padding-block-*` (Start en
-Wireframe verwijzen naar een andere spacing-maat) en de tokens die daarvan
-afgeleid zijn. Geen collection heeft beide assen, dus die zijn op 1440px
-vastgeprikt. Ze staan als `viewportPinned` in het report.
+**De theme-as staat op twee plekken.** Een designer kiest het theme in
+`dsn/Primitives` (`start-light`) én in `dsn/Density` (`start-default-vp-small`).
+Die twee moeten overeenkomen; Figma Professional kent geen manier om de ene
+collection de mode van de andere te laten volgen.
+
+**Modes van vóór de theme-as worden hernoemd.** In een bestaand bestand heten
+de Density-modes nog `default-mobile`, `default-desktop` en dergelijke, zonder
+theme en met `mobile`/`desktop` in plaats van `vp-small`/`vp-large`. De payload geeft per oude
+naam de nieuwe (`renamedModes`), en de plugin hernoemt in plaats van een mode
+toe te voegen. De modeId blijft daardoor gelijk, dus een frame waar de designer
+`default-desktop` op had staan staat daarna op `start-default-vp-large`.
+
+Fluid waarden die toch nergens een viewport-as krijgen (omdat ze niet in elke
+combinatie als getal te meten zijn) worden op 1440px vastgeprikt en staan als
+`viewportPinned` in het report. Die lijst is nu leeg.
 
 ## Gebruik
 
@@ -136,6 +162,7 @@ Figma auto layout past:
 | `display: grid` + `grid-column`      | `layoutMode: GRID` + grid anchors     |
 | `position: absolute`                 | `layoutPositioning: ABSOLUTE`         |
 | `min-block-size` / `min-inline-size` | `minHeight` / `minWidth`              |
+| `block-size` / `inline-size` (token) | `height` / `width`, gebonden          |
 | kind vult de binnenbreedte           | `layoutSizingHorizontal: FILL`        |
 
 Figma kent geen `align-self`: de uitlijning op de kruisas staat op de ouder,
@@ -169,7 +196,7 @@ alleen een onzichtbare node op en worden daarom niet meegenomen.
 De meetviewport is **360px**, en blok-componenten krijgen een wrapper van
 **328px** (360 min 2 x 16px padding). Dat is bewust: het design system wordt
 mobile-first ontworpen, en op 360px lossen alle fluid clamps op hun ondergrens
-op. De gemeten typografie komt daarmee exact overeen met de `default-mobile`
+op. De gemeten typografie komt daarmee exact overeen met de `start-default-vp-small`
 mode van de `dsn/Density`-collection, dus component en variable zeggen
 hetzelfde. Per matrix te overschrijven met `viewport`.
 
@@ -205,8 +232,8 @@ Belangrijker dan de breedte zijn de modes. `modesForMatrix` leidt uit de
 gemeten breedte af welke mode van `dsn/Density` geldt, en die modeset bepaalt
 waar de verificatie van een binding tegen afrekent. Er is daarom een
 variable-index per gemeten breedte, en elke variant wordt tegen de index van
-zijn eigen breedte geverifieerd: de small-varianten tegen `default-mobile`, de
-large-varianten tegen `default-desktop`. Dat houdt de eigenschap uit DR-2026-06
+zijn eigen breedte geverifieerd: de small-varianten tegen `start-default-vp-small`, de
+large-varianten tegen `start-default-vp-large`. Dat houdt de eigenschap uit DR-2026-06
 intact. Een token moet de gemeten waarde reproduceren in dezelfde theme-,
 mode- en viewportstand voordat er gebonden wordt, dus een misrekening kan een
 binding missen maar nooit een verkeerde leggen. `bindings.modes` in de spec
@@ -223,7 +250,7 @@ wrapper en niet aan de viewport. De viewport schuift toch mee, want een
 breadcrumb van 1168px staat in werkelijkheid op een desktoppagina. Zou hij op
 360 blijven, dan leverde dat een variant op die in de browser niet bestaat:
 desktopbreedte met mobiele typografie. Meetbaar verschil: de tekst gaat van 14
-naar 15,6px, en de bindingen gaan van `default-mobile` naar `default-desktop`.
+naar 15,6px, en de bindingen gaan van `start-default-vp-small` naar `start-default-vp-large`.
 
 ### CSS Grid
 
@@ -395,6 +422,47 @@ daarmee een aanraakdoel onder [WCAG 2.5.5](https://www.w3.org/WAI/WCAG22/quickre
 `minWidth` en `minHeight` gaan daarom expliciet mee in de spec, en worden net als
 de rest aan hun token gebonden. Ze bestaan in Figma alleen op een auto-layout
 frame; op een frame zonder layoutMode komen ze in het report.
+
+#### Maten die uit een token komen
+
+Zet de CSS een maat met een token (`inline-size: var(--dsn-checkbox-size)`, of
+`width: var(--dsn-icon-size-md)` op een icoon), dan wordt `width` of `height`
+aan die variable gebonden. Zonder binding houdt een checkbox, radio of icoon op
+elk artboard de maat van de meting (360px), ook al verschilt de variable per
+viewport (#328).
+
+Zes regels die erbij horen:
+
+- **Alleen op een vaste as.** Een binding op de breedte maakt die as in Figma
+  vast. Bij een node die HUG of FILL is zou dat de layout breken, dus daar valt
+  de binding weg (`dropUnfixedSizeBindings`). Dat wordt pas beslist als de boom
+  af is, want een ouder zet de sizing van zijn kinderen vaak achteraf.
+- **Een vaste grid-kolom met precies de maat van zijn item wordt HUG.** Alert en
+  Note schrijven `grid-template-columns: var(--dsn-alert-icon-size) 1fr`. Een
+  Figma-track kan niet gebonden worden, dus het icoonframe krijgt de vaste,
+  gebonden breedte en de kolom hugt eromheen.
+- **Een maat-token wint van meerekken.** Een laag met een maat-token die even
+  breed is als zijn ouder, wordt als blok gemeten en zou FILL krijgen. In CSS
+  rekt een element met een gedeclareerde maat nooit op, dus bij een vaste
+  flex-ouder wordt hij FIXED en houdt hij zijn binding. Zonder deze regel schaalde
+  het icoon in Alert en Note (`.dsn-icon--xl`) alleen in de hoogte mee.
+- **Een absolute laag die zijn ouder bedekt, neemt de maatbindingen van die
+  ouder over.** `.dsn-checkbox__control` en `.dsn-radio__control` staan op
+  `inset: 0` en hebben geen eigen maat-token; hun maat ís die van de ouder. De
+  waarde klopt per definitie, want beide maten zijn gelijk gemeten. Hun
+  `border-radius: 50%` wordt 999 (de waarde van `border-radius.round`) in plaats
+  van de helft van de gemeten maat; Figma begrenst dat zelf, dus de Radio blijft
+  rond als hij meeschaalt.
+- **Een instance met precies de maat van zijn component hugt**, in beide
+  richtingen. De knop in DateInput staat absoluut en dus vast, maar moet op
+  `vp-large` meegroeien met de Button zelf.
+- **De plugin legt de maatbinding ná de laatste `resize()` opnieuw.**
+  `applySizing` zet de gemeten maat als laatste terug, en een vaste maat maakt
+  een binding op diezelfde maat los. De mock in de smoke test doet dat ook, zodat
+  een vergeten herbinding daar rood wordt.
+
+`width: fit-content` of `auto` is geen token maar een instructie; dat komt niet
+als gemiste binding in het report.
 
 ### Wat niet rendert wordt overgeslagen
 
@@ -1115,24 +1183,20 @@ een element dat alleen tekst bevat wordt één TEXT-node.
 
 ### Een fluid token dat op de verkeerde viewport vastgeprikt staat, bindt niet
 
-Vijftien fluid waarden hangen van theme én viewport af en zijn daarom op 1440px
-vastgeprikt (zie "Fluid typografie en spacing"). De matrices meten op 360px. De
-verificatie uit DR-2026-06 vergelijkt beide, ziet een verschil, en weigert de
-binding.
-
-Dat is het systeem dat werkt zoals bedoeld, maar het gevolg is wel dat die
-waarden in Figma een vaste waarde houden. In de huidige build raakt het de vier
-`padding-*-with-icon`-tokens van Select, SearchInput, DateInput en TimeInput:
-175 bindingen.
-
-Zichtbaar in de build als:
+De matrices meten op 360px. Staat een fluid token in Figma op 1440px vast, dan
+ziet de verificatie uit DR-2026-06 een verschil en weigert ze de binding:
 
 ```
-padding-left  de waarde van het token (55) wijkt af van de gemeten 44 (search-input/padding-inline-start-with-icon)
+width  de waarde van het token (30) wijkt af van de gemeten 24 (checkbox/size)
 ```
 
-Dit hoort bij issue #328. Zolang die openstaat is het geen regressie maar een
-bekende post.
+Sinds #328 hoort dat niet meer voor te komen: elke waarde die tussen de
+viewports verschilt komt in `dsn/Density`, met een waarde per mode. Dat wordt
+gemeten, niet aan de tekst van het token afgelezen. `checkbox/size` schrijft
+`calc(var(--dsn-text-font-size-md) * ...)`, zonder `clamp` of `vw`, en bleef
+voorheen ongemerkt vastgeprikt, zonder vermelding in `viewportPinned`. Duikt deze
+melding toch weer op, kijk dan eerst in `variables-report.json` of het token in
+`viewportPinned` staat.
 
 ### Pseudo-elementen komen niet mee, op `::marker` na
 

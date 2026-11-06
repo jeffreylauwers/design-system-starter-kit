@@ -8,7 +8,11 @@
  */
 
 import { parseColor } from '../../design-tokens/src/config/color.js';
-import { bindingsFor, createBindingReport } from './bindings.js';
+import {
+  bindingsFor,
+  createBindingReport,
+  dropUnfixedSizeBindings,
+} from './bindings.js';
 import { blockOf, toInstance } from './instances.js';
 
 // =============================================================================
@@ -491,6 +495,8 @@ function rgbOf({ r, g, b }) {
  * helft van de kortste zijde; bij een breder element wordt het een afgeronde
  * rechthoek in plaats van een pil.
  */
+const FULLY_ROUND = 999;
+
 function cornerRadiusFrom(styles, rect) {
   // Figma kent één radius per hoek, CSS twee (horizontaal en verticaal).
   // Voor een percentage nemen we de kortste zijde, wat voor de ronde controls
@@ -501,6 +507,12 @@ function cornerRadiusFrom(styles, rect) {
       .trim()
       .match(/^([\d.]+)%$/);
     if (!percentage) return px(value);
+    // 50% of meer is in CSS volledig rond, op elke maat. Omgerekend naar de
+    // gemeten pixels zou de Radio op `vp-large` (30px, radius 12) een
+    // afgeronde rechthoek worden. Figma begrenst een radius zelf tot de helft
+    // van de kortste zijde, dus 999 (de waarde van `border-radius.round`) blijft
+    // rond, hoe de maat ook meeschaalt.
+    if (Number(percentage[1]) >= 50) return FULLY_ROUND;
     return (Number(percentage[1]) / 100) * shortestSide;
   };
 
@@ -1460,6 +1472,94 @@ function targetRootSlot(target) {
     : null;
 }
 
+/**
+ * Een vaste grid-kolom die precies de maat van zijn item heeft, wordt HUG.
+ *
+ * Alert en Note schrijven `grid-template-columns: var(--dsn-alert-icon-size)
+ * 1fr`. In Figma wordt de eerste kolom een vaste 30px, en een track kan niet
+ * aan een variable gebonden worden. Het icoon vult die kolom, dus ook zijn
+ * gebonden maat zou op `vp-large` niet breder kunnen worden dan 30.
+ *
+ * Komt de breedte van het item uit een token en is die gelijk aan de kolom,
+ * dan bepaalt het item de kolom en niet andersom: de kolom hugt, het item
+ * krijgt een vaste, gebonden breedte. Hetzelfde resultaat bij elke viewport,
+ * zonder een track te hoeven binden.
+ */
+function hugTracksOfSizedItems(node) {
+  const tracks = node.layoutMode === 'GRID' ? node.gridColumnSizes : null;
+  for (const child of node.children ?? []) {
+    const index = child.gridColumnAnchorIndex;
+    const track = tracks?.[index];
+    if (
+      track?.type === 'FIXED' &&
+      (child.gridColumnSpan ?? 1) === 1 &&
+      child.layoutSizingHorizontal === 'FILL' &&
+      child.boundVariables?.width &&
+      Math.abs(track.value - child.width) < 0.5
+    ) {
+      tracks[index] = { type: 'HUG' };
+      child.layoutSizingHorizontal = 'FIXED';
+    }
+    hugTracksOfSizedItems(child);
+  }
+}
+
+/**
+ * Laat een maat-token winnen van meerekken, en laat een absolute laag die zijn
+ * ouder bedekt de maat van die ouder volgen.
+ *
+ * Twee gevallen waarin een maat anders aan geen variable zou hangen:
+ *
+ * - Een laag met een maat-token die even breed is als zijn ouder, wordt als
+ *   blok gemeten en krijgt FILL. In CSS rekt een element met een gedeclareerde
+ *   maat nooit op, dus de token is de echte maat. Het icoon in Alert en Note
+ *   (`.dsn-icon--xl` in `.dsn-alert__icon`) verloor zo zijn breedtebinding en
+ *   schaalde alleen in de hoogte mee. Bij een vaste ouder levert FIXED met de
+ *   token dezelfde maat op, en die schaalt wel mee. Een grid-ouder blijft hier
+ *   buiten: daar regelt `hugTracksOfSizedItems` het via de track.
+ * - Een absolute laag met `inset: 0`, zoals `.dsn-checkbox__control`, heeft
+ *   geen eigen maat-token: zijn maat ís die van de ouder. Hij neemt dan de
+ *   maatbindingen van die ouder over; de waarde klopt per definitie, want de
+ *   twee maten zijn gelijk gemeten.
+ */
+function sizeFromTokens(node) {
+  const flex =
+    node.layoutMode === 'HORIZONTAL' || node.layoutMode === 'VERTICAL';
+  const axes = [
+    ['width', 'layoutSizingHorizontal'],
+    ['height', 'layoutSizingVertical'],
+  ];
+  for (const child of node.children ?? []) {
+    for (const [field, axis] of axes) {
+      if (
+        flex &&
+        child.layoutPositioning !== 'ABSOLUTE' &&
+        child[axis] === 'FILL' &&
+        child.boundVariables?.[field] &&
+        (node[axis] ?? 'FIXED') === 'FIXED'
+      ) {
+        child[axis] = 'FIXED';
+      }
+
+      if (
+        child.layoutPositioning === 'ABSOLUTE' &&
+        !child.boundVariables?.[field] &&
+        node.boundVariables?.[field] &&
+        (node[axis] ?? 'FIXED') === 'FIXED' &&
+        (child.x ?? 0) === 0 &&
+        (child.y ?? 0) === 0 &&
+        Math.abs(child[field] - node[field]) < 0.5
+      ) {
+        child.boundVariables = {
+          ...child.boundVariables,
+          [field]: node.boundVariables[field],
+        };
+      }
+    }
+    sizeFromTokens(child);
+  }
+}
+
 /** Wikkel zodat convertNode niets van de vorm van het bindings-object hoeft te weten. */
 function bindVariables(spec, tokens, bindings) {
   if (!bindings?.index) return undefined;
@@ -1995,8 +2095,8 @@ export function toComponentSet(
     ({ variant, tree, wideTree, viewportWidth }) => {
       // De bindingen van deze variant gaan tegen de index van zijn eigen
       // breedte: een variant die op 1440 gemeten is hoort tegen de
-      // desktop-modes van `dsn/Density` geverifieerd te worden, niet tegen de
-      // mobiele.
+      // `vp-large`-modes van `dsn/Density` geverifieerd te worden, niet
+      // tegen de `vp-small`-modes.
       const index = indexes?.get(viewportWidth) ?? defaultIndex;
       const bindings = {
         index,
@@ -2047,6 +2147,9 @@ export function toComponentSet(
       if (node.type === 'TEXT') {
         node.boundVariables = bindVariables(node, tree.tokens, bindings);
       }
+      hugTracksOfSizedItems(node);
+      sizeFromTokens(node);
+      dropUnfixedSizeBindings(node);
       checkSlotDepth(node, pathLabel);
       return { name: label, variantProperties: variant, node };
     }

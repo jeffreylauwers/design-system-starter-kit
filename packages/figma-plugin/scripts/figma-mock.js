@@ -394,6 +394,13 @@ class Node {
     const before = { width: this.width, height: this.height };
     this.width = width;
     this.height = height;
+    // Een vaste maat zetten maakt een binding op die maat los, net als een
+    // designer die een gebonden breedte met de hand overschrijft. Zo is te
+    // zien of de plugin de maatbinding ná zijn laatste resize opnieuw legt.
+    if (this.boundVariables) {
+      delete this.boundVariables.width;
+      delete this.boundVariables.height;
+    }
     this.shiftPinned(before);
   }
 
@@ -1229,6 +1236,17 @@ class Variable {
   }
 }
 
+/**
+ * Figma weigert een mode-naam van meer dan 40 tekens, bij toevoegen én bij
+ * hernoemen. Vastgesteld in Figma zelf (#328): zonder deze controle bleef de
+ * smoke test groen terwijl de import daar afbrak.
+ */
+function assertModeName(name) {
+  if (name.length > 40) {
+    throw new Error(`Mode-naam "${name}" is langer dan 40 tekens`);
+  }
+}
+
 class VariableCollection {
   constructor(name) {
     this.id = id('COL');
@@ -1237,6 +1255,7 @@ class VariableCollection {
   }
 
   addMode(name) {
+    assertModeName(name);
     // Figma begrenst het aantal modes per plan; Professional staat er 10 toe.
     if (this.modes.length >= 10) {
       throw new Error('Limiet van 10 modes per collection bereikt');
@@ -1249,6 +1268,7 @@ class VariableCollection {
   renameMode(modeId, name) {
     const mode = this.modes.find((m) => m.modeId === modeId);
     if (!mode) throw new Error(`mode ${modeId} bestaat niet`);
+    assertModeName(name);
     mode.name = name;
   }
 }
