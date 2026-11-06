@@ -20,6 +20,10 @@ De `dsn/Density`-collection in Figma heeft nu een mode per theme × project-type
 - **Fluid herkend door te meten:** een token is fluid als zijn waarde tussen de viewports verschilt. `checkbox/size` en `radio/size` (een `calc()` met `var()`, zonder `clamp`) stonden daardoor eerder ongemerkt op 1440px.
 - Zie [DR-2026-14](decisions/DR-2026-14-density-collection-draagt-de-theme-as.md).
 
+## Version 5.0.0 (November 4, 2026)
+
+Major release. SummaryList heet nu DataList: React-componenten, CSS-klassen, custom properties, tokens en het CSS-exportpad krijgen een nieuwe naam, zonder alias voor de oude. Gedrag en markup-structuur blijven gelijk, dus een zoek-en-vervang is genoeg. Daarnaast is de hele toolchain naar de nieuwste majors gebracht (React 19, TypeScript 6.0, ESLint 10, Style Dictionary 5), wat voor afnemers vooral de types van `triggerRef` en de notatie van duur-tokens raakt. In Figma bouwt figma-sync meer componenten op uit instances en slots.
+
 ### Dev-dependencies naar de nieuwste majors
 
 De hele toolchain is bijgewerkt. Voor wie de packages gebruikt verandert er weinig; de punten die je kunt merken staan bovenaan.
