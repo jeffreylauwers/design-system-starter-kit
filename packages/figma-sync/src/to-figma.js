@@ -1198,6 +1198,9 @@ function convertElement(
       ) {
         converted.layoutSizingHorizontal = 'FILL';
       }
+      if (shrinksInRow(converted, child, autoLayout, styles)) {
+        converted.layoutSizingHorizontal = 'HUG';
+      }
       // De tekst in een veld hugt: te lange tekst loopt het veld uit in plaats
       // van af te breken. Het veld knipt hem af, zie `clipsContent` hierboven.
       if (fieldText && isFieldText(child)) {
@@ -1502,6 +1505,58 @@ function hugTracksOfSizedItems(node) {
     }
     hugTracksOfSizedItems(child);
   }
+}
+
+/**
+ * Een flex-item in een rij krimpt in CSS om zijn inhoud.
+ *
+ * Een kind van `display: flex; flex-direction: row` zonder eigen breedte en
+ * zonder `flex-grow` is precies zo breed als zijn inhoud (`flex-basis: auto`).
+ * In Figma is dat HUG. Zonder deze regel kwam alleen `inline-flex` of
+ * `inline-block` op HUG, en stond een item van BreadcrumbNavigation (een
+ * `display: flex`-`<li>` in een `<ol>` die een rij is) op een vaste 61,8px.
+ *
+ * Alleen als de gemeten breedte ook echt de breedte van de inhoud is. Een item
+ * dat door `flex-shrink` smaller is gedrukt, of een tekst die afbreekt, zou
+ * met HUG in Figma breder worden dan in de browser.
+ */
+function shrinksInRow(converted, child, parentLayout, parentStyles) {
+  if (parentLayout.layoutMode !== 'HORIZONTAL') return false;
+  // Alleen een echte flex-rij. Een tabelrij wordt in Figma ook HORIZONTAL,
+  // maar daar verdeelt het tabelalgoritme de breedte, niet de inhoud.
+  if (!/flex/.test(parentStyles?.display ?? '')) return false;
+  if (
+    converted.type !== 'FRAME' ||
+    converted.layoutSizingHorizontal !== 'FIXED'
+  ) {
+    return false;
+  }
+  if (!converted.layoutMode || converted.layoutMode === 'NONE') return false;
+  if (converted.layoutPositioning === 'ABSOLUTE') return false;
+  const styles = child.styles ?? {};
+  if (Number.parseFloat(styles.flexGrow) > 0) return false;
+  if (declaresSize(child.tokens?.width)) return false;
+
+  // De breedte van de inhoud uit de meting: elementen met hun `rect`, tekst
+  // met zijn `textRect`. Wat buiten de stroom staat telt niet mee.
+  const widths = (child.children ?? [])
+    .filter((item) =>
+      item.kind === 'text'
+        ? Boolean(item.textRect)
+        : item.rect &&
+          !/^(absolute|fixed)$/.test(item.styles?.position ?? '') &&
+          !isVisuallyHidden(item.styles ?? {})
+    )
+    .map((item) => (item.kind === 'text' ? item.textRect : item.rect).width);
+  if (!widths.length) return false;
+  const content =
+    converted.layoutMode === 'HORIZONTAL'
+      ? widths.reduce((total, width) => total + width, 0) +
+        (converted.itemSpacing ?? 0) * (widths.length - 1)
+      : Math.max(...widths);
+  const hugged =
+    content + (converted.paddingLeft ?? 0) + (converted.paddingRight ?? 0);
+  return Math.abs(hugged - converted.width) < 1;
 }
 
 /**

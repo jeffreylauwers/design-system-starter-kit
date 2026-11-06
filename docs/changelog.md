@@ -10,6 +10,10 @@ All notable changes to this project are documented in this file.
 
 Nog niet gepubliceerde wijzigingen. Schrijf nieuwe changelog-entries hieronder; bij de volgende release wordt deze kop gepromoveerd naar het definitieve versienummer.
 
+### Figma: flex-items in een rij huggen
+
+Een kind van een `display: flex`-rij zonder eigen breedte en zonder `flex-grow` staat in Figma nu op HUG in plaats van op een vaste breedte, net als in de browser. Een item van BreadcrumbNavigation groeit zo mee met zijn tekst. Hetzelfde geldt voor de menu-links in PageHeader en PageFooter, de onderdelen van de header van PageHeader en de velden van DateInputGroup. Een item dat in de browser smaller is gedrukt, of een cel in een tabelrij, blijft vast.
+
 ### Figma: fluid maten volgen theme én viewport (#328)
 
 De `dsn/Density`-collection in Figma heeft nu een mode per theme × project-type × viewport (10 modes: `start-default-vp-small` tot en met `wireframe-information-dense`). De viewports heten in de mode-namen `vp-small` (360px) en `vp-large` (1440px) in plaats van `mobile` en `desktop`. Vijftien fluid waarden die van het theme afhangen, zoals de icon-sizes, `form-control/padding-block-*` en de padding naast het icoon in DateInput, TimeInput, SearchInput en Select, stonden vastgeprikt op 1440px en volgen nu de artboard-schakelaar. Daardoor binden die paddings in Figma weer aan een variable in plaats van een vaste waarde.

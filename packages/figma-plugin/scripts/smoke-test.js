@@ -2101,6 +2101,20 @@ check(
     radios.length > 0 && radios.every((node) => node.cornerRadius >= 999),
     `cornerRadius ${[...new Set(radios.map((node) => node.cornerRadius))].join(', ')}`
   );
+
+  // Een flex-item in een rij krimpt om zijn inhoud. Het item van
+  // BreadcrumbNavigation stond op een vaste breedte en groeide dus niet mee
+  // met een langere tekst.
+  const crumbs = layersIn(
+    'dsn/BreadcrumbNavigation',
+    'dsn-breadcrumb-navigation__item'
+  ).filter((node) => node.visible !== false);
+  check(
+    'een item van BreadcrumbNavigation hugt in de breedte',
+    crumbs.length > 0 &&
+      crumbs.every((node) => node.layoutSizingHorizontal === 'HUG'),
+    [...new Set(crumbs.map((node) => node.layoutSizingHorizontal))].join(', ')
+  );
 }
 
 // =============================================================================

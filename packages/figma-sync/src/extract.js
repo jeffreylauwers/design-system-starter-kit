@@ -712,7 +712,19 @@ function domWalker([properties, hiddenClass]) {
     for (const child of childNodes) {
       if (child.nodeType === Node.TEXT_NODE) {
         const text = child.textContent.trim();
-        if (text) node.children.push({ kind: 'text', text });
+        if (text) {
+          // De breedte van de tekst zelf, zodat de generator kan nagaan of
+          // een flex-item precies om zijn inhoud past (`shrinksInRow`). Bewust
+          // niet `rect`: daaraan herkent de plaatsing een element.
+          const range = document.createRange();
+          range.selectNodeContents(child);
+          const bounds = range.getBoundingClientRect();
+          node.children.push({
+            kind: 'text',
+            text,
+            textRect: { width: Math.round(bounds.width * 100) / 100 },
+          });
+        }
         continue;
       }
       if (child.nodeType !== Node.ELEMENT_NODE) continue;

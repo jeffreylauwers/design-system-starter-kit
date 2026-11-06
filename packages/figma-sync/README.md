@@ -582,6 +582,16 @@ op een vaste 241×40 terwijl hij net als Button met zijn tekst hoort mee te
 groeien. Naar `display` kijken is daar niet genoeg: de browser rekent
 `inline-block` op een absoluut element om naar `block`.
 
+Een flex-item in een rij krimpt ook om zijn inhoud: een kind van een
+`display: flex`-rij zonder eigen breedte en zonder `flex-grow` is zo breed als
+zijn inhoud (`flex-basis: auto`), en wordt dus HUG. Zo groeit een item van
+BreadcrumbNavigation mee met zijn tekst in plaats van op een vaste 61,8px te
+staan (`shrinksInRow`). Alleen als de gemeten breedte ook echt die van de inhoud
+is; een item dat door `flex-shrink` smaller is gedrukt blijft FIXED. Tekst krijgt
+daarvoor in de extractor een `textRect` met zijn gemeten breedte. Een tabelrij
+telt niet: die wordt in Figma ook HORIZONTAL, maar daar verdeelt het
+tabelalgoritme de breedte.
+
 Een kind met `flex-grow` in een rij krijgt FILL: het neemt de ruimte die over
 is, zoals de kop in de header van ModalDialog, Drawer en Popover, en de link in
 MenuLink. Zonder dit schoof de sluitknop in de header mee met de lengte van de
