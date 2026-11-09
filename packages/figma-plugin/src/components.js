@@ -15,6 +15,7 @@
 
 import {
   applyBindings,
+  applyEffects,
   applySizeBindings,
   createStats,
   loadVariableIndex,
@@ -517,6 +518,7 @@ function buildInstance(spec, parent, context, parentSpec) {
 
   applyOverrides(instance, spec, context, {
     applyBindings,
+    applyEffects,
     applyPaints,
     fontFor: (override, current) =>
       context.fonts.get(`${override.fontFamily}|${fontFor(override).style}`) ??
@@ -808,6 +810,8 @@ function applyFrame(frame, spec, context, name = spec.name ?? 'Frame') {
   applyCorners(frame, spec);
   if (spec.opacity !== undefined) frame.opacity = spec.opacity;
   if (spec.clipsContent !== undefined) frame.clipsContent = spec.clipsContent;
+  // Na clipsContent: zonder clip negeert Figma de spread van een schaduw.
+  applyEffects(frame, spec, context);
   if (spec.width && spec.height) frame.resize(spec.width, spec.height);
 
   applyAutoLayout(frame, spec, context.log, context);
@@ -977,6 +981,8 @@ async function resetVariant(component, context, { keepText = false } = {}) {
   component.strokes = [];
   component.dashPattern = [];
   component.cornerRadius = 0;
+  // Haalt ook een effect style eraf; die komt terug uit de spec.
+  component.effects = [];
   component.opacity = 1;
   component.clipsContent = true;
 }
@@ -1609,6 +1615,9 @@ export async function importComponentSet(payload, log, options = {}) {
     pinned: [],
     // Elke laag met een kleur-variable, iconen én tekst; zie `diagnoseColors`.
     colorChecks: [],
+    // Lagen die een effect style krijgen; aan het eind gelegd, zie
+    // `applyEffectStyles`.
+    effectStyleQueue: [],
     // De geneste instances van de variant die nu gebouwd wordt, op component-id.
     reusable: new Map(),
     // Per variant opnieuw gevuld; zie de bouwlus hieronder.
@@ -1892,6 +1901,14 @@ export async function importComponentSet(payload, log, options = {}) {
 
   pinAbsolute(context);
 
+  log.progress?.(`${spec.name}: schaduwen leggen`);
+  const effectStyles = await applyEffectStyles(context);
+  if (payload.bindings?.styled) {
+    log.info(
+      `${effectStyles.applied} lagen aan een effect style gehangen van de ${payload.bindings.styled} verwachte`
+    );
+  }
+
   // Als allerlaatste, ná het koppelen van de properties: zie `recolorIcons`.
   log.progress?.(`${spec.name}: kleuren zetten`);
   const recolored = recolorIcons(context);
@@ -1928,8 +1945,62 @@ export async function importComponentSet(payload, log, options = {}) {
     combined: !single,
     single,
     bindings: { ...stats, missing: [...stats.missing] },
+    effectStyles,
     properties,
   };
+}
+
+/**
+ * Hangt de lagen met een schaduw aan hun effect style.
+ *
+ * Aan het eind en niet tijdens de bouw: `setEffectStyleIdAsync` is asynchroon
+ * (onder `documentAccess: dynamic-page` bestaat de synchrone setter niet
+ * meer), en de bouw is synchroon. Tot dit moment staan de gemeten effects op
+ * de laag, en die zijn gelijk aan de style; ontbreekt de style, dan blijven
+ * ze staan. Dan ziet de laag er goed uit maar volgt hij een wijziging van de
+ * style niet, en dat wordt gemeld.
+ */
+async function applyEffectStyles(context) {
+  const queue = context.effectStyleQueue;
+  if (!queue.length) return { applied: 0, missing: [] };
+
+  const styles = new Map(
+    (await figma.getLocalEffectStylesAsync()).map((style) => [
+      style.name,
+      style,
+    ])
+  );
+  let applied = 0;
+  const missing = new Set();
+
+  for (const { node, name, spec } of queue) {
+    if (!name) {
+      // Een override die de style van het component eraf haalt. Opnieuw
+      // toewijzen koppelt los en houdt de effects die er staan.
+      node.effects = [...node.effects];
+      continue;
+    }
+    const style = styles.get(name);
+    if (!style) {
+      missing.add(name);
+      continue;
+    }
+    try {
+      await node.setEffectStyleIdAsync(style.id);
+      applied += 1;
+    } catch (error) {
+      context.log.warn(
+        `${spec.name ?? 'laag'}: effect style ${name} kon niet gelegd worden: ${error.message}`
+      );
+    }
+  }
+
+  for (const name of missing) {
+    context.log.warn(
+      `Effect style ${name} bestaat niet in dit bestand; de schaduw staat er als losse effects. Importeer variables.json opnieuw om de styles aan te maken.`
+    );
+  }
+  return { applied, missing: [...missing] };
 }
 
 /**

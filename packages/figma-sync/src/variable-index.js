@@ -128,10 +128,33 @@ export function createVariableIndex(payload, modes) {
     return mode in values ? values[mode] : undefined;
   };
 
+  // Effect styles op dezelfde manier: `box-shadow/md` is `--dsn-box-shadow-md`.
+  const effectStyles = new Map(
+    (payload.effectStyles ?? []).map((style) => [cssNameFor(style.name), style])
+  );
+
   return {
     modes,
     ambiguous: [...ambiguous],
     size: byCssName.size,
+    /**
+     * Een effect style, met de kleur van elke laag zoals de gebonden variable
+     * hem in de meetmode oplevert. Zo vergelijkt effects.js de style met de
+     * gemeten schaduw in dezelfde theme- en light/dark-stand.
+     */
+    effectStyle(cssName) {
+      const style = effectStyles.get(cssName);
+      if (!style) return undefined;
+      return {
+        name: style.name,
+        effects: style.effects.map((effect) => {
+          const reference = effect.boundVariables?.color;
+          if (!reference) return effect;
+          const entry = byKey.get(`${reference.collection}|${reference.name}`);
+          return { ...effect, color: entry ? valueOf(entry) : undefined };
+        }),
+      };
+    },
     /** @returns {{collection: string, name: string, type: string, value: unknown}|undefined} */
     lookup(cssName) {
       const entry = byCssName.get(cssName);

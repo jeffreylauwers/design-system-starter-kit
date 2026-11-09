@@ -11,11 +11,13 @@
  * samengevoegd, en dat past niet in een enkel format-callback.
  *
  * Figma kent maar vier variable-types: COLOR, FLOAT, STRING en BOOLEAN.
- * Alles wat daar niet in past (transitions, easings, shadows, breakpoints)
- * wordt overgeslagen en verantwoord in het report-bestand.
+ * Alles wat daar niet in past (transitions, easings, breakpoints) wordt
+ * overgeslagen en verantwoord in het report-bestand. Schaduwen passen er ook
+ * niet in, maar die worden een effect style; zie `buildEffectStyles`.
  */
 
 import { parseColor } from './color.js';
+import { parseBoxShadow } from './shadow.js';
 
 // =============================================================================
 // CONSTANTEN
@@ -214,7 +216,7 @@ function toPixels(input, pixelsByCssName, viewport = DEFAULT_VIEWPORT) {
 /** Tokengroepen die geen zinnige tegenhanger in Figma hebben. */
 const UNSUPPORTED_GROUPS = new Set([
   'transition', // Figma kent geen duration/easing variables
-  'box-shadow', // hoort een Figma effect style te worden, geen variable
+  'box-shadow', // wordt een Figma effect style, geen variable
   'breakpoint', // een designtijd-concept, niet iets om aan een laag te binden
   'z-index', // Figma bepaalt stapelvolgorde via de laagvolgorde
 ]);
@@ -293,6 +295,14 @@ export function mapTokenValue(token, pixelsByCssName, viewport) {
   const unsupported = token.path.find((segment) =>
     UNSUPPORTED_GROUPS.has(segment)
   );
+  // Een schaduw wordt een effect style (zie `buildEffectStyles`). Op het type
+  // en niet alleen op de groep: `card.box-shadow-hover` heet anders, en
+  // `text-input.focus.box-shadow-spread` is wél een gewoon getal.
+  if (unsupported === 'box-shadow' || type === 'shadow') {
+    return {
+      skip: 'een schaduw wordt een Figma effect style, geen variable',
+    };
+  }
   if (unsupported) {
     return { skip: `"${unsupported}" heeft geen Figma-variable equivalent` };
   }
@@ -374,6 +384,187 @@ export function referenceToVariableName(originalValue) {
   const match = originalValue.trim().match(/^\{([^}]+)\}$/);
   if (!match) return null;
   return match[1].split('.').slice(1).join('/');
+}
+
+// =============================================================================
+// SCHADUW -> FIGMA EFFECT STYLE
+// =============================================================================
+
+/**
+ * Een schaduwprimitief (`dsn.box-shadow.md`). De component-tokens
+ * (`dsn.card.box-shadow-hover`) verwijzen daar alleen naar; een effect style
+ * kan in Figma niet naar een andere style verwijzen, dus een eigen style per
+ * component-token zou een kopie zijn die niet meeverandert. De generator volgt
+ * de var()-keten van een component tot aan deze primitieven.
+ */
+function isShadowPrimitive(token) {
+  return token.path[1] === 'box-shadow' && token.path.length === 3;
+}
+
+/** Een effect style geeft de kleur per laag op; 0..1, op 4 decimalen. */
+function sameColor(a, b) {
+  return ['r', 'g', 'b', 'a'].every(
+    (channel) => Math.abs((a[channel] ?? 1) - (b[channel] ?? 1)) < 0.0005
+  );
+}
+
+/**
+ * Zet de schaduwprimitieven om naar Figma effect styles.
+ *
+ * Een effect style heeft geen modes, een variable wel. De kleur van elke laag
+ * wordt daarom aan de Primitives-variable gebonden waar het token naar
+ * verwijst (`color/shadow/direct`), en die volgt de theme- en
+ * light/dark-schakelaar. Wat niet kan variëren is de geometrie: offset, blur
+ * en spread staan als getal in de style. Die moet dus in elke mode gelijk
+ * zijn, anders zou de style in een van de modes een andere schaduw tekenen
+ * dan de CSS.
+ *
+ * Een mode waarin de schaduw `none` is (het wireframe-theme) kan alleen als
+ * elke gebonden kleur daar volledig transparant is: dan tekenen dezelfde
+ * lagen niets. Ook dat wordt gecontroleerd en niet aangenomen; zelfde
+ * asymmetrie als bij de variable-bindingen in figma-sync: een style die niet
+ * in elke mode de CSS reproduceert wordt niet gemaakt.
+ */
+export function buildEffectStyles({ shadows, modes, primitives }) {
+  const effectStyles = [];
+  const skipped = [];
+  const skip = (name, reason) => skipped.push({ style: name, reason });
+
+  for (const [name, { description, byMode }] of shadows) {
+    const missing = modes.filter((mode) => !byMode[mode]);
+    if (missing.length) {
+      skip(name, `ontbreekt in ${missing.join(', ')}`);
+      continue;
+    }
+
+    const parsed = Object.fromEntries(
+      modes.map((mode) => [
+        mode,
+        {
+          resolved: parseBoxShadow(byMode[mode].value),
+          original: parseBoxShadow(byMode[mode].original),
+        },
+      ])
+    );
+    const unreadable = modes.filter(
+      (mode) => !parsed[mode].resolved || !parsed[mode].original
+    );
+    if (unreadable.length) {
+      skip(name, `niet als schaduw te lezen in ${unreadable.join(', ')}`);
+      continue;
+    }
+
+    const visible = modes.filter((mode) => parsed[mode].resolved.length);
+    if (!visible.length) {
+      // `box-shadow/none`: niets om een style van te maken.
+      skip(name, 'tekent in geen enkele mode een schaduw');
+      continue;
+    }
+
+    // De geometrie in pixels, per laag.
+    const geometryOf = (layers) =>
+      layers.map((layer) => {
+        const [x, y, blur = '0', spread = '0'] = layer.lengths.map((part) =>
+          toPixels(part)
+        );
+        return { inset: layer.inset, x, y, blur, spread };
+      });
+    const reference = geometryOf(parsed[visible[0]].resolved);
+    if (reference.some((layer) => [layer.x, layer.y].includes(null))) {
+      skip(name, 'een lengte is niet naar pixels te herleiden');
+      continue;
+    }
+    const geometryKey = (geometry) => JSON.stringify(geometry);
+    const differs = visible.filter(
+      (mode) =>
+        geometryKey(geometryOf(parsed[mode].resolved)) !==
+        geometryKey(reference)
+    );
+    if (differs.length) {
+      skip(
+        name,
+        `offset, blur of spread verschilt per mode (${differs.join(', ')}); een effect style kan alleen de kleur laten meeschakelen`
+      );
+      continue;
+    }
+
+    // Per laag: de variable waar de kleur aan hangt, of een vaste kleur.
+    const effects = [];
+    let failure = null;
+    for (const [index, layer] of reference.entries()) {
+      const references = new Set(
+        visible.map((mode) =>
+          referenceToVariableName(parsed[mode].original[index].color)
+        )
+      );
+      const [variableName] = references;
+      const variable =
+        references.size === 1 && variableName
+          ? primitives.get(variableName)
+          : undefined;
+
+      const colorIn = (mode) => {
+        if (parsed[mode].resolved.length) {
+          return parseColor(parsed[mode].resolved[index].color);
+        }
+        // Een mode zonder schaduw: alleen de gebonden variable kan daar iets
+        // tekenen, dus die moet er transparant zijn.
+        return variable ? variable.valuesByMode[mode] : null;
+      };
+
+      for (const mode of modes) {
+        const color = colorIn(mode);
+        if (!color) {
+          failure = `laag ${index + 1}: kleur in ${mode} is niet te herleiden`;
+          break;
+        }
+        if (!parsed[mode].resolved.length && (color.a ?? 1) !== 0) {
+          failure = `laag ${index + 1}: in ${mode} is de schaduw none, maar ${variableName ?? 'de kleur'} is daar niet transparant`;
+          break;
+        }
+        if (variable && parsed[mode].resolved.length) {
+          // De variable moet in elke mode de kleur van de CSS opleveren.
+          const value = variable.valuesByMode[mode];
+          if (!value || !sameColor(value, color)) {
+            failure = `laag ${index + 1}: ${variableName} wijkt in ${mode} af van de schaduwkleur`;
+            break;
+          }
+        }
+      }
+      if (failure) break;
+
+      if (!variable) {
+        // Zonder variable is de kleur vast, en dan moet hij overal gelijk zijn.
+        const colors = modes.map(colorIn);
+        if (!colors.every((color) => sameColor(color, colors[0]))) {
+          failure = `laag ${index + 1}: de kleur verschilt per mode maar is geen Primitives-variable${variableName ? ` (${variableName} bestaat niet in Figma)` : ''}`;
+          break;
+        }
+      }
+
+      effects.push({
+        type: layer.inset ? 'INNER_SHADOW' : 'DROP_SHADOW',
+        offset: { x: layer.x, y: layer.y },
+        radius: layer.blur,
+        spread: layer.spread,
+        // De waarde in de eerste mode; de binding bepaalt de rest.
+        color: colorIn(modes[0]),
+        ...(variable && {
+          boundVariables: {
+            color: { collection: COLLECTIONS.primitives, name: variableName },
+          },
+        }),
+      });
+    }
+    if (failure) {
+      skip(name, failure);
+      continue;
+    }
+
+    effectStyles.push({ name, description, effects });
+  }
+
+  return { effectStyles, skipped };
 }
 
 // =============================================================================
@@ -459,6 +650,8 @@ export async function buildFigmaVariables({
   // ---------------------------------------------------------------------------
   const primitiveModes = [];
   const primitives = new Map();
+  // De schaduwprimitieven per mode, voor de effect styles.
+  const shadows = new Map();
 
   for (const theme of themes) {
     for (const mode of modes) {
@@ -472,6 +665,20 @@ export async function buildFigmaVariables({
         if (collection === COLLECTIONS.density) continue;
 
         if (collection !== COLLECTIONS.primitives) continue;
+
+        if (isShadowPrimitive(token)) {
+          const name = toVariableName(token);
+          if (!shadows.has(name)) {
+            shadows.set(name, {
+              description: token.$description ?? token.comment ?? '',
+              byMode: {},
+            });
+          }
+          shadows.get(name).byMode[modeName] = {
+            value: String(token.$value ?? token.value),
+            original: String(token.original.$value ?? token.original.value),
+          };
+        }
 
         const mapped = mapTokenValue(token, pixels);
         const name = toVariableName(token);
@@ -844,6 +1051,14 @@ export async function buildFigmaVariables({
     }
   }
 
+  // Pas na het opschonen: een effect style bindt zijn kleuren aan
+  // Primitives-variables, en alleen wat daar overbleef bestaat in Figma.
+  const { effectStyles, skipped: effectStylesSkipped } = buildEffectStyles({
+    shadows,
+    modes: primitiveModes,
+    primitives,
+  });
+
   return {
     $schema: 'dsn-figma-variables/1',
     generatedAt: new Date().toISOString(),
@@ -869,9 +1084,11 @@ export async function buildFigmaVariables({
         variables: [...components.values()],
       },
     ],
+    effectStyles,
     skipped,
     danglingReferences,
     viewportPinned,
     incomplete,
+    effectStylesSkipped,
   };
 }

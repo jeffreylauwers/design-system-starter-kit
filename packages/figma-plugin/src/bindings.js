@@ -165,3 +165,88 @@ export function requireCollections(required, variables) {
     `Dit bestand heeft nog geen ${required.join(' / ')}. Importeer eerst design-tokens/dist/figma/variables.json; anders krijgen de lagen vaste waarden en volgen ze de theme-schakelaar niet.`
   );
 }
+
+/**
+ * Velden van een effect die Figma aan een variable laat binden. Net als bij
+ * paints gaat dat niet via `setBoundVariable` op de node maar via een eigen
+ * functie, en is het effect immutable: er komt een nieuw effect uit.
+ */
+const EFFECT_FIELDS = new Set([
+  'color',
+  'radius',
+  'spread',
+  'offsetX',
+  'offsetY',
+]);
+
+/**
+ * Een effect uit de spec (generator of effect style) als Figma-effect, met de
+ * bindingen erop.
+ *
+ * `showShadowBehindNode: false` is wat CSS doet: een `box-shadow` wordt nooit
+ * onder het element zelf getekend, ook niet waar dat doorzichtig is.
+ *
+ * @param {object} spec `{type, offset, radius, spread, color, boundVariables}`
+ * @param {(reference: object) => Variable|null} resolve zoekt de variable op
+ * @param {(field: string, reference: object, error: Error) => void} onError
+ * @returns {{effect: Effect, bound: number}}
+ */
+export function effectFromSpec(spec, resolve, onError) {
+  let effect = {
+    type: spec.type,
+    color: { ...spec.color },
+    offset: { ...spec.offset },
+    radius: spec.radius ?? 0,
+    spread: spec.spread ?? 0,
+    visible: true,
+    blendMode: 'NORMAL',
+  };
+  if (spec.type === 'DROP_SHADOW') effect.showShadowBehindNode = false;
+
+  let bound = 0;
+  for (const [field, reference] of Object.entries(spec.boundVariables ?? {})) {
+    if (!EFFECT_FIELDS.has(field)) continue;
+    const variable = resolve(reference);
+    if (!variable) continue;
+    try {
+      effect = figma.variables.setBoundVariableForEffect(
+        effect,
+        field,
+        variable
+      );
+      bound += 1;
+    } catch (error) {
+      onError(field, reference, error);
+    }
+  }
+  return { effect, bound };
+}
+
+/**
+ * Zet de effects uit de spec op een laag, met hun bindingen.
+ *
+ * Een effect style komt hier níet: `setEffectStyleIdAsync` is asynchroon en
+ * de bouw is dat niet. De style wordt aan het eind van de import gelegd (zie
+ * `applyEffectStyles` in components.js); tot die tijd staan de gemeten
+ * effects erop, en die zijn gelijk aan de style.
+ */
+export function applyEffects(node, spec, context) {
+  if (spec.effectStyle !== undefined) {
+    context.effectStyleQueue?.push({ node, name: spec.effectStyle, spec });
+  }
+  if (spec.effects === undefined) return;
+  node.effects = spec.effects.map((effectSpec) => {
+    const { effect, bound } = effectFromSpec(
+      effectSpec,
+      (reference) => variableFor(reference, context),
+      (field, reference, error) => {
+        context.stats.failed += 1;
+        context.log.warn(
+          `${spec.name ?? spec.type}: schaduw-${field} kon niet aan ${reference.name} gebonden worden: ${error.message}`
+        );
+      }
+    );
+    context.stats.bound += bound;
+    return effect;
+  });
+}

@@ -7,47 +7,74 @@
  * laten meeschalen in plaats van een dood, absoluut gepositioneerd blok.
  */
 
-import { parseColor } from '../../design-tokens/src/config/color.js';
+import { parseCssColor } from './css-color.js';
 import {
   bindingsFor,
   createBindingReport,
   dropUnfixedSizeBindings,
 } from './bindings.js';
 import { blockOf, toInstance } from './instances.js';
+import { effectsFor } from './effects.js';
+
+/** Heeft de spec afgeronde hoeken? */
+function hasRoundedCorners(figmaNode) {
+  return [
+    figmaNode.cornerRadius,
+    figmaNode.topLeftRadius,
+    figmaNode.topRightRadius,
+    figmaNode.bottomRightRadius,
+    figmaNode.bottomLeftRadius,
+  ].some((radius) => radius > 0);
+}
+
+/**
+ * Vallen alle kinderen binnen dit element? Dan kan `clipsContent` aan zonder
+ * iets weg te snijden dat in de browser wél zichtbaar is.
+ *
+ * Twee redenen om te clippen. Een afgeronde root: zonder clip steken de
+ * rechthoekige secties van ModalDialog en Popover over de ronde hoeken heen.
+ * En een schaduw met spread: die tekent Figma op een frame alleen met clip.
+ */
+function childrenWithin(node) {
+  const tolerance = 0.5;
+  return (node.children ?? []).every((child) => {
+    if (!child.rect) return true;
+    return (
+      child.rect.x >= node.rect.x - tolerance &&
+      child.rect.y >= node.rect.y - tolerance &&
+      child.rect.x + child.rect.width <=
+        node.rect.x + node.rect.width + tolerance &&
+      child.rect.y + child.rect.height <=
+        node.rect.y + node.rect.height + tolerance
+    );
+  });
+}
+
+/**
+ * Meldt een schaduw met spread op een frame dat niet clipt; Figma tekent die
+ * spread niet. Op de opgeleverde boom, want een tussenlaag kan nog opgaan in
+ * een frame dat wel clipt (het veld en het icoon van Select).
+ */
+function checkSpreadClip(node, warnings, label) {
+  const spreads = (node.effects ?? []).some((effect) => effect.spread);
+  if (spreads && !node.clipsContent && node.type !== 'INSTANCE') {
+    warnings.push(
+      `${label} > ${node.name}: de schaduw heeft een spread, maar clip content kan niet aan zonder lagen af te snijden; Figma tekent de spread dan niet`
+    );
+  }
+  for (const child of node.children ?? []) {
+    checkSpreadClip(child, warnings, label);
+  }
+}
+
+/** Heeft dit element een schaduw? Dan klapt het niet in tot een tekstlaag. */
+function hasShadow(boxShadow) {
+  return Boolean(boxShadow) && boxShadow !== 'none';
+}
 
 // =============================================================================
 // WAARDE-CONVERSIE
 // =============================================================================
-
-/**
- * Computed kleur -> Figma RGBA (kanalen 0..1).
- *
- * Een browser rekent een kleur niet om naar rgb: wat als `oklch()` is
- * geschreven komt ook als `oklch()` uit `getComputedStyle`. Die vorm gaat door
- * dezelfde conversie als de variables-build, zodat de gemeten kleur en de
- * waarde van het token exact op elkaar uitkomen.
- */
-export function parseCssColor(input) {
-  if (/^\s*oklch\(/i.test(String(input))) return parseColor(input);
-
-  const match = String(input).match(
-    /rgba?\(\s*([\d.]+)[,\s]+([\d.]+)[,\s]+([\d.]+)(?:[,\s/]+([\d.%]+))?\s*\)/i
-  );
-  if (!match) return null;
-
-  const [, r, g, b, a] = match;
-  let alpha = 1;
-  if (a !== undefined) {
-    alpha = a.endsWith('%') ? Number(a.slice(0, -1)) / 100 : Number(a);
-  }
-
-  return {
-    r: Number(r) / 255,
-    g: Number(g) / 255,
-    b: Number(b) / 255,
-    a: alpha,
-  };
-}
 
 /** `12px` -> 12. `normal` en lege waarden -> fallback. */
 function px(value, fallback = 0) {
@@ -1052,6 +1079,7 @@ function convertElement(
   const drawsNothing =
     paintFrom(styles.backgroundColor).length === 0 &&
     !strokes &&
+    !hasShadow(styles.boxShadow) &&
     px(styles.borderTopLeftRadius) === 0;
 
   // De markerkolom van een list item is de uitzondering: die tekent niets,
@@ -1073,9 +1101,14 @@ function convertElement(
     };
   }
 
-  if (styles.boxShadow && styles.boxShadow !== 'none') {
+  const shadow = effectsFor(
+    styles.boxShadow,
+    node.tokens?.['box-shadow'],
+    bindings
+  );
+  if (shadow.unreadable) {
     warnings.push(
-      `${pathLabel}: box-shadow moet een Figma effect style worden, niet meegenomen`
+      `${pathLabel}: box-shadow "${styles.boxShadow}" is niet als schaduw te lezen, niet meegenomen`
     );
   }
 
@@ -1133,6 +1166,8 @@ function convertElement(
     ...cornerRadiusFrom(styles, node.rect),
     fills: paintFrom(styles.backgroundColor),
     ...(strokes ?? {}),
+    ...(shadow.effects && { effects: shadow.effects }),
+    ...(shadow.effectStyle && { effectStyle: shadow.effectStyle }),
     opacity: Number(styles.opacity) === 1 ? undefined : Number(styles.opacity),
     clipsContent: fieldText || styles.overflow === 'hidden',
     children: children.map(({ child, wide }, index) => {
@@ -1220,6 +1255,20 @@ function convertElement(
   };
 
   selfAlignment(figmaNode, children, stretchChildren, warnings, pathLabel);
+
+  if (root && hasRoundedCorners(figmaNode) && childrenWithin(node)) {
+    figmaNode.clipsContent = true;
+  }
+
+  // Figma gebruikt de spread van een schaduw op een frame alleen als dat frame
+  // zijn inhoud afknipt; anders staat het veld grijs op 0. De rand van een leeg
+  // tekstveld (`inset 0 0 0 3px`) verdween daardoor helemaal, net als de
+  // highlight-laag van Drawer. Kan het niet zonder iets weg te snijden, dan
+  // meldt `checkSpreadClip` het, op de opgeleverde boom.
+  const spreads = (figmaNode.effects ?? []).some((effect) => effect.spread);
+  if (spreads && !figmaNode.clipsContent && childrenWithin(node)) {
+    figmaNode.clipsContent = true;
+  }
 
   // HUG kan Figma alleen op een node met een eigen layoutMode; zonder
   // auto layout is er niets om naar te huggen en weigert de API het.
@@ -2206,6 +2255,7 @@ export function toComponentSet(
       sizeFromTokens(node);
       dropUnfixedSizeBindings(node);
       checkSlotDepth(node, pathLabel);
+      checkSpreadClip(node, warnings, pathLabel);
       return { name: label, variantProperties: variant, node };
     }
   );
@@ -2216,17 +2266,36 @@ export function toComponentSet(
   // getal, dus het hoort over de opgeleverde boom te gaan.
   // De bindingen in de overrides van een instance tellen mee: de plugin legt
   // ze via dezelfde route.
+  // Een binding op een schaduwveld zit in het effect zelf, niet op de laag.
+  const ownBindings = (layer) =>
+    Object.keys(layer.boundVariables ?? {}).length +
+    (layer.effects ?? []).reduce(
+      (total, effect) =>
+        total + Object.keys(effect.boundVariables ?? {}).length,
+      0
+    );
   const countBindings = (node) =>
-    Object.keys(node.boundVariables ?? {}).length +
+    ownBindings(node) +
     (node.overrides ?? []).reduce(
-      (total, override) =>
-        total + Object.keys(override.boundVariables ?? {}).length,
+      (total, override) => total + ownBindings(override),
       0
     ) +
     (node.children ?? []).reduce(
       (total, child) => total + countBindings(child),
       0
     );
+  // Lagen die een effect style krijgen, op dezelfde manier verzameld. De
+  // plugin legt ze aan het eind en telt ze na; ontbreekt een style in het
+  // bestand, dan meldt hij dat.
+  const styledLayers = [];
+  const collectStyled = (node) => {
+    if (node.effectStyle) styledLayers.push(node.effectStyle);
+    for (const override of node.overrides ?? []) {
+      if (override.effectStyle) styledLayers.push(override.effectStyle);
+    }
+    for (const child of node.children ?? []) collectStyled(child);
+  };
+  for (const component of components) collectStyled(component.node);
 
   // De sets waar deze set instances van bevat. Alleen wat er werkelijk in de
   // boom staat: de Checkbox in een CheckboxGroup zit binnen de
@@ -2301,6 +2370,8 @@ export function toComponentSet(
           (total, component) => total + countBindings(component.node),
           0
         ) + countBindings(canvas),
+      styled: styledLayers.length,
+      effectStyles: [...new Set(styledLayers)].sort(),
       // Welke modes de verificatie gebruikt heeft. Bij een matrix met varianten
       // op verschillende viewports is dat er één set per gemeten breedte.
       modes:

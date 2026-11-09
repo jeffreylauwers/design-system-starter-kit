@@ -151,6 +151,8 @@ const OVERRIDE_FIELDS = [
   'paddingLeft',
   'itemSpacing',
   'opacity',
+  'effects',
+  'effectStyle',
   'fontFamily',
   'fontSize',
   'fontWeight',
@@ -282,7 +284,12 @@ function collectDifferences(
     if (measured[field] === undefined) {
       // Een rand die het component wel heeft en de host niet: dat is een
       // lege lijst, geen ontbrekend veld.
-      if (field === 'strokes' || field === 'fills') fields[field] = [];
+      if (field === 'strokes' || field === 'fills' || field === 'effects') {
+        fields[field] = [];
+      }
+      // Een schaduw die het component wel heeft en de host niet: de style
+      // moet eraf, anders blijft hij op de instance staan.
+      if (field === 'effectStyle') fields[field] = '';
       continue;
     }
     fields[field] = measured[field];

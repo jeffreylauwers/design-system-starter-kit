@@ -28,6 +28,14 @@
  *     grid) krijgt meteen de eerste vrije cel, en een cel die al bezet is kan
  *     een ander kind niet krijgen. Zo ging de tweede import van Note en Alert
  *     mis: de hergebruikte Heading en Paragraph hielden cellen bezet
+ * 12. een effect is compleet (type, kleur met alpha, offset, radius, visible,
+ *     blendMode) en immutable: binden gaat via
+ *     `setBoundVariableForEffect`, dat een nieuw effect oplevert. Een effect
+ *     style zet je onder `documentAccess: dynamic-page` alleen met
+ *     `setEffectStyleIdAsync`; de synchrone setter gooit. `effects` toewijzen
+ *     koppelt een style los
+ * 13. de spread van een schaduw telt op een frame alleen met clip content;
+ *     zonder valt hij naar 0 (gezien in Figma bij een leeg tekstveld)
  */
 
 /**
@@ -883,6 +891,60 @@ class Node {
     delete this.componentPropertyDefinitions[propertyId];
   }
 
+  set effects(value) {
+    if (!Array.isArray(value)) throw new Error('effects verwacht een lijst');
+    value.forEach(assertEffect);
+    this._effects = value.map((effect) => ({ ...effect }));
+    // Zoals in Figma: eigen effects betekent geen style meer.
+    this._effectStyleId = '';
+    this.#dropSpreadWithoutClip();
+  }
+
+  // Gezien in Figma (#326): op een frame zonder clip content staat de spread
+  // van een schaduw grijs op 0. Zo verdween de rand van een leeg tekstveld.
+  set clipsContent(value) {
+    this._clipsContent = value;
+    this.#dropSpreadWithoutClip();
+  }
+  get clipsContent() {
+    return this._clipsContent;
+  }
+
+  #dropSpreadWithoutClip() {
+    if (!['FRAME', 'COMPONENT', 'INSTANCE'].includes(this.type)) return;
+    if (this._clipsContent !== false || !this._effects) return;
+    this._effects = this._effects.map((effect) =>
+      effect.spread ? { ...effect, spread: 0 } : effect
+    );
+  }
+  get effects() {
+    return this._effects ?? [];
+  }
+
+  // Onder `documentAccess: dynamic-page` (zie manifest.json) is de synchrone
+  // setter vervangen door `setEffectStyleIdAsync`.
+  set effectStyleId(_value) {
+    throw new Error(
+      'in set_effectStyleId: Cannot call with documentAccess: dynamic-page. Use node.setEffectStyleIdAsync instead.'
+    );
+  }
+  get effectStyleId() {
+    return this._effectStyleId ?? '';
+  }
+
+  async setEffectStyleIdAsync(styleId) {
+    if (styleId === '') {
+      this._effectStyleId = '';
+      return;
+    }
+    const style = state.effectStyles.find(
+      (candidate) => candidate.id === styleId
+    );
+    if (!style) throw new Error(`effect style ${styleId} bestaat niet`);
+    this._effects = style.effects.map((effect) => ({ ...effect }));
+    this._effectStyleId = styleId;
+  }
+
   setBoundVariable(field, variable) {
     const expected = BINDABLE_FIELDS[field];
     if (!expected) {
@@ -1176,6 +1238,9 @@ function cloneNode(node) {
   copy.x = node.x;
   copy.y = node.y;
   copy.fills = node.fills ? node.fills.map((paint) => ({ ...paint })) : [];
+  if (node._effects)
+    copy._effects = node._effects.map((effect) => ({ ...effect }));
+  if (node._effectStyleId) copy._effectStyleId = node._effectStyleId;
   if (node.strokes) copy.strokes = node.strokes.map((paint) => ({ ...paint }));
   // Een gespiegelde instance blijft aan hetzelfde component hangen; zonder dit
   // is een geneste instance in een kopie niet meer als instance te herkennen.
@@ -1201,6 +1266,56 @@ class TextNode extends Node {
   }
   get characters() {
     return this._characters;
+  }
+}
+
+/** Velden van een effect die aan een variable kunnen, met het type. */
+const EFFECT_BINDABLE_FIELDS = {
+  color: 'COLOR',
+  radius: 'FLOAT',
+  spread: 'FLOAT',
+  offsetX: 'FLOAT',
+  offsetY: 'FLOAT',
+};
+
+/** Weigert een effect dat Figma ook zou weigeren. */
+function assertEffect(effect) {
+  if (!['DROP_SHADOW', 'INNER_SHADOW'].includes(effect?.type)) {
+    // De plugin maakt alleen schaduwen; een blur zou hier iets nieuws zijn.
+    throw new Error(`onverwacht effecttype ${effect?.type}`);
+  }
+  const { color, offset } = effect;
+  if (
+    !color ||
+    !['r', 'g', 'b', 'a'].every((key) => Number.isFinite(color[key]))
+  ) {
+    throw new Error('een schaduw verwacht color als {r, g, b, a}');
+  }
+  if (!offset || !Number.isFinite(offset.x) || !Number.isFinite(offset.y)) {
+    throw new Error('een schaduw verwacht offset als {x, y}');
+  }
+  if (!Number.isFinite(effect.radius)) {
+    throw new Error('een schaduw verwacht een radius');
+  }
+  if (typeof effect.visible !== 'boolean' || !effect.blendMode) {
+    throw new Error('een schaduw verwacht visible en blendMode');
+  }
+}
+
+class EffectStyle {
+  constructor() {
+    this.id = id('S');
+    this.type = 'EFFECT';
+    this.name = '';
+    this.description = '';
+    this._effects = [];
+  }
+  set effects(value) {
+    value.forEach(assertEffect);
+    this._effects = value.map((effect) => ({ ...effect }));
+  }
+  get effects() {
+    return this._effects;
   }
 }
 
@@ -1282,6 +1397,7 @@ root.appendChild(rootPage);
 const state = {
   collections: [],
   variables: [],
+  effectStyles: [],
   propertyEdits: 0,
   page: rootPage,
   root,
@@ -1333,6 +1449,32 @@ export const figma = {
         },
       };
     },
+    setBoundVariableForEffect(effect, field, variable) {
+      const expected = EFFECT_BINDABLE_FIELDS[field];
+      if (!expected) throw new Error(`een effect kent geen veld ${field}`);
+      assertEffect(effect);
+      if (variable.resolvedType !== expected) {
+        throw new Error(
+          `${field} van een effect verwacht een ${expected}-variable, kreeg ${variable.resolvedType}`
+        );
+      }
+      return {
+        ...effect,
+        boundVariables: {
+          ...effect.boundVariables,
+          [field]: { type: 'VARIABLE_ALIAS', id: variable.id },
+        },
+      };
+    },
+  },
+
+  async getLocalEffectStylesAsync() {
+    return state.effectStyles;
+  },
+  createEffectStyle() {
+    const style = new EffectStyle();
+    state.effectStyles.push(style);
+    return style;
   },
 
   async listAvailableFontsAsync() {

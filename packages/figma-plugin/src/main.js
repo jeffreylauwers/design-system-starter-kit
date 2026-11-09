@@ -37,7 +37,8 @@ function createLog() {
 async function runImport(message, log) {
   if (message.kind === 'variables') {
     const result = await importVariables(message.payload, log);
-    return `${result.aliasCount} aliassen gelegd`;
+    const styles = result.effectStyles.created + result.effectStyles.updated;
+    return `${result.aliasCount} aliassen gelegd${styles ? `, ${styles} effect styles` : ''}`;
   }
   if (message.kind === 'icons') {
     const result = await importIconSet(message.payload, log);

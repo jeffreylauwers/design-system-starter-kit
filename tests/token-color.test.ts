@@ -1,6 +1,8 @@
 import { describe, it, expect } from 'vitest';
 // @ts-expect-error - build-script zonder type-declaraties
 import { parseColor } from '../packages/design-tokens/src/config/color.js';
+// @ts-expect-error - build-script zonder type-declaraties
+import { parseBoxShadow } from '../packages/design-tokens/src/config/shadow.js';
 
 /** `{ r, g, b }` in 0..1 -> `#rrggbb`. */
 function toHex({ r, g, b }: { r: number; g: number; b: number }) {
@@ -55,10 +57,114 @@ describe('parseColor', () => {
     );
   });
 
+  // De schaduwkleuren (#326). CSS mengt met voorvermenigvuldigde alpha:
+  // `transparent` trekt de kleur dus niet naar zwart, alleen de alpha omlaag.
+  it('rekent color-mix in srgb uit zoals CSS', () => {
+    expect(parseColor('color-mix(in srgb, black 12%, transparent)')).toEqual({
+      r: 0,
+      g: 0,
+      b: 0,
+      a: 0.12,
+    });
+    expect(parseColor('color-mix(in srgb, white 8%, transparent)')).toEqual({
+      r: 1,
+      g: 1,
+      b: 1,
+      a: 0.08,
+    });
+    // Zonder percentages 50/50; het percentage mag ook vooraan staan.
+    expect(parseColor('color-mix(in srgb, #ff0000, #0000ff)')).toEqual({
+      r: 0.5,
+      g: 0,
+      b: 0.5,
+      a: 1,
+    });
+    expect(parseColor('color-mix(in srgb, 25% black, white)')).toEqual(
+      parseColor('color-mix(in srgb, black 25%, white 75%)')
+    );
+    // Samen minder dan 100% maakt het resultaat doorzichtiger.
+    expect(parseColor('color-mix(in srgb, black 20%, white 20%)')?.a).toBe(0.4);
+  });
+
+  // Zo serialiseert Chrome de uitkomst van een color-mix in getComputedStyle.
+  it('leest color(srgb ...)', () => {
+    expect(parseColor('color(srgb 0 0 0 / 0.12)')).toEqual({
+      r: 0,
+      g: 0,
+      b: 0,
+      a: 0.12,
+    });
+    expect(parseColor('color(srgb 1 0.5 0)')).toEqual({
+      r: 1,
+      g: 0.5,
+      b: 0,
+      a: 1,
+    });
+  });
+
+  it('kent transparent, black en white', () => {
+    expect(parseColor('transparent')).toEqual({ r: 0, g: 0, b: 0, a: 0 });
+    expect(parseColor('black')).toEqual({ r: 0, g: 0, b: 0, a: 1 });
+    expect(parseColor('white')).toEqual({ r: 1, g: 1, b: 1, a: 1 });
+  });
+
   it('geeft null voor wat niet statisch naar één kleur te herleiden is', () => {
-    expect(parseColor('color-mix(in srgb, black 12%, transparent)')).toBeNull();
-    expect(parseColor('transparent')).toBeNull();
+    // Een andere interpolatieruimte vraagt andere wiskunde; geen benadering.
+    expect(parseColor('color-mix(in oklab, black, white)')).toBeNull();
+    expect(
+      parseColor('color-mix(in srgb, currentColor 50%, white)')
+    ).toBeNull();
+    expect(parseColor('currentColor')).toBeNull();
     expect(parseColor('oklch(0.5 0.1)')).toBeNull();
     expect(parseColor('#12')).toBeNull();
+  });
+});
+
+describe('parseBoxShadow', () => {
+  it('leest de schaduwtokens, met de kleur achteraan', () => {
+    expect(
+      parseBoxShadow(
+        '0 1px 2px 0 {dsn.color.shadow.direct}, 0 0 0 1px {dsn.color.shadow.highlight}'
+      )?.map(({ inset, lengths, color }) => ({ inset, lengths, color }))
+    ).toEqual([
+      {
+        inset: false,
+        lengths: ['0', '1px', '2px', '0'],
+        color: '{dsn.color.shadow.direct}',
+      },
+      {
+        inset: false,
+        lengths: ['0', '0', '0', '1px'],
+        color: '{dsn.color.shadow.highlight}',
+      },
+    ]);
+  });
+
+  it('leest een gemeten waarde, met de kleur vooraan en inset achteraan', () => {
+    const [layer] = parseBoxShadow(
+      'color(srgb 0 0 0 / 0.12) 0px 0px 0px 2px inset'
+    );
+    expect(layer.inset).toBe(true);
+    expect(layer.color).toBe('color(srgb 0 0 0 / 0.12)');
+    expect(layer.lengths).toEqual(['0px', '0px', '0px', '2px']);
+  });
+
+  it('herkent bij een var() de kleur op zijn plek, of op het type van het token', () => {
+    const [layer] = parseBoxShadow('inset 0 0 0 var(--spread) var(--color)');
+    expect(layer.lengths).toEqual(['0', '0', '0', 'var(--spread)']);
+    expect(layer.color).toBe('var(--color)');
+
+    const [decided] = parseBoxShadow(
+      '0 0 0 var(--color)',
+      (part: string) => part === 'var(--color)'
+    );
+    expect(decided.color).toBe('var(--color)');
+    expect(decided.lengths).toEqual(['0', '0', '0']);
+  });
+
+  it('geeft [] voor none en null voor wat geen schaduw is', () => {
+    expect(parseBoxShadow('none')).toEqual([]);
+    expect(parseBoxShadow('red')).toBeNull();
+    expect(parseBoxShadow('0 0 0 0 0 red')).toBeNull();
   });
 });
