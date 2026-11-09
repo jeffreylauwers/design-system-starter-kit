@@ -119,6 +119,9 @@ export async function buildFigma() {
         // Variables die niet in elke mode een waarde hadden en daarom zijn
         // weggelaten; in Figma zouden ze op een standaardwaarde terugvallen.
         incomplete: payload.incomplete,
+        // Schaduwprimitieven die geen effect style werden, met de reden.
+        effectStyles: payload.effectStyles.map((style) => style.name),
+        effectStylesSkipped: payload.effectStylesSkipped,
       },
       null,
       2
@@ -126,6 +129,9 @@ export async function buildFigma() {
   );
 
   console.log(summarise(payload));
+  console.log(
+    `   ${'effect styles'.padEnd(16)} ${String(payload.effectStyles.length).padStart(4)} styles     (${payload.effectStyles.map((style) => style.name).join(', ')})`
+  );
   console.log(
     `\n   ${payload.skipped.length} tokens overgeslagen, ` +
       `${payload.viewportPinned.length} fluid waarden vastgeprikt op ${payload.meta.viewports['vp-large']}px`

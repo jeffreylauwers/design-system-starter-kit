@@ -1427,6 +1427,21 @@
         "$description": "Volledig transparant — voor onzichtbare achtergronden en randen"
       },
       "shadow": {
+        "direct": {
+          "$value": "transparent",
+          "$type": "color",
+          "$description": "Scherpe schaduwlaag: transparant, want wireframe tekent geen schaduw. Bestaat zodat de Figma effect styles in elke mode een kleur hebben"
+        },
+        "ambient": {
+          "$value": "transparent",
+          "$type": "color",
+          "$description": "Diffuse schaduwlaag: transparant, want wireframe tekent geen schaduw"
+        },
+        "highlight": {
+          "$value": "transparent",
+          "$type": "color",
+          "$description": "Outline-laag: transparant, want wireframe tekent geen schaduw"
+        },
         "scroll": {
           "$value": "rgba(0, 0, 0, 0.15)",
           "$type": "color",

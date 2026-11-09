@@ -52,6 +52,9 @@ export const TRACKED_PROPERTIES = [
   // lezen of hij van een declaratie komt of van de inhoud. Uit de cascade wel.
   'width',
   'height',
+  // Een schaduw wordt een effect style (één token voor de hele waarde) of
+  // losse effects met per veld een binding; zie effects.js.
+  'box-shadow',
 ];
 
 /**
@@ -373,6 +376,24 @@ export function createTokenReader(trackedProperties) {
       return [[sizeLogical[1] === 'block' ? 'height' : 'width', value]];
     }
 
+    // -- background -----------------------------------------------------------
+    // `background: var(--dsn-modal-dialog-background-color)` zet de
+    // achtergrondkleur, net als de longhand. Zonder deze vertaling hield de
+    // root van ModalDialog, Popover en Drawer een vaste witte fill, die in
+    // dark mode wit bleef; en omdat er dan geen winnaar is, ook zonder
+    // melding. De kleur staat in de laatste laag. Een gok op het verkeerde deel
+    // kan geen verkeerde binding worden: bindings.js vergelijkt de waarde.
+    if (name === 'background') {
+      const layers = splitTop(value, ',');
+      const last = splitTop(layers[layers.length - 1] ?? '', ' ');
+      const colors = last.filter(
+        (part) =>
+          /^var\(/i.test(part) ||
+          /^(#|rgba?\(|hsla?\(|oklch\(|color\(|color-mix\()/i.test(part)
+      );
+      return colors.length === 1 ? [['background-color', colors[0]]] : [];
+    }
+
     // -- gap ------------------------------------------------------------------
     if (name === 'gap') {
       const [row, column = row] = parts;
@@ -619,6 +640,18 @@ export function createTokenReader(trackedProperties) {
         chain: chainFor(owner, winner.value),
         value: winner.value,
       };
+
+      // Een schaduw met losse tokens per veld (`inset 0 0 0
+      // var(--spread) var(--color)`) heeft als geheel geen keten, maar elk
+      // deel wel. Per laag, per deel, in de volgorde van de declaratie.
+      if (property === 'box-shadow') {
+        sources[property].layers = splitTop(winner.value, ',').map((layer) =>
+          splitTop(layer, ' ').map((part) => ({
+            text: part,
+            chain: chainFor(owner, part),
+          }))
+        );
+      }
     }
 
     return sources;

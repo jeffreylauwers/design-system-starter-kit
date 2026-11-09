@@ -69,10 +69,11 @@ variable die hem levert, zodat een mode-wissel in Figma het component meeneemt.
 De generator wijst per node aan welk veld aan welke variable hoort
 (`boundVariables` in de node spec); de plugin legt de koppeling:
 
-| Veld                                                       | Route                                        |
-| ---------------------------------------------------------- | -------------------------------------------- |
-| `fills`, `strokes`                                         | `figma.variables.setBoundVariableForPaint()` |
-| padding, radius, `itemSpacing`, `strokeWeight`, `fontSize` | `node.setBoundVariable()`                    |
+| Veld                                                       | Route                                         |
+| ---------------------------------------------------------- | --------------------------------------------- |
+| `fills`, `strokes`                                         | `figma.variables.setBoundVariableForPaint()`  |
+| kleur, spread, offset en blur van een schaduw              | `figma.variables.setBoundVariableForEffect()` |
+| padding, radius, `itemSpacing`, `strokeWeight`, `fontSize` | `node.setBoundVariable()`                     |
 
 Twee dingen die daarbij afwijken van wat je zou verwachten:
 
@@ -87,6 +88,27 @@ aan te binden. De plugin maakt die dan aan, zodat de laag laat zien wélk token
 de kleur stuurt in plaats van een lege Fill te tonen. De variable bepaalt
 daarna kleur én alpha. Voor strokes gebeurt dat niet: een frame zonder rand
 heeft wel een standaard `strokeWeight`, dus daar zou een lijn ontstaan.
+
+## Effect styles
+
+`variables.json` bevat naast de collections ook `effectStyles`: de
+schaduwprimitieven `box-shadow/sm`, `md` en `lg`. De variables-import maakt ze
+aan, of werkt ze bij op naam. Een style blijft dus dezelfde style (zelfde id),
+en een laag die een designer eraan hing, blijft eraan hangen. De kleur van elke
+laag in de style hangt aan `color/shadow/*` in `dsn/Primitives`; zo volgt een
+style zonder eigen modes toch de theme- en light/dark-schakelaar. Zie
+[DR-2026-15](../../docs/decisions/DR-2026-15-schaduwen-als-effect-styles-met-gebonden-kleur.md).
+
+De effects komen ná `clipsContent` op een frame: zonder clip laat Figma de
+spread van een schaduw vallen (de mock doet dat ook, en de smoke test
+controleert dat elke spread aankomt).
+
+De componentimport zet eerst de gemeten effects op een laag, en hangt hem pas
+aan het eind van de import aan zijn style. `setEffectStyleIdAsync` is
+asynchroon (de synchrone setter bestaat niet onder `documentAccess:
+dynamic-page`), en de bouw is dat niet. Ontbreekt de style in het bestand, dan
+blijven de effects staan en meldt de plugin het: importeer `variables.json`
+dan opnieuw.
 
 ## Pagina's
 
@@ -562,8 +584,6 @@ goed, op één geplaatste instance) is de controle daarop.
   ketens van Checkbox en Radio. De andere sets die er
   baat bij hebben (zie `nog gemeten, kan instance worden` in de build)
   volgen per matrix met `instances: true`.
-- **Effect styles.** Box shadows staan in het skip-report en moeten nog
-  Figma-effectstijlen worden.
 - **Booleans die tokens veranderen.** `loading` en `fullWidth` bij Button
   hebben eigen tokens en horen daarom op een variant-as, niet op een
   property, net als `iconOnly`; zie de README van `figma-sync`.

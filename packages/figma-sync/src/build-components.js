@@ -226,9 +226,9 @@ async function main() {
       `   ${matrix.component.padEnd(12)} ${String(extracted.length).padStart(3)} varianten  ${seconds}s  -> dist/${key}.json`
     );
 
-    const { bound, unbound } = spec.bindings;
+    const { bound, unbound, styled = 0 } = spec.bindings;
     console.log(
-      `   ${' '.repeat(12)} ${String(bound).padStart(3)} bindingen${unbound.length ? `, ${unbound.length} eigenschappen zonder token` : ''}`
+      `   ${' '.repeat(12)} ${String(bound).padStart(3)} bindingen${styled ? `, ${styled} effect styles` : ''}${unbound.length ? `, ${unbound.length} eigenschappen zonder token` : ''}`
     );
 
     if (unbound.length) {

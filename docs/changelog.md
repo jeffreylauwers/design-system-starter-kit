@@ -10,6 +10,20 @@ All notable changes to this project are documented in this file.
 
 Nog niet gepubliceerde wijzigingen. Schrijf nieuwe changelog-entries hieronder; bij de volgende release wordt deze kop gepromoveerd naar het definitieve versienummer.
 
+### Figma: schaduwen als effect styles (#326)
+
+Schaduwen komen nu mee naar Figma. De import van `variables.json` maakt drie effect styles aan: `box-shadow/sm`, `box-shadow/md` en `box-shadow/lg`. De kleur van elke laag hangt aan een variable in `dsn/Primitives` (`color/shadow/direct`, `ambient` en `highlight`), dus de styles volgen de theme- en light/dark-schakelaar. Drawer en ModalDialog gebruiken `box-shadow/lg`, Popover `box-shadow/md`. De waarschuwing "box-shadow moet een Figma effect style worden" is weg.
+
+- **Formuliervelden:** de dikkere rand bij hover, focus en invalid (een `inset`-schaduw) staat nu als effect op TextInput, TextArea, Select, SearchInput, DateInput, TimeInput en DateInputGroup. De kleur is gebonden aan `text-input/*/box-shadow-color` en `text-area/*/box-shadow-color`. De spread is gebonden aan `*/box-shadow-spread`. Figma tekent de inner shadow onder de stroke, dus de rand oogt er 1px dunner dan in de browser; een vaste spread van 3 kwam in Figma niet aan, dus de binding wint. De focusring van SkipLink komt mee, met een vaste spread omdat die een `calc()` van twee tokens is.
+- **`color-mix()` wordt uitgerekend** (`in srgb`, met voorvermenigvuldigde alpha zoals in CSS). De schaduwkleuren waren daarom eerder geen variable.
+- **Wireframe-tokens:** `dsn.color.shadow.direct`, `ambient` en `highlight` bestaan nu ook in het wireframe-theme, met de waarde `transparent`. Wireframe tekent nog steeds geen schaduw (`box-shadow.*` blijft `none`), maar de effect styles hebben zo in elke mode een kleur.
+- **Dark mode van ModalDialog, Popover en Drawer:** de achtergrond van de root staat in de CSS als shorthand (`background: var(...)`). figma-sync las alleen `background-color`, dus de root hield een vaste witte vulling, zonder melding. Header en footer bleven daardoor wit in `start-dark`. De shorthand wordt nu gelezen en de vulling bindt aan `modal-dialog/background-color`, `popover/background-color` en `drawer/background-color`.
+- **Spread vraagt clip content:** Figma tekent de spread van een schaduw op een frame alleen als `clip content` aan staat; anders staat het veld grijs op 0. Daardoor ontbrak de rand van een leeg tekstveld, van TextArea en van de velden in DateInputGroup. Een frame met zo'n schaduw clipt nu, tenzij er een laag buiten valt; dan meldt de build het.
+- **Afgeronde hoeken:** een afgeronde root zet in Figma `clip content` aan als alle lagen erin binnen de root vallen. Rechthoekige secties steken dan niet meer over de hoeken van ModalDialog en Popover uit.
+- **Select bij hover (CSS):** de hover-rand van `dsn-text-input` sluit `:read-only` uit, en een browser rekent een `<select>` daartoe. Select kreeg daardoor bij hover geen dikkere rand, ook niet in de browser. `.dsn-text-input.dsn-select:hover:not(:disabled)` zet hem nu wel.
+- **Bestaande Figma-bestanden:** importeer eerst `variables.json` opnieuw; anders houden de lagen losse effects en meldt de plugin dat de style ontbreekt.
+- Zie [DR-2026-15](decisions/DR-2026-15-schaduwen-als-effect-styles-met-gebonden-kleur.md).
+
 ### Figma: flex-items in een rij huggen
 
 Een kind van een `display: flex`-rij zonder eigen breedte en zonder `flex-grow` staat in Figma nu op HUG in plaats van op een vaste breedte, net als in de browser. Een item van BreadcrumbNavigation groeit zo mee met zijn tekst. Hetzelfde geldt voor de menu-links in PageHeader en PageFooter, de onderdelen van de header van PageHeader en de velden van DateInputGroup. Een item dat in de browser smaller is gedrukt, of een cel in een tabelrij, blijft vast.

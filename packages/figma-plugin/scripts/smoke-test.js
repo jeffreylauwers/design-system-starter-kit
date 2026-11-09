@@ -271,13 +271,47 @@ check(
   paragraphTarget ? paragraphTarget.name : 'geen alias'
 );
 
+// Schaduwen: een effect style per schaduwprimitief, met de kleur van elke
+// laag aan een Primitives-variable. Zonder die binding volgt de style de
+// light/dark-schakelaar niet: in start-dark is de schaduw vijf keer zo donker.
+const expectedStyles = variablesPayload.effectStyles ?? [];
+check(
+  'effect styles aangemaakt',
+  expectedStyles.length > 0 &&
+    state.effectStyles.length === expectedStyles.length &&
+    result.effectStyles.created === expectedStyles.length,
+  state.effectStyles.map((style) => style.name).join(', ')
+);
+const unboundShadowColors = state.effectStyles.flatMap((style) =>
+  style.effects
+    .filter((effect) => {
+      const variable = byId.get(effect.boundVariables?.color?.id);
+      return !variable || !variable.name.startsWith('color/shadow/');
+    })
+    .map(() => style.name)
+);
+check(
+  'elke schaduwkleur hangt aan een color/shadow-variable',
+  unboundShadowColors.length === 0,
+  unboundShadowColors.length ? unboundShadowColors.join(', ') : ''
+);
+const styleIds = state.effectStyles.map((style) => style.id).join('|');
+
 // Idempotent: nog een keer draaien mag niets dupliceren.
 const beforeRerun = state.variables.length;
-await importVariables(variablesPayload, log);
+const variablesRerun = await importVariables(variablesPayload, log);
 check(
   'tweede import dupliceert niets',
   state.variables.length === beforeRerun,
   `${state.variables.length} variables`
+);
+// Een laag die een designer aan een style hing, hangt aan zijn id.
+check(
+  'tweede import werkt de effect styles bij in plaats van ze te vervangen',
+  state.effectStyles.map((style) => style.id).join('|') === styleIds &&
+    variablesRerun.effectStyles.updated === expectedStyles.length &&
+    variablesRerun.effectStyles.created === 0,
+  `${variablesRerun.effectStyles.updated} bijgewerkt`
 );
 
 // =============================================================================
@@ -871,12 +905,71 @@ for (const file of componentFiles) {
         );
       }
     }
+    // De spread uit de spec moet er in Figma ook staan; zonder clip content
+    // laat Figma hem vallen (zie de mock).
+    for (const [position, effectSpec] of (spec?.effects ?? []).entries()) {
+      if (
+        effectSpec.spread &&
+        !spec.effectStyle &&
+        node?.effects?.[position]?.spread !== effectSpec.spread
+      ) {
+        lostSpreads.push(
+          `${spec.name ?? spec.type}: spread ${node?.effects?.[position]?.spread ?? 'geen'} (verwacht ${effectSpec.spread})`
+        );
+      }
+    }
+    // Een schaduwveld is gebonden op het effect zelf, niet op de laag.
+    for (const [position, effectSpec] of (spec?.effects ?? []).entries()) {
+      for (const [field, reference] of Object.entries(
+        effectSpec.boundVariables ?? {}
+      )) {
+        const alias = node?.effects?.[position]?.boundVariables?.[field];
+        const variable = alias && byId.get(alias.id);
+        if (!variable || variable.name !== reference.name) {
+          wrongBindings.push(
+            `${spec.name ?? spec.type}.effects[${position}].${field} -> ${variable ? variable.name : 'niets'} (verwacht ${reference.name})`
+          );
+        }
+      }
+    }
+    if (spec?.effectStyle) {
+      const style = state.effectStyles.find(
+        (candidate) => candidate.id === node?.effectStyleId
+      );
+      if (style?.name !== spec.effectStyle) {
+        wrongStyles.push(
+          `${spec.name ?? spec.type} -> ${style ? style.name : 'geen style'} (verwacht ${spec.effectStyle})`
+        );
+      }
+    }
     (spec?.children ?? []).forEach((childSpec, index) =>
       checkBindings(node?.children?.[index], childSpec)
     );
   };
+  const wrongStyles = [];
+  const lostSpreads = [];
   for (const [index, component] of payload.componentSet.components.entries()) {
     checkBindings(built(index), component.node);
+  }
+  check(
+    'de spread van elke schaduw komt aan',
+    lostSpreads.length === 0,
+    lostSpreads.length ? `${lostSpreads.length}x, o.a. ${lostSpreads[0]}` : ''
+  );
+  if (payload.bindings.styled) {
+    check(
+      'alle verwachte effect styles gelegd',
+      imported.effectStyles.applied === payload.bindings.styled &&
+        imported.effectStyles.missing.length === 0,
+      `${imported.effectStyles.applied}/${payload.bindings.styled}`
+    );
+    check(
+      'schaduwlagen hangen aan de juiste effect style',
+      wrongStyles.length === 0,
+      wrongStyles.length
+        ? `${wrongStyles.length}x, o.a. ${wrongStyles[0]}`
+        : payload.bindings.effectStyles.join(', ')
+    );
   }
   check(
     'bindingen wijzen naar de juiste variable',

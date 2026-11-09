@@ -55,6 +55,13 @@
   cursor: pointer;
 }
 
+/* De hover-rand van dsn-text-input sluit :read-only uit, en daar valt een
+   <select> onder. Zonder deze regel kreeg Select bij hover geen dikkere rand. */
+.dsn-text-input.dsn-select:hover:not(:disabled) {
+  box-shadow: inset 0 0 0 var(--dsn-text-input-hover-box-shadow-spread)
+    var(--dsn-text-input-hover-box-shadow-color);
+}
+
 .dsn-text-input.dsn-select:disabled {
   background-color: var(--dsn-text-input-disabled-background-color);
   border-color: var(--dsn-text-input-disabled-border-color);

@@ -123,13 +123,133 @@ function parseOklch(value) {
 }
 
 /**
+ * De kleurwoorden die in de tokens voorkomen, als argument van `color-mix()`.
+ * Bewust geen volledige lijst van CSS-namen: een onbekend woord moet `null`
+ * opleveren en in het report belanden, niet stil een verkeerde kleur worden.
+ */
+const KEYWORDS = {
+  transparent: { r: 0, g: 0, b: 0, a: 0 },
+  black: { r: 0, g: 0, b: 0, a: 1 },
+  white: { r: 1, g: 1, b: 1, a: 1 },
+};
+
+/**
+ * `color(srgb R G B)` of `color(srgb R G B / A)`, kanalen 0..1.
+ *
+ * Zo serialiseert Chrome de uitkomst van `color-mix(in srgb, ...)` in
+ * `getComputedStyle`. De gemeten schaduwkleur komt dus in deze vorm binnen.
+ */
+function parseColorFunction(value) {
+  const match = value.match(
+    /^color\(\s*srgb\s+([^\s/]+)\s+([^\s/]+)\s+([^\s/)]+)\s*(?:\/\s*([^\s/)]+)\s*)?\)$/i
+  );
+  if (!match) return null;
+  const [r, g, b] = [match[1], match[2], match[3]].map((raw) =>
+    clamp01(component(raw))
+  );
+  const a = match[4] === undefined ? 1 : clamp01(component(match[4]));
+  if (![r, g, b, a].every(Number.isFinite)) return null;
+  return { r, g, b, a };
+}
+
+/** Splitst op komma's buiten haakjes. */
+function splitTopLevel(input) {
+  const parts = [];
+  let depth = 0;
+  let current = '';
+  for (const char of input) {
+    if (char === '(') depth += 1;
+    if (char === ')') depth -= 1;
+    if (char === ',' && depth === 0) {
+      parts.push(current.trim());
+      current = '';
+      continue;
+    }
+    current += char;
+  }
+  parts.push(current.trim());
+  return parts;
+}
+
+/** `black 12%` of `12% black` -> kleur en (optioneel) percentage. */
+function parseMixArgument(raw) {
+  const percentage = raw.match(/(?:^|\s)(-?[\d.]+)%(?=\s|$)/);
+  const color = parseColor(
+    percentage ? raw.replace(percentage[0], ' ').trim() : raw
+  );
+  if (!color) return null;
+  return {
+    color,
+    weight: percentage ? Number(percentage[1]) / 100 : undefined,
+  };
+}
+
+/**
+ * `color-mix(in srgb, A p%, B q%)` volgens CSS Color 5.
+ *
+ * De schaduwkleuren mengen zwart met `transparent`
+ * (`color-mix(in srgb, black 12%, transparent)`), en dat is zwart met alpha
+ * 0.12. Dat klopt alleen omdat CSS met *voorvermenigvuldigde* alpha mengt:
+ * `transparent` is zwart met alpha 0 en trekt de kleur dus niet naar zijn
+ * kanalen toe. Naïef kanaal voor kanaal mengen geeft bij `white 8%,
+ * transparent` een grijs in plaats van wit.
+ *
+ * Alleen `in srgb`: een andere interpolatieruimte (oklab, oklch) vraagt andere
+ * wiskunde, en die levert hier `null` op in plaats van een benadering.
+ */
+function parseColorMix(value) {
+  const match = value.match(/^color-mix\(\s*in\s+srgb\s*,([\s\S]*)\)$/i);
+  if (!match) return null;
+  const args = splitTopLevel(match[1]);
+  if (args.length !== 2) return null;
+
+  const [first, second] = args.map(parseMixArgument);
+  if (!first || !second) return null;
+
+  // Ontbrekende percentages vullen elkaar aan tot 100%; beide weg is 50/50.
+  let p1 = first.weight;
+  let p2 = second.weight;
+  if (p1 === undefined && p2 === undefined) p1 = p2 = 0.5;
+  else if (p1 === undefined) p1 = 1 - p2;
+  else if (p2 === undefined) p2 = 1 - p1;
+  if (p1 < 0 || p2 < 0) return null;
+
+  const sum = p1 + p2;
+  if (sum === 0) return null;
+  // Samen minder dan 100% maakt het resultaat doorzichtiger.
+  const alphaMultiplier = Math.min(sum, 1);
+  const w1 = p1 / sum;
+  const w2 = p2 / sum;
+
+  const a1 = first.color.a ?? 1;
+  const a2 = second.color.a ?? 1;
+  const alpha = a1 * w1 + a2 * w2;
+
+  const channel = (name) =>
+    alpha === 0
+      ? 0
+      : (first.color[name] * a1 * w1 + second.color[name] * a2 * w2) / alpha;
+
+  return {
+    r: clamp01(channel('r')),
+    g: clamp01(channel('g')),
+    b: clamp01(channel('b')),
+    a: clamp01(alpha * alphaMultiplier),
+  };
+}
+
+/**
  * Zet een tokenwaarde om naar Figma's RGBA-object.
- * Ondersteunt hex en `oklch()`. Al het andere (color-mix, keywords) geeft
- * `null`: dat is niet statisch naar één kleur te herleiden.
+ * Ondersteunt hex, `oklch()`, `color(srgb ...)`, `color-mix(in srgb, ...)` en
+ * de woorden `transparent`, `black` en `white`. Al het andere geeft `null`:
+ * dat is niet statisch naar één kleur te herleiden.
  */
 export function parseColor(input) {
   const value = String(input).trim();
   if (value.startsWith('#')) return parseHex(value);
   if (/^oklch\(/i.test(value)) return parseOklch(value);
-  return null;
+  if (/^color\(/i.test(value)) return parseColorFunction(value);
+  if (/^color-mix\(/i.test(value)) return parseColorMix(value);
+  const keyword = KEYWORDS[value.toLowerCase()];
+  return keyword ? { ...keyword } : null;
 }

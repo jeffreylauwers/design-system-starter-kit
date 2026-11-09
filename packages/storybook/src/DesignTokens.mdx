@@ -2116,7 +2116,7 @@ Elevation shadows communicate depth: which surface floats above another. Each sh
 
 ### Shadow Colors
 
-The three primitives that power all elevation shadows. In light mode `highlight` is transparent (no visual effect). In dark mode `highlight` becomes a subtle white outline to define edges where drop shadows are less visible.
+The three primitives that power all elevation shadows. In light mode `highlight` is transparent (no visual effect). In dark mode `highlight` becomes a subtle white outline to define edges where drop shadows are less visible. In the wireframe theme all three are transparent: wireframe draws no shadows, but the Figma effect styles bind their colors to these tokens and need a value in every mode.
 
 <TokenTable
   previewType="color"

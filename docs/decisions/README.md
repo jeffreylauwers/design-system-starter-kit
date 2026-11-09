@@ -6,22 +6,23 @@ Een decision record documenteert **waarom** iets is zoals het is — niet alleen
 
 ## Index
 
-| ID                                                                      | Besluit                                                                  | Status   |
-| ----------------------------------------------------------------------- | ------------------------------------------------------------------------ | -------- |
-| [DR-2026-01](DR-2026-01-button-label-span-over-aria-label.md)           | `dsn-button__label` span in plaats van `aria-label` op buttons           | Accepted |
-| [DR-2026-02](DR-2026-02-twee-lagenpatroon-html-css-plus-react.md)       | HTML/CSS als bron van waarheid, React als wrapper                        | Accepted |
-| [DR-2026-03](DR-2026-03-breakpoints-als-reference-only-tokens.md)       | Breakpoints als reference-only tokens, hardcoded in CSS @media rules     | Accepted |
-| [DR-2026-04](DR-2026-04-htmltemplate-spiegelt-echte-render.md)          | Storybook `htmlTemplate` spiegelt de echte render en volgt de args       | Accepted |
-| [DR-2026-05](DR-2026-05-figma-genereren-uit-code-via-plugin.md)         | Figma-library genereren uit code, geschreven via een eigen plugin        | Accepted |
-| [DR-2026-06](DR-2026-06-figma-bindingen-meten-plus-cssom.md)            | Figma-bindingen: waarde gemeten, tokennaam uit de CSSOM, geverifieerd    | Accepted |
-| [DR-2026-07](DR-2026-07-css-los-van-de-javascript-bundel.md)            | CSS los van de JavaScript-bundel, zodat het package laadbaar is in Node  | Accepted |
-| [DR-2026-08](DR-2026-08-formuliercontrols-krijgen-een-html-css-laag.md) | Formuliercontrols krijgen alsnog een HTML/CSS-laag; geen React-only meer | Accepted |
-| [DR-2026-09](DR-2026-09-css-afhankelijkheden-declareren-per-laag.md)    | CSS-afhankelijkheden per laag declareren: `@dsn-depends-on` plus import  | Accepted |
-| [DR-2026-10](DR-2026-10-iconen-inline-in-de-registry.md)                | Iconen inline in de gegenereerde registry, geen `.svg`-imports           | Accepted |
-| [DR-2026-11](DR-2026-11-card-secties-en-dom-volgorde.md)                | Card in vier secties; Header in de DOM vóór de Pre-header                | Accepted |
-| [DR-2026-12](DR-2026-12-dialogs-focus-bij-openen-op-de-heading.md)      | ModalDialog, Drawer en Popover zetten de focus bij openen op de heading  | Accepted |
-| [DR-2026-13](DR-2026-13-fluid-schaal-met-min-max-per-maat.md)           | Fluid schaal met een min- en max-token per maat, uitgerekend in de build | Accepted |
-| [DR-2026-14](DR-2026-14-density-collection-draagt-de-theme-as.md)       | De Density-collection in Figma draagt ook de theme-as                    | Accepted |
+| ID                                                                         | Besluit                                                                  | Status   |
+| -------------------------------------------------------------------------- | ------------------------------------------------------------------------ | -------- |
+| [DR-2026-01](DR-2026-01-button-label-span-over-aria-label.md)              | `dsn-button__label` span in plaats van `aria-label` op buttons           | Accepted |
+| [DR-2026-02](DR-2026-02-twee-lagenpatroon-html-css-plus-react.md)          | HTML/CSS als bron van waarheid, React als wrapper                        | Accepted |
+| [DR-2026-03](DR-2026-03-breakpoints-als-reference-only-tokens.md)          | Breakpoints als reference-only tokens, hardcoded in CSS @media rules     | Accepted |
+| [DR-2026-04](DR-2026-04-htmltemplate-spiegelt-echte-render.md)             | Storybook `htmlTemplate` spiegelt de echte render en volgt de args       | Accepted |
+| [DR-2026-05](DR-2026-05-figma-genereren-uit-code-via-plugin.md)            | Figma-library genereren uit code, geschreven via een eigen plugin        | Accepted |
+| [DR-2026-06](DR-2026-06-figma-bindingen-meten-plus-cssom.md)               | Figma-bindingen: waarde gemeten, tokennaam uit de CSSOM, geverifieerd    | Accepted |
+| [DR-2026-07](DR-2026-07-css-los-van-de-javascript-bundel.md)               | CSS los van de JavaScript-bundel, zodat het package laadbaar is in Node  | Accepted |
+| [DR-2026-08](DR-2026-08-formuliercontrols-krijgen-een-html-css-laag.md)    | Formuliercontrols krijgen alsnog een HTML/CSS-laag; geen React-only meer | Accepted |
+| [DR-2026-09](DR-2026-09-css-afhankelijkheden-declareren-per-laag.md)       | CSS-afhankelijkheden per laag declareren: `@dsn-depends-on` plus import  | Accepted |
+| [DR-2026-10](DR-2026-10-iconen-inline-in-de-registry.md)                   | Iconen inline in de gegenereerde registry, geen `.svg`-imports           | Accepted |
+| [DR-2026-11](DR-2026-11-card-secties-en-dom-volgorde.md)                   | Card in vier secties; Header in de DOM vóór de Pre-header                | Accepted |
+| [DR-2026-12](DR-2026-12-dialogs-focus-bij-openen-op-de-heading.md)         | ModalDialog, Drawer en Popover zetten de focus bij openen op de heading  | Accepted |
+| [DR-2026-13](DR-2026-13-fluid-schaal-met-min-max-per-maat.md)              | Fluid schaal met een min- en max-token per maat, uitgerekend in de build | Accepted |
+| [DR-2026-14](DR-2026-14-density-collection-draagt-de-theme-as.md)          | De Density-collection in Figma draagt ook de theme-as                    | Accepted |
+| [DR-2026-15](DR-2026-15-schaduwen-als-effect-styles-met-gebonden-kleur.md) | Schaduwen worden effect styles met een kleur-variable                    | Accepted |
 
 ## Een nieuw record toevoegen
 

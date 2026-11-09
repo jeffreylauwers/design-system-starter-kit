@@ -217,6 +217,7 @@ export function applyOverrides(instance, spec, context, helpers) {
         node.setBoundVariable(field, null);
       }
       helpers.applyBindings(node, { ...override, name: label }, context);
+      helpers.applyEffects(node, { ...override, name: label }, context);
 
       // Als laatste: FILL vraagt een auto-layout ouder, en dat is de
       // instance (of een frame daarin), die er nu staat.

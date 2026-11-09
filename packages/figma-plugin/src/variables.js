@@ -10,6 +10,8 @@
  * want anders raken bindingen die designers al gelegd hebben los.
  */
 
+import { effectFromSpec } from './bindings.js';
+
 /** Zoekt een bestaande collection op naam, of maakt hem aan. */
 async function ensureCollection(name) {
   const existing = await figma.variables.getLocalVariableCollectionsAsync();
@@ -253,5 +255,79 @@ export async function importVariables(payload, log) {
   log.info(
     `${aliasCount} aliassen gelegd${aliasFailed ? `, ${aliasFailed} mislukt` : ''}`
   );
-  return { aliasCount, aliasFailed };
+
+  const effectStyles = await importEffectStyles(
+    payload.effectStyles ?? [],
+    state,
+    log
+  );
+
+  return { aliasCount, aliasFailed, effectStyles };
+}
+
+/**
+ * Schrijft de schaduwprimitieven als effect styles.
+ *
+ * Bijwerken op naam, nooit weggooien en opnieuw maken: een laag die een style
+ * gebruikt hangt aan het id ervan. Een nieuwe style met dezelfde naam is voor
+ * Figma een andere style, en dan houdt elke laag die een designer er al aan
+ * hing een losse kopie van de oude schaduw. Zelfde afweging als bij de
+ * iconen en de varianten.
+ *
+ * De kleur van elke laag hangt aan een Primitives-variable; zo volgt een style
+ * zonder eigen modes toch de theme- en light/dark-schakelaar.
+ */
+async function importEffectStyles(specs, state, log) {
+  if (!specs.length) return { created: 0, updated: 0, bound: 0 };
+  log.progress?.(`${specs.length} effect styles schrijven`);
+
+  const existing = new Map(
+    (await figma.getLocalEffectStylesAsync()).map((style) => [
+      style.name,
+      style,
+    ])
+  );
+
+  let created = 0;
+  let updated = 0;
+  let bound = 0;
+  for (const spec of specs) {
+    let style = existing.get(spec.name);
+    if (style) {
+      updated += 1;
+    } else {
+      style = figma.createEffectStyle();
+      style.name = spec.name;
+      created += 1;
+    }
+    if (spec.description) style.description = spec.description;
+
+    style.effects = spec.effects.map((effectSpec) => {
+      const result = effectFromSpec(
+        effectSpec,
+        (reference) => {
+          const variable = state
+            .get(reference.collection)
+            ?.variables.get(reference.name);
+          if (!variable) {
+            log.error(
+              `${spec.name}: ${reference.collection} / ${reference.name} niet gevonden; de schaduwkleur volgt de modes niet`
+            );
+          }
+          return variable ?? null;
+        },
+        (field, reference, error) =>
+          log.error(
+            `${spec.name}: ${field} kon niet aan ${reference.name} gebonden worden: ${error.message}`
+          )
+      );
+      bound += result.bound;
+      return result.effect;
+    });
+  }
+
+  log.info(
+    `${specs.length} effect styles (${created} nieuw, ${updated} bijgewerkt), ${bound} schaduwkleuren gebonden`
+  );
+  return { created, updated, bound };
 }

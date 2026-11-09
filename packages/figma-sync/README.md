@@ -401,12 +401,12 @@ is een regressie, ook als de build groen is.
 
 De vier terugkerende redenen:
 
-| Reden                                     | Voorbeeld                                                                 |
-| ----------------------------------------- | ------------------------------------------------------------------------- |
-| de waarde komt niet uit één token         | `border-radius: 50%` bij Radio, of een `calc()` die twee tokens optelt    |
-| het token bestaat niet als Figma-variable | box shadows en transitions; die staan in het skip-report van de variables |
-| het token is in elke mode transparant     | `button/subtle/background-color`; een lege paint in Figma helpt niemand   |
-| de node heeft geen auto layout            | Figma kent geen padding op een frame zonder layoutMode                    |
+| Reden                                     | Voorbeeld                                                               |
+| ----------------------------------------- | ----------------------------------------------------------------------- |
+| de waarde komt niet uit één token         | `border-radius: 50%` bij Radio, of een `calc()` die twee tokens optelt  |
+| het token bestaat niet als Figma-variable | transitions; die staan in het skip-report van de variables              |
+| het token is in elke mode transparant     | `button/subtle/background-color`; een lege paint in Figma helpt niemand |
+| de node heeft geen auto layout            | Figma kent geen padding op een frame zonder layoutMode                  |
 
 Een kleur die alleen in de _gemeten_ mode transparant is wordt wél gebonden: in
 een andere mode is hij zichtbaar, en zonder binding zou het component daar leeg
@@ -655,6 +655,44 @@ binding gaat dan naar de zijde die de rand tekent: `border-left-width` en
 
 Let op de volgorde in de plugin: `strokeWeight` zet in Figma álle vier de
 zijden, dus de losse diktes moeten daarna komen.
+
+### Schaduwen: effect style of effects
+
+Een `box-shadow` is geen variable maar een effect, en de generator kiest per
+laag een van twee routes ([DR-2026-15](../../docs/decisions/DR-2026-15-schaduwen-als-effect-styles-met-gebonden-kleur.md)):
+
+- **Elevatie wordt een effect style.** Loopt de `var()`-keten van de
+  declaratie naar een schaduwprimitief (`--dsn-drawer-box-shadow` naar
+  `--dsn-box-shadow-lg`), dan krijgt de laag `effectStyle: "box-shadow/lg"`.
+  Alleen als de effects van die style, met de kleur in de meetmode, gelijk
+  zijn aan de gemeten schaduw: zelfde aantal lagen, offset, blur, spread en
+  kleur. Anders komt het in het report.
+- **De rest wordt effects met bindingen.** `inset 0 0 0 var(--spread)
+var(--color)` heeft als geheel geen keten, maar elk deel wel. De tokenlezer
+  geeft per laag per deel de keten mee, en elk veld dat uit één token komt en
+  de gemeten waarde oplevert wordt gebonden. Of een `var()` de kleur of een
+  lengte is, beslist het type van zijn variable. Een `calc()` (de spread van
+  een focusring) blijft vast en staat als `box-shadow spread` in het report.
+
+Een `inset`-schaduw ligt in CSS binnen de border, in Figma begint een inner
+shadow aan de buitenrand en ligt de stroke eroverheen. De rand van een
+tekstveld oogt in Figma daardoor 1px dunner dan in de browser (2px tegenover
+3px). Dat is bewust zo gelaten: de spread blijft aan het token gebonden. Een
+poging om de randdikte bij de spread op te tellen (een vaste spread van 3)
+kwam in Figma niet aan; het veld stond op 0.
+
+Figma tekent de spread van een schaduw op een frame alleen als het frame
+clipt (`clipsContent`); anders staat het veld grijs op 0. Een frame met zo'n
+schaduw krijgt daarom clip, als al zijn kinderen binnen het frame vallen. Lukt
+dat niet, dan meldt de build het, op de opgeleverde boom. Een tussenlaag kan
+nog opgaan in een frame dat wel clipt.
+
+In beide gevallen staan de gemeten effects in de spec. De plugin legt de style
+er pas aan het eind overheen, en zonder style blijven de effects staan.
+
+De gemeten kleur van een `color-mix()` komt uit Chrome als
+`color(srgb 0 0 0 / 0.12)`; `css-color.js` leest die vorm. Een laag die
+volledig transparant is en aan geen variable hangt, valt weg.
 
 ### Pagina per component
 
@@ -1569,8 +1607,6 @@ een eigen verschijning.
   variable, geen component.
 - **Patronen en templates.** Die componeer je in Figma uit de gegenereerde
   componenten.
-- **Box shadows.** Die horen Figma effect styles te worden, geen variables.
-  Ze staan daarom in het skip-report.
 
 ## Slots
 
