@@ -10,6 +10,15 @@ All notable changes to this project are documented in this file.
 
 Nog niet gepubliceerde wijzigingen. Schrijf nieuwe changelog-entries hieronder; bij de volgende release wordt deze kop gepromoveerd naar het definitieve versienummer.
 
+### Kleurtokens: descriptions helpen bij kiezen
+
+De `$description` van alle kleurtokens in de thema-laag (`colors-light.json` en `colors-dark.json` van start en wireframe) is herschreven. De oude teksten herhaalden de tokennaam ("Subtiele rand"); de nieuwe zeggen waarvoor je een token kiest. Ze komen terecht in de CSS-commentaren en in de Figma-variables.
+
+- **Patroon:** een zin over de rol, met de familie erin ("met fout-tint", "voor primaire acties, zoals knoppen", "op een omgekeerd vlak"). Border- en color-tokens krijgen een tweede zin met de contrasteis, bijvoorbeeld "Moet een contrastverhouding van 3:1 of meer hebben met neutral.bg-default." De koppelingen volgen de kleurengenerator.
+- **border-subtle** heet nu expliciet een lijnkleur zonder 3:1-eis. Hij haalt die verhouding nergens en is dus niet bedoeld voor een rand die een element herkenbaar maakt.
+- **Geen waarden en zo min mogelijk componentnamen**, zodat een tekst klopt als een project de kleur aanpast.
+- **Gelijk in elk bestand:** `tests/token-descriptions.test.ts` controleert dat de vier kleurbestanden dezelfde descriptions hebben en dat er geen em dash in staat.
+
 ### UnorderedList en OrderedList: ruimte na een geneste lijst (#454)
 
 Na een item met een geneste lijst stond 12px in plaats van 4px. De `margin-block-end` van de geneste lijst (bedoeld voor de ruimte onder een losse lijst) liep door het `li` heen en collapste met de gap van dat `li`. Een lijst direct in een `li` heeft nu geen eigen marge meer (`li > .dsn-unordered-list` en `li > .dsn-ordered-list`), dus de ruimte is overal `--dsn-unordered-list-gap` of `--dsn-ordered-list-gap`. Dat geldt ook voor een OrderedList in een UnorderedList en andersom. Een losse lijst houdt zijn `margin-block-end`. Browser en Figma (zie #453) kloppen hiermee weer met elkaar.

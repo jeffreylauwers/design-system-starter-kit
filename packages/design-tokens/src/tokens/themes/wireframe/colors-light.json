@@ -5,1447 +5,1567 @@
         "bg-document": {
           "$value": "#FFFFFF",
           "$type": "color",
-          "$description": "Documentachtergrond"
+          "$description": "Algemene neutrale pagina-achtergrond, de basis waar andere vlakken op liggen."
         },
         "bg-elevated": {
           "$value": "#FFFFFF",
           "$type": "color",
-          "$description": "Elevated background — for floating layers (modals, popovers, dropdowns)"
+          "$description": "Neutrale achtergrondkleur voor zwevende lagen boven de pagina, in dark mode lichter dan neutral.bg-document om diepte te tonen."
         },
         "bg-subtle": {
           "$value": "#FFFFFF",
           "$type": "color",
-          "$description": "Subtiele achtergrond"
+          "$description": "Alternatieve neutrale achtergrondkleur ten opzichte van neutral.bg-document, die zich daar licht van onderscheidt."
         },
         "bg-default": {
           "$value": "#FFFFFF",
           "$type": "color",
-          "$description": "Standaard achtergrond"
+          "$description": "Standaard neutrale achtergrondkleur voor getinte componenten in standaardstatus."
         },
         "bg-hover": {
           "$value": "#FFFFFF",
           "$type": "color",
-          "$description": "Achtergrond in hover state"
+          "$description": "Neutrale achtergrondkleur bij ‘hover’ status van getinte of transparante componenten."
         },
         "bg-active": {
           "$value": "#FFFFFF",
           "$type": "color",
-          "$description": "Achtergrond in active state"
+          "$description": "Neutrale achtergrondkleur bij ‘active’ of ‘selected’ status van getinte of transparante componenten."
         },
         "border-subtle": {
           "$value": "#000000",
           "$type": "color",
-          "$description": "Subtiele rand"
+          "$description": "Subtiele neutrale lijnkleur, inzetbaar als er geen contrastverhouding van 3:1 vereist is."
         },
         "border-default": {
           "$value": "#000000",
           "$type": "color",
-          "$description": "Standaard rand"
+          "$description": "Standaard neutrale lijnkleur. Moet een contrastverhouding van 3:1 of meer hebben met neutral.bg-default."
         },
         "border-hover": {
           "$value": "#000000",
           "$type": "color",
-          "$description": "Rand in hover state"
+          "$description": "Neutrale lijnkleur bij ‘hover’ status. Moet een contrastverhouding van 3:1 of meer hebben met neutral.bg-hover."
         },
         "border-active": {
           "$value": "#000000",
           "$type": "color",
-          "$description": "Rand in active state"
+          "$description": "Neutrale lijnkleur bij ‘active’ of ‘selected’ status. Moet een contrastverhouding van 3:1 of meer hebben met neutral.bg-active."
         },
         "color-default": {
           "$value": "#000000",
           "$type": "color",
-          "$description": "Standaard tekstkleur"
+          "$description": "Standaard neutrale tekstkleur voor getinte componenten. Moet een contrastverhouding van 4.5:1 of meer hebben met neutral.bg-default."
         },
         "color-hover": {
           "$value": "#000000",
           "$type": "color",
-          "$description": "Tekst in hover state"
+          "$description": "Neutrale tekstkleur bij ‘hover’ status. Moet een contrastverhouding van 4.5:1 of meer hebben met neutral.bg-hover."
         },
         "color-active": {
           "$value": "#000000",
           "$type": "color",
-          "$description": "Tekst in active state"
+          "$description": "Neutrale tekstkleur bij ‘active’ of ‘selected’ status. Moet een contrastverhouding van 4.5:1 of meer hebben met neutral.bg-active."
         },
         "color-subtle": {
           "$value": "#000000",
           "$type": "color",
-          "$description": "Subtiele tekstkleur"
+          "$description": "Alternatieve, subtielere neutrale voorgrondkleur ten opzichte van neutral.color-document, voor secundaire tekst. Moet een contrastverhouding van 4.5:1 of meer hebben met neutral.bg-subtle."
         },
         "color-document": {
           "$value": "#000000",
           "$type": "color",
-          "$description": "Documenttekstkleur"
+          "$description": "Algemene neutrale voorgrondkleur, de standaardkeuze voor lopende tekst. Moet een contrastverhouding van 4.5:1 of meer hebben met neutral.bg-subtle."
         }
       },
       "accent-1": {
         "bg-document": {
           "$value": "{dsn.color.neutral.bg-document}",
           "$type": "color",
-          "$description": "Documentachtergrond"
+          "$description": "Pagina-achtergrond in de primaire merkkleur, voor een pagina of sectie met merkuitstraling."
         },
         "bg-elevated": {
           "$value": "{dsn.color.neutral.bg-elevated}",
           "$type": "color",
-          "$description": "Elevated background"
+          "$description": "Achtergrondkleur in de primaire merkkleur voor zwevende lagen boven de pagina."
         },
         "bg-subtle": {
           "$value": "{dsn.color.neutral.bg-subtle}",
           "$type": "color",
-          "$description": "Subtiele achtergrond"
+          "$description": "Alternatieve achtergrondkleur in de primaire merkkleur ten opzichte van accent-1.bg-document, die zich daar licht van onderscheidt."
         },
         "bg-default": {
           "$value": "{dsn.color.neutral.bg-default}",
           "$type": "color",
-          "$description": "Standaard achtergrond"
+          "$description": "Standaard achtergrondkleur in de primaire merkkleur voor getinte componenten die merkuitstraling geven zonder een actie of status aan te duiden, in standaardstatus."
         },
         "bg-hover": {
           "$value": "{dsn.color.neutral.bg-hover}",
           "$type": "color",
-          "$description": "Achtergrond in hover state"
+          "$description": "Achtergrondkleur in de primaire merkkleur bij ‘hover’ status van getinte of transparante componenten die merkuitstraling geven zonder een actie of status aan te duiden."
         },
         "bg-active": {
           "$value": "{dsn.color.neutral.bg-active}",
           "$type": "color",
-          "$description": "Achtergrond in active state"
+          "$description": "Achtergrondkleur in de primaire merkkleur bij ‘active’ of ‘selected’ status van getinte of transparante componenten die merkuitstraling geven zonder een actie of status aan te duiden."
         },
         "border-subtle": {
           "$value": "{dsn.color.neutral.border-subtle}",
           "$type": "color",
-          "$description": "Subtiele rand"
+          "$description": "Subtiele lijnkleur in de primaire merkkleur, niet voor acties of statussen, inzetbaar als er geen contrastverhouding van 3:1 vereist is."
         },
         "border-default": {
           "$value": "{dsn.color.neutral.border-default}",
           "$type": "color",
-          "$description": "Standaard rand"
+          "$description": "Standaard lijnkleur in de primaire merkkleur, niet voor acties of statussen. Moet een contrastverhouding van 3:1 of meer hebben met accent-1.bg-default."
         },
         "border-hover": {
           "$value": "{dsn.color.neutral.border-hover}",
           "$type": "color",
-          "$description": "Rand in hover state"
+          "$description": "Lijnkleur in de primaire merkkleur bij ‘hover’ status. Moet een contrastverhouding van 3:1 of meer hebben met accent-1.bg-hover."
         },
         "border-active": {
           "$value": "{dsn.color.neutral.border-active}",
           "$type": "color",
-          "$description": "Rand in active state"
+          "$description": "Lijnkleur in de primaire merkkleur bij ‘active’ of ‘selected’ status. Moet een contrastverhouding van 3:1 of meer hebben met accent-1.bg-active."
         },
         "color-default": {
           "$value": "{dsn.color.neutral.color-default}",
           "$type": "color",
-          "$description": "Standaard tekstkleur"
+          "$description": "Standaard tekstkleur in de primaire merkkleur, niet voor acties of statussen. Moet een contrastverhouding van 4.5:1 of meer hebben met accent-1.bg-default."
         },
         "color-hover": {
           "$value": "{dsn.color.neutral.color-hover}",
           "$type": "color",
-          "$description": "Tekst in hover state"
+          "$description": "Tekstkleur in de primaire merkkleur bij ‘hover’ status. Moet een contrastverhouding van 4.5:1 of meer hebben met accent-1.bg-hover."
         },
         "color-active": {
           "$value": "{dsn.color.neutral.color-active}",
           "$type": "color",
-          "$description": "Tekst in active state"
+          "$description": "Tekstkleur in de primaire merkkleur bij ‘active’ of ‘selected’ status. Moet een contrastverhouding van 4.5:1 of meer hebben met accent-1.bg-active."
         },
         "color-subtle": {
           "$value": "{dsn.color.neutral.color-subtle}",
           "$type": "color",
-          "$description": "Subtiele tekstkleur"
+          "$description": "Alternatieve, subtielere voorgrondkleur in de primaire merkkleur ten opzichte van accent-1.color-document, voor secundaire tekst. Moet een contrastverhouding van 4.5:1 of meer hebben met accent-1.bg-subtle."
         },
         "color-document": {
           "$value": "{dsn.color.neutral.color-document}",
           "$type": "color",
-          "$description": "Documenttekstkleur"
+          "$description": "Algemene voorgrondkleur in de primaire merkkleur, de standaardkeuze voor lopende tekst. Moet een contrastverhouding van 4.5:1 of meer hebben met accent-1.bg-subtle."
         }
       },
       "accent-2": {
         "bg-document": {
           "$value": "{dsn.color.accent-1.bg-document}",
           "$type": "color",
-          "$description": "Documentachtergrond"
+          "$description": "Pagina-achtergrond in de secundaire merkkleur, voor een pagina of sectie met merkuitstraling."
         },
         "bg-elevated": {
           "$value": "{dsn.color.accent-1.bg-elevated}",
           "$type": "color",
-          "$description": "Elevated background"
+          "$description": "Achtergrondkleur in de secundaire merkkleur voor zwevende lagen boven de pagina."
         },
         "bg-subtle": {
           "$value": "{dsn.color.accent-1.bg-subtle}",
           "$type": "color",
-          "$description": "Subtiele achtergrond"
+          "$description": "Alternatieve achtergrondkleur in de secundaire merkkleur ten opzichte van accent-2.bg-document, die zich daar licht van onderscheidt."
         },
         "bg-default": {
           "$value": "{dsn.color.accent-1.bg-default}",
           "$type": "color",
-          "$description": "Standaard achtergrond"
+          "$description": "Standaard achtergrondkleur in de secundaire merkkleur voor getinte componenten die merkuitstraling geven zonder een actie of status aan te duiden, in standaardstatus."
         },
         "bg-hover": {
           "$value": "{dsn.color.accent-1.bg-hover}",
           "$type": "color",
-          "$description": "Achtergrond in hover state"
+          "$description": "Achtergrondkleur in de secundaire merkkleur bij ‘hover’ status van getinte of transparante componenten die merkuitstraling geven zonder een actie of status aan te duiden."
         },
         "bg-active": {
           "$value": "{dsn.color.accent-1.bg-active}",
           "$type": "color",
-          "$description": "Achtergrond in active state"
+          "$description": "Achtergrondkleur in de secundaire merkkleur bij ‘active’ of ‘selected’ status van getinte of transparante componenten die merkuitstraling geven zonder een actie of status aan te duiden."
         },
         "border-subtle": {
           "$value": "{dsn.color.accent-1.border-subtle}",
           "$type": "color",
-          "$description": "Subtiele rand"
+          "$description": "Subtiele lijnkleur in de secundaire merkkleur, niet voor acties of statussen, inzetbaar als er geen contrastverhouding van 3:1 vereist is."
         },
         "border-default": {
           "$value": "{dsn.color.accent-1.border-default}",
           "$type": "color",
-          "$description": "Standaard rand"
+          "$description": "Standaard lijnkleur in de secundaire merkkleur, niet voor acties of statussen. Moet een contrastverhouding van 3:1 of meer hebben met accent-2.bg-default."
         },
         "border-hover": {
           "$value": "{dsn.color.accent-1.border-hover}",
           "$type": "color",
-          "$description": "Rand in hover state"
+          "$description": "Lijnkleur in de secundaire merkkleur bij ‘hover’ status. Moet een contrastverhouding van 3:1 of meer hebben met accent-2.bg-hover."
         },
         "border-active": {
           "$value": "{dsn.color.accent-1.border-active}",
           "$type": "color",
-          "$description": "Rand in active state"
+          "$description": "Lijnkleur in de secundaire merkkleur bij ‘active’ of ‘selected’ status. Moet een contrastverhouding van 3:1 of meer hebben met accent-2.bg-active."
         },
         "color-default": {
           "$value": "{dsn.color.accent-1.color-default}",
           "$type": "color",
-          "$description": "Standaard tekstkleur"
+          "$description": "Standaard tekstkleur in de secundaire merkkleur, niet voor acties of statussen. Moet een contrastverhouding van 4.5:1 of meer hebben met accent-2.bg-default."
         },
         "color-hover": {
           "$value": "{dsn.color.accent-1.color-hover}",
           "$type": "color",
-          "$description": "Tekst in hover state"
+          "$description": "Tekstkleur in de secundaire merkkleur bij ‘hover’ status. Moet een contrastverhouding van 4.5:1 of meer hebben met accent-2.bg-hover."
         },
         "color-active": {
           "$value": "{dsn.color.accent-1.color-active}",
           "$type": "color",
-          "$description": "Tekst in active state"
+          "$description": "Tekstkleur in de secundaire merkkleur bij ‘active’ of ‘selected’ status. Moet een contrastverhouding van 4.5:1 of meer hebben met accent-2.bg-active."
         },
         "color-subtle": {
           "$value": "{dsn.color.accent-1.color-subtle}",
           "$type": "color",
-          "$description": "Subtiele tekstkleur"
+          "$description": "Alternatieve, subtielere voorgrondkleur in de secundaire merkkleur ten opzichte van accent-2.color-document, voor secundaire tekst. Moet een contrastverhouding van 4.5:1 of meer hebben met accent-2.bg-subtle."
         },
         "color-document": {
           "$value": "{dsn.color.accent-1.color-document}",
           "$type": "color",
-          "$description": "Documenttekstkleur"
+          "$description": "Algemene voorgrondkleur in de secundaire merkkleur, de standaardkeuze voor lopende tekst. Moet een contrastverhouding van 4.5:1 of meer hebben met accent-2.bg-subtle."
         }
       },
       "accent-3": {
         "bg-document": {
           "$value": "{dsn.color.accent-1.bg-document}",
           "$type": "color",
-          "$description": "Documentachtergrond"
+          "$description": "Pagina-achtergrond in de tertiaire merkkleur, voor een pagina of sectie met merkuitstraling."
         },
         "bg-elevated": {
           "$value": "{dsn.color.accent-1.bg-elevated}",
           "$type": "color",
-          "$description": "Elevated background"
+          "$description": "Achtergrondkleur in de tertiaire merkkleur voor zwevende lagen boven de pagina."
         },
         "bg-subtle": {
           "$value": "{dsn.color.accent-1.bg-subtle}",
           "$type": "color",
-          "$description": "Subtiele achtergrond"
+          "$description": "Alternatieve achtergrondkleur in de tertiaire merkkleur ten opzichte van accent-3.bg-document, die zich daar licht van onderscheidt."
         },
         "bg-default": {
           "$value": "{dsn.color.accent-1.bg-default}",
           "$type": "color",
-          "$description": "Standaard achtergrond"
+          "$description": "Standaard achtergrondkleur in de tertiaire merkkleur voor getinte componenten die merkuitstraling geven zonder een actie of status aan te duiden, in standaardstatus."
         },
         "bg-hover": {
           "$value": "{dsn.color.accent-1.bg-hover}",
           "$type": "color",
-          "$description": "Achtergrond in hover state"
+          "$description": "Achtergrondkleur in de tertiaire merkkleur bij ‘hover’ status van getinte of transparante componenten die merkuitstraling geven zonder een actie of status aan te duiden."
         },
         "bg-active": {
           "$value": "{dsn.color.accent-1.bg-active}",
           "$type": "color",
-          "$description": "Achtergrond in active state"
+          "$description": "Achtergrondkleur in de tertiaire merkkleur bij ‘active’ of ‘selected’ status van getinte of transparante componenten die merkuitstraling geven zonder een actie of status aan te duiden."
         },
         "border-subtle": {
           "$value": "{dsn.color.accent-1.border-subtle}",
           "$type": "color",
-          "$description": "Subtiele rand"
+          "$description": "Subtiele lijnkleur in de tertiaire merkkleur, niet voor acties of statussen, inzetbaar als er geen contrastverhouding van 3:1 vereist is."
         },
         "border-default": {
           "$value": "{dsn.color.accent-1.border-default}",
           "$type": "color",
-          "$description": "Standaard rand"
+          "$description": "Standaard lijnkleur in de tertiaire merkkleur, niet voor acties of statussen. Moet een contrastverhouding van 3:1 of meer hebben met accent-3.bg-default."
         },
         "border-hover": {
           "$value": "{dsn.color.accent-1.border-hover}",
           "$type": "color",
-          "$description": "Rand in hover state"
+          "$description": "Lijnkleur in de tertiaire merkkleur bij ‘hover’ status. Moet een contrastverhouding van 3:1 of meer hebben met accent-3.bg-hover."
         },
         "border-active": {
           "$value": "{dsn.color.accent-1.border-active}",
           "$type": "color",
-          "$description": "Rand in active state"
+          "$description": "Lijnkleur in de tertiaire merkkleur bij ‘active’ of ‘selected’ status. Moet een contrastverhouding van 3:1 of meer hebben met accent-3.bg-active."
         },
         "color-default": {
           "$value": "{dsn.color.accent-1.color-default}",
           "$type": "color",
-          "$description": "Standaard tekstkleur"
+          "$description": "Standaard tekstkleur in de tertiaire merkkleur, niet voor acties of statussen. Moet een contrastverhouding van 4.5:1 of meer hebben met accent-3.bg-default."
         },
         "color-hover": {
           "$value": "{dsn.color.accent-1.color-hover}",
           "$type": "color",
-          "$description": "Tekst in hover state"
+          "$description": "Tekstkleur in de tertiaire merkkleur bij ‘hover’ status. Moet een contrastverhouding van 4.5:1 of meer hebben met accent-3.bg-hover."
         },
         "color-active": {
           "$value": "{dsn.color.accent-1.color-active}",
           "$type": "color",
-          "$description": "Tekst in active state"
+          "$description": "Tekstkleur in de tertiaire merkkleur bij ‘active’ of ‘selected’ status. Moet een contrastverhouding van 4.5:1 of meer hebben met accent-3.bg-active."
         },
         "color-subtle": {
           "$value": "{dsn.color.accent-1.color-subtle}",
           "$type": "color",
-          "$description": "Subtiele tekstkleur"
+          "$description": "Alternatieve, subtielere voorgrondkleur in de tertiaire merkkleur ten opzichte van accent-3.color-document, voor secundaire tekst. Moet een contrastverhouding van 4.5:1 of meer hebben met accent-3.bg-subtle."
         },
         "color-document": {
           "$value": "{dsn.color.accent-1.color-document}",
           "$type": "color",
-          "$description": "Documenttekstkleur"
+          "$description": "Algemene voorgrondkleur in de tertiaire merkkleur, de standaardkeuze voor lopende tekst. Moet een contrastverhouding van 4.5:1 of meer hebben met accent-3.bg-subtle."
         }
       },
       "action-1": {
         "bg-document": {
           "$value": "{dsn.color.accent-1.bg-document}",
           "$type": "color",
-          "$description": "Documentachtergrond"
+          "$description": "Pagina-achtergrond in de kleur voor primaire acties."
         },
         "bg-elevated": {
           "$value": "{dsn.color.accent-1.bg-elevated}",
           "$type": "color",
-          "$description": "Elevated background"
+          "$description": "Achtergrondkleur in de kleur voor primaire acties voor zwevende lagen boven de pagina."
         },
         "bg-subtle": {
           "$value": "{dsn.color.accent-1.bg-subtle}",
           "$type": "color",
-          "$description": "Subtiele achtergrond"
+          "$description": "Alternatieve achtergrondkleur in de kleur voor primaire acties ten opzichte van action-1.bg-document, die zich daar licht van onderscheidt."
         },
         "bg-default": {
           "$value": "{dsn.color.accent-1.bg-default}",
           "$type": "color",
-          "$description": "Standaard achtergrond"
+          "$description": "Standaard achtergrondkleur in de kleur voor primaire acties voor getinte componenten die een primaire actie uitvoeren, zoals knoppen, in standaardstatus."
         },
         "bg-hover": {
           "$value": "{dsn.color.accent-1.bg-hover}",
           "$type": "color",
-          "$description": "Achtergrond in hover state"
+          "$description": "Achtergrondkleur in de kleur voor primaire acties bij ‘hover’ status van getinte of transparante componenten die een primaire actie uitvoeren, zoals knoppen."
         },
         "bg-active": {
           "$value": "{dsn.color.accent-1.bg-active}",
           "$type": "color",
-          "$description": "Achtergrond in active state"
+          "$description": "Achtergrondkleur in de kleur voor primaire acties bij ‘active’ of ‘selected’ status van getinte of transparante componenten die een primaire actie uitvoeren, zoals knoppen."
         },
         "border-subtle": {
           "$value": "{dsn.color.accent-1.border-subtle}",
           "$type": "color",
-          "$description": "Subtiele rand"
+          "$description": "Subtiele lijnkleur voor primaire acties, zoals knoppen, inzetbaar als er geen contrastverhouding van 3:1 vereist is."
         },
         "border-default": {
           "$value": "{dsn.color.accent-1.border-default}",
           "$type": "color",
-          "$description": "Standaard rand"
+          "$description": "Standaard lijnkleur voor primaire acties, zoals knoppen. Moet een contrastverhouding van 3:1 of meer hebben met action-1.bg-default."
         },
         "border-hover": {
           "$value": "{dsn.color.accent-1.border-hover}",
           "$type": "color",
-          "$description": "Rand in hover state"
+          "$description": "Lijnkleur voor primaire acties bij ‘hover’ status. Moet een contrastverhouding van 3:1 of meer hebben met action-1.bg-hover."
         },
         "border-active": {
           "$value": "{dsn.color.accent-1.border-active}",
           "$type": "color",
-          "$description": "Rand in active state"
+          "$description": "Lijnkleur voor primaire acties bij ‘active’ of ‘selected’ status. Moet een contrastverhouding van 3:1 of meer hebben met action-1.bg-active."
         },
         "color-default": {
           "$value": "{dsn.color.accent-1.color-default}",
           "$type": "color",
-          "$description": "Standaard tekstkleur"
+          "$description": "Standaard tekstkleur voor primaire acties, zoals knoppen. Moet een contrastverhouding van 4.5:1 of meer hebben met action-1.bg-default."
         },
         "color-hover": {
           "$value": "{dsn.color.accent-1.color-hover}",
           "$type": "color",
-          "$description": "Tekst in hover state"
+          "$description": "Tekstkleur voor primaire acties bij ‘hover’ status. Moet een contrastverhouding van 4.5:1 of meer hebben met action-1.bg-hover."
         },
         "color-active": {
           "$value": "{dsn.color.accent-1.color-active}",
           "$type": "color",
-          "$description": "Tekst in active state"
+          "$description": "Tekstkleur voor primaire acties bij ‘active’ of ‘selected’ status. Moet een contrastverhouding van 4.5:1 of meer hebben met action-1.bg-active."
         },
         "color-subtle": {
           "$value": "{dsn.color.accent-1.color-subtle}",
           "$type": "color",
-          "$description": "Subtiele tekstkleur"
+          "$description": "Alternatieve, subtielere voorgrondkleur in de kleur voor primaire acties ten opzichte van action-1.color-document, voor secundaire tekst. Moet een contrastverhouding van 4.5:1 of meer hebben met action-1.bg-subtle."
         },
         "color-document": {
           "$value": "{dsn.color.accent-1.color-document}",
           "$type": "color",
-          "$description": "Documenttekstkleur"
+          "$description": "Algemene voorgrondkleur in de kleur voor primaire acties, de standaardkeuze voor lopende tekst. Moet een contrastverhouding van 4.5:1 of meer hebben met action-1.bg-subtle."
         }
       },
       "action-2": {
         "bg-document": {
           "$value": "{dsn.color.accent-1.bg-document}",
           "$type": "color",
-          "$description": "Documentachtergrond"
+          "$description": "Pagina-achtergrond in de kleur voor secundaire acties."
         },
         "bg-elevated": {
           "$value": "{dsn.color.accent-1.bg-elevated}",
           "$type": "color",
-          "$description": "Elevated background"
+          "$description": "Achtergrondkleur in de kleur voor secundaire acties voor zwevende lagen boven de pagina."
         },
         "bg-subtle": {
           "$value": "{dsn.color.accent-1.bg-subtle}",
           "$type": "color",
-          "$description": "Subtiele achtergrond"
+          "$description": "Alternatieve achtergrondkleur in de kleur voor secundaire acties ten opzichte van action-2.bg-document, die zich daar licht van onderscheidt."
         },
         "bg-default": {
           "$value": "{dsn.color.accent-1.bg-default}",
           "$type": "color",
-          "$description": "Standaard achtergrond"
+          "$description": "Standaard achtergrondkleur in de kleur voor secundaire acties voor getinte componenten die een secundaire actie uitvoeren, zoals links en navigatie, in standaardstatus."
         },
         "bg-hover": {
           "$value": "{dsn.color.accent-1.bg-hover}",
           "$type": "color",
-          "$description": "Achtergrond in hover state"
+          "$description": "Achtergrondkleur in de kleur voor secundaire acties bij ‘hover’ status van getinte of transparante componenten die een secundaire actie uitvoeren, zoals links en navigatie."
         },
         "bg-active": {
           "$value": "{dsn.color.accent-1.bg-active}",
           "$type": "color",
-          "$description": "Achtergrond in active state"
+          "$description": "Achtergrondkleur in de kleur voor secundaire acties bij ‘active’ of ‘selected’ status van getinte of transparante componenten die een secundaire actie uitvoeren, zoals links en navigatie."
         },
         "border-subtle": {
           "$value": "{dsn.color.accent-1.border-subtle}",
           "$type": "color",
-          "$description": "Subtiele rand"
+          "$description": "Subtiele lijnkleur voor secundaire acties, zoals links en navigatie, inzetbaar als er geen contrastverhouding van 3:1 vereist is."
         },
         "border-default": {
           "$value": "{dsn.color.accent-1.border-default}",
           "$type": "color",
-          "$description": "Standaard rand"
+          "$description": "Standaard lijnkleur voor secundaire acties, zoals links en navigatie. Moet een contrastverhouding van 3:1 of meer hebben met action-2.bg-default."
         },
         "border-hover": {
           "$value": "{dsn.color.accent-1.border-hover}",
           "$type": "color",
-          "$description": "Rand in hover state"
+          "$description": "Lijnkleur voor secundaire acties bij ‘hover’ status. Moet een contrastverhouding van 3:1 of meer hebben met action-2.bg-hover."
         },
         "border-active": {
           "$value": "{dsn.color.accent-1.border-active}",
           "$type": "color",
-          "$description": "Rand in active state"
+          "$description": "Lijnkleur voor secundaire acties bij ‘active’ of ‘selected’ status. Moet een contrastverhouding van 3:1 of meer hebben met action-2.bg-active."
         },
         "color-default": {
           "$value": "{dsn.color.accent-1.color-default}",
           "$type": "color",
-          "$description": "Standaard tekstkleur"
+          "$description": "Standaard tekstkleur voor secundaire acties, zoals links en navigatie. Moet een contrastverhouding van 4.5:1 of meer hebben met action-2.bg-default."
         },
         "color-hover": {
           "$value": "{dsn.color.accent-1.color-hover}",
           "$type": "color",
-          "$description": "Tekst in hover state"
+          "$description": "Tekstkleur voor secundaire acties bij ‘hover’ status. Moet een contrastverhouding van 4.5:1 of meer hebben met action-2.bg-hover."
         },
         "color-active": {
           "$value": "{dsn.color.accent-1.color-active}",
           "$type": "color",
-          "$description": "Tekst in active state"
+          "$description": "Tekstkleur voor secundaire acties bij ‘active’ of ‘selected’ status. Moet een contrastverhouding van 4.5:1 of meer hebben met action-2.bg-active."
         },
         "color-subtle": {
           "$value": "{dsn.color.accent-1.color-subtle}",
           "$type": "color",
-          "$description": "Subtiele tekstkleur"
+          "$description": "Alternatieve, subtielere voorgrondkleur in de kleur voor secundaire acties ten opzichte van action-2.color-document, voor secundaire tekst. Moet een contrastverhouding van 4.5:1 of meer hebben met action-2.bg-subtle."
         },
         "color-document": {
           "$value": "{dsn.color.accent-1.color-document}",
           "$type": "color",
-          "$description": "Documenttekstkleur"
+          "$description": "Algemene voorgrondkleur in de kleur voor secundaire acties, de standaardkeuze voor lopende tekst. Moet een contrastverhouding van 4.5:1 of meer hebben met action-2.bg-subtle."
         }
       },
       "positive": {
         "bg-document": {
           "$value": "{dsn.color.neutral.bg-document}",
           "$type": "color",
-          "$description": "Documentachtergrond"
+          "$description": "Pagina-achtergrond met succes-tint, voor een pagina of sectie die succes of een bevestiging toont."
         },
         "bg-elevated": {
           "$value": "{dsn.color.neutral.bg-elevated}",
           "$type": "color",
-          "$description": "Elevated background"
+          "$description": "Achtergrondkleur met succes-tint voor zwevende lagen boven de pagina."
         },
         "bg-subtle": {
           "$value": "{dsn.color.neutral.bg-subtle}",
           "$type": "color",
-          "$description": "Subtiele achtergrond"
+          "$description": "Alternatieve achtergrondkleur met succes-tint ten opzichte van positive.bg-document, die zich daar licht van onderscheidt."
         },
         "bg-default": {
           "$value": "{dsn.color.neutral.bg-default}",
           "$type": "color",
-          "$description": "Standaard achtergrond"
+          "$description": "Standaard achtergrondkleur met succes-tint voor getinte componenten die succes of een bevestiging aangeven, in standaardstatus."
         },
         "bg-hover": {
           "$value": "{dsn.color.neutral.bg-hover}",
           "$type": "color",
-          "$description": "Achtergrond in hover state"
+          "$description": "Achtergrondkleur met succes-tint bij ‘hover’ status van getinte of transparante componenten die succes of een bevestiging aangeven."
         },
         "bg-active": {
           "$value": "{dsn.color.neutral.bg-active}",
           "$type": "color",
-          "$description": "Achtergrond in active state"
+          "$description": "Achtergrondkleur met succes-tint bij ‘active’ of ‘selected’ status van getinte of transparante componenten die succes of een bevestiging aangeven."
         },
         "border-subtle": {
           "$value": "{dsn.color.neutral.border-subtle}",
           "$type": "color",
-          "$description": "Subtiele rand"
+          "$description": "Subtiele lijnkleur voor succes of een bevestiging, inzetbaar als er geen contrastverhouding van 3:1 vereist is."
         },
         "border-default": {
           "$value": "{dsn.color.neutral.border-default}",
           "$type": "color",
-          "$description": "Standaard rand"
+          "$description": "Standaard lijnkleur voor succes of een bevestiging. Moet een contrastverhouding van 3:1 of meer hebben met positive.bg-default."
         },
         "border-hover": {
           "$value": "{dsn.color.neutral.border-hover}",
           "$type": "color",
-          "$description": "Rand in hover state"
+          "$description": "Lijnkleur voor succes of een bevestiging bij ‘hover’ status. Moet een contrastverhouding van 3:1 of meer hebben met positive.bg-hover."
         },
         "border-active": {
           "$value": "{dsn.color.neutral.border-active}",
           "$type": "color",
-          "$description": "Rand in active state"
+          "$description": "Lijnkleur voor succes of een bevestiging bij ‘active’ of ‘selected’ status. Moet een contrastverhouding van 3:1 of meer hebben met positive.bg-active."
         },
         "color-default": {
           "$value": "{dsn.color.neutral.color-default}",
           "$type": "color",
-          "$description": "Standaard tekstkleur"
+          "$description": "Standaard tekstkleur voor succes of een bevestiging. Moet een contrastverhouding van 4.5:1 of meer hebben met positive.bg-default."
         },
         "color-hover": {
           "$value": "{dsn.color.neutral.color-hover}",
           "$type": "color",
-          "$description": "Tekst in hover state"
+          "$description": "Tekstkleur voor succes of een bevestiging bij ‘hover’ status. Moet een contrastverhouding van 4.5:1 of meer hebben met positive.bg-hover."
         },
         "color-active": {
           "$value": "{dsn.color.neutral.color-active}",
           "$type": "color",
-          "$description": "Tekst in active state"
+          "$description": "Tekstkleur voor succes of een bevestiging bij ‘active’ of ‘selected’ status. Moet een contrastverhouding van 4.5:1 of meer hebben met positive.bg-active."
         },
         "color-subtle": {
           "$value": "{dsn.color.neutral.color-subtle}",
           "$type": "color",
-          "$description": "Subtiele tekstkleur"
+          "$description": "Alternatieve, subtielere voorgrondkleur met succes-tint ten opzichte van positive.color-document, voor secundaire tekst. Moet een contrastverhouding van 4.5:1 of meer hebben met positive.bg-subtle."
         },
         "color-document": {
           "$value": "{dsn.color.neutral.color-document}",
           "$type": "color",
-          "$description": "Documenttekstkleur"
+          "$description": "Algemene voorgrondkleur met succes-tint, de standaardkeuze voor lopende tekst. Moet een contrastverhouding van 4.5:1 of meer hebben met positive.bg-subtle."
         }
       },
       "negative": {
         "bg-document": {
           "$value": "{dsn.color.neutral.bg-document}",
           "$type": "color",
-          "$description": "Documentachtergrond"
+          "$description": "Pagina-achtergrond met fout-tint, voor een pagina of sectie in een foutcontext."
         },
         "bg-elevated": {
           "$value": "{dsn.color.neutral.bg-elevated}",
           "$type": "color",
-          "$description": "Elevated background"
+          "$description": "Achtergrondkleur met fout-tint voor zwevende lagen boven de pagina."
         },
         "bg-subtle": {
           "$value": "{dsn.color.neutral.bg-subtle}",
           "$type": "color",
-          "$description": "Subtiele achtergrond"
+          "$description": "Alternatieve achtergrondkleur met fout-tint ten opzichte van negative.bg-document, die zich daar licht van onderscheidt."
         },
         "bg-default": {
           "$value": "{dsn.color.neutral.bg-default}",
           "$type": "color",
-          "$description": "Standaard achtergrond"
+          "$description": "Standaard achtergrondkleur voor getinte componenten die een fout of destructieve actie aangeven, in standaardstatus."
         },
         "bg-hover": {
           "$value": "{dsn.color.neutral.bg-hover}",
           "$type": "color",
-          "$description": "Achtergrond in hover state"
+          "$description": "Achtergrondkleur met fout-tint bij ‘hover’ status van getinte of transparante componenten die een fout of destructieve actie aangeven."
         },
         "bg-active": {
           "$value": "{dsn.color.neutral.bg-active}",
           "$type": "color",
-          "$description": "Achtergrond in active state"
+          "$description": "Achtergrondkleur met fout-tint bij ‘active’ of ‘selected’ status van getinte of transparante componenten die een fout of destructieve actie aangeven."
         },
         "border-subtle": {
           "$value": "{dsn.color.neutral.border-subtle}",
           "$type": "color",
-          "$description": "Subtiele rand"
+          "$description": "Subtiele lijnkleur voor een fout of destructieve actie, inzetbaar als er geen contrastverhouding van 3:1 vereist is."
         },
         "border-default": {
           "$value": "{dsn.color.neutral.border-default}",
           "$type": "color",
-          "$description": "Standaard rand"
+          "$description": "Standaard lijnkleur voor een fout of destructieve actie. Moet een contrastverhouding van 3:1 of meer hebben met negative.bg-default."
         },
         "border-hover": {
           "$value": "{dsn.color.neutral.border-hover}",
           "$type": "color",
-          "$description": "Rand in hover state"
+          "$description": "Lijnkleur voor een fout of destructieve actie bij ‘hover’ status. Moet een contrastverhouding van 3:1 of meer hebben met negative.bg-hover."
         },
         "border-active": {
           "$value": "{dsn.color.neutral.border-active}",
           "$type": "color",
-          "$description": "Rand in active state"
+          "$description": "Lijnkleur voor een fout of destructieve actie bij ‘active’ of ‘selected’ status. Moet een contrastverhouding van 3:1 of meer hebben met negative.bg-active."
         },
         "color-default": {
           "$value": "{dsn.color.neutral.color-default}",
           "$type": "color",
-          "$description": "Standaard tekstkleur"
+          "$description": "Standaard tekstkleur voor een fout of destructieve actie. Moet een contrastverhouding van 4.5:1 of meer hebben met negative.bg-default."
         },
         "color-hover": {
           "$value": "{dsn.color.neutral.color-hover}",
           "$type": "color",
-          "$description": "Tekst in hover state"
+          "$description": "Tekstkleur voor een fout of destructieve actie bij ‘hover’ status. Moet een contrastverhouding van 4.5:1 of meer hebben met negative.bg-hover."
         },
         "color-active": {
           "$value": "{dsn.color.neutral.color-active}",
           "$type": "color",
-          "$description": "Tekst in active state"
+          "$description": "Tekstkleur voor een fout of destructieve actie bij ‘active’ of ‘selected’ status. Moet een contrastverhouding van 4.5:1 of meer hebben met negative.bg-active."
         },
         "color-subtle": {
           "$value": "{dsn.color.neutral.color-subtle}",
           "$type": "color",
-          "$description": "Subtiele tekstkleur"
+          "$description": "Alternatieve, subtielere voorgrondkleur met fout-tint ten opzichte van negative.color-document, voor secundaire tekst. Moet een contrastverhouding van 4.5:1 of meer hebben met negative.bg-subtle."
         },
         "color-document": {
           "$value": "{dsn.color.neutral.color-document}",
           "$type": "color",
-          "$description": "Documenttekstkleur"
+          "$description": "Algemene voorgrondkleur met fout-tint, de standaardkeuze voor lopende tekst. Moet een contrastverhouding van 4.5:1 of meer hebben met negative.bg-subtle."
         }
       },
       "warning": {
         "bg-document": {
           "$value": "{dsn.color.neutral.bg-document}",
           "$type": "color",
-          "$description": "Documentachtergrond"
+          "$description": "Pagina-achtergrond met waarschuwings-tint, voor een pagina of sectie in een waarschuwingscontext."
         },
         "bg-elevated": {
           "$value": "{dsn.color.neutral.bg-elevated}",
           "$type": "color",
-          "$description": "Elevated background"
+          "$description": "Achtergrondkleur met waarschuwings-tint voor zwevende lagen boven de pagina."
         },
         "bg-subtle": {
           "$value": "{dsn.color.neutral.bg-subtle}",
           "$type": "color",
-          "$description": "Subtiele achtergrond"
+          "$description": "Alternatieve achtergrondkleur met waarschuwings-tint ten opzichte van warning.bg-document, die zich daar licht van onderscheidt."
         },
         "bg-default": {
           "$value": "{dsn.color.neutral.bg-default}",
           "$type": "color",
-          "$description": "Standaard achtergrond"
+          "$description": "Standaard achtergrondkleur met waarschuwings-tint voor getinte componenten die een waarschuwing aangeven, in standaardstatus."
         },
         "bg-hover": {
           "$value": "{dsn.color.neutral.bg-hover}",
           "$type": "color",
-          "$description": "Achtergrond in hover state"
+          "$description": "Achtergrondkleur met waarschuwings-tint bij ‘hover’ status van getinte of transparante componenten die een waarschuwing aangeven."
         },
         "bg-active": {
           "$value": "{dsn.color.neutral.bg-active}",
           "$type": "color",
-          "$description": "Achtergrond in active state"
+          "$description": "Achtergrondkleur met waarschuwings-tint bij ‘active’ of ‘selected’ status van getinte of transparante componenten die een waarschuwing aangeven."
         },
         "border-subtle": {
           "$value": "{dsn.color.neutral.border-subtle}",
           "$type": "color",
-          "$description": "Subtiele rand"
+          "$description": "Subtiele lijnkleur voor een waarschuwing, inzetbaar als er geen contrastverhouding van 3:1 vereist is."
         },
         "border-default": {
           "$value": "{dsn.color.neutral.border-default}",
           "$type": "color",
-          "$description": "Standaard rand"
+          "$description": "Standaard lijnkleur voor een waarschuwing. Moet een contrastverhouding van 3:1 of meer hebben met warning.bg-default."
         },
         "border-hover": {
           "$value": "{dsn.color.neutral.border-hover}",
           "$type": "color",
-          "$description": "Rand in hover state"
+          "$description": "Lijnkleur voor een waarschuwing bij ‘hover’ status. Moet een contrastverhouding van 3:1 of meer hebben met warning.bg-hover."
         },
         "border-active": {
           "$value": "{dsn.color.neutral.border-active}",
           "$type": "color",
-          "$description": "Rand in active state"
+          "$description": "Lijnkleur voor een waarschuwing bij ‘active’ of ‘selected’ status. Moet een contrastverhouding van 3:1 of meer hebben met warning.bg-active."
         },
         "color-default": {
           "$value": "{dsn.color.neutral.color-default}",
           "$type": "color",
-          "$description": "Standaard tekstkleur"
+          "$description": "Standaard tekstkleur voor een waarschuwing. Moet een contrastverhouding van 4.5:1 of meer hebben met warning.bg-default."
         },
         "color-hover": {
           "$value": "{dsn.color.neutral.color-hover}",
           "$type": "color",
-          "$description": "Tekst in hover state"
+          "$description": "Tekstkleur voor een waarschuwing bij ‘hover’ status. Moet een contrastverhouding van 4.5:1 of meer hebben met warning.bg-hover."
         },
         "color-active": {
           "$value": "{dsn.color.neutral.color-active}",
           "$type": "color",
-          "$description": "Tekst in active state"
+          "$description": "Tekstkleur voor een waarschuwing bij ‘active’ of ‘selected’ status. Moet een contrastverhouding van 4.5:1 of meer hebben met warning.bg-active."
         },
         "color-subtle": {
           "$value": "{dsn.color.neutral.color-subtle}",
           "$type": "color",
-          "$description": "Subtiele tekstkleur"
+          "$description": "Alternatieve, subtielere voorgrondkleur met waarschuwings-tint ten opzichte van warning.color-document, voor secundaire tekst. Moet een contrastverhouding van 4.5:1 of meer hebben met warning.bg-subtle."
         },
         "color-document": {
           "$value": "{dsn.color.neutral.color-document}",
           "$type": "color",
-          "$description": "Documenttekstkleur"
+          "$description": "Algemene voorgrondkleur met waarschuwings-tint, de standaardkeuze voor lopende tekst. Moet een contrastverhouding van 4.5:1 of meer hebben met warning.bg-subtle."
         }
       },
       "info": {
         "bg-document": {
           "$value": "{dsn.color.neutral.bg-document}",
           "$type": "color",
-          "$description": "Documentachtergrond"
+          "$description": "Pagina-achtergrond met info-tint, voor een pagina of sectie met informatieve inhoud."
         },
         "bg-elevated": {
           "$value": "{dsn.color.neutral.bg-elevated}",
           "$type": "color",
-          "$description": "Elevated background"
+          "$description": "Achtergrondkleur met info-tint voor zwevende lagen boven de pagina."
         },
         "bg-subtle": {
           "$value": "{dsn.color.neutral.bg-subtle}",
           "$type": "color",
-          "$description": "Subtiele achtergrond"
+          "$description": "Alternatieve achtergrondkleur met info-tint ten opzichte van info.bg-document, die zich daar licht van onderscheidt."
         },
         "bg-default": {
           "$value": "{dsn.color.neutral.bg-default}",
           "$type": "color",
-          "$description": "Standaard achtergrond"
+          "$description": "Standaard achtergrondkleur met info-tint voor getinte componenten die informatie geven zonder succes, waarschuwing of fout aan te duiden, in standaardstatus."
         },
         "bg-hover": {
           "$value": "{dsn.color.neutral.bg-hover}",
           "$type": "color",
-          "$description": "Achtergrond in hover state"
+          "$description": "Achtergrondkleur met info-tint bij ‘hover’ status van getinte of transparante componenten die informatie geven zonder succes, waarschuwing of fout aan te duiden."
         },
         "bg-active": {
           "$value": "{dsn.color.neutral.bg-active}",
           "$type": "color",
-          "$description": "Achtergrond in active state"
+          "$description": "Achtergrondkleur met info-tint bij ‘active’ of ‘selected’ status van getinte of transparante componenten die informatie geven zonder succes, waarschuwing of fout aan te duiden."
         },
         "border-subtle": {
           "$value": "{dsn.color.neutral.border-subtle}",
           "$type": "color",
-          "$description": "Subtiele rand"
+          "$description": "Subtiele lijnkleur voor informatieve inhoud, inzetbaar als er geen contrastverhouding van 3:1 vereist is."
         },
         "border-default": {
           "$value": "{dsn.color.neutral.border-default}",
           "$type": "color",
-          "$description": "Standaard rand"
+          "$description": "Standaard lijnkleur voor informatieve inhoud. Moet een contrastverhouding van 3:1 of meer hebben met info.bg-default."
         },
         "border-hover": {
           "$value": "{dsn.color.neutral.border-hover}",
           "$type": "color",
-          "$description": "Rand in hover state"
+          "$description": "Lijnkleur voor informatieve inhoud bij ‘hover’ status. Moet een contrastverhouding van 3:1 of meer hebben met info.bg-hover."
         },
         "border-active": {
           "$value": "{dsn.color.neutral.border-active}",
           "$type": "color",
-          "$description": "Rand in active state"
+          "$description": "Lijnkleur voor informatieve inhoud bij ‘active’ of ‘selected’ status. Moet een contrastverhouding van 3:1 of meer hebben met info.bg-active."
         },
         "color-default": {
           "$value": "{dsn.color.neutral.color-default}",
           "$type": "color",
-          "$description": "Standaard tekstkleur"
+          "$description": "Standaard tekstkleur voor informatieve inhoud. Moet een contrastverhouding van 4.5:1 of meer hebben met info.bg-default."
         },
         "color-hover": {
           "$value": "{dsn.color.neutral.color-hover}",
           "$type": "color",
-          "$description": "Tekst in hover state"
+          "$description": "Tekstkleur voor informatieve inhoud bij ‘hover’ status. Moet een contrastverhouding van 4.5:1 of meer hebben met info.bg-hover."
         },
         "color-active": {
           "$value": "{dsn.color.neutral.color-active}",
           "$type": "color",
-          "$description": "Tekst in active state"
+          "$description": "Tekstkleur voor informatieve inhoud bij ‘active’ of ‘selected’ status. Moet een contrastverhouding van 4.5:1 of meer hebben met info.bg-active."
         },
         "color-subtle": {
           "$value": "{dsn.color.neutral.color-subtle}",
           "$type": "color",
-          "$description": "Subtiele tekstkleur"
+          "$description": "Alternatieve, subtielere voorgrondkleur met info-tint ten opzichte van info.color-document, voor secundaire tekst. Moet een contrastverhouding van 4.5:1 of meer hebben met info.bg-subtle."
         },
         "color-document": {
           "$value": "{dsn.color.neutral.color-document}",
           "$type": "color",
-          "$description": "Documenttekstkleur"
+          "$description": "Algemene voorgrondkleur met info-tint, de standaardkeuze voor lopende tekst. Moet een contrastverhouding van 4.5:1 of meer hebben met info.bg-subtle."
         }
       },
       "neutral-inverse": {
         "bg-document": {
           "$value": "{dsn.color.neutral.color-document}",
           "$type": "color",
-          "$description": "Inverse documentachtergrond"
+          "$description": "Neutrale pagina-achtergrond voor een omgekeerd vlak (donker in light mode, licht in dark mode), voor een sectie of overlay die sterk afsteekt."
         },
         "bg-elevated": {
           "$value": "{dsn.color.neutral.color-document}",
           "$type": "color",
-          "$description": "Elevated background (inverse) — for floating layers (modals, popovers, dropdowns)"
+          "$description": "Neutrale achtergrondkleur voor zwevende lagen boven een omgekeerd vlak."
         },
         "bg-subtle": {
           "$value": "{dsn.color.neutral.color-active}",
           "$type": "color",
-          "$description": "Inverse subtiele achtergrond"
+          "$description": "Alternatieve neutrale achtergrondkleur op een omgekeerd vlak ten opzichte van neutral-inverse.bg-document, die zich daar licht van onderscheidt."
         },
         "bg-default": {
           "$value": "{dsn.color.neutral.color-hover}",
           "$type": "color",
-          "$description": "Inverse standaard achtergrond"
+          "$description": "Standaard neutrale achtergrondkleur voor omgekeerde getinte componenten (donker in light mode, licht in dark mode) die sterk moeten opvallen, in standaardstatus."
         },
         "bg-hover": {
           "$value": "{dsn.color.neutral.color-default}",
           "$type": "color",
-          "$description": "Inverse achtergrond in hover state"
+          "$description": "Neutrale achtergrondkleur bij ‘hover’ status van omgekeerde getinte of transparante componenten."
         },
         "bg-active": {
           "$value": "{dsn.color.neutral.color-subtle}",
           "$type": "color",
-          "$description": "Inverse achtergrond in active state"
+          "$description": "Neutrale achtergrondkleur bij ‘active’ of ‘selected’ status van omgekeerde getinte of transparante componenten."
         },
         "border-subtle": {
           "$value": "{dsn.color.neutral.border-active}",
           "$type": "color",
-          "$description": "Inverse subtiele rand"
+          "$description": "Subtiele neutrale lijnkleur op een omgekeerd vlak, inzetbaar als er geen contrastverhouding van 3:1 vereist is."
         },
         "border-default": {
           "$value": "{dsn.color.neutral.border-hover}",
           "$type": "color",
-          "$description": "Inverse standaard rand"
+          "$description": "Standaard neutrale lijnkleur op een omgekeerd vlak. Moet een contrastverhouding van 3:1 of meer hebben met neutral-inverse.bg-default."
         },
         "border-hover": {
           "$value": "{dsn.color.neutral.border-default}",
           "$type": "color",
-          "$description": "Inverse rand in hover state"
+          "$description": "Neutrale lijnkleur op een omgekeerd vlak bij ‘hover’ status. Moet een contrastverhouding van 3:1 of meer hebben met neutral-inverse.bg-hover."
         },
         "border-active": {
           "$value": "{dsn.color.neutral.border-subtle}",
           "$type": "color",
-          "$description": "Inverse rand in active state"
+          "$description": "Neutrale lijnkleur op een omgekeerd vlak bij ‘active’ of ‘selected’ status. Moet een contrastverhouding van 3:1 of meer hebben met neutral-inverse.bg-active."
         },
         "color-default": {
           "$value": "{dsn.color.neutral.bg-active}",
           "$type": "color",
-          "$description": "Inverse standaard tekst"
+          "$description": "Standaard neutrale tekstkleur op een omgekeerd vlak. Moet een contrastverhouding van 4.5:1 of meer hebben met neutral-inverse.bg-default."
         },
         "color-hover": {
           "$value": "{dsn.color.neutral.bg-hover}",
           "$type": "color",
-          "$description": "Inverse tekst in hover state"
+          "$description": "Neutrale tekstkleur op een omgekeerd vlak bij ‘hover’ status. Moet een contrastverhouding van 4.5:1 of meer hebben met neutral-inverse.bg-hover."
         },
         "color-active": {
           "$value": "{dsn.color.neutral.bg-default}",
           "$type": "color",
-          "$description": "Inverse tekst in active state"
+          "$description": "Neutrale tekstkleur op een omgekeerd vlak bij ‘active’ of ‘selected’ status. Moet een contrastverhouding van 4.5:1 of meer hebben met neutral-inverse.bg-active."
         },
         "color-subtle": {
           "$value": "{dsn.color.neutral.bg-subtle}",
           "$type": "color",
-          "$description": "Inverse subtiele tekst"
+          "$description": "Alternatieve, subtielere neutrale voorgrondkleur op een omgekeerd vlak ten opzichte van neutral-inverse.color-document, voor secundaire tekst. Moet een contrastverhouding van 4.5:1 of meer hebben met neutral-inverse.bg-document."
         },
         "color-document": {
           "$value": "{dsn.color.neutral.bg-document}",
           "$type": "color",
-          "$description": "Inverse documenttekst"
+          "$description": "Algemene neutrale voorgrondkleur op een omgekeerd vlak, de standaardkeuze voor lopende tekst. Moet een contrastverhouding van 4.5:1 of meer hebben met neutral-inverse.bg-default."
         }
       },
       "accent-1-inverse": {
         "bg-document": {
           "$value": "{dsn.color.neutral-inverse.bg-document}",
           "$type": "color",
-          "$description": "Inverse documentachtergrond"
+          "$description": "Pagina-achtergrond in de sterke primaire merkkleur (donker in light mode, licht in dark mode), voor een sectie die sterk afsteekt."
         },
         "bg-elevated": {
           "$value": "{dsn.color.neutral-inverse.bg-elevated}",
           "$type": "color",
-          "$description": "Elevated background (inverse)"
+          "$description": "Achtergrondkleur voor zwevende lagen boven een vlak in de sterke primaire merkkleur."
         },
         "bg-subtle": {
           "$value": "{dsn.color.neutral-inverse.bg-subtle}",
           "$type": "color",
-          "$description": "Inverse subtiele achtergrond"
+          "$description": "Alternatieve achtergrondkleur in de sterke primaire merkkleur ten opzichte van accent-1-inverse.bg-document, die zich daar licht van onderscheidt."
         },
         "bg-default": {
           "$value": "{dsn.color.neutral-inverse.bg-default}",
           "$type": "color",
-          "$description": "Inverse standaard achtergrond"
+          "$description": "Standaard achtergrondkleur in de sterke primaire merkkleur (donker in light mode, licht in dark mode) voor getinte componenten die merkuitstraling benadrukken zonder een actie of status aan te duiden, in standaardstatus."
         },
         "bg-hover": {
           "$value": "{dsn.color.neutral-inverse.bg-hover}",
           "$type": "color",
-          "$description": "Inverse achtergrond in hover state"
+          "$description": "Achtergrondkleur in de sterke primaire merkkleur bij ‘hover’ status van getinte of transparante componenten die merkuitstraling benadrukken zonder een actie of status aan te duiden."
         },
         "bg-active": {
           "$value": "{dsn.color.neutral-inverse.bg-active}",
           "$type": "color",
-          "$description": "Inverse achtergrond in active state"
+          "$description": "Achtergrondkleur in de sterke primaire merkkleur bij ‘active’ of ‘selected’ status van getinte of transparante componenten die merkuitstraling benadrukken zonder een actie of status aan te duiden."
         },
         "border-subtle": {
           "$value": "{dsn.color.neutral-inverse.border-subtle}",
           "$type": "color",
-          "$description": "Inverse subtiele rand"
+          "$description": "Subtiele lijnkleur op een vlak in de sterke primaire merkkleur, inzetbaar als er geen contrastverhouding van 3:1 vereist is."
         },
         "border-default": {
           "$value": "{dsn.color.neutral-inverse.border-default}",
           "$type": "color",
-          "$description": "Inverse standaard rand"
+          "$description": "Standaard lijnkleur op een vlak in de sterke primaire merkkleur. Moet een contrastverhouding van 3:1 of meer hebben met accent-1-inverse.bg-default."
         },
         "border-hover": {
           "$value": "{dsn.color.neutral-inverse.border-hover}",
           "$type": "color",
-          "$description": "Inverse rand in hover state"
+          "$description": "Lijnkleur op een vlak in de sterke primaire merkkleur bij ‘hover’ status. Moet een contrastverhouding van 3:1 of meer hebben met accent-1-inverse.bg-hover."
         },
         "border-active": {
           "$value": "{dsn.color.neutral-inverse.border-active}",
           "$type": "color",
-          "$description": "Inverse rand in active state"
+          "$description": "Lijnkleur op een vlak in de sterke primaire merkkleur bij ‘active’ of ‘selected’ status. Moet een contrastverhouding van 3:1 of meer hebben met accent-1-inverse.bg-active."
         },
         "color-default": {
           "$value": "{dsn.color.neutral-inverse.color-default}",
           "$type": "color",
-          "$description": "Inverse standaard tekst"
+          "$description": "Standaard tekstkleur op een vlak in de sterke primaire merkkleur. Moet een contrastverhouding van 4.5:1 of meer hebben met accent-1-inverse.bg-default."
         },
         "color-hover": {
           "$value": "{dsn.color.neutral-inverse.color-hover}",
           "$type": "color",
-          "$description": "Inverse tekst in hover state"
+          "$description": "Tekstkleur op een vlak in de sterke primaire merkkleur bij ‘hover’ status. Moet een contrastverhouding van 4.5:1 of meer hebben met accent-1-inverse.bg-hover."
         },
         "color-active": {
           "$value": "{dsn.color.neutral-inverse.color-active}",
           "$type": "color",
-          "$description": "Inverse tekst in active state"
+          "$description": "Tekstkleur op een vlak in de sterke primaire merkkleur bij ‘active’ of ‘selected’ status. Moet een contrastverhouding van 4.5:1 of meer hebben met accent-1-inverse.bg-active."
         },
         "color-subtle": {
           "$value": "{dsn.color.neutral-inverse.color-subtle}",
           "$type": "color",
-          "$description": "Inverse subtiele tekst"
+          "$description": "Alternatieve, subtielere voorgrondkleur op een vlak in de sterke primaire merkkleur ten opzichte van accent-1-inverse.color-document, voor secundaire tekst. Moet een contrastverhouding van 4.5:1 of meer hebben met accent-1-inverse.bg-document."
         },
         "color-document": {
           "$value": "{dsn.color.neutral-inverse.color-document}",
           "$type": "color",
-          "$description": "Inverse documenttekst"
+          "$description": "Algemene voorgrondkleur op een vlak in de sterke primaire merkkleur, de standaardkeuze voor lopende tekst. Moet een contrastverhouding van 4.5:1 of meer hebben met accent-1-inverse.bg-default."
         }
       },
       "accent-2-inverse": {
         "bg-document": {
           "$value": "{dsn.color.accent-1-inverse.bg-document}",
-          "$type": "color"
+          "$type": "color",
+          "$description": "Pagina-achtergrond in de sterke secundaire merkkleur (donker in light mode, licht in dark mode), voor een sectie die sterk afsteekt."
         },
         "bg-elevated": {
           "$value": "{dsn.color.accent-1-inverse.bg-elevated}",
-          "$type": "color"
+          "$type": "color",
+          "$description": "Achtergrondkleur voor zwevende lagen boven een vlak in de sterke secundaire merkkleur."
         },
         "bg-subtle": {
           "$value": "{dsn.color.accent-1-inverse.bg-subtle}",
-          "$type": "color"
+          "$type": "color",
+          "$description": "Alternatieve achtergrondkleur in de sterke secundaire merkkleur ten opzichte van accent-2-inverse.bg-document, die zich daar licht van onderscheidt."
         },
         "bg-default": {
           "$value": "{dsn.color.accent-1-inverse.bg-default}",
-          "$type": "color"
+          "$type": "color",
+          "$description": "Standaard achtergrondkleur in de sterke secundaire merkkleur (donker in light mode, licht in dark mode) voor getinte componenten die merkuitstraling benadrukken zonder een actie of status aan te duiden, in standaardstatus."
         },
         "bg-hover": {
           "$value": "{dsn.color.accent-1-inverse.bg-hover}",
-          "$type": "color"
+          "$type": "color",
+          "$description": "Achtergrondkleur in de sterke secundaire merkkleur bij ‘hover’ status van getinte of transparante componenten die merkuitstraling benadrukken zonder een actie of status aan te duiden."
         },
         "bg-active": {
           "$value": "{dsn.color.accent-1-inverse.bg-active}",
-          "$type": "color"
+          "$type": "color",
+          "$description": "Achtergrondkleur in de sterke secundaire merkkleur bij ‘active’ of ‘selected’ status van getinte of transparante componenten die merkuitstraling benadrukken zonder een actie of status aan te duiden."
         },
         "border-subtle": {
           "$value": "{dsn.color.accent-1-inverse.border-subtle}",
-          "$type": "color"
+          "$type": "color",
+          "$description": "Subtiele lijnkleur op een vlak in de sterke secundaire merkkleur, inzetbaar als er geen contrastverhouding van 3:1 vereist is."
         },
         "border-default": {
           "$value": "{dsn.color.accent-1-inverse.border-default}",
-          "$type": "color"
+          "$type": "color",
+          "$description": "Standaard lijnkleur op een vlak in de sterke secundaire merkkleur. Moet een contrastverhouding van 3:1 of meer hebben met accent-2-inverse.bg-default."
         },
         "border-hover": {
           "$value": "{dsn.color.accent-1-inverse.border-hover}",
-          "$type": "color"
+          "$type": "color",
+          "$description": "Lijnkleur op een vlak in de sterke secundaire merkkleur bij ‘hover’ status. Moet een contrastverhouding van 3:1 of meer hebben met accent-2-inverse.bg-hover."
         },
         "border-active": {
           "$value": "{dsn.color.accent-1-inverse.border-active}",
-          "$type": "color"
+          "$type": "color",
+          "$description": "Lijnkleur op een vlak in de sterke secundaire merkkleur bij ‘active’ of ‘selected’ status. Moet een contrastverhouding van 3:1 of meer hebben met accent-2-inverse.bg-active."
         },
         "color-default": {
           "$value": "{dsn.color.accent-1-inverse.color-default}",
-          "$type": "color"
+          "$type": "color",
+          "$description": "Standaard tekstkleur op een vlak in de sterke secundaire merkkleur. Moet een contrastverhouding van 4.5:1 of meer hebben met accent-2-inverse.bg-default."
         },
         "color-hover": {
           "$value": "{dsn.color.accent-1-inverse.color-hover}",
-          "$type": "color"
+          "$type": "color",
+          "$description": "Tekstkleur op een vlak in de sterke secundaire merkkleur bij ‘hover’ status. Moet een contrastverhouding van 4.5:1 of meer hebben met accent-2-inverse.bg-hover."
         },
         "color-active": {
           "$value": "{dsn.color.accent-1-inverse.color-active}",
-          "$type": "color"
+          "$type": "color",
+          "$description": "Tekstkleur op een vlak in de sterke secundaire merkkleur bij ‘active’ of ‘selected’ status. Moet een contrastverhouding van 4.5:1 of meer hebben met accent-2-inverse.bg-active."
         },
         "color-subtle": {
           "$value": "{dsn.color.accent-1-inverse.color-subtle}",
-          "$type": "color"
+          "$type": "color",
+          "$description": "Alternatieve, subtielere voorgrondkleur op een vlak in de sterke secundaire merkkleur ten opzichte van accent-2-inverse.color-document, voor secundaire tekst. Moet een contrastverhouding van 4.5:1 of meer hebben met accent-2-inverse.bg-document."
         },
         "color-document": {
           "$value": "{dsn.color.accent-1-inverse.color-document}",
-          "$type": "color"
+          "$type": "color",
+          "$description": "Algemene voorgrondkleur op een vlak in de sterke secundaire merkkleur, de standaardkeuze voor lopende tekst. Moet een contrastverhouding van 4.5:1 of meer hebben met accent-2-inverse.bg-default."
         }
       },
       "accent-3-inverse": {
         "bg-document": {
           "$value": "{dsn.color.accent-1-inverse.bg-document}",
-          "$type": "color"
+          "$type": "color",
+          "$description": "Pagina-achtergrond in de sterke tertiaire merkkleur (donker in light mode, licht in dark mode), voor een sectie die sterk afsteekt."
         },
         "bg-elevated": {
           "$value": "{dsn.color.accent-1-inverse.bg-elevated}",
-          "$type": "color"
+          "$type": "color",
+          "$description": "Achtergrondkleur voor zwevende lagen boven een vlak in de sterke tertiaire merkkleur."
         },
         "bg-subtle": {
           "$value": "{dsn.color.accent-1-inverse.bg-subtle}",
-          "$type": "color"
+          "$type": "color",
+          "$description": "Alternatieve achtergrondkleur in de sterke tertiaire merkkleur ten opzichte van accent-3-inverse.bg-document, die zich daar licht van onderscheidt."
         },
         "bg-default": {
           "$value": "{dsn.color.accent-1-inverse.bg-default}",
-          "$type": "color"
+          "$type": "color",
+          "$description": "Standaard achtergrondkleur in de sterke tertiaire merkkleur (donker in light mode, licht in dark mode) voor getinte componenten die merkuitstraling benadrukken zonder een actie of status aan te duiden, in standaardstatus."
         },
         "bg-hover": {
           "$value": "{dsn.color.accent-1-inverse.bg-hover}",
-          "$type": "color"
+          "$type": "color",
+          "$description": "Achtergrondkleur in de sterke tertiaire merkkleur bij ‘hover’ status van getinte of transparante componenten die merkuitstraling benadrukken zonder een actie of status aan te duiden."
         },
         "bg-active": {
           "$value": "{dsn.color.accent-1-inverse.bg-active}",
-          "$type": "color"
+          "$type": "color",
+          "$description": "Achtergrondkleur in de sterke tertiaire merkkleur bij ‘active’ of ‘selected’ status van getinte of transparante componenten die merkuitstraling benadrukken zonder een actie of status aan te duiden."
         },
         "border-subtle": {
           "$value": "{dsn.color.accent-1-inverse.border-subtle}",
-          "$type": "color"
+          "$type": "color",
+          "$description": "Subtiele lijnkleur op een vlak in de sterke tertiaire merkkleur, inzetbaar als er geen contrastverhouding van 3:1 vereist is."
         },
         "border-default": {
           "$value": "{dsn.color.accent-1-inverse.border-default}",
-          "$type": "color"
+          "$type": "color",
+          "$description": "Standaard lijnkleur op een vlak in de sterke tertiaire merkkleur. Moet een contrastverhouding van 3:1 of meer hebben met accent-3-inverse.bg-default."
         },
         "border-hover": {
           "$value": "{dsn.color.accent-1-inverse.border-hover}",
-          "$type": "color"
+          "$type": "color",
+          "$description": "Lijnkleur op een vlak in de sterke tertiaire merkkleur bij ‘hover’ status. Moet een contrastverhouding van 3:1 of meer hebben met accent-3-inverse.bg-hover."
         },
         "border-active": {
           "$value": "{dsn.color.accent-1-inverse.border-active}",
-          "$type": "color"
+          "$type": "color",
+          "$description": "Lijnkleur op een vlak in de sterke tertiaire merkkleur bij ‘active’ of ‘selected’ status. Moet een contrastverhouding van 3:1 of meer hebben met accent-3-inverse.bg-active."
         },
         "color-default": {
           "$value": "{dsn.color.accent-1-inverse.color-default}",
-          "$type": "color"
+          "$type": "color",
+          "$description": "Standaard tekstkleur op een vlak in de sterke tertiaire merkkleur. Moet een contrastverhouding van 4.5:1 of meer hebben met accent-3-inverse.bg-default."
         },
         "color-hover": {
           "$value": "{dsn.color.accent-1-inverse.color-hover}",
-          "$type": "color"
+          "$type": "color",
+          "$description": "Tekstkleur op een vlak in de sterke tertiaire merkkleur bij ‘hover’ status. Moet een contrastverhouding van 4.5:1 of meer hebben met accent-3-inverse.bg-hover."
         },
         "color-active": {
           "$value": "{dsn.color.accent-1-inverse.color-active}",
-          "$type": "color"
+          "$type": "color",
+          "$description": "Tekstkleur op een vlak in de sterke tertiaire merkkleur bij ‘active’ of ‘selected’ status. Moet een contrastverhouding van 4.5:1 of meer hebben met accent-3-inverse.bg-active."
         },
         "color-subtle": {
           "$value": "{dsn.color.accent-1-inverse.color-subtle}",
-          "$type": "color"
+          "$type": "color",
+          "$description": "Alternatieve, subtielere voorgrondkleur op een vlak in de sterke tertiaire merkkleur ten opzichte van accent-3-inverse.color-document, voor secundaire tekst. Moet een contrastverhouding van 4.5:1 of meer hebben met accent-3-inverse.bg-document."
         },
         "color-document": {
           "$value": "{dsn.color.accent-1-inverse.color-document}",
-          "$type": "color"
+          "$type": "color",
+          "$description": "Algemene voorgrondkleur op een vlak in de sterke tertiaire merkkleur, de standaardkeuze voor lopende tekst. Moet een contrastverhouding van 4.5:1 of meer hebben met accent-3-inverse.bg-default."
         }
       },
       "action-1-inverse": {
         "bg-document": {
           "$value": "{dsn.color.accent-1-inverse.bg-document}",
-          "$type": "color"
+          "$type": "color",
+          "$description": "Pagina-achtergrond in de sterke kleur voor primaire acties (donker in light mode, licht in dark mode), voor een sectie die sterk afsteekt."
         },
         "bg-elevated": {
           "$value": "{dsn.color.accent-1-inverse.bg-elevated}",
-          "$type": "color"
+          "$type": "color",
+          "$description": "Achtergrondkleur voor zwevende lagen boven een vlak in de sterke kleur voor primaire acties."
         },
         "bg-subtle": {
           "$value": "{dsn.color.accent-1-inverse.bg-subtle}",
-          "$type": "color"
+          "$type": "color",
+          "$description": "Alternatieve achtergrondkleur in de sterke kleur voor primaire acties ten opzichte van action-1-inverse.bg-document, die zich daar licht van onderscheidt."
         },
         "bg-default": {
           "$value": "{dsn.color.accent-1-inverse.bg-default}",
-          "$type": "color"
+          "$type": "color",
+          "$description": "Standaard achtergrondkleur in de sterke kleur voor primaire acties (donker in light mode, licht in dark mode) voor getinte componenten die een primaire actie met extra nadruk uitvoeren, zoals knoppen, in standaardstatus."
         },
         "bg-hover": {
           "$value": "{dsn.color.accent-1-inverse.bg-hover}",
-          "$type": "color"
+          "$type": "color",
+          "$description": "Achtergrondkleur in de sterke kleur voor primaire acties bij ‘hover’ status van getinte of transparante componenten die een primaire actie met extra nadruk uitvoeren, zoals knoppen."
         },
         "bg-active": {
           "$value": "{dsn.color.accent-1-inverse.bg-active}",
-          "$type": "color"
+          "$type": "color",
+          "$description": "Achtergrondkleur in de sterke kleur voor primaire acties bij ‘active’ of ‘selected’ status van getinte of transparante componenten die een primaire actie met extra nadruk uitvoeren, zoals knoppen."
         },
         "border-subtle": {
           "$value": "{dsn.color.accent-1-inverse.border-subtle}",
-          "$type": "color"
+          "$type": "color",
+          "$description": "Subtiele lijnkleur op een vlak in de sterke kleur voor primaire acties, inzetbaar als er geen contrastverhouding van 3:1 vereist is."
         },
         "border-default": {
           "$value": "{dsn.color.accent-1-inverse.border-default}",
-          "$type": "color"
+          "$type": "color",
+          "$description": "Standaard lijnkleur op een vlak in de sterke kleur voor primaire acties. Moet een contrastverhouding van 3:1 of meer hebben met action-1-inverse.bg-default."
         },
         "border-hover": {
           "$value": "{dsn.color.accent-1-inverse.border-hover}",
-          "$type": "color"
+          "$type": "color",
+          "$description": "Lijnkleur op een vlak in de sterke kleur voor primaire acties bij ‘hover’ status. Moet een contrastverhouding van 3:1 of meer hebben met action-1-inverse.bg-hover."
         },
         "border-active": {
           "$value": "{dsn.color.accent-1-inverse.border-active}",
-          "$type": "color"
+          "$type": "color",
+          "$description": "Lijnkleur op een vlak in de sterke kleur voor primaire acties bij ‘active’ of ‘selected’ status. Moet een contrastverhouding van 3:1 of meer hebben met action-1-inverse.bg-active."
         },
         "color-default": {
           "$value": "{dsn.color.accent-1-inverse.color-default}",
-          "$type": "color"
+          "$type": "color",
+          "$description": "Standaard tekstkleur op een vlak in de sterke kleur voor primaire acties. Moet een contrastverhouding van 4.5:1 of meer hebben met action-1-inverse.bg-default."
         },
         "color-hover": {
           "$value": "{dsn.color.accent-1-inverse.color-hover}",
-          "$type": "color"
+          "$type": "color",
+          "$description": "Tekstkleur op een vlak in de sterke kleur voor primaire acties bij ‘hover’ status. Moet een contrastverhouding van 4.5:1 of meer hebben met action-1-inverse.bg-hover."
         },
         "color-active": {
           "$value": "{dsn.color.accent-1-inverse.color-active}",
-          "$type": "color"
+          "$type": "color",
+          "$description": "Tekstkleur op een vlak in de sterke kleur voor primaire acties bij ‘active’ of ‘selected’ status. Moet een contrastverhouding van 4.5:1 of meer hebben met action-1-inverse.bg-active."
         },
         "color-subtle": {
           "$value": "{dsn.color.accent-1-inverse.color-subtle}",
-          "$type": "color"
+          "$type": "color",
+          "$description": "Alternatieve, subtielere voorgrondkleur op een vlak in de sterke kleur voor primaire acties ten opzichte van action-1-inverse.color-document, voor secundaire tekst. Moet een contrastverhouding van 4.5:1 of meer hebben met action-1-inverse.bg-document."
         },
         "color-document": {
           "$value": "{dsn.color.accent-1-inverse.color-document}",
-          "$type": "color"
+          "$type": "color",
+          "$description": "Algemene voorgrondkleur op een vlak in de sterke kleur voor primaire acties, de standaardkeuze voor lopende tekst. Moet een contrastverhouding van 4.5:1 of meer hebben met action-1-inverse.bg-default."
         }
       },
       "action-2-inverse": {
         "bg-document": {
           "$value": "{dsn.color.accent-1-inverse.bg-document}",
-          "$type": "color"
+          "$type": "color",
+          "$description": "Pagina-achtergrond in de sterke kleur voor secundaire acties (donker in light mode, licht in dark mode), voor een sectie die sterk afsteekt."
         },
         "bg-elevated": {
           "$value": "{dsn.color.accent-1-inverse.bg-elevated}",
-          "$type": "color"
+          "$type": "color",
+          "$description": "Achtergrondkleur voor zwevende lagen boven een vlak in de sterke kleur voor secundaire acties."
         },
         "bg-subtle": {
           "$value": "{dsn.color.accent-1-inverse.bg-subtle}",
-          "$type": "color"
+          "$type": "color",
+          "$description": "Alternatieve achtergrondkleur in de sterke kleur voor secundaire acties ten opzichte van action-2-inverse.bg-document, die zich daar licht van onderscheidt."
         },
         "bg-default": {
           "$value": "{dsn.color.accent-1-inverse.bg-default}",
-          "$type": "color"
+          "$type": "color",
+          "$description": "Standaard achtergrondkleur in de sterke kleur voor secundaire acties (donker in light mode, licht in dark mode) voor getinte componenten die een secundaire actie met extra nadruk uitvoeren, zoals links en navigatie, in standaardstatus."
         },
         "bg-hover": {
           "$value": "{dsn.color.accent-1-inverse.bg-hover}",
-          "$type": "color"
+          "$type": "color",
+          "$description": "Achtergrondkleur in de sterke kleur voor secundaire acties bij ‘hover’ status van getinte of transparante componenten die een secundaire actie met extra nadruk uitvoeren, zoals links en navigatie."
         },
         "bg-active": {
           "$value": "{dsn.color.accent-1-inverse.bg-active}",
-          "$type": "color"
+          "$type": "color",
+          "$description": "Achtergrondkleur in de sterke kleur voor secundaire acties bij ‘active’ of ‘selected’ status van getinte of transparante componenten die een secundaire actie met extra nadruk uitvoeren, zoals links en navigatie."
         },
         "border-subtle": {
           "$value": "{dsn.color.accent-1-inverse.border-subtle}",
-          "$type": "color"
+          "$type": "color",
+          "$description": "Subtiele lijnkleur op een vlak in de sterke kleur voor secundaire acties, inzetbaar als er geen contrastverhouding van 3:1 vereist is."
         },
         "border-default": {
           "$value": "{dsn.color.accent-1-inverse.border-default}",
-          "$type": "color"
+          "$type": "color",
+          "$description": "Standaard lijnkleur op een vlak in de sterke kleur voor secundaire acties. Moet een contrastverhouding van 3:1 of meer hebben met action-2-inverse.bg-default."
         },
         "border-hover": {
           "$value": "{dsn.color.accent-1-inverse.border-hover}",
-          "$type": "color"
+          "$type": "color",
+          "$description": "Lijnkleur op een vlak in de sterke kleur voor secundaire acties bij ‘hover’ status. Moet een contrastverhouding van 3:1 of meer hebben met action-2-inverse.bg-hover."
         },
         "border-active": {
           "$value": "{dsn.color.accent-1-inverse.border-active}",
-          "$type": "color"
+          "$type": "color",
+          "$description": "Lijnkleur op een vlak in de sterke kleur voor secundaire acties bij ‘active’ of ‘selected’ status. Moet een contrastverhouding van 3:1 of meer hebben met action-2-inverse.bg-active."
         },
         "color-default": {
           "$value": "{dsn.color.accent-1-inverse.color-default}",
-          "$type": "color"
+          "$type": "color",
+          "$description": "Standaard tekstkleur op een vlak in de sterke kleur voor secundaire acties. Moet een contrastverhouding van 4.5:1 of meer hebben met action-2-inverse.bg-default."
         },
         "color-hover": {
           "$value": "{dsn.color.accent-1-inverse.color-hover}",
-          "$type": "color"
+          "$type": "color",
+          "$description": "Tekstkleur op een vlak in de sterke kleur voor secundaire acties bij ‘hover’ status. Moet een contrastverhouding van 4.5:1 of meer hebben met action-2-inverse.bg-hover."
         },
         "color-active": {
           "$value": "{dsn.color.accent-1-inverse.color-active}",
-          "$type": "color"
+          "$type": "color",
+          "$description": "Tekstkleur op een vlak in de sterke kleur voor secundaire acties bij ‘active’ of ‘selected’ status. Moet een contrastverhouding van 4.5:1 of meer hebben met action-2-inverse.bg-active."
         },
         "color-subtle": {
           "$value": "{dsn.color.accent-1-inverse.color-subtle}",
-          "$type": "color"
+          "$type": "color",
+          "$description": "Alternatieve, subtielere voorgrondkleur op een vlak in de sterke kleur voor secundaire acties ten opzichte van action-2-inverse.color-document, voor secundaire tekst. Moet een contrastverhouding van 4.5:1 of meer hebben met action-2-inverse.bg-document."
         },
         "color-document": {
           "$value": "{dsn.color.accent-1-inverse.color-document}",
-          "$type": "color"
+          "$type": "color",
+          "$description": "Algemene voorgrondkleur op een vlak in de sterke kleur voor secundaire acties, de standaardkeuze voor lopende tekst. Moet een contrastverhouding van 4.5:1 of meer hebben met action-2-inverse.bg-default."
         }
       },
       "positive-inverse": {
         "bg-document": {
           "$value": "{dsn.color.neutral-inverse.bg-document}",
-          "$type": "color"
+          "$type": "color",
+          "$description": "Pagina-achtergrond met sterke succes-tint (donker in light mode, licht in dark mode), voor een sectie die sterk afsteekt."
         },
         "bg-elevated": {
           "$value": "{dsn.color.neutral-inverse.bg-elevated}",
-          "$type": "color"
+          "$type": "color",
+          "$description": "Achtergrondkleur voor zwevende lagen boven een vlak met sterke succes-tint."
         },
         "bg-subtle": {
           "$value": "{dsn.color.neutral-inverse.bg-subtle}",
-          "$type": "color"
+          "$type": "color",
+          "$description": "Alternatieve achtergrondkleur met sterke succes-tint ten opzichte van positive-inverse.bg-document, die zich daar licht van onderscheidt."
         },
         "bg-default": {
           "$value": "{dsn.color.neutral-inverse.bg-default}",
-          "$type": "color"
+          "$type": "color",
+          "$description": "Standaard achtergrondkleur met sterke succes-tint (donker in light mode, licht in dark mode) voor getinte componenten die succes of een bevestiging benadrukken, in standaardstatus."
         },
         "bg-hover": {
           "$value": "{dsn.color.neutral-inverse.bg-hover}",
-          "$type": "color"
+          "$type": "color",
+          "$description": "Achtergrondkleur met sterke succes-tint bij ‘hover’ status van getinte of transparante componenten die succes of een bevestiging benadrukken."
         },
         "bg-active": {
           "$value": "{dsn.color.neutral-inverse.bg-active}",
-          "$type": "color"
+          "$type": "color",
+          "$description": "Achtergrondkleur met sterke succes-tint bij ‘active’ of ‘selected’ status van getinte of transparante componenten die succes of een bevestiging benadrukken."
         },
         "border-subtle": {
           "$value": "{dsn.color.neutral-inverse.border-subtle}",
-          "$type": "color"
+          "$type": "color",
+          "$description": "Subtiele lijnkleur op een vlak met sterke succes-tint, inzetbaar als er geen contrastverhouding van 3:1 vereist is."
         },
         "border-default": {
           "$value": "{dsn.color.neutral-inverse.border-default}",
-          "$type": "color"
+          "$type": "color",
+          "$description": "Standaard lijnkleur op een vlak met sterke succes-tint. Moet een contrastverhouding van 3:1 of meer hebben met positive-inverse.bg-default."
         },
         "border-hover": {
           "$value": "{dsn.color.neutral-inverse.border-hover}",
-          "$type": "color"
+          "$type": "color",
+          "$description": "Lijnkleur op een vlak met sterke succes-tint bij ‘hover’ status. Moet een contrastverhouding van 3:1 of meer hebben met positive-inverse.bg-hover."
         },
         "border-active": {
           "$value": "{dsn.color.neutral-inverse.border-active}",
-          "$type": "color"
+          "$type": "color",
+          "$description": "Lijnkleur op een vlak met sterke succes-tint bij ‘active’ of ‘selected’ status. Moet een contrastverhouding van 3:1 of meer hebben met positive-inverse.bg-active."
         },
         "color-default": {
           "$value": "{dsn.color.neutral-inverse.color-default}",
-          "$type": "color"
+          "$type": "color",
+          "$description": "Standaard tekstkleur op een vlak met sterke succes-tint. Moet een contrastverhouding van 4.5:1 of meer hebben met positive-inverse.bg-default."
         },
         "color-hover": {
           "$value": "{dsn.color.neutral-inverse.color-hover}",
-          "$type": "color"
+          "$type": "color",
+          "$description": "Tekstkleur op een vlak met sterke succes-tint bij ‘hover’ status. Moet een contrastverhouding van 4.5:1 of meer hebben met positive-inverse.bg-hover."
         },
         "color-active": {
           "$value": "{dsn.color.neutral-inverse.color-active}",
-          "$type": "color"
+          "$type": "color",
+          "$description": "Tekstkleur op een vlak met sterke succes-tint bij ‘active’ of ‘selected’ status. Moet een contrastverhouding van 4.5:1 of meer hebben met positive-inverse.bg-active."
         },
         "color-subtle": {
           "$value": "{dsn.color.neutral-inverse.color-subtle}",
-          "$type": "color"
+          "$type": "color",
+          "$description": "Alternatieve, subtielere voorgrondkleur op een vlak met sterke succes-tint ten opzichte van positive-inverse.color-document, voor secundaire tekst. Moet een contrastverhouding van 4.5:1 of meer hebben met positive-inverse.bg-document."
         },
         "color-document": {
           "$value": "{dsn.color.neutral-inverse.color-document}",
-          "$type": "color"
+          "$type": "color",
+          "$description": "Algemene voorgrondkleur op een vlak met sterke succes-tint, de standaardkeuze voor lopende tekst. Moet een contrastverhouding van 4.5:1 of meer hebben met positive-inverse.bg-default."
         }
       },
       "negative-inverse": {
         "bg-document": {
           "$value": "{dsn.color.neutral-inverse.bg-document}",
-          "$type": "color"
+          "$type": "color",
+          "$description": "Pagina-achtergrond met sterke fout-tint (donker in light mode, licht in dark mode), voor een sectie die een fout nadrukkelijk toont."
         },
         "bg-elevated": {
           "$value": "{dsn.color.neutral-inverse.bg-elevated}",
-          "$type": "color"
+          "$type": "color",
+          "$description": "Achtergrondkleur voor zwevende lagen boven een vlak met sterke fout-tint."
         },
         "bg-subtle": {
           "$value": "{dsn.color.neutral-inverse.bg-subtle}",
-          "$type": "color"
+          "$type": "color",
+          "$description": "Alternatieve achtergrondkleur met sterke fout-tint ten opzichte van negative-inverse.bg-document, die zich daar licht van onderscheidt."
         },
         "bg-default": {
           "$value": "{dsn.color.neutral-inverse.bg-default}",
-          "$type": "color"
+          "$type": "color",
+          "$description": "Standaard achtergrondkleur met sterke fout-tint (donker in light mode, licht in dark mode) voor getinte componenten die een fout of destructieve actie benadrukken, in standaardstatus."
         },
         "bg-hover": {
           "$value": "{dsn.color.neutral-inverse.bg-hover}",
-          "$type": "color"
+          "$type": "color",
+          "$description": "Achtergrondkleur met sterke fout-tint bij ‘hover’ status van getinte of transparante componenten die een fout of destructieve actie benadrukken."
         },
         "bg-active": {
           "$value": "{dsn.color.neutral-inverse.bg-active}",
-          "$type": "color"
+          "$type": "color",
+          "$description": "Achtergrondkleur met sterke fout-tint bij ‘active’ of ‘selected’ status van getinte of transparante componenten die een fout of destructieve actie benadrukken."
         },
         "border-subtle": {
           "$value": "{dsn.color.neutral-inverse.border-subtle}",
-          "$type": "color"
+          "$type": "color",
+          "$description": "Subtiele lijnkleur op een vlak met sterke fout-tint, inzetbaar als er geen contrastverhouding van 3:1 vereist is."
         },
         "border-default": {
           "$value": "{dsn.color.neutral-inverse.border-default}",
-          "$type": "color"
+          "$type": "color",
+          "$description": "Standaard lijnkleur op een vlak met sterke fout-tint. Moet een contrastverhouding van 3:1 of meer hebben met negative-inverse.bg-default."
         },
         "border-hover": {
           "$value": "{dsn.color.neutral-inverse.border-hover}",
-          "$type": "color"
+          "$type": "color",
+          "$description": "Lijnkleur op een vlak met sterke fout-tint bij ‘hover’ status. Moet een contrastverhouding van 3:1 of meer hebben met negative-inverse.bg-hover."
         },
         "border-active": {
           "$value": "{dsn.color.neutral-inverse.border-active}",
-          "$type": "color"
+          "$type": "color",
+          "$description": "Lijnkleur op een vlak met sterke fout-tint bij ‘active’ of ‘selected’ status. Moet een contrastverhouding van 3:1 of meer hebben met negative-inverse.bg-active."
         },
         "color-default": {
           "$value": "{dsn.color.neutral-inverse.color-default}",
-          "$type": "color"
+          "$type": "color",
+          "$description": "Standaard tekstkleur op een vlak met sterke fout-tint. Moet een contrastverhouding van 4.5:1 of meer hebben met negative-inverse.bg-default."
         },
         "color-hover": {
           "$value": "{dsn.color.neutral-inverse.color-hover}",
-          "$type": "color"
+          "$type": "color",
+          "$description": "Tekstkleur op een vlak met sterke fout-tint bij ‘hover’ status. Moet een contrastverhouding van 4.5:1 of meer hebben met negative-inverse.bg-hover."
         },
         "color-active": {
           "$value": "{dsn.color.neutral-inverse.color-active}",
-          "$type": "color"
+          "$type": "color",
+          "$description": "Tekstkleur op een vlak met sterke fout-tint bij ‘active’ of ‘selected’ status. Moet een contrastverhouding van 4.5:1 of meer hebben met negative-inverse.bg-active."
         },
         "color-subtle": {
           "$value": "{dsn.color.neutral-inverse.color-subtle}",
-          "$type": "color"
+          "$type": "color",
+          "$description": "Alternatieve, subtielere voorgrondkleur op een vlak met sterke fout-tint ten opzichte van negative-inverse.color-document, voor secundaire tekst. Moet een contrastverhouding van 4.5:1 of meer hebben met negative-inverse.bg-document."
         },
         "color-document": {
           "$value": "{dsn.color.neutral-inverse.color-document}",
-          "$type": "color"
+          "$type": "color",
+          "$description": "Algemene voorgrondkleur op een vlak met sterke fout-tint, de standaardkeuze voor lopende tekst. Moet een contrastverhouding van 4.5:1 of meer hebben met negative-inverse.bg-default."
         }
       },
       "warning-inverse": {
         "bg-document": {
           "$value": "{dsn.color.neutral-inverse.bg-document}",
-          "$type": "color"
+          "$type": "color",
+          "$description": "Pagina-achtergrond met sterke waarschuwings-tint (donker in light mode, licht in dark mode), voor een sectie die sterk afsteekt."
         },
         "bg-elevated": {
           "$value": "{dsn.color.neutral-inverse.bg-elevated}",
-          "$type": "color"
+          "$type": "color",
+          "$description": "Achtergrondkleur voor zwevende lagen boven een vlak met sterke waarschuwings-tint."
         },
         "bg-subtle": {
           "$value": "{dsn.color.neutral-inverse.bg-subtle}",
-          "$type": "color"
+          "$type": "color",
+          "$description": "Alternatieve achtergrondkleur met sterke waarschuwings-tint ten opzichte van warning-inverse.bg-document, die zich daar licht van onderscheidt."
         },
         "bg-default": {
           "$value": "{dsn.color.neutral-inverse.bg-default}",
-          "$type": "color"
+          "$type": "color",
+          "$description": "Standaard achtergrondkleur met sterke waarschuwings-tint (donker in light mode, licht in dark mode) voor getinte componenten die een waarschuwing benadrukken, in standaardstatus."
         },
         "bg-hover": {
           "$value": "{dsn.color.neutral-inverse.bg-hover}",
-          "$type": "color"
+          "$type": "color",
+          "$description": "Achtergrondkleur met sterke waarschuwings-tint bij ‘hover’ status van getinte of transparante componenten die een waarschuwing benadrukken."
         },
         "bg-active": {
           "$value": "{dsn.color.neutral-inverse.bg-active}",
-          "$type": "color"
+          "$type": "color",
+          "$description": "Achtergrondkleur met sterke waarschuwings-tint bij ‘active’ of ‘selected’ status van getinte of transparante componenten die een waarschuwing benadrukken."
         },
         "border-subtle": {
           "$value": "{dsn.color.neutral-inverse.border-subtle}",
-          "$type": "color"
+          "$type": "color",
+          "$description": "Subtiele lijnkleur op een vlak met sterke waarschuwings-tint, inzetbaar als er geen contrastverhouding van 3:1 vereist is."
         },
         "border-default": {
           "$value": "{dsn.color.neutral-inverse.border-default}",
-          "$type": "color"
+          "$type": "color",
+          "$description": "Standaard lijnkleur op een vlak met sterke waarschuwings-tint. Moet een contrastverhouding van 3:1 of meer hebben met warning-inverse.bg-default."
         },
         "border-hover": {
           "$value": "{dsn.color.neutral-inverse.border-hover}",
-          "$type": "color"
+          "$type": "color",
+          "$description": "Lijnkleur op een vlak met sterke waarschuwings-tint bij ‘hover’ status. Moet een contrastverhouding van 3:1 of meer hebben met warning-inverse.bg-hover."
         },
         "border-active": {
           "$value": "{dsn.color.neutral-inverse.border-active}",
-          "$type": "color"
+          "$type": "color",
+          "$description": "Lijnkleur op een vlak met sterke waarschuwings-tint bij ‘active’ of ‘selected’ status. Moet een contrastverhouding van 3:1 of meer hebben met warning-inverse.bg-active."
         },
         "color-default": {
           "$value": "{dsn.color.neutral-inverse.color-default}",
-          "$type": "color"
+          "$type": "color",
+          "$description": "Standaard tekstkleur op een vlak met sterke waarschuwings-tint. Moet een contrastverhouding van 4.5:1 of meer hebben met warning-inverse.bg-default."
         },
         "color-hover": {
           "$value": "{dsn.color.neutral-inverse.color-hover}",
-          "$type": "color"
+          "$type": "color",
+          "$description": "Tekstkleur op een vlak met sterke waarschuwings-tint bij ‘hover’ status. Moet een contrastverhouding van 4.5:1 of meer hebben met warning-inverse.bg-hover."
         },
         "color-active": {
           "$value": "{dsn.color.neutral-inverse.color-active}",
-          "$type": "color"
+          "$type": "color",
+          "$description": "Tekstkleur op een vlak met sterke waarschuwings-tint bij ‘active’ of ‘selected’ status. Moet een contrastverhouding van 4.5:1 of meer hebben met warning-inverse.bg-active."
         },
         "color-subtle": {
           "$value": "{dsn.color.neutral-inverse.color-subtle}",
-          "$type": "color"
+          "$type": "color",
+          "$description": "Alternatieve, subtielere voorgrondkleur op een vlak met sterke waarschuwings-tint ten opzichte van warning-inverse.color-document, voor secundaire tekst. Moet een contrastverhouding van 4.5:1 of meer hebben met warning-inverse.bg-document."
         },
         "color-document": {
           "$value": "{dsn.color.neutral-inverse.color-document}",
-          "$type": "color"
+          "$type": "color",
+          "$description": "Algemene voorgrondkleur op een vlak met sterke waarschuwings-tint, de standaardkeuze voor lopende tekst. Moet een contrastverhouding van 4.5:1 of meer hebben met warning-inverse.bg-default."
         }
       },
       "info-inverse": {
         "bg-document": {
           "$value": "{dsn.color.neutral-inverse.bg-document}",
-          "$type": "color"
+          "$type": "color",
+          "$description": "Pagina-achtergrond met sterke info-tint (donker in light mode, licht in dark mode), voor een sectie die sterk afsteekt."
         },
         "bg-elevated": {
           "$value": "{dsn.color.neutral-inverse.bg-elevated}",
-          "$type": "color"
+          "$type": "color",
+          "$description": "Achtergrondkleur voor zwevende lagen boven een vlak met sterke info-tint."
         },
         "bg-subtle": {
           "$value": "{dsn.color.neutral-inverse.bg-subtle}",
-          "$type": "color"
+          "$type": "color",
+          "$description": "Alternatieve achtergrondkleur met sterke info-tint ten opzichte van info-inverse.bg-document, die zich daar licht van onderscheidt."
         },
         "bg-default": {
           "$value": "{dsn.color.neutral-inverse.bg-default}",
-          "$type": "color"
+          "$type": "color",
+          "$description": "Standaard achtergrondkleur met sterke info-tint (donker in light mode, licht in dark mode) voor getinte componenten die informatie benadrukken, in standaardstatus."
         },
         "bg-hover": {
           "$value": "{dsn.color.neutral-inverse.bg-hover}",
-          "$type": "color"
+          "$type": "color",
+          "$description": "Achtergrondkleur met sterke info-tint bij ‘hover’ status van getinte of transparante componenten die informatie benadrukken."
         },
         "bg-active": {
           "$value": "{dsn.color.neutral-inverse.bg-active}",
-          "$type": "color"
+          "$type": "color",
+          "$description": "Achtergrondkleur met sterke info-tint bij ‘active’ of ‘selected’ status van getinte of transparante componenten die informatie benadrukken."
         },
         "border-subtle": {
           "$value": "{dsn.color.neutral-inverse.border-subtle}",
-          "$type": "color"
+          "$type": "color",
+          "$description": "Subtiele lijnkleur op een vlak met sterke info-tint, inzetbaar als er geen contrastverhouding van 3:1 vereist is."
         },
         "border-default": {
           "$value": "{dsn.color.neutral-inverse.border-default}",
-          "$type": "color"
+          "$type": "color",
+          "$description": "Standaard lijnkleur op een vlak met sterke info-tint. Moet een contrastverhouding van 3:1 of meer hebben met info-inverse.bg-default."
         },
         "border-hover": {
           "$value": "{dsn.color.neutral-inverse.border-hover}",
-          "$type": "color"
+          "$type": "color",
+          "$description": "Lijnkleur op een vlak met sterke info-tint bij ‘hover’ status. Moet een contrastverhouding van 3:1 of meer hebben met info-inverse.bg-hover."
         },
         "border-active": {
           "$value": "{dsn.color.neutral-inverse.border-active}",
-          "$type": "color"
+          "$type": "color",
+          "$description": "Lijnkleur op een vlak met sterke info-tint bij ‘active’ of ‘selected’ status. Moet een contrastverhouding van 3:1 of meer hebben met info-inverse.bg-active."
         },
         "color-default": {
           "$value": "{dsn.color.neutral-inverse.color-default}",
-          "$type": "color"
+          "$type": "color",
+          "$description": "Standaard tekstkleur op een vlak met sterke info-tint. Moet een contrastverhouding van 4.5:1 of meer hebben met info-inverse.bg-default."
         },
         "color-hover": {
           "$value": "{dsn.color.neutral-inverse.color-hover}",
-          "$type": "color"
+          "$type": "color",
+          "$description": "Tekstkleur op een vlak met sterke info-tint bij ‘hover’ status. Moet een contrastverhouding van 4.5:1 of meer hebben met info-inverse.bg-hover."
         },
         "color-active": {
           "$value": "{dsn.color.neutral-inverse.color-active}",
-          "$type": "color"
+          "$type": "color",
+          "$description": "Tekstkleur op een vlak met sterke info-tint bij ‘active’ of ‘selected’ status. Moet een contrastverhouding van 4.5:1 of meer hebben met info-inverse.bg-active."
         },
         "color-subtle": {
           "$value": "{dsn.color.neutral-inverse.color-subtle}",
-          "$type": "color"
+          "$type": "color",
+          "$description": "Alternatieve, subtielere voorgrondkleur op een vlak met sterke info-tint ten opzichte van info-inverse.color-document, voor secundaire tekst. Moet een contrastverhouding van 4.5:1 of meer hebben met info-inverse.bg-document."
         },
         "color-document": {
           "$value": "{dsn.color.neutral-inverse.color-document}",
-          "$type": "color"
+          "$type": "color",
+          "$description": "Algemene voorgrondkleur op een vlak met sterke info-tint, de standaardkeuze voor lopende tekst. Moet een contrastverhouding van 4.5:1 of meer hebben met info-inverse.bg-default."
         }
       },
       "transparent": {
         "$value": "transparent",
         "$type": "color",
-        "$description": "Volledig transparant — voor onzichtbare achtergronden en randen"
+        "$description": "Volledig transparante kleur, voor een onzichtbare achtergrond of rand die wel ruimte inneemt."
       },
       "shadow": {
         "direct": {
           "$value": "transparent",
           "$type": "color",
-          "$description": "Scherpe schaduwlaag: transparant, want wireframe tekent geen schaduw. Bestaat zodat de Figma effect styles in elke mode een kleur hebben"
+          "$description": "Schaduwkleur voor de scherpe laag van een schaduw, dicht bij het vlak (direct licht)."
         },
         "ambient": {
           "$value": "transparent",
           "$type": "color",
-          "$description": "Diffuse schaduwlaag: transparant, want wireframe tekent geen schaduw"
+          "$description": "Schaduwkleur voor de diffuse laag van een schaduw, verder van het vlak (omgevingslicht)."
         },
         "highlight": {
           "$value": "transparent",
           "$type": "color",
-          "$description": "Outline-laag: transparant, want wireframe tekent geen schaduw"
+          "$description": "Kleur van de outline-laag van een schaduw, die verhoogde vlakken in dark mode randscherpte geeft; in light mode meestal transparant."
         },
         "scroll": {
           "$value": "rgba(0, 0, 0, 0.15)",
           "$type": "color",
-          "$description": "Scroll-affordance schaduw voor horizontaal scrollbare tabellen"
+          "$description": "Schaduwkleur die aangeeft dat een vlak horizontaal verder scrolt."
         }
       }
     },
@@ -1453,152 +1573,152 @@
       "color": {
         "$value": "{dsn.color.neutral.color-document}",
         "$type": "color",
-        "$description": "Tekstkleur van koppen"
+        "$description": "Tekstkleur van koppen op alle niveaus."
       }
     },
     "form-control": {
       "accent-color": {
         "$value": "{dsn.color.action-1.color-default}",
         "$type": "color",
-        "$description": "Accentkleur van form controls (checkboxes, radio buttons)"
+        "$description": "Accentkleur van form controls met een aangevinkte staat, zoals checkboxes en radio buttons. Moet een contrastverhouding van 3:1 of meer hebben met form-control.background-color."
       },
       "background-color": {
         "$value": "{dsn.color.neutral.bg-document}",
         "$type": "color",
-        "$description": "Achtergrondkleur van form controls"
+        "$description": "Achtergrondkleur van form controls in standaardstatus."
       },
       "border-color": {
         "$value": "{dsn.color.neutral.border-default}",
         "$type": "color",
-        "$description": "Randkleur van form controls"
+        "$description": "Lijnkleur van form controls in standaardstatus. Moet een contrastverhouding van 3:1 of meer hebben met form-control.background-color."
       },
       "color": {
         "$value": "{dsn.color.neutral.color-document}",
         "$type": "color",
-        "$description": "Tekstkleur van form controls"
+        "$description": "Tekstkleur van form controls in standaardstatus. Moet een contrastverhouding van 4.5:1 of meer hebben met form-control.background-color."
       },
       "placeholder": {
         "color": {
           "$value": "{dsn.color.neutral.color-subtle}",
           "$type": "color",
-          "$description": "Tekstkleur van placeholder in form controls"
+          "$description": "Tekstkleur van placeholdertekst in form controls. Moet een contrastverhouding van 4.5:1 of meer hebben met form-control.background-color."
         }
       },
       "hover": {
         "accent-color": {
           "$value": "{dsn.color.action-1.color-hover}",
           "$type": "color",
-          "$description": "Accentkleur van form controls in hover state"
+          "$description": "Accentkleur van form controls bij ‘hover’ status. Moet een contrastverhouding van 3:1 of meer hebben met form-control.hover.background-color."
         },
         "background-color": {
           "$value": "{dsn.color.neutral.bg-hover}",
           "$type": "color",
-          "$description": "Achtergrondkleur van form controls in hover state"
+          "$description": "Achtergrondkleur van form controls bij ‘hover’ status."
         },
         "border-color": {
           "$value": "{dsn.color.neutral.border-hover}",
           "$type": "color",
-          "$description": "Randkleur van form controls in hover state"
+          "$description": "Lijnkleur van form controls bij ‘hover’ status. Moet een contrastverhouding van 3:1 of meer hebben met form-control.hover.background-color."
         },
         "color": {
           "$value": "{dsn.form-control.color}",
           "$type": "color",
-          "$description": "Tekstkleur van form controls in hover state"
+          "$description": "Tekstkleur van form controls bij ‘hover’ status. Moet een contrastverhouding van 4.5:1 of meer hebben met form-control.hover.background-color."
         }
       },
       "focus": {
         "background-color": {
           "$value": "{dsn.form-control.background-color}",
           "$type": "color",
-          "$description": "Achtergrondkleur van form controls in focus state"
+          "$description": "Achtergrondkleur van form controls bij ‘focus’ status."
         },
         "border-color": {
           "$value": "{dsn.color.neutral.border-active}",
           "$type": "color",
-          "$description": "Randkleur van form controls in focus state"
+          "$description": "Lijnkleur van form controls bij ‘focus’ status. Moet een contrastverhouding van 3:1 of meer hebben met form-control.focus.background-color."
         },
         "color": {
           "$value": "{dsn.form-control.color}",
           "$type": "color",
-          "$description": "Tekstkleur van form controls in focus state"
+          "$description": "Tekstkleur van form controls bij ‘focus’ status. Moet een contrastverhouding van 4.5:1 of meer hebben met form-control.focus.background-color."
         }
       },
       "active": {
         "accent-color": {
           "$value": "{dsn.color.action-1.color-active}",
           "$type": "color",
-          "$description": "Accentkleur van form controls in active state"
+          "$description": "Accentkleur van form controls bij ‘active’ status. Moet een contrastverhouding van 3:1 of meer hebben met form-control.active.background-color."
         },
         "background-color": {
           "$value": "{dsn.color.neutral.bg-active}",
           "$type": "color",
-          "$description": "Achtergrondkleur van form controls in active state"
+          "$description": "Achtergrondkleur van form controls bij ‘active’ status."
         },
         "border-color": {
           "$value": "{dsn.color.neutral.border-active}",
           "$type": "color",
-          "$description": "Randkleur van form controls in active state"
+          "$description": "Lijnkleur van form controls bij ‘active’ status. Moet een contrastverhouding van 3:1 of meer hebben met form-control.active.background-color."
         },
         "color": {
           "$value": "{dsn.form-control.color}",
           "$type": "color",
-          "$description": "Tekstkleur van form controls in active state"
+          "$description": "Tekstkleur van form controls bij ‘active’ status. Moet een contrastverhouding van 4.5:1 of meer hebben met form-control.active.background-color."
         }
       },
       "disabled": {
         "accent-color": {
           "$value": "{dsn.color.neutral.bg-subtle}",
           "$type": "color",
-          "$description": "Accentkleur van form controls in disabled state"
+          "$description": "Accentkleur van uitgeschakelde form controls, zonder contrasteis."
         },
         "background-color": {
           "$value": "{dsn.color.neutral.bg-subtle}",
           "$type": "color",
-          "$description": "Achtergrondkleur van form controls in disabled state"
+          "$description": "Achtergrondkleur van uitgeschakelde form controls."
         },
         "border-color": {
           "$value": "{dsn.color.neutral.border-subtle}",
           "$type": "color",
-          "$description": "Randkleur van form controls in disabled state"
+          "$description": "Lijnkleur van uitgeschakelde form controls, zonder contrasteis."
         },
         "color": {
           "$value": "{dsn.color.neutral.color-subtle}",
           "$type": "color",
-          "$description": "Tekstkleur van form controls in disabled state"
+          "$description": "Tekstkleur van uitgeschakelde form controls, zonder contrasteis."
         }
       },
       "invalid": {
         "background-color": {
           "$value": "{dsn.color.negative.bg-default}",
           "$type": "color",
-          "$description": "Achtergrondkleur van form controls in invalid state"
+          "$description": "Achtergrondkleur van form controls met een ongeldige invoer."
         },
         "border-color": {
           "$value": "{dsn.color.negative.border-default}",
           "$type": "color",
-          "$description": "Randkleur van form controls in invalid state"
+          "$description": "Lijnkleur van form controls met een ongeldige invoer. Moet een contrastverhouding van 3:1 of meer hebben met form-control.invalid.background-color."
         },
         "color": {
           "$value": "{dsn.color.negative.color-default}",
           "$type": "color",
-          "$description": "Tekstkleur van form controls in invalid state"
+          "$description": "Tekstkleur van form controls met een ongeldige invoer. Moet een contrastverhouding van 4.5:1 of meer hebben met form-control.invalid.background-color."
         }
       },
       "read-only": {
         "background-color": {
           "$value": "{dsn.color.neutral.bg-subtle}",
           "$type": "color",
-          "$description": "Achtergrondkleur van form controls in read-only state"
+          "$description": "Achtergrondkleur van alleen-lezen form controls, die laat zien dat de waarde niet te wijzigen is."
         },
         "border-color": {
           "$value": "{dsn.color.transparent}",
           "$type": "color",
-          "$description": "Randkleur van form controls in read-only state"
+          "$description": "Lijnkleur van alleen-lezen form controls, meestal transparant omdat er geen invoer verwacht wordt."
         },
         "color": {
           "$value": "{dsn.color.neutral.color-document}",
           "$type": "color",
-          "$description": "Tekstkleur van form controls in read-only state"
+          "$description": "Tekstkleur van alleen-lezen form controls. Moet een contrastverhouding van 4.5:1 of meer hebben met form-control.read-only.background-color."
         }
       }
     },
@@ -1606,23 +1726,23 @@
       "background-color": {
         "$value": "#ffdd00",
         "$type": "color",
-        "$description": "Achtergrondkleur van de focusindicator — geel"
+        "$description": "Achtergrondkleur van de focusindicator, achter de tekst van een gefocust element."
       },
       "color": {
         "$value": "#000000",
         "$type": "color",
-        "$description": "Tekstkleur van de focusindicator"
+        "$description": "Tekstkleur binnen de focusindicator. Moet een contrastverhouding van 4.5:1 of meer hebben met focus.background-color."
       },
       "outline-color": {
         "$value": "#000000",
         "$type": "color",
-        "$description": "Kleur van de focusomtrek"
+        "$description": "Kleur van de focusomtrek. Moet een contrastverhouding van 3:1 of meer hebben met de achtergrond eromheen."
       },
       "inverse": {
         "outline-color": {
           "$value": "#FFFFFF",
           "$type": "color",
-          "$description": "Kleur van de focusomtrek op gekleurde/donkere achtergronden — tegenhanger van outline-color"
+          "$description": "Kleur van de focusomtrek op een omgekeerd of sterk gekleurd vlak, tegenhanger van focus.outline-color. Moet een contrastverhouding van 3:1 of meer hebben met dat vlak."
         }
       }
     }
