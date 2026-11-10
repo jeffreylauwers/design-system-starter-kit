@@ -773,37 +773,37 @@
       },
       "neutral-inverse": {
         "bg-document": {
-          "$value": "{dsn.color.neutral.color-document}",
+          "$value": "#000000",
           "$type": "color",
           "$description": "Inverse documentachtergrond"
         },
         "bg-elevated": {
-          "$value": "{dsn.color.neutral.color-document}",
+          "$value": "#000000",
           "$type": "color",
           "$description": "Elevated background (inverse) — for floating layers (modals, popovers, dropdowns)"
         },
         "bg-subtle": {
-          "$value": "{dsn.color.neutral.color-active}",
+          "$value": "#000000",
           "$type": "color",
           "$description": "Inverse subtiele achtergrond"
         },
         "bg-default": {
-          "$value": "{dsn.color.neutral.color-hover}",
+          "$value": "#000000",
           "$type": "color",
           "$description": "Inverse standaard achtergrond"
         },
         "bg-hover": {
-          "$value": "{dsn.color.neutral.color-default}",
+          "$value": "#000000",
           "$type": "color",
           "$description": "Inverse achtergrond in hover state"
         },
         "bg-active": {
-          "$value": "{dsn.color.neutral.color-subtle}",
+          "$value": "#000000",
           "$type": "color",
           "$description": "Inverse achtergrond in active state"
         },
         "border-subtle": {
-          "$value": "{dsn.color.neutral.border-active}",
+          "$value": "#000000",
           "$type": "color",
           "$description": "Inverse subtiele rand"
         },
@@ -823,27 +823,27 @@
           "$description": "Inverse rand in active state"
         },
         "color-default": {
-          "$value": "{dsn.color.neutral.bg-active}",
+          "$value": "#FFFFFF",
           "$type": "color",
           "$description": "Inverse standaard tekst"
         },
         "color-hover": {
-          "$value": "{dsn.color.neutral.bg-hover}",
+          "$value": "#FFFFFF",
           "$type": "color",
           "$description": "Inverse tekst in hover state"
         },
         "color-active": {
-          "$value": "{dsn.color.neutral.bg-default}",
+          "$value": "#FFFFFF",
           "$type": "color",
           "$description": "Inverse tekst in active state"
         },
         "color-subtle": {
-          "$value": "{dsn.color.neutral.bg-subtle}",
+          "$value": "#FFFFFF",
           "$type": "color",
           "$description": "Inverse subtiele tekst"
         },
         "color-document": {
-          "$value": "{dsn.color.neutral.bg-document}",
+          "$value": "#FFFFFF",
           "$type": "color",
           "$description": "Inverse documenttekst"
         }
