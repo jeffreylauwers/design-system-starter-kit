@@ -803,7 +803,7 @@
           "$description": "Inverse achtergrond in active state"
         },
         "border-subtle": {
-          "$value": "#000000",
+          "$value": "#FFFFFF",
           "$type": "color",
           "$description": "Inverse subtiele rand"
         },
