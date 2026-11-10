@@ -3,22 +3,33 @@ import { readFileSync } from 'fs';
 import path from 'path';
 
 /**
- * Kleurtokens hebben in elk thema en elke mode dezelfde $description.
- * De tekst beschrijft rol en contrasteis, niet de waarde, dus hoort hij
- * niet per bestand te verschillen. Deze test bewaakt dat de vier
- * kleurbestanden gelijk blijven.
+ * Semantische tokens hebben in elk thema, elke mode en elk project-type
+ * dezelfde $description. De tekst beschrijft de rol (en bij kleur de
+ * contrasteis), niet de waarde, dus hoort hij niet per bestand te
+ * verschillen. Komt een token in meerdere bestanden van een groep voor,
+ * dan moet de description overal gelijk zijn.
  */
 
-const THEMES_DIR = path.resolve(
+const TOKENS_DIR = path.resolve(
   __dirname,
-  '../packages/design-tokens/src/tokens/themes'
+  '../packages/design-tokens/src/tokens'
 );
-const REFERENCE = 'start/colors-light.json';
-const OTHERS = [
-  'start/colors-dark.json',
-  'wireframe/colors-light.json',
-  'wireframe/colors-dark.json',
-];
+
+const GROUPS: Record<string, string[]> = {
+  kleur: [
+    'themes/start/colors-light.json',
+    'themes/start/colors-dark.json',
+    'themes/wireframe/colors-light.json',
+    'themes/wireframe/colors-dark.json',
+  ],
+  base: [
+    'themes/start/base.json',
+    'themes/wireframe/base.json',
+    'project-types/default/space.json',
+    'project-types/default/typography.json',
+    'project-types/information-dense/typography.json',
+  ],
+};
 
 type TokenNode = { $value?: unknown; $description?: string } & {
   [key: string]: unknown;
@@ -26,7 +37,7 @@ type TokenNode = { $value?: unknown; $description?: string } & {
 
 function collectDescriptions(file: string): Map<string, string | undefined> {
   const json = JSON.parse(
-    readFileSync(path.join(THEMES_DIR, file), 'utf-8')
+    readFileSync(path.join(TOKENS_DIR, file), 'utf-8')
   ) as TokenNode;
   const result = new Map<string, string | undefined>();
   const walk = (node: TokenNode, trail: string[]) => {
@@ -44,23 +55,35 @@ function collectDescriptions(file: string): Map<string, string | undefined> {
   return result;
 }
 
-const reference = collectDescriptions(REFERENCE);
+describe.each(Object.entries(GROUPS))('%s-descriptions', (_group, files) => {
+  const perFile = files.map(
+    (file) => [file, collectDescriptions(file)] as const
+  );
 
-describe('kleurtoken-descriptions', () => {
-  it('geeft elke token in het referentiebestand een description zonder em dash', () => {
-    for (const [token, description] of reference) {
-      expect(description, token).toBeTruthy();
-      expect(description, token).not.toContain('—');
+  it.each(files)(
+    '%s geeft elke token een description zonder em dash',
+    (file) => {
+      const descriptions = perFile.find(([f]) => f === file)![1];
+      for (const [token, description] of descriptions) {
+        expect(description, `${token} in ${file}`).toBeTruthy();
+        expect(description, `${token} in ${file}`).not.toContain('—');
+      }
     }
-  });
+  );
 
-  it.each(OTHERS)('%s heeft dezelfde descriptions als ' + REFERENCE, (file) => {
-    const other = collectDescriptions(file);
-    for (const [token, description] of other) {
-      expect(reference.has(token), `${token} ontbreekt in ${REFERENCE}`).toBe(
-        true
-      );
-      expect(description, token).toBe(reference.get(token));
+  it('heeft voor elke token in alle bestanden dezelfde description', () => {
+    const first = new Map<string, { file: string; text?: string }>();
+    for (const [file, descriptions] of perFile) {
+      for (const [token, text] of descriptions) {
+        const seen = first.get(token);
+        if (!seen) {
+          first.set(token, { file, text });
+          continue;
+        }
+        expect(text, `${token}: ${file} wijkt af van ${seen.file}`).toBe(
+          seen.text
+        );
+      }
     }
   });
 });
