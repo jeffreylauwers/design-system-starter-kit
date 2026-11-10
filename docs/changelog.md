@@ -10,6 +10,16 @@ All notable changes to this project are documented in this file.
 
 Nog niet gepubliceerde wijzigingen. Schrijf nieuwe changelog-entries hieronder; bij de volgende release wordt deze kop gepromoveerd naar het definitieve versienummer.
 
+### Basistokens: descriptions zonder waarden
+
+De `$description` van alle tokens in `themes/start/base.json` en `themes/wireframe/base.json` is herschreven, net als die in de project-types (`default/space.json`, `default/typography.json`, `information-dense/typography.json`). Daar komt de uiteindelijke description van onder meer `text.font-size.*` en `space.*` vandaan, dus de CSS-commentaren en Figma-variables tonen nu de nieuwe tekst.
+
+- **Rol in plaats van waarde:** "8px tot 10px (fluid ...)" wordt "Verticale ruimte binnen een component, zoals padding boven en onder." Een tekst klopt zo ook als een project een waarde aanpast.
+- **Space:** elke maat binnen een familie (`block`, `inline`, `text`, `column`, `row`) krijgt dezelfde zin; het verschil tussen de families is wat de tekst uitlegt.
+- **Bouwstenen:** `*.min.*` en `*.max.*` heten "Bouwsteen voor ...: de maat op de kleinste/grootste viewport".
+- **Gelijk in elk bestand:** start en wireframe hadden 27 afwijkende teksten, waaronder een andere uitleg van `form-control.inline-size`. Alle bestanden hebben nu dezelfde tekst; `tests/token-descriptions.test.ts` bewaakt dat ook voor `base.json` en de project-types.
+- Geen WCAG-verwijzingen, gebruiksinstructies of em dashes meer in deze descriptions.
+
 ### Wireframe: zichtbare randen op inverse vlakken
 
 In het wireframe-theme hadden `border-default`, `border-hover` en `border-active` van elke `*-inverse`-kleurfamilie dezelfde kleur als het inverse vlak eronder: zwart op zwart in light, wit op wit in dark. De rand was dus onzichtbaar (contrast 1:1). De randen, ook `border-subtle`, hebben nu een vaste waarde: `#FFFFFF` in light (op het zwarte inverse vlak) en `#000000` in dark (op het witte inverse vlak). Daarbij heeft `neutral-inverse` in wireframe nu overal vaste waarden in plaats van aliassen naar `neutral`. `neutral` en `neutral-inverse` zijn zo de twee bronschalen; alle andere families verwijzen daarnaar. Alle andere inverse families erven dit via hun alias, dus alle 60 combinaties halen nu 21:1. Wireframe werkt niet met subtiele kleuren: elke rand is hard zwart of wit. Zichtbaar effect: de bovenrand van een inverse PageFooter is in wireframe nu te zien. Het start-theme verandert niet.

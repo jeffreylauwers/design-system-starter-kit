@@ -4,31 +4,31 @@
       "font-size": {
         "sm": {
           "$value": "fluid({dsn.text.font-size.min.sm}, {dsn.text.font-size.max.sm})",
-          "$description": "14px tot 17.5px (fluid tussen de kleinste en grootste viewport)"
+          "$description": "Kleine lettergrootte, voor ondersteunende tekst zoals beschrijvingen en metadata."
         },
         "md": {
           "$value": "fluid({dsn.text.font-size.min.md}, {dsn.text.font-size.max.md})",
-          "$description": "16px tot 20px (fluid tussen de kleinste en grootste viewport)"
+          "$description": "Standaard lettergrootte voor lopende tekst en interface-tekst."
         },
         "lg": {
           "$value": "fluid({dsn.text.font-size.min.lg}, {dsn.text.font-size.max.lg})",
-          "$description": "20px tot 25px (fluid tussen de kleinste en grootste viewport)"
+          "$description": "Grote lettergrootte, voor een inleidende alinea en kleine koppen."
         },
         "xl": {
           "$value": "fluid({dsn.text.font-size.min.xl}, {dsn.text.font-size.max.xl})",
-          "$description": "24px tot 30px (fluid tussen de kleinste en grootste viewport)"
+          "$description": "Lettergrootte voor tussenkoppen."
         },
         "2xl": {
           "$value": "fluid({dsn.text.font-size.min.2xl}, {dsn.text.font-size.max.2xl})",
-          "$description": "32px tot 40px (fluid tussen de kleinste en grootste viewport)"
+          "$description": "Lettergrootte voor sectiekoppen."
         },
         "3xl": {
           "$value": "fluid({dsn.text.font-size.min.3xl}, {dsn.text.font-size.max.3xl})",
-          "$description": "40px tot 50px (fluid tussen de kleinste en grootste viewport)"
+          "$description": "Lettergrootte voor de hoofdkop van een pagina."
         },
         "4xl": {
           "$value": "fluid({dsn.text.font-size.min.4xl}, {dsn.text.font-size.max.4xl})",
-          "$description": "48px tot 60px (fluid tussen de kleinste en grootste viewport)"
+          "$description": "Grootste lettergrootte, voor een opvallende paginabrede titel."
         }
       }
     }
