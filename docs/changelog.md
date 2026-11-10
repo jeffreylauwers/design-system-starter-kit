@@ -19,7 +19,7 @@ In het wireframe-theme hadden `border-default`, `border-hover` en `border-active
 De `$description` van alle kleurtokens in de thema-laag (`colors-light.json` en `colors-dark.json` van start en wireframe) is herschreven. De oude teksten herhaalden de tokennaam ("Subtiele rand"); de nieuwe zeggen waarvoor je een token kiest. Ze komen terecht in de CSS-commentaren en in de Figma-variables.
 
 - **Patroon:** een zin over de rol, met de familie erin ("met fout-tint", "voor primaire acties, zoals knoppen", "op een omgekeerd vlak"). Border- en color-tokens krijgen een tweede zin met de contrasteis, bijvoorbeeld "Moet een contrastverhouding van 3:1 of meer hebben met neutral.bg-default." De koppelingen volgen de kleurengenerator.
-- **border-subtle** heet nu expliciet een lijnkleur zonder 3:1-eis. Hij haalt die verhouding nergens en is dus niet bedoeld voor een rand die een element herkenbaar maakt.
+- **border-subtle** heet nu expliciet een lijnkleur zonder 3:1-eis. Hij is dus niet bedoeld voor een rand die een element herkenbaar maakt. In het start-theme haalt hij die verhouding nergens; in wireframe wel, omdat dat theme geen subtiele kleuren kent en elke rand hard zwart of wit is.
 - **Geen waarden en zo min mogelijk componentnamen**, zodat een tekst klopt als een project de kleur aanpast.
 - **Gelijk in elk bestand:** `tests/token-descriptions.test.ts` controleert dat de vier kleurbestanden dezelfde descriptions hebben en dat er geen em dash in staat.
 
