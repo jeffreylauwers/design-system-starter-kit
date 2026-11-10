@@ -10,6 +10,10 @@ All notable changes to this project are documented in this file.
 
 Nog niet gepubliceerde wijzigingen. Schrijf nieuwe changelog-entries hieronder; bij de volgende release wordt deze kop gepromoveerd naar het definitieve versienummer.
 
+### Wireframe: zichtbare randen op inverse vlakken
+
+In het wireframe-theme hadden `border-default`, `border-hover` en `border-active` van elke `*-inverse`-kleurfamilie dezelfde kleur als het inverse vlak eronder: zwart op zwart in light, wit op wit in dark. De rand was dus onzichtbaar (contrast 1:1). `neutral-inverse.border-*` verwees naar `neutral.border-*`, en in wireframe is die net zo zwart (of wit) als de inverse achtergrond. De drie tokens verwijzen nu naar `neutral.bg-*`, net als `neutral-inverse.color-*`. Alle andere inverse families erven dit via hun alias, dus alle 60 combinaties halen nu 21:1. Zichtbaar effect: de bovenrand van een inverse PageFooter is in wireframe nu te zien. Het start-theme verandert niet.
+
 ### UnorderedList en OrderedList: ruimte na een geneste lijst (#454)
 
 Na een item met een geneste lijst stond 12px in plaats van 4px. De `margin-block-end` van de geneste lijst (bedoeld voor de ruimte onder een losse lijst) liep door het `li` heen en collapste met de gap van dat `li`. Een lijst direct in een `li` heeft nu geen eigen marge meer (`li > .dsn-unordered-list` en `li > .dsn-ordered-list`), dus de ruimte is overal `--dsn-unordered-list-gap` of `--dsn-ordered-list-gap`. Dat geldt ook voor een OrderedList in een UnorderedList en andersom. Een losse lijst houdt zijn `margin-block-end`. Browser en Figma (zie #453) kloppen hiermee weer met elkaar.

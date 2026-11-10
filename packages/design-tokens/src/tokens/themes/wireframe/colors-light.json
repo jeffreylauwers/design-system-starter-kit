@@ -808,17 +808,17 @@
           "$description": "Inverse subtiele rand"
         },
         "border-default": {
-          "$value": "{dsn.color.neutral.border-hover}",
+          "$value": "{dsn.color.neutral.bg-hover}",
           "$type": "color",
           "$description": "Inverse standaard rand"
         },
         "border-hover": {
-          "$value": "{dsn.color.neutral.border-default}",
+          "$value": "{dsn.color.neutral.bg-default}",
           "$type": "color",
           "$description": "Inverse rand in hover state"
         },
         "border-active": {
-          "$value": "{dsn.color.neutral.border-subtle}",
+          "$value": "{dsn.color.neutral.bg-subtle}",
           "$type": "color",
           "$description": "Inverse rand in active state"
         },
