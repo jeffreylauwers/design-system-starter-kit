@@ -14,6 +14,15 @@ Nog niet gepubliceerde wijzigingen. Schrijf nieuwe changelog-entries hieronder; 
 
 In het wireframe-theme hadden `border-default`, `border-hover` en `border-active` van elke `*-inverse`-kleurfamilie dezelfde kleur als het inverse vlak eronder: zwart op zwart in light, wit op wit in dark. De rand was dus onzichtbaar (contrast 1:1). De randen, ook `border-subtle`, hebben nu een vaste waarde: `#FFFFFF` in light (op het zwarte inverse vlak) en `#000000` in dark (op het witte inverse vlak). Daarbij heeft `neutral-inverse` in wireframe nu overal vaste waarden in plaats van aliassen naar `neutral`. `neutral` en `neutral-inverse` zijn zo de twee bronschalen; alle andere families verwijzen daarnaar. Alle andere inverse families erven dit via hun alias, dus alle 60 combinaties halen nu 21:1. Wireframe werkt niet met subtiele kleuren: elke rand is hard zwart of wit. Zichtbaar effect: de bovenrand van een inverse PageFooter is in wireframe nu te zien. Het start-theme verandert niet.
 
+### Kleurtokens: descriptions helpen bij kiezen
+
+De `$description` van alle kleurtokens in de thema-laag (`colors-light.json` en `colors-dark.json` van start en wireframe) is herschreven. De oude teksten herhaalden de tokennaam ("Subtiele rand"); de nieuwe zeggen waarvoor je een token kiest. Ze komen terecht in de CSS-commentaren en in de Figma-variables.
+
+- **Patroon:** een zin over de rol, met de familie erin ("met fout-tint", "voor primaire acties, zoals knoppen", "op een omgekeerd vlak"). Border- en color-tokens krijgen een tweede zin met de contrasteis, bijvoorbeeld "Moet een contrastverhouding van 3:1 of meer hebben met neutral.bg-default." De koppelingen volgen de kleurengenerator.
+- **border-subtle** heet nu expliciet een lijnkleur zonder 3:1-eis. Hij haalt die verhouding nergens en is dus niet bedoeld voor een rand die een element herkenbaar maakt.
+- **Geen waarden en zo min mogelijk componentnamen**, zodat een tekst klopt als een project de kleur aanpast.
+- **Gelijk in elk bestand:** `tests/token-descriptions.test.ts` controleert dat de vier kleurbestanden dezelfde descriptions hebben en dat er geen em dash in staat.
+
 ### UnorderedList en OrderedList: ruimte na een geneste lijst (#454)
 
 Na een item met een geneste lijst stond 12px in plaats van 4px. De `margin-block-end` van de geneste lijst (bedoeld voor de ruimte onder een losse lijst) liep door het `li` heen en collapste met de gap van dat `li`. Een lijst direct in een `li` heeft nu geen eigen marge meer (`li > .dsn-unordered-list` en `li > .dsn-ordered-list`), dus de ruimte is overal `--dsn-unordered-list-gap` of `--dsn-ordered-list-gap`. Dat geldt ook voor een OrderedList in een UnorderedList en andersom. Een losse lijst houdt zijn `margin-block-end`. Browser en Figma (zie #453) kloppen hiermee weer met elkaar.
