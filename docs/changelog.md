@@ -12,7 +12,7 @@ Nog niet gepubliceerde wijzigingen. Schrijf nieuwe changelog-entries hieronder; 
 
 ### Wireframe: zichtbare randen op inverse vlakken
 
-In het wireframe-theme hadden `border-default`, `border-hover` en `border-active` van elke `*-inverse`-kleurfamilie dezelfde kleur als het inverse vlak eronder: zwart op zwart in light, wit op wit in dark. De rand was dus onzichtbaar (contrast 1:1). `neutral-inverse.border-*` verwees naar `neutral.border-*`, en in wireframe is die net zo zwart (of wit) als de inverse achtergrond. De drie tokens verwijzen nu naar `neutral.bg-*`, net als `neutral-inverse.color-*`. Alle andere inverse families erven dit via hun alias, dus alle 60 combinaties halen nu 21:1. Zichtbaar effect: de bovenrand van een inverse PageFooter is in wireframe nu te zien. Het start-theme verandert niet.
+In het wireframe-theme hadden `border-default`, `border-hover` en `border-active` van elke `*-inverse`-kleurfamilie dezelfde kleur als het inverse vlak eronder: zwart op zwart in light, wit op wit in dark. De rand was dus onzichtbaar (contrast 1:1). `neutral-inverse.border-*` heeft nu een vaste waarde: `#FFFFFF` in light (op het zwarte inverse vlak) en `#000000` in dark (op het witte inverse vlak). Alle andere inverse families erven dit via hun alias, dus alle 60 combinaties halen nu 21:1. Zichtbaar effect: de bovenrand van een inverse PageFooter is in wireframe nu te zien. Het start-theme verandert niet.
 
 ### UnorderedList en OrderedList: ruimte na een geneste lijst (#454)
 
