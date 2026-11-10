@@ -773,77 +773,77 @@
       },
       "neutral-inverse": {
         "bg-document": {
-          "$value": "{dsn.color.neutral.color-document}",
+          "$value": "#FFFFFF",
           "$type": "color",
           "$description": "Neutrale pagina-achtergrond voor een omgekeerd vlak (donker in light mode, licht in dark mode), voor een sectie of overlay die sterk afsteekt."
         },
         "bg-elevated": {
-          "$value": "{dsn.color.neutral.color-document}",
+          "$value": "#FFFFFF",
           "$type": "color",
           "$description": "Neutrale achtergrondkleur voor zwevende lagen boven een omgekeerd vlak."
         },
         "bg-subtle": {
-          "$value": "{dsn.color.neutral.color-active}",
+          "$value": "#FFFFFF",
           "$type": "color",
           "$description": "Alternatieve neutrale achtergrondkleur op een omgekeerd vlak ten opzichte van neutral-inverse.bg-document, die zich daar licht van onderscheidt."
         },
         "bg-default": {
-          "$value": "{dsn.color.neutral.color-hover}",
+          "$value": "#FFFFFF",
           "$type": "color",
           "$description": "Standaard neutrale achtergrondkleur voor omgekeerde getinte componenten (donker in light mode, licht in dark mode) die sterk moeten opvallen, in standaardstatus."
         },
         "bg-hover": {
-          "$value": "{dsn.color.neutral.color-default}",
+          "$value": "#FFFFFF",
           "$type": "color",
           "$description": "Neutrale achtergrondkleur bij ‘hover’ status van omgekeerde getinte of transparante componenten."
         },
         "bg-active": {
-          "$value": "{dsn.color.neutral.color-subtle}",
+          "$value": "#FFFFFF",
           "$type": "color",
           "$description": "Neutrale achtergrondkleur bij ‘active’ of ‘selected’ status van omgekeerde getinte of transparante componenten."
         },
         "border-subtle": {
-          "$value": "{dsn.color.neutral.border-active}",
+          "$value": "#000000",
           "$type": "color",
           "$description": "Subtiele neutrale lijnkleur op een omgekeerd vlak, inzetbaar als er geen contrastverhouding van 3:1 vereist is."
         },
         "border-default": {
-          "$value": "{dsn.color.neutral.border-hover}",
+          "$value": "#000000",
           "$type": "color",
           "$description": "Standaard neutrale lijnkleur op een omgekeerd vlak. Moet een contrastverhouding van 3:1 of meer hebben met neutral-inverse.bg-default."
         },
         "border-hover": {
-          "$value": "{dsn.color.neutral.border-default}",
+          "$value": "#000000",
           "$type": "color",
           "$description": "Neutrale lijnkleur op een omgekeerd vlak bij ‘hover’ status. Moet een contrastverhouding van 3:1 of meer hebben met neutral-inverse.bg-hover."
         },
         "border-active": {
-          "$value": "{dsn.color.neutral.border-subtle}",
+          "$value": "#000000",
           "$type": "color",
           "$description": "Neutrale lijnkleur op een omgekeerd vlak bij ‘active’ of ‘selected’ status. Moet een contrastverhouding van 3:1 of meer hebben met neutral-inverse.bg-active."
         },
         "color-default": {
-          "$value": "{dsn.color.neutral.bg-active}",
+          "$value": "#000000",
           "$type": "color",
           "$description": "Standaard neutrale voorgrondkleur op een omgekeerd vlak. Moet een contrastverhouding van 4.5:1 of meer hebben met neutral-inverse.bg-default."
         },
         "color-hover": {
-          "$value": "{dsn.color.neutral.bg-hover}",
+          "$value": "#000000",
           "$type": "color",
           "$description": "Neutrale voorgrondkleur op een omgekeerd vlak bij ‘hover’ status. Moet een contrastverhouding van 4.5:1 of meer hebben met neutral-inverse.bg-hover."
         },
         "color-active": {
-          "$value": "{dsn.color.neutral.bg-default}",
+          "$value": "#000000",
           "$type": "color",
           "$description": "Neutrale voorgrondkleur op een omgekeerd vlak bij ‘active’ of ‘selected’ status. Moet een contrastverhouding van 4.5:1 of meer hebben met neutral-inverse.bg-active."
         },
         "color-subtle": {
-          "$value": "{dsn.color.neutral.bg-subtle}",
+          "$value": "#000000",
           "$type": "color",
           "$description": "Alternatieve, subtielere neutrale voorgrondkleur op een omgekeerd vlak ten opzichte van neutral-inverse.color-document, voor secundaire tekst. Moet een contrastverhouding van 4.5:1 of meer hebben met neutral-inverse.bg-document."
         },
         "color-document": {
-          "$value": "{dsn.color.neutral.bg-document}",
+          "$value": "#000000",
           "$type": "color",
           "$description": "Algemene neutrale voorgrondkleur op een omgekeerd vlak, de standaardkeuze voor lopende tekst. Moet een contrastverhouding van 4.5:1 of meer hebben met neutral-inverse.bg-default."
         }
