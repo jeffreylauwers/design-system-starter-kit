@@ -29,3 +29,12 @@
 .dsn-ordered-list > li:last-child {
   margin-block-end: 0;
 }
+
+/*
+ * A nested list has no margin of its own: the gap of its parent li
+ * already sets the space to the next item. Without this, the list's
+ * margin-block-end collapses with that gap and the space grows.
+ */
+li > .dsn-ordered-list {
+  margin-block-end: 0;
+}

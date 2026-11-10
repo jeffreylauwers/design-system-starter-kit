@@ -4,7 +4,7 @@ Een lijst met items in een specifieke volgorde, weergegeven met nummers.
 
 ## Doel
 
-De OrderedList component biedt een consistente, toegankelijke manier om lijsten met items weer te geven waar de volgorde belangrijk is. De component gebruikt genummerde markers die automatisch worden bijgewerkt, zelfs bij geneste lijsten. OrderedLists ondersteunen HTML attributen zoals `start` (startnummer) en `reversed` (omgekeerde volgorde) en zorgen voor consistente spacing tussen items.
+De OrderedList component biedt een consistente, toegankelijke manier om lijsten met items weer te geven waar de volgorde belangrijk is. De component gebruikt genummerde markers die automatisch worden bijgewerkt. Elke geneste lijst heeft zijn eigen nummering en begint weer bij 1. OrderedLists ondersteunen HTML attributen zoals `start` (startnummer) en `reversed` (omgekeerde volgorde) en zorgen voor consistente spacing tussen items.
 
 <!-- VOORBEELD -->
 
@@ -13,7 +13,7 @@ De OrderedList component biedt een consistente, toegankelijke manier om lijsten 
 - Je een reeks stappen of instructies wilt tonen waar de volgorde belangrijk is.
 - Je items wilt rangschikken (bijv. top 10 lijst).
 - Je naar specifieke stappen wilt verwijzen via hun nummer ("zie stap 3").
-- Je geneste geordende lijsten nodig hebt (1.1, 1.2, 2.1, etc.).
+- Je stappen wilt opdelen in deelstappen met een geneste lijst. Elk niveau telt opnieuw vanaf 1; hiërarchische nummering (1.1, 1.2) levert de component niet.
 
 ## Don't use when
 
@@ -31,17 +31,17 @@ De OrderedList component biedt een consistente, toegankelijke manier om lijsten 
 
 ## Design tokens
 
-| Token                                     | Beschrijving                     |
-| ----------------------------------------- | -------------------------------- |
-| `--dsn-ordered-list-color`                | Tekstkleur                       |
-| `--dsn-ordered-list-font-family`          | Lettertypefamilie                |
-| `--dsn-ordered-list-font-size`            | Font size (md)                   |
-| `--dsn-ordered-list-font-weight`          | Font weight                      |
-| `--dsn-ordered-list-gap`                  | Ruimte tussen list items         |
-| `--dsn-ordered-list-line-height`          | Line height                      |
-| `--dsn-ordered-list-margin-block-end`     | Bottom margin van de lijst       |
-| `--dsn-ordered-list-marker-color`         | Kleur van de nummers             |
-| `--dsn-ordered-list-padding-inline-start` | Linker inspringing voor de lijst |
+| Token                                     | Beschrijving                                                       |
+| ----------------------------------------- | ------------------------------------------------------------------ |
+| `--dsn-ordered-list-color`                | Tekstkleur                                                         |
+| `--dsn-ordered-list-font-family`          | Lettertypefamilie                                                  |
+| `--dsn-ordered-list-font-size`            | Font size (md)                                                     |
+| `--dsn-ordered-list-font-weight`          | Font weight                                                        |
+| `--dsn-ordered-list-gap`                  | Ruimte tussen list items                                           |
+| `--dsn-ordered-list-line-height`          | Line height                                                        |
+| `--dsn-ordered-list-margin-block-end`     | Bottom margin van een losse lijst; een geneste lijst heeft er geen |
+| `--dsn-ordered-list-marker-color`         | Kleur van de nummers                                               |
+| `--dsn-ordered-list-padding-inline-start` | Linker inspringing voor de lijst                                   |
 
 ## Accessibility
 

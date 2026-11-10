@@ -10,6 +10,12 @@ All notable changes to this project are documented in this file.
 
 Nog niet gepubliceerde wijzigingen. Schrijf nieuwe changelog-entries hieronder; bij de volgende release wordt deze kop gepromoveerd naar het definitieve versienummer.
 
+### UnorderedList en OrderedList: ruimte na een geneste lijst (#454)
+
+Na een item met een geneste lijst stond 12px in plaats van 4px. De `margin-block-end` van de geneste lijst (bedoeld voor de ruimte onder een losse lijst) liep door het `li` heen en collapste met de gap van dat `li`. Een lijst direct in een `li` heeft nu geen eigen marge meer (`li > .dsn-unordered-list` en `li > .dsn-ordered-list`), dus de ruimte is overal `--dsn-unordered-list-gap` of `--dsn-ordered-list-gap`. Dat geldt ook voor een OrderedList in een UnorderedList en andersom. Een losse lijst houdt zijn `margin-block-end`. Browser en Figma (zie #453) kloppen hiermee weer met elkaar.
+
+- **Nummering in de docs:** `OrderedList.docs.md` beloofde hiërarchische nummering (1.1, 1.2). De CSS geeft elk niveau een eigen `decimal`-teller, dus een geneste lijst begint weer bij 1. De docs zeggen dat nu; de CSS en figma-sync blijven zoals ze zijn.
+
 ### Figma: schaduwen als effect styles (#326)
 
 Schaduwen komen nu mee naar Figma. De import van `variables.json` maakt drie effect styles aan: `box-shadow/sm`, `box-shadow/md` en `box-shadow/lg`. De kleur van elke laag hangt aan een variable in `dsn/Primitives` (`color/shadow/direct`, `ambient` en `highlight`), dus de styles volgen de theme- en light/dark-schakelaar. Drawer en ModalDialog gebruiken `box-shadow/lg`, Popover `box-shadow/md`. De waarschuwing "box-shadow moet een Figma effect style worden" is weg.
