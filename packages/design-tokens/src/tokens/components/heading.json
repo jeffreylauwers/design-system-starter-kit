@@ -5,192 +5,192 @@
         "color": {
           "$value": "{dsn.heading.color}",
           "$type": "color",
-          "$description": "Tekstkleur van Heading 1"
+          "$description": "Tekstkleur van kopniveau 1."
         },
         "font-family": {
           "$value": "{dsn.heading.font-family}",
           "$type": "fontFamily",
-          "$description": "Font-familie van Heading 1"
+          "$description": "Lettertype van kopniveau 1."
         },
         "font-size": {
           "$value": "{dsn.text.font-size.3xl}",
           "$type": "fontSize",
-          "$description": "Font-size van Heading 1"
+          "$description": "Lettergrootte van kopniveau 1."
         },
         "font-weight": {
           "$value": "{dsn.heading.font-weight}",
           "$type": "fontWeight",
-          "$description": "Font-gewicht van Heading 1"
+          "$description": "Lettergewicht van kopniveau 1."
         },
         "line-height": {
           "$value": "{dsn.text.line-height.3xl}",
           "$type": "lineHeight",
-          "$description": "Line-height van Heading 1"
+          "$description": "Regelafstand van kopniveau 1."
         },
         "margin-block-end": {
           "$value": "{dsn.space.row.xl}",
           "$type": "spacing",
-          "$description": "Onderste margin van Heading 1"
+          "$description": "Ruimte onder kopniveau 1."
         }
       },
       "level-2": {
         "color": {
           "$value": "{dsn.heading.color}",
           "$type": "color",
-          "$description": "Tekstkleur van Heading 2"
+          "$description": "Tekstkleur van kopniveau 2."
         },
         "font-family": {
           "$value": "{dsn.heading.font-family}",
           "$type": "fontFamily",
-          "$description": "Font-familie van Heading 2"
+          "$description": "Lettertype van kopniveau 2."
         },
         "font-size": {
           "$value": "{dsn.text.font-size.2xl}",
           "$type": "fontSize",
-          "$description": "Font-size van Heading 2"
+          "$description": "Lettergrootte van kopniveau 2."
         },
         "font-weight": {
           "$value": "{dsn.heading.font-weight}",
           "$type": "fontWeight",
-          "$description": "Font-gewicht van Heading 2"
+          "$description": "Lettergewicht van kopniveau 2."
         },
         "line-height": {
           "$value": "{dsn.text.line-height.2xl}",
           "$type": "lineHeight",
-          "$description": "Line-height van Heading 2"
+          "$description": "Regelafstand van kopniveau 2."
         },
         "margin-block-end": {
           "$value": "{dsn.space.row.xl}",
           "$type": "spacing",
-          "$description": "Onderste margin van Heading 2"
+          "$description": "Ruimte onder kopniveau 2."
         }
       },
       "level-3": {
         "color": {
           "$value": "{dsn.heading.color}",
           "$type": "color",
-          "$description": "Tekstkleur van Heading 3"
+          "$description": "Tekstkleur van kopniveau 3."
         },
         "font-family": {
           "$value": "{dsn.heading.font-family}",
           "$type": "fontFamily",
-          "$description": "Font-familie van Heading 3"
+          "$description": "Lettertype van kopniveau 3."
         },
         "font-size": {
           "$value": "{dsn.text.font-size.xl}",
           "$type": "fontSize",
-          "$description": "Font-size van Heading 3"
+          "$description": "Lettergrootte van kopniveau 3."
         },
         "font-weight": {
           "$value": "{dsn.heading.font-weight}",
           "$type": "fontWeight",
-          "$description": "Font-gewicht van Heading 3"
+          "$description": "Lettergewicht van kopniveau 3."
         },
         "line-height": {
           "$value": "{dsn.text.line-height.xl}",
           "$type": "lineHeight",
-          "$description": "Line-height van Heading 3"
+          "$description": "Regelafstand van kopniveau 3."
         },
         "margin-block-end": {
           "$value": "{dsn.space.row.lg}",
           "$type": "spacing",
-          "$description": "Onderste margin van Heading 3"
+          "$description": "Ruimte onder kopniveau 3."
         }
       },
       "level-4": {
         "color": {
           "$value": "{dsn.heading.color}",
           "$type": "color",
-          "$description": "Tekstkleur van Heading 4"
+          "$description": "Tekstkleur van kopniveau 4."
         },
         "font-family": {
           "$value": "{dsn.heading.font-family}",
           "$type": "fontFamily",
-          "$description": "Font-familie van Heading 4"
+          "$description": "Lettertype van kopniveau 4."
         },
         "font-size": {
           "$value": "{dsn.text.font-size.lg}",
           "$type": "fontSize",
-          "$description": "Font-size van Heading 4"
+          "$description": "Lettergrootte van kopniveau 4."
         },
         "font-weight": {
           "$value": "{dsn.heading.font-weight}",
           "$type": "fontWeight",
-          "$description": "Font-gewicht van Heading 4"
+          "$description": "Lettergewicht van kopniveau 4."
         },
         "line-height": {
           "$value": "{dsn.text.line-height.lg}",
           "$type": "lineHeight",
-          "$description": "Line-height van Heading 4"
+          "$description": "Regelafstand van kopniveau 4."
         },
         "margin-block-end": {
           "$value": "{dsn.space.row.lg}",
           "$type": "spacing",
-          "$description": "Onderste margin van Heading 4"
+          "$description": "Ruimte onder kopniveau 4."
         }
       },
       "level-5": {
         "color": {
           "$value": "{dsn.heading.color}",
           "$type": "color",
-          "$description": "Tekstkleur van Heading 5"
+          "$description": "Tekstkleur van kopniveau 5."
         },
         "font-family": {
           "$value": "{dsn.heading.font-family}",
           "$type": "fontFamily",
-          "$description": "Font-familie van Heading 5"
+          "$description": "Lettertype van kopniveau 5."
         },
         "font-size": {
           "$value": "{dsn.text.font-size.md}",
           "$type": "fontSize",
-          "$description": "Font-size van Heading 5"
+          "$description": "Lettergrootte van kopniveau 5."
         },
         "font-weight": {
           "$value": "{dsn.heading.font-weight}",
           "$type": "fontWeight",
-          "$description": "Font-gewicht van Heading 5"
+          "$description": "Lettergewicht van kopniveau 5."
         },
         "line-height": {
           "$value": "{dsn.text.line-height.md}",
           "$type": "lineHeight",
-          "$description": "Line-height van Heading 5"
+          "$description": "Regelafstand van kopniveau 5."
         },
         "margin-block-end": {
           "$value": "{dsn.space.row.md}",
           "$type": "spacing",
-          "$description": "Onderste margin van Heading 5"
+          "$description": "Ruimte onder kopniveau 5."
         }
       },
       "level-6": {
         "color": {
           "$value": "{dsn.heading.color}",
           "$type": "color",
-          "$description": "Tekstkleur van Heading 6"
+          "$description": "Tekstkleur van kopniveau 6."
         },
         "font-family": {
           "$value": "{dsn.heading.font-family}",
           "$type": "fontFamily",
-          "$description": "Font-familie van Heading 6"
+          "$description": "Lettertype van kopniveau 6."
         },
         "font-size": {
           "$value": "{dsn.text.font-size.sm}",
           "$type": "fontSize",
-          "$description": "Font-size van Heading 6"
+          "$description": "Lettergrootte van kopniveau 6."
         },
         "font-weight": {
           "$value": "{dsn.heading.font-weight}",
           "$type": "fontWeight",
-          "$description": "Font-gewicht van Heading 6"
+          "$description": "Lettergewicht van kopniveau 6."
         },
         "line-height": {
           "$value": "{dsn.text.line-height.sm}",
           "$type": "lineHeight",
-          "$description": "Line-height van Heading 6"
+          "$description": "Regelafstand van kopniveau 6."
         },
         "margin-block-end": {
           "$value": "{dsn.space.row.md}",
           "$type": "spacing",
-          "$description": "Onderste margin van Heading 6"
+          "$description": "Ruimte onder kopniveau 6."
         }
       }
     }

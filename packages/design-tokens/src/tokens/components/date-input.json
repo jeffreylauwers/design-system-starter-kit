@@ -4,22 +4,22 @@
       "button-inset-inline-end": {
         "$value": "{dsn.space.inline.sm}",
         "$type": "dimension",
-        "$description": "Distance from the inline-end border to the calendar button (4px)"
+        "$description": "Afstand tussen de agendaknop en de rand aan het eind van het veld."
       },
       "icon-gap": {
         "$value": "{dsn.space.text.md}",
         "$type": "dimension",
-        "$description": "Gap between calendar button and input text"
+        "$description": "Ruimte tussen icoon en tekst."
       },
       "icon-size": {
         "$value": "{dsn.button.size.small.icon-size}",
         "$type": "dimension",
-        "$description": "Calendar icon size — matches the small button icon size"
+        "$description": "Grootte van het icoon."
       },
       "padding-inline-end-with-icon": {
         "$value": "calc(({dsn.button.size.small.icon-only-padding} * 2) + {dsn.date-input.icon-size} + {dsn.date-input.button-inset-inline-end} + {dsn.date-input.icon-gap})",
         "$type": "dimension",
-        "$description": "Right padding when icon is present: (button-padding × 2) + icon-size + button-inset + gap"
+        "$description": "Ruimte aan het eind van de inhoud als er een knop met icoon in het veld staat, zodat tekst er niet onder loopt."
       }
     }
   }

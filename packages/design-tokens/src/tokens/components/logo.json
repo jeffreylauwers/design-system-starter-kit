@@ -5,12 +5,12 @@
         "primary": {
           "$value": "{dsn.color.accent-1-inverse.bg-default}",
           "$type": "color",
-          "$description": "Achtergrondrechthoek en letterpaden — de merkkleur van het actieve thema."
+          "$description": "Merkkleur van het vlak en de letters."
         },
         "label": {
           "$value": "{dsn.color.neutral.bg-document}",
           "$type": "color",
-          "$description": "Binnenste rechthoek — zelfde kleur als de documentachtergrond, zodat de letters als doorkijkjes werken."
+          "$description": "Kleur van het binnenvlak, gelijk aan de pagina-achtergrond, zodat de letters erdoorheen lijken te vallen."
         }
       }
     }

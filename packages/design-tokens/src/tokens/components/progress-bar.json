@@ -5,34 +5,34 @@
         "track": {
           "$value": "{dsn.color.neutral.bg-default}",
           "$type": "color",
-          "$description": "Achtergrondtrack"
+          "$description": "Kleur van de baan waarover de voortgang loopt."
         },
         "fill": {
           "$value": "{dsn.color.accent-1-inverse.bg-default}",
           "$type": "color",
-          "$description": "Vulbalk achtergrondkleur"
+          "$description": "Kleur van het deel dat de voortgang toont."
         }
       },
       "block-size": {
         "$value": "8px",
         "$type": "dimension",
-        "$description": "Hoogte van de balk — gangbare dikte voor voortgangsbalken"
+        "$description": "Hoogte."
       },
       "border-radius": {
         "$value": "{dsn.border.radius.round}",
         "$type": "borderRadius",
-        "$description": "Volledig afgerond (pill-vorm) voor zowel track als fill"
+        "$description": "Hoekafronding."
       },
       "gap": {
         "header": {
           "$value": "{dsn.space.block.xs}",
           "$type": "spacing",
-          "$description": "Ruimte tussen percentage-tekst en balk"
+          "$description": "Ruimte tussen de tekst boven de balk en de balk."
         },
         "footer": {
           "$value": "{dsn.space.block.xs}",
           "$type": "spacing",
-          "$description": "Ruimte tussen balk en beschrijving"
+          "$description": "Ruimte tussen de balk en de tekst eronder."
         }
       }
     }

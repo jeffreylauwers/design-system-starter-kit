@@ -4,109 +4,109 @@
       "z-index": {
         "$value": "{dsn.z-index.500}",
         "$type": "number",
-        "$description": "Positionering boven de backdrop ({dsn.z-index.400}) en onder de skip-link ({dsn.z-index.600})"
+        "$description": "Stapellaag."
       },
       "background-color": {
         "$value": "{dsn.color.neutral.bg-elevated}",
         "$type": "color",
-        "$description": "Achtergrondkleur van het dialoogvenster — bg-elevated benadrukt elevatie boven de pagina"
+        "$description": "Achtergrondkleur."
       },
       "border-radius": {
         "$value": "{dsn.border.radius.lg}",
         "$type": "dimension",
-        "$description": "Afgeronde hoeken van het dialoogvenster (12px)"
+        "$description": "Hoekafronding."
       },
       "border-width": {
         "$value": "{dsn.border.width.thin}",
         "$type": "borderWidth",
-        "$description": "Randbreedte van het dialoogvenster"
+        "$description": "Lijndikte van de rand."
       },
       "border-color": {
         "$value": "{dsn.color.neutral.border-subtle}",
         "$type": "color",
-        "$description": "Randkleur van het dialoogvenster"
+        "$description": "Lijnkleur van de rand."
       },
       "box-shadow": {
         "$value": "{dsn.box-shadow.lg}",
         "$type": "shadow",
-        "$description": "Schaduw van het dialoogvenster — hoogste elevatie (lg)"
+        "$description": "Schaduw."
       },
       "max-width": {
         "$value": "40rem",
         "$type": "dimension",
-        "$description": "Maximale breedte van het dialoogvenster (640px)"
+        "$description": "Maximale breedte."
       },
       "heading": {
         "font-family": {
           "$value": "{dsn.heading.font-family}",
           "$type": "fontFamily",
-          "$description": "Lettertype van de dialoogvenster-heading"
+          "$description": "Lettertype van de kop."
         },
         "font-weight": {
           "$value": "{dsn.heading.font-weight}",
           "$type": "fontWeight",
-          "$description": "Vetgedrukt van de dialoogvenster-heading"
+          "$description": "Lettergewicht van de kop."
         },
         "color": {
           "$value": "{dsn.heading.color}",
           "$type": "color",
-          "$description": "Kleur van de dialoogvenster-heading"
+          "$description": "Tekstkleur van de kop."
         },
         "font-size": {
           "$value": "{dsn.text.font-size.lg}",
           "$type": "fontSize",
-          "$description": "Tekstgrootte van de dialoogvenster-heading"
+          "$description": "Lettergrootte van de kop."
         },
         "line-height": {
           "$value": "{dsn.text.line-height.lg}",
           "$type": "lineHeight",
-          "$description": "Regelafstand van de dialoogvenster-heading"
+          "$description": "Regelafstand van de kop."
         }
       },
       "header": {
         "padding-block-start": {
           "$value": "{dsn.space.block.xl}",
           "$type": "spacing",
-          "$description": "Bovenkant padding van de header (16px)"
+          "$description": "Ruimte boven de inhoud van de kopzone."
         },
         "padding-block-end": {
           "$value": "{dsn.space.block.xl}",
           "$type": "spacing",
-          "$description": "Onderkant padding van de header (16px)"
+          "$description": "Ruimte onder de inhoud van de kopzone."
         },
         "padding-inline": {
           "$value": "{dsn.space.inline.xl}",
           "$type": "spacing",
-          "$description": "Horizontale padding van de header (16px)"
+          "$description": "Ruimte aan begin en eind van de inhoud van de kopzone."
         }
       },
       "body": {
         "padding-block": {
           "$value": "{dsn.space.block.3xl}",
           "$type": "spacing",
-          "$description": "Verticale padding van de body (24px)"
+          "$description": "Ruimte boven en onder de inhoud van het hoofdgedeelte."
         },
         "padding-inline": {
           "$value": "{dsn.space.inline.xl}",
           "$type": "spacing",
-          "$description": "Horizontale padding van de body (16px)"
+          "$description": "Ruimte aan begin en eind van de inhoud van het hoofdgedeelte."
         }
       },
       "footer": {
         "padding-block-start": {
           "$value": "{dsn.space.block.xl}",
           "$type": "spacing",
-          "$description": "Bovenkant padding van de footer (16px)"
+          "$description": "Ruimte boven de inhoud van de voetzone."
         },
         "padding-block-end": {
           "$value": "{dsn.space.block.xl}",
           "$type": "spacing",
-          "$description": "Onderkant padding van de footer (16px)"
+          "$description": "Ruimte onder de inhoud van de voetzone."
         },
         "padding-inline": {
           "$value": "{dsn.space.inline.xl}",
           "$type": "spacing",
-          "$description": "Horizontale padding van de footer (16px)"
+          "$description": "Ruimte aan begin en eind van de inhoud van de voetzone."
         }
       }
     }

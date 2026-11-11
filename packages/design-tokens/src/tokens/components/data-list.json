@@ -5,58 +5,58 @@
         "border-block-end-color": {
           "$value": "{dsn.color.neutral.border-subtle}",
           "$type": "color",
-          "$description": "Kleur van de rij-scheidingsborder"
+          "$description": "Lijnkleur van de rand aan de onderkant van een rij."
         },
         "border-block-end-width": {
           "$value": "{dsn.border.width.thin}",
           "$type": "dimension",
-          "$description": "Breedte van de rij-scheidingsborder"
+          "$description": "Lijndikte van de rand aan de onderkant van een rij."
         },
         "gap": {
           "$value": "{dsn.space.inline.lg}",
           "$type": "dimension",
-          "$description": "Horizontale ruimte tussen kolommen in de gridindeling"
+          "$description": "Ruimte tussen de onderdelen van een rij."
         },
         "padding-block": {
           "$value": "{dsn.space.block.lg}",
           "$type": "dimension",
-          "$description": "Verticale ruimte rondom elke rij — geldt voor zowel gestapelde als gridindeling; komt overeen met de celpadding van de Table"
+          "$description": "Ruimte boven en onder de inhoud van een rij."
         }
       },
       "key": {
         "color": {
           "$value": "{dsn.color.neutral.color-document}",
           "$type": "color",
-          "$description": "Tekstkleur van de sleutelcel"
+          "$description": "Tekstkleur van de key."
         },
         "font-weight": {
           "$value": "{dsn.text.font-weight.bold}",
           "$type": "fontWeight",
-          "$description": "Vet gewicht onderscheidt de sleutel visueel van de waarde"
+          "$description": "Lettergewicht van de key."
         },
         "basis": {
           "$value": "30%",
           "$type": "dimension",
-          "$description": "Breedte van de sleutelkolom in de gridindeling"
+          "$description": "Breedte van de kolom met keys."
         }
       },
       "value": {
         "color": {
           "$value": "{dsn.color.neutral.color-document}",
           "$type": "color",
-          "$description": "Tekstkleur van de waardecel"
+          "$description": "Tekstkleur van de value."
         }
       },
       "actions": {
         "gap": {
           "$value": "{dsn.space.inline.3xl}",
           "$type": "dimension",
-          "$description": "Ruimte tussen meerdere actielinks in één rij"
+          "$description": "Ruimte tussen de onderdelen van de acties."
         },
         "margin-block-start-stacked": {
           "$value": "{dsn.space.block.md}",
           "$type": "dimension",
-          "$description": "Extra ruimte boven de actiescel in de gestapelde (mobiele) indeling"
+          "$description": "Ruimte boven de acties als key en value onder elkaar staan."
         }
       }
     }

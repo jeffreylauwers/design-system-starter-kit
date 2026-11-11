@@ -5,12 +5,12 @@
         "vertical": {
           "$value": "{dsn.space.block.md}",
           "$type": "spacing",
-          "$description": "Kleine ruimte tussen items in verticale oriëntatie"
+          "$description": "Ruimte tussen de items als ze onder elkaar staan."
         },
         "horizontal": {
           "$value": "{dsn.space.inline.sm}",
           "$type": "spacing",
-          "$description": "Ruimte tussen items in horizontale oriëntatie"
+          "$description": "Ruimte tussen de items als ze naast elkaar staan."
         }
       }
     }

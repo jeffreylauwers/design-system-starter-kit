@@ -4,95 +4,95 @@
       "font-size": {
         "$value": "{dsn.text.font-size.md}",
         "$type": "dimension",
-        "$description": "Gedeeld: lettergrootte voor MenuLink en MenuButton"
+        "$description": "Lettergrootte."
       },
       "font-weight": {
         "$value": "{dsn.text.font-weight.default}",
         "$type": "fontWeight",
-        "$description": "Gedeeld: letterdikte — regular voor navigatie-items"
+        "$description": "Lettergewicht."
       },
       "line-height": {
         "$value": "{dsn.text.line-height.md}",
         "$type": "lineHeight",
-        "$description": "Gedeeld: regelhoogte"
+        "$description": "Regelafstand."
       },
       "padding-block": {
         "$value": "{dsn.space.block.md}",
         "$type": "dimension",
-        "$description": "Gedeeld: verticale padding"
+        "$description": "Ruimte boven en onder de inhoud."
       },
       "padding-inline": {
         "$value": "{dsn.space.inline.lg}",
         "$type": "dimension",
-        "$description": "Gedeeld: horizontale padding"
+        "$description": "Ruimte aan begin en eind van de inhoud."
       },
       "gap": {
         "$value": "{dsn.space.inline.md}",
         "$type": "dimension",
-        "$description": "Gedeeld: ruimte tussen icoon, label en badge"
+        "$description": "Ruimte tussen de onderdelen."
       },
       "min-block-size": {
         "$value": "{dsn.pointer-target.min-block-size}",
         "$type": "dimension",
-        "$description": "Gedeeld: minimale raakbare hoogte — WCAG pointer target"
+        "$description": "Minimale hoogte."
       },
       "icon-size": {
         "$value": "{dsn.icon.size.md}",
         "$type": "dimension",
-        "$description": "Gedeeld: icoongrootte"
+        "$description": "Grootte van het icoon."
       },
       "color": {
         "$value": "{dsn.color.action-2.color-default}",
         "$type": "color",
-        "$description": "Gedeeld: standaard tekstkleur"
+        "$description": "Voorgrondkleur."
       },
       "background-color": {
         "$value": "{dsn.color.transparent}",
         "$type": "color",
-        "$description": "Gedeeld: standaard achtergrondkleur"
+        "$description": "Achtergrondkleur."
       },
       "indicator-width": {
         "$value": "3px",
         "$type": "dimension",
-        "$description": "Gedeeld: dikte van de indicator (border-inline-start, of border-block-end in een horizontaal Menu). Altijd aanwezig zodat hover en current niet verspringen"
+        "$description": "Lijndikte van de indicator die ‘hover’ status en de huidige pagina markeert. Is er altijd, zodat de inhoud niet verspringt."
       },
       "indicator-color": {
         "$value": "{dsn.color.transparent}",
         "$type": "color",
-        "$description": "Gedeeld: standaard kleur van de indicator, onzichtbaar"
+        "$description": "Kleur van de indicator in standaardstatus."
       },
       "hover": {
         "color": {
           "$value": "{dsn.color.action-2.color-hover}",
           "$type": "color",
-          "$description": "Gedeeld: hover tekstkleur"
+          "$description": "Voorgrondkleur bij ‘hover’ status."
         },
         "background-color": {
           "$value": "{dsn.color.action-2.bg-hover}",
           "$type": "color",
-          "$description": "Gedeeld: hover achtergrondkleur"
+          "$description": "Achtergrondkleur bij ‘hover’ status."
         },
         "indicator-color": {
           "$value": "{dsn.color.action-2.color-hover}",
           "$type": "color",
-          "$description": "Gedeeld: hover kleur van de indicator"
+          "$description": "Kleur van de indicator bij ‘hover’ status."
         }
       },
       "active": {
         "color": {
           "$value": "{dsn.color.action-2.color-active}",
           "$type": "color",
-          "$description": "Gedeeld: active tekstkleur"
+          "$description": "Voorgrondkleur bij ‘active’ status."
         },
         "background-color": {
           "$value": "{dsn.color.action-2.bg-active}",
           "$type": "color",
-          "$description": "Gedeeld: active achtergrondkleur"
+          "$description": "Achtergrondkleur bij ‘active’ status."
         },
         "indicator-color": {
           "$value": "{dsn.color.action-2.color-active}",
           "$type": "color",
-          "$description": "Gedeeld: active kleur van de indicator"
+          "$description": "Kleur van de indicator bij ‘active’ status."
         }
       }
     }

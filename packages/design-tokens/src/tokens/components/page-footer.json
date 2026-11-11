@@ -4,38 +4,38 @@
       "background-color": {
         "$value": "{dsn.color.accent-1.bg-default}",
         "$type": "color",
-        "$description": "Achtergrondkleur van de PageFooter"
+        "$description": "Achtergrondkleur."
       },
       "border-block-start-width": {
         "$value": "{dsn.border.width.thick}",
         "$type": "dimension",
-        "$description": "Breedte van de bovenkantrand (4px) — spiegelt de PageHeader border-block-end voor visuele symmetrie"
+        "$description": "Lijndikte van de rand aan de bovenkant."
       },
       "border-block-start-color": {
         "$value": "{dsn.color.accent-1.border-default}",
         "$type": "color",
-        "$description": "Kleur van de bovenkantrand"
+        "$description": "Lijnkleur van de rand aan de bovenkant."
       },
       "padding-block": {
         "$value": "{dsn.space.block.6xl}",
         "$type": "spacing",
-        "$description": "Verticale ademruimte van de footer-binnenbalk"
+        "$description": "Ruimte boven en onder de inhoud."
       },
       "slot-gap": {
         "$value": "{dsn.space.block.xl}",
         "$type": "spacing",
-        "$description": "Verticale witruimte tussen gestapelde slots op small viewport"
+        "$description": "Verticale ruimte tussen de onderdelen als ze onder elkaar staan."
       },
       "padding-inline": {
         "$value": "{dsn.space.inline.xl}",
         "$type": "spacing",
-        "$description": "Horizontale padding van de footer-binnenbalk — zelfde schaal als PageHeader masthead en navbar"
+        "$description": "Ruimte aan begin en eind van de inhoud."
       },
       "logo": {
         "max-block-size": {
           "$value": "2rem",
           "$type": "dimension",
-          "$description": "Maximale hoogte van het logo in de PageFooter (32px) — zelfde waarde als page-header.logo.max-block-size voor consistente logogrootte"
+          "$description": "Maximale hoogte van het logo."
         }
       }
     }

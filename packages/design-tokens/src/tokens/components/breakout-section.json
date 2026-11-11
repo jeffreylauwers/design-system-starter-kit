@@ -4,7 +4,7 @@
       "border-block-width": {
         "$value": "{dsn.border.width.thin}",
         "$type": "dimension",
-        "$description": "Breedte van de transparante border-block op de BreakoutSection — zichtbaar in forced-colors / High Contrast mode om de sectieafbakening aan te geven"
+        "$description": "Lijndikte van de randen boven en onder."
       }
     }
   }

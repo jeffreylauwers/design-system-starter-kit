@@ -4,57 +4,57 @@
       "block-size": {
         "$value": "70svh",
         "$type": "dimension",
-        "$description": "Hoogte van de Hero via min-block-size: max(--dsn-hero-min-block-size, --dsn-hero-block-size); aanpasbaar per instantie via inline style"
+        "$description": "Hoogte."
       },
       "min-block-size": {
         "$value": "400px",
         "$type": "dimension",
-        "$description": "Minimale hoogte van de Hero — vloer zodat de Hero niet te klein wordt bij weinig inhoud of kleine viewport"
+        "$description": "Minimale hoogte, zodat het vlak bij weinig inhoud niet te klein wordt."
       },
       "padding-block": {
         "$value": "{dsn.space.block.4xl}",
         "$type": "spacing",
-        "$description": "Verticale padding van de Hero-inhoud"
+        "$description": "Ruimte boven en onder de inhoud."
       },
       "padding-inline": {
         "$value": "{dsn.space.inline.xl}",
         "$type": "spacing",
-        "$description": "Horizontale padding van de dsn-hero__inner wrapper — stemt af op dsn-page-body-padding-inline"
+        "$description": "Ruimte aan begin en eind van de inhoud."
       },
       "background-color": {
         "default": {
           "$value": "{dsn.color.accent-1.bg-default}",
           "$type": "color",
-          "$description": "Achtergrondkleur van de standaard Hero"
+          "$description": "Achtergrondkleur in variant ‘default’."
         },
         "inverse": {
           "$value": "{dsn.color.accent-1-inverse.bg-default}",
           "$type": "color",
-          "$description": "Achtergrondkleur van de inverse Hero"
+          "$description": "Achtergrondkleur in variant ‘inverse’."
         }
       },
       "color": {
         "default": {
           "$value": "{dsn.color.accent-1.color-default}",
           "$type": "color",
-          "$description": "Tekstkleur in de standaard Hero"
+          "$description": "Voorgrondkleur in variant ‘default’."
         },
         "inverse": {
           "$value": "{dsn.color.accent-1-inverse.color-default}",
           "$type": "color",
-          "$description": "Tekstkleur in de inverse Hero"
+          "$description": "Voorgrondkleur in variant ‘inverse’."
         }
       },
       "border-block-width": {
         "$value": "{dsn.border.width.thin}",
         "$type": "dimension",
-        "$description": "Breedte van de transparante border-block op de Hero — zichtbaar in forced-colors / High Contrast mode om de sectieafbakening aan te geven"
+        "$description": "Lijndikte van de randen boven en onder."
       },
       "image": {
         "blend-color": {
           "$value": "{dsn.color.accent-1-inverse.bg-default}",
           "$type": "color",
-          "$description": "Blendkleur voor de image-blend variant"
+          "$description": "Kleur die met de afbeelding wordt gemengd in de variant met kleurmenging."
         }
       }
     }

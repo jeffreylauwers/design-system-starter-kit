@@ -3,28 +3,34 @@
     "option-label": {
       "color": {
         "$value": "{dsn.color.neutral.color-document}",
-        "$type": "color"
+        "$type": "color",
+        "$description": "Tekstkleur."
       },
       "font-family": {
         "$value": "{dsn.text.font-family.default}",
-        "$type": "fontFamily"
+        "$type": "fontFamily",
+        "$description": "Lettertype."
       },
       "font-size": {
         "$value": "{dsn.text.font-size.md}",
-        "$type": "fontSize"
+        "$type": "fontSize",
+        "$description": "Lettergrootte."
       },
       "font-weight": {
         "$value": "{dsn.text.font-weight.default}",
-        "$type": "fontWeight"
+        "$type": "fontWeight",
+        "$description": "Lettergewicht."
       },
       "line-height": {
         "$value": "{dsn.text.line-height.md}",
-        "$type": "lineHeight"
+        "$type": "lineHeight",
+        "$description": "Regelafstand."
       },
       "disabled": {
         "color": {
           "$value": "{dsn.form-control.disabled.color}",
-          "$type": "color"
+          "$type": "color",
+          "$description": "Tekstkleur bij ‘disabled’ status."
         }
       }
     }

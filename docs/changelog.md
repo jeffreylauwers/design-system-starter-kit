@@ -10,6 +10,17 @@ All notable changes to this project are documented in this file.
 
 Nog niet gepubliceerde wijzigingen. Schrijf nieuwe changelog-entries hieronder; bij de volgende release wordt deze kop gepromoveerd naar het definitieve versienummer.
 
+### Component-tokens: descriptions volgens de schrijfregels
+
+De `$description` van alle 942 tokens in `components/*.json` is herschreven, en de 135 tokens zonder description hebben er nu een. Dezelfde regels als bij de thema- en basistokens: rol in plaats van waarde, Nederlands, geen em dashes.
+
+- **Geen componentnaam:** de tokennaam zegt al welk component het is. "Achtergrond van de default button op hover" wordt "Achtergrondkleur in variant ‘default’ bij ‘hover’ status."
+- **CSS-termen in het Nederlands**, zoals in `base.json`: "Lijnkleur van de rand", "Ruimte boven de inhoud", "Lettergrootte" in plaats van "Border van", "Font-size van".
+- **Vaste opbouw:** eigenschap, onderdeel, variant, maat en status, in die volgorde. Varianten en maten staan tussen aanhalingstekens zoals in de API (‘strong-negative’, ‘small’).
+- **Tekstkleur of voorgrondkleur:** "Tekstkleur" alleen waar het om tekst gaat (koppen, labels, invoer), anders "Voorgrondkleur", zoals bij de kleurtokens.
+- **Geen delegatie-uitleg** zoals "zelfde als Card" of "hergebruikt van het formulierveldlabel": de tokenwaarde laat al zien waar een waarde vandaan komt.
+- `project-types/information-dense/grid.json` krijgt dezelfde tekst als `components/grid.json`. `tests/token-descriptions.test.ts` controleert nu ook de component-tokens, en weigert in alle groepen een concrete waarde zoals `8px` of `500ms`.
+
 ### Checkbox en Radio: grootte via tokenreferenties
 
 `checkbox.size`, `checkbox.icon.size`, `radio.size` en `radio.icon.size` rekenden met `var(--dsn-...)` in plaats van met tokenreferenties, en omzeilden zo de delegatieketen. Ze gebruiken nu `{dsn.text.font-size.md}`, `{dsn.text.line-height.md}`, `{dsn.checkbox.size}` en `{dsn.radio.size}`.

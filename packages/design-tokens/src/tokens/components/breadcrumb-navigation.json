@@ -4,95 +4,95 @@
       "column-gap": {
         "$value": "{dsn.space.column.md}",
         "$type": "dimension",
-        "$description": "Ruimte tussen breadcrumb-items"
+        "$description": "Horizontale ruimte tussen de onderdelen."
       },
       "font-size": {
         "$value": "{dsn.text.font-size.sm}",
         "$type": "fontSize",
-        "$description": "Breadcrumb font-size — sm (consistent met Link size small)"
+        "$description": "Lettergrootte."
       },
       "font-weight": {
         "$value": "{dsn.text.font-weight.default}",
         "$type": "fontWeight",
-        "$description": "Breadcrumb font-gewicht"
+        "$description": "Lettergewicht."
       },
       "line-height": {
         "$value": "{dsn.text.line-height.sm}",
         "$type": "lineHeight",
-        "$description": "Breadcrumb line-height — sm (consistent met Link size small)"
+        "$description": "Regelafstand."
       },
       "current": {
         "color": {
           "$value": "{dsn.color.neutral.color-subtle}",
           "$type": "color",
-          "$description": "Kleur van het huidige pagina-item"
+          "$description": "Voorgrondkleur voor de huidige pagina."
         }
       },
       "item": {
         "min-block-size": {
           "$value": "{dsn.pointer-target.min-block-size}",
           "$type": "dimension",
-          "$description": "Minimale aanraak-/klikhoogte"
+          "$description": "Minimale hoogte van een item."
         },
         "padding-block": {
           "$value": "{dsn.space.block.sm}",
           "$type": "dimension",
-          "$description": "Verticale padding om de min-block-size te bereiken"
+          "$description": "Ruimte boven en onder de inhoud van een item."
         },
         "padding-inline": {
           "$value": "{dsn.space.none}",
           "$type": "dimension",
-          "$description": "Geen horizontale padding op items"
+          "$description": "Ruimte aan begin en eind van de inhoud van een item."
         }
       },
       "link": {
         "color": {
           "$value": "{dsn.color.action-2.color-default}",
           "$type": "color",
-          "$description": "Tekstkleur van de link"
+          "$description": "Voorgrondkleur van de link."
         },
         "column-gap": {
           "$value": "{dsn.space.text.xs}",
           "$type": "dimension",
-          "$description": "Ruimte tussen icoon en linktekst"
+          "$description": "Horizontale ruimte tussen de onderdelen van de link."
         },
         "text-decoration-line": {
           "$value": "underline",
           "$type": "other",
-          "$description": "Links zijn standaard onderstreept (a11y standaard)"
+          "$description": "Tekstdecoratie, zoals onderstreping, van de link."
         },
         "text-underline-offset": {
           "$value": "4px",
           "$type": "dimension",
-          "$description": "Onderstrepingsafstand"
+          "$description": "Afstand tussen tekst en onderstreping van de link."
         },
         "text-decoration-thickness": {
           "$value": "auto",
           "$type": "other",
-          "$description": "Dikte van de onderstreping"
+          "$description": "Lijndikte van de onderstreping van de link."
         },
         "hover": {
           "color": {
             "$value": "{dsn.color.action-2.color-hover}",
             "$type": "color",
-            "$description": "Linkkleur op hover"
+            "$description": "Voorgrondkleur van de link bij ‘hover’ status."
           },
           "text-decoration-line": {
             "$value": "none",
             "$type": "other",
-            "$description": "Underline verdwijnt op hover als visuele feedback"
+            "$description": "Tekstdecoratie, zoals onderstreping, van de link bij ‘hover’ status."
           }
         },
         "active": {
           "color": {
             "$value": "{dsn.color.action-2.color-active}",
             "$type": "color",
-            "$description": "Linkkleur op active"
+            "$description": "Voorgrondkleur van de link bij ‘active’ status."
           },
           "text-decoration-line": {
             "$value": "none",
             "$type": "other",
-            "$description": "Geen onderstreping op active"
+            "$description": "Tekstdecoratie, zoals onderstreping, van de link bij ‘active’ status."
           }
         }
       },
@@ -100,19 +100,19 @@
         "color": {
           "$value": "{dsn.color.neutral.color-subtle}",
           "$type": "color",
-          "$description": "Kleur van het scheidingsicoon"
+          "$description": "Voorgrondkleur van het scheidingsteken."
         },
         "size": {
           "$value": "{dsn.icon.size.sm}",
           "$type": "dimension",
-          "$description": "Grootte van het scheidingsicoon — sm (kleiner dan terug-icoon)"
+          "$description": "Grootte van het scheidingsteken."
         }
       },
       "icon": {
         "size": {
           "$value": "{dsn.icon.size.sm}",
           "$type": "dimension",
-          "$description": "Grootte van het terug-icoon — sm (consistent met Link size small)"
+          "$description": "Grootte van het icoon."
         }
       }
     }

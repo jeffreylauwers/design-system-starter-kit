@@ -4,51 +4,51 @@
       "row-gap": {
         "$value": "{dsn.space.row.md}",
         "$type": "dimension",
-        "$description": "Verticale ruimte tussen summary en inhoud"
+        "$description": "Verticale ruimte tussen de onderdelen."
       },
       "summary": {
         "color": {
           "$value": "{dsn.color.action-2.color-default}",
           "$type": "color",
-          "$description": "Kleur van het summary-label (volgt Link via action-2)"
+          "$description": "Voorgrondkleur van de klikbare samenvatting."
         },
         "gap": {
           "$value": "{dsn.space.text.sm}",
           "$type": "dimension",
-          "$description": "Ruimte tussen het chevron-icoon en de labeltekst"
+          "$description": "Ruimte tussen de onderdelen van de klikbare samenvatting."
         },
         "text-decoration-line": {
           "$value": "none",
           "$type": "other",
-          "$description": "Standaard geen onderstreping; verschijnt op hover"
+          "$description": "Tekstdecoratie, zoals onderstreping, van de klikbare samenvatting."
         },
         "text-underline-offset": {
           "$value": "4px",
           "$type": "dimension",
-          "$description": "Onderstrepingsafstand voor de hover-staat"
+          "$description": "Afstand tussen tekst en onderstreping van de klikbare samenvatting."
         },
         "text-decoration-thickness": {
           "$value": "auto",
           "$type": "other",
-          "$description": "Dikte van de onderstreping voor de hover-staat"
+          "$description": "Lijndikte van de onderstreping van de klikbare samenvatting."
         },
         "hover": {
           "color": {
             "$value": "{dsn.color.action-2.color-hover}",
             "$type": "color",
-            "$description": "Kleur van het summary-label op hover"
+            "$description": "Voorgrondkleur van de klikbare samenvatting bij ‘hover’ status."
           },
           "text-decoration-line": {
             "$value": "underline",
             "$type": "other",
-            "$description": "Onderstreping verschijnt op hover"
+            "$description": "Tekstdecoratie, zoals onderstreping, van de klikbare samenvatting bij ‘hover’ status."
           }
         },
         "active": {
           "color": {
             "$value": "{dsn.color.action-2.color-active}",
             "$type": "color",
-            "$description": "Kleur van het summary-label op active"
+            "$description": "Voorgrondkleur van de klikbare samenvatting bij ‘active’ status."
           }
         }
       },
@@ -56,39 +56,39 @@
         "size": {
           "$value": "{dsn.icon.size.md}",
           "$type": "dimension",
-          "$description": "Grootte van het chevron-icoon"
+          "$description": "Grootte van het icoon."
         }
       },
       "content": {
         "background-color": {
           "$value": "transparent",
           "$type": "color",
-          "$description": "Achtergrond van het inhoudsgebied"
+          "$description": "Achtergrondkleur van het uitgeklapte deel."
         },
         "border-color": {
           "$value": "{dsn.color.neutral.border-subtle}",
           "$type": "color",
-          "$description": "Kleur van de linkerborder voor visuele groepering"
+          "$description": "Lijnkleur van de rand van het uitgeklapte deel."
         },
         "border-inline-start-width": {
           "$value": "{dsn.border.width.medium}",
           "$type": "dimension",
-          "$description": "Breedte van de linkerborder"
+          "$description": "Lijndikte van de rand aan de beginkant van het uitgeklapte deel."
         },
         "padding-inline-start": {
           "$value": "{dsn.space.inline.xl}",
           "$type": "dimension",
-          "$description": "Linker padding — lijnt de inhoud uit met de labeltekst"
+          "$description": "Ruimte aan het begin van de inhoud van het uitgeklapte deel."
         },
         "padding-inline-end": {
           "$value": "{dsn.space.inline.xl}",
           "$type": "dimension",
-          "$description": "Rechter padding"
+          "$description": "Ruimte aan het eind van de inhoud van het uitgeklapte deel."
         },
         "padding-block": {
           "$value": "{dsn.space.block.xl}",
           "$type": "dimension",
-          "$description": "Boven- en onderpadding"
+          "$description": "Ruimte boven en onder de inhoud van het uitgeklapte deel."
         }
       }
     }

@@ -4,62 +4,62 @@
       "color": {
         "$value": "{dsn.color.action-2.color-default}",
         "$type": "color",
-        "$description": "Tekstkleur van de link"
+        "$description": "Voorgrondkleur."
       },
       "gap": {
         "$value": "{dsn.space.text.sm}",
         "$type": "dimension",
-        "$description": "Ruimte tussen icoon en tekst van de link"
+        "$description": "Ruimte tussen de onderdelen."
       },
       "icon-size": {
         "$value": "{dsn.icon.size.md}",
         "$type": "dimension",
-        "$description": "Icoongrootte van de link"
+        "$description": "Grootte van het icoon."
       },
       "text-decoration-color": {
         "$value": "{dsn.color.action-2.color-default}",
         "$type": "color",
-        "$description": "Kleur van de onderstreping van de link"
+        "$description": "Kleur van de onderstreping."
       },
       "text-decoration-line": {
         "$value": "underline",
         "$type": "string",
-        "$description": "Tekstverfraaiing van de link"
+        "$description": "Tekstdecoratie, zoals onderstreping."
       },
       "text-decoration-thickness": {
         "$value": "auto",
         "$type": "string",
-        "$description": "Dikte van de onderstreping van de link"
+        "$description": "Lijndikte van de onderstreping."
       },
       "text-underline-offset": {
         "$value": "4px",
         "$type": "string",
-        "$description": "Onderstrepingsafstand van de link"
+        "$description": "Afstand tussen tekst en onderstreping."
       },
       "active": {
         "color": {
           "$value": "{dsn.color.action-2.color-active}",
           "$type": "color",
-          "$description": "Tekstkleur van de link op active"
+          "$description": "Voorgrondkleur bij ‘active’ status."
         }
       },
       "disabled": {
         "color": {
           "$value": "{dsn.color.neutral.color-subtle}",
           "$type": "color",
-          "$description": "Tekstkleur van de link op disabled"
+          "$description": "Voorgrondkleur bij ‘disabled’ status."
         }
       },
       "hover": {
         "color": {
           "$value": "{dsn.color.action-2.color-hover}",
           "$type": "color",
-          "$description": "Tekstkleur van de link op hover"
+          "$description": "Voorgrondkleur bij ‘hover’ status."
         },
         "text-decoration-line": {
           "$value": "none",
           "$type": "string",
-          "$description": "Tekstverfraaiing van de link op hover"
+          "$description": "Tekstdecoratie, zoals onderstreping, bij ‘hover’ status."
         }
       },
       "size": {
@@ -67,51 +67,51 @@
           "font-size": {
             "$value": "{dsn.text.font-size.md}",
             "$type": "dimension",
-            "$description": "Font-size van de default link"
+            "$description": "Lettergrootte in maat ‘default’."
           },
           "gap": {
             "$value": "{dsn.space.text.sm}",
             "$type": "dimension",
-            "$description": "Ruimte tussen icoon en tekst van de default link"
+            "$description": "Ruimte tussen de onderdelen in maat ‘default’."
           },
           "icon-size": {
             "$value": "{dsn.icon.size.md}",
             "$type": "dimension",
-            "$description": "Icoongrootte van de default link"
+            "$description": "Grootte van het icoon in maat ‘default’."
           }
         },
         "large": {
           "font-size": {
             "$value": "{dsn.text.font-size.lg}",
             "$type": "dimension",
-            "$description": "Font-size van de large link"
+            "$description": "Lettergrootte in maat ‘large’."
           },
           "gap": {
             "$value": "{dsn.space.text.md}",
             "$type": "dimension",
-            "$description": "Ruimte tussen icoon en tekst van de large link"
+            "$description": "Ruimte tussen de onderdelen in maat ‘large’."
           },
           "icon-size": {
             "$value": "{dsn.icon.size.lg}",
             "$type": "dimension",
-            "$description": "Icoongrootte van de large link"
+            "$description": "Grootte van het icoon in maat ‘large’."
           }
         },
         "small": {
           "font-size": {
             "$value": "{dsn.text.font-size.sm}",
             "$type": "dimension",
-            "$description": "Font-size van de small link"
+            "$description": "Lettergrootte in maat ‘small’."
           },
           "gap": {
             "$value": "{dsn.space.text.sm}",
             "$type": "dimension",
-            "$description": "Ruimte tussen icoon en tekst van de small link"
+            "$description": "Ruimte tussen de onderdelen in maat ‘small’."
           },
           "icon-size": {
             "$value": "{dsn.icon.size.sm}",
             "$type": "dimension",
-            "$description": "Icoongrootte van de small link"
+            "$description": "Grootte van het icoon in maat ‘small’."
           }
         }
       }

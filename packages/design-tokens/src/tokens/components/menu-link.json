@@ -4,51 +4,51 @@
       "level-indent": {
         "$value": "{dsn.space.inline.3xl}",
         "$type": "dimension",
-        "$description": "MenuLink-specifiek: inspringing per hiërarchisch niveau (level 2–4) — via margin-inline-start op de link"
+        "$description": "Inspringing per niveau in de hiërarchie."
       },
       "current": {
         "font-weight": {
           "$value": "{dsn.text.font-weight.bold}",
           "$type": "fontWeight",
-          "$description": "MenuLink-specifiek: font weight voor de actieve/huidige pagina — bold voor visuele nadruk"
+          "$description": "Lettergewicht voor de huidige pagina."
         },
         "color": {
           "$value": "{dsn.color.action-2.color-default}",
           "$type": "color",
-          "$description": "MenuLink-specifiek: tekstkleur voor de actieve/huidige pagina"
+          "$description": "Voorgrondkleur voor de huidige pagina."
         },
         "background-color": {
           "$value": "{dsn.color.action-2.bg-active}",
           "$type": "color",
-          "$description": "MenuLink-specifiek: achtergrondkleur voor de actieve/huidige pagina"
+          "$description": "Achtergrondkleur voor de huidige pagina."
         },
         "indicator-color": {
           "$value": "{dsn.color.action-2.color-default}",
           "$type": "color",
-          "$description": "MenuLink-specifiek: kleur van de indicator voor de actieve/huidige pagina"
+          "$description": "Kleur van de indicator voor de huidige pagina."
         },
         "hover": {
           "color": {
             "$value": "{dsn.color.action-2.color-default}",
             "$type": "color",
-            "$description": "MenuLink-specifiek: hover tekstkleur voor de actieve pagina"
+            "$description": "Voorgrondkleur voor de huidige pagina bij ‘hover’ status."
           },
           "background-color": {
             "$value": "{dsn.color.action-2.bg-active}",
             "$type": "color",
-            "$description": "MenuLink-specifiek: hover achtergrondkleur voor de actieve pagina"
+            "$description": "Achtergrondkleur voor de huidige pagina bij ‘hover’ status."
           }
         },
         "active": {
           "color": {
             "$value": "{dsn.color.action-2.color-default}",
             "$type": "color",
-            "$description": "MenuLink-specifiek: active tekstkleur voor de actieve pagina"
+            "$description": "Voorgrondkleur voor de huidige pagina bij ‘active’ status."
           },
           "background-color": {
             "$value": "{dsn.color.action-2.bg-active}",
             "$type": "color",
-            "$description": "MenuLink-specifiek: active achtergrondkleur voor de actieve pagina"
+            "$description": "Achtergrondkleur voor de huidige pagina bij ‘active’ status."
           }
         }
       }

@@ -1,9 +1,9 @@
 import { describe, it, expect } from 'vitest';
-import { readFileSync } from 'fs';
+import { readFileSync, readdirSync } from 'fs';
 import path from 'path';
 
 /**
- * Semantische tokens hebben in elk thema, elke mode en elk project-type
+ * Tokens hebben in elk thema, elke mode en elk project-type
  * dezelfde $description. De tekst beschrijft de rol (en bij kleur de
  * contrasteis), niet de waarde, dus hoort hij niet per bestand te
  * verschillen. Komt een token in meerdere bestanden van een groep voor,
@@ -29,7 +29,17 @@ const GROUPS: Record<string, string[]> = {
     'project-types/default/typography.json',
     'project-types/information-dense/typography.json',
   ],
+  component: [
+    ...readdirSync(path.join(TOKENS_DIR, 'components'))
+      .filter((file) => file.endsWith('.json'))
+      .map((file) => `components/${file}`),
+    'project-types/information-dense/grid.json',
+  ],
 };
+
+// Een concrete maat of duur in een description veroudert zodra een project
+// de waarde aanpast.
+const CONCRETE_VALUE = /\d+(\.\d+)?\s?(px|rem|em|ms|s|%)(?![a-z])/i;
 
 type TokenNode = { $value?: unknown; $description?: string } & {
   [key: string]: unknown;
@@ -61,12 +71,13 @@ describe.each(Object.entries(GROUPS))('%s-descriptions', (_group, files) => {
   );
 
   it.each(files)(
-    '%s geeft elke token een description zonder em dash',
+    '%s geeft elke token een description zonder em dash of waarde',
     (file) => {
       const descriptions = perFile.find(([f]) => f === file)![1];
       for (const [token, description] of descriptions) {
         expect(description, `${token} in ${file}`).toBeTruthy();
         expect(description, `${token} in ${file}`).not.toContain('—');
+        expect(description, `${token} in ${file}`).not.toMatch(CONCRETE_VALUE);
       }
     }
   );

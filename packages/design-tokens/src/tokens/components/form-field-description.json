@@ -4,32 +4,32 @@
       "color": {
         "$value": "{dsn.color.neutral.color-subtle}",
         "$type": "color",
-        "$description": "Tekstkleur van de formulierveldbeschrijving"
+        "$description": "Tekstkleur."
       },
       "font-family": {
         "$value": "{dsn.text.font-family.default}",
         "$type": "fontFamily",
-        "$description": "Font-familie van de formulierveldbeschrijving"
+        "$description": "Lettertype."
       },
       "font-size": {
         "$value": "{dsn.text.font-size.md}",
         "$type": "fontSize",
-        "$description": "Font-size van de formulierveldbeschrijving"
+        "$description": "Lettergrootte."
       },
       "font-weight": {
         "$value": "{dsn.text.font-weight.default}",
         "$type": "fontWeight",
-        "$description": "Font-gewicht van de formulierveldbeschrijving"
+        "$description": "Lettergewicht."
       },
       "line-height": {
         "$value": "{dsn.text.line-height.md}",
         "$type": "lineHeight",
-        "$description": "Line-height van de formulierveldbeschrijving"
+        "$description": "Regelafstand."
       },
       "margin-block-end": {
         "$value": "{dsn.space.block.md}",
         "$type": "dimension",
-        "$description": "Ruimte onder de beschrijving voor het formulierbesturingselement"
+        "$description": "Ruimte onder het component."
       }
     }
   }

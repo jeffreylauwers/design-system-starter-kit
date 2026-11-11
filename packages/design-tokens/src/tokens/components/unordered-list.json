@@ -4,52 +4,52 @@
       "color": {
         "$value": "{dsn.color.neutral.color-document}",
         "$type": "color",
-        "$description": "Unordered list text color"
+        "$description": "Voorgrondkleur."
       },
       "font-family": {
         "$value": "{dsn.text.font-family.default}",
         "$type": "fontFamily",
-        "$description": "Unordered list font family"
+        "$description": "Lettertype."
       },
       "font-size": {
         "$value": "{dsn.text.font-size.md}",
         "$type": "fontSize",
-        "$description": "Unordered list font size"
+        "$description": "Lettergrootte."
       },
       "font-weight": {
         "$value": "{dsn.text.font-weight.default}",
         "$type": "fontWeight",
-        "$description": "Unordered list font weight"
+        "$description": "Lettergewicht."
       },
       "max-inline-size": {
         "$value": "{dsn.text.max-inline-size}",
         "$type": "sizing",
-        "$description": "Unordered list max width for readability"
+        "$description": "Maximale breedte."
       },
       "gap": {
         "$value": "{dsn.space.row.sm}",
         "$type": "spacing",
-        "$description": "Space between list items"
+        "$description": "Ruimte tussen de onderdelen."
       },
       "line-height": {
         "$value": "{dsn.text.line-height.md}",
         "$type": "lineHeight",
-        "$description": "Unordered list line height"
+        "$description": "Regelafstand."
       },
       "margin-block-end": {
         "$value": "{dsn.space.row.lg}",
         "$type": "spacing",
-        "$description": "Unordered list bottom margin"
+        "$description": "Ruimte onder het component."
       },
       "marker-color": {
         "$value": "{dsn.color.accent-1.color-default}",
         "$type": "color",
-        "$description": "Bullet marker color"
+        "$description": "Kleur van de opsommingstekens."
       },
       "padding-inline-start": {
         "$value": "{dsn.space.inline.3xl}",
         "$type": "spacing",
-        "$description": "Unordered list left indentation"
+        "$description": "Ruimte aan het begin van de inhoud."
       }
     }
   }

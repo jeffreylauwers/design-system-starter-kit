@@ -4,86 +4,86 @@
       "border-radius": {
         "$value": "{dsn.border.radius.md}",
         "$type": "dimension",
-        "$description": "Button border-radius"
+        "$description": "Hoekafronding."
       },
       "border-width": {
         "$value": "{dsn.border.width.thin}",
         "$type": "dimension",
-        "$description": "Button border-breedte"
+        "$description": "Lijndikte van de rand."
       },
       "font-family": {
         "$value": "{dsn.text.font-family.default}",
         "$type": "fontFamily",
-        "$description": "Button font-familie"
+        "$description": "Lettertype."
       },
       "font-weight": {
         "$value": "{dsn.text.font-weight.bold}",
         "$type": "fontWeight",
-        "$description": "Button font-gewicht"
+        "$description": "Lettergewicht."
       },
       "line-height": {
         "$value": "{dsn.text.line-height.md}",
         "$type": "lineHeight",
-        "$description": "Button line-height"
+        "$description": "Regelafstand."
       },
       "min-block-size": {
         "$value": "{dsn.pointer-target.min-block-size}",
         "$type": "dimension",
-        "$description": "Minimale blokhoogte van de button (WCAG 2.5.5 aanraakdoel)"
+        "$description": "Minimale hoogte, zodat de knop een goed aanraakdoel is."
       },
       "min-inline-size": {
         "$value": "{dsn.pointer-target.min-inline-size}",
         "$type": "dimension",
-        "$description": "Minimale inlinebreedte van de button (WCAG 2.5.5 aanraakdoel)"
+        "$description": "Minimale breedte, zodat de knop een goed aanraakdoel is."
       },
       "default": {
         "background-color": {
           "$value": "{dsn.color.transparent}",
           "$type": "color",
-          "$description": "Achtergrond van de default button"
+          "$description": "Achtergrondkleur in variant ‘default’."
         },
         "border-color": {
           "$value": "{dsn.color.action-1.border-default}",
           "$type": "color",
-          "$description": "Border van de default button"
+          "$description": "Lijnkleur van de rand in variant ‘default’."
         },
         "color": {
           "$value": "{dsn.color.action-1.color-default}",
           "$type": "color",
-          "$description": "Tekst-/icoonkleur van de default button"
+          "$description": "Voorgrondkleur in variant ‘default’."
         },
         "active": {
           "background-color": {
             "$value": "{dsn.color.action-1.bg-active}",
             "$type": "color",
-            "$description": "Achtergrond van de default button op active"
+            "$description": "Achtergrondkleur in variant ‘default’ bij ‘active’ status."
           },
           "border-color": {
             "$value": "{dsn.color.action-1.border-active}",
             "$type": "color",
-            "$description": "Border van de default button op active"
+            "$description": "Lijnkleur van de rand in variant ‘default’ bij ‘active’ status."
           },
           "color": {
             "$value": "{dsn.color.action-1.color-active}",
             "$type": "color",
-            "$description": "Tekst-/icoonkleur van de default button op active"
+            "$description": "Voorgrondkleur in variant ‘default’ bij ‘active’ status."
           }
         },
         "hover": {
           "background-color": {
             "$value": "{dsn.color.action-1.bg-hover}",
             "$type": "color",
-            "$description": "Achtergrond van de default button op hover"
+            "$description": "Achtergrondkleur in variant ‘default’ bij ‘hover’ status."
           },
           "border-color": {
             "$value": "{dsn.color.action-1.border-hover}",
             "$type": "color",
-            "$description": "Border van de default button op hover"
+            "$description": "Lijnkleur van de rand in variant ‘default’ bij ‘hover’ status."
           },
           "color": {
             "$value": "{dsn.color.action-1.color-hover}",
             "$type": "color",
-            "$description": "Tekst-/icoonkleur van de default button op hover"
+            "$description": "Voorgrondkleur in variant ‘default’ bij ‘hover’ status."
           }
         }
       },
@@ -91,50 +91,50 @@
         "background-color": {
           "$value": "{dsn.color.transparent}",
           "$type": "color",
-          "$description": "Achtergrond van de default negative button"
+          "$description": "Achtergrondkleur in variant ‘default-negative’."
         },
         "border-color": {
           "$value": "{dsn.color.negative.border-default}",
           "$type": "color",
-          "$description": "Border van de default negative button"
+          "$description": "Lijnkleur van de rand in variant ‘default-negative’."
         },
         "color": {
           "$value": "{dsn.color.negative.color-default}",
           "$type": "color",
-          "$description": "Tekst-/icoonkleur van de default negative button"
+          "$description": "Voorgrondkleur in variant ‘default-negative’."
         },
         "active": {
           "background-color": {
             "$value": "{dsn.color.negative.bg-active}",
             "$type": "color",
-            "$description": "Achtergrond van de default negative button op active"
+            "$description": "Achtergrondkleur in variant ‘default-negative’ bij ‘active’ status."
           },
           "border-color": {
             "$value": "{dsn.color.negative.border-active}",
             "$type": "color",
-            "$description": "Border van de default negative button op active"
+            "$description": "Lijnkleur van de rand in variant ‘default-negative’ bij ‘active’ status."
           },
           "color": {
             "$value": "{dsn.color.negative.color-active}",
             "$type": "color",
-            "$description": "Tekst-/icoonkleur van de default negative button op active"
+            "$description": "Voorgrondkleur in variant ‘default-negative’ bij ‘active’ status."
           }
         },
         "hover": {
           "background-color": {
             "$value": "{dsn.color.negative.bg-hover}",
             "$type": "color",
-            "$description": "Achtergrond van de default negative button op hover"
+            "$description": "Achtergrondkleur in variant ‘default-negative’ bij ‘hover’ status."
           },
           "border-color": {
             "$value": "{dsn.color.negative.border-hover}",
             "$type": "color",
-            "$description": "Border van de default negative button op hover"
+            "$description": "Lijnkleur van de rand in variant ‘default-negative’ bij ‘hover’ status."
           },
           "color": {
             "$value": "{dsn.color.negative.color-hover}",
             "$type": "color",
-            "$description": "Tekst-/icoonkleur van de default negative button op hover"
+            "$description": "Voorgrondkleur in variant ‘default-negative’ bij ‘hover’ status."
           }
         }
       },
@@ -142,50 +142,50 @@
         "background-color": {
           "$value": "{dsn.color.transparent}",
           "$type": "color",
-          "$description": "Achtergrond van de default positive button"
+          "$description": "Achtergrondkleur in variant ‘default-positive’."
         },
         "border-color": {
           "$value": "{dsn.color.positive.border-default}",
           "$type": "color",
-          "$description": "Border van de default positive button"
+          "$description": "Lijnkleur van de rand in variant ‘default-positive’."
         },
         "color": {
           "$value": "{dsn.color.positive.color-default}",
           "$type": "color",
-          "$description": "Tekst-/icoonkleur van de default positive button"
+          "$description": "Voorgrondkleur in variant ‘default-positive’."
         },
         "active": {
           "background-color": {
             "$value": "{dsn.color.positive.bg-active}",
             "$type": "color",
-            "$description": "Achtergrond van de default positive button op active"
+            "$description": "Achtergrondkleur in variant ‘default-positive’ bij ‘active’ status."
           },
           "border-color": {
             "$value": "{dsn.color.positive.border-active}",
             "$type": "color",
-            "$description": "Border van de default positive button op active"
+            "$description": "Lijnkleur van de rand in variant ‘default-positive’ bij ‘active’ status."
           },
           "color": {
             "$value": "{dsn.color.positive.color-active}",
             "$type": "color",
-            "$description": "Tekst-/icoonkleur van de default positive button op active"
+            "$description": "Voorgrondkleur in variant ‘default-positive’ bij ‘active’ status."
           }
         },
         "hover": {
           "background-color": {
             "$value": "{dsn.color.positive.bg-hover}",
             "$type": "color",
-            "$description": "Achtergrond van de default positive button op hover"
+            "$description": "Achtergrondkleur in variant ‘default-positive’ bij ‘hover’ status."
           },
           "border-color": {
             "$value": "{dsn.color.positive.border-hover}",
             "$type": "color",
-            "$description": "Border van de default positive button op hover"
+            "$description": "Lijnkleur van de rand in variant ‘default-positive’ bij ‘hover’ status."
           },
           "color": {
             "$value": "{dsn.color.positive.color-hover}",
             "$type": "color",
-            "$description": "Tekst-/icoonkleur van de default positive button op hover"
+            "$description": "Voorgrondkleur in variant ‘default-positive’ bij ‘hover’ status."
           }
         }
       },
@@ -193,50 +193,50 @@
         "background-color": {
           "$value": "{dsn.color.action-1-inverse.bg-default}",
           "$type": "color",
-          "$description": "Achtergrond van de strong button"
+          "$description": "Achtergrondkleur in variant ‘strong’."
         },
         "border-color": {
           "$value": "{dsn.color.transparent}",
           "$type": "color",
-          "$description": "Border van de strong button"
+          "$description": "Lijnkleur van de rand in variant ‘strong’."
         },
         "color": {
           "$value": "{dsn.color.action-1-inverse.color-default}",
           "$type": "color",
-          "$description": "Tekst-/icoonkleur van de strong button"
+          "$description": "Voorgrondkleur in variant ‘strong’."
         },
         "active": {
           "background-color": {
             "$value": "{dsn.color.action-1-inverse.bg-active}",
             "$type": "color",
-            "$description": "Achtergrond van de strong button op active"
+            "$description": "Achtergrondkleur in variant ‘strong’ bij ‘active’ status."
           },
           "border-color": {
             "$value": "{dsn.color.transparent}",
             "$type": "color",
-            "$description": "Border van de strong button op active"
+            "$description": "Lijnkleur van de rand in variant ‘strong’ bij ‘active’ status."
           },
           "color": {
             "$value": "{dsn.color.action-1-inverse.color-active}",
             "$type": "color",
-            "$description": "Tekst-/icoonkleur van de strong button op active"
+            "$description": "Voorgrondkleur in variant ‘strong’ bij ‘active’ status."
           }
         },
         "hover": {
           "background-color": {
             "$value": "{dsn.color.action-1-inverse.bg-hover}",
             "$type": "color",
-            "$description": "Achtergrond van de strong button op hover"
+            "$description": "Achtergrondkleur in variant ‘strong’ bij ‘hover’ status."
           },
           "border-color": {
             "$value": "{dsn.color.transparent}",
             "$type": "color",
-            "$description": "Border van de strong button op hover"
+            "$description": "Lijnkleur van de rand in variant ‘strong’ bij ‘hover’ status."
           },
           "color": {
             "$value": "{dsn.color.action-1-inverse.color-hover}",
             "$type": "color",
-            "$description": "Tekst-/icoonkleur van de strong button op hover"
+            "$description": "Voorgrondkleur in variant ‘strong’ bij ‘hover’ status."
           }
         }
       },
@@ -244,50 +244,50 @@
         "background-color": {
           "$value": "{dsn.color.negative-inverse.bg-default}",
           "$type": "color",
-          "$description": "Achtergrond van de strong negative button"
+          "$description": "Achtergrondkleur in variant ‘strong-negative’."
         },
         "border-color": {
           "$value": "{dsn.color.transparent}",
           "$type": "color",
-          "$description": "Border van de strong negative button"
+          "$description": "Lijnkleur van de rand in variant ‘strong-negative’."
         },
         "color": {
           "$value": "{dsn.color.negative-inverse.color-default}",
           "$type": "color",
-          "$description": "Tekst-/icoonkleur van de strong negative button"
+          "$description": "Voorgrondkleur in variant ‘strong-negative’."
         },
         "active": {
           "background-color": {
             "$value": "{dsn.color.negative-inverse.bg-active}",
             "$type": "color",
-            "$description": "Achtergrond van de strong negative button op active"
+            "$description": "Achtergrondkleur in variant ‘strong-negative’ bij ‘active’ status."
           },
           "border-color": {
             "$value": "{dsn.color.transparent}",
             "$type": "color",
-            "$description": "Border van de strong negative button op active"
+            "$description": "Lijnkleur van de rand in variant ‘strong-negative’ bij ‘active’ status."
           },
           "color": {
             "$value": "{dsn.color.negative-inverse.color-active}",
             "$type": "color",
-            "$description": "Tekst-/icoonkleur van de strong negative button op active"
+            "$description": "Voorgrondkleur in variant ‘strong-negative’ bij ‘active’ status."
           }
         },
         "hover": {
           "background-color": {
             "$value": "{dsn.color.negative-inverse.bg-hover}",
             "$type": "color",
-            "$description": "Achtergrond van de strong negative button op hover"
+            "$description": "Achtergrondkleur in variant ‘strong-negative’ bij ‘hover’ status."
           },
           "border-color": {
             "$value": "{dsn.color.transparent}",
             "$type": "color",
-            "$description": "Border van de strong negative button op hover"
+            "$description": "Lijnkleur van de rand in variant ‘strong-negative’ bij ‘hover’ status."
           },
           "color": {
             "$value": "{dsn.color.negative-inverse.color-hover}",
             "$type": "color",
-            "$description": "Tekst-/icoonkleur van de strong negative button op hover"
+            "$description": "Voorgrondkleur in variant ‘strong-negative’ bij ‘hover’ status."
           }
         }
       },
@@ -295,50 +295,50 @@
         "background-color": {
           "$value": "{dsn.color.positive-inverse.bg-default}",
           "$type": "color",
-          "$description": "Achtergrond van de strong positive button"
+          "$description": "Achtergrondkleur in variant ‘strong-positive’."
         },
         "border-color": {
           "$value": "{dsn.color.transparent}",
           "$type": "color",
-          "$description": "Border van de strong positive button"
+          "$description": "Lijnkleur van de rand in variant ‘strong-positive’."
         },
         "color": {
           "$value": "{dsn.color.positive-inverse.color-default}",
           "$type": "color",
-          "$description": "Tekst-/icoonkleur van de strong positive button"
+          "$description": "Voorgrondkleur in variant ‘strong-positive’."
         },
         "active": {
           "background-color": {
             "$value": "{dsn.color.positive-inverse.bg-active}",
             "$type": "color",
-            "$description": "Achtergrond van de strong positive button op active"
+            "$description": "Achtergrondkleur in variant ‘strong-positive’ bij ‘active’ status."
           },
           "border-color": {
             "$value": "{dsn.color.transparent}",
             "$type": "color",
-            "$description": "Border van de strong positive button op active"
+            "$description": "Lijnkleur van de rand in variant ‘strong-positive’ bij ‘active’ status."
           },
           "color": {
             "$value": "{dsn.color.positive-inverse.color-active}",
             "$type": "color",
-            "$description": "Tekst-/icoonkleur van de strong positive button op active"
+            "$description": "Voorgrondkleur in variant ‘strong-positive’ bij ‘active’ status."
           }
         },
         "hover": {
           "background-color": {
             "$value": "{dsn.color.positive-inverse.bg-hover}",
             "$type": "color",
-            "$description": "Achtergrond van de strong positive button op hover"
+            "$description": "Achtergrondkleur in variant ‘strong-positive’ bij ‘hover’ status."
           },
           "border-color": {
             "$value": "{dsn.color.transparent}",
             "$type": "color",
-            "$description": "Border van de strong positive button op hover"
+            "$description": "Lijnkleur van de rand in variant ‘strong-positive’ bij ‘hover’ status."
           },
           "color": {
             "$value": "{dsn.color.positive-inverse.color-hover}",
             "$type": "color",
-            "$description": "Tekst-/icoonkleur van de strong positive button op hover"
+            "$description": "Voorgrondkleur in variant ‘strong-positive’ bij ‘hover’ status."
           }
         }
       },
@@ -346,50 +346,50 @@
         "background-color": {
           "$value": "{dsn.color.transparent}",
           "$type": "color",
-          "$description": "Achtergrond van de subtle button"
+          "$description": "Achtergrondkleur in variant ‘subtle’."
         },
         "border-color": {
           "$value": "{dsn.color.transparent}",
           "$type": "color",
-          "$description": "Border van de subtle button"
+          "$description": "Lijnkleur van de rand in variant ‘subtle’."
         },
         "color": {
           "$value": "{dsn.color.action-1.color-default}",
           "$type": "color",
-          "$description": "Tekst-/icoonkleur van de subtle button"
+          "$description": "Voorgrondkleur in variant ‘subtle’."
         },
         "active": {
           "background-color": {
             "$value": "{dsn.color.action-1.bg-active}",
             "$type": "color",
-            "$description": "Achtergrond van de subtle button op active"
+            "$description": "Achtergrondkleur in variant ‘subtle’ bij ‘active’ status."
           },
           "border-color": {
             "$value": "{dsn.color.transparent}",
             "$type": "color",
-            "$description": "Border van de subtle button op active"
+            "$description": "Lijnkleur van de rand in variant ‘subtle’ bij ‘active’ status."
           },
           "color": {
             "$value": "{dsn.color.action-1.color-active}",
             "$type": "color",
-            "$description": "Tekst-/icoonkleur van de subtle button op active"
+            "$description": "Voorgrondkleur in variant ‘subtle’ bij ‘active’ status."
           }
         },
         "hover": {
           "background-color": {
             "$value": "{dsn.color.action-1.bg-hover}",
             "$type": "color",
-            "$description": "Achtergrond van de subtle button op hover"
+            "$description": "Achtergrondkleur in variant ‘subtle’ bij ‘hover’ status."
           },
           "border-color": {
             "$value": "{dsn.color.transparent}",
             "$type": "color",
-            "$description": "Border van de subtle button op hover"
+            "$description": "Lijnkleur van de rand in variant ‘subtle’ bij ‘hover’ status."
           },
           "color": {
             "$value": "{dsn.color.action-1.color-hover}",
             "$type": "color",
-            "$description": "Tekst-/icoonkleur van de subtle button op hover"
+            "$description": "Voorgrondkleur in variant ‘subtle’ bij ‘hover’ status."
           }
         }
       },
@@ -397,50 +397,50 @@
         "background-color": {
           "$value": "{dsn.color.transparent}",
           "$type": "color",
-          "$description": "Achtergrond van de subtle negative button"
+          "$description": "Achtergrondkleur in variant ‘subtle-negative’."
         },
         "border-color": {
           "$value": "{dsn.color.transparent}",
           "$type": "color",
-          "$description": "Border van de subtle negative button"
+          "$description": "Lijnkleur van de rand in variant ‘subtle-negative’."
         },
         "color": {
           "$value": "{dsn.color.negative.color-default}",
           "$type": "color",
-          "$description": "Tekst-/icoonkleur van de subtle negative button"
+          "$description": "Voorgrondkleur in variant ‘subtle-negative’."
         },
         "active": {
           "background-color": {
             "$value": "{dsn.color.negative.bg-active}",
             "$type": "color",
-            "$description": "Achtergrond van de subtle negative button op active"
+            "$description": "Achtergrondkleur in variant ‘subtle-negative’ bij ‘active’ status."
           },
           "border-color": {
             "$value": "{dsn.color.transparent}",
             "$type": "color",
-            "$description": "Border van de subtle negative button op active"
+            "$description": "Lijnkleur van de rand in variant ‘subtle-negative’ bij ‘active’ status."
           },
           "color": {
             "$value": "{dsn.color.negative.color-active}",
             "$type": "color",
-            "$description": "Tekst-/icoonkleur van de subtle negative button op active"
+            "$description": "Voorgrondkleur in variant ‘subtle-negative’ bij ‘active’ status."
           }
         },
         "hover": {
           "background-color": {
             "$value": "{dsn.color.negative.bg-hover}",
             "$type": "color",
-            "$description": "Achtergrond van de subtle negative button op hover"
+            "$description": "Achtergrondkleur in variant ‘subtle-negative’ bij ‘hover’ status."
           },
           "border-color": {
             "$value": "{dsn.color.transparent}",
             "$type": "color",
-            "$description": "Border van de subtle negative button op hover"
+            "$description": "Lijnkleur van de rand in variant ‘subtle-negative’ bij ‘hover’ status."
           },
           "color": {
             "$value": "{dsn.color.negative.color-hover}",
             "$type": "color",
-            "$description": "Tekst-/icoonkleur van de subtle negative button op hover"
+            "$description": "Voorgrondkleur in variant ‘subtle-negative’ bij ‘hover’ status."
           }
         }
       },
@@ -448,50 +448,50 @@
         "background-color": {
           "$value": "{dsn.color.transparent}",
           "$type": "color",
-          "$description": "Achtergrond van de subtle positive button"
+          "$description": "Achtergrondkleur in variant ‘subtle-positive’."
         },
         "border-color": {
           "$value": "{dsn.color.transparent}",
           "$type": "color",
-          "$description": "Border van de subtle positive button"
+          "$description": "Lijnkleur van de rand in variant ‘subtle-positive’."
         },
         "color": {
           "$value": "{dsn.color.positive.color-default}",
           "$type": "color",
-          "$description": "Tekst-/icoonkleur van de subtle positive button"
+          "$description": "Voorgrondkleur in variant ‘subtle-positive’."
         },
         "active": {
           "background-color": {
             "$value": "{dsn.color.positive.bg-active}",
             "$type": "color",
-            "$description": "Achtergrond van de subtle positive button op active"
+            "$description": "Achtergrondkleur in variant ‘subtle-positive’ bij ‘active’ status."
           },
           "border-color": {
             "$value": "{dsn.color.transparent}",
             "$type": "color",
-            "$description": "Border van de subtle positive button op active"
+            "$description": "Lijnkleur van de rand in variant ‘subtle-positive’ bij ‘active’ status."
           },
           "color": {
             "$value": "{dsn.color.positive.color-active}",
             "$type": "color",
-            "$description": "Tekst-/icoonkleur van de subtle positive button op active"
+            "$description": "Voorgrondkleur in variant ‘subtle-positive’ bij ‘active’ status."
           }
         },
         "hover": {
           "background-color": {
             "$value": "{dsn.color.positive.bg-hover}",
             "$type": "color",
-            "$description": "Achtergrond van de subtle positive button op hover"
+            "$description": "Achtergrondkleur in variant ‘subtle-positive’ bij ‘hover’ status."
           },
           "border-color": {
             "$value": "{dsn.color.transparent}",
             "$type": "color",
-            "$description": "Border van de subtle positive button op hover"
+            "$description": "Lijnkleur van de rand in variant ‘subtle-positive’ bij ‘hover’ status."
           },
           "color": {
             "$value": "{dsn.color.positive.color-hover}",
             "$type": "color",
-            "$description": "Tekst-/icoonkleur van de subtle positive button op hover"
+            "$description": "Voorgrondkleur in variant ‘subtle-positive’ bij ‘hover’ status."
           }
         }
       },
@@ -499,17 +499,17 @@
         "background-color": {
           "$value": "{dsn.color.neutral.bg-subtle}",
           "$type": "color",
-          "$description": "Achtergrond van de disabled button — neutrale schaal, variant-onafhankelijk"
+          "$description": "Achtergrondkleur bij ‘disabled’ status."
         },
         "color": {
           "$value": "{dsn.color.neutral.color-subtle}",
           "$type": "color",
-          "$description": "Tekst-/icoonkleur van de disabled button — neutrale schaal, variant-onafhankelijk"
+          "$description": "Voorgrondkleur bij ‘disabled’ status."
         },
         "border-color": {
           "$value": "{dsn.color.neutral.border-subtle}",
           "$type": "color",
-          "$description": "Borderkleur van de disabled button — neutrale schaal, variant-onafhankelijk"
+          "$description": "Lijnkleur van de rand bij ‘disabled’ status."
         }
       },
       "size": {
@@ -517,101 +517,101 @@
           "font-size": {
             "$value": "{dsn.text.font-size.md}",
             "$type": "dimension",
-            "$description": "Font-size van de default button"
+            "$description": "Lettergrootte in maat ‘default’."
           },
           "gap": {
             "$value": "{dsn.space.text.sm}",
             "$type": "dimension",
-            "$description": "Ruimte tussen icoon en tekst van de default button"
+            "$description": "Ruimte tussen de onderdelen in maat ‘default’."
           },
           "icon-only-padding": {
             "$value": "{dsn.space.block.md}",
             "$type": "dimension",
-            "$description": "Padding van de icon-only default button"
+            "$description": "Ruimte rondom het icoon als alleen een icoon zichtbaar is, in maat ‘default’."
           },
           "icon-size": {
             "$value": "{dsn.icon.size.md}",
             "$type": "dimension",
-            "$description": "Icoongrootte van de default button"
+            "$description": "Grootte van het icoon in maat ‘default’."
           },
           "padding-block": {
             "$value": "{dsn.space.block.md}",
             "$type": "dimension",
-            "$description": "Verticale padding van de default button"
+            "$description": "Ruimte boven en onder de inhoud in maat ‘default’."
           },
           "padding-inline": {
             "$value": "{dsn.space.inline.xl}",
             "$type": "dimension",
-            "$description": "Horizontale padding van de default button"
+            "$description": "Ruimte aan begin en eind van de inhoud in maat ‘default’."
           }
         },
         "large": {
           "font-size": {
             "$value": "{dsn.text.font-size.lg}",
             "$type": "dimension",
-            "$description": "Font-size van de large button"
+            "$description": "Lettergrootte in maat ‘large’."
           },
           "gap": {
             "$value": "{dsn.space.text.md}",
             "$type": "dimension",
-            "$description": "Ruimte tussen icoon en tekst van de large button"
+            "$description": "Ruimte tussen de onderdelen in maat ‘large’."
           },
           "icon-only-padding": {
             "$value": "{dsn.space.block.lg}",
             "$type": "dimension",
-            "$description": "Padding van de icon-only large button"
+            "$description": "Ruimte rondom het icoon als alleen een icoon zichtbaar is, in maat ‘large’."
           },
           "icon-size": {
             "$value": "{dsn.icon.size.lg}",
             "$type": "dimension",
-            "$description": "Icoongrootte van de large button"
+            "$description": "Grootte van het icoon in maat ‘large’."
           },
           "padding-block": {
             "$value": "{dsn.space.block.lg}",
             "$type": "dimension",
-            "$description": "Verticale padding van de large button"
+            "$description": "Ruimte boven en onder de inhoud in maat ‘large’."
           },
           "padding-inline": {
             "$value": "{dsn.space.inline.2xl}",
             "$type": "dimension",
-            "$description": "Horizontale padding van de large button"
+            "$description": "Ruimte aan begin en eind van de inhoud in maat ‘large’."
           }
         },
         "small": {
           "font-size": {
             "$value": "{dsn.text.font-size.sm}",
             "$type": "dimension",
-            "$description": "Font-size van de small button"
+            "$description": "Lettergrootte in maat ‘small’."
           },
           "gap": {
             "$value": "{dsn.space.text.sm}",
             "$type": "dimension",
-            "$description": "Ruimte tussen icoon en tekst van de small button"
+            "$description": "Ruimte tussen de onderdelen in maat ‘small’."
           },
           "icon-only-padding": {
             "$value": "{dsn.space.block.sm}",
             "$type": "dimension",
-            "$description": "Padding van de icon-only small button"
+            "$description": "Ruimte rondom het icoon als alleen een icoon zichtbaar is, in maat ‘small’."
           },
           "icon-size": {
             "$value": "{dsn.icon.size.sm}",
             "$type": "dimension",
-            "$description": "Icoongrootte van de small button"
+            "$description": "Grootte van het icoon in maat ‘small’."
           },
           "min-block-size": {
             "$value": "2.5rem",
             "$type": "dimension",
-            "$description": "Minimale blokhoogte van de small button (verkleind aanraakdoel — 40px)"
+            "$description": "Minimale hoogte in maat ‘small’."
           },
           "padding-block": {
             "$value": "{dsn.space.block.sm}",
             "$type": "dimension",
-            "$description": "Verticale padding van de small button"
+            "$description": "Ruimte boven en onder de inhoud in maat ‘small’."
           },
           "padding-inline": {
             "$value": "{dsn.space.inline.lg}",
             "$type": "dimension",
-            "$description": "Horizontale padding van de small button"
+            "$description": "Ruimte aan begin en eind van de inhoud in maat ‘small’."
           }
         }
       }

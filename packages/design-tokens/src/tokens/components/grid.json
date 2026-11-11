@@ -4,21 +4,21 @@
       "gutter": {
         "$value": "{dsn.space.column.xl}",
         "$type": "dimension",
-        "$description": "Horizontal gap between grid columns (overridden to column.md in information-dense)"
+        "$description": "Horizontale ruimte tussen de kolommen."
       },
       "row-gap": {
         "$value": "{dsn.space.column.xl}",
         "$type": "dimension",
-        "$description": "Vertical gap between grid rows (overridden to column.md in information-dense)"
+        "$description": "Verticale ruimte tussen de rijen."
       },
       "padding-inline": {
         "$value": "0px",
         "$type": "dimension",
-        "$description": "Outer padding-inline of the grid container. Default 0: grids sit inside dsn-page-body__inner which already provides horizontal padding."
+        "$description": "Ruimte aan begin en eind van de inhoud."
       },
       "max-width": {
         "$value": "74rem",
-        "$description": "Maximum width of a contained grid (--dsn-breakpoint-xl ~1184px)"
+        "$description": "Maximale breedte."
       }
     }
   }

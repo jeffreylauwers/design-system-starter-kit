@@ -4,12 +4,12 @@
       "column-gap": {
         "$value": "{dsn.space.inline.lg}",
         "$type": "dimension",
-        "$description": "Horizontal gap between actions in horizontal direction"
+        "$description": "Horizontale ruimte tussen de onderdelen."
       },
       "row-gap": {
         "$value": "{dsn.space.row.lg}",
         "$type": "dimension",
-        "$description": "Vertical gap between wrapped rows in horizontal direction"
+        "$description": "Verticale ruimte tussen de onderdelen."
       }
     }
   }

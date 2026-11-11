@@ -4,266 +4,266 @@
       "background-color": {
         "$value": "{dsn.color.neutral.bg-document}",
         "$type": "color",
-        "$description": "Card achtergrondkleur standaard — zelfde als paginaachtergrond"
+        "$description": "Achtergrondkleur."
       },
       "background-color-hover": {
         "$value": "{dsn.color.neutral.bg-elevated}",
         "$type": "color",
-        "$description": "Card achtergrondkleur bij hover — bg-elevated benadrukt elevatie"
+        "$description": "Achtergrondkleur bij ‘hover’ status."
       },
       "border-radius": {
         "$value": "{dsn.border.radius.md}",
         "$type": "dimension",
-        "$description": "Afgeronde hoeken van de card (8px)"
+        "$description": "Hoekafronding."
       },
       "border-width": {
         "$value": "{dsn.border.width.thin}",
         "$type": "borderWidth",
-        "$description": "Randbreedte van de card"
+        "$description": "Lijndikte van de rand."
       },
       "border-color": {
         "$value": "{dsn.color.neutral.border-subtle}",
         "$type": "color",
-        "$description": "Randkleur van de card"
+        "$description": "Lijnkleur van de rand."
       },
       "box-shadow": {
         "$value": "none",
         "$type": "shadow",
-        "$description": "Schaduw standaard — geen schaduw by default"
+        "$description": "Schaduw."
       },
       "box-shadow-hover": {
         "$value": "{dsn.box-shadow.md}",
         "$type": "shadow",
-        "$description": "Schaduw bij hover — hogere elevatie benadrukt interactiviteit"
+        "$description": "Schaduw bij ‘hover’ status."
       },
       "min-block-size": {
         "$value": "auto",
         "$type": "sizing",
-        "$description": "Minimale hoogte van de card"
+        "$description": "Minimale hoogte."
       },
       "pre-header": {
         "padding-block-start": {
           "$value": "{dsn.card.header.padding-block-start}",
           "$type": "spacing",
-          "$description": "Bovenkant padding van de pre-header, gelijk aan de header. Media als direct kind bleedt hier doorheen."
+          "$description": "Ruimte boven de inhoud van de bovenkop."
         },
         "padding-block-end": {
           "$value": "{dsn.card.header.padding-block-end}",
           "$type": "spacing",
-          "$description": "Onderkant padding van de pre-header, gelijk aan de header"
+          "$description": "Ruimte onder de inhoud van de bovenkop."
         },
         "padding-inline-start": {
           "$value": "{dsn.card.header.padding-inline-start}",
           "$type": "spacing",
-          "$description": "Padding aan de beginzijde van de pre-header, gelijk aan de header"
+          "$description": "Ruimte aan het begin van de inhoud van de bovenkop."
         },
         "padding-inline-end": {
           "$value": "{dsn.card.header.padding-inline-end}",
           "$type": "spacing",
-          "$description": "Padding aan de eindzijde van de pre-header, gelijk aan de header"
+          "$description": "Ruimte aan het eind van de inhoud van de bovenkop."
         },
         "row-gap": {
           "$value": "{dsn.card.header.row-gap}",
           "$type": "spacing",
-          "$description": "Verticale ruimte tussen directe kinderen van de pre-header, gelijk aan de header"
+          "$description": "Verticale ruimte tussen de onderdelen van de bovenkop."
         }
       },
       "header": {
         "padding-block-start": {
           "$value": "{dsn.space.block.xl}",
           "$type": "spacing",
-          "$description": "Bovenkant padding van de header (16px)"
+          "$description": "Ruimte boven de inhoud van de kopzone."
         },
         "padding-block-end": {
           "$value": "{dsn.space.block.lg}",
           "$type": "spacing",
-          "$description": "Onderkant padding van de header (12px); ook de ruimte naar de body"
+          "$description": "Ruimte onder de inhoud van de kopzone."
         },
         "padding-inline-start": {
           "$value": "{dsn.space.inline.xl}",
           "$type": "spacing",
-          "$description": "Padding aan de beginzijde van de header (16px)"
+          "$description": "Ruimte aan het begin van de inhoud van de kopzone."
         },
         "padding-inline-end": {
           "$value": "{dsn.space.inline.xl}",
           "$type": "spacing",
-          "$description": "Padding aan de eindzijde van de header (16px)"
+          "$description": "Ruimte aan het eind van de inhoud van de kopzone."
         },
         "row-gap": {
           "$value": "{dsn.space.block.lg}",
           "$type": "spacing",
-          "$description": "Verticale ruimte tussen directe kinderen van de header (12px)"
+          "$description": "Verticale ruimte tussen de onderdelen van de kopzone."
         }
       },
       "body": {
         "padding-block-start": {
           "$value": "0",
           "$type": "spacing",
-          "$description": "Bovenkant padding van de body; de header levert de ruimte erboven"
+          "$description": "Ruimte boven de inhoud van het hoofdgedeelte."
         },
         "padding-block-end": {
           "$value": "{dsn.space.block.xl}",
           "$type": "spacing",
-          "$description": "Onderkant padding van de body (16px)"
+          "$description": "Ruimte onder de inhoud van het hoofdgedeelte."
         },
         "padding-inline-start": {
           "$value": "{dsn.space.inline.xl}",
           "$type": "spacing",
-          "$description": "Padding aan de beginzijde van de body (16px)"
+          "$description": "Ruimte aan het begin van de inhoud van het hoofdgedeelte."
         },
         "padding-inline-end": {
           "$value": "{dsn.space.inline.xl}",
           "$type": "spacing",
-          "$description": "Padding aan de eindzijde van de body (16px)"
+          "$description": "Ruimte aan het eind van de inhoud van het hoofdgedeelte."
         },
         "row-gap": {
           "$value": "{dsn.space.block.lg}",
           "$type": "spacing",
-          "$description": "Verticale ruimte tussen directe kinderen van de body (12px)"
+          "$description": "Verticale ruimte tussen de onderdelen van het hoofdgedeelte."
         }
       },
       "footer": {
         "padding-block-start": {
           "$value": "0",
           "$type": "spacing",
-          "$description": "Bovenkant padding van de footer; de sectie erboven levert de ruimte"
+          "$description": "Ruimte boven de inhoud van de voetzone."
         },
         "padding-block-end": {
           "$value": "{dsn.space.block.3xl}",
           "$type": "spacing",
-          "$description": "Onderkant padding van de footer (24px)"
+          "$description": "Ruimte onder de inhoud van de voetzone."
         },
         "padding-inline-start": {
           "$value": "{dsn.space.inline.xl}",
           "$type": "spacing",
-          "$description": "Padding aan de beginzijde van de footer (16px)"
+          "$description": "Ruimte aan het begin van de inhoud van de voetzone."
         },
         "padding-inline-end": {
           "$value": "{dsn.space.inline.xl}",
           "$type": "spacing",
-          "$description": "Padding aan de eindzijde van de footer (16px)"
+          "$description": "Ruimte aan het eind van de inhoud van de voetzone."
         },
         "column-gap": {
           "$value": "{dsn.space.inline.md}",
           "$type": "spacing",
-          "$description": "Horizontale ruimte tussen directe kinderen van de footer"
+          "$description": "Horizontale ruimte tussen de onderdelen van de voetzone."
         }
       },
       "image-placeholder": {
         "background-color": {
           "$value": "{dsn.color.neutral.bg-subtle}",
           "$type": "color",
-          "$description": "Achtergrondkleur van de afbeeldingsplaceholder"
+          "$description": "Achtergrondkleur van de lege afbeeldingsplek."
         },
         "color": {
           "$value": "{dsn.color.neutral.color-subtle}",
           "$type": "color",
-          "$description": "Kleur van het icoon in de afbeeldingsplaceholder"
+          "$description": "Voorgrondkleur van de lege afbeeldingsplek."
         },
         "icon-size": {
           "$value": "{dsn.icon.size.2xl}",
           "$type": "dimension",
-          "$description": "Grootte van het icoon in de afbeeldingsplaceholder — schaalt mee met de fluid type scale (40–50px)"
+          "$description": "Grootte van het icoon van de lege afbeeldingsplek."
         }
       },
       "heading": {
         "font-family": {
           "$value": "{dsn.heading.font-family}",
           "$type": "fontFamily",
-          "$description": "Lettertype van de card heading"
+          "$description": "Lettertype van de kop."
         },
         "font-weight": {
           "$value": "{dsn.heading.font-weight}",
           "$type": "fontWeight",
-          "$description": "Vetgedrukt van de card heading"
+          "$description": "Lettergewicht van de kop."
         },
         "color": {
           "$value": "{dsn.heading.color}",
           "$type": "color",
-          "$description": "Kleur van de card heading"
+          "$description": "Tekstkleur van de kop."
         },
         "font-size": {
           "$value": "{dsn.text.font-size.lg}",
           "$type": "fontSize",
-          "$description": "Tekstgrootte van de card heading (20–24px fluid)"
+          "$description": "Lettergrootte van de kop."
         },
         "line-height": {
           "$value": "{dsn.text.line-height.lg}",
           "$type": "lineHeight",
-          "$description": "Regelafstand van de card heading"
+          "$description": "Regelafstand van de kop."
         }
       },
       "label": {
         "color": {
           "$value": "{dsn.color.neutral.color-document}",
           "$type": "color",
-          "$description": "Kleur van het card-label"
+          "$description": "Tekstkleur van het label."
         },
         "font-family": {
           "$value": "{dsn.text.font-family.default}",
           "$type": "fontFamily",
-          "$description": "Lettertype van het card-label"
+          "$description": "Lettertype van het label."
         },
         "font-size": {
           "$value": "{dsn.text.font-size.md}",
           "$type": "fontSize",
-          "$description": "Tekstgrootte van het card-label"
+          "$description": "Lettergrootte van het label."
         },
         "font-weight": {
           "$value": "{dsn.text.font-weight.bold}",
           "$type": "fontWeight",
-          "$description": "Gewicht van het card-label"
+          "$description": "Lettergewicht van het label."
         },
         "line-height": {
           "$value": "{dsn.text.line-height.md}",
           "$type": "lineHeight",
-          "$description": "Regelafstand van het card-label"
+          "$description": "Regelafstand van het label."
         }
       },
       "description": {
         "color": {
           "$value": "{dsn.color.neutral.color-document}",
           "$type": "color",
-          "$description": "Kleur van de card-description"
+          "$description": "Tekstkleur van de beschrijving."
         },
         "font-size": {
           "$value": "{dsn.text.font-size.md}",
           "$type": "fontSize",
-          "$description": "Tekstgrootte van de card-description"
+          "$description": "Lettergrootte van de beschrijving."
         },
         "line-height": {
           "$value": "{dsn.text.line-height.md}",
           "$type": "lineHeight",
-          "$description": "Regelafstand van de card-description"
+          "$description": "Regelafstand van de beschrijving."
         }
       },
       "meta": {
         "color": {
           "$value": "{dsn.color.neutral.color-subtle}",
           "$type": "color",
-          "$description": "Kleur van de card-meta (bijv. datum)"
+          "$description": "Tekstkleur van de metagegevens."
         },
         "font-size": {
           "$value": "{dsn.text.font-size.sm}",
           "$type": "fontSize",
-          "$description": "Tekstgrootte van de card-meta"
+          "$description": "Lettergrootte van de metagegevens."
         },
         "line-height": {
           "$value": "{dsn.text.line-height.sm}",
           "$type": "lineHeight",
-          "$description": "Regelafstand van de card-meta"
+          "$description": "Regelafstand van de metagegevens."
         }
       },
       "group": {
         "gap": {
           "$value": "{dsn.space.inline.xl}",
           "$type": "spacing",
-          "$description": "Ruimte tussen cards in een CardGroup (16px)"
+          "$description": "Ruimte tussen de onderdelen van de groep."
         },
         "item-min-width": {
           "$value": "17.5rem",
           "$type": "dimension",
-          "$description": "Minimale breedte van een card in een groep (280px) — gebruikt door CSS auto-fill"
+          "$description": "Minimale breedte van een item in een groep; daaronder schuiven de items onder elkaar."
         }
       }
     }

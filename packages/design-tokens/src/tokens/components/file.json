@@ -4,119 +4,130 @@
       "background-color": {
         "$value": "{dsn.color.neutral.bg-document}",
         "$type": "color",
-        "$description": "Achtergrondkleur van het file component"
+        "$description": "Achtergrondkleur."
       },
       "background-color-hover": {
         "$value": "{dsn.color.neutral.bg-elevated}",
         "$type": "color",
-        "$description": "Achtergrondkleur bij hover in de interactieve variant — zelfde als Card"
+        "$description": "Achtergrondkleur bij ‘hover’ status."
       },
       "background-color-active": {
         "$value": "{dsn.color.neutral.bg-elevated}",
         "$type": "color",
-        "$description": "Achtergrondkleur bij active — zelfde als hover; geen box-shadow wijziging"
+        "$description": "Achtergrondkleur bij ‘active’ status."
       },
       "border-radius": {
         "$value": "{dsn.border.radius.md}",
-        "$type": "dimension"
+        "$type": "dimension",
+        "$description": "Hoekafronding."
       },
       "border-width": {
         "$value": "{dsn.border.width.thin}",
-        "$type": "borderWidth"
+        "$type": "borderWidth",
+        "$description": "Lijndikte van de rand."
       },
       "border-color": {
         "$value": "{dsn.color.neutral.border-subtle}",
-        "$type": "color"
+        "$type": "color",
+        "$description": "Lijnkleur van de rand."
       },
       "border-color-hover": {
         "$value": "{dsn.color.neutral.border-default}",
         "$type": "color",
-        "$description": "Iets prominentere rand bij hover — signaleert interactiviteit"
+        "$description": "Lijnkleur van de rand bij ‘hover’ status."
       },
       "border-color-active": {
         "$value": "{dsn.color.neutral.border-default}",
         "$type": "color",
-        "$description": "Zelfde als hover"
+        "$description": "Lijnkleur van de rand bij ‘active’ status."
       },
       "border-color-error": {
         "$value": "{dsn.color.negative.border-default}",
         "$type": "color",
-        "$description": "Randkleur in de error state — zelfde schaal als FormFieldset bij invalid"
+        "$description": "Lijnkleur van de rand bij een fout."
       },
       "box-shadow": {
         "$value": "none",
         "$type": "shadow",
-        "$description": "Geen schaduw standaard — zelfde als Card"
+        "$description": "Schaduw."
       },
       "box-shadow-hover": {
         "$value": "{dsn.box-shadow.md}",
         "$type": "shadow",
-        "$description": "Hogere elevatie bij hover — zelfde als Card hover"
+        "$description": "Schaduw bij ‘hover’ status."
       },
       "padding-block": {
         "$value": "{dsn.space.block.lg}",
-        "$type": "spacing"
+        "$type": "spacing",
+        "$description": "Ruimte boven en onder de inhoud."
       },
       "padding-inline": {
         "$value": "{dsn.space.inline.xl}",
-        "$type": "spacing"
+        "$type": "spacing",
+        "$description": "Ruimte aan begin en eind van de inhoud."
       },
       "gap": {
         "$value": "{dsn.space.inline.lg}",
         "$type": "spacing",
-        "$description": "Horizontale ruimte tussen media-vlak, content en actions"
+        "$description": "Ruimte tussen de onderdelen."
       },
       "content": {
         "gap": {
           "$value": "{dsn.space.block.xs}",
           "$type": "spacing",
-          "$description": "Verticale ruimte tussen naam, meta en error message"
+          "$description": "Ruimte tussen de onderdelen van het tekstdeel."
         }
       },
       "name": {
         "color": {
           "$value": "{dsn.color.neutral.color-default}",
-          "$type": "color"
+          "$type": "color",
+          "$description": "Tekstkleur van de naam."
         },
         "font-weight": {
           "$value": "{dsn.text.font-weight.bold}",
           "$type": "fontWeight",
-          "$description": "Bold gewicht benadrukt de bestandsnaam als primaire informatie"
+          "$description": "Lettergewicht van de naam."
         }
       },
       "meta": {
         "color": {
           "$value": "{dsn.color.neutral.color-subtle}",
           "$type": "color",
-          "$description": "Subtielere kleur legt visuele hiërarchie vast t.o.v. de naam"
+          "$description": "Tekstkleur van de metagegevens."
         },
         "font-size": {
           "$value": "{dsn.text.font-size.md}",
-          "$type": "fontSize"
+          "$type": "fontSize",
+          "$description": "Lettergrootte van de metagegevens."
         }
       },
       "media": {
         "size": {
           "$value": "calc({dsn.icon.size.md} * 2)",
           "$type": "dimension",
-          "$description": "Grootte van het media-vlak — vierkant voor zowel icoon als preview. Twee keer icon.size.md, zodat het meeschaalt met de tekst ernaast (48–60px)"
+          "$description": "Grootte van het vierkante mediavlak voor een icoon of voorbeeld."
         },
         "border-radius": {
           "$value": "{dsn.border.radius.sm}",
-          "$type": "dimension"
+          "$type": "dimension",
+          "$description": "Hoekafronding van het mediavlak."
         },
         "background-color": {
           "$value": "{dsn.color.neutral.bg-default}",
-          "$type": "color"
+          "$type": "color",
+          "$description": "Achtergrondkleur van het mediavlak."
         },
         "icon": {
           "color": {
             "$value": "{dsn.color.neutral.color-subtle}",
-            "$type": "color"
+            "$type": "color",
+            "$description": "Kleur van het icoon van het mediavlak."
           },
           "size": {
             "$value": "{dsn.icon.size.md}",
-            "$type": "dimension"
+            "$type": "dimension",
+            "$description": "Grootte van het icoon van het mediavlak."
           }
         }
       },
@@ -124,11 +135,12 @@
         "color": {
           "$value": "{dsn.color.positive.color-default}",
           "$type": "color",
-          "$description": "Zelfde token als FormFieldStatus positive variant"
+          "$description": "Kleur van het statusicoon."
         },
         "size": {
           "$value": "{dsn.icon.size.md}",
-          "$type": "dimension"
+          "$type": "dimension",
+          "$description": "Grootte van het statusicoon."
         }
       }
     }
