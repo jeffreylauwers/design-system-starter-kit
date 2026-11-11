@@ -19,9 +19,9 @@
         "$description": "Kleur van de binnenste cirkel in de standaard staat"
       },
       "size": {
-        "$value": "calc(var(--dsn-text-font-size-md) * var(--dsn-text-line-height-md))",
+        "$value": "calc({dsn.text.font-size.md} * {dsn.text.line-height.md})",
         "$type": "dimension",
-        "$description": "Grootte van de radioknop — vloeiend op basis van tekstgrootte en line-height"
+        "$description": "Grootte van de radioknop, afgeleid van de lettergrootte en regelafstand van lopende tekst."
       },
       "active": {
         "background-color": {
@@ -199,9 +199,9 @@
       },
       "icon": {
         "size": {
-          "$value": "calc(var(--dsn-radio-size) * 0.33)",
+          "$value": "calc({dsn.radio.size} * 0.33)",
           "$type": "dimension",
-          "$description": "Grootte van de binnenste cirkel wanneer aangevinkt — 33% van de radioknopgrootte"
+          "$description": "Grootte van de binnenste cirkel van een aangevinkte radioknop, in verhouding tot de grootte van de radioknop."
         }
       }
     }
