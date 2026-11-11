@@ -165,45 +165,15 @@ function resolveFunctions(expression) {
 }
 
 /**
- * Vervangt `var(--dsn-x-y)` door de al bekende pixelwaarde van dat token.
- *
- * Een handvol tokens verwijst rechtstreeks naar een CSS custom property in
- * plaats van naar een tokenreferentie (`{dsn.x.y}`). Die waarden zijn niet via
- * de tokengraaf te resolven, maar wel via de naam van de custom property.
- */
-function substituteCssVars(expression, pixelsByCssName) {
-  if (!expression.includes('var(')) return expression;
-  if (!pixelsByCssName) return null;
-
-  let resolved = expression;
-  for (let guard = 0; guard < 5 && resolved.includes('var('); guard += 1) {
-    resolved = resolved.replace(
-      /var\(\s*--([a-z0-9-]+)\s*\)/gi,
-      (match, name) =>
-        pixelsByCssName.has(name) ? String(pixelsByCssName.get(name)) : match
-    );
-    if (!/var\(/.test(resolved)) break;
-    // Geen voortgang meer? Dan is de verwijzing onbekend.
-    if (resolved === expression) return null;
-    expression = resolved;
-  }
-
-  return resolved.includes('var(') ? null : resolved;
-}
-
-/**
  * Zet een lengte-achtige tokenwaarde om naar een getal in pixels.
  * Retourneert null als de waarde niet betrouwbaar te herleiden is.
  */
-function toPixels(input, pixelsByCssName, viewport = DEFAULT_VIEWPORT) {
+function toPixels(input, viewport = DEFAULT_VIEWPORT) {
   const value = String(input).trim();
 
   if (/^-?[\d.]+$/.test(value)) return Number(value);
 
-  const substituted = substituteCssVars(value, pixelsByCssName);
-  if (substituted === null) return null;
-
-  const withPixels = unitsToPixels(substituted, viewport);
+  const withPixels = unitsToPixels(value, viewport);
   if (withPixels === null) return null;
 
   return resolveFunctions(withPixels);
@@ -284,10 +254,8 @@ const DURATION_PATTERN = /^-?[\d.]+m?s$/;
  * Retourneert `{ skip: reden }` als het token niet te mappen is.
  *
  * @param {object} token Style Dictionary token
- * @param {Map<string, number>} [pixelsByCssName] Lookup om `var(--dsn-x)`
- *   binnen een tokenwaarde alsnog te kunnen uitrekenen.
  */
-export function mapTokenValue(token, pixelsByCssName, viewport) {
+export function mapTokenValue(token, viewport) {
   const type = token.$type ?? token.type;
   const raw = token.$value ?? token.value;
   // Op elk padsegment matchen, niet alleen op de groep: `dsn.backdrop.z-index`
@@ -353,7 +321,7 @@ export function mapTokenValue(token, pixelsByCssName, viewport) {
   }
 
   // Alles wat overblijft proberen we als getal te lezen.
-  const pixels = toPixels(raw, pixelsByCssName, viewport);
+  const pixels = toPixels(raw, viewport);
   if (pixels === null) {
     return { skip: `waarde "${raw}" is niet naar een getal te herleiden` };
   }
@@ -584,43 +552,6 @@ function collectionForToken(token) {
 }
 
 /**
- * Bouwt een lookup van CSS custom property-naam naar pixelwaarde.
- *
- * Meerdere passes, omdat een token dat `var(--x)` gebruikt kan verwijzen naar
- * een token dat zelf ook nog opgelost moet worden.
- */
-function buildPixelLookup(tokens, viewport) {
-  const lookup = new Map();
-  const pending = [];
-
-  for (const token of tokens) {
-    const cssName = token.path.join('-');
-    const raw = String(token.$value ?? token.value);
-    if (raw.includes('var(')) {
-      pending.push({ cssName, raw });
-      continue;
-    }
-    const pixels = toPixels(raw, undefined, viewport);
-    if (pixels !== null) lookup.set(cssName, pixels);
-  }
-
-  // Elke ronde lost minstens één laag var()-verwijzingen op.
-  for (let round = 0; round < 5 && pending.length > 0; round += 1) {
-    let resolvedThisRound = 0;
-    for (let index = pending.length - 1; index >= 0; index -= 1) {
-      const pixels = toPixels(pending[index].raw, lookup, viewport);
-      if (pixels === null) continue;
-      lookup.set(pending[index].cssName, pixels);
-      pending.splice(index, 1);
-      resolvedThisRound += 1;
-    }
-    if (resolvedThisRound === 0) break;
-  }
-
-  return lookup;
-}
-
-/**
  * Bouwt de volledige Figma-variables payload.
  *
  * @param {object} deps
@@ -659,7 +590,6 @@ export async function buildFigmaVariables({
       primitiveModes.push(modeName);
 
       const tokens = await loadTokens(theme, mode, densities[0]);
-      const pixels = buildPixelLookup(tokens);
       for (const token of tokens) {
         const collection = collectionForToken(token);
         if (collection === COLLECTIONS.density) continue;
@@ -680,7 +610,7 @@ export async function buildFigmaVariables({
           };
         }
 
-        const mapped = mapTokenValue(token, pixels);
+        const mapped = mapTokenValue(token);
         const name = toVariableName(token);
         if (mapped.skip) {
           if (modeName === primitiveModes[0]) noteSkip(token, mapped.skip);
@@ -731,13 +661,12 @@ export async function buildFigmaVariables({
       const tokens = await loadTokens(theme, modes[0], densityName);
       for (const viewportName of viewportNames) {
         const viewport = VIEWPORTS[viewportName];
-        const pixels = buildPixelLookup(tokens, viewport);
         const values = new Map();
 
         for (const token of tokens) {
           const isDensityToken =
             collectionForToken(token) === COLLECTIONS.density;
-          const mapped = mapTokenValue(token, pixels, viewport);
+          const mapped = mapTokenValue(token, viewport);
           const name = toVariableName(token);
 
           if (mapped.skip) {
@@ -772,8 +701,8 @@ export async function buildFigmaVariables({
   );
   // Fluid is een waarde die tussen de viewports verschilt, in welk theme of
   // project-type dan ook. Aan de tekst valt het niet altijd te zien:
-  // `checkbox/size` schrijft `calc(var(--dsn-text-font-size-md) * ...)`, zonder
-  // clamp of vw, en bleef daardoor ongemerkt op 1440px staan.
+  // `checkbox/size` schrijft `calc({dsn.text.font-size.md} * ...)`, zonder
+  // clamp of vw in de eigen bron, en bleef daardoor ongemerkt op 1440px staan.
   const variesWithViewport = (name) =>
     themes.some((theme) =>
       densities.some((densityName) => {
@@ -915,7 +844,6 @@ export async function buildFigmaVariables({
   // ---------------------------------------------------------------------------
   const components = new Map();
   const baseTokens = await loadTokens(themes[0], modes[0], densities[0]);
-  const basePixels = buildPixelLookup(baseTokens);
 
   // Eerste pass: alle component-variables met hun letterlijke waarde, plus de
   // referentie uit de bron. Een component-token mag naar een ander
@@ -928,7 +856,7 @@ export async function buildFigmaVariables({
     // Een token dat al als density-variant bestaat hoort daar thuis, niet hier.
     if (density.has(name)) continue;
 
-    const mapped = mapTokenValue(token, basePixels);
+    const mapped = mapTokenValue(token);
     if (mapped.skip) {
       noteSkip(token, mapped.skip);
       continue;

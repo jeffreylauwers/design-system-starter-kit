@@ -19,9 +19,9 @@
         "$type": "dimension"
       },
       "size": {
-        "$value": "calc(var(--dsn-text-font-size-md) * var(--dsn-text-line-height-md))",
+        "$value": "calc({dsn.text.font-size.md} * {dsn.text.line-height.md})",
         "$type": "dimension",
-        "$description": "Grootte van de checkbox — vloeiend op basis van tekstgrootte en line-height"
+        "$description": "Grootte van de checkbox, afgeleid van de lettergrootte en regelafstand van lopende tekst."
       },
       "active": {
         "background-color": {
@@ -265,9 +265,9 @@
       },
       "icon": {
         "size": {
-          "$value": "calc(var(--dsn-checkbox-size) * 0.67)",
+          "$value": "calc({dsn.checkbox.size} * 0.67)",
           "$type": "dimension",
-          "$description": "Grootte van het vinkje — 67% van de checkboxgrootte voor een goede visuele balans"
+          "$description": "Grootte van het vinkje, in verhouding tot de grootte van de checkbox."
         }
       }
     }

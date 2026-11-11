@@ -10,6 +10,15 @@ All notable changes to this project are documented in this file.
 
 Nog niet gepubliceerde wijzigingen. Schrijf nieuwe changelog-entries hieronder; bij de volgende release wordt deze kop gepromoveerd naar het definitieve versienummer.
 
+### Checkbox en Radio: grootte via tokenreferenties
+
+`checkbox.size`, `checkbox.icon.size`, `radio.size` en `radio.icon.size` rekenden met `var(--dsn-...)` in plaats van met tokenreferenties, en omzeilden zo de delegatieketen. Ze gebruiken nu `{dsn.text.font-size.md}`, `{dsn.text.line-height.md}`, `{dsn.checkbox.size}` en `{dsn.radio.size}`.
+
+- **CSS:** ongewijzigd, de custom properties hebben dezelfde waarde.
+- **JS en SCSS:** krijgen nu een bruikbare waarde. In JS stond eerst de letterlijke string `calc(var(--dsn-...) * ...)`, nu de opgeloste waarde; in SCSS verwijst de waarde nu naar `$dsn-text-font-size-md` en verwante variabelen.
+- **Figma-sync:** de omweg in `src/config/figma.js` die `var(--...)` in tokenwaarden alsnog naar pixels omrekende, is weg. Geen token gebruikt dat nog; de Figma-variables blijven gelijk.
+- De descriptions van deze vier tokens noemen geen percentages meer en bevatten geen em dashes.
+
 ### Basistokens: descriptions zonder waarden
 
 De `$description` van alle tokens in `themes/start/base.json` en `themes/wireframe/base.json` is herschreven, net als die in de project-types (`default/space.json`, `default/typography.json`, `information-dense/typography.json`). Daar komt de uiteindelijke description van onder meer `text.font-size.*` en `space.*` vandaan, dus de CSS-commentaren en Figma-variables tonen nu de nieuwe tekst.
