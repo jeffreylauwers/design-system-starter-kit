@@ -4,37 +4,37 @@
       "color": {
         "$value": "{dsn.color.neutral.color-document}",
         "$type": "color",
-        "$description": "Tekstkleur van het formulierveldlabel"
+        "$description": "Tekstkleur."
       },
       "font-family": {
         "$value": "{dsn.text.font-family.default}",
         "$type": "fontFamily",
-        "$description": "Font-familie van het formulierveldlabel"
+        "$description": "Lettertype."
       },
       "font-size": {
         "$value": "{dsn.text.font-size.md}",
         "$type": "fontSize",
-        "$description": "Font-size van het formulierveldlabel"
+        "$description": "Lettergrootte."
       },
       "font-weight": {
         "$value": "{dsn.text.font-weight.bold}",
         "$type": "fontWeight",
-        "$description": "Font-gewicht van het formulierveldlabel"
+        "$description": "Lettergewicht."
       },
       "line-height": {
         "$value": "{dsn.text.line-height.md}",
         "$type": "lineHeight",
-        "$description": "Line-height van het formulierveldlabel"
+        "$description": "Regelafstand."
       },
       "margin-block-end": {
         "$value": "{dsn.space.block.md}",
         "$type": "dimension",
-        "$description": "Ruimte onder het label voor het formulierbesturingselement (wanneer geen beschrijving volgt)"
+        "$description": "Ruimte onder het component."
       },
       "margin-block-end-with-description": {
         "$value": "{dsn.space.block.sm}",
         "$type": "dimension",
-        "$description": "Ruimte onder het label wanneer een beschrijving volgt"
+        "$description": "Ruimte onder het label als er een beschrijving op volgt."
       }
     }
   }

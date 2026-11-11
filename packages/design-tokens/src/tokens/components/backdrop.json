@@ -4,17 +4,17 @@
       "opacity": {
         "$value": "50%",
         "$type": "opacity",
-        "$description": "Bepaalt hoe doorzichtig de overlay is — gebruikt in color-mix()"
+        "$description": "Dekking van de verduistering."
       },
       "blur": {
         "$value": "4px",
         "$type": "dimension",
-        "$description": "backdrop-filter: blur() op de overlay — valt gracefully weg zonder support"
+        "$description": "Vervaging van de pagina achter de verduistering."
       },
       "z-index": {
         "$value": "{dsn.z-index.400}",
         "$type": "number",
-        "$description": "Z-index schaal: backdrop ({dsn.z-index.400}) → modal-dialog/drawer ({dsn.z-index.500}) → skip-link ({dsn.z-index.600})"
+        "$description": "Stapellaag."
       }
     }
   }

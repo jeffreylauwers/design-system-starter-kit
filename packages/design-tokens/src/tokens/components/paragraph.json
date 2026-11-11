@@ -4,72 +4,72 @@
       "color": {
         "$value": "{dsn.color.neutral.color-document}",
         "$type": "color",
-        "$description": "Tekstkleur van de alinea"
+        "$description": "Tekstkleur."
       },
       "font-family": {
         "$value": "{dsn.text.font-family.default}",
         "$type": "fontFamily",
-        "$description": "Font-familie van de alinea"
+        "$description": "Lettertype."
       },
       "font-weight": {
         "$value": "{dsn.text.font-weight.default}",
         "$type": "fontWeight",
-        "$description": "Font-gewicht van de alinea"
+        "$description": "Lettergewicht."
       },
       "max-inline-size": {
         "$value": "{dsn.text.max-inline-size}",
         "$type": "sizing",
-        "$description": "Maximale breedte van de alinea voor leesbaarheid"
+        "$description": "Maximale breedte."
       },
       "default": {
         "font-size": {
           "$value": "{dsn.text.font-size.md}",
           "$type": "fontSize",
-          "$description": "Font-size van de standaard alinea"
+          "$description": "Lettergrootte in variant ‘default’."
         },
         "line-height": {
           "$value": "{dsn.text.line-height.md}",
           "$type": "lineHeight",
-          "$description": "Line-height van de standaard alinea"
+          "$description": "Regelafstand in variant ‘default’."
         },
         "margin-block-end": {
           "$value": "{dsn.space.row.lg}",
           "$type": "spacing",
-          "$description": "Onderste margin van de standaard alinea"
+          "$description": "Ruimte onder het component in variant ‘default’."
         }
       },
       "lead": {
         "font-size": {
           "$value": "{dsn.text.font-size.lg}",
           "$type": "fontSize",
-          "$description": "Font-size van de inleidende alinea"
+          "$description": "Lettergrootte in variant ‘lead’."
         },
         "line-height": {
           "$value": "{dsn.text.line-height.lg}",
           "$type": "lineHeight",
-          "$description": "Line-height van de inleidende alinea"
+          "$description": "Regelafstand in variant ‘lead’."
         },
         "margin-block-end": {
           "$value": "{dsn.space.row.xl}",
           "$type": "spacing",
-          "$description": "Onderste margin van de inleidende alinea"
+          "$description": "Ruimte onder het component in variant ‘lead’."
         }
       },
       "small-print": {
         "font-size": {
           "$value": "{dsn.text.font-size.sm}",
           "$type": "fontSize",
-          "$description": "Font-size van de kleine tekst alinea"
+          "$description": "Lettergrootte in variant ‘small-print’."
         },
         "line-height": {
           "$value": "{dsn.text.line-height.sm}",
           "$type": "lineHeight",
-          "$description": "Line-height van de kleine tekst alinea"
+          "$description": "Regelafstand in variant ‘small-print’."
         },
         "margin-block-end": {
           "$value": "{dsn.space.row.md}",
           "$type": "spacing",
-          "$description": "Onderste margin van de kleine tekst alinea"
+          "$description": "Ruimte onder het component in variant ‘small-print’."
         }
       }
     }

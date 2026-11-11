@@ -4,58 +4,58 @@
       "border-inline-start-width": {
         "$value": "{dsn.border.width.medium}",
         "$type": "dimension",
-        "$description": "Breedte van de linkerborder (framed appearance)"
+        "$description": "Lijndikte van de rand aan de beginkant."
       },
       "border-inline-start-color": {
         "$value": "{dsn.color.accent-1.border-default}",
         "$type": "color",
-        "$description": "Kleur van de linkerborder (framed appearance)"
+        "$description": "Lijnkleur van de rand aan de beginkant."
       },
       "background-color": {
         "$value": "{dsn.color.accent-1.bg-default}",
         "$type": "color",
-        "$description": "Achtergrondkleur (framed appearance)"
+        "$description": "Achtergrondkleur."
       },
       "padding-block": {
         "$value": "{dsn.space.block.xl}",
         "$type": "dimension",
-        "$description": "Verticale padding (framed appearance)"
+        "$description": "Ruimte boven en onder de inhoud."
       },
       "padding-inline-start": {
         "$value": "{dsn.space.inline.xl}",
         "$type": "dimension",
-        "$description": "Horizontale padding aan het begin, na de border (framed appearance)"
+        "$description": "Ruimte aan het begin van de inhoud."
       },
       "padding-inline-end": {
         "$value": "{dsn.space.inline.xl}",
         "$type": "dimension",
-        "$description": "Horizontale padding aan het einde (framed appearance)"
+        "$description": "Ruimte aan het eind van de inhoud."
       },
       "heading-gap": {
         "$value": "{dsn.space.row.xl}",
         "$type": "dimension",
-        "$description": "Ruimte tussen de heading en de lijst met ankerlinks"
+        "$description": "Ruimte tussen de kop en de lijst met links."
       },
       "plain": {
         "padding-block": {
           "$value": "{dsn.space.block.md}",
           "$type": "dimension",
-          "$description": "Plain-appearance-specifiek: verticale padding zodat de heading en het eerste ankerlink-item uitlijnen met het eerste item van de Sidebar/Sub-navigatie"
+          "$description": "Ruimte boven en onder de inhoud in variant ‘plain’, zodat de eerste link uitlijnt met navigatie ernaast."
         },
         "list-gap": {
           "$value": "{dsn.space.row.lg}",
           "$type": "dimension",
-          "$description": "Plain-appearance-specifiek: ruimte tussen de ankerlinks, ruimer dan de standaard lijst-gap zodat dit in balans is met de Sidebar/Sub-navigatie"
+          "$description": "Ruimte tussen de links in variant ‘plain’."
         },
         "link-text-decoration-line": {
           "$value": "none",
           "$type": "string",
-          "$description": "Plain-appearance-specifiek: tekstverfraaiing van de ankerlinks in rust — omgekeerd t.o.v. de standaard Link (geen onderstreping)"
+          "$description": "Tekstdecoratie, zoals onderstreping, van de links in variant ‘plain’."
         },
         "link-hover-text-decoration-line": {
           "$value": "underline",
           "$type": "string",
-          "$description": "Plain-appearance-specifiek: tekstverfraaiing van de ankerlinks op hover — omgekeerd t.o.v. de standaard Link (wel onderstreping)"
+          "$description": "Tekstdecoratie, zoals onderstreping, van de links in variant ‘plain’ bij ‘hover’ status."
         }
       }
     }

@@ -4,32 +4,32 @@
       "color": {
         "$type": "color",
         "$value": "{dsn.color.neutral.color-document}",
-        "$description": "Tekstkleur van de pre-heading"
+        "$description": "Tekstkleur."
       },
       "font-family": {
         "$type": "fontFamily",
         "$value": "{dsn.text.font-family.default}",
-        "$description": "Font-familie van de pre-heading"
+        "$description": "Lettertype."
       },
       "font-size": {
         "$type": "fontSize",
         "$value": "{dsn.text.font-size.md}",
-        "$description": "Font-size van de pre-heading (gelijk aan de bodytekst)"
+        "$description": "Lettergrootte."
       },
       "font-weight": {
         "$type": "fontWeight",
         "$value": "{dsn.text.font-weight.bold}",
-        "$description": "Font-gewicht van de pre-heading (vet om te onderscheiden van de kopregel)"
+        "$description": "Lettergewicht."
       },
       "line-height": {
         "$type": "lineHeight",
         "$value": "{dsn.text.line-height.md}",
-        "$description": "Line-height van de pre-heading"
+        "$description": "Regelafstand."
       },
       "margin-block-end": {
         "$type": "spacing",
         "$value": "{dsn.space.row.xs}",
-        "$description": "Ruimte tussen de pre-heading en de koptekst"
+        "$description": "Ruimte onder het component."
       }
     }
   }

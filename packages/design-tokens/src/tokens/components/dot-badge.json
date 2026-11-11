@@ -4,31 +4,31 @@
       "size": {
         "$value": "calc({dsn.icon.size.md} / 3)",
         "$type": "dimension",
-        "$description": "Diameter van de dot — een derde van icon.size.md, schaalt mee met het icoon waar hij op zit (8–10px)"
+        "$description": "Grootte."
       },
       "inset-block-start": {
         "$value": "{dsn.space.block.sm}",
         "$type": "dimension",
-        "$description": "Verticale offset — dot zit space.block.sm binnen de bovenrand van de parent"
+        "$description": "Afstand tussen de stip en de bovenkant van het element waar hij bij hoort."
       },
       "inset-inline-end": {
         "$value": "{dsn.space.inline.sm}",
         "$type": "dimension",
-        "$description": "Horizontale offset — dot zit space.inline.sm binnen de rechterrand van de parent"
+        "$description": "Afstand tussen de stip en de eindkant van het element waar hij bij hoort."
       },
       "pulse-duration": {
         "$value": "1500ms",
         "$type": "duration",
-        "$description": "Duur van de pulse-animatie — bewust hoger dan transition.duration.slower (500ms): dit is een herhalende ambient animatie, geen UI-transition"
+        "$description": "Duur van één puls van de animatie die aandacht vraagt."
       },
       "pulse-iteration-count": {
         "$value": "3",
         "$type": "number",
-        "$description": "Aantal herhalingen van de pulse-animatie — 3 × 1500ms = 4500ms, bewust onder de 5 seconden van WCAG 2.2.2 Pauzeren, stoppen, verbergen"
+        "$description": "Aantal keer dat de pulsanimatie herhaalt."
       },
       "pulse-easing": {
         "$value": "{dsn.transition.easing.default}",
-        "$description": "Easing van de pulse-animatie"
+        "$description": "Snelheidsverloop van de pulsanimatie."
       }
     }
   }

@@ -4,12 +4,12 @@
       "gap": {
         "$value": "{dsn.space.text.md}",
         "$type": "dimension",
-        "$description": "Gap between radio button and label"
+        "$description": "Ruimte tussen de onderdelen."
       },
       "padding-block": {
         "$value": "{dsn.space.block.md}",
         "$type": "dimension",
-        "$description": "Vertical padding for touch target accessibility (WCAG 2.5.5)"
+        "$description": "Ruimte boven en onder de inhoud."
       }
     }
   }

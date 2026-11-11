@@ -4,32 +4,32 @@
       "z-index": {
         "$value": "{dsn.z-index.600}",
         "$type": "number",
-        "$description": "Hoogste z-index — boven modals ({dsn.z-index.500}) en backdrop ({dsn.z-index.400}), zodat de skip-link altijd zichtbaar is bij focus"
+        "$description": "Stapellaag boven modale vensters, zodat de skiplink bij ‘focus’ status altijd zichtbaar is."
       },
       "padding-block": {
         "$value": "{dsn.space.block.md}",
         "$type": "spacing",
-        "$description": "Verticale padding van de skip-link"
+        "$description": "Ruimte boven en onder de inhoud."
       },
       "padding-inline": {
         "$value": "{dsn.space.inline.lg}",
         "$type": "spacing",
-        "$description": "Horizontale padding van de skip-link"
+        "$description": "Ruimte aan begin en eind van de inhoud."
       },
       "border-radius": {
         "$value": "{dsn.border.radius.md}",
         "$type": "dimension",
-        "$description": "Afgeronde hoeken van de skip-link"
+        "$description": "Hoekafronding."
       },
       "offset-block-start": {
         "$value": "{dsn.space.block.md}",
         "$type": "spacing",
-        "$description": "Afstand van de bovenkant van het viewport bij focus"
+        "$description": "Afstand tot de bovenkant van het venster bij ‘focus’ status."
       },
       "offset-inline-start": {
         "$value": "{dsn.space.inline.md}",
         "$type": "spacing",
-        "$description": "Afstand van de linkerkant (of rechterkant in RTL) van het viewport bij focus"
+        "$description": "Afstand tot de beginkant van het venster bij ‘focus’ status."
       }
     }
   }

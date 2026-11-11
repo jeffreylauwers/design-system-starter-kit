@@ -4,28 +4,28 @@
       "border-radius": {
         "$value": "{dsn.border.radius.md}",
         "$type": "dimension",
-        "$description": "Afgeronde hoeken van de afbeelding"
+        "$description": "Hoekafronding."
       },
       "caption": {
         "color": {
           "$value": "{dsn.color.neutral.color-subtle}",
           "$type": "color",
-          "$description": "Gedempte kleur voor bijschrift — bewust minder prominent dan bodytekst"
+          "$description": "Tekstkleur van het bijschrift."
         },
         "font-size": {
           "$value": "{dsn.text.font-size.sm}",
           "$type": "dimension",
-          "$description": "Iets kleiner dan bodytekst om hiërarchie te markeren"
+          "$description": "Lettergrootte van het bijschrift."
         },
         "line-height": {
           "$value": "{dsn.text.line-height.sm}",
           "$type": "lineHeight",
-          "$description": "Compacte regelafstand passend bij kleine tekst — consistent met font-size.sm"
+          "$description": "Regelafstand van het bijschrift."
         },
         "margin-block-start": {
           "$value": "{dsn.space.row.sm}",
           "$type": "dimension",
-          "$description": "Kleine ademruimte tussen afbeelding en bijschrift"
+          "$description": "Ruimte boven het bijschrift."
         }
       }
     }

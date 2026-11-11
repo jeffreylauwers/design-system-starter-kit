@@ -4,28 +4,28 @@
       "margin-block-end": {
         "$value": "{dsn.space.none}",
         "$type": "dimension",
-        "$description": "Onderste margin van de formulierveldcontainer"
+        "$description": "Ruimte onder het component."
       },
       "margin-block-start": {
         "$value": "{dsn.space.none}",
         "$type": "dimension",
-        "$description": "Bovenste margin van de formulierveldcontainer"
+        "$description": "Ruimte boven het component."
       },
       "invalid": {
         "border-inline-start-color": {
           "$value": "{dsn.color.negative.border-default}",
           "$type": "color",
-          "$description": "Kleur van de linkerborder voor ongeldige formuliervelden"
+          "$description": "Lijnkleur van de rand aan de beginkant bij een ongeldige invoer."
         },
         "border-inline-start-width": {
           "$value": "{dsn.border.width.medium}",
           "$type": "dimension",
-          "$description": "Breedte van de linkerborder voor ongeldige formuliervelden"
+          "$description": "Lijndikte van de rand aan de beginkant bij een ongeldige invoer."
         },
         "padding-inline-start": {
           "$value": "{dsn.space.inline.xl}",
           "$type": "dimension",
-          "$description": "Linker padding voor ongeldige formuliervelden (om de border op te vangen)"
+          "$description": "Ruimte aan het begin van de inhoud bij een ongeldige invoer."
         }
       }
     }

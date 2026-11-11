@@ -4,109 +4,130 @@
       "caption": {
         "color": {
           "$value": "{dsn.color.neutral.color-document}",
-          "$type": "color"
+          "$type": "color",
+          "$description": "Tekstkleur van het bijschrift."
         },
         "font-family": {
           "$value": "{dsn.heading.font-family}",
-          "$type": "fontFamily"
+          "$type": "fontFamily",
+          "$description": "Lettertype van het bijschrift."
         },
         "font-size": {
           "$value": "{dsn.text.font-size.xl}",
-          "$type": "fontSize"
+          "$type": "fontSize",
+          "$description": "Lettergrootte van het bijschrift."
         },
         "font-weight": {
           "$value": "{dsn.heading.font-weight}",
-          "$type": "fontWeight"
+          "$type": "fontWeight",
+          "$description": "Lettergewicht van het bijschrift."
         },
         "line-height": {
           "$value": "{dsn.text.line-height.xl}",
-          "$type": "lineHeight"
+          "$type": "lineHeight",
+          "$description": "Regelafstand van het bijschrift."
         }
       },
       "cell": {
         "padding-block-end": {
           "$value": "{dsn.space.block.lg}",
-          "$type": "dimension"
+          "$type": "dimension",
+          "$description": "Ruimte onder de inhoud van een cel."
         },
         "padding-block-start": {
           "$value": "{dsn.space.block.lg}",
-          "$type": "dimension"
+          "$type": "dimension",
+          "$description": "Ruimte boven de inhoud van een cel."
         },
         "padding-inline-end": {
           "$value": "{dsn.space.inline.xl}",
-          "$type": "dimension"
+          "$type": "dimension",
+          "$description": "Ruimte aan het eind van de inhoud van een cel."
         },
         "padding-inline-start": {
           "$value": "{dsn.space.inline.xl}",
-          "$type": "dimension"
+          "$type": "dimension",
+          "$description": "Ruimte aan het begin van de inhoud van een cel."
         }
       },
       "header": {
         "background-color": {
           "$value": "transparent",
-          "$type": "color"
+          "$type": "color",
+          "$description": "Achtergrondkleur van de tabelkop."
         },
         "border-block-end-color": {
           "$value": "{dsn.color.neutral.border-subtle}",
-          "$type": "color"
+          "$type": "color",
+          "$description": "Lijnkleur van de rand aan de onderkant van de tabelkop."
         },
         "border-block-end-width": {
           "$value": "{dsn.border.width.medium}",
-          "$type": "dimension"
+          "$type": "dimension",
+          "$description": "Lijndikte van de rand aan de onderkant van de tabelkop."
         },
         "color": {
           "$value": "{dsn.color.neutral.color-document}",
-          "$type": "color"
+          "$type": "color",
+          "$description": "Tekstkleur van de tabelkop."
         }
       },
       "header-cell": {
         "font-weight": {
           "$value": "{dsn.text.font-weight.bold}",
-          "$type": "fontWeight"
+          "$type": "fontWeight",
+          "$description": "Lettergewicht van een kopcel."
         }
       },
       "row": {
         "border-block-end-color": {
           "$value": "{dsn.color.neutral.border-subtle}",
-          "$type": "color"
+          "$type": "color",
+          "$description": "Lijnkleur van de rand aan de onderkant van een rij."
         },
         "border-block-end-width": {
           "$value": "{dsn.border.width.thin}",
-          "$type": "dimension"
+          "$type": "dimension",
+          "$description": "Lijndikte van de rand aan de onderkant van een rij."
         }
       },
       "footer": {
         "background-color": {
           "$value": "transparent",
-          "$type": "color"
+          "$type": "color",
+          "$description": "Achtergrondkleur van de tabelvoet."
         },
         "border-block-start-color": {
           "$value": "{dsn.color.neutral.border-subtle}",
-          "$type": "color"
+          "$type": "color",
+          "$description": "Lijnkleur van de rand aan de bovenkant van de tabelvoet."
         },
         "border-block-start-width": {
           "$value": "{dsn.border.width.medium}",
-          "$type": "dimension"
+          "$type": "dimension",
+          "$description": "Lijndikte van de rand aan de bovenkant van de tabelvoet."
         },
         "color": {
           "$value": "{dsn.color.neutral.color-document}",
-          "$type": "color"
+          "$type": "color",
+          "$description": "Tekstkleur van de tabelvoet."
         },
         "font-weight": {
           "$value": "{dsn.text.font-weight.bold}",
-          "$type": "fontWeight"
+          "$type": "fontWeight",
+          "$description": "Lettergewicht van de tabelvoet."
         }
       },
       "wrapper": {
         "background-color": {
           "$value": "{dsn.color.neutral.bg-document}",
           "$type": "color",
-          "$description": "Achtergrondkleur van de scroll-wrapper — moet overeenkomen met de pagina-achtergrond voor de scroll-schaduw techniek"
+          "$description": "Achtergrondkleur van de scrollcontainer."
         },
         "scroll-shadow-color": {
           "$value": "{dsn.color.shadow.scroll}",
           "$type": "color",
-          "$description": "Kleur van de scroll-affordance schaduw aan de zijkanten van scrollbare tabellen"
+          "$description": "Kleur van de schaduw aan de zijkant die laat zien dat de tabel verder scrolt."
         }
       }
     }

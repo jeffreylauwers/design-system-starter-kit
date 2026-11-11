@@ -4,12 +4,12 @@
       "gutter": {
         "$value": "calc(0.5rem * 1)",
         "$type": "dimension",
-        "$description": "Compactere kolomafstand voor information-dense project types (8px = space.column.md)"
+        "$description": "Horizontale ruimte tussen de kolommen."
       },
       "row-gap": {
         "$value": "calc(0.5rem * 1)",
         "$type": "dimension",
-        "$description": "Compactere rij-afstand voor information-dense project types (8px = space.column.md)"
+        "$description": "Verticale ruimte tussen de rijen."
       }
     }
   }

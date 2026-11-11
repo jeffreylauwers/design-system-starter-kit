@@ -4,42 +4,42 @@
       "color": {
         "$value": "{dsn.color.negative.color-default}",
         "$type": "color",
-        "$description": "Tekstkleur van de foutmelding (negative sentiment)"
+        "$description": "Tekstkleur."
       },
       "font-family": {
         "$value": "{dsn.text.font-family.default}",
         "$type": "fontFamily",
-        "$description": "Font-familie van de foutmelding"
+        "$description": "Lettertype."
       },
       "font-size": {
         "$value": "{dsn.text.font-size.md}",
         "$type": "fontSize",
-        "$description": "Font-size van de foutmelding"
+        "$description": "Lettergrootte."
       },
       "font-weight": {
         "$value": "{dsn.text.font-weight.default}",
         "$type": "fontWeight",
-        "$description": "Font-gewicht van de foutmelding"
+        "$description": "Lettergewicht."
       },
       "gap": {
         "$value": "{dsn.space.text.sm}",
         "$type": "dimension",
-        "$description": "Ruimte tussen icoon en foutmeldingstekst"
+        "$description": "Ruimte tussen de onderdelen."
       },
       "icon-size": {
         "$value": "{dsn.icon.size.md}",
         "$type": "dimension",
-        "$description": "Icoongrootte van de foutmelding"
+        "$description": "Grootte van het icoon."
       },
       "line-height": {
         "$value": "{dsn.text.line-height.md}",
         "$type": "lineHeight",
-        "$description": "Line-height van de foutmelding"
+        "$description": "Regelafstand."
       },
       "margin-block-end": {
         "$value": "{dsn.space.block.md}",
         "$type": "dimension",
-        "$description": "Ruimte onder de foutmelding voor het formulierbesturingselement"
+        "$description": "Ruimte onder het component."
       }
     }
   }

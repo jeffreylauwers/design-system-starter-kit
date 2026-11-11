@@ -4,238 +4,238 @@
       "background-color": {
         "$value": "{dsn.form-control.background-color}",
         "$type": "color",
-        "$description": "Achtergrondkleur van het tekstinvoerveld"
+        "$description": "Achtergrondkleur."
       },
       "border-color": {
         "$value": "{dsn.form-control.border-color}",
         "$type": "color",
-        "$description": "Borderkleur van het tekstinvoerveld"
+        "$description": "Lijnkleur van de rand."
       },
       "border-radius": {
         "$value": "{dsn.form-control.border-radius}",
         "$type": "dimension",
-        "$description": "Border-radius van het tekstinvoerveld"
+        "$description": "Hoekafronding."
       },
       "border-width": {
         "$value": "{dsn.form-control.border-width}",
         "$type": "dimension",
-        "$description": "Border-breedte van het tekstinvoerveld"
+        "$description": "Lijndikte van de rand."
       },
       "color": {
         "$value": "{dsn.form-control.color}",
         "$type": "color",
-        "$description": "Tekstkleur van het tekstinvoerveld"
+        "$description": "Tekstkleur."
       },
       "column-gap": {
         "$value": "{dsn.space.text.lg}",
         "$type": "dimension",
-        "$description": "Ruimte tussen tekst en iconen (voor toekomstige icoonondersteuning)"
+        "$description": "Horizontale ruimte tussen de onderdelen."
       },
       "font-family": {
         "$value": "{dsn.form-control.font-family}",
         "$type": "fontFamily",
-        "$description": "Font-familie van het tekstinvoerveld"
+        "$description": "Lettertype."
       },
       "font-size": {
         "$value": "{dsn.form-control.font-size}",
         "$type": "fontSize",
-        "$description": "Font-size van het tekstinvoerveld"
+        "$description": "Lettergrootte."
       },
       "font-weight": {
         "$value": "{dsn.form-control.font-weight}",
         "$type": "fontWeight",
-        "$description": "Font-gewicht van het tekstinvoerveld"
+        "$description": "Lettergewicht."
       },
       "line-height": {
         "$value": "{dsn.form-control.line-height}",
         "$type": "lineHeight",
-        "$description": "Line-height van het tekstinvoerveld"
+        "$description": "Regelafstand."
       },
       "min-block-size": {
         "$value": "{dsn.pointer-target.min-block-size}",
         "$type": "dimension",
-        "$description": "Minimale hoogte van het tekstinvoerveld (WCAG aanraakdoel)"
+        "$description": "Minimale hoogte."
       },
       "min-inline-size": {
         "$value": "{dsn.pointer-target.min-inline-size}",
         "$type": "dimension",
-        "$description": "Minimale breedte van het tekstinvoerveld (WCAG aanraakdoel)"
+        "$description": "Minimale breedte."
       },
       "outline-offset": {
         "$value": "0px",
         "$type": "dimension",
-        "$description": "Outline-afstand van het tekstinvoerveld"
+        "$description": "Afstand tussen de rand en de focusomtrek."
       },
       "padding-block-end": {
         "$value": "{dsn.form-control.padding-block-end}",
         "$type": "dimension",
-        "$description": "Onderste padding van het tekstinvoerveld"
+        "$description": "Ruimte onder de inhoud."
       },
       "padding-block-start": {
         "$value": "{dsn.form-control.padding-block-start}",
         "$type": "dimension",
-        "$description": "Bovenste padding van het tekstinvoerveld"
+        "$description": "Ruimte boven de inhoud."
       },
       "padding-inline-end": {
         "$value": "{dsn.form-control.padding-inline-end}",
         "$type": "dimension",
-        "$description": "Rechter padding van het tekstinvoerveld"
+        "$description": "Ruimte aan het eind van de inhoud."
       },
       "padding-inline-start": {
         "$value": "{dsn.form-control.padding-inline-start}",
         "$type": "dimension",
-        "$description": "Linker padding van het tekstinvoerveld"
+        "$description": "Ruimte aan het begin van de inhoud."
       },
       "disabled": {
         "background-color": {
           "$value": "{dsn.form-control.disabled.background-color}",
           "$type": "color",
-          "$description": "Achtergrond van het tekstinvoerveld op disabled"
+          "$description": "Achtergrondkleur bij ‘disabled’ status."
         },
         "border-color": {
           "$value": "{dsn.form-control.disabled.border-color}",
           "$type": "color",
-          "$description": "Border van het tekstinvoerveld op disabled"
+          "$description": "Lijnkleur van de rand bij ‘disabled’ status."
         },
         "color": {
           "$value": "{dsn.form-control.disabled.color}",
           "$type": "color",
-          "$description": "Tekstkleur van het tekstinvoerveld op disabled"
+          "$description": "Tekstkleur bij ‘disabled’ status."
         }
       },
       "focus": {
         "background-color": {
           "$value": "{dsn.form-control.focus.background-color}",
           "$type": "color",
-          "$description": "Achtergrond van het tekstinvoerveld op focus"
+          "$description": "Achtergrondkleur bij ‘focus’ status."
         },
         "border-color": {
           "$value": "{dsn.form-control.focus.border-color}",
           "$type": "color",
-          "$description": "Border van het tekstinvoerveld op focus"
+          "$description": "Lijnkleur van de rand bij ‘focus’ status."
         },
         "box-shadow-x": {
           "$value": "0",
           "$type": "dimension",
-          "$description": "X-verschuiving van de box-shadow op focus"
+          "$description": "Horizontale verschuiving van de schaduw bij ‘focus’ status."
         },
         "box-shadow-y": {
           "$value": "0",
           "$type": "dimension",
-          "$description": "Y-verschuiving van de box-shadow op focus"
+          "$description": "Verticale verschuiving van de schaduw bij ‘focus’ status."
         },
         "box-shadow-blur": {
           "$value": "0",
           "$type": "dimension",
-          "$description": "Vervaging van de box-shadow op focus"
+          "$description": "Vervaging van de schaduw bij ‘focus’ status."
         },
         "box-shadow-spread": {
           "$value": "{dsn.border.width.medium}",
           "$type": "dimension",
-          "$description": "Spreiding van de box-shadow op focus (creëert een dikkere border)"
+          "$description": "Spreiding van de schaduw die de rand dikker laat lijken, bij ‘focus’ status."
         },
         "box-shadow-color": {
           "$value": "{dsn.text-input.focus.border-color}",
           "$type": "color",
-          "$description": "Kleur van de box-shadow op focus"
+          "$description": "Kleur van de schaduw bij ‘focus’ status."
         },
         "color": {
           "$value": "{dsn.form-control.focus.color}",
           "$type": "color",
-          "$description": "Tekstkleur van het tekstinvoerveld op focus"
+          "$description": "Tekstkleur bij ‘focus’ status."
         }
       },
       "hover": {
         "box-shadow-x": {
           "$value": "0",
           "$type": "dimension",
-          "$description": "X-verschuiving van de box-shadow op hover"
+          "$description": "Horizontale verschuiving van de schaduw bij ‘hover’ status."
         },
         "box-shadow-y": {
           "$value": "0",
           "$type": "dimension",
-          "$description": "Y-verschuiving van de box-shadow op hover"
+          "$description": "Verticale verschuiving van de schaduw bij ‘hover’ status."
         },
         "box-shadow-blur": {
           "$value": "0",
           "$type": "dimension",
-          "$description": "Vervaging van de box-shadow op hover"
+          "$description": "Vervaging van de schaduw bij ‘hover’ status."
         },
         "box-shadow-spread": {
           "$value": "{dsn.border.width.medium}",
           "$type": "dimension",
-          "$description": "Spreiding van de box-shadow op hover (creëert een dikkere border)"
+          "$description": "Spreiding van de schaduw die de rand dikker laat lijken, bij ‘hover’ status."
         },
         "box-shadow-color": {
           "$value": "{dsn.text-input.border-color}",
           "$type": "color",
-          "$description": "Kleur van de box-shadow op hover"
+          "$description": "Kleur van de schaduw bij ‘hover’ status."
         }
       },
       "placeholder": {
         "color": {
           "$value": "{dsn.form-control.placeholder.color}",
           "$type": "color",
-          "$description": "Plaatshouderkleur van het tekstinvoerveld"
+          "$description": "Tekstkleur van de placeholdertekst."
         }
       },
       "invalid": {
         "background-color": {
           "$value": "{dsn.form-control.invalid.background-color}",
           "$type": "color",
-          "$description": "Achtergrond van het tekstinvoerveld bij ongeldige invoer"
+          "$description": "Achtergrondkleur bij een ongeldige invoer."
         },
         "border-color": {
           "$value": "{dsn.form-control.invalid.border-color}",
           "$type": "color",
-          "$description": "Border van het tekstinvoerveld bij ongeldige invoer"
+          "$description": "Lijnkleur van de rand bij een ongeldige invoer."
         },
         "box-shadow-x": {
           "$value": "0",
           "$type": "dimension",
-          "$description": "X-verschuiving van de box-shadow bij ongeldige invoer"
+          "$description": "Horizontale verschuiving van de schaduw bij een ongeldige invoer."
         },
         "box-shadow-y": {
           "$value": "0",
           "$type": "dimension",
-          "$description": "Y-verschuiving van de box-shadow bij ongeldige invoer"
+          "$description": "Verticale verschuiving van de schaduw bij een ongeldige invoer."
         },
         "box-shadow-blur": {
           "$value": "0",
           "$type": "dimension",
-          "$description": "Vervaging van de box-shadow bij ongeldige invoer"
+          "$description": "Vervaging van de schaduw bij een ongeldige invoer."
         },
         "box-shadow-spread": {
           "$value": "{dsn.border.width.medium}",
           "$type": "dimension",
-          "$description": "Spreiding van de box-shadow bij ongeldige invoer (creëert een dikkere border)"
+          "$description": "Spreiding van de schaduw die de rand dikker laat lijken, bij een ongeldige invoer."
         },
         "box-shadow-color": {
           "$value": "{dsn.text-input.invalid.border-color}",
           "$type": "color",
-          "$description": "Kleur van de box-shadow bij ongeldige invoer"
+          "$description": "Kleur van de schaduw bij een ongeldige invoer."
         },
         "color": {
           "$value": "{dsn.form-control.color}",
           "$type": "color",
-          "$description": "Tekstkleur van het tekstinvoerveld bij ongeldige invoer"
+          "$description": "Tekstkleur bij een ongeldige invoer."
         }
       },
       "read-only": {
         "background-color": {
           "$value": "{dsn.form-control.read-only.background-color}",
           "$type": "color",
-          "$description": "Achtergrond van het tekstinvoerveld op read-only"
+          "$description": "Achtergrondkleur bij ‘read-only’ status."
         },
         "border-color": {
           "$value": "{dsn.form-control.read-only.border-color}",
           "$type": "color",
-          "$description": "Border van het tekstinvoerveld op read-only"
+          "$description": "Lijnkleur van de rand bij ‘read-only’ status."
         },
         "color": {
           "$value": "{dsn.form-control.read-only.color}",
           "$type": "color",
-          "$description": "Tekstkleur van het tekstinvoerveld op read-only"
+          "$description": "Tekstkleur bij ‘read-only’ status."
         }
       }
     }

@@ -4,34 +4,34 @@
       "size": {
         "$value": "{dsn.icon.size.md}",
         "$type": "dimension",
-        "$description": "Diameter van de spinner — gelijk aan icon.size.md, schaalt mee met de fluid type scale (24–30px)"
+        "$description": "Grootte."
       },
       "size-large": {
         "$value": "calc({dsn.icon.size.md} * 2)",
         "$type": "dimension",
-        "$description": "Grote variant — twee keer icon.size.md, schaalt mee met de fluid type scale (48–60px)"
+        "$description": "Grootte in maat ‘large’."
       },
       "stroke-width": {
         "$value": "{dsn.border.width.medium}",
         "$type": "dimension",
-        "$description": "Lijndikte van de boog — identiek aan border.width.medium voor visuele consistentie"
+        "$description": "Lijndikte van de draaiende boog."
       },
       "color": {
         "$value": "{dsn.color.accent-1.color-default}",
-        "$description": "Kleur van de draaiende boog"
+        "$description": "Kleur van de draaiende boog."
       },
       "track-color": {
         "$value": "{dsn.color.neutral.bg-subtle}",
-        "$description": "Achtergrondkleur van de cirkelbaan"
+        "$description": "Kleur van de cirkel waarover de boog draait."
       },
       "duration": {
         "$value": "800ms",
         "$type": "duration",
-        "$description": "Duur van één rotatie — bewust sneller dan transition.duration.slower (500ms): dit is een herhalende ambient animatie"
+        "$description": "Duur van één rotatie."
       },
       "gap-size": {
         "$value": "{dsn.space.inline.md}",
-        "$description": "Ruimte tussen spinner en label"
+        "$description": "Ruimte tussen de spinner en het label."
       }
     }
   }

@@ -4,12 +4,12 @@
       "gap": {
         "$value": "{dsn.space.inline.md}",
         "$type": "dimension",
-        "$description": "Gap between the day, month and year inputs"
+        "$description": "Ruimte tussen de onderdelen."
       },
       "label-gap": {
         "$value": "{dsn.space.text.sm}",
         "$type": "dimension",
-        "$description": "Gap between each field label and its input"
+        "$description": "Ruimte tussen het label en het invoerveld van elk deelveld."
       }
     }
   }

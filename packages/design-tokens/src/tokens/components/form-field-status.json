@@ -4,52 +4,52 @@
       "color": {
         "$value": "{dsn.color.neutral.color-subtle}",
         "$type": "color",
-        "$description": "Tekstkleur van de veldstatus (subtiel voor niet-kritieke informatie)"
+        "$description": "Voorgrondkleur."
       },
       "font-family": {
         "$value": "{dsn.text.font-family.default}",
         "$type": "fontFamily",
-        "$description": "Font-familie van de veldstatus"
+        "$description": "Lettertype."
       },
       "font-size": {
         "$value": "{dsn.text.font-size.md}",
         "$type": "fontSize",
-        "$description": "Font-size van de veldstatus"
+        "$description": "Lettergrootte."
       },
       "font-weight": {
         "$value": "{dsn.text.font-weight.default}",
         "$type": "fontWeight",
-        "$description": "Font-gewicht van de veldstatus"
+        "$description": "Lettergewicht."
       },
       "gap": {
         "$value": "{dsn.space.text.sm}",
         "$type": "dimension",
-        "$description": "Ruimte tussen icoon en tekst (positive en warning varianten)"
+        "$description": "Ruimte tussen de onderdelen."
       },
       "icon-size": {
         "$value": "{dsn.icon.size.md}",
         "$type": "dimension",
-        "$description": "Icoongrootte voor positive en warning varianten"
+        "$description": "Grootte van het icoon."
       },
       "line-height": {
         "$value": "{dsn.text.line-height.md}",
         "$type": "lineHeight",
-        "$description": "Line-height van de veldstatus"
+        "$description": "Regelafstand."
       },
       "margin-block-start": {
         "$value": "{dsn.space.block.md}",
         "$type": "dimension",
-        "$description": "Ruimte boven het statusbericht na het formulierbesturingselement"
+        "$description": "Ruimte boven het component."
       },
       "positive-color": {
         "$value": "{dsn.color.positive.color-default}",
         "$type": "color",
-        "$description": "Tekstkleur voor positive variant"
+        "$description": "Voorgrondkleur in variant ‘positive’."
       },
       "warning-color": {
         "$value": "{dsn.color.warning.color-default}",
         "$type": "color",
-        "$description": "Tekstkleur voor warning variant"
+        "$description": "Voorgrondkleur in variant ‘warning’."
       }
     }
   }

@@ -4,7 +4,7 @@
       "padding-inline": {
         "$value": "{dsn.space.inline.xl}",
         "$type": "spacing",
-        "$description": "Horizontale padding van de page-body binnenbalk — zelfde schaal als PageHeader en PageFooter voor een consistente paginakantranding"
+        "$description": "Ruimte aan begin en eind van de inhoud."
       }
     }
   }

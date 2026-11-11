@@ -4,7 +4,7 @@
       "max-inline-size": {
         "$value": "75rem",
         "$type": "dimension",
-        "$description": "Maximale breedte van de paginainhoud binnen page-level componenten. Achtergronden lopen altijd full-bleed; __inner containers gebruiken dit token om de inhoudsbreedte te beperken."
+        "$description": "Maximale breedte van de paginainhoud. Achtergronden lopen door over de volle breedte."
       }
     }
   }

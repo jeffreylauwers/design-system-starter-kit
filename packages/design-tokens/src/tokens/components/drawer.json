@@ -4,109 +4,109 @@
       "z-index": {
         "$value": "{dsn.z-index.500}",
         "$type": "number",
-        "$description": "Positionering boven de backdrop ({dsn.z-index.400}) en onder de skip-link ({dsn.z-index.600})"
+        "$description": "Stapellaag."
       },
       "background-color": {
         "$value": "{dsn.color.neutral.bg-elevated}",
         "$type": "color",
-        "$description": "Achtergrondkleur van het zijpaneel — bg-elevated benadrukt elevatie boven de pagina"
+        "$description": "Achtergrondkleur."
       },
       "border-width": {
         "$value": "{dsn.border.width.thin}",
         "$type": "borderWidth",
-        "$description": "Randbreedte van het zijpaneel"
+        "$description": "Lijndikte van de rand."
       },
       "border-color": {
         "$value": "{dsn.color.neutral.border-subtle}",
         "$type": "color",
-        "$description": "Randkleur van het zijpaneel"
+        "$description": "Lijnkleur van de rand."
       },
       "box-shadow": {
         "$value": "{dsn.box-shadow.lg}",
         "$type": "shadow",
-        "$description": "Schaduw van het zijpaneel — hoogste elevatie (lg)"
+        "$description": "Schaduw."
       },
       "max-width": {
         "$value": "25rem",
         "$type": "dimension",
-        "$description": "Maximale breedte van het zijpaneel (400px)"
+        "$description": "Maximale breedte."
       },
       "min-gap": {
         "$value": "3rem",
         "$type": "dimension",
-        "$description": "Minimale zichtbare ruimte van de achtergrondpagina naast het zijpaneel (48px)"
+        "$description": "Minimale ruimte naast het paneel waarin de pagina erachter zichtbaar blijft."
       },
       "heading": {
         "font-family": {
           "$value": "{dsn.heading.font-family}",
           "$type": "fontFamily",
-          "$description": "Lettertype van de zijpaneel-heading"
+          "$description": "Lettertype van de kop."
         },
         "font-weight": {
           "$value": "{dsn.heading.font-weight}",
           "$type": "fontWeight",
-          "$description": "Vetgedrukt van de zijpaneel-heading"
+          "$description": "Lettergewicht van de kop."
         },
         "color": {
           "$value": "{dsn.heading.color}",
           "$type": "color",
-          "$description": "Kleur van de zijpaneel-heading"
+          "$description": "Tekstkleur van de kop."
         },
         "font-size": {
           "$value": "{dsn.text.font-size.lg}",
           "$type": "fontSize",
-          "$description": "Tekstgrootte van de zijpaneel-heading"
+          "$description": "Lettergrootte van de kop."
         },
         "line-height": {
           "$value": "{dsn.text.line-height.lg}",
           "$type": "lineHeight",
-          "$description": "Regelafstand van de zijpaneel-heading"
+          "$description": "Regelafstand van de kop."
         }
       },
       "header": {
         "padding-block-start": {
           "$value": "{dsn.space.block.xl}",
           "$type": "spacing",
-          "$description": "Bovenkant padding van de header (16px)"
+          "$description": "Ruimte boven de inhoud van de kopzone."
         },
         "padding-block-end": {
           "$value": "{dsn.space.block.xl}",
           "$type": "spacing",
-          "$description": "Onderkant padding van de header (16px)"
+          "$description": "Ruimte onder de inhoud van de kopzone."
         },
         "padding-inline": {
           "$value": "{dsn.space.inline.xl}",
           "$type": "spacing",
-          "$description": "Horizontale padding van de header (16px)"
+          "$description": "Ruimte aan begin en eind van de inhoud van de kopzone."
         }
       },
       "body": {
         "padding-block": {
           "$value": "{dsn.space.block.3xl}",
           "$type": "spacing",
-          "$description": "Verticale padding van de body (24px)"
+          "$description": "Ruimte boven en onder de inhoud van het hoofdgedeelte."
         },
         "padding-inline": {
           "$value": "{dsn.space.inline.xl}",
           "$type": "spacing",
-          "$description": "Horizontale padding van de body (16px)"
+          "$description": "Ruimte aan begin en eind van de inhoud van het hoofdgedeelte."
         }
       },
       "footer": {
         "padding-block-start": {
           "$value": "{dsn.space.block.xl}",
           "$type": "spacing",
-          "$description": "Bovenkant padding van de footer (16px)"
+          "$description": "Ruimte boven de inhoud van de voetzone."
         },
         "padding-block-end": {
           "$value": "{dsn.space.block.xl}",
           "$type": "spacing",
-          "$description": "Onderkant padding van de footer (16px)"
+          "$description": "Ruimte onder de inhoud van de voetzone."
         },
         "padding-inline": {
           "$value": "{dsn.space.inline.xl}",
           "$type": "spacing",
-          "$description": "Horizontale padding van de footer (16px)"
+          "$description": "Ruimte aan begin en eind van de inhoud van de voetzone."
         }
       }
     }

@@ -4,32 +4,32 @@
       "color": {
         "$value": "{dsn.color.neutral.color-document}",
         "$type": "color",
-        "$description": "Tekstkleur van het labelachtervoegsel"
+        "$description": "Tekstkleur."
       },
       "font-family": {
         "$value": "{dsn.text.font-family.default}",
         "$type": "fontFamily",
-        "$description": "Font-familie van het labelachtervoegsel"
+        "$description": "Lettertype."
       },
       "font-size": {
         "$value": "{dsn.text.font-size.md}",
         "$type": "fontSize",
-        "$description": "Font-size van het labelachtervoegsel"
+        "$description": "Lettergrootte."
       },
       "font-weight": {
         "$value": "{dsn.text.font-weight.default}",
         "$type": "fontWeight",
-        "$description": "Font-gewicht van het labelachtervoegsel"
+        "$description": "Lettergewicht."
       },
       "line-height": {
         "$value": "{dsn.text.line-height.md}",
         "$type": "lineHeight",
-        "$description": "Line-height van het labelachtervoegsel"
+        "$description": "Regelafstand."
       },
       "margin-inline-start": {
         "$value": "{dsn.space.text.sm}",
         "$type": "dimension",
-        "$description": "Ruimte tussen de labeltekst en het achtervoegsel"
+        "$description": "Ruimte voor het component."
       }
     }
   }

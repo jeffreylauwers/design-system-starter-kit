@@ -4,100 +4,100 @@
       "font-size": {
         "$value": "{dsn.text.font-size.sm}",
         "$type": "fontSize",
-        "$description": "NumberBadge font size — zelfde schaal als StatusBadge (kleinst beschikbare stap)"
+        "$description": "Lettergrootte."
       },
       "line-height": {
         "$value": "{dsn.text.line-height.sm}",
         "$type": "lineHeight",
-        "$description": "NumberBadge line height"
+        "$description": "Regelafstand."
       },
       "font-weight": {
         "$value": "{dsn.text.font-weight.bold}",
-        "$description": "NumberBadge font weight — bold voor leesbaarheid op kleine afmeting"
+        "$description": "Lettergewicht."
       },
       "padding-block": {
         "$value": "{dsn.space.none}",
         "$type": "dimension",
-        "$description": "Verticale padding"
+        "$description": "Ruimte boven en onder de inhoud."
       },
       "padding-inline": {
         "$value": "{dsn.space.inline.sm}",
         "$type": "dimension",
-        "$description": "Horizontale padding"
+        "$description": "Ruimte aan begin en eind van de inhoud."
       },
       "border-radius": {
         "$value": "{dsn.border.radius.round}",
         "$type": "dimension",
-        "$description": "Pill-vorm via volledig ronde border-radius"
+        "$description": "Hoekafronding."
       },
       "border-width": {
         "$value": "{dsn.border.width.thin}",
         "$type": "dimension",
-        "$description": "Transparante border voor forced-colors / High Contrast mode ondersteuning"
+        "$description": "Lijndikte van de rand."
       },
       "border-color": {
         "$value": "{dsn.color.transparent}",
         "$type": "color",
-        "$description": "Transparant by default; zichtbaar in forced-colors / High Contrast mode"
+        "$description": "Lijnkleur van de rand."
       },
       "negative": {
         "color": {
           "$value": "{dsn.color.negative-inverse.color-default}",
           "$type": "color",
-          "$description": "Tekstkleur voor negative variant"
+          "$description": "Voorgrondkleur in variant ‘negative’."
         },
         "background-color": {
           "$value": "{dsn.color.negative-inverse.bg-default}",
           "$type": "color",
-          "$description": "Achtergrondkleur voor negative variant"
+          "$description": "Achtergrondkleur in variant ‘negative’."
         }
       },
       "positive": {
         "color": {
           "$value": "{dsn.color.positive-inverse.color-default}",
           "$type": "color",
-          "$description": "Tekstkleur voor positive variant"
+          "$description": "Voorgrondkleur in variant ‘positive’."
         },
         "background-color": {
           "$value": "{dsn.color.positive-inverse.bg-default}",
           "$type": "color",
-          "$description": "Achtergrondkleur voor positive variant"
+          "$description": "Achtergrondkleur in variant ‘positive’."
         }
       },
       "warning": {
         "color": {
           "$value": "{dsn.color.warning-inverse.color-default}",
           "$type": "color",
-          "$description": "Tekstkleur voor warning variant"
+          "$description": "Voorgrondkleur in variant ‘warning’."
         },
         "background-color": {
           "$value": "{dsn.color.warning-inverse.bg-default}",
           "$type": "color",
-          "$description": "Achtergrondkleur voor warning variant"
+          "$description": "Achtergrondkleur in variant ‘warning’."
         }
       },
       "info": {
         "color": {
           "$value": "{dsn.color.info-inverse.color-default}",
           "$type": "color",
-          "$description": "Tekstkleur voor info variant"
+          "$description": "Voorgrondkleur in variant ‘info’."
         },
         "background-color": {
           "$value": "{dsn.color.info-inverse.bg-default}",
           "$type": "color",
-          "$description": "Achtergrondkleur voor info variant"
+          "$description": "Achtergrondkleur in variant ‘info’."
         }
       },
       "neutral": {
         "color": {
           "$value": "{dsn.color.neutral-inverse.color-default}",
           "$type": "color",
-          "$description": "Tekstkleur voor neutral variant"
+          "$description": "Voorgrondkleur in variant ‘neutral’."
         },
         "background-color": {
           "$value": "{dsn.color.neutral-inverse.bg-default}",
           "$type": "color",
-          "$description": "Achtergrondkleur voor neutral variant"
+          "$description": "Achtergrondkleur in variant ‘neutral’."
         }
       }
     }

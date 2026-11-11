@@ -4,52 +4,52 @@
       "color": {
         "$value": "{dsn.color.neutral.color-document}",
         "$type": "color",
-        "$description": "Tekstkleur van de geordende lijst"
+        "$description": "Voorgrondkleur."
       },
       "font-family": {
         "$value": "{dsn.text.font-family.default}",
         "$type": "fontFamily",
-        "$description": "Font-familie van de geordende lijst"
+        "$description": "Lettertype."
       },
       "font-size": {
         "$value": "{dsn.text.font-size.md}",
         "$type": "fontSize",
-        "$description": "Font-size van de geordende lijst"
+        "$description": "Lettergrootte."
       },
       "font-weight": {
         "$value": "{dsn.text.font-weight.default}",
         "$type": "fontWeight",
-        "$description": "Font-gewicht van de geordende lijst"
+        "$description": "Lettergewicht."
       },
       "max-inline-size": {
         "$value": "{dsn.text.max-inline-size}",
         "$type": "sizing",
-        "$description": "Maximale breedte van de geordende lijst voor leesbaarheid"
+        "$description": "Maximale breedte."
       },
       "gap": {
         "$value": "{dsn.space.row.sm}",
         "$type": "spacing",
-        "$description": "Ruimte tussen lijstitems"
+        "$description": "Ruimte tussen de onderdelen."
       },
       "line-height": {
         "$value": "{dsn.text.line-height.md}",
         "$type": "lineHeight",
-        "$description": "Line-height van de geordende lijst"
+        "$description": "Regelafstand."
       },
       "margin-block-end": {
         "$value": "{dsn.space.row.lg}",
         "$type": "spacing",
-        "$description": "Onderste margin van de geordende lijst"
+        "$description": "Ruimte onder het component."
       },
       "marker-color": {
         "$value": "{dsn.color.neutral.color-document}",
         "$type": "color",
-        "$description": "Kleur van het nummermarkeerteken"
+        "$description": "Kleur van de nummers."
       },
       "padding-inline-start": {
         "$value": "{dsn.space.inline.3xl}",
         "$type": "spacing",
-        "$description": "Inspringing aan de linkerkant van de geordende lijst"
+        "$description": "Ruimte aan het begin van de inhoud."
       }
     }
   }

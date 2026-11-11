@@ -4,124 +4,124 @@
       "border-radius": {
         "$value": "{dsn.border.radius.square}",
         "$type": "dimension",
-        "$description": "Alert border-radius (standaard vierkant; thema's kunnen afgeronde hoeken toevoegen)"
+        "$description": "Hoekafronding."
       },
       "border-width": {
         "$value": "{dsn.border.width.medium}",
         "$type": "dimension",
-        "$description": "Alert border-breedte (alleen linkerborder)"
+        "$description": "Lijndikte van de rand aan de beginkant."
       },
       "column-gap": {
         "$value": "{dsn.space.inline.md}",
         "$type": "dimension",
-        "$description": "Ruimte tussen icoon en inhoud"
+        "$description": "Horizontale ruimte tussen de onderdelen."
       },
       "icon-size": {
         "$value": "{dsn.icon.size.xl}",
         "$type": "dimension",
-        "$description": "Icoongrootte van de Alert (ook gebruikt als breedte van de gridkolom)"
+        "$description": "Grootte van het icoon, ook de breedte van de kolom waarin het staat."
       },
       "padding-block": {
         "$value": "{dsn.space.block.xl}",
         "$type": "dimension",
-        "$description": "Verticale padding"
+        "$description": "Ruimte boven en onder de inhoud."
       },
       "padding-inline": {
         "$value": "{dsn.space.inline.xl}",
         "$type": "dimension",
-        "$description": "Horizontale padding"
+        "$description": "Ruimte aan begin en eind van de inhoud."
       },
       "row-gap": {
         "$value": "{dsn.space.row.md}",
         "$type": "dimension",
-        "$description": "Ruimte tussen koptekst en inhoud"
+        "$description": "Verticale ruimte tussen de onderdelen."
       },
       "info": {
         "background-color": {
           "$value": "{dsn.color.info.bg-default}",
           "$type": "color",
-          "$description": "Achtergrondkleur voor info variant (standaard)"
+          "$description": "Achtergrondkleur in variant ‘info’."
         },
         "border-color": {
           "$value": "{dsn.color.info.border-default}",
           "$type": "color",
-          "$description": "Borderkleur voor info variant (standaard)"
+          "$description": "Lijnkleur van de rand in variant ‘info’."
         },
         "color": {
           "$value": "{dsn.color.info.color-document}",
           "$type": "color",
-          "$description": "Tekstkleur voor info variant (standaard)"
+          "$description": "Voorgrondkleur in variant ‘info’."
         },
         "icon-color": {
           "$value": "{dsn.color.info.color-default}",
           "$type": "color",
-          "$description": "Icoonkleur voor info variant (standaard)"
+          "$description": "Kleur van het icoon in variant ‘info’."
         }
       },
       "negative": {
         "background-color": {
           "$value": "{dsn.color.negative.bg-default}",
           "$type": "color",
-          "$description": "Achtergrondkleur voor negative variant"
+          "$description": "Achtergrondkleur in variant ‘negative’."
         },
         "border-color": {
           "$value": "{dsn.color.negative.border-default}",
           "$type": "color",
-          "$description": "Borderkleur voor negative variant"
+          "$description": "Lijnkleur van de rand in variant ‘negative’."
         },
         "color": {
           "$value": "{dsn.color.negative.color-document}",
           "$type": "color",
-          "$description": "Tekstkleur voor negative variant"
+          "$description": "Voorgrondkleur in variant ‘negative’."
         },
         "icon-color": {
           "$value": "{dsn.color.negative.color-default}",
           "$type": "color",
-          "$description": "Icoonkleur voor negative variant"
+          "$description": "Kleur van het icoon in variant ‘negative’."
         }
       },
       "positive": {
         "background-color": {
           "$value": "{dsn.color.positive.bg-default}",
           "$type": "color",
-          "$description": "Achtergrondkleur voor positive variant"
+          "$description": "Achtergrondkleur in variant ‘positive’."
         },
         "border-color": {
           "$value": "{dsn.color.positive.border-default}",
           "$type": "color",
-          "$description": "Borderkleur voor positive variant"
+          "$description": "Lijnkleur van de rand in variant ‘positive’."
         },
         "color": {
           "$value": "{dsn.color.positive.color-document}",
           "$type": "color",
-          "$description": "Tekstkleur voor positive variant"
+          "$description": "Voorgrondkleur in variant ‘positive’."
         },
         "icon-color": {
           "$value": "{dsn.color.positive.color-default}",
           "$type": "color",
-          "$description": "Icoonkleur voor positive variant"
+          "$description": "Kleur van het icoon in variant ‘positive’."
         }
       },
       "warning": {
         "background-color": {
           "$value": "{dsn.color.warning.bg-default}",
           "$type": "color",
-          "$description": "Achtergrondkleur voor warning variant"
+          "$description": "Achtergrondkleur in variant ‘warning’."
         },
         "border-color": {
           "$value": "{dsn.color.warning.border-default}",
           "$type": "color",
-          "$description": "Borderkleur voor warning variant"
+          "$description": "Lijnkleur van de rand in variant ‘warning’."
         },
         "color": {
           "$value": "{dsn.color.warning.color-document}",
           "$type": "color",
-          "$description": "Tekstkleur voor warning variant"
+          "$description": "Voorgrondkleur in variant ‘warning’."
         },
         "icon-color": {
           "$value": "{dsn.color.warning.color-default}",
           "$type": "color",
-          "$description": "Icoonkleur voor warning variant"
+          "$description": "Kleur van het icoon in variant ‘warning’."
         }
       }
     }

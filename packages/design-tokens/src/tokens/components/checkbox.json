@@ -3,271 +3,324 @@
     "checkbox": {
       "background-color": {
         "$value": "{dsn.form-control.background-color}",
-        "$type": "color"
+        "$type": "color",
+        "$description": "Achtergrondkleur."
       },
       "border-color": {
         "$value": "{dsn.form-control.border-color}",
-        "$type": "color"
+        "$type": "color",
+        "$description": "Lijnkleur van de rand."
       },
       "border-radius": {
         "$value": "{dsn.border.radius.square}",
         "$type": "dimension",
-        "$description": "Vierkante hoeken voor de checkbox"
+        "$description": "Hoekafronding."
       },
       "border-width": {
         "$value": "{dsn.border.width.thin}",
-        "$type": "dimension"
+        "$type": "dimension",
+        "$description": "Lijndikte van de rand."
       },
       "size": {
         "$value": "calc({dsn.text.font-size.md} * {dsn.text.line-height.md})",
         "$type": "dimension",
-        "$description": "Grootte van de checkbox, afgeleid van de lettergrootte en regelafstand van lopende tekst."
+        "$description": "Grootte van het vakje, afgeleid van de lettergrootte en regelafstand van lopende tekst."
       },
       "active": {
         "background-color": {
           "$value": "{dsn.form-control.active.background-color}",
-          "$type": "color"
+          "$type": "color",
+          "$description": "Achtergrondkleur bij ‘active’ status."
         },
         "border-color": {
           "$value": "{dsn.form-control.active.border-color}",
-          "$type": "color"
+          "$type": "color",
+          "$description": "Lijnkleur van de rand bij ‘active’ status."
         },
         "border-width": {
           "$value": "{dsn.border.width.medium}",
-          "$type": "dimension"
+          "$type": "dimension",
+          "$description": "Lijndikte van de rand bij ‘active’ status."
         }
       },
       "checked": {
         "background-color": {
           "$value": "{dsn.form-control.accent-color}",
-          "$type": "color"
+          "$type": "color",
+          "$description": "Achtergrondkleur als het vakje is aangevinkt."
         },
         "border-color": {
           "$value": "transparent",
-          "$type": "color"
+          "$type": "color",
+          "$description": "Lijnkleur van de rand als het vakje is aangevinkt."
         },
         "border-width": {
           "$value": "{dsn.border.width.thin}",
-          "$type": "dimension"
+          "$type": "dimension",
+          "$description": "Lijndikte van de rand als het vakje is aangevinkt."
         },
         "color": {
           "$value": "{dsn.color.neutral-inverse.color-default}",
           "$type": "color",
-          "$description": "Kleur van het vinkje"
+          "$description": "Kleur van het vinkje als het vakje is aangevinkt."
         }
       },
       "disabled": {
         "background-color": {
           "$value": "{dsn.form-control.disabled.background-color}",
-          "$type": "color"
+          "$type": "color",
+          "$description": "Achtergrondkleur bij ‘disabled’ status."
         },
         "border-color": {
           "$value": "{dsn.form-control.disabled.border-color}",
-          "$type": "color"
+          "$type": "color",
+          "$description": "Lijnkleur van de rand bij ‘disabled’ status."
         }
       },
       "focus": {
         "background-color": {
           "$value": "{dsn.form-control.focus.background-color}",
-          "$type": "color"
+          "$type": "color",
+          "$description": "Achtergrondkleur bij ‘focus’ status."
         },
         "border-color": {
           "$value": "{dsn.form-control.focus.border-color}",
-          "$type": "color"
+          "$type": "color",
+          "$description": "Lijnkleur van de rand bij ‘focus’ status."
         },
         "border-width": {
           "$value": "{dsn.border.width.medium}",
-          "$type": "dimension"
+          "$type": "dimension",
+          "$description": "Lijndikte van de rand bij ‘focus’ status."
         }
       },
       "hover": {
         "background-color": {
           "$value": "{dsn.form-control.hover.background-color}",
-          "$type": "color"
+          "$type": "color",
+          "$description": "Achtergrondkleur bij ‘hover’ status."
         },
         "border-color": {
           "$value": "{dsn.form-control.hover.border-color}",
-          "$type": "color"
+          "$type": "color",
+          "$description": "Lijnkleur van de rand bij ‘hover’ status."
         },
         "border-width": {
           "$value": "{dsn.border.width.medium}",
-          "$type": "dimension"
+          "$type": "dimension",
+          "$description": "Lijndikte van de rand bij ‘hover’ status."
         }
       },
       "invalid": {
         "background-color": {
           "$value": "{dsn.form-control.invalid.background-color}",
-          "$type": "color"
+          "$type": "color",
+          "$description": "Achtergrondkleur bij een ongeldige invoer."
         },
         "border-color": {
           "$value": "{dsn.form-control.invalid.border-color}",
-          "$type": "color"
+          "$type": "color",
+          "$description": "Lijnkleur van de rand bij een ongeldige invoer."
         },
         "border-width": {
           "$value": "{dsn.border.width.medium}",
-          "$type": "dimension"
+          "$type": "dimension",
+          "$description": "Lijndikte van de rand bij een ongeldige invoer."
         }
       },
       "checked-active": {
         "background-color": {
           "$value": "{dsn.form-control.active.accent-color}",
-          "$type": "color"
+          "$type": "color",
+          "$description": "Achtergrondkleur als het vakje is aangevinkt, bij ‘active’ status."
         },
         "border-color": {
           "$value": "transparent",
-          "$type": "color"
+          "$type": "color",
+          "$description": "Lijnkleur van de rand als het vakje is aangevinkt, bij ‘active’ status."
         },
         "border-width": {
           "$value": "{dsn.border.width.medium}",
-          "$type": "dimension"
+          "$type": "dimension",
+          "$description": "Lijndikte van de rand als het vakje is aangevinkt, bij ‘active’ status."
         },
         "color": {
           "$value": "{dsn.color.neutral-inverse.color-default}",
-          "$type": "color"
+          "$type": "color",
+          "$description": "Kleur van het vinkje als het vakje is aangevinkt, bij ‘active’ status."
         }
       },
       "checked-disabled": {
         "background-color": {
           "$value": "{dsn.form-control.disabled.accent-color}",
-          "$type": "color"
+          "$type": "color",
+          "$description": "Achtergrondkleur als het vakje is aangevinkt, bij ‘disabled’ status."
         },
         "border-color": {
           "$value": "{dsn.form-control.disabled.border-color}",
-          "$type": "color"
+          "$type": "color",
+          "$description": "Lijnkleur van de rand als het vakje is aangevinkt, bij ‘disabled’ status."
         },
         "color": {
           "$value": "{dsn.form-control.disabled.color}",
-          "$type": "color"
+          "$type": "color",
+          "$description": "Kleur van het vinkje als het vakje is aangevinkt, bij ‘disabled’ status."
         }
       },
       "checked-focus": {
         "background-color": {
           "$value": "{dsn.form-control.focus.background-color}",
-          "$type": "color"
+          "$type": "color",
+          "$description": "Achtergrondkleur als het vakje is aangevinkt, bij ‘focus’ status."
         },
         "border-color": {
           "$value": "{dsn.form-control.focus.border-color}",
-          "$type": "color"
+          "$type": "color",
+          "$description": "Lijnkleur van de rand als het vakje is aangevinkt, bij ‘focus’ status."
         },
         "border-width": {
           "$value": "{dsn.border.width.medium}",
-          "$type": "dimension"
+          "$type": "dimension",
+          "$description": "Lijndikte van de rand als het vakje is aangevinkt, bij ‘focus’ status."
         },
         "color": {
           "$value": "{dsn.form-control.focus.color}",
-          "$type": "color"
+          "$type": "color",
+          "$description": "Kleur van het vinkje als het vakje is aangevinkt, bij ‘focus’ status."
         }
       },
       "checked-hover": {
         "background-color": {
           "$value": "{dsn.form-control.hover.accent-color}",
-          "$type": "color"
+          "$type": "color",
+          "$description": "Achtergrondkleur als het vakje is aangevinkt, bij ‘hover’ status."
         },
         "border-color": {
           "$value": "transparent",
-          "$type": "color"
+          "$type": "color",
+          "$description": "Lijnkleur van de rand als het vakje is aangevinkt, bij ‘hover’ status."
         },
         "border-width": {
           "$value": "{dsn.border.width.medium}",
-          "$type": "dimension"
+          "$type": "dimension",
+          "$description": "Lijndikte van de rand als het vakje is aangevinkt, bij ‘hover’ status."
         },
         "color": {
           "$value": "{dsn.color.neutral-inverse.color-default}",
-          "$type": "color"
+          "$type": "color",
+          "$description": "Kleur van het vinkje als het vakje is aangevinkt, bij ‘hover’ status."
         }
       },
       "indeterminate": {
         "background-color": {
           "$value": "{dsn.form-control.accent-color}",
-          "$type": "color"
+          "$type": "color",
+          "$description": "Achtergrondkleur als het vakje gedeeltelijk is aangevinkt."
         },
         "border-color": {
           "$value": "transparent",
-          "$type": "color"
+          "$type": "color",
+          "$description": "Lijnkleur van de rand als het vakje gedeeltelijk is aangevinkt."
         },
         "border-width": {
           "$value": "{dsn.border.width.thin}",
-          "$type": "dimension"
+          "$type": "dimension",
+          "$description": "Lijndikte van de rand als het vakje gedeeltelijk is aangevinkt."
         },
         "color": {
           "$value": "{dsn.color.neutral-inverse.color-default}",
           "$type": "color",
-          "$description": "Kleur van het indeterminate-icoon (minteken)"
+          "$description": "Kleur van het streepje als het vakje gedeeltelijk is aangevinkt."
         }
       },
       "indeterminate-active": {
         "background-color": {
           "$value": "{dsn.form-control.active.accent-color}",
-          "$type": "color"
+          "$type": "color",
+          "$description": "Achtergrondkleur als het vakje gedeeltelijk is aangevinkt, bij ‘active’ status."
         },
         "border-color": {
           "$value": "transparent",
-          "$type": "color"
+          "$type": "color",
+          "$description": "Lijnkleur van de rand als het vakje gedeeltelijk is aangevinkt, bij ‘active’ status."
         },
         "border-width": {
           "$value": "{dsn.border.width.medium}",
-          "$type": "dimension"
+          "$type": "dimension",
+          "$description": "Lijndikte van de rand als het vakje gedeeltelijk is aangevinkt, bij ‘active’ status."
         },
         "color": {
           "$value": "{dsn.color.neutral-inverse.color-default}",
-          "$type": "color"
+          "$type": "color",
+          "$description": "Kleur van het streepje als het vakje gedeeltelijk is aangevinkt, bij ‘active’ status."
         }
       },
       "indeterminate-disabled": {
         "background-color": {
           "$value": "{dsn.form-control.disabled.accent-color}",
-          "$type": "color"
+          "$type": "color",
+          "$description": "Achtergrondkleur als het vakje gedeeltelijk is aangevinkt, bij ‘disabled’ status."
         },
         "border-color": {
           "$value": "{dsn.form-control.disabled.border-color}",
-          "$type": "color"
+          "$type": "color",
+          "$description": "Lijnkleur van de rand als het vakje gedeeltelijk is aangevinkt, bij ‘disabled’ status."
         },
         "color": {
           "$value": "{dsn.form-control.disabled.color}",
-          "$type": "color"
+          "$type": "color",
+          "$description": "Kleur van het streepje als het vakje gedeeltelijk is aangevinkt, bij ‘disabled’ status."
         }
       },
       "indeterminate-focus": {
         "background-color": {
           "$value": "{dsn.form-control.focus.background-color}",
-          "$type": "color"
+          "$type": "color",
+          "$description": "Achtergrondkleur als het vakje gedeeltelijk is aangevinkt, bij ‘focus’ status."
         },
         "border-color": {
           "$value": "{dsn.form-control.focus.border-color}",
-          "$type": "color"
+          "$type": "color",
+          "$description": "Lijnkleur van de rand als het vakje gedeeltelijk is aangevinkt, bij ‘focus’ status."
         },
         "border-width": {
           "$value": "{dsn.border.width.medium}",
-          "$type": "dimension"
+          "$type": "dimension",
+          "$description": "Lijndikte van de rand als het vakje gedeeltelijk is aangevinkt, bij ‘focus’ status."
         },
         "color": {
           "$value": "{dsn.form-control.focus.color}",
-          "$type": "color"
+          "$type": "color",
+          "$description": "Kleur van het streepje als het vakje gedeeltelijk is aangevinkt, bij ‘focus’ status."
         }
       },
       "indeterminate-hover": {
         "background-color": {
           "$value": "{dsn.form-control.hover.accent-color}",
-          "$type": "color"
+          "$type": "color",
+          "$description": "Achtergrondkleur als het vakje gedeeltelijk is aangevinkt, bij ‘hover’ status."
         },
         "border-color": {
           "$value": "transparent",
-          "$type": "color"
+          "$type": "color",
+          "$description": "Lijnkleur van de rand als het vakje gedeeltelijk is aangevinkt, bij ‘hover’ status."
         },
         "border-width": {
           "$value": "{dsn.border.width.medium}",
-          "$type": "dimension"
+          "$type": "dimension",
+          "$description": "Lijndikte van de rand als het vakje gedeeltelijk is aangevinkt, bij ‘hover’ status."
         },
         "color": {
           "$value": "{dsn.color.neutral-inverse.color-default}",
-          "$type": "color"
+          "$type": "color",
+          "$description": "Kleur van het streepje als het vakje gedeeltelijk is aangevinkt, bij ‘hover’ status."
         }
       },
       "icon": {
         "size": {
           "$value": "calc({dsn.checkbox.size} * 0.67)",
           "$type": "dimension",
-          "$description": "Grootte van het vinkje, in verhouding tot de grootte van de checkbox."
+          "$description": "Grootte van het vinkje, in verhouding tot de grootte van het vakje."
         }
       }
     }
