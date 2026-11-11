@@ -309,6 +309,18 @@ export const LongFileName: Story = {
   },
 };
 
+// Bestandsnamen zonder spaties (camera, screenshots) hebben geen natuurlijke
+// afbreekpunten en moeten toch binnen de content-kolom blijven.
+export const LongFileNameWithoutSpaces: Story = {
+  args: {
+    fileName: `${VEEL_TEKST.replace(/\s+/g, '_')}.jpg`,
+    fileType: 'JPG',
+    fileSize: '402,2 KB',
+    href: HREF,
+    onDelete: () => {},
+  },
+};
+
 // =============================================================================
 // RTL
 // =============================================================================

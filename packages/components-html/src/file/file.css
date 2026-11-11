@@ -104,9 +104,13 @@
   min-width: 0;
 }
 
-/* Bestandsnaam — bold, mag over meerdere regels lopen */
+/* Bestandsnaam — bold, mag over meerdere regels lopen.
+   overflow-wrap: anywhere breekt ook namen zonder spaties af
+   (bijv. "Screenshot_20261111_200058_Gallery"), zodat ze niet
+   achter de actions doorlopen. */
 .dsn-file__name {
   font-weight: var(--dsn-file-name-font-weight);
+  overflow-wrap: anywhere;
 }
 
 /* Alleen als span: expliciete kleur (als link geeft dsn-link de kleur) */
