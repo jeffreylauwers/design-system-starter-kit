@@ -5,3 +5,38 @@ body {
     background-color 0.2s ease,
     color 0.2s ease;
 }
+
+/*
+ * Docs-pagina's: brede inhoud scrolt binnen zijn eigen blok in plaats van de
+ * hele pagina breder te maken (op smalle viewports).
+ *
+ * - Codeblokken uit markdown: Storybook geeft deze `pre` geen overflow.
+ * - Controls-tabel (ArgsTable): Storybook rendert hem zonder scroll-wrapper,
+ *   dus de directe parent wordt de scroll-container.
+ */
+.sbdocs-content pre {
+  overflow-x: auto;
+}
+
+.sbdocs-content :has(> .docblock-argstable) {
+  overflow-x: auto;
+  /* Ruimte voor de 1px-rand (box-shadow) van de tabel, die Storybook anders
+     met margin-inline: 1px naast width: 100% maakt: 2px te breed, dus altijd
+     een scrollbalk. */
+  padding-inline: 1px;
+}
+
+.sbdocs.sbdocs-content .docblock-argstable.docblock-argstable {
+  margin-inline: 0;
+}
+
+/*
+ * Inline code in lopende tekst mag afbreken. Storybook zet er
+ * `white-space: nowrap` op, waardoor een lang fragment (een HTML-snippet of
+ * token-naam) de pagina breder maakt. In tabelcellen blijft code wel op één
+ * regel: die tabellen scrollen (zie DocsMarkdown.css).
+ */
+.sbdocs-content :is(p, li) > code {
+  white-space: normal;
+  overflow-wrap: anywhere;
+}
