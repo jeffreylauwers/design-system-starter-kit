@@ -16,11 +16,6 @@
         "$type": "dimension",
         "$description": "Lijndikte van de rand."
       },
-      "color": {
-        "$value": "{dsn.form-control.border-color}",
-        "$type": "color",
-        "$description": "Kleur van de stip."
-      },
       "size": {
         "$value": "calc({dsn.text.font-size.md} * {dsn.text.line-height.md})",
         "$type": "dimension",
@@ -41,11 +36,6 @@
           "$value": "{dsn.border.width.medium}",
           "$type": "dimension",
           "$description": "Lijndikte van de rand bij ‘active’ status."
-        },
-        "color": {
-          "$value": "{dsn.form-control.active.border-color}",
-          "$type": "color",
-          "$description": "Kleur van de stip bij ‘active’ status."
         }
       },
       "checked": {
@@ -80,11 +70,6 @@
           "$value": "{dsn.form-control.disabled.border-color}",
           "$type": "color",
           "$description": "Lijnkleur van de rand bij ‘disabled’ status."
-        },
-        "color": {
-          "$value": "{dsn.form-control.disabled.border-color}",
-          "$type": "color",
-          "$description": "Kleur van de stip bij ‘disabled’ status."
         }
       },
       "focus": {
@@ -102,11 +87,6 @@
           "$value": "{dsn.border.width.medium}",
           "$type": "dimension",
           "$description": "Lijndikte van de rand bij ‘focus’ status."
-        },
-        "color": {
-          "$value": "{dsn.form-control.focus.border-color}",
-          "$type": "color",
-          "$description": "Kleur van de stip bij ‘focus’ status."
         }
       },
       "hover": {
@@ -124,11 +104,6 @@
           "$value": "{dsn.border.width.medium}",
           "$type": "dimension",
           "$description": "Lijndikte van de rand bij ‘hover’ status."
-        },
-        "color": {
-          "$value": "{dsn.form-control.hover.border-color}",
-          "$type": "color",
-          "$description": "Kleur van de stip bij ‘hover’ status."
         }
       },
       "invalid": {
@@ -146,11 +121,6 @@
           "$value": "{dsn.border.width.medium}",
           "$type": "dimension",
           "$description": "Lijndikte van de rand bij een ongeldige invoer."
-        },
-        "color": {
-          "$value": "{dsn.form-control.invalid.border-color}",
-          "$type": "color",
-          "$description": "Kleur van de stip bij een ongeldige invoer."
         }
       },
       "checked-active": {

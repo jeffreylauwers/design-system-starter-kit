@@ -29,11 +29,6 @@
         }
       },
       "item": {
-        "min-block-size": {
-          "$value": "{dsn.pointer-target.min-block-size}",
-          "$type": "dimension",
-          "$description": "Minimale hoogte van een item."
-        },
         "padding-block": {
           "$value": "{dsn.space.block.sm}",
           "$type": "dimension",

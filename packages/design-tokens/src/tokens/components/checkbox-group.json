@@ -1,57 +1,10 @@
 {
   "dsn": {
     "checkbox-group": {
-      "border-width": {
-        "$value": "{dsn.border.width.none}",
-        "$type": "dimension",
-        "$description": "Lijndikte van de rand."
-      },
       "gap": {
         "$value": "{dsn.space.row.sm}",
         "$type": "dimension",
         "$description": "Ruimte tussen de onderdelen."
-      },
-      "margin": {
-        "$value": "{dsn.space.none}",
-        "$type": "dimension",
-        "$description": "Ruimte rondom het component."
-      },
-      "padding": {
-        "$value": "{dsn.space.none}",
-        "$type": "dimension",
-        "$description": "Ruimte rondom de inhoud."
-      },
-      "legend": {
-        "color": {
-          "$value": "{dsn.form-field-label.color}",
-          "$type": "color",
-          "$description": "Tekstkleur van de groepsnaam."
-        },
-        "font-family": {
-          "$value": "{dsn.form-field-label.font-family}",
-          "$type": "fontFamily",
-          "$description": "Lettertype van de groepsnaam."
-        },
-        "font-size": {
-          "$value": "{dsn.form-field-label.font-size}",
-          "$type": "fontSize",
-          "$description": "Lettergrootte van de groepsnaam."
-        },
-        "font-weight": {
-          "$value": "{dsn.form-field-label.font-weight}",
-          "$type": "fontWeight",
-          "$description": "Lettergewicht van de groepsnaam."
-        },
-        "line-height": {
-          "$value": "{dsn.form-field-label.line-height}",
-          "$type": "lineHeight",
-          "$description": "Regelafstand van de groepsnaam."
-        },
-        "margin-block-end": {
-          "$value": "{dsn.form-field-label.margin-block-end-with-description}",
-          "$type": "dimension",
-          "$description": "Ruimte tussen de groepsnaam en de opties."
-        }
       }
     }
   }
