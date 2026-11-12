@@ -1,5 +1,5 @@
-import type { ComponentProps } from 'react';
-import { Markdown } from '@storybook/addon-docs/blocks';
+import { isValidElement, type ComponentProps, type ReactNode } from 'react';
+import { Markdown, Source } from '@storybook/addon-docs/blocks';
 import './DocsMarkdown.css';
 import tokenDocs from '@dsn-starter-kit/design-tokens/token-docs.json';
 
@@ -74,8 +74,8 @@ export function tokenTable(spec: string): string {
 /**
  * Brede tabellen (lange token-namen) scrollen horizontaal binnen hun eigen
  * wrapper, net als de tabellen van `TokenTable`: inline code (token-namen)
- * breekt niet af, en de tabel scrolt in plaats van samen te knijpen. De wrapper is focusbaar, zodat ook
- * toetsenbordgebruikers kunnen scrollen.
+ * breekt niet af, en de tabel scrolt in plaats van samen te knijpen. De
+ * wrapper is focusbaar, zodat ook toetsenbordgebruikers kunnen scrollen.
  */
 function ScrollableTable(props: ComponentProps<'table'>) {
   return (
@@ -90,8 +90,55 @@ function ScrollableTable(props: ComponentProps<'table'>) {
   );
 }
 
+const SOURCE_LANGUAGES = ['html', 'tsx', 'css', 'json', 'bash'] as const;
+type SourceLanguage = (typeof SOURCE_LANGUAGES)[number] | 'text';
+
+function sourceLanguage(className: unknown): SourceLanguage {
+  const lang =
+    typeof className === 'string'
+      ? className.match(/(?:^|\s)lang(?:uage)?-(\S+)/)?.[1]
+      : undefined;
+  if (lang === 'jsx' || lang === 'ts' || lang === 'typescript') return 'tsx';
+  return (SOURCE_LANGUAGES as readonly string[]).includes(lang ?? '')
+    ? (lang as SourceLanguage)
+    : 'text';
+}
+
+/**
+ * Een codeblok in dezelfde donkere stijl als `CodeTabs` onder de
+ * componentpreview: Storybooks `Source`-block met syntax highlighting,
+ * scrollen en een kopieerknop. Ook los te gebruiken in MDX.
+ */
+export function DocsCode({
+  code,
+  language = 'text',
+}: {
+  code: string;
+  language?: SourceLanguage;
+}) {
+  return (
+    <div className="docs-markdown-code">
+      <Source code={code.replace(/^\n|\n$/g, '')} language={language} dark />
+    </div>
+  );
+}
+
+/** Codeblokken in markdown (```html, ```tsx) renderen als `DocsCode`. */
+function CodeBlock({ children }: { children?: ReactNode }) {
+  if (!isValidElement<{ className?: string; children?: ReactNode }>(children)) {
+    return <pre>{children}</pre>;
+  }
+  const { className, children: code } = children.props;
+  return (
+    <DocsCode code={String(code ?? '')} language={sourceLanguage(className)} />
+  );
+}
+
 const markdownOptions = {
-  overrides: { table: { component: ScrollableTable } },
+  overrides: {
+    table: { component: ScrollableTable },
+    pre: { component: CodeBlock },
+  },
 };
 
 export function DocsMarkdown({ children }: { children: string }) {

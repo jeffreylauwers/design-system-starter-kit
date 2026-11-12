@@ -1,4 +1,6 @@
-import { Meta, Markdown } from '@storybook/addon-docs/blocks';
+import { Meta } from '@storybook/addon-docs/blocks';
+import { DocsCode } from './components';
+import { installCode, usageCode, developmentCode } from './Introduction.code';
 
 <Meta title="Introduction" />
 
@@ -30,39 +32,11 @@ Het design system bestaat uit meerdere packages:
 
 ### Installatie
 
-<Markdown>
-{`\`\`\`bash
-# Clone de repository
-git clone https://github.com/jeffreylauwers/design-system-starter-kit.git
-
-# Installeer dependencies
-
-pnpm install
-
-# Start Storybook lokaal
-
-pnpm run dev
-\`\`\``}
-
-</Markdown>
+<DocsCode language="bash" code={installCode} />
 
 ### Basis gebruik
 
-<Markdown>
-{`\`\`\`tsx
-import { Button, Icon } from '@dsn-starter-kit/components-react';
-
-function App() {
-return (
-
-<Button variant="strong" iconEnd={<Icon name="arrow-right" />}>
-Ga verder
-</Button>
-);
-}
-\`\`\``}
-
-</Markdown>
+<DocsCode language="tsx" code={usageCode} />
 
 ## Componenten overzicht
 
@@ -179,25 +153,7 @@ Gebruik de toolbar bovenaan om te wisselen tussen:
 
 ## Development
 
-<Markdown>
-{`\`\`\`bash
-# Build alle packages
-pnpm build
-
-# Run tests
-
-pnpm test
-
-# Lint code
-
-pnpm lint
-
-# Format code
-
-pnpm format
-\`\`\``}
-
-</Markdown>
+<DocsCode language="bash" code={developmentCode} />
 
 ## Licentie
 
