@@ -32,15 +32,7 @@ De Icon component biedt een consistente, toegankelijke manier om iconen te gebru
 
 ## Design tokens
 
-| Token                 | Beschrijving                                                        |
-| --------------------- | ------------------------------------------------------------------- |
-| `--dsn-icon-size-sm`  | Small icon size (gekoppeld aan font-size.sm × line-height.sm)       |
-| `--dsn-icon-size-md`  | Medium icon size (gekoppeld aan font-size.md × line-height.md)      |
-| `--dsn-icon-size-lg`  | Large icon size (gekoppeld aan font-size.lg × line-height.lg)       |
-| `--dsn-icon-size-xl`  | Extra large icon size (gekoppeld aan font-size.xl × line-height.xl) |
-| `--dsn-icon-size-2xl` | 2XL icon size (gekoppeld aan font-size.2xl × line-height.2xl)       |
-| `--dsn-icon-size-3xl` | 3XL icon size (gekoppeld aan font-size.3xl × line-height.3xl)       |
-| `--dsn-icon-size-4xl` | 4XL icon size (gekoppeld aan font-size.4xl × line-height.4xl)       |
+<!-- tokens: --dsn-icon-size-sm --dsn-icon-size-md --dsn-icon-size-lg --dsn-icon-size-xl --dsn-icon-size-2xl --dsn-icon-size-3xl --dsn-icon-size-4xl -->
 
 ## Accessibility
 

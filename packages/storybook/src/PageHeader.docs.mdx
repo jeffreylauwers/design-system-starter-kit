@@ -1,7 +1,7 @@
 import { Meta, Story, Controls, Markdown } from '@storybook/addon-docs/blocks';
 import * as PageHeaderStories from './PageHeader.stories';
 import docs from './PageHeader.docs.md?raw';
-import { PreviewFrame, CodeTabs } from './components';
+import { PreviewFrame, CodeTabs, DocsMarkdown } from './components';
 
 export const [intro, rest] = docs.split('<!-- VOORBEELD -->');
 
@@ -103,4 +103,4 @@ export const [intro, rest] = docs.split('<!-- VOORBEELD -->');
 
 <Controls of={PageHeaderStories.Default} />
 
-<Markdown>{rest}</Markdown>
+<DocsMarkdown>{rest}</DocsMarkdown>

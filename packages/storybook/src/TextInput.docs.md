@@ -50,42 +50,7 @@ Niet elk invulveld biedt alle varianten. TextArea, EmailInput, PasswordInput, Te
 
 ## Design tokens
 
-| Token                                         | Beschrijving                            |
-| --------------------------------------------- | --------------------------------------- |
-| `--dsn-text-input-background-color`           | Background color                        |
-| `--dsn-text-input-border-color`               | Border color                            |
-| `--dsn-text-input-border-radius`              | Border radius                           |
-| `--dsn-text-input-border-width`               | Border width                            |
-| `--dsn-text-input-color`                      | Text color                              |
-| `--dsn-text-input-font-family`                | Font family                             |
-| `--dsn-text-input-font-size`                  | Font size                               |
-| `--dsn-text-input-font-weight`                | Font weight                             |
-| `--dsn-text-input-line-height`                | Line height                             |
-| `--dsn-text-input-min-block-size`             | Minimum height (WCAG 24px touch target) |
-| `--dsn-text-input-min-inline-size`            | Minimum width (WCAG 24px touch target)  |
-| `--dsn-text-input-padding-block-end`          | Bottom padding                          |
-| `--dsn-text-input-padding-block-start`        | Top padding                             |
-| `--dsn-text-input-padding-inline-end`         | Right padding                           |
-| `--dsn-text-input-padding-inline-start`       | Left padding                            |
-| `--dsn-text-input-disabled-background-color`  | Disabled background color               |
-| `--dsn-text-input-disabled-border-color`      | Disabled border color                   |
-| `--dsn-text-input-disabled-color`             | Disabled text color                     |
-| `--dsn-text-input-focus-background-color`     | Focus background color                  |
-| `--dsn-text-input-focus-border-color`         | Focus border color                      |
-| `--dsn-text-input-focus-color`                | Focus text color                        |
-| `--dsn-text-input-invalid-background-color`   | Invalid background color                |
-| `--dsn-text-input-invalid-border-color`       | Invalid border color                    |
-| `--dsn-text-input-invalid-color`              | Invalid text color                      |
-| `--dsn-text-input-placeholder-color`          | Placeholder text color                  |
-| `--dsn-text-input-read-only-background-color` | Read-only background color              |
-| `--dsn-text-input-read-only-border-color`     | Read-only border color                  |
-| `--dsn-text-input-read-only-color`            | Read-only text color                    |
-| `--dsn-form-control-inline-size-xs`           | Extra small inline-size (10ch)          |
-| `--dsn-form-control-inline-size-sm`           | Small inline-size (14ch)                |
-| `--dsn-form-control-inline-size-md`           | Medium inline-size (20ch)               |
-| `--dsn-form-control-inline-size-lg`           | Large inline-size (32ch)                |
-| `--dsn-form-control-inline-size-xl`           | Extra large inline-size (48ch)          |
-| `--dsn-form-control-inline-size-full`         | Full inline-size (100%)                 |
+<!-- tokens: text-input --dsn-form-control-inline-size-xs --dsn-form-control-inline-size-sm --dsn-form-control-inline-size-md --dsn-form-control-inline-size-lg --dsn-form-control-inline-size-xl --dsn-form-control-inline-size-full -->
 
 ## Accessibility
 

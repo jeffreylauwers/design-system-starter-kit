@@ -71,42 +71,7 @@ Geef je `Card` een `href`, dan wordt de heading een stretched link: de hele card
 
 De tokens van de pre-header verwijzen standaard naar die van de header: pas je de header aan, dan verandert de pre-header mee.
 
-| Token                                                            | Beschrijving                                                      |
-| ---------------------------------------------------------------- | ----------------------------------------------------------------- |
-| `--dsn-card-background-color`                                    | Achtergrondkleur standaard (bg-document)                          |
-| `--dsn-card-background-color-hover`                              | Achtergrondkleur bij hover (bg-elevated)                          |
-| `--dsn-card-border-radius`                                       | Afgeronde hoeken (8px)                                            |
-| `--dsn-card-border-width`                                        | Randbreedte                                                       |
-| `--dsn-card-border-color`                                        | Randkleur (neutral.border-subtle)                                 |
-| `--dsn-card-box-shadow`                                          | Standaard schaduw (none)                                          |
-| `--dsn-card-box-shadow-hover`                                    | Schaduw bij hover (md-elevatie)                                   |
-| `--dsn-card-min-block-size`                                      | Minimale hoogte van de card (auto)                                |
-| `--dsn-card-pre-header-padding-block-start` / `-end`             | Verticale padding van de pre-header (volgt de header)             |
-| `--dsn-card-pre-header-padding-inline-start` / `-end`            | Horizontale padding van de pre-header (volgt de header)           |
-| `--dsn-card-pre-header-row-gap`                                  | Ruimte tussen kinderen van de pre-header (volgt de header)        |
-| `--dsn-card-header-padding-block-start`                          | Bovenkant padding van de header (16px)                            |
-| `--dsn-card-header-padding-block-end`                            | Onderkant padding van de header (12px), ook de ruimte tot de body |
-| `--dsn-card-header-padding-inline-start` / `-end`                | Horizontale padding van de header (16px)                          |
-| `--dsn-card-header-row-gap`                                      | Ruimte tussen kinderen van de header (12px)                       |
-| `--dsn-card-body-padding-block-start`                            | Bovenkant padding van de body (0)                                 |
-| `--dsn-card-body-padding-block-end`                              | Onderkant padding van de body (16px)                              |
-| `--dsn-card-body-padding-inline-start` / `-end`                  | Horizontale padding van de body (16px)                            |
-| `--dsn-card-body-row-gap`                                        | Ruimte tussen kinderen van de body (12px)                         |
-| `--dsn-card-footer-padding-block-start`                          | Bovenkant padding van de footer (0)                               |
-| `--dsn-card-footer-padding-block-end`                            | Onderkant padding van de footer (24px)                            |
-| `--dsn-card-footer-padding-inline-start` / `-end`                | Horizontale padding van de footer (16px)                          |
-| `--dsn-card-footer-column-gap`                                   | Ruimte tussen kinderen van de footer                              |
-| `--dsn-card-image-placeholder-background-color`                  | Achtergrond van de afbeeldingsplaceholder                         |
-| `--dsn-card-image-placeholder-color`                             | Kleur van het icoon in de placeholder                             |
-| `--dsn-card-image-placeholder-icon-size`                         | Grootte van het icoon in de placeholder (40–50px, fluid)          |
-| `--dsn-card-heading-font-family` / `-font-size` / `-font-weight` | Typografie van de card heading                                    |
-| `--dsn-card-heading-line-height` / `-color`                      | Regelafstand en kleur van de card heading                         |
-| `--dsn-card-label-font-family` / `-font-size` / `-font-weight`   | Typografie van het card-label                                     |
-| `--dsn-card-label-line-height` / `-color`                        | Regelafstand en kleur van het card-label                          |
-| `--dsn-card-description-font-size` / `-line-height` / `-color`   | Typografie van de card-description                                |
-| `--dsn-card-meta-font-size` / `-line-height` / `-color`          | Typografie van de card-meta                                       |
-| `--dsn-card-group-gap`                                           | Ruimte tussen cards in een groep (16px)                           |
-| `--dsn-card-group-item-min-width`                                | Minimale breedte per card (17.5rem)                               |
+<!-- tokens: card -->
 
 ## Accessibility
 

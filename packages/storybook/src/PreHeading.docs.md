@@ -64,14 +64,7 @@ Wanneer je de pre-heading en heading altijd samen gebruikt, overweeg dan de [Hea
 
 ## Design tokens
 
-| Token                                | Beschrijving                               |
-| ------------------------------------ | ------------------------------------------ |
-| `--dsn-pre-heading-color`            | Tekstkleur                                 |
-| `--dsn-pre-heading-font-family`      | Lettertypefamilie                          |
-| `--dsn-pre-heading-font-size`        | Lettergrootte (md, gelijk aan body)        |
-| `--dsn-pre-heading-font-weight`      | Font weight (bold)                         |
-| `--dsn-pre-heading-line-height`      | Regelafstand                               |
-| `--dsn-pre-heading-margin-block-end` | Ruimte tussen pre-heading en heading-tekst |
+<!-- tokens: pre-heading -->
 
 ## Accessibility
 

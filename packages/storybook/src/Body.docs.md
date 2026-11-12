@@ -34,11 +34,4 @@ Body heeft geen directe invloed op toegankelijkheid. De tokens die het instelt: 
 
 ## Design tokens
 
-| CSS property       | Token                                | Beschrijving                      |
-| ------------------ | ------------------------------------ | --------------------------------- |
-| `background-color` | `--dsn-color-neutral-bg-document`    | Achtergrondkleur van het document |
-| `color`            | `--dsn-color-neutral-color-document` | Standaard tekstkleur              |
-| `font-family`      | `--dsn-text-font-family-default`     | Standaard lettertype              |
-| `font-size`        | `--dsn-text-font-size-md`            | Standaard lettergrootte           |
-| `line-height`      | `--dsn-text-line-height-md`          | Standaard regelafstand            |
-| `font-weight`      | `--dsn-text-font-weight-default`     | Standaard lettergewicht           |
+<!-- tokens: --dsn-color-neutral-bg-document --dsn-color-neutral-color-document --dsn-text-font-family-default --dsn-text-font-size-md --dsn-text-line-height-md --dsn-text-font-weight-default -->

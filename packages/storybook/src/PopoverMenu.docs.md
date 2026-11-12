@@ -91,18 +91,7 @@ Na een keuze sluit het menu niet vanzelf: roep in de actie-handler `hidePopover(
 
 Alle tokens delegeren naar de Popover, zodat beide panelen gelijk ogen: dezelfde stijl en dezelfde binnenruimte als de body van een Popover.
 
-| Token                                 | Standaardwaarde                     | Beschrijving                      |
-| ------------------------------------- | ----------------------------------- | --------------------------------- |
-| `--dsn-popover-menu-background-color` | `{dsn.popover.background-color}`    | Achtergrondkleur                  |
-| `--dsn-popover-menu-border-width`     | `{dsn.popover.border-width}`        | Randbreedte                       |
-| `--dsn-popover-menu-border-color`     | `{dsn.popover.border-color}`        | Randkleur                         |
-| `--dsn-popover-menu-border-radius`    | `{dsn.popover.border-radius}`       | Hoekafronding                     |
-| `--dsn-popover-menu-box-shadow`       | `{dsn.popover.box-shadow}`          | Schaduw                           |
-| `--dsn-popover-menu-min-width`        | `{dsn.popover.min-width}`           | Minimale breedte                  |
-| `--dsn-popover-menu-max-width`        | `{dsn.popover.max-width}`           | Maximale breedte                  |
-| `--dsn-popover-menu-z-index`          | `{dsn.popover.z-index}`             | Z-index                           |
-| `--dsn-popover-menu-padding-block`    | `{dsn.popover.body.padding-block}`  | Verticale padding rond de lijst   |
-| `--dsn-popover-menu-padding-inline`   | `{dsn.popover.body.padding-inline}` | Horizontale padding rond de lijst |
+<!-- tokens: popover-menu -->
 
 ## Accessibility
 

@@ -1,7 +1,7 @@
 import { Meta, Story, Controls, Markdown } from '@storybook/addon-docs/blocks';
 import * as MenuStories from './Menu.stories';
 import docs from './Menu.docs.md?raw';
-import { PreviewFrame, CodeTabs } from './components';
+import { PreviewFrame, CodeTabs, DocsMarkdown } from './components';
 
 export const [intro, rest] = docs.split('<!-- VOORBEELD -->');
 
@@ -35,4 +35,4 @@ export const [intro, rest] = docs.split('<!-- VOORBEELD -->');
 
 <Controls of={MenuStories.Default} />
 
-<Markdown>{rest}</Markdown>
+<DocsMarkdown>{rest}</DocsMarkdown>

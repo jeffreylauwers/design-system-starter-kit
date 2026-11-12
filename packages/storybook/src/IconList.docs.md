@@ -44,19 +44,7 @@ De IconList component toont een opsomming waarbij het icoon per item visuele con
 
 ## Design tokens
 
-| Token                              | Beschrijving                                        |
-| ---------------------------------- | --------------------------------------------------- |
-| `--dsn-icon-list-color`            | Tekstkleur                                          |
-| `--dsn-icon-list-font-family`      | Lettertypefamilie                                   |
-| `--dsn-icon-list-font-size`        | Font size (md)                                      |
-| `--dsn-icon-list-font-weight`      | Font weight                                         |
-| `--dsn-icon-list-line-height`      | Line height                                         |
-| `--dsn-icon-list-max-inline-size`  | Maximale breedte voor leesbaarheid                  |
-| `--dsn-icon-list-gap`              | Ruimte tussen list items                            |
-| `--dsn-icon-list-margin-block-end` | Ondermarge van de lijst                             |
-| `--dsn-icon-list-icon-color`       | Icoonkleur (accentkleur), overschrijfbaar per lijst |
-| `--dsn-icon-list-icon-size`        | Icoongrootte, gelijk aan één regelhoogte            |
-| `--dsn-icon-list-icon-gap`         | Ruimte tussen icoon en tekst                        |
+<!-- tokens: icon-list -->
 
 De icoonkleur is de enige token die bedoeld is om per lijst te overschrijven. In React gaat dat via de `iconColor` prop, in HTML/CSS via een inline custom property op het lijstelement:
 

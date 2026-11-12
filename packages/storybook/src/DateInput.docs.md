@@ -52,28 +52,6 @@ Een DateInput bestaat uit:
 
 ## Design tokens
 
-| Token                                           | Beschrijving                                                          |
-| ----------------------------------------------- | --------------------------------------------------------------------- |
-| `--dsn-date-input-padding-inline-end-with-icon` | Berekende padding rechts: `icon-size + icon-gap + padding-inline-end` |
+<!-- tokens: date-input -->
 
-DateInput erft verder alle tokens van [TextInput](/docs/components-textinput--docs):
-
-| Token                                        | Beschrijving              |
-| -------------------------------------------- | ------------------------- |
-| `--dsn-text-input-color`                     | Tekstkleur                |
-| `--dsn-text-input-font-family`               | Lettertypefamilie         |
-| `--dsn-text-input-font-size`                 | Font size                 |
-| `--dsn-text-input-font-weight`               | Font weight               |
-| `--dsn-text-input-line-height`               | Line height               |
-| `--dsn-text-input-background-color`          | Achtergrondkleur          |
-| `--dsn-text-input-border-color`              | Borderkleur default state |
-| `--dsn-text-input-border-width`              | Dikte van de border       |
-| `--dsn-text-input-border-radius`             | Border radius             |
-| `--dsn-text-input-padding-block-start`       | Padding boven             |
-| `--dsn-text-input-padding-block-end`         | Padding onder             |
-| `--dsn-text-input-hover-border-color`        | Borderkleur hover state   |
-| `--dsn-text-input-focus-border-color`        | Borderkleur focus state   |
-| `--dsn-text-input-disabled-background-color` | Achtergrondkleur disabled |
-| `--dsn-text-input-disabled-color`            | Tekstkleur disabled       |
-| `--dsn-text-input-invalid-border-color`      | Borderkleur invalid state |
-| `--dsn-text-input-placeholder-color`         | Placeholder tekstkleur    |
+DateInput erft verder alle tokens van [TextInput](/docs/components-textinput--docs).

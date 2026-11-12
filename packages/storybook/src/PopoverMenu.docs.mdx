@@ -1,7 +1,7 @@
 import { Meta, Story, Controls, Markdown } from '@storybook/addon-docs/blocks';
 import * as PopoverMenuStories from './PopoverMenu.stories';
 import docs from './PopoverMenu.docs.md?raw';
-import { PreviewFrame, CodeTabs } from './components';
+import { PreviewFrame, CodeTabs, DocsMarkdown } from './components';
 
 export const [intro, rest] = docs.split('<!-- VOORBEELD -->');
 
@@ -52,4 +52,4 @@ export const [intro, rest] = docs.split('<!-- VOORBEELD -->');
 
 <Controls of={PopoverMenuStories.Default} />
 
-<Markdown>{rest}</Markdown>
+<DocsMarkdown>{rest}</DocsMarkdown>

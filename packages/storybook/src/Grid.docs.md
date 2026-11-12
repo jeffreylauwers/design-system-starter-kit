@@ -122,13 +122,4 @@ Gebruik de CSS property `order` niet (of met uiterste terughoudendheid) om de vi
 
 ## Design tokens
 
-| Token                       | Standaard waarde                    | Omschrijving                                                                                                                                                                             |
-| --------------------------- | ----------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `--dsn-grid-gutter`         | `var(--dsn-space-column-xl)` (16px) | Horizontale ruimte tussen kolommen; 8px in information-dense                                                                                                                             |
-| `--dsn-grid-row-gap`        | `var(--dsn-space-column-xl)` (16px) | Verticale ruimte tussen rijen; 8px in information-dense                                                                                                                                  |
-| `--dsn-grid-padding-inline` | `0px`                               | Outer padding-inline van de grid container. Standaard 0: grids staan doorgaans binnen `dsn-page-body__inner` die al voor horizontale padding zorgt. Zet expliciet voor standalone grids. |
-| `--dsn-grid-max-width`      | `74rem` (~1184px)                   | Maximale breedte bij `contained` variant                                                                                                                                                 |
-| `--dsn-breakpoint-sm`       | `36em`                              | Referentiewaarde small breakpoint (niet te gebruiken in CSS @media)                                                                                                                      |
-| `--dsn-breakpoint-md`       | `44em`                              | Referentiewaarde medium breakpoint                                                                                                                                                       |
-| `--dsn-breakpoint-lg`       | `64em`                              | Referentiewaarde large breakpoint                                                                                                                                                        |
-| `--dsn-breakpoint-xl`       | `74em`                              | Referentiewaarde extra large breakpoint                                                                                                                                                  |
+<!-- tokens: grid --dsn-breakpoint-sm --dsn-breakpoint-md --dsn-breakpoint-lg --dsn-breakpoint-xl -->

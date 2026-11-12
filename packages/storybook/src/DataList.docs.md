@@ -44,17 +44,7 @@ De DataList component presenteert gestructureerde gegevens als een beschrijvings
 
 ## Design tokens
 
-| Token                                        | Beschrijving                                         |
-| -------------------------------------------- | ---------------------------------------------------- |
-| `--dsn-data-list-row-border-block-end-color` | Kleur van de rij-scheidingslijn                      |
-| `--dsn-data-list-row-border-block-end-width` | Breedte van de rij-scheidingslijn                    |
-| `--dsn-data-list-row-gap`                    | Horizontale ruimte tussen kolommen in de grid-layout |
-| `--dsn-data-list-row-padding-block`          | Verticale ruimte rondom elke rij                     |
-| `--dsn-data-list-key-color`                  | Tekstkleur van de key cell                           |
-| `--dsn-data-list-key-font-weight`            | Vetdikte van de key cell                             |
-| `--dsn-data-list-key-basis`                  | Breedte van de key-kolom in de grid-layout           |
-| `--dsn-data-list-value-color`                | Tekstkleur van de value cell                         |
-| `--dsn-data-list-actions-gap`                | Ruimte tussen meerdere actielinks naast elkaar       |
+<!-- tokens: data-list -->
 
 ## Accessibility
 

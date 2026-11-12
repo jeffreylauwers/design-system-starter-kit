@@ -1,7 +1,7 @@
 import { Meta, Story, Markdown } from '@storybook/addon-docs/blocks';
 import * as CheckboxGroupStories from './CheckboxGroup.stories';
 import docs from './CheckboxGroup.docs.md?raw';
-import { PreviewFrame, CodeTabs } from './components';
+import { PreviewFrame, CodeTabs, DocsMarkdown } from './components';
 
 export const [intro, rest] = docs.split('<!-- VOORBEELD -->');
 
@@ -42,4 +42,4 @@ export const [intro, rest] = docs.split('<!-- VOORBEELD -->');
 </div>`}
 />
 
-<Markdown>{rest}</Markdown>
+<DocsMarkdown>{rest}</DocsMarkdown>

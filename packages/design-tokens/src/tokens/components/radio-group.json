@@ -7,7 +7,7 @@
         "$description": "Lijndikte van de rand."
       },
       "gap": {
-        "$value": "{dsn.space.block.sm}",
+        "$value": "{dsn.space.row.sm}",
         "$type": "dimension",
         "$description": "Ruimte tussen de onderdelen."
       },

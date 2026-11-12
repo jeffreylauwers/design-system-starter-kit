@@ -236,30 +236,7 @@ const [isOpen, setIsOpen] = useState(false);
 
 ## Design tokens
 
-| Token                                         | Beschrijving                                   |
-| --------------------------------------------- | ---------------------------------------------- |
-| `--dsn-table-caption-color`                   | Tekstkleur van het bijschrift                  |
-| `--dsn-table-caption-font-family`             | Lettertype van het bijschrift (heading font)   |
-| `--dsn-table-caption-font-size`               | Lettergrootte van het bijschrift               |
-| `--dsn-table-caption-font-weight`             | Gewicht van het bijschrift                     |
-| `--dsn-table-caption-line-height`             | Regelafstand van het bijschrift                |
-| `--dsn-table-cell-padding-block-start`        | Verticale padding bovenkant van cellen         |
-| `--dsn-table-cell-padding-block-end`          | Verticale padding onderkant van cellen         |
-| `--dsn-table-cell-padding-inline-start`       | Horizontale padding begin van cellen           |
-| `--dsn-table-cell-padding-inline-end`         | Horizontale padding einde van cellen           |
-| `--dsn-table-header-background-color`         | Achtergrondkleur van de header (`transparent`) |
-| `--dsn-table-header-border-block-end-color`   | Kleur van de scheiding onder de header         |
-| `--dsn-table-header-border-block-end-width`   | Breedte van de scheiding onder de header (2px) |
-| `--dsn-table-header-color`                    | Tekstkleur van de header                       |
-| `--dsn-table-header-cell-font-weight`         | Gewicht van kolomkoppen en rijkoppen           |
-| `--dsn-table-row-border-block-end-color`      | Kleur van de rij-scheiding in de body          |
-| `--dsn-table-row-border-block-end-width`      | Breedte van de rij-scheiding in de body (1px)  |
-| `--dsn-table-footer-background-color`         | Achtergrondkleur van de footer (`transparent`) |
-| `--dsn-table-footer-border-block-start-color` | Kleur van de scheiding boven de footer         |
-| `--dsn-table-footer-border-block-start-width` | Breedte van de scheiding boven de footer (2px) |
-| `--dsn-table-footer-color`                    | Tekstkleur van de footer                       |
-| `--dsn-table-footer-font-weight`              | Gewicht van footercellen (vet)                 |
-| `--dsn-table-wrapper-scroll-shadow-color`     | Kleur van de scroll-affordance schaduw         |
+<!-- tokens: table -->
 
 ## Accessibility
 

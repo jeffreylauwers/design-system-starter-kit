@@ -78,27 +78,7 @@ NumberBadge heeft altijd `aria-hidden="true"`: screenreaders negeren de badge vo
 
 ## Design tokens
 
-| Token                                          | Beschrijving                                                       |
-| ---------------------------------------------- | ------------------------------------------------------------------ |
-| `--dsn-number-badge-font-size`                 | Lettergrootte (xs)                                                 |
-| `--dsn-number-badge-line-height`               | Regelhoogte (xs)                                                   |
-| `--dsn-number-badge-font-weight`               | Letterdikte (bold)                                                 |
-| `--dsn-number-badge-min-inline-size`           | Minimumbreedte voor cirkelronde ééncijferige badges (1.25rem/20px) |
-| `--dsn-number-badge-padding-block`             | Verticale padding (xs)                                             |
-| `--dsn-number-badge-padding-inline`            | Horizontale padding (xs)                                           |
-| `--dsn-number-badge-border-radius`             | Pill-vorm via round border-radius                                  |
-| `--dsn-number-badge-border-width`              | Randbreedte (thin: zichtbaar in High Contrast mode)                |
-| `--dsn-number-badge-border-color`              | Randkleur (transparant: zichtbaar in High Contrast mode)           |
-| `--dsn-number-badge-negative-color`            | Tekstkleur negative variant                                        |
-| `--dsn-number-badge-negative-background-color` | Achtergrondkleur negative variant                                  |
-| `--dsn-number-badge-positive-color`            | Tekstkleur positive variant                                        |
-| `--dsn-number-badge-positive-background-color` | Achtergrondkleur positive variant                                  |
-| `--dsn-number-badge-warning-color`             | Tekstkleur warning variant                                         |
-| `--dsn-number-badge-warning-background-color`  | Achtergrondkleur warning variant                                   |
-| `--dsn-number-badge-info-color`                | Tekstkleur info variant                                            |
-| `--dsn-number-badge-info-background-color`     | Achtergrondkleur info variant                                      |
-| `--dsn-number-badge-neutral-color`             | Tekstkleur neutral variant                                         |
-| `--dsn-number-badge-neutral-background-color`  | Achtergrondkleur neutral variant                                   |
+<!-- tokens: number-badge -->
 
 ## Accessibility
 

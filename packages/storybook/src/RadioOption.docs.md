@@ -34,10 +34,7 @@ De RadioOption component combineert een Radio en OptionLabel in een klikbaar lab
 
 ## Design tokens
 
-| Token                              | Beschrijving                                                   |
-| ---------------------------------- | -------------------------------------------------------------- |
-| `--dsn-radio-option-gap`           | Ruimte tussen radio button en label (medium text spacing)      |
-| `--dsn-radio-option-padding-block` | Verticale padding voor touch target accessibility (WCAG 2.5.5) |
+<!-- tokens: radio-option -->
 
 Plus alle tokens van [Radio](/docs/components-radio--docs) en [OptionLabel](/docs/components-optionlabel--docs).
 

@@ -2,7 +2,7 @@
   "dsn": {
     "date-input-group": {
       "gap": {
-        "$value": "{dsn.space.inline.md}",
+        "$value": "{dsn.space.column.md}",
         "$type": "dimension",
         "$description": "Ruimte tussen de onderdelen."
       },

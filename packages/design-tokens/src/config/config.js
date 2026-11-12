@@ -238,6 +238,39 @@ StyleDictionary.registerFormat({
   },
 });
 
+// Documentatie-output: per token de echte CSS-naam, de description en het
+// component waar het bij hoort. Storybook bouwt hier de token-tabellen van de
+// componentpagina's uit, zodat namen en descriptions alleen in de JSON staan.
+//
+// Het component volgt uit het bronbestand (src/tokens/components/{naam}.json).
+// Een token dat een project type overschrijft (zoals de grid-gutter) komt uit
+// een ander bestand; dan geeft het tweede padsegment de doorslag.
+const componentNames = new Set(
+  fs
+    .readdirSync(path.join(packageRoot, 'src/tokens/components'))
+    .filter((file) => file.endsWith('.json'))
+    .map((file) => path.basename(file, '.json'))
+);
+
+function componentOf(token) {
+  const file = token.filePath?.replace(/\\/g, '/') ?? '';
+  const match = file.match(/(?:^|\/)tokens\/components\/([^/]+)\.json$/);
+  if (match) return match[1];
+  return componentNames.has(token.path[1]) ? token.path[1] : null;
+}
+
+StyleDictionary.registerFormat({
+  name: 'json/token-docs',
+  format: function ({ dictionary }) {
+    const tokens = dictionary.allTokens.map((token) => ({
+      name: `--${token.name}`,
+      description: token.$description ?? token.description ?? '',
+      component: componentOf(token),
+    }));
+    return `${JSON.stringify({ tokens }, null, 2)}\n`;
+  },
+});
+
 // =============================================================================
 // CONFIGURATION AXES
 // =============================================================================
@@ -343,6 +376,18 @@ function createFullConfig(theme, mode, projectType) {
           },
         ],
       },
+      // Namen en descriptions verschillen niet per configuratie: één
+      // documentatiebestand, uit de standaardconfiguratie, is genoeg.
+      ...(configName === 'start-light-default' && {
+        docs: {
+          transformGroup: 'dsn/css',
+          fluidViewport,
+          buildPath: 'dist/json/',
+          files: [
+            { destination: 'token-docs.json', format: 'json/token-docs' },
+          ],
+        },
+      }),
     },
   };
 }

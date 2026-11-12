@@ -61,10 +61,6 @@ De `<main>` met `id="main-content"` is een verantwoordelijkheid van de **templat
 
 `PageBody` heeft geen component-specifieke tokens. `flex: 1` is een layout-constante.
 
-| Keuze     | Reden                                                                                                                           |
-| --------- | ------------------------------------------------------------------------------------------------------------------------------- |
-| `flex: 1` | Shorthand voor `flex-grow: 1; flex-shrink: 1; flex-basis: 0%`. Vult alle beschikbare ruimte op zonder vaste hoogte op te geven. |
-
 ## Accessibility
 
 ### Transparante structuurlaag

@@ -42,17 +42,7 @@ Container kan andere layout-componenten bevatten (Stack, Grid). Container regelt
 
 ## Design tokens
 
-| Token                                 | Beschrijving                              |
-| ------------------------------------- | ----------------------------------------- |
-| `--dsn-container-background-color`    | Achtergrond: `neutral.bg-elevated`        |
-| `--dsn-container-border-color`        | Borderkleur: `neutral.border-subtle`      |
-| `--dsn-container-border-radius`       | Afronding: `border.radius.md` (8px)       |
-| `--dsn-container-border-width`        | Breedte: `border.width.thin` (1px)        |
-| `--dsn-container-box-shadow`          | Standaard geen schaduw (`none`)           |
-| `--dsn-container-color`               | Tekstkleur: `neutral.color-document`      |
-| `--dsn-container-padding-block`       | Verticale padding: `space.block.3xl`      |
-| `--dsn-container-padding-inline`      | Horizontale padding: `space.inline.3xl`   |
-| `--dsn-container-elevated-box-shadow` | Schaduw elevated variant: `box-shadow.sm` |
+<!-- tokens: container -->
 
 ## Accessibility
 

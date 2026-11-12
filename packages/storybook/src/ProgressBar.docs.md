@@ -74,14 +74,7 @@ Toon een beschrijving wanneer de balk 100% bereikt:
 
 ## Design tokens
 
-| Token                              | Beschrijving                                                    |
-| ---------------------------------- | --------------------------------------------------------------- |
-| `--dsn-progress-bar-color-track`   | Achtergrondkleur van de track (neutraal grijs)                  |
-| `--dsn-progress-bar-color-fill`    | Kleur van de vulbalk (primaire accentkleur, zelfde als Spinner) |
-| `--dsn-progress-bar-block-size`    | Hoogte van de balk (8px)                                        |
-| `--dsn-progress-bar-border-radius` | Afronding van track en fill (pill-vorm)                         |
-| `--dsn-progress-bar-gap-header`    | Ruimte tussen percentage-tekst en balk                          |
-| `--dsn-progress-bar-gap-footer`    | Ruimte tussen balk en beschrijving                              |
+<!-- tokens: progress-bar -->
 
 ## Accessibility
 

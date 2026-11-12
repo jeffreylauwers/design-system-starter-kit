@@ -68,18 +68,7 @@ De FormFieldStatus component toont status informatie onder een form control. Het
 
 ## Design tokens
 
-| Token                                        | Beschrijving                         |
-| -------------------------------------------- | ------------------------------------ |
-| `--dsn-form-field-status-color`              | Tekstkleur default variant (subtiel) |
-| `--dsn-form-field-status-font-family`        | Lettertypefamilie                    |
-| `--dsn-form-field-status-font-size`          | Font size (medium)                   |
-| `--dsn-form-field-status-font-weight`        | Font weight (normal)                 |
-| `--dsn-form-field-status-gap`                | Ruimte tussen icoon en tekst         |
-| `--dsn-form-field-status-icon-size`          | Icoongrootte (positive/warning)      |
-| `--dsn-form-field-status-line-height`        | Regelhoogte (medium)                 |
-| `--dsn-form-field-status-margin-block-start` | Ruimte boven status na form control  |
-| `--dsn-form-field-status-positive-color`     | Tekstkleur positive variant (groen)  |
-| `--dsn-form-field-status-warning-color`      | Tekstkleur warning variant (oranje)  |
+<!-- tokens: form-field-status -->
 
 ## Accessibility
 

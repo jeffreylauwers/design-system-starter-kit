@@ -47,7 +47,4 @@ Gebruik `FormFieldset` als wrapper voor een volledig formulierveld met legend, b
 
 ## Design tokens
 
-| Token                              | Beschrijving                          |
-| ---------------------------------- | ------------------------------------- |
-| `--dsn-date-input-group-gap`       | Ruimte tussen de drie velden          |
-| `--dsn-date-input-group-label-gap` | Ruimte tussen label en input per veld |
+<!-- tokens: date-input-group -->

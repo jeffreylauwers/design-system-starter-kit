@@ -64,11 +64,7 @@ Wanneer er een `error` prop aanwezig is, krijgt het hele FormField een dikke rod
 
 ## Design tokens
 
-| Token                                                | Beschrijving                                              |
-| ---------------------------------------------------- | --------------------------------------------------------- |
-| `--dsn-form-field-invalid-border-inline-start-color` | Linker border kleur bij invalid state (rode error border) |
-| `--dsn-form-field-invalid-border-inline-start-width` | Linker border breedte bij invalid state (medium)          |
-| `--dsn-form-field-invalid-padding-inline-start`      | Linker padding bij invalid state (voor border ruimte)     |
+<!-- tokens: form-field -->
 
 Plus de tokens van de sub-componenten:
 

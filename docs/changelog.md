@@ -10,6 +10,19 @@ All notable changes to this project are documented in this file.
 
 Nog niet gepubliceerde wijzigingen. Schrijf nieuwe changelog-entries hieronder; bij de volgende release wordt deze kop gepromoveerd naar het definitieve versienummer.
 
+### Storybook: token-tabellen uit de design tokens
+
+De token-tabellen op de componentpagina's waren met de hand geschreven en liepen uit de pas met de JSON: geen enkele van de 968 beschrijvingen was gelijk aan de `$description`, ongeveer 100 gebruikte tokens ontbraken (zoals alle `checked-*`- en `indeterminate-*`-staten van Checkbox) en een paar rijen wezen naar tokens die niet bestaan, zoals `--dsn-text-input-hover-border-color`.
+
+- **Nieuw build-bestand:** de token-build schrijft `dist/json/token-docs.json`, met per token de CSS-naam, de description en het component. Export: `@dsn-starter-kit/design-tokens/token-docs.json`.
+- **Markers in plaats van tabellen:** een `.docs.md` bevat onder `## Design tokens` een marker als `<!-- tokens: checkbox-group -->`. `DocsMarkdown` maakt daar een tabel van, dus namen en descriptions staan alleen nog in de JSON.
+- **Afgeleide componenten:** EmailInput, NumberInput, PasswordInput, TelephoneInput, DateInput, TimeInput, SearchInput, ButtonLink en LinkButton tonen geen kopie van de TextInput-, Button- of Link-tabel meer, maar verwijzen ernaar.
+- **Bewaking:** `tests/token-docs.test.ts` faalt bij een marker naar een onbekend component of token, bij een component-tokenbestand zonder marker, bij een handgeschreven token-tabel en bij een onbekende token-naam in de tekst.
+
+### CheckboxGroup, RadioGroup en DateInputGroup: gap via row en column
+
+De `gap` tussen de opties van CheckboxGroup en RadioGroup verwees naar `space.block.sm`, ruimte _binnen_ een component. Het gaat om ruimte tussen onderdelen onder elkaar, dus nu `space.row.sm`, zoals bij IconList, OrderedList en UnorderedList. DateInputGroup gaat om dezelfde reden van `space.inline.md` naar `space.column.md`. De waarden zijn gelijk in elk thema en elke density: visueel verandert er niets.
+
 ### Component-tokens: descriptions volgens de schrijfregels
 
 De `$description` van alle 942 tokens in `components/*.json` is herschreven, en de 135 tokens zonder description hebben er nu een. Dezelfde regels als bij de thema- en basistokens: rol in plaats van waarde, Nederlands, geen em dashes.

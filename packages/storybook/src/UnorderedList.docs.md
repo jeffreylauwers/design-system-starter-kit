@@ -32,17 +32,7 @@ De UnorderedList component biedt een consistente, toegankelijke manier om lijste
 
 ## Design tokens
 
-| Token                                       | Beschrijving                                                       |
-| ------------------------------------------- | ------------------------------------------------------------------ |
-| `--dsn-unordered-list-color`                | Tekstkleur                                                         |
-| `--dsn-unordered-list-font-family`          | Lettertypefamilie                                                  |
-| `--dsn-unordered-list-font-size`            | Font size (md)                                                     |
-| `--dsn-unordered-list-font-weight`          | Font weight                                                        |
-| `--dsn-unordered-list-gap`                  | Ruimte tussen list items                                           |
-| `--dsn-unordered-list-line-height`          | Line height                                                        |
-| `--dsn-unordered-list-margin-block-end`     | Bottom margin van een losse lijst; een geneste lijst heeft er geen |
-| `--dsn-unordered-list-marker-color`         | Kleur van de bullet markers (accent kleur)                         |
-| `--dsn-unordered-list-padding-inline-start` | Linker inspringing voor de lijst                                   |
+<!-- tokens: unordered-list -->
 
 ## Accessibility
 

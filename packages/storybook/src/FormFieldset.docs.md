@@ -66,11 +66,7 @@ Wanneer er een `error` prop aanwezig is, krijgt het hele FormFieldset een dikke 
 
 FormFieldset hergebruikt FormField design tokens:
 
-| Token                                                | Beschrijving                                              |
-| ---------------------------------------------------- | --------------------------------------------------------- |
-| `--dsn-form-field-invalid-border-inline-start-color` | Linker border kleur bij invalid state (rode error border) |
-| `--dsn-form-field-invalid-border-inline-start-width` | Linker border breedte bij invalid state (medium)          |
-| `--dsn-form-field-invalid-padding-inline-start`      | Linker padding bij invalid state (voor border ruimte)     |
+<!-- tokens: form-field -->
 
 Plus fieldset reset styling (geen default border/padding/margin).
 

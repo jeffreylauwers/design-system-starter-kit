@@ -56,15 +56,7 @@ De `inverse` kleurvariant schakelt naar de `accent-1-inverse` kleurenschaal voor
 
 ## Design tokens
 
-| Token                                        | Waarde                                | Beschrijving                             |
-| -------------------------------------------- | ------------------------------------- | ---------------------------------------- |
-| `--dsn-page-footer-background-color`         | `{dsn.color.accent-1.bg-default}`     | Achtergrondkleur (default)               |
-| `--dsn-page-footer-border-block-start-width` | `{dsn.border.width.thick}`            | Breedte topborder (4px)                  |
-| `--dsn-page-footer-border-block-start-color` | `{dsn.color.accent-1.border-default}` | Kleur topborder (default)                |
-| `--dsn-page-footer-padding-block`            | `{dsn.space.block.6xl}`               | Verticale padding boven en onder (64px)  |
-| `--dsn-page-footer-padding-inline`           | `{dsn.space.inline.xl}`               | Horizontale padding                      |
-| `--dsn-page-footer-slot-gap`                 | `{dsn.space.block.xl}`                | Verticale ruimte tussen gestapelde slots |
-| `--dsn-page-footer-logo-max-block-size`      | `2rem`                                | Maximale logohoogte (32px)               |
+<!-- tokens: page-footer -->
 
 ## Accessibility
 

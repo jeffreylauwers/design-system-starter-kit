@@ -83,6 +83,7 @@
       "types": "./css.d.ts",
       "default": "./dist/css/scoped/density-information-dense.css"
     },
+    "./token-docs.json": "./dist/json/token-docs.json",
     "./package.json": "./package.json"
   },
   "sideEffects": [

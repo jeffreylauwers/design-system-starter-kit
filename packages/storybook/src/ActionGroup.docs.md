@@ -54,10 +54,7 @@ ActionGroup is een lay-outprimitief voor het groeperen van één of meer gerelat
 
 ## Design tokens
 
-| Token                           | Beschrijving                                                   |
-| ------------------------------- | -------------------------------------------------------------- |
-| `--dsn-action-group-column-gap` | Horizontale ruimte tussen acties in horizontale richting       |
-| `--dsn-action-group-row-gap`    | Verticale ruimte tussen gewrapte rijen in horizontale richting |
+<!-- tokens: action-group -->
 
 ## Accessibility
 

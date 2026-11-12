@@ -284,27 +284,7 @@ Het paneel klapt open en dicht met een CSS-transitie: `grid-template-rows` gaat 
 
 ## Design tokens
 
-| Token                                             | Standaard                            | Omschrijving                              |
-| ------------------------------------------------- | ------------------------------------ | ----------------------------------------- |
-| `--dsn-page-header-background-color`              | `{dsn.color.neutral.bg-document}`    | Achtergrondkleur                          |
-| `--dsn-page-header-border-block-end-width`        | `{dsn.border.width.thick}`           | Breedte onderkantrand (4px)               |
-| `--dsn-page-header-border-block-end-color`        | `{dsn.color.accent-1.color-default}` | Kleur onderkantrand (merkkleur)           |
-| `--dsn-page-header-padding-block`                 | `{dsn.space.block.md}`               | Verticale padding binnenbalk              |
-| `--dsn-page-header-padding-inline`                | `{dsn.space.inline.xl}`              | Horizontale padding binnenbalk            |
-| `--dsn-page-header-z-index`                       | `300`                                | Z-index voor sticky: onder backdrop (400) |
-| `--dsn-page-header-logo-max-block-size`           | `2rem`                               | Maximale hoogte logo (32px)               |
-| `--dsn-page-header-search-panel-background-color` | `{dsn.color.accent-1.bg-default}`    | Achtergrond zoekpaneel (small)            |
-| `--dsn-page-header-search-panel-padding-block`    | `{dsn.space.block.md}`               | Verticale padding zoekpaneel (small)      |
-| `--dsn-page-header-search-panel-padding-inline`   | `{dsn.space.inline.xl}`              | Horizontale padding zoekpaneel (small)    |
-| `--dsn-page-header-masthead-background-color`     | `{dsn.color.neutral.bg-document}`    | Masthead achtergrond (large)              |
-| `--dsn-page-header-masthead-padding-block`        | `{dsn.space.block.xl}`               | Verticale padding masthead (large)        |
-| `--dsn-page-header-masthead-padding-inline`       | `{dsn.space.inline.xl}`              | Horizontale padding masthead (large)      |
-| `--dsn-page-header-navbar-background-color`       | `{dsn.color.accent-1.bg-default}`    | Navigatiebalk achtergrond (large)         |
-| `--dsn-page-header-navbar-padding-inline`         | `{dsn.space.inline.xl}`              | Horizontale padding navigatiebalk (large) |
-| `--dsn-page-header-secondary-nav-gap`             | `{dsn.space.column.3xl}`             | Gap servicemenu ↔ zoekveld (large)        |
-| `--dsn-page-header-compact-background-color`      | `{dsn.color.neutral.bg-document}`    | Compact balk achtergrond                  |
-| `--dsn-page-header-compact-padding-block`         | `{dsn.space.block.xl}`               | Verticale padding compact balk            |
-| `--dsn-page-header-compact-padding-inline`        | `{dsn.space.inline.xl}`              | Horizontale padding compact balk          |
+<!-- tokens: page-header -->
 
 ## Accessibility
 

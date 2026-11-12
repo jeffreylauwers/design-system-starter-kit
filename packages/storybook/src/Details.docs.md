@@ -39,24 +39,7 @@ De Details component biedt een semantisch correcte uitvouwbare sectie op basis v
 
 ## Design tokens
 
-| Token                                              | Beschrijving                               |
-| -------------------------------------------------- | ------------------------------------------ |
-| `--dsn-details-row-gap`                            | Verticale ruimte tussen summary en content |
-| `--dsn-details-summary-color`                      | Kleur van het summarylabel (default)       |
-| `--dsn-details-summary-gap`                        | Ruimte tussen chevron-icoon en label       |
-| `--dsn-details-summary-text-decoration-line`       | Onderstreepstijl (standaard: none)         |
-| `--dsn-details-summary-text-underline-offset`      | Offset van de onderstreping                |
-| `--dsn-details-summary-text-decoration-thickness`  | Dikte van de onderstreping                 |
-| `--dsn-details-summary-hover-color`                | Kleur van het label bij hover              |
-| `--dsn-details-summary-hover-text-decoration-line` | Onderstreepstijl bij hover (underline)     |
-| `--dsn-details-summary-active-color`               | Kleur van het label bij active             |
-| `--dsn-details-icon-size`                          | Grootte van het chevron-icoon              |
-| `--dsn-details-content-background-color`           | Achtergrond van de content-area            |
-| `--dsn-details-content-border-color`               | Kleur van de linkerborder                  |
-| `--dsn-details-content-border-inline-start-width`  | Breedte van de linkerborder                |
-| `--dsn-details-content-padding-inline-start`       | Linkerpadding van de content-area          |
-| `--dsn-details-content-padding-inline-end`         | Rechterpadding van de content-area         |
-| `--dsn-details-content-padding-block`              | Verticale padding van de content-area      |
+<!-- tokens: details -->
 
 ## Accessibility
 

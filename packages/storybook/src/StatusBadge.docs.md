@@ -47,28 +47,7 @@ De StatusBadge component toont een statusaanduiding naast tabelrijen, koppen of 
 
 ## Design tokens
 
-| Token                                          | Beschrijving                                                |
-| ---------------------------------------------- | ----------------------------------------------------------- |
-| `--dsn-status-badge-border-color`              | Border color (transparent: zichtbaar in High Contrast mode) |
-| `--dsn-status-badge-border-radius`             | Border radius (sm: 4px)                                     |
-| `--dsn-status-badge-border-width`              | Border width (thin: 1px)                                    |
-| `--dsn-status-badge-font-size`                 | Font size (sm)                                              |
-| `--dsn-status-badge-gap`                       | Ruimte tussen icoon en tekst                                |
-| `--dsn-status-badge-icon-size`                 | Icoongrootte (sm)                                           |
-| `--dsn-status-badge-line-height`               | Line height (sm)                                            |
-| `--dsn-status-badge-padding-block`             | Verticale padding                                           |
-| `--dsn-status-badge-padding-inline`            | Horizontale padding                                         |
-| `--dsn-status-badge-text-transform`            | Text transform (none: thema-overschrijfbaar)                |
-| `--dsn-status-badge-info-background-color`     | Achtergrond info variant                                    |
-| `--dsn-status-badge-info-color`                | Tekstkleur info variant                                     |
-| `--dsn-status-badge-negative-background-color` | Achtergrond negative variant                                |
-| `--dsn-status-badge-negative-color`            | Tekstkleur negative variant                                 |
-| `--dsn-status-badge-neutral-background-color`  | Achtergrond neutral variant                                 |
-| `--dsn-status-badge-neutral-color`             | Tekstkleur neutral variant                                  |
-| `--dsn-status-badge-positive-background-color` | Achtergrond positive variant                                |
-| `--dsn-status-badge-positive-color`            | Tekstkleur positive variant                                 |
-| `--dsn-status-badge-warning-background-color`  | Achtergrond warning variant                                 |
-| `--dsn-status-badge-warning-color`             | Tekstkleur warning variant                                  |
+<!-- tokens: status-badge -->
 
 ## Accessibility
 
