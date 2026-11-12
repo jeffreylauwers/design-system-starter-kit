@@ -10,6 +10,15 @@ All notable changes to this project are documented in this file.
 
 Nog niet gepubliceerde wijzigingen. Schrijf nieuwe changelog-entries hieronder; bij de volgende release wordt deze kop gepromoveerd naar het definitieve versienummer.
 
+### Storybook: Design Tokens-pagina uit de design tokens
+
+De pagina Foundations/Design Tokens was met de hand gevuld: 2261 regels met tokennamen en waarden. Er stonden geen beschrijvingen op, en 222 van de 596 semantische tokens ontbraken, zoals de volledige inverse-schalen van Accent 2 en 3 en Action 1 en 2, de meeste `form-control`-tokens en de `min`/`max`-bouwstenen van de fluid schaal. De handgeschreven waarden en namen werden bovendien nergens getoond, omdat de tabel de live waarde laat zien.
+
+- **`TokenTable` kiest zelf:** een tabel krijgt een `prefix`, `exclude` of losse `tokens` en haalt namen en beschrijvingen uit `token-docs.json`. Preview en live waarde blijven zoals ze waren. Nieuwe kolom: Beschrijving.
+- **Compleet:** alle semantische tokens staan op de pagina. De `min`/`max`-bouwstenen staan per schaal in een uitklapblok, Form Controls is een eigen sectie met alle 47 tokens, en `--dsn-color-transparent`, `--dsn-color-shadow-scroll`, `--dsn-focus-inverse-outline-color`, `--dsn-space-base` en de `--dsn-viewport-*`-tokens hebben een plek gekregen.
+- **Nederlands:** de lopende tekst op de pagina is Nederlands; de kopjes blijven Engels.
+- **Bewaking:** `tests/design-tokens-page.test.ts` faalt als een semantisch token in geen of in meer dan één tabel staat, of als een tabel naar een token wijst dat niet bestaat.
+
 ### Component-tokens: 57 ongebruikte tokens verwijderd
 
 Deze tokens las geen enkel component: wie ze aanpaste, zag geen verschil. Ze stonden wel in de npm-dist, in Figma en in de token-tabellen in Storybook. Wie een van deze custom properties zelf overschreef, kan die regel weghalen; er verandert niets aan de weergave.

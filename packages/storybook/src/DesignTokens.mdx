@@ -1,7 +1,7 @@
 import { Meta } from '@storybook/addon-docs/blocks';
 import { TokenTable } from './components/TokenTable';
 import { TokenControls } from './components/TokenControls';
-import { OrderedList } from '@dsn-starter-kit/components-react';
+import { Details, OrderedList } from '@dsn-starter-kit/components-react';
 import { TocLink } from './components/TocLink';
 import { FluidScaleDemo } from './components/FluidScaleDemo';
 
@@ -9,7 +9,9 @@ import { FluidScaleDemo } from './components/FluidScaleDemo';
 
 # Design Tokens
 
-Design tokens are the single source of truth for colors, typography, spacing, borders, and other visual properties. All tokens are available as CSS custom properties and respond to theme switching.
+Design tokens zijn de enige bron voor kleuren, typografie, ruimte, randen en andere visuele eigenschappen. Elk token is beschikbaar als CSS custom property en volgt het thema, de mode en de density die je kiest.
+
+De tabellen op deze pagina komen rechtstreeks uit de design tokens: naam en beschrijving staan in de token-JSON, de live waarde leest de pagina zelf uit. Wissel hieronder of in de toolbar van thema, mode of density en de waarden en previews veranderen mee.
 
 <TokenControls />
 
@@ -47,7 +49,7 @@ Design tokens are the single source of truth for colors, typography, spacing, bo
     <TocLink targetId="content-sizing">Content Sizing</TocLink>
   </li>
   <li>
-    <TocLink targetId="form-control-sizing">Form Control Sizing</TocLink>
+    <TocLink targetId="form-controls">Form Controls</TocLink>
   </li>
   <li>
     <TocLink targetId="box-shadows">Box Shadows</TocLink>
@@ -67,1388 +69,165 @@ Design tokens are the single source of truth for colors, typography, spacing, bo
 
 ## Colors
 
-Each color scale provides a full set of tokens for backgrounds, borders, and text: including document, elevated, subtle, default, hover, and active states. The **elevated** token is intended for floating UI layers (modals, popovers, dropdowns) that appear above the document surface.
+Elke kleurschaal heeft een volledige set tokens voor achtergronden, randen en tekst, met de varianten document, elevated, subtle, default, hover en active. **Elevated** is bedoeld voor zwevende lagen (modals, popovers, dropdowns) die boven het documentvlak liggen.
 
 ### Neutral
 
 <TokenTable
+  prefix="--dsn-color-neutral-"
+  exclude="--dsn-color-neutral-inverse-"
   previewType="color"
-  tokens={[
-    {
-      name: 'Document BG',
-      cssVar: '--dsn-color-neutral-bg-document',
-      value: '#FCFCFC',
-    },
-    {
-      name: 'Elevated BG',
-      cssVar: '--dsn-color-neutral-bg-elevated',
-      value: '#FCFCFC',
-    },
-    {
-      name: 'Subtle BG',
-      cssVar: '--dsn-color-neutral-bg-subtle',
-      value: '#F6F6F6',
-    },
-    {
-      name: 'Default BG',
-      cssVar: '--dsn-color-neutral-bg-default',
-      value: '#F1F1F1',
-    },
-    {
-      name: 'Hover BG',
-      cssVar: '--dsn-color-neutral-bg-hover',
-      value: '#EBEBEB',
-    },
-    {
-      name: 'Active BG',
-      cssVar: '--dsn-color-neutral-bg-active',
-      value: '#E5E5E5',
-    },
-    {
-      name: 'Subtle Border',
-      cssVar: '--dsn-color-neutral-border-subtle',
-      value: '#C4C4C4',
-    },
-    {
-      name: 'Default Border',
-      cssVar: '--dsn-color-neutral-border-default',
-      value: '#868686',
-    },
-    {
-      name: 'Hover Border',
-      cssVar: '--dsn-color-neutral-border-hover',
-      value: '#7C7C7C',
-    },
-    {
-      name: 'Active Border',
-      cssVar: '--dsn-color-neutral-border-active',
-      value: '#727272',
-    },
-    {
-      name: 'Default Color',
-      cssVar: '--dsn-color-neutral-color-default',
-      value: '#595959',
-    },
-    {
-      name: 'Hover Color',
-      cssVar: '--dsn-color-neutral-color-hover',
-      value: '#4B4B4B',
-    },
-    {
-      name: 'Active Color',
-      cssVar: '--dsn-color-neutral-color-active',
-      value: '#3E3E3E',
-    },
-    {
-      name: 'Subtle Color',
-      cssVar: '--dsn-color-neutral-color-subtle',
-      value: '#636363',
-    },
-    {
-      name: 'Document Color',
-      cssVar: '--dsn-color-neutral-color-document',
-      value: '#1B1B1B',
-    },
-  ]}
 />
 
 ### Accent 1 (Primary)
 
 <TokenTable
+  prefix="--dsn-color-accent-1-"
+  exclude="--dsn-color-accent-1-inverse-"
   previewType="color"
-  tokens={[
-    {
-      name: 'Document BG',
-      cssVar: '--dsn-color-accent-1-bg-document',
-      value: '#FBFCFD',
-    },
-    {
-      name: 'Elevated BG',
-      cssVar: '--dsn-color-accent-1-bg-elevated',
-      value: '#FBFCFD',
-    },
-    {
-      name: 'Subtle BG',
-      cssVar: '--dsn-color-accent-1-bg-subtle',
-      value: '#F4F7FA',
-    },
-    {
-      name: 'Default BG',
-      cssVar: '--dsn-color-accent-1-bg-default',
-      value: '#ECF1F7',
-    },
-    {
-      name: 'Hover BG',
-      cssVar: '--dsn-color-accent-1-bg-hover',
-      value: '#E4ECF4',
-    },
-    {
-      name: 'Active BG',
-      cssVar: '--dsn-color-accent-1-bg-active',
-      value: '#DDE6F1',
-    },
-    {
-      name: 'Subtle Border',
-      cssVar: '--dsn-color-accent-1-border-subtle',
-      value: '#B0C6DF',
-    },
-    {
-      name: 'Default Border',
-      cssVar: '--dsn-color-accent-1-border-default',
-      value: '#5C89BE',
-    },
-    {
-      name: 'Hover Border',
-      cssVar: '--dsn-color-accent-1-border-hover',
-      value: '#4E7FB8',
-    },
-    {
-      name: 'Active Border',
-      cssVar: '--dsn-color-accent-1-border-active',
-      value: '#3F74B2',
-    },
-    {
-      name: 'Default Color',
-      cssVar: '--dsn-color-accent-1-color-default',
-      value: '#1B59A4',
-    },
-    {
-      name: 'Hover Color',
-      cssVar: '--dsn-color-accent-1-color-hover',
-      value: '#04499A',
-    },
-    {
-      name: 'Active Color',
-      cssVar: '--dsn-color-accent-1-color-active',
-      value: '#003B81',
-    },
-    {
-      name: 'Subtle Color',
-      cssVar: '--dsn-color-accent-1-color-subtle',
-      value: '#2964AA',
-    },
-    {
-      name: 'Document Color',
-      cssVar: '--dsn-color-accent-1-color-document',
-      value: '#001B3C',
-    },
-  ]}
 />
 
 ### Accent 2
 
-Aliases accent-1 by default. Override in your theme to differentiate.
+Verwijst standaard naar accent-1. Geef het in je thema een eigen waarde om het te onderscheiden.
 
 <TokenTable
+  prefix="--dsn-color-accent-2-"
+  exclude="--dsn-color-accent-2-inverse-"
   previewType="color"
-  tokens={[
-    {
-      name: 'Document BG',
-      cssVar: '--dsn-color-accent-2-bg-document',
-      value: 'alias → accent-1',
-    },
-    {
-      name: 'Elevated BG',
-      cssVar: '--dsn-color-accent-2-bg-elevated',
-      value: 'alias → accent-1',
-    },
-    {
-      name: 'Subtle BG',
-      cssVar: '--dsn-color-accent-2-bg-subtle',
-      value: 'alias → accent-1',
-    },
-    {
-      name: 'Default BG',
-      cssVar: '--dsn-color-accent-2-bg-default',
-      value: 'alias → accent-1',
-    },
-    {
-      name: 'Hover BG',
-      cssVar: '--dsn-color-accent-2-bg-hover',
-      value: 'alias → accent-1',
-    },
-    {
-      name: 'Active BG',
-      cssVar: '--dsn-color-accent-2-bg-active',
-      value: 'alias → accent-1',
-    },
-    {
-      name: 'Subtle Border',
-      cssVar: '--dsn-color-accent-2-border-subtle',
-      value: 'alias → accent-1',
-    },
-    {
-      name: 'Default Border',
-      cssVar: '--dsn-color-accent-2-border-default',
-      value: 'alias → accent-1',
-    },
-    {
-      name: 'Hover Border',
-      cssVar: '--dsn-color-accent-2-border-hover',
-      value: 'alias → accent-1',
-    },
-    {
-      name: 'Active Border',
-      cssVar: '--dsn-color-accent-2-border-active',
-      value: 'alias → accent-1',
-    },
-    {
-      name: 'Default Color',
-      cssVar: '--dsn-color-accent-2-color-default',
-      value: 'alias → accent-1',
-    },
-    {
-      name: 'Hover Color',
-      cssVar: '--dsn-color-accent-2-color-hover',
-      value: 'alias → accent-1',
-    },
-    {
-      name: 'Active Color',
-      cssVar: '--dsn-color-accent-2-color-active',
-      value: 'alias → accent-1',
-    },
-    {
-      name: 'Subtle Color',
-      cssVar: '--dsn-color-accent-2-color-subtle',
-      value: 'alias → accent-1',
-    },
-    {
-      name: 'Document Color',
-      cssVar: '--dsn-color-accent-2-color-document',
-      value: 'alias → accent-1',
-    },
-  ]}
 />
 
 ### Accent 3
 
-Aliases accent-1 by default. Override in your theme to differentiate.
+Verwijst standaard naar accent-1. Geef het in je thema een eigen waarde om het te onderscheiden.
 
 <TokenTable
+  prefix="--dsn-color-accent-3-"
+  exclude="--dsn-color-accent-3-inverse-"
   previewType="color"
-  tokens={[
-    {
-      name: 'Document BG',
-      cssVar: '--dsn-color-accent-3-bg-document',
-      value: 'alias → accent-1',
-    },
-    {
-      name: 'Elevated BG',
-      cssVar: '--dsn-color-accent-3-bg-elevated',
-      value: 'alias → accent-1',
-    },
-    {
-      name: 'Subtle BG',
-      cssVar: '--dsn-color-accent-3-bg-subtle',
-      value: 'alias → accent-1',
-    },
-    {
-      name: 'Default BG',
-      cssVar: '--dsn-color-accent-3-bg-default',
-      value: 'alias → accent-1',
-    },
-    {
-      name: 'Hover BG',
-      cssVar: '--dsn-color-accent-3-bg-hover',
-      value: 'alias → accent-1',
-    },
-    {
-      name: 'Active BG',
-      cssVar: '--dsn-color-accent-3-bg-active',
-      value: 'alias → accent-1',
-    },
-    {
-      name: 'Subtle Border',
-      cssVar: '--dsn-color-accent-3-border-subtle',
-      value: 'alias → accent-1',
-    },
-    {
-      name: 'Default Border',
-      cssVar: '--dsn-color-accent-3-border-default',
-      value: 'alias → accent-1',
-    },
-    {
-      name: 'Hover Border',
-      cssVar: '--dsn-color-accent-3-border-hover',
-      value: 'alias → accent-1',
-    },
-    {
-      name: 'Active Border',
-      cssVar: '--dsn-color-accent-3-border-active',
-      value: 'alias → accent-1',
-    },
-    {
-      name: 'Default Color',
-      cssVar: '--dsn-color-accent-3-color-default',
-      value: 'alias → accent-1',
-    },
-    {
-      name: 'Hover Color',
-      cssVar: '--dsn-color-accent-3-color-hover',
-      value: 'alias → accent-1',
-    },
-    {
-      name: 'Active Color',
-      cssVar: '--dsn-color-accent-3-color-active',
-      value: 'alias → accent-1',
-    },
-    {
-      name: 'Subtle Color',
-      cssVar: '--dsn-color-accent-3-color-subtle',
-      value: 'alias → accent-1',
-    },
-    {
-      name: 'Document Color',
-      cssVar: '--dsn-color-accent-3-color-document',
-      value: 'alias → accent-1',
-    },
-  ]}
 />
 
 ### Action 1 (Primary Actions)
 
-Used for primary interactive elements like buttons. Aliases accent-1 by default.
+Voor primaire interactieve elementen, zoals buttons. Verwijst standaard naar accent-1.
 
 <TokenTable
+  prefix="--dsn-color-action-1-"
+  exclude="--dsn-color-action-1-inverse-"
   previewType="color"
-  tokens={[
-    {
-      name: 'Document BG',
-      cssVar: '--dsn-color-action-1-bg-document',
-      value: 'alias → accent-1',
-    },
-    {
-      name: 'Elevated BG',
-      cssVar: '--dsn-color-action-1-bg-elevated',
-      value: 'alias → accent-1',
-    },
-    {
-      name: 'Subtle BG',
-      cssVar: '--dsn-color-action-1-bg-subtle',
-      value: 'alias → accent-1',
-    },
-    {
-      name: 'Default BG',
-      cssVar: '--dsn-color-action-1-bg-default',
-      value: 'alias → accent-1',
-    },
-    {
-      name: 'Hover BG',
-      cssVar: '--dsn-color-action-1-bg-hover',
-      value: 'alias → accent-1',
-    },
-    {
-      name: 'Active BG',
-      cssVar: '--dsn-color-action-1-bg-active',
-      value: 'alias → accent-1',
-    },
-    {
-      name: 'Subtle Border',
-      cssVar: '--dsn-color-action-1-border-subtle',
-      value: 'alias → accent-1',
-    },
-    {
-      name: 'Default Border',
-      cssVar: '--dsn-color-action-1-border-default',
-      value: 'alias → accent-1',
-    },
-    {
-      name: 'Hover Border',
-      cssVar: '--dsn-color-action-1-border-hover',
-      value: 'alias → accent-1',
-    },
-    {
-      name: 'Active Border',
-      cssVar: '--dsn-color-action-1-border-active',
-      value: 'alias → accent-1',
-    },
-    {
-      name: 'Default Color',
-      cssVar: '--dsn-color-action-1-color-default',
-      value: 'alias → accent-1',
-    },
-    {
-      name: 'Hover Color',
-      cssVar: '--dsn-color-action-1-color-hover',
-      value: 'alias → accent-1',
-    },
-    {
-      name: 'Active Color',
-      cssVar: '--dsn-color-action-1-color-active',
-      value: 'alias → accent-1',
-    },
-    {
-      name: 'Subtle Color',
-      cssVar: '--dsn-color-action-1-color-subtle',
-      value: 'alias → accent-1',
-    },
-    {
-      name: 'Document Color',
-      cssVar: '--dsn-color-action-1-color-document',
-      value: 'alias → accent-1',
-    },
-  ]}
 />
 
 ### Action 2 (Secondary Actions)
 
-Used for secondary interactive elements like links and navigation. Aliases accent-1 by default.
+Voor secundaire interactieve elementen, zoals links en navigatie. Verwijst standaard naar accent-1.
 
 <TokenTable
+  prefix="--dsn-color-action-2-"
+  exclude="--dsn-color-action-2-inverse-"
   previewType="color"
-  tokens={[
-    {
-      name: 'Document BG',
-      cssVar: '--dsn-color-action-2-bg-document',
-      value: 'alias → accent-1',
-    },
-    {
-      name: 'Elevated BG',
-      cssVar: '--dsn-color-action-2-bg-elevated',
-      value: 'alias → accent-1',
-    },
-    {
-      name: 'Subtle BG',
-      cssVar: '--dsn-color-action-2-bg-subtle',
-      value: 'alias → accent-1',
-    },
-    {
-      name: 'Default BG',
-      cssVar: '--dsn-color-action-2-bg-default',
-      value: 'alias → accent-1',
-    },
-    {
-      name: 'Hover BG',
-      cssVar: '--dsn-color-action-2-bg-hover',
-      value: 'alias → accent-1',
-    },
-    {
-      name: 'Active BG',
-      cssVar: '--dsn-color-action-2-bg-active',
-      value: 'alias → accent-1',
-    },
-    {
-      name: 'Subtle Border',
-      cssVar: '--dsn-color-action-2-border-subtle',
-      value: 'alias → accent-1',
-    },
-    {
-      name: 'Default Border',
-      cssVar: '--dsn-color-action-2-border-default',
-      value: 'alias → accent-1',
-    },
-    {
-      name: 'Hover Border',
-      cssVar: '--dsn-color-action-2-border-hover',
-      value: 'alias → accent-1',
-    },
-    {
-      name: 'Active Border',
-      cssVar: '--dsn-color-action-2-border-active',
-      value: 'alias → accent-1',
-    },
-    {
-      name: 'Default Color',
-      cssVar: '--dsn-color-action-2-color-default',
-      value: 'alias → accent-1',
-    },
-    {
-      name: 'Hover Color',
-      cssVar: '--dsn-color-action-2-color-hover',
-      value: 'alias → accent-1',
-    },
-    {
-      name: 'Active Color',
-      cssVar: '--dsn-color-action-2-color-active',
-      value: 'alias → accent-1',
-    },
-    {
-      name: 'Subtle Color',
-      cssVar: '--dsn-color-action-2-color-subtle',
-      value: 'alias → accent-1',
-    },
-    {
-      name: 'Document Color',
-      cssVar: '--dsn-color-action-2-color-document',
-      value: 'alias → accent-1',
-    },
-  ]}
 />
 
 ### Positive (Success)
 
 <TokenTable
+  prefix="--dsn-color-positive-"
+  exclude="--dsn-color-positive-inverse-"
   previewType="color"
-  tokens={[
-    {
-      name: 'Document BG',
-      cssVar: '--dsn-color-positive-bg-document',
-      value: '#FAFDFB',
-    },
-    {
-      name: 'Elevated BG',
-      cssVar: '--dsn-color-positive-bg-elevated',
-      value: '#FAFDFB',
-    },
-    {
-      name: 'Subtle BG',
-      cssVar: '--dsn-color-positive-bg-subtle',
-      value: '#EFF9F3',
-    },
-    {
-      name: 'Default BG',
-      cssVar: '--dsn-color-positive-bg-default',
-      value: '#E4F5EA',
-    },
-    {
-      name: 'Hover BG',
-      cssVar: '--dsn-color-positive-bg-hover',
-      value: '#D9F1E2',
-    },
-    {
-      name: 'Active BG',
-      cssVar: '--dsn-color-positive-bg-active',
-      value: '#CEEDD9',
-    },
-    {
-      name: 'Subtle Border',
-      cssVar: '--dsn-color-positive-border-subtle',
-      value: '#8AD3A6',
-    },
-    {
-      name: 'Default Border',
-      cssVar: '--dsn-color-positive-border-default',
-      value: '#009B3A',
-    },
-    {
-      name: 'Hover Border',
-      cssVar: '--dsn-color-positive-border-hover',
-      value: '#009036',
-    },
-    {
-      name: 'Active Border',
-      cssVar: '--dsn-color-positive-border-active',
-      value: '#008432',
-    },
-    {
-      name: 'Default Color',
-      cssVar: '--dsn-color-positive-color-default',
-      value: '#006827',
-    },
-    {
-      name: 'Hover Color',
-      cssVar: '--dsn-color-positive-color-hover',
-      value: '#005821',
-    },
-    {
-      name: 'Active Color',
-      cssVar: '--dsn-color-positive-color-active',
-      value: '#00481B',
-    },
-    {
-      name: 'Subtle Color',
-      cssVar: '--dsn-color-positive-color-subtle',
-      value: '#00732B',
-    },
-    {
-      name: 'Document Color',
-      cssVar: '--dsn-color-positive-color-document',
-      value: '#00210C',
-    },
-  ]}
 />
 
 ### Negative (Error)
 
 <TokenTable
+  prefix="--dsn-color-negative-"
+  exclude="--dsn-color-negative-inverse-"
   previewType="color"
-  tokens={[
-    {
-      name: 'Document BG',
-      cssVar: '--dsn-color-negative-bg-document',
-      value: '#FFFBFB',
-    },
-    {
-      name: 'Elevated BG',
-      cssVar: '--dsn-color-negative-bg-elevated',
-      value: '#FFFBFB',
-    },
-    {
-      name: 'Subtle BG',
-      cssVar: '--dsn-color-negative-bg-subtle',
-      value: '#FEF4F4',
-    },
-    {
-      name: 'Default BG',
-      cssVar: '--dsn-color-negative-bg-default',
-      value: '#FEEDED',
-    },
-    {
-      name: 'Hover BG',
-      cssVar: '--dsn-color-negative-bg-hover',
-      value: '#FDE6E6',
-    },
-    {
-      name: 'Active BG',
-      cssVar: '--dsn-color-negative-bg-active',
-      value: '#FDDEDE',
-    },
-    {
-      name: 'Subtle Border',
-      cssVar: '--dsn-color-negative-border-subtle',
-      value: '#F9B1B1',
-    },
-    {
-      name: 'Default Border',
-      cssVar: '--dsn-color-negative-border-default',
-      value: '#F14848',
-    },
-    {
-      name: 'Hover Border',
-      cssVar: '--dsn-color-negative-border-hover',
-      value: '#EF2929',
-    },
-    {
-      name: 'Active Border',
-      cssVar: '--dsn-color-negative-border-active',
-      value: '#E60000',
-    },
-    {
-      name: 'Default Color',
-      cssVar: '--dsn-color-negative-color-default',
-      value: '#B70000',
-    },
-    {
-      name: 'Hover Color',
-      cssVar: '--dsn-color-negative-color-hover',
-      value: '#9C0000',
-    },
-    {
-      name: 'Active Color',
-      cssVar: '--dsn-color-negative-color-active',
-      value: '#930000',
-    },
-    {
-      name: 'Subtle Color',
-      cssVar: '--dsn-color-negative-color-subtle',
-      value: '#CA0000',
-    },
-    {
-      name: 'Document Color',
-      cssVar: '--dsn-color-negative-color-document',
-      value: '#410000',
-    },
-  ]}
 />
 
 ### Warning
 
 <TokenTable
+  prefix="--dsn-color-warning-"
+  exclude="--dsn-color-warning-inverse-"
   previewType="color"
-  tokens={[
-    {
-      name: 'Document BG',
-      cssVar: '--dsn-color-warning-bg-document',
-      value: '#FFFCF8',
-    },
-    {
-      name: 'Elevated BG',
-      cssVar: '--dsn-color-warning-bg-elevated',
-      value: '#FFFCF8',
-    },
-    {
-      name: 'Subtle BG',
-      cssVar: '--dsn-color-warning-bg-subtle',
-      value: '#FFF5EB',
-    },
-    {
-      name: 'Default BG',
-      cssVar: '--dsn-color-warning-bg-default',
-      value: '#FFEEDD',
-    },
-    {
-      name: 'Hover BG',
-      cssVar: '--dsn-color-warning-bg-hover',
-      value: '#FFE7D0',
-    },
-    {
-      name: 'Active BG',
-      cssVar: '--dsn-color-warning-bg-active',
-      value: '#FFE0C2',
-    },
-    {
-      name: 'Subtle Border',
-      cssVar: '--dsn-color-warning-border-subtle',
-      value: '#FFB46B',
-    },
-    {
-      name: 'Default Border',
-      cssVar: '--dsn-color-warning-border-default',
-      value: '#C8700E',
-    },
-    {
-      name: 'Hover Border',
-      cssVar: '--dsn-color-warning-border-hover',
-      value: '#B86810',
-    },
-    {
-      name: 'Active Border',
-      cssVar: '--dsn-color-warning-border-active',
-      value: '#A96011',
-    },
-    {
-      name: 'Default Color',
-      cssVar: '--dsn-color-warning-color-default',
-      value: '#844C12',
-    },
-    {
-      name: 'Hover Color',
-      cssVar: '--dsn-color-warning-color-hover',
-      value: '#6F4012',
-    },
-    {
-      name: 'Active Color',
-      cssVar: '--dsn-color-warning-color-active',
-      value: '#5A3511',
-    },
-    {
-      name: 'Subtle Color',
-      cssVar: '--dsn-color-warning-color-subtle',
-      value: '#935412',
-    },
-    {
-      name: 'Document Color',
-      cssVar: '--dsn-color-warning-color-document',
-      value: '#27190A',
-    },
-  ]}
 />
 
 ### Info
 
 <TokenTable
+  prefix="--dsn-color-info-"
+  exclude="--dsn-color-info-inverse-"
   previewType="color"
-  tokens={[
-    {
-      name: 'Document BG',
-      cssVar: '--dsn-color-info-bg-document',
-      value: 'alias → accent-1',
-    },
-    {
-      name: 'Elevated BG',
-      cssVar: '--dsn-color-info-bg-elevated',
-      value: 'alias → accent-1',
-    },
-    {
-      name: 'Subtle BG',
-      cssVar: '--dsn-color-info-bg-subtle',
-      value: 'alias → accent-1',
-    },
-    {
-      name: 'Default BG',
-      cssVar: '--dsn-color-info-bg-default',
-      value: 'alias → accent-1',
-    },
-    {
-      name: 'Hover BG',
-      cssVar: '--dsn-color-info-bg-hover',
-      value: 'alias → accent-1',
-    },
-    {
-      name: 'Active BG',
-      cssVar: '--dsn-color-info-bg-active',
-      value: 'alias → accent-1',
-    },
-    {
-      name: 'Subtle Border',
-      cssVar: '--dsn-color-info-border-subtle',
-      value: 'alias → accent-1',
-    },
-    {
-      name: 'Default Border',
-      cssVar: '--dsn-color-info-border-default',
-      value: 'alias → accent-1',
-    },
-    {
-      name: 'Hover Border',
-      cssVar: '--dsn-color-info-border-hover',
-      value: 'alias → accent-1',
-    },
-    {
-      name: 'Active Border',
-      cssVar: '--dsn-color-info-border-active',
-      value: 'alias → accent-1',
-    },
-    {
-      name: 'Default Color',
-      cssVar: '--dsn-color-info-color-default',
-      value: 'alias → accent-1',
-    },
-    {
-      name: 'Hover Color',
-      cssVar: '--dsn-color-info-color-hover',
-      value: 'alias → accent-1',
-    },
-    {
-      name: 'Active Color',
-      cssVar: '--dsn-color-info-color-active',
-      value: 'alias → accent-1',
-    },
-    {
-      name: 'Subtle Color',
-      cssVar: '--dsn-color-info-color-subtle',
-      value: 'alias → accent-1',
-    },
-    {
-      name: 'Document Color',
-      cssVar: '--dsn-color-info-color-document',
-      value: 'alias → accent-1',
-    },
-  ]}
 />
+
+### Transparent
+
+<TokenTable tokens="--dsn-color-transparent" previewType="color" />
 
 ---
 
 ## Inverse Colors
 
-Inverse color scales are used for components on dark backgrounds (e.g. strong buttons, banners). Each provides the same token structure as the standard scales.
+Inverse kleurschalen zijn voor componenten op een donkere of sterk gekleurde achtergrond, zoals een strong button of een banner. Ze hebben dezelfde opbouw als de gewone schalen.
 
 ### Neutral Inverse
 
-<TokenTable
-  previewType="color"
-  tokens={[
-    {
-      name: 'Document BG',
-      cssVar: '--dsn-color-neutral-inverse-bg-document',
-      value: '#242424',
-    },
-    {
-      name: 'Elevated BG',
-      cssVar: '--dsn-color-neutral-inverse-bg-elevated',
-      value: '#242424',
-    },
-    {
-      name: 'Subtle BG',
-      cssVar: '--dsn-color-neutral-inverse-bg-subtle',
-      value: '#1B1B1B',
-    },
-    {
-      name: 'Default BG',
-      cssVar: '--dsn-color-neutral-inverse-bg-default',
-      value: '#595959',
-    },
-    {
-      name: 'Hover BG',
-      cssVar: '--dsn-color-neutral-inverse-bg-hover',
-      value: '#4B4B4B',
-    },
-    {
-      name: 'Active BG',
-      cssVar: '--dsn-color-neutral-inverse-bg-active',
-      value: '#3E3E3E',
-    },
-    {
-      name: 'Subtle Border',
-      cssVar: '--dsn-color-neutral-inverse-border-subtle',
-      value: '#474747',
-    },
-    {
-      name: 'Default Border',
-      cssVar: '--dsn-color-neutral-inverse-border-default',
-      value: '#C9C9C9',
-    },
-    {
-      name: 'Hover Border',
-      cssVar: '--dsn-color-neutral-inverse-border-hover',
-      value: '#D4D4D4',
-    },
-    {
-      name: 'Active Border',
-      cssVar: '--dsn-color-neutral-inverse-border-active',
-      value: '#DFDFDF',
-    },
-    {
-      name: 'Default Color',
-      cssVar: '--dsn-color-neutral-inverse-color-default',
-      value: '#FFFFFF',
-    },
-    {
-      name: 'Hover Color',
-      cssVar: '--dsn-color-neutral-inverse-color-hover',
-      value: '#FFFFFF',
-    },
-    {
-      name: 'Active Color',
-      cssVar: '--dsn-color-neutral-inverse-color-active',
-      value: '#FFFFFF',
-    },
-    {
-      name: 'Subtle Color',
-      cssVar: '--dsn-color-neutral-inverse-color-subtle',
-      value: '#C4C4C4',
-    },
-    {
-      name: 'Document Color',
-      cssVar: '--dsn-color-neutral-inverse-color-document',
-      value: '#FFFFFF',
-    },
-  ]}
-/>
+<TokenTable prefix="--dsn-color-neutral-inverse-" previewType="color" />
 
 ### Accent 1 Inverse
 
-<TokenTable
-  previewType="color"
-  tokens={[
-    {
-      name: 'Document BG',
-      cssVar: '--dsn-color-accent-1-inverse-bg-document',
-      value: '#00234D',
-    },
-    {
-      name: 'Elevated BG',
-      cssVar: '--dsn-color-accent-1-inverse-bg-elevated',
-      value: '#00234D',
-    },
-    {
-      name: 'Subtle BG',
-      cssVar: '--dsn-color-accent-1-inverse-bg-subtle',
-      value: '#001B3C',
-    },
-    {
-      name: 'Default BG',
-      cssVar: '--dsn-color-accent-1-inverse-bg-default',
-      value: '#1B59A4',
-    },
-    {
-      name: 'Hover BG',
-      cssVar: '--dsn-color-accent-1-inverse-bg-hover',
-      value: '#04499A',
-    },
-    {
-      name: 'Active BG',
-      cssVar: '--dsn-color-accent-1-inverse-bg-active',
-      value: '#003B81',
-    },
-    {
-      name: 'Subtle Border',
-      cssVar: '--dsn-color-accent-1-inverse-border-subtle',
-      value: '#004494',
-    },
-    {
-      name: 'Default Border',
-      cssVar: '--dsn-color-accent-1-inverse-border-default',
-      value: '#B8CBE2',
-    },
-    {
-      name: 'Hover Border',
-      cssVar: '--dsn-color-accent-1-inverse-border-hover',
-      value: '#C6D6E8',
-    },
-    {
-      name: 'Active Border',
-      cssVar: '--dsn-color-accent-1-inverse-border-active',
-      value: '#D5E1EE',
-    },
-    {
-      name: 'Default Color',
-      cssVar: '--dsn-color-accent-1-inverse-color-default',
-      value: '#FFFFFF',
-    },
-    {
-      name: 'Hover Color',
-      cssVar: '--dsn-color-accent-1-inverse-color-hover',
-      value: '#FFFFFF',
-    },
-    {
-      name: 'Active Color',
-      cssVar: '--dsn-color-accent-1-inverse-color-active',
-      value: '#FFFFFF',
-    },
-    {
-      name: 'Subtle Color',
-      cssVar: '--dsn-color-accent-1-inverse-color-subtle',
-      value: '#B0C6DF',
-    },
-    {
-      name: 'Document Color',
-      cssVar: '--dsn-color-accent-1-inverse-color-document',
-      value: '#FFFFFF',
-    },
-  ]}
-/>
+<TokenTable prefix="--dsn-color-accent-1-inverse-" previewType="color" />
 
-### Accent 2 Inverse / Accent 3 Inverse / Action 1 Inverse / Action 2 Inverse
+### Accent 2 Inverse
 
-All alias accent-1-inverse by default. Available CSS variables:
+Verwijst standaard naar accent-1-inverse.
 
-<TokenTable
-  tokens={[
-    {
-      name: 'Accent 2 Inverse (bg-elevated)',
-      cssVar: '--dsn-color-accent-2-inverse-bg-elevated',
-      value: 'alias → accent-1-inverse',
-    },
-    {
-      name: 'Accent 3 Inverse (bg-elevated)',
-      cssVar: '--dsn-color-accent-3-inverse-bg-elevated',
-      value: 'alias → accent-1-inverse',
-    },
-    {
-      name: 'Action 1 Inverse (bg-elevated)',
-      cssVar: '--dsn-color-action-1-inverse-bg-elevated',
-      value: 'alias → accent-1-inverse',
-    },
-    {
-      name: 'Action 2 Inverse (bg-elevated)',
-      cssVar: '--dsn-color-action-2-inverse-bg-elevated',
-      value: 'alias → accent-1-inverse',
-    },
-  ]}
-/>
+<TokenTable prefix="--dsn-color-accent-2-inverse-" previewType="color" />
+
+### Accent 3 Inverse
+
+Verwijst standaard naar accent-1-inverse.
+
+<TokenTable prefix="--dsn-color-accent-3-inverse-" previewType="color" />
+
+### Action 1 Inverse
+
+Verwijst standaard naar accent-1-inverse.
+
+<TokenTable prefix="--dsn-color-action-1-inverse-" previewType="color" />
+
+### Action 2 Inverse
+
+Verwijst standaard naar accent-1-inverse.
+
+<TokenTable prefix="--dsn-color-action-2-inverse-" previewType="color" />
 
 ### Positive Inverse
 
-<TokenTable
-  previewType="color"
-  tokens={[
-    {
-      name: 'Document BG',
-      cssVar: '--dsn-color-positive-inverse-bg-document',
-      value: '#002B10',
-    },
-    {
-      name: 'Elevated BG',
-      cssVar: '--dsn-color-positive-inverse-bg-elevated',
-      value: '#002B10',
-    },
-    {
-      name: 'Subtle BG',
-      cssVar: '--dsn-color-positive-inverse-bg-subtle',
-      value: '#00210C',
-    },
-    {
-      name: 'Default BG',
-      cssVar: '--dsn-color-positive-inverse-bg-default',
-      value: '#006827',
-    },
-    {
-      name: 'Hover BG',
-      cssVar: '--dsn-color-positive-inverse-bg-hover',
-      value: '#005821',
-    },
-    {
-      name: 'Active BG',
-      cssVar: '--dsn-color-positive-inverse-bg-active',
-      value: '#00481B',
-    },
-    {
-      name: 'Subtle Border',
-      cssVar: '--dsn-color-positive-inverse-border-subtle',
-      value: '#00531F',
-    },
-    {
-      name: 'Default Border',
-      cssVar: '--dsn-color-positive-inverse-border-default',
-      value: '#96D8AE',
-    },
-    {
-      name: 'Hover Border',
-      cssVar: '--dsn-color-positive-inverse-border-hover',
-      value: '#ACE0C0',
-    },
-    {
-      name: 'Active Border',
-      cssVar: '--dsn-color-positive-inverse-border-active',
-      value: '#C3E9D1',
-    },
-    {
-      name: 'Default Color',
-      cssVar: '--dsn-color-positive-inverse-color-default',
-      value: '#FFFFFF',
-    },
-    {
-      name: 'Hover Color',
-      cssVar: '--dsn-color-positive-inverse-color-hover',
-      value: '#FFFFFF',
-    },
-    {
-      name: 'Active Color',
-      cssVar: '--dsn-color-positive-inverse-color-active',
-      value: '#FFFFFF',
-    },
-    {
-      name: 'Subtle Color',
-      cssVar: '--dsn-color-positive-inverse-color-subtle',
-      value: '#8AD3A6',
-    },
-    {
-      name: 'Document Color',
-      cssVar: '--dsn-color-positive-inverse-color-document',
-      value: '#FFFFFF',
-    },
-  ]}
-/>
+<TokenTable prefix="--dsn-color-positive-inverse-" previewType="color" />
 
 ### Negative Inverse
 
-<TokenTable
-  previewType="color"
-  tokens={[
-    {
-      name: 'Document BG',
-      cssVar: '--dsn-color-negative-inverse-bg-document',
-      value: '#510000',
-    },
-    {
-      name: 'Elevated BG',
-      cssVar: '--dsn-color-negative-inverse-bg-elevated',
-      value: '#510000',
-    },
-    {
-      name: 'Subtle BG',
-      cssVar: '--dsn-color-negative-inverse-bg-subtle',
-      value: '#410000',
-    },
-    {
-      name: 'Default BG',
-      cssVar: '--dsn-color-negative-inverse-bg-default',
-      value: '#B70000',
-    },
-    {
-      name: 'Hover BG',
-      cssVar: '--dsn-color-negative-inverse-bg-hover',
-      value: '#9C0000',
-    },
-    {
-      name: 'Active BG',
-      cssVar: '--dsn-color-negative-inverse-bg-active',
-      value: '#820000',
-    },
-    {
-      name: 'Subtle Border',
-      cssVar: '--dsn-color-negative-inverse-border-subtle',
-      value: '#930000',
-    },
-    {
-      name: 'Default Border',
-      cssVar: '--dsn-color-negative-inverse-border-default',
-      value: '#FAB9B9',
-    },
-    {
-      name: 'Hover Border',
-      cssVar: '--dsn-color-negative-inverse-border-hover',
-      value: '#FBC8C8',
-    },
-    {
-      name: 'Active Border',
-      cssVar: '--dsn-color-negative-inverse-border-active',
-      value: '#FCD7D7',
-    },
-    {
-      name: 'Default Color',
-      cssVar: '--dsn-color-negative-inverse-color-default',
-      value: '#FFFFFF',
-    },
-    {
-      name: 'Hover Color',
-      cssVar: '--dsn-color-negative-inverse-color-hover',
-      value: '#FFFFFF',
-    },
-    {
-      name: 'Active Color',
-      cssVar: '--dsn-color-negative-inverse-color-active',
-      value: '#FFFFFF',
-    },
-    {
-      name: 'Subtle Color',
-      cssVar: '--dsn-color-negative-inverse-color-subtle',
-      value: '#F9B1B1',
-    },
-    {
-      name: 'Document Color',
-      cssVar: '--dsn-color-negative-inverse-color-document',
-      value: '#FFFFFF',
-    },
-  ]}
-/>
+<TokenTable prefix="--dsn-color-negative-inverse-" previewType="color" />
 
 ### Warning Inverse
 
-<TokenTable
-  previewType="color"
-  tokens={[
-    {
-      name: 'Document BG',
-      cssVar: '--dsn-color-warning-inverse-bg-document',
-      value: '#331F0D',
-    },
-    {
-      name: 'Elevated BG',
-      cssVar: '--dsn-color-warning-inverse-bg-elevated',
-      value: '#331F0D',
-    },
-    {
-      name: 'Subtle BG',
-      cssVar: '--dsn-color-warning-inverse-bg-subtle',
-      value: '#27190A',
-    },
-    {
-      name: 'Default BG',
-      cssVar: '--dsn-color-warning-inverse-bg-default',
-      value: '#844C12',
-    },
-    {
-      name: 'Hover BG',
-      cssVar: '--dsn-color-warning-inverse-bg-hover',
-      value: '#6F4012',
-    },
-    {
-      name: 'Active BG',
-      cssVar: '--dsn-color-warning-inverse-bg-active',
-      value: '#5A3511',
-    },
-    {
-      name: 'Subtle Border',
-      cssVar: '--dsn-color-warning-inverse-border-subtle',
-      value: '#683C12',
-    },
-    {
-      name: 'Default Border',
-      cssVar: '--dsn-color-warning-inverse-border-default',
-      value: '#FFBC7A',
-    },
-    {
-      name: 'Hover Border',
-      cssVar: '--dsn-color-warning-inverse-border-hover',
-      value: '#FFCB98',
-    },
-    {
-      name: 'Active Border',
-      cssVar: '--dsn-color-warning-inverse-border-active',
-      value: '#FFD9B4',
-    },
-    {
-      name: 'Default Color',
-      cssVar: '--dsn-color-warning-inverse-color-default',
-      value: '#FFFFFF',
-    },
-    {
-      name: 'Hover Color',
-      cssVar: '--dsn-color-warning-inverse-color-hover',
-      value: '#FFFFFF',
-    },
-    {
-      name: 'Active Color',
-      cssVar: '--dsn-color-warning-inverse-color-active',
-      value: '#FFFFFF',
-    },
-    {
-      name: 'Subtle Color',
-      cssVar: '--dsn-color-warning-inverse-color-subtle',
-      value: '#FFB46B',
-    },
-    {
-      name: 'Document Color',
-      cssVar: '--dsn-color-warning-inverse-color-document',
-      value: '#FFFFFF',
-    },
-  ]}
-/>
+<TokenTable prefix="--dsn-color-warning-inverse-" previewType="color" />
 
 ### Info Inverse
 
-<TokenTable
-  previewType="color"
-  tokens={[
-    {
-      name: 'Document BG',
-      cssVar: '--dsn-color-info-inverse-bg-document',
-      value: '#00234D',
-    },
-    {
-      name: 'Elevated BG',
-      cssVar: '--dsn-color-info-inverse-bg-elevated',
-      value: '#00234D',
-    },
-    {
-      name: 'Subtle BG',
-      cssVar: '--dsn-color-info-inverse-bg-subtle',
-      value: '#001B3C',
-    },
-    {
-      name: 'Default BG',
-      cssVar: '--dsn-color-info-inverse-bg-default',
-      value: '#1B59A4',
-    },
-    {
-      name: 'Hover BG',
-      cssVar: '--dsn-color-info-inverse-bg-hover',
-      value: '#04499A',
-    },
-    {
-      name: 'Active BG',
-      cssVar: '--dsn-color-info-inverse-bg-active',
-      value: '#003B81',
-    },
-    {
-      name: 'Subtle Border',
-      cssVar: '--dsn-color-info-inverse-border-subtle',
-      value: '#004494',
-    },
-    {
-      name: 'Default Border',
-      cssVar: '--dsn-color-info-inverse-border-default',
-      value: '#B8CBE2',
-    },
-    {
-      name: 'Hover Border',
-      cssVar: '--dsn-color-info-inverse-border-hover',
-      value: '#C6D6E8',
-    },
-    {
-      name: 'Active Border',
-      cssVar: '--dsn-color-info-inverse-border-active',
-      value: '#D5E1EE',
-    },
-    {
-      name: 'Default Color',
-      cssVar: '--dsn-color-info-inverse-color-default',
-      value: '#FFFFFF',
-    },
-    {
-      name: 'Hover Color',
-      cssVar: '--dsn-color-info-inverse-color-hover',
-      value: '#FFFFFF',
-    },
-    {
-      name: 'Active Color',
-      cssVar: '--dsn-color-info-inverse-color-active',
-      value: '#FFFFFF',
-    },
-    {
-      name: 'Subtle Color',
-      cssVar: '--dsn-color-info-inverse-color-subtle',
-      value: '#B0C6DF',
-    },
-    {
-      name: 'Document Color',
-      cssVar: '--dsn-color-info-inverse-color-document',
-      value: '#FFFFFF',
-    },
-  ]}
-/>
+<TokenTable prefix="--dsn-color-info-inverse-" previewType="color" />
 
 ---
 
 ## Fluid Scale
 
-Font sizes and spacing grow with the viewport. Every size has a **min** value at the smallest viewport (`--dsn-viewport-min-inline-size`, 360px) and a **max** value at the largest viewport (`--dsn-viewport-max-inline-size`, 1440px). In between, the value grows in a straight line; outside that range it stays at min or max. By default every max is the min × 1.25. Sizes of 1px and 2px and the pointer target (3rem) do not scale.
+Lettergroottes en ruimte groeien mee met de viewport. Elke maat heeft een **min**-waarde bij de kleinste viewport en een **max**-waarde bij de grootste viewport. Daartussen groeit de waarde lineair mee; daarbuiten blijft hij op min of max. Standaard is elke max de min × 1,25. Maten van 1px en 2px en de pointer target (3rem) schalen niet mee.
 
-The min and max values live in the theme (`dsn.text.font-size.min.*` / `max.*`, `dsn.space.*.min.*` / `max.*`), so an organisation can deviate per size. The build turns each pair into a `clamp()`.
+<TokenTable tokens="--dsn-viewport-min-inline-size --dsn-viewport-max-inline-size" />
 
-Which scales are fluid depends on the **density** (toolbar):
+De min- en maxwaarden staan in het thema (`dsn.text.font-size.min.*` / `max.*`, `dsn.space.*.min.*` / `max.*`), zodat een organisatie per maat kan afwijken. De build maakt van elk paar een `clamp()`. Je vindt ze per schaal onder **Min- en maxwaarden** bij Typography en Spacing.
+
+Welke schalen fluid zijn, hangt af van de **density** (toolbar):
 
 {/* HTML-tabel: deze Storybook-MDX heeft geen remark-gfm, dus Markdown-tabellen renderen als tekst. */}
 
@@ -1456,8 +235,8 @@ Which scales are fluid depends on the **density** (toolbar):
   <thead>
     <tr>
       <th>Density</th>
-      <th>Font sizes</th>
-      <th>Spacing</th>
+      <th>Lettergroottes</th>
+      <th>Ruimte</th>
     </tr>
   </thead>
   <tbody>
@@ -1473,19 +252,19 @@ Which scales are fluid depends on the **density** (toolbar):
         <code>default-fixed-space</code>
       </td>
       <td>fluid</td>
-      <td>fixed (min values)</td>
+      <td>vast (min-waarden)</td>
     </tr>
     <tr>
       <td>
         <code>information-dense</code>
       </td>
-      <td>fixed (min values)</td>
-      <td>fixed (min values)</td>
+      <td>vast (min-waarden)</td>
+      <td>vast (min-waarden)</td>
     </tr>
   </tbody>
 </table>
 
-Icons, checkboxes and radios follow the font size, so they scale along. Resize the window to see the values below change:
+Iconen, checkboxes en radio's volgen de lettergrootte en schalen dus mee. Maak het venster smaller of breder om de waarden hieronder te zien veranderen:
 
 <FluidScaleDemo />
 
@@ -1496,410 +275,134 @@ Icons, checkboxes and radios follow the font size, so they scale along. Resize t
 ### Font Families
 
 <TokenTable
-  tokens={[
-    {
-      name: 'Default',
-      cssVar: '--dsn-text-font-family-default',
-      value: 'Fira Sans, sans-serif',
-    },
-    {
-      name: 'Monospace',
-      cssVar: '--dsn-text-font-family-monospace',
-      value: 'Fira Mono, monospace',
-    },
-    {
-      name: 'Heading',
-      cssVar: '--dsn-heading-font-family',
-      value: 'Fira Sans, sans-serif',
-    },
-  ]}
+  prefix="--dsn-text-font-family-"
+  tokens="--dsn-heading-font-family"
 />
 
 ### Font Sizes (Fluid)
 
 <TokenTable
+  prefix="--dsn-text-font-size-"
+  exclude="--dsn-text-font-size-min- --dsn-text-font-size-max-"
   previewType="typography-size"
-  tokens={[
-    {
-      name: 'sm',
-      cssVar: '--dsn-text-font-size-sm',
-      value: '14px → 17.5px (fluid)',
-    },
-    {
-      name: 'md',
-      cssVar: '--dsn-text-font-size-md',
-      value: '16px → 20px (fluid)',
-    },
-    {
-      name: 'lg',
-      cssVar: '--dsn-text-font-size-lg',
-      value: '20px → 25px (fluid)',
-    },
-    {
-      name: 'xl',
-      cssVar: '--dsn-text-font-size-xl',
-      value: '24px → 30px (fluid)',
-    },
-    {
-      name: '2xl',
-      cssVar: '--dsn-text-font-size-2xl',
-      value: '32px → 40px (fluid)',
-    },
-    {
-      name: '3xl',
-      cssVar: '--dsn-text-font-size-3xl',
-      value: '40px → 50px (fluid)',
-    },
-    {
-      name: '4xl',
-      cssVar: '--dsn-text-font-size-4xl',
-      value: '48px → 60px (fluid)',
-    },
-  ]}
 />
+
+<Details summary="Min- en maxwaarden van de lettergroottes">
+
+<TokenTable
+  prefix="--dsn-text-font-size-min- --dsn-text-font-size-max-"
+  previewType="typography-size"
+/>
+
+</Details>
 
 ### Font Weights
 
 <TokenTable
-  tokens={[
-    { name: 'Default', cssVar: '--dsn-text-font-weight-default', value: '400' },
-    { name: 'Bold', cssVar: '--dsn-text-font-weight-bold', value: '700' },
-    { name: 'Heading', cssVar: '--dsn-heading-font-weight', value: '700' },
-  ]}
+  prefix="--dsn-text-font-weight-"
+  tokens="--dsn-heading-font-weight"
 />
 
 ### Line Heights
 
-<TokenTable
-  tokens={[
-    { name: 'sm', cssVar: '--dsn-text-line-height-sm', value: '1.5' },
-    { name: 'md', cssVar: '--dsn-text-line-height-md', value: '1.5' },
-    { name: 'lg', cssVar: '--dsn-text-line-height-lg', value: '1.25' },
-    { name: 'xl', cssVar: '--dsn-text-line-height-xl', value: '1.25' },
-    { name: '2xl', cssVar: '--dsn-text-line-height-2xl', value: '1.25' },
-    { name: '3xl', cssVar: '--dsn-text-line-height-3xl', value: '1.25' },
-    { name: '4xl', cssVar: '--dsn-text-line-height-4xl', value: '1.1' },
-  ]}
-/>
+<TokenTable prefix="--dsn-text-line-height-" />
 
 ---
 
 ## Spacing
 
-All spacing is based on a `0.5rem` (8px) base unit, following an 8-point grid system. The values below show min → max for the `default` density (see [Fluid Scale](#fluid-scale)).
-The system defines five spacing concepts: **row** (vertical between components), **column** (horizontal between components), **inline** (horizontal within components), **block** (vertical within components), and **text** (between text and icons).
+Alle ruimte is afgeleid van één basiseenheid, `--dsn-space-base`. Bij de density `default` zijn de maten fluid (zie [Fluid Scale](#fluid-scale)); de live waarde toont dan de `clamp()`.
 
-### None
+Het systeem kent vijf soorten ruimte: **row** (verticaal tussen componenten), **column** (horizontaal tussen componenten), **inline** (horizontaal binnen een component), **block** (verticaal binnen een component) en **text** (tussen tekst en icoon).
 
-<TokenTable
-  previewType="spacing"
-  tokens={[{ name: 'none', cssVar: '--dsn-space-none', value: '0px' }]}
-/>
+### Base and None
+
+<TokenTable tokens="--dsn-space-base --dsn-space-none" previewType="spacing" />
 
 ### Row Spacing (vertical between components)
 
 <TokenTable
+  prefix="--dsn-space-row-"
+  exclude="--dsn-space-row-min- --dsn-space-row-max-"
   previewType="spacing"
-  tokens={[
-    {
-      name: '2xs',
-      cssVar: '--dsn-space-row-2xs',
-      value: '1px (fixed)',
-    },
-    {
-      name: 'xs',
-      cssVar: '--dsn-space-row-xs',
-      value: '2px (fixed)',
-    },
-    {
-      name: 'sm',
-      cssVar: '--dsn-space-row-sm',
-      value: '4px → 5px (fluid)',
-    },
-    {
-      name: 'md',
-      cssVar: '--dsn-space-row-md',
-      value: '8px → 10px (fluid)',
-    },
-    {
-      name: 'lg',
-      cssVar: '--dsn-space-row-lg',
-      value: '12px → 15px (fluid)',
-    },
-    {
-      name: 'xl',
-      cssVar: '--dsn-space-row-xl',
-      value: '16px → 20px (fluid)',
-    },
-    {
-      name: '2xl',
-      cssVar: '--dsn-space-row-2xl',
-      value: '20px → 25px (fluid)',
-    },
-    {
-      name: '3xl',
-      cssVar: '--dsn-space-row-3xl',
-      value: '24px → 30px (fluid)',
-    },
-    {
-      name: '4xl',
-      cssVar: '--dsn-space-row-4xl',
-      value: '32px → 40px (fluid)',
-    },
-    {
-      name: '5xl',
-      cssVar: '--dsn-space-row-5xl',
-      value: '64px → 80px (fluid)',
-    },
-    {
-      name: '6xl',
-      cssVar: '--dsn-space-row-6xl',
-      value: '160px → 200px (fluid)',
-    },
-  ]}
 />
+
+<Details summary="Min- en maxwaarden van row">
+
+<TokenTable
+  prefix="--dsn-space-row-min- --dsn-space-row-max-"
+  previewType="spacing"
+/>
+
+</Details>
 
 ### Column Spacing (horizontal between components)
 
 <TokenTable
+  prefix="--dsn-space-column-"
+  exclude="--dsn-space-column-min- --dsn-space-column-max-"
   previewType="spacing"
-  tokens={[
-    {
-      name: '2xs',
-      cssVar: '--dsn-space-column-2xs',
-      value: '1px (fixed)',
-    },
-    {
-      name: 'xs',
-      cssVar: '--dsn-space-column-xs',
-      value: '2px (fixed)',
-    },
-    {
-      name: 'sm',
-      cssVar: '--dsn-space-column-sm',
-      value: '4px → 5px (fluid)',
-    },
-    {
-      name: 'md',
-      cssVar: '--dsn-space-column-md',
-      value: '8px → 10px (fluid)',
-    },
-    {
-      name: 'lg',
-      cssVar: '--dsn-space-column-lg',
-      value: '12px → 15px (fluid)',
-    },
-    {
-      name: 'xl',
-      cssVar: '--dsn-space-column-xl',
-      value: '16px → 20px (fluid)',
-    },
-    {
-      name: '2xl',
-      cssVar: '--dsn-space-column-2xl',
-      value: '20px → 25px (fluid)',
-    },
-    {
-      name: '3xl',
-      cssVar: '--dsn-space-column-3xl',
-      value: '24px → 30px (fluid)',
-    },
-    {
-      name: '4xl',
-      cssVar: '--dsn-space-column-4xl',
-      value: '32px → 40px (fluid)',
-    },
-    {
-      name: '5xl',
-      cssVar: '--dsn-space-column-5xl',
-      value: '64px → 80px (fluid)',
-    },
-    {
-      name: '6xl',
-      cssVar: '--dsn-space-column-6xl',
-      value: '160px → 200px (fluid)',
-    },
-  ]}
 />
+
+<Details summary="Min- en maxwaarden van column">
+
+<TokenTable
+  prefix="--dsn-space-column-min- --dsn-space-column-max-"
+  previewType="spacing"
+/>
+
+</Details>
 
 ### Inline Spacing (horizontal within components)
 
 <TokenTable
+  prefix="--dsn-space-inline-"
+  exclude="--dsn-space-inline-min- --dsn-space-inline-max-"
   previewType="spacing"
-  tokens={[
-    {
-      name: '2xs',
-      cssVar: '--dsn-space-inline-2xs',
-      value: '1px (fixed)',
-    },
-    {
-      name: 'xs',
-      cssVar: '--dsn-space-inline-xs',
-      value: '2px (fixed)',
-    },
-    {
-      name: 'sm',
-      cssVar: '--dsn-space-inline-sm',
-      value: '4px → 5px (fluid)',
-    },
-    {
-      name: 'md',
-      cssVar: '--dsn-space-inline-md',
-      value: '8px → 10px (fluid)',
-    },
-    {
-      name: 'lg',
-      cssVar: '--dsn-space-inline-lg',
-      value: '12px → 15px (fluid)',
-    },
-    {
-      name: 'xl',
-      cssVar: '--dsn-space-inline-xl',
-      value: '16px → 20px (fluid)',
-    },
-    {
-      name: '2xl',
-      cssVar: '--dsn-space-inline-2xl',
-      value: '20px → 25px (fluid)',
-    },
-    {
-      name: '3xl',
-      cssVar: '--dsn-space-inline-3xl',
-      value: '24px → 30px (fluid)',
-    },
-    {
-      name: '4xl',
-      cssVar: '--dsn-space-inline-4xl',
-      value: '32px → 40px (fluid)',
-    },
-    {
-      name: '5xl',
-      cssVar: '--dsn-space-inline-5xl',
-      value: '48px → 60px (fluid)',
-    },
-    {
-      name: '6xl',
-      cssVar: '--dsn-space-inline-6xl',
-      value: '64px → 80px (fluid)',
-    },
-  ]}
 />
+
+<Details summary="Min- en maxwaarden van inline">
+
+<TokenTable
+  prefix="--dsn-space-inline-min- --dsn-space-inline-max-"
+  previewType="spacing"
+/>
+
+</Details>
 
 ### Block Spacing (vertical within components)
 
 <TokenTable
+  prefix="--dsn-space-block-"
+  exclude="--dsn-space-block-min- --dsn-space-block-max-"
   previewType="spacing"
-  tokens={[
-    {
-      name: '2xs',
-      cssVar: '--dsn-space-block-2xs',
-      value: '1px (fixed)',
-    },
-    {
-      name: 'xs',
-      cssVar: '--dsn-space-block-xs',
-      value: '2px (fixed)',
-    },
-    {
-      name: 'sm',
-      cssVar: '--dsn-space-block-sm',
-      value: '4px → 5px (fluid)',
-    },
-    {
-      name: 'md',
-      cssVar: '--dsn-space-block-md',
-      value: '8px → 10px (fluid)',
-    },
-    {
-      name: 'lg',
-      cssVar: '--dsn-space-block-lg',
-      value: '12px → 15px (fluid)',
-    },
-    {
-      name: 'xl',
-      cssVar: '--dsn-space-block-xl',
-      value: '16px → 20px (fluid)',
-    },
-    {
-      name: '2xl',
-      cssVar: '--dsn-space-block-2xl',
-      value: '20px → 25px (fluid)',
-    },
-    {
-      name: '3xl',
-      cssVar: '--dsn-space-block-3xl',
-      value: '24px → 30px (fluid)',
-    },
-    {
-      name: '4xl',
-      cssVar: '--dsn-space-block-4xl',
-      value: '32px → 40px (fluid)',
-    },
-    {
-      name: '5xl',
-      cssVar: '--dsn-space-block-5xl',
-      value: '48px → 60px (fluid)',
-    },
-    {
-      name: '6xl',
-      cssVar: '--dsn-space-block-6xl',
-      value: '64px → 80px (fluid)',
-    },
-  ]}
 />
+
+<Details summary="Min- en maxwaarden van block">
+
+<TokenTable
+  prefix="--dsn-space-block-min- --dsn-space-block-max-"
+  previewType="spacing"
+/>
+
+</Details>
 
 ### Text Spacing (between text and icons)
 
 <TokenTable
+  prefix="--dsn-space-text-"
+  exclude="--dsn-space-text-min- --dsn-space-text-max-"
   previewType="spacing"
-  tokens={[
-    {
-      name: '3xs',
-      cssVar: '--dsn-space-text-3xs',
-      value: '1px (fixed)',
-    },
-    {
-      name: '2xs',
-      cssVar: '--dsn-space-text-2xs',
-      value: '2px (fixed)',
-    },
-    {
-      name: 'xs',
-      cssVar: '--dsn-space-text-xs',
-      value: '2px (fixed)',
-    },
-    {
-      name: 'sm',
-      cssVar: '--dsn-space-text-sm',
-      value: '4px → 5px (fluid)',
-    },
-    {
-      name: 'md',
-      cssVar: '--dsn-space-text-md',
-      value: '8px → 10px (fluid)',
-    },
-    {
-      name: 'lg',
-      cssVar: '--dsn-space-text-lg',
-      value: '12px → 15px (fluid)',
-    },
-    {
-      name: 'xl',
-      cssVar: '--dsn-space-text-xl',
-      value: '16px → 20px (fluid)',
-    },
-    {
-      name: '2xl',
-      cssVar: '--dsn-space-text-2xl',
-      value: '20px → 25px (fluid)',
-    },
-    {
-      name: '3xl',
-      cssVar: '--dsn-space-text-3xl',
-      value: '24px → 30px (fluid)',
-    },
-  ]}
 />
+
+<Details summary="Min- en maxwaarden van text">
+
+<TokenTable
+  prefix="--dsn-space-text-min- --dsn-space-text-max-"
+  previewType="spacing"
+/>
+
+</Details>
 
 ---
 
@@ -1907,355 +410,114 @@ The system defines five spacing concepts: **row** (vertical between components),
 
 ### Border Width
 
-<TokenTable
-  tokens={[
-    { name: 'None', cssVar: '--dsn-border-width-none', value: '0px' },
-    { name: 'Thin', cssVar: '--dsn-border-width-thin', value: '1px' },
-    { name: 'Medium', cssVar: '--dsn-border-width-medium', value: '2px' },
-    { name: 'Thick', cssVar: '--dsn-border-width-thick', value: '4px' },
-  ]}
-/>
+<TokenTable prefix="--dsn-border-width-" />
 
 ### Border Radius
 
-<TokenTable
-  previewType="border-radius"
-  tokens={[
-    { name: 'square', cssVar: '--dsn-border-radius-square', value: '0px' },
-    { name: 'sm', cssVar: '--dsn-border-radius-sm', value: '4px' },
-    { name: 'md', cssVar: '--dsn-border-radius-md', value: '8px' },
-    { name: 'lg', cssVar: '--dsn-border-radius-lg', value: '16px' },
-    { name: 'round', cssVar: '--dsn-border-radius-round', value: '999px' },
-  ]}
-/>
+<TokenTable prefix="--dsn-border-radius-" previewType="border-radius" />
 
 ---
 
 ## Focus Indicators
 
-Accessible focus indicators for keyboard navigation, following WCAG 2.4.7.
+Toegankelijke focusindicatoren voor toetsenbordnavigatie, volgens WCAG 2.4.7.
 
-<TokenTable
-  previewType="color"
-  tokens={[
-    {
-      name: 'Outline Color',
-      cssVar: '--dsn-focus-outline-color',
-      value: '#0b0c0c',
-    },
-    {
-      name: 'Background',
-      cssVar: '--dsn-focus-background-color',
-      value: '#ffdd00',
-    },
-    { name: 'Text Color', cssVar: '--dsn-focus-color', value: '#0b0c0c' },
-  ]}
-/>
-
-<TokenTable
-  tokens={[
-    {
-      name: 'Outline Width',
-      cssVar: '--dsn-focus-outline-width',
-      value: '2px',
-    },
-    {
-      name: 'Outline Style',
-      cssVar: '--dsn-focus-outline-style',
-      value: 'dashed',
-    },
-    {
-      name: 'Outline Offset',
-      cssVar: '--dsn-focus-outline-offset',
-      value: '0px',
-    },
-  ]}
-/>
+<TokenTable prefix="--dsn-focus-" previewType="auto" />
 
 ---
 
 ## Icon Sizes
 
-Icon sizes are fluid and coupled to typography: calculated as `font-size * line-height` to ensure optical alignment with adjacent text.
+Iconen zijn fluid en gekoppeld aan de typografie: hun maat is `font-size * line-height`, zodat ze optisch uitlijnen met de tekst ernaast.
 
-<TokenTable
-  previewType="spacing"
-  tokens={[
-    {
-      name: 'sm',
-      cssVar: '--dsn-icon-size-sm',
-      value: 'font-size-sm * line-height-sm',
-    },
-    {
-      name: 'md',
-      cssVar: '--dsn-icon-size-md',
-      value: 'font-size-md * line-height-md',
-    },
-    {
-      name: 'lg',
-      cssVar: '--dsn-icon-size-lg',
-      value: 'font-size-lg * line-height-lg',
-    },
-    {
-      name: 'xl',
-      cssVar: '--dsn-icon-size-xl',
-      value: 'font-size-xl * line-height-xl',
-    },
-    {
-      name: '2xl',
-      cssVar: '--dsn-icon-size-2xl',
-      value: 'font-size-2xl * line-height-2xl',
-    },
-    {
-      name: '3xl',
-      cssVar: '--dsn-icon-size-3xl',
-      value: 'font-size-3xl * line-height-3xl',
-    },
-    {
-      name: '4xl',
-      cssVar: '--dsn-icon-size-4xl',
-      value: 'font-size-4xl * line-height-4xl',
-    },
-  ]}
-/>
+<TokenTable prefix="--dsn-icon-size-" previewType="spacing" />
 
 ---
 
 ## Pointer Target Sizing
 
-Minimum touch/click target sizes following WCAG 2.5.5 Target Size.
+Minimale maat van een klik- of aanraakdoel, volgens WCAG 2.5.5 Target Size.
 
-<TokenTable
-  previewType="spacing"
-  tokens={[
-    {
-      name: 'Min Block Size',
-      cssVar: '--dsn-pointer-target-min-block-size',
-      value: '3rem (48px)',
-    },
-    {
-      name: 'Min Inline Size',
-      cssVar: '--dsn-pointer-target-min-inline-size',
-      value: '3rem (48px)',
-    },
-  ]}
-/>
+<TokenTable prefix="--dsn-pointer-target-" previewType="spacing" />
 
 ---
 
 ## Content Sizing
 
-Maximum width constraints for page content and readable text lines.
+Maximale breedte van de pagina-inhoud en van leesbare tekstregels.
 
-<TokenTable
-  tokens={[
-    {
-      name: 'Page Max Inline Size',
-      cssVar: '--dsn-page-max-inline-size',
-      value: '75rem',
-    },
-    {
-      name: 'Text Max Inline Size',
-      cssVar: '--dsn-text-max-inline-size',
-      value: '65ch',
-    },
-  ]}
-/>
+<TokenTable tokens="--dsn-page-max-inline-size --dsn-text-max-inline-size" />
 
 ---
 
-## Form Control Sizing
+## Form Controls
 
-Inline-size presets for form inputs, based on the expected character count of the input value. Use `max-inline-size` as the default cap when no specific inline-size preset applies.
+Gedeelde tokens voor alle invoervelden. De component-tokens van TextInput, TextArea, Checkbox en Radio verwijzen hiernaar (en via TextInput ook de afgeleide invoervelden), dus een wijziging hier geldt voor alle form controls tegelijk.
+
+### Sizing
+
+Breedtes voor invoervelden, gebaseerd op het verwachte aantal tekens. Gebruik `max-inline-size` als standaardgrens wanneer geen van de andere breedtes past.
 
 <TokenTable
-  tokens={[
-    {
-      name: 'Max Inline Size',
-      cssVar: '--dsn-form-control-max-inline-size',
-      value: '25rem',
-    },
-    {
-      name: 'Inline Size xs',
-      cssVar: '--dsn-form-control-inline-size-xs',
-      value: '10ch',
-    },
-    {
-      name: 'Inline Size sm',
-      cssVar: '--dsn-form-control-inline-size-sm',
-      value: '14ch',
-    },
-    {
-      name: 'Inline Size md',
-      cssVar: '--dsn-form-control-inline-size-md',
-      value: '20ch',
-    },
-    {
-      name: 'Inline Size lg',
-      cssVar: '--dsn-form-control-inline-size-lg',
-      value: '32ch',
-    },
-    {
-      name: 'Inline Size xl',
-      cssVar: '--dsn-form-control-inline-size-xl',
-      value: '48ch',
-    },
-    {
-      name: 'Inline Size full',
-      cssVar: '--dsn-form-control-inline-size-full',
-      value: '100%',
-    },
-  ]}
+  tokens="--dsn-form-control-max-inline-size"
+  prefix="--dsn-form-control-inline-size-"
+/>
+
+### Typography, Spacing and States
+
+<TokenTable
+  prefix="--dsn-form-control-"
+  exclude="--dsn-form-control-inline-size- --dsn-form-control-max-inline-size"
+  previewType="auto"
 />
 
 ---
 
 ## Box Shadows
 
-Elevation shadows communicate depth: which surface floats above another. Each shadow is composed of two drop shadow layers (direct + ambient) and a spread-only outline layer (highlight). Only the color tokens differ between light and dark mode; the shadow structure is identical.
+Schaduwen laten diepte zien: welk vlak boven een ander ligt. Elke schaduw bestaat uit twee slagschaduwen (direct en ambient) en een omlijning met alleen spread (highlight). Tussen light en dark mode verschillen alleen de kleurtokens; de opbouw van de schaduw is gelijk.
 
 ### Shadow Colors
 
-The three primitives that power all elevation shadows. In light mode `highlight` is transparent (no visual effect). In dark mode `highlight` becomes a subtle white outline to define edges where drop shadows are less visible. In the wireframe theme all three are transparent: wireframe draws no shadows, but the Figma effect styles bind their colors to these tokens and need a value in every mode.
+De kleuren achter alle schaduwen. In light mode is `highlight` transparant en dus onzichtbaar. In dark mode wordt `highlight` een subtiele witte omlijning die randen zichtbaar maakt waar slagschaduwen wegvallen. In het wireframe-thema zijn ze allemaal transparant: wireframe tekent geen schaduwen, maar de effect styles in Figma koppelen hun kleur aan deze tokens en hebben in elke mode een waarde nodig. `scroll` is de schaduw die aangeeft dat een vlak horizontaal verder scrolt.
 
-<TokenTable
-  previewType="color"
-  tokens={[
-    { name: 'Direct', cssVar: '--dsn-color-shadow-direct' },
-    { name: 'Ambient', cssVar: '--dsn-color-shadow-ambient' },
-    { name: 'Highlight', cssVar: '--dsn-color-shadow-highlight' },
-  ]}
-/>
+<TokenTable prefix="--dsn-color-shadow-" previewType="color" />
 
 ### Elevation Scale
 
-<TokenTable
-  previewType="shadow"
-  tokens={[
-    {
-      name: 'none: Flat, no elevation',
-      cssVar: '--dsn-box-shadow-none',
-      value: 'none',
-    },
-    { name: 'sm: Cards, chips', cssVar: '--dsn-box-shadow-sm' },
-    { name: 'md: Dropdowns, tooltips', cssVar: '--dsn-box-shadow-md' },
-    { name: 'lg: Modals, dialogs', cssVar: '--dsn-box-shadow-lg' },
-  ]}
-/>
+<TokenTable prefix="--dsn-box-shadow-" previewType="shadow" />
 
 ---
 
 ## Z-Index
 
-Z-index tokens definiëren de stapelvolgorde van UI-lagen. De tokennaam is gelijk aan de waarde, zodat er altijd ruimte is om tussenliggende niveaus toe te voegen.
+Z-index-tokens bepalen de stapelvolgorde van lagen in de interface. De tokennaam is gelijk aan de waarde, zodat er altijd ruimte is om een tussenliggend niveau toe te voegen.
 
-<TokenTable
-  tokens={[
-    {
-      name: '300 — PageHeader (sticky/auto-hide)',
-      cssVar: '--dsn-z-index-300',
-      value: '300',
-    },
-    {
-      name: '350 — Popover, tooltips, dropdowns',
-      cssVar: '--dsn-z-index-350',
-      value: '350',
-    },
-    {
-      name: '400 — Backdrop (achter modals/drawers)',
-      cssVar: '--dsn-z-index-400',
-      value: '400',
-    },
-    {
-      name: '500 — ModalDialog, Drawer',
-      cssVar: '--dsn-z-index-500',
-      value: '500',
-    },
-    {
-      name: '600 — SkipLink (altijd bovenaan)',
-      cssVar: '--dsn-z-index-600',
-      value: '600',
-    },
-  ]}
-/>
+<TokenTable prefix="--dsn-z-index-" />
 
 ---
 
 ## Motion
 
-Motion tokens beheren timing en easing op één centrale plek. Alle componenten gebruiken deze tokens: waardoor `prefers-reduced-motion` automatisch en consistent wordt gerespecteerd.
+Motion-tokens regelen timing en easing op één centrale plek. Alle componenten gebruiken deze tokens, waardoor `prefers-reduced-motion` automatisch en overal hetzelfde wordt gerespecteerd.
 
-Bij `prefers-reduced-motion: reduce` worden alle duration-tokens naar `0ms` gezet via een centrale media query in het theme CSS-bestand. Componenten hoeven zelf geen media query te implementeren.
+Bij `prefers-reduced-motion: reduce` worden alle duration-tokens `0ms`, via een centrale media query in het CSS-bestand van het thema. Componenten hoeven zelf geen media query te hebben.
 
 ### Transition Duration
 
 <TokenTable
+  prefix="--dsn-transition-duration-"
   previewType="transition-duration"
-  tokens={[
-    {
-      name: 'Instant',
-      cssVar: '--dsn-transition-duration-instant',
-      value: '0ms',
-    },
-    { name: 'Fast', cssVar: '--dsn-transition-duration-fast', value: '100ms' },
-    {
-      name: 'Normal',
-      cssVar: '--dsn-transition-duration-normal',
-      value: '200ms',
-    },
-    { name: 'Slow', cssVar: '--dsn-transition-duration-slow', value: '350ms' },
-    {
-      name: 'Slower',
-      cssVar: '--dsn-transition-duration-slower',
-      value: '500ms',
-    },
-  ]}
 />
 
 ### Transition Easing
 
-<TokenTable
-  previewType="transition-easing"
-  tokens={[
-    {
-      name: 'Default',
-      cssVar: '--dsn-transition-easing-default',
-      value: 'cubic-bezier(0.25, 0.1, 0.25, 1)',
-    },
-    {
-      name: 'Enter',
-      cssVar: '--dsn-transition-easing-enter',
-      value: 'cubic-bezier(0, 0, 0.2, 1)',
-    },
-    {
-      name: 'Exit',
-      cssVar: '--dsn-transition-easing-exit',
-      value: 'cubic-bezier(0.4, 0, 1, 1)',
-    },
-    {
-      name: 'Move',
-      cssVar: '--dsn-transition-easing-move',
-      value: 'cubic-bezier(0.4, 0, 0.2, 1)',
-    },
-    {
-      name: 'Linear',
-      cssVar: '--dsn-transition-easing-linear',
-      value: 'linear',
-    },
-  ]}
-/>
+<TokenTable prefix="--dsn-transition-easing-" previewType="transition-easing" />
 
 ---
 
 ## Breakpoints
 
-Reference breakpoints for responsive design. These tokens are available as CSS custom properties but **should not be used in CSS `@media` rules** — browsers do not resolve custom properties inside media queries. Use the hardcoded values directly in your CSS.
+Referentie-breakpoints voor responsive design. Ze bestaan als CSS custom property, maar **gebruik ze niet in een CSS `@media`-regel**: browsers lossen custom properties in een media query niet op. Zet de waarde daar rechtstreeks in je CSS.
 
-<TokenTable
-  tokens={[
-    { name: 'sm', cssVar: '--dsn-breakpoint-sm', value: '36em (~576px)' },
-    { name: 'md', cssVar: '--dsn-breakpoint-md', value: '44em (~704px)' },
-    { name: 'lg', cssVar: '--dsn-breakpoint-lg', value: '64em (~1024px)' },
-    { name: 'xl', cssVar: '--dsn-breakpoint-xl', value: '74em (~1184px)' },
-  ]}
-/>
+<TokenTable prefix="--dsn-breakpoint-" />

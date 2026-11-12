@@ -1,16 +1,16 @@
 import React, { useEffect, useState, useCallback } from 'react';
+import tokenDocs from '@dsn-starter-kit/design-tokens/token-docs.json';
+import {
+  selectTokens,
+  type TokenDoc,
+  type TokenSelection,
+} from './tokenSelection';
 
 // Extend Window interface for our custom property
 declare global {
   interface Window {
     __lastDsnToken?: string;
   }
-}
-
-interface Token {
-  name: string;
-  cssVar: string;
-  value?: string; // Optional - will be computed live if not provided
 }
 
 type PreviewType =
@@ -21,12 +21,18 @@ type PreviewType =
   | 'shadow'
   | 'transition-duration'
   | 'transition-easing'
+  /** Kleurvlak voor kleurtokens, geen preview voor de rest. */
+  | 'auto'
   | 'none';
 
-interface TokenTableProps {
-  tokens: Token[];
+interface TokenTableProps extends TokenSelection {
   previewType?: PreviewType;
-  showLiveValue?: boolean; // When true, shows the computed CSS value
+}
+
+const allTokens: TokenDoc[] = tokenDocs.tokens;
+
+function isColor(name: string): boolean {
+  return /^--dsn-color-|-color$/.test(name);
 }
 
 const cellStyle: React.CSSProperties = {
@@ -35,6 +41,13 @@ const cellStyle: React.CSSProperties = {
   fontSize: '13px',
   fontFamily: 'var(--dsn-text-font-family-monospace, monospace)',
   verticalAlign: 'middle',
+};
+
+const descriptionStyle: React.CSSProperties = {
+  ...cellStyle,
+  minWidth: 240,
+  fontFamily: 'var(--dsn-text-font-family-default, sans-serif)',
+  fontSize: '14px',
 };
 
 const headerStyle: React.CSSProperties = {
@@ -229,6 +242,8 @@ function Preview({ type, cssVar }: { type: PreviewType; cssVar: string }) {
       return <TransitionDurationPreview cssVar={cssVar} />;
     case 'transition-easing':
       return <TransitionEasingPreview cssVar={cssVar} />;
+    case 'auto':
+      return isColor(cssVar) ? <ColorPreview cssVar={cssVar} /> : null;
     case 'none':
       return null;
   }
@@ -392,57 +407,73 @@ function LiveValue({ cssVar }: { cssVar: string }) {
   return <>{value}</>;
 }
 
+/**
+ * Tabel met design tokens: preview, naam, description en de live waarde.
+ *
+ * Namen en descriptions komen uit `token-docs.json`, dat de token-build
+ * schrijft. Je kiest tokens met `prefix` (en `exclude`) of met losse
+ * `tokens`, nooit door ze over te typen:
+ *
+ *   <TokenTable prefix="--dsn-color-neutral-" exclude="--dsn-color-neutral-inverse-" previewType="color" />
+ *   <TokenTable tokens="--dsn-text-font-family-default --dsn-heading-font-family" />
+ *
+ * De live waarde leest de custom property uit de pagina, dus die volgt het
+ * thema, de mode en de density uit de toolbar.
+ */
 export function TokenTable({
-  tokens,
   previewType = 'none',
-  showLiveValue = true,
+  ...selection
 }: TokenTableProps) {
+  const tokens = selectTokens(allTokens, selection);
   const showPreview = previewType !== 'none';
 
   return (
-    <table
-      style={{
-        width: '100%',
-        borderCollapse: 'collapse',
-        marginBottom: 32,
-      }}
-    >
-      <thead>
-        <tr>
-          {showPreview && <th style={headerStyle}>Preview</th>}
-          <th style={headerStyle}>CSS Variable</th>
-          <th style={headerStyle}>{showLiveValue ? 'Live Value' : 'Value'}</th>
-        </tr>
-      </thead>
-      <tbody>
-        {tokens.map((token) => (
-          <tr key={token.cssVar}>
-            {showPreview && (
+    <div style={{ overflowX: 'auto', marginBottom: 32 }}>
+      <table
+        style={{
+          width: '100%',
+          borderCollapse: 'collapse',
+        }}
+      >
+        <thead>
+          <tr>
+            {showPreview && <th style={headerStyle}>Preview</th>}
+            <th style={headerStyle}>Token</th>
+            <th style={headerStyle}>Beschrijving</th>
+            <th style={headerStyle}>Live waarde</th>
+          </tr>
+        </thead>
+        <tbody>
+          {tokens.map((token) => (
+            <tr key={token.name}>
+              {showPreview && (
+                <td
+                  style={{
+                    ...cellStyle,
+                    width: previewType === 'shadow' ? 140 : 60,
+                  }}
+                >
+                  <Preview type={previewType} cssVar={token.name} />
+                </td>
+              )}
+              <td style={{ ...cellStyle, whiteSpace: 'nowrap' }}>
+                {token.name}
+              </td>
+              <td style={descriptionStyle}>
+                {token.description ?? '⚠️ Onbekend token'}
+              </td>
               <td
                 style={{
                   ...cellStyle,
-                  width: previewType === 'shadow' ? 140 : 60,
+                  color: 'var(--dsn-color-neutral-color-subtle, #666)',
                 }}
               >
-                <Preview type={previewType} cssVar={token.cssVar} />
+                <LiveValue cssVar={token.name} />
               </td>
-            )}
-            <td style={cellStyle}>{token.cssVar}</td>
-            <td
-              style={{
-                ...cellStyle,
-                color: 'var(--dsn-color-neutral-color-subtle, #666)',
-              }}
-            >
-              {showLiveValue ? (
-                <LiveValue cssVar={token.cssVar} />
-              ) : (
-                token.value
-              )}
-            </td>
-          </tr>
-        ))}
-      </tbody>
-    </table>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </div>
   );
 }
