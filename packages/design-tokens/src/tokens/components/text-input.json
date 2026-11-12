@@ -26,11 +26,6 @@
         "$type": "color",
         "$description": "Tekstkleur."
       },
-      "column-gap": {
-        "$value": "{dsn.space.text.lg}",
-        "$type": "dimension",
-        "$description": "Horizontale ruimte tussen de onderdelen."
-      },
       "font-family": {
         "$value": "{dsn.form-control.font-family}",
         "$type": "fontFamily",
@@ -60,11 +55,6 @@
         "$value": "{dsn.pointer-target.min-inline-size}",
         "$type": "dimension",
         "$description": "Minimale breedte."
-      },
-      "outline-offset": {
-        "$value": "0px",
-        "$type": "dimension",
-        "$description": "Afstand tussen de rand en de focusomtrek."
       },
       "padding-block-end": {
         "$value": "{dsn.form-control.padding-block-end}",
@@ -114,21 +104,6 @@
           "$type": "color",
           "$description": "Lijnkleur van de rand bij ‘focus’ status."
         },
-        "box-shadow-x": {
-          "$value": "0",
-          "$type": "dimension",
-          "$description": "Horizontale verschuiving van de schaduw bij ‘focus’ status."
-        },
-        "box-shadow-y": {
-          "$value": "0",
-          "$type": "dimension",
-          "$description": "Verticale verschuiving van de schaduw bij ‘focus’ status."
-        },
-        "box-shadow-blur": {
-          "$value": "0",
-          "$type": "dimension",
-          "$description": "Vervaging van de schaduw bij ‘focus’ status."
-        },
         "box-shadow-spread": {
           "$value": "{dsn.border.width.medium}",
           "$type": "dimension",
@@ -138,29 +113,9 @@
           "$value": "{dsn.text-input.focus.border-color}",
           "$type": "color",
           "$description": "Kleur van de schaduw bij ‘focus’ status."
-        },
-        "color": {
-          "$value": "{dsn.form-control.focus.color}",
-          "$type": "color",
-          "$description": "Tekstkleur bij ‘focus’ status."
         }
       },
       "hover": {
-        "box-shadow-x": {
-          "$value": "0",
-          "$type": "dimension",
-          "$description": "Horizontale verschuiving van de schaduw bij ‘hover’ status."
-        },
-        "box-shadow-y": {
-          "$value": "0",
-          "$type": "dimension",
-          "$description": "Verticale verschuiving van de schaduw bij ‘hover’ status."
-        },
-        "box-shadow-blur": {
-          "$value": "0",
-          "$type": "dimension",
-          "$description": "Vervaging van de schaduw bij ‘hover’ status."
-        },
         "box-shadow-spread": {
           "$value": "{dsn.border.width.medium}",
           "$type": "dimension",
@@ -190,21 +145,6 @@
           "$type": "color",
           "$description": "Lijnkleur van de rand bij een ongeldige invoer."
         },
-        "box-shadow-x": {
-          "$value": "0",
-          "$type": "dimension",
-          "$description": "Horizontale verschuiving van de schaduw bij een ongeldige invoer."
-        },
-        "box-shadow-y": {
-          "$value": "0",
-          "$type": "dimension",
-          "$description": "Verticale verschuiving van de schaduw bij een ongeldige invoer."
-        },
-        "box-shadow-blur": {
-          "$value": "0",
-          "$type": "dimension",
-          "$description": "Vervaging van de schaduw bij een ongeldige invoer."
-        },
         "box-shadow-spread": {
           "$value": "{dsn.border.width.medium}",
           "$type": "dimension",
@@ -214,11 +154,6 @@
           "$value": "{dsn.text-input.invalid.border-color}",
           "$type": "color",
           "$description": "Kleur van de schaduw bij een ongeldige invoer."
-        },
-        "color": {
-          "$value": "{dsn.form-control.color}",
-          "$type": "color",
-          "$description": "Tekstkleur bij een ongeldige invoer."
         }
       },
       "read-only": {

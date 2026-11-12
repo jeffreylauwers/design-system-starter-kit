@@ -6,20 +6,10 @@
         "$type": "dimension",
         "$description": "Afstand tussen de klokknop en de rand aan het eind van het veld."
       },
-      "icon-color": {
-        "$value": "{dsn.color.action-2.color-default}",
-        "$type": "color",
-        "$description": "Kleur van het icoon."
-      },
       "icon-gap": {
         "$value": "{dsn.space.text.md}",
         "$type": "dimension",
         "$description": "Ruimte tussen icoon en tekst."
-      },
-      "icon-hover-color": {
-        "$value": "{dsn.color.action-2.color-hover}",
-        "$type": "color",
-        "$description": "Kleur van het icoon bij ‘hover’ status."
       },
       "icon-size": {
         "$value": "{dsn.button.size.small.icon-size}",
