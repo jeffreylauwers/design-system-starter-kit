@@ -1,16 +1,6 @@
 {
   "dsn": {
     "form-field": {
-      "margin-block-end": {
-        "$value": "{dsn.space.none}",
-        "$type": "dimension",
-        "$description": "Ruimte onder het component."
-      },
-      "margin-block-start": {
-        "$value": "{dsn.space.none}",
-        "$type": "dimension",
-        "$description": "Ruimte boven het component."
-      },
       "invalid": {
         "border-inline-start-color": {
           "$value": "{dsn.color.negative.border-default}",

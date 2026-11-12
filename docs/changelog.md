@@ -10,6 +10,17 @@ All notable changes to this project are documented in this file.
 
 Nog niet gepubliceerde wijzigingen. Schrijf nieuwe changelog-entries hieronder; bij de volgende release wordt deze kop gepromoveerd naar het definitieve versienummer.
 
+### Component-tokens: 57 ongebruikte tokens verwijderd
+
+Deze tokens las geen enkel component: wie ze aanpaste, zag geen verschil. Ze stonden wel in de npm-dist, in Figma en in de token-tabellen in Storybook. Wie een van deze custom properties zelf overschreef, kan die regel weghalen; er verandert niets aan de weergave.
+
+- **CheckboxGroup en RadioGroup:** `border-width`, `margin`, `padding` en alle `legend-*`-tokens. De groepen zijn een lijst zonder `<fieldset>`; de legend hoort bij FormFieldset. Alleen `gap` blijft.
+- **TextInput en TextArea:** `focus-`, `hover-` en `invalid-box-shadow-x`, `-y` en `-blur`, `focus-color`, `invalid-color` en `outline-offset`, plus `text-input-column-gap`. De ring is een `inset`-schaduw met alleen `spread` en `box-shadow-color`; die tokens blijven.
+- **Radio:** `color` en de `hover-`, `active-`, `focus-`, `disabled-` en `invalid-color`. De stip bestaat alleen in de `checked`-staten, met eigen tokens.
+- **Drawer en ModalDialog:** `z-index`. Beide openen in de top layer, waar `z-index` geen effect heeft.
+- **Overig:** `form-field-margin-block-start` en `-end`, `breadcrumb-navigation-item-min-block-size`, `time-input-icon-color` en `-icon-hover-color` (de knop gebruikt de Button-tokens) en `password-input-padding-inline-end`. `password-input.json` is daarmee leeg en verdwenen.
+- **Bewaking:** `tests/component-tokens-used.test.ts` faalt bij een component-token dat geen component gebruikt, direct of via een ander token.
+
 ### Storybook: token-tabellen uit de design tokens
 
 De token-tabellen op de componentpagina's waren met de hand geschreven en liepen uit de pas met de JSON: geen enkele van de 968 beschrijvingen was gelijk aan de `$description`, ongeveer 100 gebruikte tokens ontbraken (zoals alle `checked-*`- en `indeterminate-*`-staten van Checkbox) en een paar rijen wezen naar tokens die niet bestaan, zoals `--dsn-text-input-hover-border-color`.

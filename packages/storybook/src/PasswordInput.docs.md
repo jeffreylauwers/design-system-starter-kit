@@ -45,6 +45,4 @@ Het tonen en verbergen van het ingevulde wachtwoord is bewust **niet** ingebouwd
 
 ## Design tokens
 
-<!-- tokens: password-input -->
-
-PasswordInput erft verder alle tokens van [TextInput](/docs/components-textinput--docs).
+PasswordInput erft alle tokens van [TextInput](/docs/components-textinput--docs).

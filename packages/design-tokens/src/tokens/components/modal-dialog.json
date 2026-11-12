@@ -1,11 +1,6 @@
 {
   "dsn": {
     "modal-dialog": {
-      "z-index": {
-        "$value": "{dsn.z-index.500}",
-        "$type": "number",
-        "$description": "Stapellaag."
-      },
       "background-color": {
         "$value": "{dsn.color.neutral.bg-elevated}",
         "$type": "color",
