@@ -33,10 +33,7 @@ De CheckboxOption component combineert een Checkbox en OptionLabel in een klikba
 
 ## Design tokens
 
-| Token                                 | Beschrijving                                                   |
-| ------------------------------------- | -------------------------------------------------------------- |
-| `--dsn-checkbox-option-gap`           | Ruimte tussen checkbox en label (medium text spacing)          |
-| `--dsn-checkbox-option-padding-block` | Verticale padding voor touch target accessibility (WCAG 2.5.5) |
+<!-- tokens: checkbox-option -->
 
 Plus alle tokens van [Checkbox](/docs/components-checkbox--docs) en [OptionLabel](/docs/components-optionlabel--docs).
 

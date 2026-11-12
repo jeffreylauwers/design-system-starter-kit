@@ -75,17 +75,7 @@ Draait een hele formulierstap om het uploaden, dan mag de opsomming een echte li
 
 ## Design tokens
 
-| Token                              | Beschrijving                                              |
-| ---------------------------------- | --------------------------------------------------------- |
-| `--dsn-file-input-color`           | Subtiele tekst kleur voor bestandsnaam / "no file chosen" |
-| `--dsn-file-input-column-gap`      | Ruimte tussen knop en bestandsnaam tekst                  |
-| `--dsn-file-input-font-family`     | Font family                                               |
-| `--dsn-file-input-font-size`       | Font size                                                 |
-| `--dsn-file-input-font-weight`     | Font weight                                               |
-| `--dsn-file-input-line-height`     | Line height                                               |
-| `--dsn-file-input-min-block-size`  | Minimale hoogte (WCAG touch target)                       |
-| `--dsn-file-input-min-inline-size` | Minimale breedte (WCAG touch target)                      |
-| `--dsn-file-input-disabled-color`  | Tekst kleur in disabled state                             |
+<!-- tokens: file-input -->
 
 De knop (`::file-selector-button`) gebruikt de `--dsn-button-default-*`, `--dsn-button-size-default-*` en `--dsn-button-disabled-*` tokens rechtstreeks, zodat knopstijl altijd in sync blijft met de Button component.
 

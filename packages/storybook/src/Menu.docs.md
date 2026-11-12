@@ -75,10 +75,7 @@ Kies de oriëntatie op basis van de context:
 
 ## Design tokens
 
-| Token                       | Beschrijving                                                                      |
-| --------------------------- | --------------------------------------------------------------------------------- |
-| `--dsn-menu-gap-vertical`   | Ruimte tussen items in verticale oriëntatie (0: items hebben eigen padding-block) |
-| `--dsn-menu-gap-horizontal` | Ruimte tussen items in horizontale oriëntatie                                     |
+<!-- tokens: menu -->
 
 ## Accessibility
 

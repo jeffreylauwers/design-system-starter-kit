@@ -85,15 +85,9 @@ Bij dynamisch bijwerken van de dot (bijv. nieuwe berichten binnenkomen): voeg `a
 
 ## Design tokens
 
-| Token                                   | Beschrijving                                      |
-| --------------------------------------- | ------------------------------------------------- |
-| `--dsn-dot-badge-size`                  | Diameter van de dot (8–10px, fluid)               |
-| `--dsn-dot-badge-color`                 | Achtergrondkleur: wordt per variant ingesteld     |
-| `--dsn-dot-badge-inset-block-start`     | Verticale offset t.o.v. rechterbovenhoek parent   |
-| `--dsn-dot-badge-inset-inline-end`      | Horizontale offset t.o.v. rechterbovenhoek parent |
-| `--dsn-dot-badge-pulse-duration`        | Duur van één pulse-cyclus (1500ms)                |
-| `--dsn-dot-badge-pulse-iteration-count` | Aantal herhalingen van de pulse (3)               |
-| `--dsn-dot-badge-pulse-easing`          | Easing van de pulse-animatie                      |
+<!-- tokens: dot-badge -->
+
+De achtergrondkleur loopt via het interne custom property `--dsn-dot-badge-color`, dat elke variant zelf zet. Het is geen design token: pas de kleur aan via de kleurtokens van de variant.
 
 ## Accessibility
 

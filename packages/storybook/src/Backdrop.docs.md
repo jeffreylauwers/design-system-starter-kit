@@ -65,12 +65,7 @@ Conditioneel renderen biedt geen ruimte voor fade-in/out. Als animatie later gew
 
 ## Design tokens
 
-| Token                             | Beschrijving                                                                                      |
-| --------------------------------- | ------------------------------------------------------------------------------------------------- |
-| `--dsn-backdrop-background-color` | Basiskleur van de overlay: altijd donker, ongeacht light/dark mode (per thema apart gedefinieerd) |
-| `--dsn-backdrop-opacity`          | Transparantie van de overlay: gebruikt in `color-mix()` (standaard: `50%`)                        |
-| `--dsn-backdrop-blur`             | Intensiteit van het blur-filter (standaard: `4px`)                                                |
-| `--dsn-backdrop-z-index`          | Stapelvolgorde: moet lager zijn dan Modal/Drawer z-index (standaard: `400`)                       |
+<!-- tokens: backdrop -->
 
 ## Accessibility
 

@@ -81,10 +81,7 @@ Het logo reageert automatisch op thema- en moduswisselingen via design tokens:
 
 ## Design tokens
 
-| Token                      | Beschrijving                                                                     |
-| -------------------------- | -------------------------------------------------------------------------------- |
-| `--dsn-logo-color-primary` | Achtergrondrechthoek en letterpaden: merkkleur van het actieve thema             |
-| `--dsn-logo-color-label`   | Binnenste rechthoek: zelfde kleur als de documentachtergrond (doorkijkje-effect) |
+<!-- tokens: logo -->
 
 ## Accessibility
 

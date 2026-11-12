@@ -136,40 +136,11 @@ MenuLink gebruikt twee token-sets. De gedeelde `--dsn-menu-item-*` tokens zijn o
 
 ### Gedeeld met MenuButton (`--dsn-menu-item-*`)
 
-| Token                                     | Beschrijving                                    |
-| ----------------------------------------- | ----------------------------------------------- |
-| `--dsn-menu-item-font-size`               | Lettergrootte                                   |
-| `--dsn-menu-item-font-weight`             | Letterdikte (regular)                           |
-| `--dsn-menu-item-line-height`             | Regelhoogte                                     |
-| `--dsn-menu-item-padding-block`           | Verticale padding                               |
-| `--dsn-menu-item-padding-inline`          | Horizontale padding                             |
-| `--dsn-menu-item-gap`                     | Ruimte tussen icoon en label                    |
-| `--dsn-menu-item-min-block-size`          | Minimale raakbare hoogte                        |
-| `--dsn-menu-item-icon-size`               | Icoongrootte                                    |
-| `--dsn-menu-item-color`                   | Tekstkleur (standaard)                          |
-| `--dsn-menu-item-background-color`        | Achtergrondkleur (standaard)                    |
-| `--dsn-menu-item-indicator-width`         | Dikte van de indicator (3px)                    |
-| `--dsn-menu-item-indicator-color`         | Kleur van de indicator (standaard, transparent) |
-| `--dsn-menu-item-hover-color`             | Tekstkleur bij hover                            |
-| `--dsn-menu-item-hover-background-color`  | Achtergrondkleur bij hover                      |
-| `--dsn-menu-item-hover-indicator-color`   | Kleur van de indicator bij hover                |
-| `--dsn-menu-item-active-color`            | Tekstkleur bij active                           |
-| `--dsn-menu-item-active-background-color` | Achtergrondkleur bij active                     |
-| `--dsn-menu-item-active-indicator-color`  | Kleur van de indicator bij active               |
+<!-- tokens: menu-item -->
 
 ### MenuLink-specifiek (`--dsn-menu-link-*`)
 
-| Token                                             | Beschrijving                                                         |
-| ------------------------------------------------- | -------------------------------------------------------------------- |
-| `--dsn-menu-link-level-indent`                    | Inspringing per niveau (level 2–4) via margin-inline-start           |
-| `--dsn-menu-link-current-font-weight`             | Letterdikte voor de actieve/huidige pagina (bold)                    |
-| `--dsn-menu-link-current-color`                   | Tekstkleur voor de actieve/huidige pagina                            |
-| `--dsn-menu-link-current-background-color`        | Achtergrondkleur voor de actieve/huidige pagina (action-2.bg-active) |
-| `--dsn-menu-link-current-indicator-color`         | Kleur van de indicator voor de actieve/huidige pagina                |
-| `--dsn-menu-link-current-hover-color`             | Hover tekstkleur voor de actieve pagina                              |
-| `--dsn-menu-link-current-hover-background-color`  | Hover achtergrondkleur voor de actieve pagina                        |
-| `--dsn-menu-link-current-active-color`            | Active tekstkleur voor de actieve pagina                             |
-| `--dsn-menu-link-current-active-background-color` | Active achtergrondkleur voor de actieve pagina                       |
+<!-- tokens: menu-link -->
 
 ## Accessibility
 

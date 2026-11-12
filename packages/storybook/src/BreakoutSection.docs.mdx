@@ -1,7 +1,7 @@
 import { Meta, Story, Controls, Markdown } from '@storybook/addon-docs/blocks';
 import * as BreakoutSectionStories from './BreakoutSection.stories';
 import docs from './BreakoutSection.docs.md?raw';
-import { PreviewFrame, CodeTabs } from './components';
+import { PreviewFrame, CodeTabs, DocsMarkdown } from './components';
 
 export const [intro, rest] = docs.split('<!-- VOORBEELD -->');
 
@@ -27,4 +27,4 @@ export const [intro, rest] = docs.split('<!-- VOORBEELD -->');
 
 <Controls of={BreakoutSectionStories.Default} />
 
-<Markdown>{rest}</Markdown>
+<DocsMarkdown>{rest}</DocsMarkdown>

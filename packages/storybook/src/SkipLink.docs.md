@@ -60,14 +60,7 @@ De standaardtekst "Ga direct naar de hoofdinhoud" is bruikbaar voor de meeste pa
 
 ## Design tokens
 
-| Token                                 | Beschrijving                                         |
-| ------------------------------------- | ---------------------------------------------------- |
-| `--dsn-skip-link-z-index`             | Z-index (600): boven modals en backdrop              |
-| `--dsn-skip-link-padding-block`       | Verticale padding bij focus                          |
-| `--dsn-skip-link-padding-inline`      | Horizontale padding bij focus                        |
-| `--dsn-skip-link-border-radius`       | Afgeronde hoeken bij focus                           |
-| `--dsn-skip-link-offset-block-start`  | Afstand van boven het viewport bij focus             |
-| `--dsn-skip-link-offset-inline-start` | Afstand van de linkerkant van het viewport bij focus |
+<!-- tokens: skip-link -->
 
 ## Accessibility
 

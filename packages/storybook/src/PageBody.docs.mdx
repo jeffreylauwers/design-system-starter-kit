@@ -1,7 +1,7 @@
 import { Meta, Story, Markdown } from '@storybook/addon-docs/blocks';
 import * as PageBodyStories from './PageBody.stories';
 import docs from './PageBody.docs.md?raw';
-import { PreviewFrame, CodeTabs } from './components';
+import { PreviewFrame, CodeTabs, DocsMarkdown } from './components';
 
 export const [intro, rest] = docs.split('<!-- VOORBEELD -->');
 
@@ -29,4 +29,4 @@ export const [intro, rest] = docs.split('<!-- VOORBEELD -->');
 </div>`}
 />
 
-<Markdown>{rest}</Markdown>
+<DocsMarkdown>{rest}</DocsMarkdown>

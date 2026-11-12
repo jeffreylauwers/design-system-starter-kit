@@ -122,27 +122,7 @@ De non-modale variant (`popover="manual"`) opent met `popovertarget="drawer-id"`
 
 ## Design tokens
 
-| Token                                     | Beschrijving                                            |
-| ----------------------------------------- | ------------------------------------------------------- |
-| `--dsn-drawer-background-color`           | Achtergrondkleur (bg-elevated)                          |
-| `--dsn-drawer-border-width`               | Randbreedte van de scheidingslijn met de pagina         |
-| `--dsn-drawer-border-color`               | Randkleur van de scheidingslijn (neutral.border-subtle) |
-| `--dsn-drawer-box-shadow`                 | Schaduw (box-shadow.lg: hoogste elevatie)               |
-| `--dsn-drawer-max-width`                  | Maximale breedte (25rem / 400px)                        |
-| `--dsn-drawer-min-gap`                    | Minimale zichtbare achtergrondruimte (3rem / 48px)      |
-| `--dsn-drawer-heading-font-family`        | Lettertype van de heading                               |
-| `--dsn-drawer-heading-font-weight`        | Vetgedrukt van de heading                               |
-| `--dsn-drawer-heading-font-size`          | Tekstgrootte van de heading                             |
-| `--dsn-drawer-heading-line-height`        | Regelafstand van de heading                             |
-| `--dsn-drawer-heading-color`              | Kleur van de heading                                    |
-| `--dsn-drawer-header-padding-block-start` | Bovenkant padding van de header (16px)                  |
-| `--dsn-drawer-header-padding-block-end`   | Onderkant padding van de header (16px)                  |
-| `--dsn-drawer-header-padding-inline`      | Horizontale padding van de header (16px)                |
-| `--dsn-drawer-body-padding-block`         | Verticale padding van de body (24px)                    |
-| `--dsn-drawer-body-padding-inline`        | Horizontale padding van de body (16px)                  |
-| `--dsn-drawer-footer-padding-block-start` | Bovenkant padding van de footer (16px)                  |
-| `--dsn-drawer-footer-padding-block-end`   | Onderkant padding van de footer (16px)                  |
-| `--dsn-drawer-footer-padding-inline`      | Horizontale padding van de footer (16px)                |
+<!-- tokens: drawer -->
 
 ## Accessibility
 

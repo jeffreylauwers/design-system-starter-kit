@@ -78,26 +78,7 @@ Gebruik `iconStart` voor contextuele iconen links van het label. Gebruik `iconEn
 
 MenuButton gebruikt uitsluitend de gedeelde `--dsn-menu-item-*` tokens. Deze tokens zijn ook van toepassing op `MenuLink`: wijzigingen hier gelden voor beide componenten.
 
-| Token                                     | Beschrijving                                    |
-| ----------------------------------------- | ----------------------------------------------- |
-| `--dsn-menu-item-font-size`               | Lettergrootte                                   |
-| `--dsn-menu-item-font-weight`             | Letterdikte (regular)                           |
-| `--dsn-menu-item-line-height`             | Regelhoogte                                     |
-| `--dsn-menu-item-padding-block`           | Verticale padding                               |
-| `--dsn-menu-item-padding-inline`          | Horizontale padding                             |
-| `--dsn-menu-item-gap`                     | Ruimte tussen icoon en label                    |
-| `--dsn-menu-item-min-block-size`          | Minimale raakbare hoogte                        |
-| `--dsn-menu-item-icon-size`               | Icoongrootte                                    |
-| `--dsn-menu-item-color`                   | Tekstkleur (standaard)                          |
-| `--dsn-menu-item-background-color`        | Achtergrondkleur (standaard)                    |
-| `--dsn-menu-item-indicator-width`         | Dikte van de indicator (3px)                    |
-| `--dsn-menu-item-indicator-color`         | Kleur van de indicator (standaard, transparent) |
-| `--dsn-menu-item-hover-color`             | Tekstkleur bij hover                            |
-| `--dsn-menu-item-hover-background-color`  | Achtergrondkleur bij hover                      |
-| `--dsn-menu-item-hover-indicator-color`   | Kleur van de indicator bij hover                |
-| `--dsn-menu-item-active-color`            | Tekstkleur bij active                           |
-| `--dsn-menu-item-active-background-color` | Achtergrondkleur bij active                     |
-| `--dsn-menu-item-active-indicator-color`  | Kleur van de indicator bij active               |
+<!-- tokens: menu-item -->
 
 ## Accessibility
 

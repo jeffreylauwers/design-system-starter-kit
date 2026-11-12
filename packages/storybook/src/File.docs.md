@@ -113,34 +113,7 @@ Gebruik `FileList` als wrapper wanneer je meerdere `File` componenten toont. De 
 
 ## Design tokens
 
-| Token                                | Beschrijving                                          |
-| ------------------------------------ | ----------------------------------------------------- |
-| `--dsn-file-background-color`        | Achtergrondkleur standaard                            |
-| `--dsn-file-background-color-hover`  | Achtergrondkleur bij hover (interactief)              |
-| `--dsn-file-background-color-active` | Achtergrondkleur bij active (interactief)             |
-| `--dsn-file-border-radius`           | Afgeronde hoeken                                      |
-| `--dsn-file-border-width`            | Randbreedte                                           |
-| `--dsn-file-border-color`            | Randkleur standaard                                   |
-| `--dsn-file-border-color-hover`      | Randkleur bij hover (interactief)                     |
-| `--dsn-file-border-color-active`     | Randkleur bij active (interactief)                    |
-| `--dsn-file-border-color-error`      | Randkleur in error state                              |
-| `--dsn-file-box-shadow`              | Schaduw standaard (geen)                              |
-| `--dsn-file-box-shadow-hover`        | Schaduw bij hover (interactief)                       |
-| `--dsn-file-padding-block`           | Verticale padding                                     |
-| `--dsn-file-padding-inline`          | Horizontale padding                                   |
-| `--dsn-file-gap`                     | Ruimte tussen media-vlak, content en actions          |
-| `--dsn-file-content-gap`             | Verticale ruimte in het content-gebied                |
-| `--dsn-file-name-color`              | Kleur van de bestandsnaam                             |
-| `--dsn-file-name-font-weight`        | Gewicht van de bestandsnaam (bold)                    |
-| `--dsn-file-meta-color`              | Kleur van de meta-tekst                               |
-| `--dsn-file-meta-font-size`          | Tekstgrootte van de meta                              |
-| `--dsn-file-media-size`              | Grootte van het vierkante media-vlak (48–60px, fluid) |
-| `--dsn-file-media-border-radius`     | Afgeronde hoeken van het media-vlak                   |
-| `--dsn-file-media-background-color`  | Achtergrondkleur van het media-vlak                   |
-| `--dsn-file-media-icon-color`        | Kleur van het icoon in het media-vlak                 |
-| `--dsn-file-media-icon-size`         | Grootte van het icoon in het media-vlak               |
-| `--dsn-file-status-icon-color`       | Kleur van het check-icoon (uploaded state)            |
-| `--dsn-file-status-icon-size`        | Grootte van het check-icoon                           |
+<!-- tokens: file -->
 
 ## Accessibility
 

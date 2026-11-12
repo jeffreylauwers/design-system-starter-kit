@@ -32,21 +32,7 @@ De Paragraph component biedt een consistente, toegankelijke manier om tekstblokk
 
 ## Design tokens
 
-| Token                                          | Beschrijving                      |
-| ---------------------------------------------- | --------------------------------- |
-| `--dsn-paragraph-color`                        | Tekstkleur                        |
-| `--dsn-paragraph-font-family`                  | Lettertypefamilie (standaard)     |
-| `--dsn-paragraph-font-weight`                  | Font weight (standaard)           |
-| `--dsn-paragraph-max-inline-size`              | Maximale regelbreedte (65ch)      |
-| `--dsn-paragraph-default-font-size`            | Font size default variant         |
-| `--dsn-paragraph-default-line-height`          | Line height default variant       |
-| `--dsn-paragraph-default-margin-block-end`     | Bottom margin default variant     |
-| `--dsn-paragraph-lead-font-size`               | Font size lead variant            |
-| `--dsn-paragraph-lead-line-height`             | Line height lead variant          |
-| `--dsn-paragraph-lead-margin-block-end`        | Bottom margin lead variant        |
-| `--dsn-paragraph-small-print-font-size`        | Font size small-print variant     |
-| `--dsn-paragraph-small-print-line-height`      | Line height small-print variant   |
-| `--dsn-paragraph-small-print-margin-block-end` | Bottom margin small-print variant |
+<!-- tokens: paragraph -->
 
 ## Accessibility
 

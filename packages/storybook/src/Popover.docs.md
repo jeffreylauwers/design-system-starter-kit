@@ -76,29 +76,7 @@ Escape, sluiten bij een klik buiten de popover en het terugzetten van de focus b
 
 ## Design tokens
 
-| Token                                      | Standaardwaarde                     | Beschrijving                      |
-| ------------------------------------------ | ----------------------------------- | --------------------------------- |
-| `--dsn-popover-background-color`           | `{dsn.color.neutral.bg-elevated}`   | Achtergrondkleur                  |
-| `--dsn-popover-border-width`               | `{dsn.border.width.thin}`           | Randbreedte                       |
-| `--dsn-popover-border-color`               | `{dsn.color.neutral.border-subtle}` | Randkleur                         |
-| `--dsn-popover-border-radius`              | `{dsn.border.radius.md}`            | Hoekafronding                     |
-| `--dsn-popover-box-shadow`                 | `{dsn.box-shadow.md}`               | Schaduw (md-elevatie)             |
-| `--dsn-popover-max-width`                  | `25rem`                             | Maximale breedte (400px)          |
-| `--dsn-popover-min-width`                  | `12.5rem`                           | Minimale breedte (200px)          |
-| `--dsn-popover-z-index`                    | `{dsn.z-index.350}`                 | Z-index (lager dan modals: 500)   |
-| `--dsn-popover-heading-font-family`        | `{dsn.heading.font-family}`         | Lettertype heading                |
-| `--dsn-popover-heading-font-weight`        | `{dsn.heading.font-weight}`         | Gewicht heading                   |
-| `--dsn-popover-heading-color`              | `{dsn.heading.color}`               | Kleur heading                     |
-| `--dsn-popover-heading-font-size`          | `{dsn.text.font-size.md}`           | Tekstgrootte heading              |
-| `--dsn-popover-heading-line-height`        | `{dsn.text.line-height.md}`         | Regelafstand heading              |
-| `--dsn-popover-header-padding-block-start` | `{dsn.space.block.xl}`              | Boven-padding header (16px)       |
-| `--dsn-popover-header-padding-block-end`   | `{dsn.space.block.xl}`              | Onder-padding header (16px)       |
-| `--dsn-popover-header-padding-inline`      | `{dsn.space.inline.xl}`             | Horizontale padding header (16px) |
-| `--dsn-popover-body-padding-block`         | `{dsn.space.block.xl}`              | Verticale padding body (16px)     |
-| `--dsn-popover-body-padding-inline`        | `{dsn.space.inline.xl}`             | Horizontale padding body (16px)   |
-| `--dsn-popover-footer-padding-block-start` | `{dsn.space.block.xl}`              | Boven-padding footer (16px)       |
-| `--dsn-popover-footer-padding-block-end`   | `{dsn.space.block.xl}`              | Onder-padding footer (16px)       |
-| `--dsn-popover-footer-padding-inline`      | `{dsn.space.inline.xl}`             | Horizontale padding footer (16px) |
+<!-- tokens: popover -->
 
 ## Accessibility
 

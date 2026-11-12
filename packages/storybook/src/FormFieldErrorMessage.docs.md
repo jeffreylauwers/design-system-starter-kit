@@ -44,16 +44,7 @@ De FormFieldErrorMessage component toont validatie foutmeldingen bij form fields
 
 ## Design tokens
 
-| Token                                             | Beschrijving                                |
-| ------------------------------------------------- | ------------------------------------------- |
-| `--dsn-form-field-error-message-color`            | Text color (negative/error red)             |
-| `--dsn-form-field-error-message-font-family`      | Font family                                 |
-| `--dsn-form-field-error-message-font-size`        | Font size (medium)                          |
-| `--dsn-form-field-error-message-font-weight`      | Font weight (normal)                        |
-| `--dsn-form-field-error-message-gap`              | Space between icon and text (small)         |
-| `--dsn-form-field-error-message-icon-size`        | Icon size (medium)                          |
-| `--dsn-form-field-error-message-line-height`      | Line height (medium)                        |
-| `--dsn-form-field-error-message-margin-block-end` | Margin below error message (medium spacing) |
+<!-- tokens: form-field-error-message -->
 
 ## Accessibility
 

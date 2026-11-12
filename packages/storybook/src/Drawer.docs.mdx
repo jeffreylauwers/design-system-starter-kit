@@ -1,7 +1,7 @@
 import { Meta, Story, Controls, Markdown } from '@storybook/addon-docs/blocks';
 import * as DrawerStories from './Drawer.stories';
 import docs from './Drawer.docs.md?raw';
-import { PreviewFrame, CodeTabs } from './components';
+import { PreviewFrame, CodeTabs, DocsMarkdown } from './components';
 
 export const [intro, rest] = docs.split('<!-- VOORBEELD -->');
 
@@ -80,4 +80,4 @@ const triggerRef = useRef<HTMLButtonElement>(null);
 
 <Controls of={DrawerStories.Default} />
 
-<Markdown>{rest}</Markdown>
+<DocsMarkdown>{rest}</DocsMarkdown>

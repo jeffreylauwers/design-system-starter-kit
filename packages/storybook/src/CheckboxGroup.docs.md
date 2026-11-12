@@ -31,9 +31,7 @@ De CheckboxGroup component is een simpele container die meerdere CheckboxOption 
 
 ## Design tokens
 
-| Token                      | Beschrijving                                        |
-| -------------------------- | --------------------------------------------------- |
-| `--dsn-checkbox-group-gap` | Ruimte tussen checkbox opties (small block spacing) |
+<!-- tokens: checkbox-group -->
 
 ## Accessibility
 

@@ -59,7 +59,8 @@ BreakoutSection heeft geen eigen ARIA-rollen of -labels. Als de sectie een eigen
 
 ## Design tokens
 
-| Token                            | Beschrijving                                                                              |
-| -------------------------------- | ----------------------------------------------------------------------------------------- |
-| `--dsn-page-max-inline-size`     | Maximale inhoudsbreedte van de pagina: gebruik dit voor de inner wrapper herstelling      |
-| `--dsn-page-body-padding-inline` | Horizontale padding van de page body: gebruik dit als inline padding van de inner wrapper |
+<!-- tokens: breakout-section -->
+
+Voor het opnieuw begrenzen van de inhoud gebruikt BreakoutSection de tokens van de pagina:
+
+<!-- tokens: page page-body -->

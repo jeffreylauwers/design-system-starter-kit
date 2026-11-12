@@ -57,18 +57,9 @@ De standaardhoogte is `70svh` met een minimum van `400px`. Overschrijf `--dsn-he
 
 ## Design tokens
 
-| Token                                 | Beschrijving                                                                       |
-| ------------------------------------- | ---------------------------------------------------------------------------------- |
-| `--dsn-hero-block-size`               | Hoogte van de Hero (`70svh` standaard); aanpasbaar per instantie                   |
-| `--dsn-hero-min-block-size`           | Minimale hoogte (`400px`); vloer zodat de Hero niet te klein wordt                 |
-| `--dsn-hero-padding-block`            | Verticale padding van de inhoud                                                    |
-| `--dsn-hero-padding-inline`           | Horizontale padding van de inner wrapper                                           |
-| `--dsn-hero-background-color-default` | Achtergrondkleur standaard variant (licht blauw)                                   |
-| `--dsn-hero-background-color-inverse` | Achtergrondkleur inverse variant (donker blauw)                                    |
-| `--dsn-hero-color-default`            | Tekstkleur standaard variant                                                       |
-| `--dsn-hero-color-inverse`            | Tekstkleur inverse variant (licht op donker)                                       |
-| `--dsn-hero-image-blend-color`        | Blendkleur voor de image-blend variant                                             |
-| `--dsn-hero-bg-image`                 | CSS custom property voor de achtergrondafbeelding (niet in tokens — per instantie) |
+<!-- tokens: hero -->
+
+De achtergrondafbeelding loopt via het custom property `--dsn-hero-bg-image`. Dat is geen design token: je zet het per Hero, zie Achtergrondafbeelding hierboven.
 
 ## Accessibility
 

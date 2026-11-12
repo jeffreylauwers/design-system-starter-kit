@@ -473,6 +473,29 @@ const meta: Meta<typeof Button> = {
 
 Alle kleur-previews gebruiken `--dsn-color-accent-1-inverse-bg-default` als accentkleur.
 
+### DocsMarkdown
+
+**Location:** `packages/storybook/src/components/DocsMarkdown.tsx`
+
+**Purpose:** Rendert het tweede deel van een `.docs.md` (na `<!-- VOORBEELD -->`) en vervangt token-markers door een tabel uit de design tokens.
+
+Token-tabellen schrijf je **niet** met de hand. In de Markdown staat een marker:
+
+```markdown
+## Design tokens
+
+<!-- tokens: checkbox-group -->
+
+<!-- tokens: grid --dsn-breakpoint-sm --dsn-breakpoint-md -->
+```
+
+- Een woord zonder `--` is een component: alle tokens uit `design-tokens/src/tokens/components/{naam}.json`.
+- Een woord met `--` is één losse token, voor basistokens die een component gebruikt (zoals `--dsn-focus-*` bij Button).
+
+Namen en descriptions komen uit `design-tokens/dist/json/token-docs.json` (export `@dsn-starter-kit/design-tokens/token-docs.json`). De token-build schrijft dat bestand met het format `json/token-docs` in `src/config/config.js`, met dezelfde naamomzetting als de CSS. Een nieuwe, hernoemde of verwijderde token en een aangepaste `$description` verschijnen zo vanzelf in Storybook.
+
+`tests/token-docs.test.ts` bewaakt in CI dat elke marker naar een bestaand component of token wijst, dat elk component-tokenbestand ergens een marker heeft, dat er geen handgeschreven token-tabellen terugkomen, en dat token-namen in de lopende tekst bestaan. Custom properties die een component zelf zet (zoals `--dsn-stack-space`) staan niet in de JSON; noem die in de tekst onder de marker.
+
 ### TocLink
 
 **Location:** `packages/storybook/src/components/TocLink.tsx`
@@ -563,7 +586,7 @@ export const Disabled: Story = {
 import { Meta, Story, Controls, Markdown } from '@storybook/blocks';
 import \* as ButtonStories from './Button.stories';
 import docs from './Button.docs.md?raw';
-import { PreviewFrame, CodeTabs } from './components';
+import { PreviewFrame, CodeTabs, DocsMarkdown } from './components';
 
 export const [intro, rest] = docs.split('<!-- VOORBEELD -->');
 
@@ -584,7 +607,7 @@ export const [intro, rest] = docs.split('<!-- VOORBEELD -->');
 
 <Controls of={ButtonStories.Default} />
 
-<Markdown>{rest}</Markdown>
+<DocsMarkdown>{rest}</DocsMarkdown>
 ```
 
 ### Markdown File Sections
@@ -625,7 +648,7 @@ Uitleg wat het component doet.
 
 ## Design tokens
 
-[TokenTable showing component tokens]
+<!-- tokens: button -->
 ```
 
 ### story-helpers.tsx
@@ -706,6 +729,7 @@ pnpm --filter @dsn-starter-kit/storybook build
    - Add `<CodeTabs of={} html="..." />`
 3. **Create markdown file**: `ComponentName.docs.md`
    - Follow the standard section structure
+   - Onder `## Design tokens` een marker `<!-- tokens: component-name -->`, geen tabel (zie DocsMarkdown)
 4. **Test theme switching**: Verify all themes/modes work
 5. **Verify both tabs**: Check that React and HTML/CSS tabs show correct, dynamic code
 

@@ -68,11 +68,6 @@ Net als Heading ondersteunt HeadingGroup de `appearance` prop voor ontkoppeling 
 
 HeadingGroup voegt geen nieuwe design tokens toe. Het hergebruikt tokens van `dsn-heading` en `dsn-pre-heading`.
 
-| Token                 | Beschrijving                                                                  |
-| --------------------- | ----------------------------------------------------------------------------- |
-| `--dsn-heading-*`     | Alle heading tokens (zie [Heading](/docs/components-heading--docs))           |
-| `--dsn-pre-heading-*` | Alle pre-heading tokens (zie [PreHeading](/docs/components-preheading--docs)) |
-
 ## Accessibility
 
 - HeadingGroup rendert als `<hx>` element. De accessible name omvat zowel de pre-heading als de heading-tekst.

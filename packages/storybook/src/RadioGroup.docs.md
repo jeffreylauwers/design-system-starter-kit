@@ -33,9 +33,7 @@ De RadioGroup component is een simpele container die meerdere RadioOption compon
 
 ## Design tokens
 
-| Token                   | Beschrijving                                     |
-| ----------------------- | ------------------------------------------------ |
-| `--dsn-radio-group-gap` | Ruimte tussen radio opties (small block spacing) |
+<!-- tokens: radio-group -->
 
 ## Accessibility
 

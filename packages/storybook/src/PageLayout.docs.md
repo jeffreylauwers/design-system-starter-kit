@@ -67,11 +67,6 @@ Geef de `<main>` altijd een `id="main-content"` zodat de skip-link er naartoe ka
 
 `PageLayout` heeft geen component-specifieke tokens. De `min-block-size: 100dvh` is een structurele constante, geen designbeslissing.
 
-| Keuze                                   | Reden                                                                                                                      |
-| --------------------------------------- | -------------------------------------------------------------------------------------------------------------------------- |
-| `min-block-size: 100dvh` i.p.v. `100vh` | `dvh` (dynamic viewport height) compenseert op mobiel voor de adresbalk van de browser. `100vh` is te groot op iOS Safari. |
-| `flex-direction: column`                | Meest directe aanpak voor sticky footer: children stapelen verticaal, `PageBody` vult de resterende ruimte.                |
-
 ## Accessibility
 
 ### Transparante structuurlaag

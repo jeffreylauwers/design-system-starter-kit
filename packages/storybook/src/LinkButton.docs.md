@@ -39,19 +39,3 @@ Een knop die semantisch een `<button>` is, maar visueel het uiterlijk van een [L
 ## Design tokens
 
 `LinkButton` erft alle `--dsn-link-*` tokens van het [Link](/docs/components-link--docs) component via de `dsn-link` klasse. Er zijn geen eigen componenttokens.
-
-| Token                                  | Beschrijving                         |
-| -------------------------------------- | ------------------------------------ |
-| `--dsn-link-color`                     | Tekstkleur                           |
-| `--dsn-link-hover-color`               | Tekstkleur bij hover                 |
-| `--dsn-link-active-color`              | Tekstkleur bij active (klik)         |
-| `--dsn-link-disabled-color`            | Tekstkleur disabled state            |
-| `--dsn-link-text-decoration-line`      | Onderlijning (underline)             |
-| `--dsn-link-text-decoration-color`     | Kleur van de onderlijning            |
-| `--dsn-link-text-decoration-thickness` | Dikte van de onderlijning            |
-| `--dsn-link-text-underline-offset`     | Afstand tussen tekst en onderlijning |
-| `--dsn-link-gap`                       | Ruimte tussen icoon en tekst         |
-| `--dsn-link-icon-size`                 | Icoongrootte standaard               |
-| `--dsn-link-size-small-font-size`      | Font size small variant              |
-| `--dsn-link-size-default-font-size`    | Font size default variant            |
-| `--dsn-link-size-large-font-size`      | Font size large variant              |

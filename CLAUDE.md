@@ -289,7 +289,7 @@ Elk component heeft een `.docs.md` met vaste secties in deze volgorde:
 3. **Use when**: bulletlijst
 4. **Don't use when**: bulletlijst
 5. **Best practices**: subsecties per onderwerp
-6. **Design tokens**: tabel met alle `--dsn-{component}-*` tokens
+6. **Design tokens**: een marker `<!-- tokens: {component-name} -->`, geen handgeschreven tabel. `DocsMarkdown` maakt er een tabel van met namen en descriptions uit de token-JSON (zie `docs/05-storybook-configuration.md`)
 7. **Accessibility**: toegankelijkheidsaandachtspunten
 
 Bekijk `packages/storybook/src/Button.docs.md` als referentie voor toon en opmaak.

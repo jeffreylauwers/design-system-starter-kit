@@ -58,13 +58,7 @@ De Image component biedt een semantisch correcte afbeeldingcontainer op basis va
 
 ## Design tokens
 
-| Token                                    | Beschrijving                                         |
-| ---------------------------------------- | ---------------------------------------------------- |
-| `--dsn-image-border-radius`              | Afgeronde hoeken van de afbeelding                   |
-| `--dsn-image-caption-color`              | Gedempte kleur voor het bijschrift                   |
-| `--dsn-image-caption-font-size`          | Iets kleiner dan bodytekst om hiërarchie te markeren |
-| `--dsn-image-caption-line-height`        | Regelafstand passend bij kleine tekst                |
-| `--dsn-image-caption-margin-block-start` | Ruimte tussen afbeelding en bijschrift               |
+<!-- tokens: image -->
 
 ## Accessibility
 
