@@ -448,15 +448,33 @@ const meta: Meta<typeof Button> = {
 
 **Location:** `packages/storybook/src/components/TokenTable.tsx`
 
-**Purpose:** Renders a table of design tokens with optional live preview visuals and computed CSS values.
+**Purpose:** Tabel met design tokens voor de pagina Foundations/Design Tokens: preview, naam, beschrijving en de live waarde.
+
+Net als bij `DocsMarkdown` typ je geen tokens over. Namen en beschrijvingen komen uit `token-docs.json`; je kiest alleen welke tokens in de tabel komen:
+
+```mdx
+<TokenTable
+  prefix="--dsn-color-neutral-"
+  exclude="--dsn-color-neutral-inverse-"
+  previewType="color"
+/>
+
+<TokenTable
+  prefix="--dsn-text-font-family-"
+  tokens="--dsn-heading-font-family"
+/>
+```
 
 **Props:**
 
-| Prop            | Type          | Default  | Description                         |
-| --------------- | ------------- | -------- | ----------------------------------- |
-| `tokens`        | `Token[]`     | -        | Array of `{ name, cssVar, value? }` |
-| `previewType`   | `PreviewType` | `'none'` | Visual preview type                 |
-| `showLiveValue` | `boolean`     | `true`   | Show computed CSS value             |
+| Prop          | Type          | Default  | Description                                                                         |
+| ------------- | ------------- | -------- | ----------------------------------------------------------------------------------- |
+| `prefix`      | `string`      | -        | Eén of meer prefixen (spatie ertussen); toont de tokens in JSON-volgorde            |
+| `exclude`     | `string`      | -        | Prefixen of namen die binnen `prefix` niet meedoen, zoals de `min`/`max`-bouwstenen |
+| `tokens`      | `string`      | -        | Losse tokens op naam, na de `prefix`-tokens                                         |
+| `previewType` | `PreviewType` | `'none'` | Visual preview type                                                                 |
+
+De live waarde leest de custom property uit de pagina en volgt dus thema, mode en density. De selectielogica staat los in `tokenSelection.ts`, zodat `tests/design-tokens-page.test.ts` dezelfde regels toepast. Die test faalt als een semantisch token (een token zonder component) in geen of in meer dan één tabel staat, als een tabel leeg is of als een losse naam niet bestaat. Een nieuw semantisch token vraagt dus hooguit een nieuwe `prefix` of tabel; meestal valt het al onder een bestaande.
 
 **`previewType` values:**
 
@@ -469,6 +487,7 @@ const meta: Meta<typeof Button> = {
 | `'shadow'`              | Kaartje met `box-shadow` toegepast                            |
 | `'transition-duration'` | Animerende sweep-balk (animationDuration = token)             |
 | `'transition-easing'`   | Stip op track (animationTimingFunction = token, vaste 1200ms) |
+| `'auto'`                | Kleurvlak voor kleurtokens, geen preview voor de rest         |
 | `'none'`                | Geen preview kolom                                            |
 
 Alle kleur-previews gebruiken `--dsn-color-accent-1-inverse-bg-default` als accentkleur.
