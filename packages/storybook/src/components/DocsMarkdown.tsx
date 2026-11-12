@@ -1,4 +1,6 @@
+import type { ComponentProps } from 'react';
 import { Markdown } from '@storybook/addon-docs/blocks';
+import './DocsMarkdown.css';
 import tokenDocs from '@dsn-starter-kit/design-tokens/token-docs.json';
 
 /**
@@ -69,9 +71,32 @@ export function tokenTable(spec: string): string {
   ].join('\n');
 }
 
+/**
+ * Brede tabellen (lange token-namen) scrollen horizontaal binnen hun eigen
+ * wrapper, net als de tabellen van `TokenTable`: inline code (token-namen)
+ * breekt niet af, en de tabel scrolt in plaats van samen te knijpen. De wrapper is focusbaar, zodat ook
+ * toetsenbordgebruikers kunnen scrollen.
+ */
+function ScrollableTable(props: ComponentProps<'table'>) {
+  return (
+    <div
+      role="region"
+      aria-label="Tabel"
+      tabIndex={0}
+      className="docs-markdown-table"
+    >
+      <table {...props} />
+    </div>
+  );
+}
+
+const markdownOptions = {
+  overrides: { table: { component: ScrollableTable } },
+};
+
 export function DocsMarkdown({ children }: { children: string }) {
   return (
-    <Markdown>
+    <Markdown options={markdownOptions}>
       {children.replace(MARKER, (_match, spec: string) => tokenTable(spec))}
     </Markdown>
   );

@@ -1,0 +1,24 @@
+/*
+ * Tabellen in docs-markdown scrollen horizontaal, net als TokenTable op de
+ * Design tokens-pagina. Token-namen in inline code breken niet af; tekstcellen
+ * krijgen een minimumbreedte, zodat de tabel scrolt in plaats van dat elke
+ * kolom tot een paar woorden per regel wordt samengeknepen.
+ */
+.docs-markdown-table {
+  overflow-x: auto;
+  margin-block: 16px;
+}
+
+.docs-markdown-table table {
+  margin-block: 0;
+}
+
+.docs-markdown-table td code,
+.docs-markdown-table th code {
+  white-space: nowrap;
+}
+
+.docs-markdown-table td,
+.docs-markdown-table th {
+  min-inline-size: 160px;
+}
