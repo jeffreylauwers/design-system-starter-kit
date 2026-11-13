@@ -82,6 +82,10 @@ export const ActionGroup = React.forwardRef<HTMLUListElement, ActionGroupProps>(
     return (
       <ul ref={ref} className={classes} aria-label={ariaLabel} {...props}>
         {flattenActions(children).map((child, index) => (
+          // Acties zijn positioneel en hebben geen eigen state; de index is
+          // hier een stabiele key. Children.toArray geeft geen unieke keys
+          // over geneste fragments heen.
+          // eslint-disable-next-line @eslint-react/no-array-index-key
           <li className="dsn-action-group__item" key={index}>
             {child}
           </li>

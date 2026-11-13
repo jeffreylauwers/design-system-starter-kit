@@ -1825,7 +1825,6 @@ function mergeAdornments(root, tree, warnings, label, pinned) {
   const gaps = items
     .slice(1)
     .map((item, index) => item.x - (items[index].x + items[index].width));
-  const textIndex = items.findIndex((item) => item.isText);
 
   const merged = {
     ...field,

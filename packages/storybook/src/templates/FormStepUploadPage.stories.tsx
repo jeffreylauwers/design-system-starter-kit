@@ -208,12 +208,12 @@ function FormModals({
 function UploadPage() {
   const [activeModal, setActiveModal] = React.useState<ActiveModal>(null);
   const [bestanden, setBestanden] = React.useState<GekozenBestand[]>([]);
-  const volgendeId = React.useRef(0);
-  const timers = React.useRef<ReturnType<typeof setTimeout>[]>([]);
+  const volgendeIdRef = React.useRef(0);
+  const timersRef = React.useRef<ReturnType<typeof setTimeout>[]>([]);
 
   // Ruim lopende upload-timers op bij unmount
   React.useEffect(() => {
-    const lopend = timers.current;
+    const lopend = timersRef.current;
     return () => lopend.forEach(clearTimeout);
   }, []);
 
@@ -222,10 +222,10 @@ function UploadPage() {
     if (gekozen.length === 0) return;
 
     const nieuwe: GekozenBestand[] = gekozen.map((bestand) => {
-      volgendeId.current += 1;
+      volgendeIdRef.current += 1;
       const { status, foutmelding } = beoordeel(bestand.name, bestand.size);
       return {
-        id: volgendeId.current,
+        id: volgendeIdRef.current,
         naam: bestand.name,
         type: extensieVan(bestand.name).toUpperCase(),
         grootte: formatteerGrootte(bestand.size),
@@ -250,7 +250,7 @@ function UploadPage() {
             )
           );
         }, UPLOAD_DUUR_MS);
-        timers.current.push(timer);
+        timersRef.current.push(timer);
       });
   }
 

@@ -479,7 +479,7 @@ const products = [
 ];
 
 const SelectableRowsTable = (args: TableProps) => {
-  const [selected, setSelected] = useState<Set<string>>(new Set());
+  const [selected, setSelected] = useState<Set<string>>(() => new Set());
 
   const allSelected = selected.size === products.length;
   const someSelected = selected.size > 0 && !allSelected;
@@ -674,7 +674,7 @@ export const WithActionsMenu: Story = {
 /* ===== Alles gecombineerd ===== */
 
 const AllTogetherTable = (args: TableProps) => {
-  const [selected, setSelected] = useState<Set<string>>(new Set());
+  const [selected, setSelected] = useState<Set<string>>(() => new Set());
 
   const allSelected = selected.size === products.length;
   const someSelected = selected.size > 0 && !allSelected;

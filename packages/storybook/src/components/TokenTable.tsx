@@ -279,6 +279,9 @@ function useComputedCssValue(cssVar: string): string {
     const listeners = new AbortController();
     const timeouts = new Set<ReturnType<typeof setTimeout>>();
     const schedule = (delay: number) => {
+      // Wordt opgeruimd via timeouts.forEach(clearTimeout) in de cleanup;
+      // de regel herkent die indirecte opruiming niet.
+      // eslint-disable-next-line @eslint-react/web-api-no-leaked-timeout
       const id = setTimeout(() => {
         timeouts.delete(id);
         updateValue();

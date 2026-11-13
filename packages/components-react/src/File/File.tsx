@@ -332,6 +332,9 @@ export const FileList = React.forwardRef<HTMLUListElement, FileListProps>(
         {...props}
       >
         {React.Children.map(children, (child, index) => (
+          // Children.map combineert deze key met de key van het child zelf,
+          // dus identiteit blijft behouden bij herordenen.
+          // eslint-disable-next-line @eslint-react/no-array-index-key
           <li key={index}>{child}</li>
         ))}
       </ul>
