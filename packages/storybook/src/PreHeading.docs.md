@@ -14,19 +14,19 @@ Gebruik PreHeading voor:
 - Sectie-categorisering: "Diensten" boven "We helpen u groeien"
 - Processtap-context: "Stap 1 van 4" boven de staptitel
 
-## Use when
+## Wel gebruiken als...
 
 - Je een stap-indicator of categorielabel visueel boven een heading wilt tonen dat ook semantisch bij die heading hoort.
 - De pre-heading en de heading samen één betekenisvolle heading vormen voor screenreaders.
 - Je gebruik maakt van meerstappenformulieren waarbij de staptitel én het stapnummer samen de accessible name van de heading moeten zijn.
 
-## Don't use when
+## Niet gebruiken als...
 
 - De pre-heading een semantisch zelfstandige sectie aanduidt. Gebruik dan een structureel lagere heading (`<h3>` onder een `<h2>`), nooit een hogere of gelijkwaardige heading visueel boven de andere.
 - De tekst puur decoratief is en niet bijdraagt aan de accessible name van de heading.
 - Je een subtitle wilt die niet bij de accessible name hoort; gebruik dan een afzonderlijke [Paragraph](/docs/components-paragraph--docs).
 
-## Best practices
+## Goed gebruik
 
 ### Gebruik altijd binnen een Heading
 
@@ -66,7 +66,7 @@ Wanneer je de pre-heading en heading altijd samen gebruikt, overweeg dan de [Hea
 
 <!-- tokens: pre-heading -->
 
-## Accessibility
+## Toegankelijkheid
 
 - De `<span class="dsn-pre-heading">` heeft geen eigen ARIA-rol. De inhoud wordt onderdeel van de accessible name van de bovenliggende heading.
 - Screenreaders (NVDA, JAWS, VoiceOver) lezen de volledige heading inclusief pre-heading als één heading.

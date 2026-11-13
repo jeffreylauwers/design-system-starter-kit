@@ -8,20 +8,20 @@ Container biedt een afgebakend kader voor content die visueel bij elkaar hoort. 
 
 <!-- VOORBEELD -->
 
-## Use when
+## Wel gebruiken als...
 
-- Gerelateerde componenten visueel groeperen (formuliersecties, kaarten, panelen).
+- Je gerelateerde componenten visueel wilt groeperen (formuliersecties, kaarten, panelen).
 - Een duidelijke grens nodig is tussen content en pagina-achtergrond.
 - Je een kaart-achtig element wilt met een lichte schaduw (`elevated`).
-- Layout componenten (Stack, Grid) een visueel kader geven in een pagina of demo.
+- Je layoutcomponenten (Stack, Grid) een visueel kader wilt geven in een pagina of demo.
 
-## Don't use when
+## Niet gebruiken als...
 
 - Je alleen witruimte nodig hebt tussen secties: gebruik Stack of Grid met de juiste spacing tokens.
 - Het element navigatie, een formulier of andere semantisch geladen structuur is: geef dan de juiste HTML-semantiek aan de parent zelf mee.
 - Je een kleurrijke statusachtergrond wilt: gebruik Alert of Note.
 
-## Best practices
+## Goed gebruik
 
 ### `as` prop
 
@@ -44,6 +44,6 @@ Container kan andere layout-componenten bevatten (Stack, Grid). Container regelt
 
 <!-- tokens: container -->
 
-## Accessibility
+## Toegankelijkheid
 
 Container voegt geen ARIA-rollen of labels toe. Gebruik de `as` prop voor semantisch correcte HTML. Bij `as="section"` of `as="aside"` met een heading: voeg zelf `aria-labelledby` toe aan de Container en koppel het aan het `id` van de heading.

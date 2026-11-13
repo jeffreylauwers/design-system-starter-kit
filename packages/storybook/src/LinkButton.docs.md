@@ -8,7 +8,7 @@ Een knop die semantisch een `<button>` is, maar visueel het uiterlijk van een [L
 
 <!-- VOORBEELD -->
 
-## Use when
+## Wel gebruiken als...
 
 - De actie een JavaScript-handler of form-submit vereist en niet naar een andere URL navigeert.
 - Je de visuele prominentie van een Button wilt verminderen, maar toch correcte button-semantiek nodig hebt.
@@ -16,13 +16,13 @@ Een knop die semantisch een `<button>` is, maar visueel het uiterlijk van een [L
 - Je inline tekstacties in een formulier wilt toevoegen, zoals "Wachtwoord vergeten?".
 - Je een menu of paneel wilt openen, zoals "Mijn profiel" in een Page Header.
 
-## Don't use when
+## Niet gebruiken als...
 
 - De actie de gebruiker naar een andere pagina of URL navigeert: gebruik dan de [Link](/docs/components-link--docs) component.
 - Je een duidelijke, prominente call-to-action wilt: gebruik dan de [Button](/docs/components-button--docs) component.
 - Je de button als `<a>` element wilt renderen: gebruik dan Link, nooit een `<a>` met een click handler.
 
-## Best practices
+## Goed gebruik
 
 - **Gebruik beschrijvende teksten.** Vermijd "klik hier". Gebruik teksten die de actie beschrijven, zoals "Wachtwoord vergeten?" of "Selectie wissen".
 - **Geen loading state.** `LinkButton` heeft het uiterlijk van een Link. Een laadspinner past niet in dit visuele patroon; gebruik een Button als je een loading state nodig hebt.
@@ -30,7 +30,7 @@ Een knop die semantisch een `<button>` is, maar visueel het uiterlijk van een [L
 - **Gebruik `size` alleen wanneer nodig.** Zonder expliciete `size` erft de LinkButton de lettergrootte van de omliggende tekst: ideaal voor inline gebruik.
 - **`type="button"` is de default.** Dat voorkomt onbedoeld form-submit. Stel expliciet `type="submit"` in als je een formulier wilt versturen.
 
-## Accessibility
+## Toegankelijkheid
 
 - Semantisch een `<button>`: screenreaders kondigen het element aan als "knop", niet als "link". Gebruikers weten daardoor dat de actie geen navigatie veroorzaakt.
 - `disabled` werkt native: toetsenbord en screenreader ondersteuning zijn out of the box correct.

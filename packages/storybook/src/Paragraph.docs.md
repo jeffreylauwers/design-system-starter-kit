@@ -8,21 +8,21 @@ De Paragraph component biedt een consistente, toegankelijke manier om tekstblokk
 
 <!-- VOORBEELD -->
 
-## Use when
+## Wel gebruiken als...
 
 - Je lopende tekst wilt weergeven in artikelen, documentatie, of beschrijvingen.
 - Je een introductie wilt schrijven die meer visueel gewicht moet hebben (`lead` variant).
 - Je disclaimers, voorwaarden, of bijkomende informatie wilt tonen (`small-print` variant).
 - Je tekst wilt structureren met consistente marges tussen alinea's.
 
-## Don't use when
+## Niet gebruiken als...
 
 - Je een enkele regel tekst hebt: overweeg dan gewoon tekst zonder wrapper.
 - Je een titel of kop nodig hebt: gebruik dan de [Heading](/docs/components-heading--docs) component.
 - De tekst interactief is: gebruik dan de [Link](/docs/components-link--docs) component.
 - Je een lijst wilt tonen: gebruik dan de [Unordered List](/docs/components-unorderedlist--docs) of [Ordered List](/docs/components-orderedlist--docs) componenten.
 
-## Best practices
+## Goed gebruik
 
 - **Respecteer de maximale regelbreedte.** De component beperkt tekstregels automatisch tot 65 karakters (65ch) voor optimale leesbaarheid. Onderzoek toont aan dat regels tussen 45-75 karakters het gemakkelijkst te lezen zijn.
 - **Gebruik `lead` spaarzaam.** De `lead` variant is bedoeld voor korte introducerende tekst (1-2 alinea's). Te veel lead paragraphs verzwakken de hiërarchie.
@@ -34,7 +34,7 @@ De Paragraph component biedt een consistente, toegankelijke manier om tekstblokk
 
 <!-- tokens: paragraph -->
 
-## Accessibility
+## Toegankelijkheid
 
 - Paragrafen gebruiken het semantische `<p>` HTML element.
 - De component respecteert gebruikersvoorkeuren voor lettergrootte (gebruikt relative units).

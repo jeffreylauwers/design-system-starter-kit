@@ -8,20 +8,20 @@ De OrderedList component biedt een consistente, toegankelijke manier om lijsten 
 
 <!-- VOORBEELD -->
 
-## Use when
+## Wel gebruiken als...
 
 - Je een reeks stappen of instructies wilt tonen waar de volgorde belangrijk is.
 - Je items wilt rangschikken (bijv. top 10 lijst).
 - Je naar specifieke stappen wilt verwijzen via hun nummer ("zie stap 3").
 - Je stappen wilt opdelen in deelstappen met een geneste lijst. Elk niveau telt opnieuw vanaf 1; hiërarchische nummering (1.1, 1.2) levert de component niet.
 
-## Don't use when
+## Niet gebruiken als...
 
 - De volgorde van items niet uitmaakt: gebruik dan de [Unordered List](/docs/components-unorderedlist--docs) component.
 - Je maar één enkel item hebt: gebruik dan gewoon tekst of een paragraph.
 - De items geen opeenvolgende stappen zijn maar losse punten.
 
-## Best practices
+## Goed gebruik
 
 - **Gebruik voor sequenties.** Ordered lists zijn ideaal voor stappen, instructies, procedures, of rankings waar de volgorde betekenis heeft.
 - **Houd items actionable.** Voor instructielijsten, start elk item met een werkwoord ("Klik", "Voer in", "Selecteer").
@@ -33,7 +33,7 @@ De OrderedList component biedt een consistente, toegankelijke manier om lijsten 
 
 <!-- tokens: ordered-list -->
 
-## Accessibility
+## Toegankelijkheid
 
 - De component gebruikt het semantische `<ol>` HTML element voor correcte structuur.
 - Screenreaders kondigen het aantal items in de lijst aan.
@@ -41,7 +41,7 @@ De OrderedList component biedt een consistente, toegankelijke manier om lijsten 
 - Het `start` attribuut wordt correct aangekondigd door screenreaders.
 - Lijstitems (`<li>`) moeten directe children zijn van `<ol>` voor correcte semantiek.
 
-## HTML attributes
+## HTML-attributen
 
 De OrderedList component ondersteunt standaard HTML `<ol>` attributen:
 

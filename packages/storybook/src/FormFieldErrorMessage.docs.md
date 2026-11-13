@@ -8,19 +8,19 @@ De FormFieldErrorMessage component toont validatie foutmeldingen bij form fields
 
 <!-- VOORBEELD -->
 
-## Use when
+## Wel gebruiken als...
 
 - Je validatie fouten wilt communiceren aan de gebruiker.
 - Een form field een ongeldige waarde heeft na gebruikersinteractie.
 - Je specifieke feedback wilt geven over wat er fout is.
 
-## Don't use when
+## Niet gebruiken als...
 
 - Je algemene help tekst wilt tonen: gebruik [FormFieldDescription](/docs/components-formfielddescription--docs).
 - Je status feedback wilt geven (success, info, warning): gebruik [FormFieldStatus](/docs/components-formfieldstatus--docs).
-- Voor preventieve feedback: toon errors alleen na interactie (blur) of submit.
+- Je preventieve feedback wilt geven: toon errors alleen na interactie (blur) of submit.
 
-## Best practices
+## Goed gebruik
 
 ### Timing
 
@@ -46,7 +46,7 @@ De FormFieldErrorMessage component toont validatie foutmeldingen bij form fields
 
 <!-- tokens: form-field-error-message -->
 
-## Accessibility
+## Toegankelijkheid
 
 - Gebruik `id` attribuut op de error message.
 - Koppel de error message aan de form control met `aria-describedby`. Gebruik je FormField of FormFieldset, dan is dat al geregeld.

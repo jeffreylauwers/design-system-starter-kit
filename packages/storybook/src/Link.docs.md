@@ -8,19 +8,19 @@ De Link component biedt een consistente, toegankelijke manier om hyperlinks weer
 
 <!-- VOORBEELD -->
 
-## Use when
+## Wel gebruiken als...
 
 - De gebruiker naar een andere pagina, sectie, of externe site moet navigeren.
 - Je puur navigatie nodig hebt zonder bijeffecten (zoals data opslaan of verwijderen).
 - Je een link inline in lopende tekst wilt plaatsen.
 - Je een duidelijke visuele indicatie wilt dat iets klikbaar is en ergens naartoe leidt.
 
-## Don't use when
+## Niet gebruiken als...
 
 - De actie een bijeffect heeft (opslaan, verwijderen, formulier versturen) zonder dat er genavigeerd wordt: gebruik dan de [LinkButton](/docs/components-linkbutton--docs) component (link-styling met button semantiek) of de [Button](/docs/components-button--docs) component voor meer prominentie.
 - De link een complexe interactie triggert: overweeg dan een button of custom element.
 
-## Best practices
+## Goed gebruik
 
 - **Gebruik beschrijvende linkteksten.** Vermijd "klik hier" of "lees meer". Gebruik in plaats daarvan beschrijvende tekst zoals "Bekijk onze prijzen" of "Lees de volledige documentatie".
 - **Markeer de huidige pagina.** Gebruik de `current` prop voor links die naar de huidige pagina wijzen (bijv. in navigatie).
@@ -34,7 +34,7 @@ De Link component biedt een consistente, toegankelijke manier om hyperlinks weer
 
 <!-- tokens: link -->
 
-## Accessibility
+## Toegankelijkheid
 
 - Links gebruiken het semantische `<a>` HTML element met correcte `href` attributen.
 - Disabled links krijgen `aria-disabled="true"` en `tabIndex={-1}` om ze uit de tab order te halen.

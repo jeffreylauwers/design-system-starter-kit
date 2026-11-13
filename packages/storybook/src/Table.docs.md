@@ -8,20 +8,20 @@ De Table component structureert tabeldata semantisch correct zodat schermlezers 
 
 <!-- VOORBEELD -->
 
-## Use when
+## Wel gebruiken als...
 
-- Tabulaire data weergeven met een duidelijke kolomstructuur.
-- Data vergelijken over meerdere dimensies (rijen × kolommen).
-- Een overzicht tonen waarbij kolommen gesorteerd kunnen worden.
-- Een totaal- of samenvattingsrij toevoegen onderaan de tabel.
+- Je tabulaire data wilt weergeven met een duidelijke kolomstructuur.
+- Je data wilt vergelijken over meerdere dimensies (rijen × kolommen).
+- Je een overzicht wilt tonen waarbij kolommen gesorteerd kunnen worden.
+- Je een totaal- of samenvattingsrij onderaan de tabel wilt toevoegen.
 
-## Don't use when
+## Niet gebruiken als...
 
 - De data één-dimensionaal is: gebruik een lijst (`UnorderedList`, `OrderedList`).
 - Je paginalayout wilt opbouwen: gebruik `Grid` of `Stack`.
 - Er slechts één kolom is zonder relationele data: gebruik een lijst of `Paragraph`.
 
-## Best practices
+## Goed gebruik
 
 ### Caption
 
@@ -238,7 +238,7 @@ const [isOpen, setIsOpen] = useState(false);
 
 <!-- tokens: table -->
 
-## Accessibility
+## Toegankelijkheid
 
 - Gebruik **altijd** `scope="col"` op kolomkoppen en `scope="row"` op rijkoppen: dit is de kern van toegankelijke tabellen. Zonder `scope` kunnen schermlezers de relatie tussen cellen en koppen niet vaststellen.
 - De `<caption>` staat altijd als eerste kind van `<table>` en is zowel zichtbaar als machine-leesbaar.

@@ -8,21 +8,21 @@ De Checkbox component is een standalone checkbox zonder label - alleen het vierk
 
 <!-- VOORBEELD -->
 
-## Use when
+## Wel gebruiken als...
 
 - Je een checkbox nodig hebt zonder label (voor custom layouts).
 - Je volledige controle wilt over de positioning van label en checkbox.
 - Je een "select all" checkbox implementeert (gebruik `indeterminate` state).
 - Je checkboxes in een tabel of grid wilt plaatsen.
 
-## Don't use when
+## Niet gebruiken als...
 
 - Je een checkbox met label nodig hebt: gebruik dan [CheckboxOption](/docs/components-checkboxoption--docs).
 - Je een groep gerelateerde checkboxes hebt: gebruik dan [CheckboxGroup](/docs/components-checkboxgroup--docs).
 - Je een ja/nee keuze hebt: overweeg een toggle/switch (indien beschikbaar in je design system).
 - Je een enkele optie uit meerdere wilt selecteren: gebruik dan [Radio](/docs/components-radio--docs).
 
-## Best practices
+## Goed gebruik
 
 - **Gebruik altijd een label.** Zelfs als de Checkbox component zelf geen label heeft, moet er altijd een zichtbaar of toegankelijk label zijn. Gebruik `aria-label` of koppel aan een `<label>` element met `htmlFor`.
 - **Indeterminate voor "select all".** Gebruik de `indeterminate` state voor "select all" checkboxes wanneer sommige (maar niet alle) child items geselecteerd zijn.
@@ -34,7 +34,7 @@ De Checkbox component is een standalone checkbox zonder label - alleen het vierk
 
 <!-- tokens: checkbox -->
 
-## Accessibility
+## Toegankelijkheid
 
 - De component gebruikt een native `<input type="checkbox">` voor volledige toegankelijkheid.
 - Checkboxes zonder zichtbaar label hebben een `aria-label` nodig.

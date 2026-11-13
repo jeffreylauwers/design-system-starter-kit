@@ -15,20 +15,20 @@ Geef je `Card` een `href`, dan wordt de heading een stretched link: de hele card
 
 <!-- VOORBEELD -->
 
-## Use when
+## Wel gebruiken als...
 
-- Overzichtspagina's met navigeerbare content-items (artikelen, producten, nieuwsberichten).
-- Zoekresultaten met een preview van afbeelding, titel en samenvatting.
-- Dashboards met samenvattende blokken die doorlinken naar detailpagina's.
-- Groepen van gelijksoortige items waarbij visuele consistentie (gelijke hoogte, uitgelijnde footer) vereist is.
+- Je op een overzichtspagina navigeerbare content-items toont (artikelen, producten, nieuwsberichten).
+- Je zoekresultaten toont met een preview van afbeelding, titel en samenvatting.
+- Je in een dashboard samenvattende blokken toont die doorlinken naar detailpagina's.
+- Je een groep gelijksoortige items toont waarbij visuele consistentie (gelijke hoogte, uitgelijnde footer) vereist is.
 
-## Don't use when
+## Niet gebruiken als...
 
 - De inhoud geen navigatie-actie heeft en geen zelfstandig blok vormt: gebruik dan **Note** of **Alert**.
-- Het gaat om losse KPI-statistieken zonder navigatie-actie.
+- Het om losse KPI-statistieken zonder navigatie-actie gaat.
 - Een eenvoudige container zonder gestructureerde secties vereist is: gebruik dan een `<div>` met padding.
 
-## Best practices
+## Goed gebruik
 
 ### Volgorde van de secties
 
@@ -73,7 +73,7 @@ De tokens van de pre-header verwijzen standaard naar die van de header: pas je d
 
 <!-- tokens: card -->
 
-## Accessibility
+## Toegankelijkheid
 
 - De card root is `<article>`: een semantisch zelfstandig inhoudsblok, navigeerbaar via screenreader-sneltoets.
 - De header staat in de DOM vóór de pre-header. Informatie in de pre-header (alt-tekst, badge) wordt dus ná de heading voorgelezen, en wie op koppen navigeert mist niets (WCAG 1.3.2).

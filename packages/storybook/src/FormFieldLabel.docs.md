@@ -8,18 +8,18 @@ De FormFieldLabel component is een gestandaardiseerd label element voor form con
 
 <!-- VOORBEELD -->
 
-## Use when
+## Wel gebruiken als...
 
 - Je een label nodig hebt voor een form control (input, textarea, select, etc.).
 - Je duidelijk wilt aangeven of een veld optioneel of verplicht is.
 - Je een consistent label patroon wilt in je formulieren.
 
-## Don't use when
+## Niet gebruiken als...
 
 - Je een inline label nodig hebt binnen een checkbox/radio: gebruik dan [OptionLabel](/docs/components-optionlabel--docs).
 - Je een heading nodig hebt: gebruik [Heading](/docs/components-heading--docs).
 
-## Best practices
+## Goed gebruik
 
 ### Suffix gebruik
 
@@ -51,7 +51,7 @@ De FormFieldLabel component is een gestandaardiseerd label element voor form con
 
 <!-- tokens: form-field-label form-field-label-suffix -->
 
-## Accessibility
+## Toegankelijkheid
 
 - Labels zijn essentieel voor accessibility: elke form control moet een label hebben.
 - Gebruik `htmlFor` attribuut om label te koppelen aan input (of wrap in FormField).

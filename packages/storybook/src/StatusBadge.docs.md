@@ -8,19 +8,19 @@ De StatusBadge component toont een statusaanduiding naast tabelrijen, koppen of 
 
 <!-- VOORBEELD -->
 
-## Use when
+## Wel gebruiken als...
 
-- De status van een item compact weergeven (bijv. "Actief", "In behandeling", "Afgewezen").
-- Statusaanduidingen in een tabel, naast een koptekst of naast een formulierveld.
+- Je de status van een item compact wilt weergeven (bijv. "Actief", "In behandeling", "Afgewezen").
+- Je een statusaanduiding wilt tonen in een tabel, naast een koptekst of naast een formulierveld.
 - Visuele nadruk op de huidige toestand nodig is zonder dat er een actie aan hangt.
 
-## Don't use when
+## Niet gebruiken als...
 
 - De status een actie vereist: gebruik een **Button** of **Link**.
 - Je een langere toelichting wilt geven: gebruik een **Alert** of **Note**.
 - De badge interactief moet zijn: gebruik een **Link** of **Button** met gepaste styling.
 
-## Best practices
+## Goed gebruik
 
 ### Variantkeuze
 
@@ -49,7 +49,7 @@ De StatusBadge component toont een statusaanduiding naast tabelrijen, koppen of 
 
 <!-- tokens: status-badge -->
 
-## Accessibility
+## Toegankelijkheid
 
 - `<strong>` geeft screenreaders semantisch gewicht aan de status.
 - Het icoon heeft altijd `aria-hidden="true"`: de tekst is de informatiedrager.

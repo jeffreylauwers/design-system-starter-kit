@@ -8,19 +8,19 @@ De TableOfContents component toont een lijst van ankerlinks waarmee een gebruike
 
 <!-- VOORBEELD -->
 
-## Use when
+## Wel gebruiken als...
 
-- Een lange pagina met meerdere H2-secties waar de gebruiker snel naartoe wil kunnen springen.
-- `appearance="framed"` (default) voor gebruik inline in de content-flow, bijvoorbeeld direct onder de introductietekst op kleinere viewports.
-- `appearance="plain"` voor gebruik in een losstaande kolom naast de hoofdinhoud op bredere viewports.
+- Een lange pagina meerdere H2-secties heeft waar de gebruiker snel naartoe wil kunnen springen.
+- De inhoudsopgave inline in de content-flow staat, bijvoorbeeld direct onder de introductietekst op kleinere viewports: gebruik dan `appearance="framed"` (default).
+- De inhoudsopgave op bredere viewports in een losstaande kolom naast de hoofdinhoud staat: gebruik dan `appearance="plain"`.
 
-## Don't use when
+## Niet gebruiken als...
 
 - De pagina maar één of twee secties heeft: een inhoudsopgave voegt dan geen waarde toe.
 - Je een paginabrede navigatiestructuur nodig hebt: gebruik **Menu**/**MenuLink**.
 - Je een algemene, niet-navigatiegerelateerde tip of waarschuwing wilt tonen: gebruik **Note**.
 
-## Best practices
+## Goed gebruik
 
 ### Alleen H2-secties
 
@@ -45,7 +45,7 @@ Elk item's `id` moet exact overeenkomen met het `id` van de bijbehorende `Headin
 
 <!-- tokens: table-of-contents -->
 
-## Accessibility
+## Toegankelijkheid
 
 - Rendert als `<nav>` met `aria-labelledby` gekoppeld aan de heading: de accessible name is de zichtbare heading-tekst.
 - Pas `headingLevel` aan op de documenthiërarchie (standaard `h2`, gelijk aan de secties waarnaar gelinkt wordt).

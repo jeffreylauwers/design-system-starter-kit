@@ -10,25 +10,25 @@ Negen space-varianten: gebaseerd op de globale `--dsn-space-row-*` tokens: geven
 
 <!-- VOORBEELD -->
 
-## Use when
+## Wel gebruiken als...
 
-- Elementen verticaal stapelen met consistente tussenruimte (kopteksten, paragrafen, formuliervelden, secties).
+- Je elementen verticaal wilt stapelen met consistente tussenruimte (kopteksten, paragrafen, formuliervelden, secties).
 - De tussenruimte uniform moet zijn voor alle children, zonder uitzonderingen per child.
 - Je een layout-laag wilt scheiden van de inhoud zelf.
 
-## Don't use when
+## Niet gebruiken als...
 
 - De ruimte tussen elementen sterk verschilt per child: gebruik dan losse `margin-block` per element.
 - Je horizontale layout nodig hebt: gebruik flexbox of grid rechtstreeks.
 - Slechts één child aanwezig is: Stack voegt dan geen zichtbare ruimte toe.
 
-## Best practices
+## Goed gebruik
 
 - **Kies de kleinst passende variant**: voor formuliervelden `sm`–`md`, voor secties op een pagina `3xl`–`4xl`, voor grote paginaovergangen `5xl`–`6xl`.
 - **Nest Stack-componenten** voor complexe layouts: een buitenste Stack met `4xl` voor paginasecties, binnenste Stacks met `md` voor formuliervelden.
 - **Gebruik Stack niet als vervanging voor semantische HTML**: de Stack rendert altijd als `<div>`. Geef children de juiste semantische elementen mee.
 
-## Accessibility
+## Toegankelijkheid
 
 Stack is een puur visueel layout-hulpmiddel. Het voegt geen ARIA-rollen, labels of andere toegankelijkheidsattributen toe. De semantiek van de pagina zit volledig in de children.
 

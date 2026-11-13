@@ -8,20 +8,20 @@ De Icon component biedt een consistente, toegankelijke manier om iconen te gebru
 
 <!-- VOORBEELD -->
 
-## Use when
+## Wel gebruiken als...
 
 - Je een visuele indicatie wilt geven bij acties (bijv. een prullenbak-icoon bij "Verwijderen").
 - Je een object of concept visueel wilt representeren (bijv. een map-icoon voor een folder).
 - Je een status wilt communiceren (bijv. een vinkje voor succes, een driehoek voor waarschuwing).
 - Het icoon de herkenbaarheid van een UI-element verhoogt (bijv. een tandwiel-icoon bij instellingen).
 
-## Don't use when
+## Niet gebruiken als...
 
 - Het icoon de enige visuele indicatie is zonder duidelijke betekenis: voeg altijd een `aria-label` toe voor standalone iconen.
 - Je complexe illustraties of logo's wilt tonen: gebruik dan een afbeelding of SVG.
 - Het icoon puur decoratief is en geen betekenis toevoegt aan de interface.
 
-## Best practices
+## Goed gebruik
 
 - **Decoratieve vs standalone iconen.** Iconen die naast tekst staan zijn decoratief (geen `aria-label` nodig). Standalone iconen (zonder tekst) hebben altijd een `aria-label` nodig voor toegankelijkheid.
 - **Gebruik iconen consequent.** Gebruik hetzelfde icoon voor dezelfde actie door de hele interface (bijv. altijd een prullenbak voor verwijderen).
@@ -34,7 +34,7 @@ De Icon component biedt een consistente, toegankelijke manier om iconen te gebru
 
 <!-- tokens: --dsn-icon-size-sm --dsn-icon-size-md --dsn-icon-size-lg --dsn-icon-size-xl --dsn-icon-size-2xl --dsn-icon-size-3xl --dsn-icon-size-4xl -->
 
-## Accessibility
+## Toegankelijkheid
 
 - Decoratieve iconen (naast tekst): automatisch `aria-hidden="true"`.
 - Standalone iconen (zonder tekst): vereist `aria-label` en krijgt `role="img"`.

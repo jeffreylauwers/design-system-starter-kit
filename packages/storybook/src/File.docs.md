@@ -10,17 +10,17 @@ File ondersteunt vier upload-states (`default`, `loading`, `uploaded`, `error`) 
 
 <!-- VOORBEELD -->
 
-## Use when
+## Wel gebruiken als...
 
 - De gebruiker een bestand heeft geselecteerd of geüpload binnen een formulier, en feedback nodig heeft over de status. Gebruik `File` dan samen met `FileInput`, zie het patroon **Bestanden uploaden** onder Patronen/Formulieren en het template **Form step: Upload**.
 - Een eerder geüpload bestand getoond wordt op een controlepagina van een meerstappenformulier, met de mogelijkheid het te bekijken of te downloaden.
 - Een downloadbaar bestand aangeboden wordt op een detailpagina.
 
-## Don't use when
+## Niet gebruiken als...
 
 - Je enkel een link naar een bestand wilt tonen zonder visueel onderscheid of acties. Gebruik in dat geval een gewone `Link`.
 
-## Best practices
+## Goed gebruik
 
 ### Bestandsnaam zonder extensie
 
@@ -115,7 +115,7 @@ Gebruik `FileList` als wrapper wanneer je meerdere `File` componenten toont. De 
 
 <!-- tokens: file -->
 
-## Accessibility
+## Toegankelijkheid
 
 - `dsn-file__media` heeft altijd `aria-hidden="true"`: het icoon en de preview zijn decoratief.
 - `<img class="dsn-file__preview" alt="">` heeft een lege `alt` — de media-container is toch `aria-hidden`.

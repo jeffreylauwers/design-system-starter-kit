@@ -226,7 +226,7 @@ Elk gekozen bestand doorloopt een eigen cyclus, los van de andere bestanden in d
 | `default`  | Bestand staat klaar          | Verwijderknop                 | Niets                               |
 | `error`    | Bestand geweigerd of mislukt | Rode rand plus de foutmelding | Bestandsnaam gevolgd door de reden  |
 
-De aankondigingen komen uit de `aria-live` regio die `File` zelf meebrengt. Zie de Accessibility-sectie van de File-documentatie voor de exacte teksten en hoe je ze overschrijft.
+De aankondigingen komen uit de `aria-live` regio die `File` zelf meebrengt. Zie de sectie Toegankelijkheid van de File-documentatie voor de exacte teksten en hoe je ze overschrijft.
 
 ### Controleer bij het kiezen, niet pas bij submit
 

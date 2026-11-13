@@ -8,30 +8,30 @@ De TimeInput component is een gespecialiseerd invoerveld voor het invoeren van e
 
 <!-- VOORBEELD -->
 
-## Use when
+## Wel gebruiken als...
 
 - Je een tijdstip wilt laten invoeren (bijv. aanvangstijd, eindtijd, afspraak).
 - Je wilt dat gebruikers de native tijdkiezer van het apparaat kunnen gebruiken.
 - Je een tijdveld in een formulier nodig hebt.
 
-## Don't use when
+## Niet gebruiken als...
 
 - Je een datumveld nodig hebt: gebruik dan een DateInput.
 - Je datum én tijd tegelijk wilt invoeren: gebruik dan een datetime-local input.
 
-## Best practices
+## Goed gebruik
 
 - **Combineer met FormField voor een label.** Gebruik `FormFieldLabel` of `FormField` voor een zichtbaar label.
 - **Gebruik een duidelijk label.** Benoem wat de tijd betekent (bijv. "Starttijd", "Eindtijd", "Afspraak").
 - **Geef een standaardwaarde mee waar van toepassing.** Dit helpt gebruikers het verwachte formaat te begrijpen.
 
-## Accessibility
+## Toegankelijkheid
 
 - De klokknop is volledig toetsenbord- en schermlezertoegankelijk. De tekst "Tijdkiezer openen" is visueel verborgen via het `dsn-button__label` patroon, maar leesbaar voor screenreaders.
 - De extra `padding-inline-end` zorgt ervoor dat ingevoerde tekst nooit over de knop heen loopt.
 - In `disabled` en `read-only` staat wordt de klokknop niet getoond.
 
-## Anatomy
+## Opbouw
 
 Een TimeInput bestaat uit:
 
@@ -39,7 +39,7 @@ Een TimeInput bestaat uit:
 - **Klokknop**: `Button` component (`variant="subtle"`, `size="small"`, `iconOnly`) rechts in het veld, opent de native tijdkiezer via `showPicker()`
 - **Input element**: `type="time"` met extra padding rechts voor de knop
 
-## States
+## Toestanden
 
 - **Default**: Leeg, klaar voor invoer
 - **Filled**: Bevat een tijd

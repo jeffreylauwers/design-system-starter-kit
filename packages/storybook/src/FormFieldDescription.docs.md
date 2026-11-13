@@ -10,22 +10,22 @@ Schrijf een description als lopende tekst. Een screenreader leest de inhoud van 
 
 <!-- VOORBEELD -->
 
-## Use when
+## Wel gebruiken als...
 
 - Je aanvullende informatie of context nodig hebt bij een form field.
 - Je wilt uitleggen wat er verwacht wordt in het veld.
 - Je format requirements of beperkingen wilt communiceren.
 - Je privacy of gebruik van data wilt uitleggen.
 
-## Don't use when
+## Niet gebruiken als...
 
 - Je een foutmelding wilt tonen: gebruik [FormFieldErrorMessage](/docs/components-formfielderrormessage--docs).
 - Je status feedback wilt geven: gebruik [FormFieldStatus](/docs/components-formfieldstatus--docs).
-- Je een echte lijst of een link wilt tonen: zet die buiten de description, zie [Best practices](#best-practices).
+- Je een echte lijst of een link wilt tonen: zet die buiten de description, zie [Goed gebruik](#goed-gebruik).
 - De informatie essentieel is: voeg het toe aan het label zelf.
 - Je een label nodig hebt: gebruik [FormFieldLabel](/docs/components-formfieldlabel--docs).
 
-## Best practices
+## Goed gebruik
 
 - **Houd het kort.** Descriptions moeten bondig zijn (1-2 zinnen meestal).
 - **Wees specifiek.** Geef concrete voorbeelden of requirements ("Minimaal 8 tekens" in plaats van "Kies een sterk wachtwoord").
@@ -55,7 +55,7 @@ Schrijf een description als lopende tekst. Een screenreader leest de inhoud van 
 
 <!-- tokens: form-field-description -->
 
-## Accessibility
+## Toegankelijkheid
 
 - Gebruik `id` attribuut op de description.
 - Koppel de description aan de form control met `aria-describedby`. Gebruik je FormField of FormFieldset, dan is dat al geregeld.

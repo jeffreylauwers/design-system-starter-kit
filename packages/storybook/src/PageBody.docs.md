@@ -10,18 +10,18 @@ Structurele inhoudcontainer die de ruimte tussen `PageHeader` en `PageFooter` op
 
 <!-- VOORBEELD -->
 
-## Use when
+## Wel gebruiken als...
 
 - Je de ruimte tussen `PageHeader` en `PageFooter` wilt opvullen zodat de footer altijd onderaan staat.
 - Je structurele elementen zoals `<main>`, breadcrumbs of een side navigation wilt groeperen.
 - Je een layoutpunt nodig hebt voor complexere paginastructuren.
 
-## Don't use when
+## Niet gebruiken als...
 
 - Je `PageBody` buiten een `PageLayout` plaatst: gebruik dan `Stack`, `Grid` of `Container`.
 - Je alleen een kaart of sectie wilt opmaken: gebruik dan `Stack` of `Grid`.
 
-## Best practices
+## Goed gebruik
 
 ### `<main>` en skip-link
 
@@ -61,7 +61,7 @@ De `<main>` met `id="main-content"` is een verantwoordelijkheid van de **templat
 
 `PageBody` heeft geen component-specifieke tokens. `flex: 1` is een layout-constante.
 
-## Accessibility
+## Toegankelijkheid
 
 ### Transparante structuurlaag
 

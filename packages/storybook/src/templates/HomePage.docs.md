@@ -86,18 +86,18 @@ Stel `--dsn-page-max-inline-size: none` in op `PageLayout` voor een volledige pa
 
 Combineer `colorScheme="inverse"` op de `PageHeader` met `variant="image-blend"` op de `Hero` voor een doorgaand visueel thema van header naar hero.
 
-## Use when
+## Wel gebruiken als...
 
 - Je een homepage of landingspagina bouwt met een prominente openingssectie.
 - Je een visuele nadruk wilt op het eerste scherm met een Hero-afbeelding of inversekleurschema.
 - Je de PageHeader en Hero thematisch op elkaar wilt afstemmen.
 
-## Don't use when
+## Niet gebruiken als...
 
 - De pagina geen bijzondere openingssectie nodig heeft: gebruik dan het Base Page template.
 - De Hero alleen decoratief is zonder informatieve koptekst: een Hero vereist altijd een herkenbare `<h1>` met `aria-labelledby`.
 
-## Accessibility
+## Toegankelijkheid
 
 - Geef de `Hero` altijd `aria-labelledby` dat verwijst naar de `<h1>` erin, zodat het `<section>`-element een toegankelijke naam heeft.
 - De `<h1>` staat in de Hero en is de eerste heading op de pagina — gebruik geen andere `<h1>` elders op de pagina.

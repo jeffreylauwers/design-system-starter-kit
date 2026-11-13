@@ -539,7 +539,7 @@ Each component has **three files**:
 
 1. **Stories file** (`.stories.tsx`): Interactive examples + argTypes + DocsPage import + `htmlTemplate`
 2. **MDX file** (`.docs.mdx`): Documentation wrapper met PreviewFrame, CodeTabs, Controls
-3. **Markdown file** (`.docs.md`): Dutch content (Doel, Use when, Best practices, etc.)
+3. **Markdown file** (`.docs.md`): Dutch content, including headings (Doel, Wel gebruiken als..., Goed gebruik, etc.)
 
 ### Stories File Pattern
 
@@ -644,24 +644,24 @@ Uitleg wat het component doet.
 
 <!-- VOORBEELD -->
 
-## Use when
+## Wel gebruiken als...
 
-- De gebruiker moet een actie uitvoeren
+- De gebruiker een actie moet uitvoeren
 - Je een primaire call-to-action nodig hebt
 
-## Don't use when
+## Niet gebruiken als...
 
 - Je naar een andere pagina wilt navigeren (gebruik Link)
 
-## Best practices
+## Goed gebruik
 
 - Gebruik duidelijke, actie-gerichte tekst
 
-## Accessibility
+## Toegankelijkheid
 
 - ...
 
-## States
+## Toestanden
 
 - ...
 

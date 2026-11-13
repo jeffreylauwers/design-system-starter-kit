@@ -10,19 +10,19 @@ De component heeft bewust geen eigen toegankelijkheidsmechanisme. De verantwoord
 
 <!-- VOORBEELD -->
 
-## Use when
+## Wel gebruiken als...
 
 - Een gebruiker het aantal ongelezen berichten bij een inbox-button moet zien.
 - Het aantal openstaande taken in een navigatie-item of sidebar-link getoond wordt.
-- Korte tellingen (1–99+) waarbij de context al duidelijk is vanuit het omliggende element.
+- Het om korte tellingen (1–99+) gaat waarbij de context al duidelijk is vanuit het omliggende element.
 
-## Don't use when
+## Niet gebruiken als...
 
 - De status kwalitatief is (bijv. "Goedgekeurd", "Let op"): gebruik dan `StatusBadge`.
 - Je alleen de aanwezigheid van een melding wil signaleren zonder getal: gebruik dan `DotBadge`.
 - De badge op zichzelf staat zonder parent Button of Link: de badge heeft altijd context nodig.
 
-## Best practices
+## Goed gebruik
 
 ### Variantkeuze
 
@@ -80,7 +80,7 @@ NumberBadge heeft altijd `aria-hidden="true"`: screenreaders negeren de badge vo
 
 <!-- tokens: number-badge -->
 
-## Accessibility
+## Toegankelijkheid
 
 - NumberBadge heeft altijd `aria-hidden="true"`: geen semantische betekenis op zichzelf.
 - Bij afgekapte getallen (`99+`): verplicht een `dsn-visually-hidden` span in de parent met het werkelijke getal.

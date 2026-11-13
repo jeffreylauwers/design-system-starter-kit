@@ -10,6 +10,21 @@ All notable changes to this project are documented in this file.
 
 Nog niet gepubliceerde wijzigingen. Schrijf nieuwe changelog-entries hieronder; bij de volgende release wordt deze kop gepromoveerd naar het definitieve versienummer.
 
+### Storybook: componentdocumentatie volledig Nederlands
+
+De vaste kopjes op de Docs-pagina's van alle componenten waren nog Engels. Ze zijn nu Nederlands:
+
+| Was            | Wordt                 |
+| -------------- | --------------------- |
+| Use when       | Wel gebruiken als...  |
+| Don't use when | Niet gebruiken als... |
+| Best practices | Goed gebruik          |
+| Accessibility  | Toegankelijkheid      |
+
+Ook de losse Engelse kopjes zijn vertaald: States (Toestanden), Anatomy (Opbouw), HTML attributes (HTML-attributen), In form field context (In een formulierveld) en Row height richtlijnen (Richtlijnen voor rijhoogte).
+
+Bullets onder Wel/Niet gebruiken als... die na het nieuwe kopje niet als lopende zin lazen, zijn herschreven, zoals "Tabulaire data weergeven" naar "Je tabulaire data wilt weergeven". Bullets die al aansloten, zijn ongewijzigd. CLAUDE.md, `docs/05-storybook-configuration.md` en het `/update-docs`-commando noemen de nieuwe kopjes, zodat nieuwe componenten ze meteen goed krijgen.
+
 ### Storybook: Design Tokens-pagina uit de design tokens
 
 De pagina Foundations/Design Tokens was met de hand gevuld: 2261 regels met tokennamen en waarden. Er stonden geen beschrijvingen op, en 222 van de 596 semantische tokens ontbraken, zoals de volledige inverse-schalen van Accent 2 en 3 en Action 1 en 2, de meeste `form-control`-tokens en de `min`/`max`-bouwstenen van de fluid schaal. De handgeschreven waarden en namen werden bovendien nergens getoond, omdat de tabel de live waarde laat zien.

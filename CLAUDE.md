@@ -286,13 +286,13 @@ Elk component heeft een `.docs.md` met vaste secties in deze volgorde:
 
 1. **Titel + korte beschrijving** (één zin)
 2. **Doel**: wat doet het component en wanneer gebruik je het?
-3. **Use when**: bulletlijst
-4. **Don't use when**: bulletlijst
-5. **Best practices**: subsecties per onderwerp
+3. **Wel gebruiken als...**: bulletlijst. Formuleer elk item zo dat het de zin na het kopje afmaakt ("Je een ... wilt tonen", "De gebruiker ... moet ...")
+4. **Niet gebruiken als...**: bulletlijst, zelfde zinsopbouw, met het alternatief na een dubbele punt
+5. **Goed gebruik**: subsecties per onderwerp
 6. **Design tokens**: een marker `<!-- tokens: {component-name} -->`, geen handgeschreven tabel. `DocsMarkdown` maakt er een tabel van met namen en descriptions uit de token-JSON (zie `docs/05-storybook-configuration.md`)
-7. **Accessibility**: toegankelijkheidsaandachtspunten
+7. **Toegankelijkheid**: toegankelijkheidsaandachtspunten
 
-Bekijk `packages/storybook/src/Button.docs.md` als referentie voor toon en opmaak.
+Alle kopjes en teksten in een `.docs.md` zijn Nederlands. Bekijk `packages/storybook/src/Button.docs.md` als referentie voor toon en opmaak.
 
 ---
 

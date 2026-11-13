@@ -8,33 +8,33 @@ Select is een formuliercomponent op basis van het native `<select>` element. Het
 
 <!-- VOORBEELD -->
 
-## Use when
+## Wel gebruiken als...
 
 - De gebruiker één keuze moet maken uit een vooraf bepaalde lijst
 - Er meer dan 5 opties zijn (minder opties kunnen beter als RadioGroup worden weergegeven)
 - Ruimte beperkt is en een uitklaplijst handiger is dan losse radio buttons
 
-## Don't use when
+## Niet gebruiken als...
 
 - Er maar 2-4 opties zijn: gebruik dan RadioOption/RadioGroup
 - Meerdere opties tegelijk geselecteerd mogen worden: gebruik dan CheckboxGroup
 - De opties dynamisch gefilterd of doorzocht moeten worden: gebruik dan een autocomplete of combobox pattern
 
-## Best practices
+## Goed gebruik
 
 - Geef altijd een eerste lege optie of placeholder-optie (bijv. "Kies een optie") zodat de gebruiker bewust een keuze maakt
 - Gebruik een `<FormField>` wrapper met een duidelijk label
 - Zorg dat opties kort en onderscheidend zijn
 - Groepeer gerelateerde opties met `<optgroup>` bij lange lijsten
 
-## Accessibility
+## Toegankelijkheid
 
 - Het `<select>` element is van nature toegankelijk voor toetsenbord en screenreaders
 - Gebruik altijd een zichtbaar label via `<FormField>` of `<FormFieldLabel htmlFor="...">`
 - De `invalid` prop zet `aria-invalid="true"`: combineer dit met `<FormFieldErrorMessage>` en `aria-describedby`
 - Het chevron-icoon heeft `aria-hidden="true"` en is voor screenreaders onzichtbaar
 
-## States
+## Toestanden
 
 - **Default**: lege selectie of placeholder
 - **With value**: een optie is geselecteerd

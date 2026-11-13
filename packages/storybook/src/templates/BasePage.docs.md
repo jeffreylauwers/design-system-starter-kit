@@ -124,17 +124,17 @@ Gebruik de `Base Page: with Grid` en `Base Page: Full Width + Grid` stories als 
 | 2   | 12/12 elk    | 6/12 elk                 |
 | 3   | 12/12 elk    | 4/12 elk                 |
 
-## Use when
+## Wel gebruiken als...
 
 - Je een volledige pagina opbouwt met header, inhoud en footer.
 - Je een startpunt nodig hebt voor een nieuw paginatype.
 
-## Don't use when
+## Niet gebruiken als...
 
 - Je een gedeelte van een pagina opmaakt: gebruik dan `Stack`, `Grid` of `Container`.
 - Je geen `PageHeader` of `PageFooter` nodig hebt.
 
-## Best practices
+## Goed gebruik
 
 ### Skip-link in het template
 
@@ -158,7 +158,7 @@ Geef de `<main>` altijd `tabIndex={-1}` zodat de skip-link er programmatisch naa
 
 Elke pagina moet een zichtbare `<h1>` bevatten (WCAG 2.4.6). Gebruik de `Heading`-component met `level={1}` als eerste heading in `<main>`.
 
-## Accessibility
+## Toegankelijkheid
 
 ### Landmarks
 

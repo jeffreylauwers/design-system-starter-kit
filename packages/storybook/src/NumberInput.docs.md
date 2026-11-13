@@ -8,18 +8,18 @@ De NumberInput component is een gespecialiseerd invoerveld voor het invoeren van
 
 <!-- VOORBEELD -->
 
-## Use when
+## Wel gebruiken als...
 
 - Je een invoerveld nodig hebt voor gehele getallen, zoals leeftijd, aantal of postcode.
 - Je een invoerveld nodig hebt voor bedragen of maten met decimalen (`allowDecimals`).
 - Je mobiele gebruikers direct het juiste toetsenbord wil tonen.
 
-## Don't use when
+## Niet gebruiken als...
 
 - Het om vrije tekst gaat: gebruik dan [TextInput](/docs/components-textinput--docs).
 - Je een datum- of tijdinvoer nodig hebt: gebruik dan DateInput of [TimeInput](/docs/components-timeinput--docs).
 
-## Best practices
+## Goed gebruik
 
 - **Gebruik FormFieldDescription voor formaathints.** Als je wilt toelichten wat de verwachte invoer is (bijv. "Voer een bedrag in, gebruik een komma voor decimalen"), gebruik dan [FormFieldDescription](/docs/components-formfielddescription--docs): niet een placeholder. Placeholder tekst verdwijnt bij typen en is daarna niet meer zichtbaar.
 - **Gebruik `allowDecimals` voor bedragen.** Dit schakelt `inputmode="decimal"` in zodat ook een kommatoets beschikbaar is op mobiel.
@@ -27,14 +27,14 @@ De NumberInput component is een gespecialiseerd invoerveld voor het invoeren van
 - **Geef validatie feedback.** Gebruik de `invalid` prop in combinatie met `aria-invalid` en een `FormFieldErrorMessage`.
 - **Beperk de inline-size.** Gebruik de `inlineSize` prop om de inline-size af te stemmen op de verwachte waarde (bijv. `xs` voor leeftijd, `sm` voor postcode).
 
-## Accessibility
+## Toegankelijkheid
 
 - Gebruikt `type="text"` om problemen met `type="number"` te vermijden (screen reader inconsistenties, stille validatie, scrollwiel-interactie).
 - `inputmode="numeric"` zorgt voor een cijfertoetsenbord op mobiel.
 - `pattern="[0-9]*"` biedt backwards compatibility voor oudere iOS-apparaten.
 - Bij `allowDecimals={true}` wordt `inputmode="decimal"` gebruikt voor een toetsenbord met komma/punt.
 
-## States
+## Toestanden
 
 - **Default**: Leeg, klaar voor invoer
 - **Filled**: Bevat een getal

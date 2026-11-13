@@ -8,31 +8,31 @@ De DateInput component is een gespecialiseerd invoerveld voor het invoeren van e
 
 <!-- VOORBEELD -->
 
-## Use when
+## Wel gebruiken als...
 
 - Je een datum wilt laten invoeren (bijv. geboortedatum, einddatum, afspraakdatum).
 - Je wilt dat gebruikers de native datumkiezer van het apparaat kunnen gebruiken.
 - Je een datumveld in een formulier nodig hebt.
 
-## Don't use when
+## Niet gebruiken als...
 
 - Je een tijdstip wilt invoeren: gebruik dan een [TimeInput](/docs/components-timeinput--docs).
 - Je datum én tijd tegelijk wilt invoeren: gebruik dan een `datetime-local` input.
 
-## Best practices
+## Goed gebruik
 
 - **Combineer met FormField voor een label.** Gebruik `FormFieldLabel` of `FormField` voor een zichtbaar label.
 - **Gebruik een duidelijk label.** Benoem wat de datum betekent (bijv. "Geboortedatum", "Einddatum", "Afspraak").
 - **Geef een standaardwaarde mee waar van toepassing.** Dit helpt gebruikers het verwachte formaat te begrijpen.
 - **Gebruik `min` en `max` attributen** om het bereik van geldige datums te beperken waar nodig.
 
-## Accessibility
+## Toegankelijkheid
 
 - De kalenderknop is volledig toetsenbord- en schermlezertoegankelijk. De tekst "Datumkiezer openen" is visueel verborgen via het `dsn-button__label` patroon, maar leesbaar voor screenreaders.
 - De extra `padding-inline-end` zorgt ervoor dat ingevoerde tekst nooit over de knop heen loopt.
 - In `disabled` en `read-only` staat wordt de kalenderknop niet getoond.
 
-## Anatomy
+## Opbouw
 
 Een DateInput bestaat uit:
 
@@ -40,7 +40,7 @@ Een DateInput bestaat uit:
 - **Kalenderknop**: `Button` component (`variant="subtle"`, `size="small"`, `iconOnly`) rechts in het veld, opent de native datumkiezer via `showPicker()`
 - **Input element**: `type="date"` met extra padding rechts voor de knop
 
-## States
+## Toestanden
 
 - **Default**: Leeg, klaar voor invoer
 - **Filled**: Bevat een datum

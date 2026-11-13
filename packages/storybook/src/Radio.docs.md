@@ -8,21 +8,21 @@ De Radio component is een standalone radio button zonder label - alleen het rond
 
 <!-- VOORBEELD -->
 
-## Use when
+## Wel gebruiken als...
 
 - Je een radio button nodig hebt zonder label (voor custom layouts).
 - Je volledige controle wilt over de positioning van label en radio.
 - Je radio buttons in een groep wilt plaatsen waar slechts één optie tegelijk geselecteerd kan zijn.
 - Je radio buttons in een tabel of grid wilt plaatsen.
 
-## Don't use when
+## Niet gebruiken als...
 
 - Je een radio button met label nodig hebt: gebruik dan [RadioOption](/docs/components-radiooption--docs).
 - Je een groep gerelateerde radio buttons hebt: gebruik dan [RadioGroup](/docs/components-radiogroup--docs).
 - Je meerdere opties tegelijk wilt selecteren: gebruik dan [Checkbox](/docs/components-checkbox--docs).
 - Je een aan/uit toggle nodig hebt: overweeg een toggle/switch (indien beschikbaar).
 
-## Best practices
+## Goed gebruik
 
 - **Gebruik altijd een label.** Zelfs als de Radio component zelf geen label heeft, moet er altijd een zichtbaar of toegankelijk label zijn. Gebruik `aria-label` of koppel aan een `<label>` element met `htmlFor`.
 - **Groepeer met name attribuut.** Radio buttons in dezelfde groep moeten hetzelfde `name` attribuut hebben, zodat slechts één tegelijk geselecteerd kan zijn.
@@ -35,7 +35,7 @@ De Radio component is een standalone radio button zonder label - alleen het rond
 
 <!-- tokens: radio -->
 
-## Accessibility
+## Toegankelijkheid
 
 - De component gebruikt een native `<input type="radio">` voor volledige toegankelijkheid.
 - Radio buttons zonder zichtbaar label hebben een `aria-label` nodig.

@@ -10,13 +10,13 @@ De FormField component is een complete form field container die alle onderdelen 
 
 <!-- VOORBEELD -->
 
-## Use when
+## Wel gebruiken als...
 
 - Je een complete form field nodig hebt met label en control.
 - Je een consistente form field structuur wilt in je formulieren.
 - Je wilt dat description, error en status automatisch via `aria-describedby` aan de control gekoppeld worden.
 
-## Don't use when
+## Niet gebruiken als...
 
 - Je een groep controls hebt (CheckboxGroup, RadioGroup): gebruik [FormFieldset](/docs/components-formfieldset--docs).
 - Je alleen een label zonder control nodig hebt: gebruik [FormFieldLabel](/docs/components-formfieldlabel--docs).
@@ -36,7 +36,7 @@ FormField combineert deze sub-componenten in de juiste volgorde:
 
 Wanneer er een `error` prop aanwezig is, krijgt het hele FormField een dikke rode border aan de linkerzijde en extra padding. Dit trekt visueel de aandacht naar het probleem en groepeert de error message met het field.
 
-## Best practices
+## Goed gebruik
 
 ### Props
 
@@ -74,7 +74,7 @@ Plus de tokens van de sub-componenten:
 - FormFieldStatus tokens voor status styling
 - Sub-component margins zorgen voor spacing
 
-## Accessibility
+## Toegankelijkheid
 
 - **htmlFor prop** - Koppelt label aan control via ID. Geef altijd hetzelfde ID mee aan de control zelf.
 - **Automatische IDs** - FormField genereert `{htmlFor}-description`, `{htmlFor}-error` en `{htmlFor}-status` voor de teksten die je meegeeft. Zonder `htmlFor` vallen de ID's terug op `useId()`: de koppeling werkt dan nog steeds, maar het label niet meer.

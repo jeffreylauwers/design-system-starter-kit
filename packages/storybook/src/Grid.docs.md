@@ -11,20 +11,20 @@ Grid legt een 12-koloms structuur vast als basis voor paginalayouts. Alle childr
 
 <!-- VOORBEELD -->
 
-## Use when
+## Wel gebruiken als...
 
 - Je een paginabrede layout wilt structureren met kolommen
 - Content naast elkaar moet staan (twee kolommen, drie kolommen, etc.)
 - Je responsive kolomverdeling nodig hebt via breakpoints
 - Je een sectie "edge-to-edge" wilt laten lopen binnen een `contained` grid
 
-## Don't use when
+## Niet gebruiken als...
 
 - Je alleen verticale stapeling nodig hebt → gebruik `Stack`
 - Je een kleine, component-interne layout wilt → gebruik inline CSS of `display: flex`
 - De content geen kolom-gebaseerde structuur heeft
 
-## Best practices
+## Goed gebruik
 
 - Gebruik `contained` voor paginalayouts waarbij de maximale breedte bepaald wordt door `--dsn-grid-max-width`
 - Gebruik geen `GridItem` als directe child niet nodig is: gewone `<div>` elementen werken ook (ze beslaan standaard de volledige breedte via `grid-column: 1 / -1`)
@@ -108,7 +108,7 @@ Een `GridItem` met `fullBleed` (of `<div class="dsn-full-bleed">`) breekt visuee
 </div>
 ```
 
-## Accessibility
+## Toegankelijkheid
 
 Grid en GridItem zijn puur visuele layout utilities. Ze voegen geen ARIA-attributen of semantische HTML toe. Gebruik passende semantische elementen (`<main>`, `<aside>`, `<section>`) als wrapper of als `className`-drager.
 

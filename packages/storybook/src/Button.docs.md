@@ -8,21 +8,21 @@ De Button component biedt een consistente, toegankelijke manier om acties te tri
 
 <!-- VOORBEELD -->
 
-## Use when
+## Wel gebruiken als...
 
 - De gebruiker een actie moet uitvoeren, zoals opslaan, verwijderen of navigeren naar een volgende stap.
 - Je visuele hiërarchie wilt aanbrengen tussen primaire (`strong`), secundaire (`default`), en tertiaire (`subtle`) acties.
 - Je sentiment wilt communiceren, zoals een destructieve actie (`strong-negative`) of een bevestiging (`strong-positive`).
 - Een icoon de betekenis van de actie kan verduidelijken (bijv. een prullenbak-icoon bij "Verwijderen").
 
-## Don't use when
+## Niet gebruiken als...
 
 - De actie puur navigatie is zonder bijeffecten: gebruik dan de [Link](/docs/components-link--docs) component.
 - Het element inline in een tekst staat: gebruik dan de `link` variant of de Link component.
 - Je een toggle of selectie nodig hebt: overweeg een checkbox, switch of toggle button pattern.
 - De pagina meer dan twee `strong` buttons naast elkaar bevat: dit verzwakt de visuele hiërarchie.
 
-## Best practices
+## Goed gebruik
 
 - **Eén primaire actie per context.** Gebruik maximaal één `strong` button per sectie of dialoog. Ondersteunende acties gebruiken `default` of `subtle`.
 - **Gebruik duidelijke, actieve labels.** Schrijf labels als werkwoorden: "Opslaan", "Verwijderen", "Volgende". Vermijd vage labels als "OK" of "Klik hier".

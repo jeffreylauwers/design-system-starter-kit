@@ -8,20 +8,20 @@ ActionGroup is een lay-outprimitief voor het groeperen van één of meer gerelat
 
 <!-- VOORBEELD -->
 
-## Use when
+## Wel gebruiken als...
 
-- Primaire en secundaire actie naast elkaar in een formulier (bijv. "Opslaan" + "Annuleren").
-- Navigatieacties onderaan een wizardstap.
-- Combinatie van een button en een link als zachte uitweg (GOV.UK patroon).
-- Meerdere gerelateerde acties die automatisch moeten wrappen bij smalle viewports.
+- Je een primaire en secundaire actie naast elkaar zet in een formulier (bijv. "Opslaan" + "Annuleren").
+- Je navigatieacties onderaan een wizardstap plaatst.
+- Je een button combineert met een link als zachte uitweg (GOV.UK patroon).
+- Meerdere gerelateerde acties automatisch moeten wrappen bij smalle viewports.
 
-## Don't use when
+## Niet gebruiken als...
 
 - Acties geen directe relatie met elkaar hebben: gebruik dan losse Buttons.
-- Navigatie-items in een menu of navbar: gebruik andere navigatiepatronen.
+- Het om navigatie-items in een menu of navbar gaat: gebruik dan andere navigatiepatronen.
 - Er slechts één actie is die niet in een groepscontext staat: een losse Button volstaat.
 
-## Best practices
+## Goed gebruik
 
 ### Volgorde van acties
 
@@ -56,7 +56,7 @@ ActionGroup is een lay-outprimitief voor het groeperen van één of meer gerelat
 
 <!-- tokens: action-group -->
 
-## Accessibility
+## Toegankelijkheid
 
 - ActionGroup rendert als `<ul aria-label="...">` met elke actie in een eigen `<li>`. Screenreaders kondigen zo het aantal acties én de groepsnaam aan wanneer de groep focus krijgt.
 - `role="group"` is bewust niet gekozen: in VoiceOver en NVDA geeft dit inconsistent gedrag, waarbij de toegankelijke naam van de eerste knop soms wordt overgeslagen. Een `<ul>` met `aria-label` is de robuustere ARIA-oplossing en voorkomt dit.

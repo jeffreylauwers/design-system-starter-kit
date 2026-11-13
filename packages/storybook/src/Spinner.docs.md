@@ -10,19 +10,19 @@ De spinner heeft `role="status"` zodat screenreaders de laadtoestand aankondigen
 
 <!-- VOORBEELD -->
 
-## Use when
+## Wel gebruiken als...
 
 - Een actie loopt en de gebruiker moet wachten, maar de voortgang kan niet worden gemeten.
-- Korte laadacties na een gebruikersinteractie: een formulier dat wordt verstuurd, een zoekopdracht die wordt uitgevoerd.
+- Er een korte laadactie volgt op een gebruikersinteractie, zoals een formulier dat wordt verstuurd of een zoekopdracht die wordt uitgevoerd.
 - Een sectie van een pagina laadt asynchroon.
 
-## Don't use when
+## Niet gebruiken als...
 
 - De voortgang wel meetbaar is: gebruik dan een voortgangsbalk.
 - De wachttijd langer dan een paar seconden duurt: geef dan extra context over wat er gebeurt.
 - De spinner enkel decoratief is zonder betekenis voor de gebruiker: gebruik dan een loading skeleton.
 
-## Best practices
+## Goed gebruik
 
 ### Labelkeuze
 
@@ -86,7 +86,7 @@ De rotatie-animatie respecteert `prefers-reduced-motion: reduce`. Bij verminderd
 
 <!-- tokens: spinner -->
 
-## Accessibility
+## Toegankelijkheid
 
 - De container heeft altijd `role="status"` zodat screenreaders de laadtoestand aankondigen.
 - De SVG-cirkel heeft altijd `aria-hidden="true"`: puur decoratief, geen semantische waarde.

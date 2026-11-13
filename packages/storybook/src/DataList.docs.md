@@ -8,19 +8,19 @@ De DataList component presenteert gestructureerde gegevens als een beschrijvings
 
 <!-- VOORBEELD -->
 
-## Use when
+## Wel gebruiken als...
 
-- Samenvatten van ingevulde formulierantwoorden vóór definitieve indiening ("check your answers").
-- Tonen van metadata met bijbehorende labels (naam, geboortedatum, adres).
-- Overzichtspagina's waar gebruikers gegevens kunnen controleren en aanpassen.
-- Presenteren van een beperkte set key-value paren die inhoudelijk bij elkaar horen.
+- Je ingevulde formulierantwoorden wilt samenvatten vóór definitieve indiening ("check your answers").
+- Je metadata met bijbehorende labels wilt tonen (naam, geboortedatum, adres).
+- Gebruikers op een overzichtspagina gegevens moeten kunnen controleren en aanpassen.
+- Je een beperkte set key-value paren wilt presenteren die inhoudelijk bij elkaar horen.
 
-## Don't use when
+## Niet gebruiken als...
 
-- Tabulaire gegevens met meerdere kolommen: gebruik `Table`.
-- Eenvoudige lijsten zonder labels: gebruik `UnorderedList` of `OrderedList`.
+- Het om tabulaire gegevens met meerdere kolommen gaat: gebruik dan `Table`.
+- Het om eenvoudige lijsten zonder labels gaat: gebruik dan `UnorderedList` of `OrderedList`.
 
-## Best practices
+## Goed gebruik
 
 ### Key en value
 
@@ -46,7 +46,7 @@ De DataList component presenteert gestructureerde gegevens als een beschrijvings
 
 <!-- tokens: data-list -->
 
-## Accessibility
+## Toegankelijkheid
 
 - `<dl>`, `<dt>` en `<dd>` zijn de semantische bouwstenen: screenreaders kondigen de description list-rol automatisch aan.
 - Elke `<dt>` (key) beschrijft precies de bijbehorende `<dd>` (value) in dezelfde rij.

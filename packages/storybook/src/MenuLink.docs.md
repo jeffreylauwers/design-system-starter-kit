@@ -10,7 +10,7 @@ De `level`-prop (1–4) geeft de paginahiërarchie weer via toenemende `padding-
 
 <!-- VOORBEELD -->
 
-## Use when
+## Wel gebruiken als...
 
 - Je een navigatielink wil tonen in een menu of sidebar.
 - De link naar een URL navigeert (in tegenstelling tot `MenuButton` voor JS-acties).
@@ -18,12 +18,12 @@ De `level`-prop (1–4) geeft de paginahiërarchie weer via toenemende `padding-
 - Je de actieve/huidige pagina wil markeren in de navigatie.
 - Een pagina subpagina's heeft die uitgevouwen kunnen worden.
 
-## Don't use when
+## Niet gebruiken als...
 
 - De actie een JavaScript-handeling is (geen URL-navigatie): gebruik dan `MenuButton`.
 - Je buiten een nav-context werkt: gebruik dan een reguliere `Button`, `ButtonLink` of `Link`.
 
-## Best practices
+## Goed gebruik
 
 ### HTML-structuur
 
@@ -142,7 +142,7 @@ MenuLink gebruikt twee token-sets. De gedeelde `--dsn-menu-item-*` tokens zijn o
 
 <!-- tokens: menu-link -->
 
-## Accessibility
+## Toegankelijkheid
 
 - Gebruik `aria-current="page"` (via de `current` prop) om de actieve pagina aan screenreaders door te geven. Gebruik nooit enkel kleur om de actieve staat aan te duiden.
 - De uitklapknop gebruikt altijd `dsn-button__label` voor zijn toegankelijke naam: nooit `aria-label`. Voeg de paginanaam toe via een geneste `dsn-visually-hidden` span.

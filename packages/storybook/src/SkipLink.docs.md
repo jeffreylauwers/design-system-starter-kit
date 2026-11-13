@@ -10,18 +10,18 @@ De component voldoet aan WCAG 2.2 succescriterium **2.4.1 Bypass Blocks (Level A
 
 <!-- VOORBEELD -->
 
-## Use when
+## Wel gebruiken als...
 
-- Op elke pagina met herhalende navigatieblokken vóór de hoofdinhoud (header, menu, breadcrumbs).
+- De pagina herhalende navigatieblokken heeft vóór de hoofdinhoud (header, menu, breadcrumbs).
 - Je wilt voldoen aan WCAG 2.4.1 (Bypass Blocks, Level A).
 - Je een toetsenbordvriendelijke pagina-navigatie wilt bouwen.
 
-## Don't use when
+## Niet gebruiken als...
 
 - De pagina geen herhalende navigatie heeft vóór de hoofdinhoud.
 - De hoofdinhoud al het eerste focusbare element is (bijv. een eenvoudige landingspagina zonder header-navigatie).
 
-## Best practices
+## Goed gebruik
 
 ### Positionering in de DOM
 
@@ -62,7 +62,7 @@ De standaardtekst "Ga direct naar de hoofdinhoud" is bruikbaar voor de meeste pa
 
 <!-- tokens: skip-link -->
 
-## Accessibility
+## Toegankelijkheid
 
 - De SkipLink gebruikt het semantische `<a>` element: screenreaders kondigen het aan als "link" en nemen het op in de linklijst (NVDA: `R`; VoiceOver: `Control+Option+U`).
 - De link is standaard verborgen via `clip-path: inset(50%)`: dit is de voorkeursmethode boven `display: none` of `visibility: hidden`, omdat die elementen uit de accessibility tree verwijderen.

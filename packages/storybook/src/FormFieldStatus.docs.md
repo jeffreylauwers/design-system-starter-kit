@@ -8,19 +8,19 @@ De FormFieldStatus component toont status informatie onder een form control. Het
 
 <!-- VOORBEELD -->
 
-## Use when
+## Wel gebruiken als...
 
-- **Default:** Character counters, format hints, algemene info die altijd zichtbaar is.
-- **Positive:** Success feedback na validatie ("Wachtwoord is sterk", "Gebruikersnaam beschikbaar").
-- **Warning:** Waarschuwingen die geen blokkerende errors zijn ("Wachtwoord is zwak", "Dit veld is openbaar").
+- Je informatie wilt tonen die altijd zichtbaar is, zoals een tekenteller, formaathint of algemene info (**Default**).
+- Je positieve feedback wilt geven na validatie, zoals "Wachtwoord is sterk" of "Gebruikersnaam beschikbaar" (**Positive**).
+- Je wilt waarschuwen zonder te blokkeren, zoals "Wachtwoord is zwak" of "Dit veld is openbaar" (**Warning**).
 
-## Don't use when
+## Niet gebruiken als...
 
 - Je een blokkerende fout wilt tonen: gebruik [FormFieldErrorMessage](/docs/components-formfielderrormessage--docs) (negatieve variant).
 - Je algemene help tekst wilt tonen: gebruik [FormFieldDescription](/docs/components-formfielddescription--docs) (komt boven de input).
 - Je informatieve context wilt geven: gebruik FormFieldDescription (informatie variant is hetzelfde als description).
 
-## Best practices
+## Goed gebruik
 
 ### Variant keuze
 
@@ -70,7 +70,7 @@ De FormFieldStatus component toont status informatie onder een form control. Het
 
 <!-- tokens: form-field-status -->
 
-## Accessibility
+## Toegankelijkheid
 
 - Default variant heeft subtiele kleur maar nog voldoende contrast.
 - Positive en warning varianten hebben duidelijke kleuren voor zichtbaarheid.

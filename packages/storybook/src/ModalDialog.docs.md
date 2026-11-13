@@ -8,21 +8,21 @@ Het ModalDialog component toont een tijdelijk overlay-venster dat de achtergrond
 
 <!-- VOORBEELD -->
 
-## Use when
+## Wel gebruiken als...
 
-- De gebruiker moet een onomkeerbare actie bevestigen (bijv. verwijderen, annuleren van een bestelling).
-- Een actie of formulier vereist een gefocuste modale context zonder afleiding van de achtergrond.
+- De gebruiker een onomkeerbare actie moet bevestigen (bijv. verwijderen, annuleren van een bestelling).
+- Een actie of formulier een gefocuste modale context vereist zonder afleiding van de achtergrond.
 - Er een korte, zelfstandige keuze nodig is die geen eigen URL rechtvaardigt.
 
-## Don't use when
+## Niet gebruiken als...
 
 - De gebruiker de achtergrondpagina voor context nodig heeft: gebruik dan **Drawer**.
-- Rij- of itemdetails naast een lijst bekijken of bewerken: gebruik dan **Drawer**.
-- Resultaten live filteren terwijl je de lijst bijhoudt: gebruik dan **Drawer** (non-modal).
+- De gebruiker rij- of itemdetails naast een lijst wil bekijken of bewerken: gebruik dan **Drawer**.
+- Je resultaten live wilt filteren terwijl de lijst in beeld blijft: gebruik dan **Drawer** (non-modal).
 - De inhoud een volwaardige werkstroom is die een eigen URL rechtvaardigt: gebruik dan een aparte pagina.
 - Er meer dan één primaire actie tegelijk aangeboden wordt: splits in twee aparte dialoogvensters of heroverweeg de flow.
 
-## Best practices
+## Goed gebruik
 
 ### ModalDialog vs. Drawer
 
@@ -160,7 +160,7 @@ Escape en het terugzetten van de focus bij sluiten doet de browser zelf. De focu
 
 <!-- tokens: modal-dialog -->
 
-## Accessibility
+## Toegankelijkheid
 
 - Het dialoogvenster gebruikt het native `<dialog>` element met impliciete `role="dialog"` semantiek. Met `alert` wordt dat `role="alertdialog"`, met `aria-describedby` naar de `ModalDialogBody`.
 - `.showModal()` activeert automatisch `aria-modal`-gedrag en het `inert`-attribuut op de achtergrond.

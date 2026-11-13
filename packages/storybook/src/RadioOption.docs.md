@@ -8,21 +8,21 @@ De RadioOption component combineert een Radio en OptionLabel in een klikbaar lab
 
 <!-- VOORBEELD -->
 
-## Use when
+## Wel gebruiken als...
 
 - Je radio buttons met labels nodig hebt voor formulieren.
 - Je gebruikers één optie uit meerdere wilt laten selecteren.
 - Je een groep opties hebt die elkaar uitsluiten (mutually exclusive).
 - Je een duidelijke default selectie wilt tonen.
 
-## Don't use when
+## Niet gebruiken als...
 
 - Je alleen het radio rondje nodig hebt zonder label: gebruik dan [Radio](/docs/components-radio--docs).
 - Je een groep radio buttons met een gezamenlijk label nodig hebt: gebruik dan [RadioGroup](/docs/components-radiogroup--docs).
 - Je meerdere opties tegelijk wilt selecteren: gebruik dan [CheckboxOption](/docs/components-checkboxoption--docs).
 - Je een aan/uit toggle nodig hebt: overweeg een toggle/switch component (indien beschikbaar).
 
-## Best practices
+## Goed gebruik
 
 - **Duidelijke labels.** Labels moeten kort en beschrijvend zijn en duidelijk aangeven wat de optie doet.
 - **Groepeer met name attribuut.** Radio buttons in dezelfde groep moeten hetzelfde `name` attribuut hebben.
@@ -38,7 +38,7 @@ De RadioOption component combineert een Radio en OptionLabel in een klikbaar lab
 
 Plus alle tokens van [Radio](/docs/components-radio--docs) en [OptionLabel](/docs/components-optionlabel--docs).
 
-## Accessibility
+## Toegankelijkheid
 
 - De component gebruikt een native `<label>` element dat gekoppeld is aan de radio input.
 - Het hele label is klikbaar, wat de usability verbetert.

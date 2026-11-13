@@ -138,16 +138,16 @@ Controleer ook of de bestaande rijen nog kloppen (klassenamen, export paths).
 Maak een nieuw bestand aan in hetzelfde formaat als bestaande bestanden. Kijk naar een bestaand bestand in dezelfde categorie als voorbeeld. Secties:
 
 1. Titel + korte beschrijving
-2. Use when
-3. Don't use when
-4. Best practices
+2. Wel gebruiken als...
+3. Niet gebruiken als...
+4. Goed gebruik
 5. Design tokens tabel (tokennaam | waarde/beschrijving)
 
 **Voor gewijzigde componenten:**
 
 - Beschrijving updaten als de API of scope veranderd is
 - Design tokens tabel updaten bij nieuwe of gewijzigde tokens
-- Use when / Don't use when aanpassen als de aanbevolen inzet veranderd is
+- Wel gebruiken als... / Niet gebruiken als... aanpassen als de aanbevolen inzet veranderd is
 
 ---
 

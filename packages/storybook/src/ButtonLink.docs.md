@@ -8,20 +8,20 @@ Een link die semantisch een `<a>` is, maar visueel het uiterlijk van een [Button
 
 <!-- VOORBEELD -->
 
-## Use when
+## Wel gebruiken als...
 
 - De actie naar een andere pagina of URL navigeert en de visuele prominentie van een Button gewenst is.
 - Je een primaire call-to-action wilt tonen die de gebruiker doorstuurt naar een volgende stap, zoals "Start aanvraag" of "Download rapport".
 - Je in een landingspagina of een meerstappenformulier een prominente CTA nodig hebt die wél een echte link is.
 
-## Don't use when
+## Niet gebruiken als...
 
 - De actie een JavaScript-handler of form-submit vereist en niet navigeert: gebruik dan de [Button](/docs/components-button--docs) component.
 - Je een knop wilt met een lage attentiewaarde die navigeert: gebruik dan de [Link](/docs/components-link--docs) component.
 - Je JS-acties met een lage visuele prominentie wilt: gebruik dan de [LinkButton](/docs/components-linkbutton--docs) component.
 - Je een echte `<button>` nodig hebt maar het eruit wil laten zien als een link: gebruik dan `LinkButton`, nooit een `<button>` met `href`.
 
-## Best practices
+## Goed gebruik
 
 - **Gebruik beschrijvende teksten.** Vermijd "klik hier". Gebruik teksten die de bestemming of actie beschrijven, zoals "Download rapport" of "Start aanvraag".
 - **Gebruik `strong` voor primaire CTA's.** Gebruik `default` of `subtle` voor secundaire navigatieacties die minder nadruk nodig hebben.
@@ -29,7 +29,7 @@ Een link die semantisch een `<a>` is, maar visueel het uiterlijk van een [Button
 - **Iconen verduidelijken betekenis.** Gebruik `iconEnd` met een pijl voor "volgende stap"-acties, `iconStart` voor downloads of specifieke acties.
 - **Geen `loading` state.** `ButtonLink` navigeert naar een URL. Een laadspinner past niet bij een navigatieactie; gebruik Button als je een loading state nodig hebt.
 
-## Accessibility
+## Toegankelijkheid
 
 - Semantisch een `<a>`: screenreaders kondigen het element aan als "link", niet als "knop". Gebruikers weten daardoor dat de actie navigatie veroorzaakt.
 - `disabled` werkt via `aria-disabled="true"` + `tabIndex={-1}`: `<a>` heeft geen native `disabled` attribuut.

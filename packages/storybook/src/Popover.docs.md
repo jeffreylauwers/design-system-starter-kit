@@ -14,20 +14,20 @@ Voor een lijst met acties of links is er [PopoverMenu](?path=/docs/components-po
 
 **Implementatiekeuze:** De React-implementatie gebruikt de HTML Popover API (`popover="auto"`) voor ingebakken light-dismiss en top-layer gedrag. Positionering vindt plaats via JavaScript (`getBoundingClientRect`). Dit gedrag deelt de Popover met PopoverMenu.
 
-## Use when
+## Wel gebruiken als...
 
-- Kleine formulieren of keuze-UI's die tijdelijk naast een triggerpunt verschijnen (bijv. filters).
-- Beknopte aanvullende informatie met een heading bij een UI-element.
-- Inhoud waarbij de achtergrond interactief moet blijven.
+- Een klein formulier of keuze-UI tijdelijk naast een triggerpunt moet verschijnen (bijv. filters).
+- Je beknopte aanvullende informatie met een heading bij een UI-element wilt tonen.
+- De achtergrond interactief moet blijven terwijl de inhoud zichtbaar is.
 
-## Don't use when
+## Niet gebruiken als...
 
 - Het paneel alleen een lijst met acties of links bevat (bijv. acties voor een tabelrij of accountnavigatie): gebruik dan **PopoverMenu**.
 - De content de volledige aandacht van de gebruiker vereist of interactie met de achtergrond niet toegestaan mag zijn: gebruik dan **ModalDialog**.
 - De gebruiker de achtergrondpagina voor context nodig heeft terwijl hij een uitgebreid formulier invult: gebruik dan **Drawer**.
 - De content een volwaardige werkstroom is die een eigen URL rechtvaardigt: gebruik dan een aparte pagina.
 
-## Best practices
+## Goed gebruik
 
 ### Popover vs. ModalDialog vs. Drawer
 
@@ -78,7 +78,7 @@ Escape, sluiten bij een klik buiten de popover en het terugzetten van de focus b
 
 <!-- tokens: popover -->
 
-## Accessibility
+## Toegankelijkheid
 
 ### Structuur
 

@@ -8,19 +8,19 @@ De Image component biedt een semantisch correcte afbeeldingcontainer op basis va
 
 <!-- VOORBEELD -->
 
-## Use when
+## Wel gebruiken als...
 
-- Contentafbeeldingen in artikelen, cards en hero-secties.
+- Je contentafbeeldingen toont in artikelen, cards en hero-secties.
 - Een vaste beeldverhouding vereist is (bijv. 16:9 voor video-thumbnails).
-- Een LCP-afbeelding is waarbij laadprioriteit expliciet gestuurd moet worden.
+- Het een LCP-afbeelding is waarbij laadprioriteit expliciet gestuurd moet worden.
 - Een optioneel bijschrift (`<figcaption>`) bij de afbeelding gewenst is.
 
-## Don't use when
+## Niet gebruiken als...
 
-- Decoratieve SVG-iconen of UI-iconen: gebruik daarvoor het **Icon** component.
-- Afbeeldingen die via CSS als achtergrond gezet worden (`background-image`).
+- Het om decoratieve SVG-iconen of UI-iconen gaat: gebruik daarvoor het **Icon** component.
+- De afbeelding via CSS als achtergrond gezet wordt (`background-image`).
 
-## Best practices
+## Goed gebruik
 
 ### Alt-tekst
 
@@ -60,7 +60,7 @@ De Image component biedt een semantisch correcte afbeeldingcontainer op basis va
 
 <!-- tokens: image -->
 
-## Accessibility
+## Toegankelijkheid
 
 - `alt` is altijd verplicht aanwezig als attribuut. Een ontbrekend `alt` is een WCAG 2.2 SC 1.1.1 overtreding.
 - `alt=""` (lege string) is correct voor decoratieve afbeeldingen: de React-component voegt automatisch `aria-hidden="true"` toe aan de `<figure>`.
