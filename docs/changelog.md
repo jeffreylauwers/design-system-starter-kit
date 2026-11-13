@@ -10,6 +10,10 @@ All notable changes to this project are documented in this file.
 
 Nog niet gepubliceerde wijzigingen. Schrijf nieuwe changelog-entries hieronder; bij de volgende release wordt deze kop gepromoveerd naar het definitieve versienummer.
 
+## Version 6.0.0 (November 13, 2026)
+
+Major release. 57 component-tokens die geen enkel component las, zijn verwijderd uit de design tokens. De weergave verandert niet, maar wie een van deze custom properties in eigen CSS uitleest, moet die verwijzing weghalen: zie "Component-tokens: 57 ongebruikte tokens verwijderd". Verder: bugfixes in File, UnorderedList en OrderedList, zichtbare randen op inverse vlakken in het wireframe-thema, beschrijvingen bij alle tokens, Nederlandstalige docs-pagina's met token-tabellen uit de design tokens, en in Figma schaduwen als effect styles en fluid maten die thema en viewport volgen.
+
 ### Storybook: componentdocumentatie volledig Nederlands
 
 De vaste kopjes op de Docs-pagina's van alle componenten waren nog Engels. Ze zijn nu Nederlands:
