@@ -10,17 +10,17 @@ De navigatie-inhoud (primair en service) wordt via props doorgegeven en in de `D
 
 <!-- VOORBEELD -->
 
-## Use when
+## Wel gebruiken als...
 
 - Je een globale paginaheader nodig hebt voor een website of applicatie.
 - Primaire navigatie via een overlay-lade (`Drawer`) wordt aangeboden.
 - De pagina een zoekfunctie heeft die inline in de header wordt getriggerd.
 
-## Don't use when
+## Niet gebruiken als...
 
 - Je enkel een large viewport layout nodig hebt zonder mobile fallback: `PageHeader` is altijd responsive en toont altijd beide layouts op de juiste viewport.
 
-## Best practices
+## Goed gebruik
 
 ### Logo-slot
 
@@ -286,7 +286,7 @@ Het paneel klapt open en dicht met een CSS-transitie: `grid-template-rows` gaat 
 
 <!-- tokens: page-header -->
 
-## Accessibility
+## Toegankelijkheid
 
 - `<header>` heeft impliciete `role="banner"`: geen extra ARIA nodig.
 - De menuknop en zoekknop gebruiken altijd een `dsn-button__label` span voor de toegankelijke naam: nooit `aria-label`.

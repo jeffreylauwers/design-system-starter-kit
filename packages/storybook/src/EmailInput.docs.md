@@ -8,17 +8,17 @@ De EmailInput component is een gespecialiseerd invoerveld voor e-mailadressen. H
 
 <!-- VOORBEELD -->
 
-## Use when
+## Wel gebruiken als...
 
 - Je een e-mailadres van de gebruiker nodig hebt, bijv. voor een inlogformulier, registratie of contactformulier.
 - Je wilt dat de browser het e-mailadres valideert en autocomplete aanbiedt.
 
-## Don't use when
+## Niet gebruiken als...
 
 - Je meerdere e-mailadressen wilt invoeren: overweeg dan een TagInput of tekstinvoer met eigen validatie.
 - Het om een vrij tekstveld gaat: gebruik dan [TextInput](/docs/components-textinput--docs).
 
-## Best practices
+## Goed gebruik
 
 - **Gebruik FormFieldDescription voor formaathints.** Als het e-mailadresformaat toelichting behoeft, gebruik dan [FormFieldDescription](/docs/components-formfielddescription--docs): niet een placeholder. Placeholder tekst verdwijnt bij typen en is daarna niet meer zichtbaar.
 - **Laat browser-autocomplete aan.** De standaard `autocomplete="email"` helpt gebruikers snel invullen. Zet alleen op `off` als daar een goede reden voor is.
@@ -26,13 +26,13 @@ De EmailInput component is een gespecialiseerd invoerveld voor e-mailadressen. H
 - **Geef validatie feedback.** Gebruik de `invalid` prop in combinatie met `aria-invalid` en een `FormFieldErrorMessage`.
 - **Kies de juiste inline-size.** Gebruik `inlineSize` met `md`, `lg`, `xl` of `full`. `xs` en `sm` bestaan bij EmailInput niet: een e-mailadres past daar vrijwel nooit in.
 
-## Accessibility
+## Toegankelijkheid
 
 - `type="email"` zorgt voor ingebouwde browservalidatie en een geoptimaliseerd mobiel toetsenbord.
 - `inputmode="email"` geeft op mobiel een toetsenbord met @-teken en veelgebruikte domeinsuffixen.
 - `autocomplete="email"` maakt het voor gebruikers eenvoudig om hun e-mailadres in te vullen zonder te typen.
 
-## States
+## Toestanden
 
 - **Default**: Leeg, klaar voor invoer
 - **Filled**: Bevat een e-mailadres

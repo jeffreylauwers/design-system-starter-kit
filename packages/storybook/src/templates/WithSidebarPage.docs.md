@@ -90,17 +90,17 @@ De sidebar breedte is instelbaar via een CSS custom property:
 >
 ```
 
-## Use when
+## Wel gebruiken als...
 
-- Een pagina heeft subnavigatie (Level 2 menu-items) die naast de hoofdinhoud getoond moeten worden.
+- De pagina subnavigatie heeft (Level 2 menu-items) die naast de hoofdinhoud getoond moet worden.
 - Je dezelfde paginastructuur als Base Page wilt, aangevuld met een zijkolom.
 
-## Don't use when
+## Niet gebruiken als...
 
 - De pagina geen Level 2 sub-items heeft: gebruik dan Base Page rechtstreeks.
 - Je sidebar-content wilt tonen op alle viewports: dit patroon verbergt de sidebar op small en medium viewports.
 
-## Accessibility
+## Toegankelijkheid
 
 - De `<aside>` bevat een `<nav>` met een beschrijvend `aria-label` (bijv. `"Sub-navigatie"`).
 - De sidebar-inhoud is alleen zichtbaar op large viewport. Zorg dat de subnavigatie op small/medium viewports op een andere manier bereikbaar is als dat inhoudelijk noodzakelijk is.

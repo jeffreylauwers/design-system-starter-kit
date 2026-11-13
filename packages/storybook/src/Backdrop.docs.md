@@ -10,20 +10,20 @@ Het component heeft bewust geen eigen interactie of toegankelijkheidsmechanisme:
 
 <!-- VOORBEELD -->
 
-## Use when
+## Wel gebruiken als...
 
-- Als visuele achtergrond achter een Modal Dialog om de pagina op de achtergrond te dempen.
-- Als visuele achtergrond achter een Drawer (zijpaneel) om context te bieden dat de interface vergrendeld is.
-- Als onderdeel van elk modaal patroon waarbij de gebruiker zijn focus bij het bovenliggende UI-element moet houden.
-- Als zelfstandig element dat door de parent conditioneel gerenderd wordt.
+- Je een visuele achtergrond nodig hebt achter een Modal Dialog om de pagina op de achtergrond te dempen.
+- Je een visuele achtergrond nodig hebt achter een Drawer (zijpaneel) om duidelijk te maken dat de interface vergrendeld is.
+- Je een modaal patroon bouwt waarbij de gebruiker zijn focus bij het bovenliggende UI-element moet houden.
+- Het element zelfstandig is en door de parent conditioneel gerenderd wordt.
 
-## Don't use when
+## Niet gebruiken als...
 
-- Als visuele scheider of achtergrond zonder dat er een modaal element boven staat.
-- Als interactief element: gebruik daarvoor een button of overlay met een `onClick` handler op de parent.
-- Voor paginaovergangen of laadschermen: gebruik daarvoor een specifiek loading-patroon.
+- Je een visuele scheider of achtergrond zoekt zonder dat er een modaal element boven staat.
+- Je een interactief element nodig hebt: gebruik daarvoor een button of overlay met een `onClick` handler op de parent.
+- Het om paginaovergangen of laadschermen gaat: gebruik daarvoor een specifiek loading-patroon.
 
-## Best practices
+## Goed gebruik
 
 ### Conditioneel renderen
 
@@ -67,7 +67,7 @@ Conditioneel renderen biedt geen ruimte voor fade-in/out. Als animatie later gew
 
 <!-- tokens: backdrop -->
 
-## Accessibility
+## Toegankelijkheid
 
 - Backdrop heeft altijd `aria-hidden="true"`: schermlezers nemen dit element niet waar.
 - Geen `role` attribuut nodig: het component is puur decoratief.

@@ -10,18 +10,18 @@ Het native `<progress>`-element biedt impliciete `role="progressbar"` zodat scre
 
 <!-- VOORBEELD -->
 
-## Use when
+## Wel gebruiken als...
 
 - De voortgang van een actie meetbaar is (bestandsupload, export, stapsgewijs proces).
 - Het totaal aantal stappen of de bestandsgrootte van tevoren bekend is.
 - Achtergrondtaken met een bekende duur worden uitgevoerd.
 
-## Don't use when
+## Niet gebruiken als...
 
 - De duur van de actie niet van tevoren bekend is: gebruik dan een **Spinner**.
 - De voortgang geen getal oplevert maar een kwalitatieve status: gebruik dan een **StatusBadge**.
 
-## Best practices
+## Goed gebruik
 
 ### Label
 
@@ -76,7 +76,7 @@ Toon een beschrijving wanneer de balk 100% bereikt:
 
 <!-- tokens: progress-bar -->
 
-## Accessibility
+## Toegankelijkheid
 
 - Het native `<progress>`-element heeft impliciete `role="progressbar"`, `aria-valuenow`, `aria-valuemin` (0) en `aria-valuemax`.
 - Een `<label>` is gekoppeld via `for`/`id` — robuuster dan `aria-label`.

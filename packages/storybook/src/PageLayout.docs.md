@@ -10,18 +10,18 @@ Structurele full-page layout container die `PageHeader`, `PageBody` en `PageFoot
 
 <!-- VOORBEELD -->
 
-## Use when
+## Wel gebruiken als...
 
 - Je de basisstructuur van een pagina opzet met `PageHeader`, `PageBody` en `PageFooter`.
 - De footer altijd onderaan de viewport moet staan, ook als de pagina weinig content heeft.
 - Je de drie pagina-onderdelen in één consistente wrapper wilt samenbrengen.
 
-## Don't use when
+## Niet gebruiken als...
 
 - Je een gedeelte van een pagina opmaakt, zoals een kaart of sectie: gebruik dan `Stack`, `Grid` of `Container`.
 - Je geen volledige viewport-hoogte nodig hebt.
 
-## Best practices
+## Goed gebruik
 
 ### Skip-link (aanbevolen)
 
@@ -67,7 +67,7 @@ Geef de `<main>` altijd een `id="main-content"` zodat de skip-link er naartoe ka
 
 `PageLayout` heeft geen component-specifieke tokens. De `min-block-size: 100dvh` is een structurele constante, geen designbeslissing.
 
-## Accessibility
+## Toegankelijkheid
 
 ### Transparante structuurlaag
 

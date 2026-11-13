@@ -12,20 +12,20 @@ De parent `.dsn-page-body` heeft `overflow-x: clip` zodat er geen horizontale sc
 
 <!-- VOORBEELD -->
 
-## Use when
+## Wel gebruiken als...
 
 - Een hero-banner de volledige viewportbreedte moet beslaan.
 - Een gekleurde call-to-action band van rand tot rand loopt terwijl de rest van de pagina een beperkte breedte heeft.
 - Een datavisualisatie, kaart of afbeelding bewust buiten de paginamarges valt.
 - Een sectie visueel los moet staan van de rest van de paginainhoud.
 
-## Don't use when
+## Niet gebruiken als...
 
 - De hele pagina full-width moet zijn: gebruik dan `--dsn-page-max-inline-size: none` op `PageLayout`.
 - Je het component buiten een `PageBody` gebruikt: de formule werkt alleen correct als de directe parent een beperkte breedte heeft.
 - De content zelf ook full-width moet zijn zonder beperking: voeg dan een inner container toe met `max-inline-size` en `margin-inline: auto`.
 
-## Best practices
+## Goed gebruik
 
 ### Herbeperking van de inhoud
 
@@ -53,7 +53,7 @@ Kies het juiste HTML-element via de `as` prop. Gebruik `section` (standaard) voo
 
 BreakoutSection voegt zelf geen padding, achtergrond of kleur toe. Voeg deze toe via `style` of een eigen CSS-klasse — zo blijft de component maximaal flexibel.
 
-## Accessibility
+## Toegankelijkheid
 
 BreakoutSection heeft geen eigen ARIA-rollen of -labels. Als de sectie een eigen kop heeft (`as="section"`), zorg dan dat die kop aanwezig is zodat screenreadergebruikers de sectiestructuur kunnen navigeren.
 

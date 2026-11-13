@@ -8,14 +8,14 @@ De Alert component toont een prominent bericht op de pagina: bij een succesvolle
 
 <!-- VOORBEELD -->
 
-## Use when
+## Wel gebruiken als...
 
-- Een gebruiker feedback geven na een actie (formulier ingediend, fout, sessiewaarschuwing).
-- Een pagina-breed bericht tonen dat de aandacht vraagt maar geen interactie vereist.
-- Validatiefouten samenvatten bovenaan een formulier (negative variant met lijst).
-- Contextuele informatie geven die relevant is voor de huidige stap of pagina.
+- Je de gebruiker feedback wilt geven na een actie (formulier ingediend, fout, sessiewaarschuwing).
+- Je een paginabreed bericht wilt tonen dat de aandacht vraagt maar geen interactie vereist.
+- Je validatiefouten bovenaan een formulier wilt samenvatten (negative variant met lijst).
+- Je contextuele informatie wilt geven die relevant is voor de huidige stap of pagina.
 
-## Don't use when
+## Niet gebruiken als...
 
 - De informatie één regel tekst is zonder heading: gebruik een **StatusBadge** of **FormFieldStatus**.
 - Het bericht interactief is (bijv. een link of knop vereist): gebruik een **Alert** met `children` die een link bevatten, of een **Button** als de actie centraal staat.
@@ -23,7 +23,7 @@ De Alert component toont een prominent bericht op de pagina: bij een succesvolle
 - Het bericht tijdelijk is en na enkele seconden verdwijnt: gebruik een toast/snackbar patroon (nog niet beschikbaar).
 - De content redactioneel of contextgevend is zonder dat het systeem een toestand meldt: gebruik een **Note**.
 
-## Best practices
+## Goed gebruik
 
 ### Variantkeuze
 
@@ -73,7 +73,7 @@ Een Alert communiceert altijd een toestand die het systeem heeft vastgesteld. El
 
 <!-- tokens: alert -->
 
-## Accessibility
+## Toegankelijkheid
 
 - `role="alert"` maakt de component een assertieve live region: screenreaders lezen het voor zodra het in de DOM verschijnt.
 - Het icoon heeft altijd `aria-hidden="true"`: de heading is de informatiedrager.

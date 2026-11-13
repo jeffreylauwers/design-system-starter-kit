@@ -10,18 +10,18 @@ HeadingGroup combineert de functionaliteit van [Heading](/docs/components-headin
 
 HeadingGroup heeft geen eigen semantische HTML-rol. Het rendert als een `<hx>` element, net als Heading. De accessible name omvat zowel de pre-heading als de heading-tekst.
 
-## Use when
+## Wel gebruiken als...
 
 - Je altijd een pre-heading en heading samen wilt gebruiken en de koppeling in de markup wilt bewaken.
 - Je in een meerstappenformulier stap-label en paginatitel als één heading wilt presenteren.
 - Je niet handmatig `<PreHeading>` binnen `<Heading>` wilt nesten.
 
-## Don't use when
+## Niet gebruiken als...
 
 - Je de pre-heading als semantisch losse tekst wilt presenteren (niet bij de accessible name hoort). Gebruik dan afzonderlijke [Heading](/docs/components-heading--docs) en [Paragraph](/docs/components-paragraph--docs) componenten.
 - Je de pre-heading en heading onafhankelijk van elkaar wilt positioneren in de layout. Gebruik dan [PreHeading](/docs/components-preheading--docs) direct binnen [Heading](/docs/components-heading--docs).
 
-## Best practices
+## Goed gebruik
 
 ### preHeading prop
 
@@ -68,7 +68,7 @@ Net als Heading ondersteunt HeadingGroup de `appearance` prop voor ontkoppeling 
 
 HeadingGroup voegt geen nieuwe design tokens toe. Het hergebruikt tokens van `dsn-heading` en `dsn-pre-heading`.
 
-## Accessibility
+## Toegankelijkheid
 
 - HeadingGroup rendert als `<hx>` element. De accessible name omvat zowel de pre-heading als de heading-tekst.
 - Dezelfde ARIA-regels als het Heading component zijn van toepassing.

@@ -10,17 +10,17 @@ Het component is bedoeld als bouwsteen voor de toekomstige `PageHeader`- en `Pag
 
 <!-- VOORBEELD -->
 
-## Use when
+## Wel gebruiken als...
 
-- Merkidentificatie in de paginaheader.
-- Merkidentificatie in de paginafooter.
-- Standalone branding op specifieke pagina's (inlogpagina, foutpagina's).
+- Je het merk wilt tonen in de paginaheader.
+- Je het merk wilt tonen in de paginafooter.
+- Je losstaande branding nodig hebt op specifieke pagina's (inlogpagina, foutpagina's).
 
-## Don't use when
+## Niet gebruiken als...
 
 - Je een extern organisatielogo wil tonen dat buiten de token-structuur valt: gebruik dan een `<img>` element met een passend `alt`-attribuut.
 
-## Best practices
+## Goed gebruik
 
 ### Standalone vs. decoratief gebruik
 
@@ -83,7 +83,7 @@ Het logo reageert automatisch op thema- en moduswisselingen via design tokens:
 
 <!-- tokens: logo -->
 
-## Accessibility
+## Toegankelijkheid
 
 - **Standalone**: `role="img"` + `<title>` binnenin + `aria-labelledby`-koppeling op `<svg>`: geeft de beste cross-browser/screenreader ondersteuning.
 - **Decoratief (in link of met omringende tekst)**: `aria-hidden="true"` op `<svg>`, géén `<title>`.

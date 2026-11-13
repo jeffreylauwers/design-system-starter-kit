@@ -8,18 +8,18 @@ MenuButton is een navigatie-item dat semantisch een `<button>`-element is en vis
 
 <!-- VOORBEELD -->
 
-## Use when
+## Wel gebruiken als...
 
 - De actie een JavaScript-handeling is (geen URL-navigatie).
 - Je een navigatie-item wil tonen in een menu of sidebar dat een JS-actie triggert.
 - Je statusindicatie wil tonen bij een navigatie-item via een `DotBadge`.
 
-## Don't use when
+## Niet gebruiken als...
 
 - De actie naar een URL navigeert: gebruik dan `MenuLink`.
 - Je buiten een nav-context werkt: gebruik dan een reguliere `Button` of `LinkButton`.
 
-## Best practices
+## Goed gebruik
 
 ### HTML-structuur
 
@@ -80,7 +80,7 @@ MenuButton gebruikt uitsluitend de gedeelde `--dsn-menu-item-*` tokens. Deze tok
 
 <!-- tokens: menu-item -->
 
-## Accessibility
+## Toegankelijkheid
 
 - MenuButton is semantisch een `<button type="button">`: screenreaders kondigen het aan als knop.
 - Het icoon heeft altijd `aria-hidden="true"`: de toegankelijke naam komt van de knoptekst.

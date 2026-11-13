@@ -10,18 +10,18 @@ Op kleine viewports stapelen alle slots verticaal. Op grote viewports (≥ 64em)
 
 <!-- VOORBEELD -->
 
-## Use when
+## Wel gebruiken als...
 
 - Je een globale paginavoettekst nodig hebt als huisstijldrager met organisatielogo.
 - Juridische en organisatorische links aanwezig moeten zijn op elke pagina (privacyverklaring, cookies, toegankelijkheid, contact).
 - Een korte contextuele tekst met verwijzing naar relevante informatie gewenst is.
 
-## Don't use when
+## Niet gebruiken als...
 
 - Je een eenvoudige linkenlijst midden op een pagina wilt tonen: gebruik in dat geval een `UnorderedList` of `Menu`.
 - Je enkel een footer nodig hebt zonder huisstijlkleuren: pas dan de tokens aan of gebruik een andere container.
 
-## Best practices
+## Goed gebruik
 
 ### Slot 1 (inline-start)
 
@@ -58,7 +58,7 @@ De `inverse` kleurvariant schakelt naar de `accent-1-inverse` kleurenschaal voor
 
 <!-- tokens: page-footer -->
 
-## Accessibility
+## Toegankelijkheid
 
 ### Landmark
 

@@ -10,20 +10,20 @@ De component ondersteunt vier achtergrondvarianten — licht blauw, donker blauw
 
 <!-- VOORBEELD -->
 
-## Use when
+## Wel gebruiken als...
 
 - De pagina een prominente introductiesectie nodig heeft direct onder de header (landingspagina's, startpagina's, campagnepagina's).
 - U een kernboodschap wilt presenteren met één of twee calls-to-action.
 - U een zoekfunctie aanbiedt als primaire pagina-actie.
 - U de begininhoud visueel wilt onderscheiden via een gekleurde of beeldachtergrond.
 
-## Don't use when
+## Niet gebruiken als...
 
 - De sectie verderop op de pagina staat: gebruik dan BreakoutSection als basis voor een eigen sectie.
 - U een carrousel wilt bouwen: dit schaadt toegankelijkheid en gebruikersbetrokkenheid.
 - De pagina geen duidelijke primaire boodschap heeft: een Hero zonder inhoudelijk doel leidt af en voegt geen waarde toe.
 
-## Best practices
+## Goed gebruik
 
 ### Kop en beschrijving
 
@@ -61,7 +61,7 @@ De standaardhoogte is `70svh` met een minimum van `400px`. Overschrijf `--dsn-he
 
 De achtergrondafbeelding loopt via het custom property `--dsn-hero-bg-image`. Dat is geen design token: je zet het per Hero, zie Achtergrondafbeelding hierboven.
 
-## Accessibility
+## Toegankelijkheid
 
 ### Sectie-landmark
 

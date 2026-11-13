@@ -8,21 +8,21 @@ De IconList component toont een opsomming waarbij het icoon per item visuele con
 
 <!-- VOORBEELD -->
 
-## Use when
+## Wel gebruiken als...
 
 - Iconen visuele context toevoegen aan elk item, bijvoorbeeld voordelen, kenmerken of praktische details.
 - Je categorisch onderscheid wilt maken tussen items via verschillende iconen.
 - Je een status per item wilt tonen met een semantische kleur (positief, negatief, waarschuwing).
 - Je geordende stappen toont waarbij een icoon duidelijker is dan een cijfer.
 
-## Don't use when
+## Niet gebruiken als...
 
 - De items geen visueel onderscheidend icoon nodig hebben: gebruik dan de [Unordered List](/docs/components-unorderedlist--docs) of [Ordered List](/docs/components-orderedlist--docs).
 - Het nummer van elke stap zelf betekenis heeft en genoemd moet worden: gebruik dan de [Ordered List](/docs/components-orderedlist--docs), die het cijfer zichtbaar houdt.
 - De items volledige statusberichten zijn die aandacht vragen: gebruik dan [Alert](/docs/components-alert--docs) of [Note](/docs/components-note--docs).
 - Je key-value informatie toont: gebruik dan de [Data List](/docs/components-datalist--docs).
 
-## Best practices
+## Goed gebruik
 
 ### Icoonkeuze
 
@@ -58,7 +58,7 @@ De icoonkleur is de enige token die bedoeld is om per lijst te overschrijven. In
 </ul>
 ```
 
-## Accessibility
+## Toegankelijkheid
 
 - De component gebruikt het semantische `<ul>` of `<ol>` element voor correcte structuur.
 - **`role="list"` staat er altijd op.** `list-style-type: none` laat Safari/VoiceOver de lijstaankondiging weglaten; de expliciete rol herstelt dat en verandert niets in andere browsers. De React-component zet de rol automatisch; neem hem in handgeschreven HTML altijd over.

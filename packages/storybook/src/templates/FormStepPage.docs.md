@@ -76,17 +76,17 @@ De `<main>` bevat een `Stack space="3xl"` met de volgende elementen in volgorde:
 </ActionGroup>
 ```
 
-## Use when
+## Wel gebruiken als...
 
 - Je een meerstappenformulier bouwt waarbij de gebruiker stap voor stap door een aanvraag of invoerflow wordt geleid.
 - Je de gebruiker wilt focussen op de taak door navigatie weg te laten.
 
-## Don't use when
+## Niet gebruiken als...
 
 - Je een informatieve pagina toont: gebruik dan het Base Page template.
 - Het formulier uit slechts één stap bestaat zonder stap-voor-stap navigatie.
 
-## Accessibility
+## Toegankelijkheid
 
 - De `<main>` heeft `id="main-content"` zodat de skip-link werkt voor toetsenbordgebruikers.
 - Het `<form>`-element heeft `noValidate` om de browser-validatie te onderdrukken; valideer in plaats daarvan via de design system form-componenten.

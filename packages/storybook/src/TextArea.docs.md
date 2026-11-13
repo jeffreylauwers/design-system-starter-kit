@@ -8,19 +8,19 @@ De TextArea component is een gestandaardiseerd invoerveld voor multi-line tekst.
 
 <!-- VOORBEELD -->
 
-## Use when
+## Wel gebruiken als...
 
 - Je multi-line tekst invoer nodig hebt (beschrijving, opmerking, bio).
 - Je gebruikers meerdere regels tekst wilt laten invoeren.
 - Je resize gedrag wilt toestaan voor grotere teksten.
 
-## Don't use when
+## Niet gebruiken als...
 
 - Je single-line tekst invoer nodig hebt: gebruik dan [TextInput](/docs/components-textinput--docs).
 - Je rich text editing nodig hebt: overweeg een rich text editor component.
 - Je alleen een label nodig hebt: gebruik FormFieldLabel.
 
-## Best practices
+## Goed gebruik
 
 - **Kies de juiste height.** Gebruik `rows` om de standaard hoogte aan te passen:
   - `rows={2-3}` - Korte berichten, opmerkingen
@@ -37,7 +37,7 @@ De TextArea component is een gestandaardiseerd invoerveld voor multi-line tekst.
 - **Vermijd placeholders.** Placeholder tekst verdwijnt zodra de gebruiker begint te typen: daarna is de informatie niet meer zichtbaar. Bovendien kan de lage contrast van placeholders het veld er ingevuld laten uitzien. Gebruik [FormFieldDescription](/docs/components-formfielddescription--docs) voor hints over het verwachte formaat of inhoud.
 - **Character/word limits.** Overweeg een character counter te tonen bij lange teksten.
 
-## Row height richtlijnen
+## Richtlijnen voor rijhoogte
 
 | Rows | Gebruik                                                 |
 | ---- | ------------------------------------------------------- |
@@ -58,7 +58,7 @@ De TextArea component is een gestandaardiseerd invoerveld voor multi-line tekst.
 
 <!-- tokens: text-area --dsn-form-control-inline-size-md --dsn-form-control-inline-size-lg --dsn-form-control-inline-size-xl --dsn-form-control-inline-size-full -->
 
-## Accessibility
+## Toegankelijkheid
 
 - Altijd een `<label>` koppelen via `htmlFor` of wrap in FormField.
 - Invalid state wordt gecommuniceerd via `aria-invalid="true"`.

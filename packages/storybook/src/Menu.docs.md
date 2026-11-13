@@ -10,18 +10,18 @@ Containercomponent voor `MenuLink`- en `MenuButton`-items in een verticale of ho
 
 <!-- VOORBEELD -->
 
-## Use when
+## Wel gebruiken als...
 
 - Je meerdere `MenuLink`- en/of `MenuButton`-items wilt groeperen in een navigatielijst.
 - Je een verticale navigatielijst wilt in een zijbalk, Drawer of sub-navigatie.
 - Je een horizontale navigatielijst wilt in een Page Header bij grote viewports.
 
-## Don't use when
+## Niet gebruiken als...
 
 - Je slechts één enkel navigatie-item wilt tonen: gebruik dan `Link` of `Button` direct.
 - Je `<li>`-elementen wilt tonen zonder navigatiecontext: `MenuLink` en `MenuButton` zijn `<li>`-elementen en vereisen altijd een omliggend `<ul>`.
 
-## Best practices
+## Goed gebruik
 
 ### Nav-context is verantwoordelijkheid van de ouder
 
@@ -77,7 +77,7 @@ Kies de oriëntatie op basis van de context:
 
 <!-- tokens: menu -->
 
-## Accessibility
+## Toegankelijkheid
 
 - `Menu` rendert een `<ul>`: screenreaders kondigen de lijst aan met het aantal items.
 - `Menu` rendert zelf **geen `<nav>`**: de ouder is verantwoordelijk voor de navigatielandmark.

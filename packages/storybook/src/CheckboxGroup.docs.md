@@ -10,19 +10,19 @@ De CheckboxGroup component is een simpele container die meerdere CheckboxOption 
 
 <!-- VOORBEELD -->
 
-## Use when
+## Wel gebruiken als...
 
 - Je meerdere checkbox opties hebt die bij elkaar horen.
 - Je consistente spacing tussen checkboxes nodig hebt.
 - Je een lijst van checkboxes wilt tonen zonder expliciete groepslabel.
 
-## Don't use when
+## Niet gebruiken als...
 
 - Je een complete form field met label nodig hebt: wrap dan CheckboxGroup in [FormFieldset](/docs/components-formfieldset--docs).
 - Je maar één checkbox hebt: gebruik dan gewoon [CheckboxOption](/docs/components-checkboxoption--docs).
 - Je geen gerelateerde opties hebt: gebruik losse CheckboxOptions.
 
-## Best practices
+## Goed gebruik
 
 - **Groepeer logisch gerelateerde opties.** Checkbox opties in een groep zouden conceptueel bij elkaar moeten horen.
 - **Gebruik FormFieldset voor labels.** Voor een volledige form field met label, wrap de CheckboxGroup in een FormFieldset met FormFieldLegend.
@@ -33,7 +33,7 @@ De CheckboxGroup component is een simpele container die meerdere CheckboxOption 
 
 <!-- tokens: checkbox-group -->
 
-## Accessibility
+## Toegankelijkheid
 
 - De component is een simpele div container zonder extra semantiek.
 - Voor semantisch correcte form groups gebruik FormFieldset met `<fieldset>` en `<legend>` elementen.

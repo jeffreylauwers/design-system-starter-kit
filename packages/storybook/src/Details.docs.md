@@ -8,20 +8,20 @@ De Details component biedt een semantisch correcte uitvouwbare sectie op basis v
 
 <!-- VOORBEELD -->
 
-## Use when
+## Wel gebruiken als...
 
-- Aanvullende informatie die niet iedereen nodig heeft (uitleg, toelichting, achtergrondinformatie).
-- Inhoud die de pagina-scan voor de meeste gebruikers belemmert.
-- Inhoud die alleen relevant is voor een specifieke doelgroep.
-- FAQ-patronen waarbij meerdere Details-componenten onder elkaar staan.
+- Je aanvullende informatie hebt die niet iedereen nodig heeft (uitleg, toelichting, achtergrondinformatie).
+- De inhoud het scannen van de pagina voor de meeste gebruikers belemmert.
+- De inhoud alleen relevant is voor een specifieke doelgroep.
+- Je een FAQ-patroon bouwt waarbij meerdere Details-componenten onder elkaar staan.
 
-## Don't use when
+## Niet gebruiken als...
 
 - De meerderheid van gebruikers de informatie nodig heeft: verberg geen essentiële inhoud.
 - De inhoud cruciaal is voor het voltooien van een taak: toon het altijd zichtbaar.
 - Er een urgente melding nodig is: gebruik een **Alert**.
 
-## Best practices
+## Goed gebruik
 
 ### Summarylabel
 
@@ -41,7 +41,7 @@ De Details component biedt een semantisch correcte uitvouwbare sectie op basis v
 
 <!-- tokens: details -->
 
-## Accessibility
+## Toegankelijkheid
 
 - Het native `<details>`/`<summary>` element heeft een impliciete ARIA-rol `group`: geen extra `role` attribuut nodig.
 - De `<summary>` is volledig toetsenbordtoegankelijk: Tab om te focussen, Spatiebalk of Enter om te togglen.

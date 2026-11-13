@@ -12,25 +12,25 @@ Gebruik `FormFieldset` als wrapper voor een volledig formulierveld met legend, b
 
 <!-- VOORBEELD -->
 
-## Use when
+## Wel gebruiken als...
 
 - De gebruiker een specifieke datum moet invoeren (bijv. geboortedatum, startdatum)
 - Je een browser-onafhankelijke, consistente datuminvoer nodig hebt
 - Gedeeltelijke invoer (bijv. alleen jaar) een geldige usecase is
 
-## Don't use when
+## Niet gebruiken als...
 
 - De gebruiker een datum uit een kalender moet kiezen (gebruik dan `DateInput`)
 - Het om een datum in de nabije toekomst gaat die makkelijk te selecteren is: een datumkiezer is dan handiger
 
-## Best practices
+## Goed gebruik
 
 - Gebruik altijd `<FormFieldset legend="...">` als wrapper: dit geeft de groep een naam voor screenreaders
 - Geef de `description` prop mee met een voorbeelddatum, bijv. `"Bijvoorbeeld: 15 3 1990"`
 - Geef de `id` prop mee zodat de labels correct gekoppeld zijn aan de inputs
 - Geef bij een fout de `error` prop mee aan `FormFieldset`: de foutmelding verschijnt dan automatisch bóven de invoervelden
 
-## Accessibility
+## Toegankelijkheid
 
 - Elk veld heeft een zichtbaar label ("Dag", "Maand", "Jaar") gekoppeld via `htmlFor`
 - De `id` prop genereert automatisch `{id}-dag`, `{id}-maand` en `{id}-jaar` als input-id's
@@ -38,7 +38,7 @@ Gebruik `FormFieldset` als wrapper voor een volledig formulierveld met legend, b
 - `FormFieldset` genereert een ID voor de foutmelding en koppelt die via `aria-describedby` aan het `<fieldset>`, zodat een screenreader hem meeneemt bij de hele groep
 - De `legend` verbindt de drie velden semantisch voor screenreaders via het `<fieldset>` element
 
-## States
+## Toestanden
 
 - **Default**: lege velden
 - **With value**: datum ingevuld

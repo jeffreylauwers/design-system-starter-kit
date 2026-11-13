@@ -8,19 +8,19 @@ De FileInput component biedt een consistent gestyled bestandsinvoerveld. De brow
 
 <!-- VOORBEELD -->
 
-## Use when
+## Wel gebruiken als...
 
 - Je de gebruiker een bestand wilt laten uploaden (bijlage, afbeelding, document).
 - Je native browser file-selectie wilt met een consistent, gestyled uiterlijk.
 - Je meerdere bestanden tegelijk wilt accepteren (via `multiple`).
 - Je het bestandstype wilt beperken (via `accept`).
 
-## Don't use when
+## Niet gebruiken als...
 
 - Je drag-and-drop functionaliteit nodig hebt: dat vereist een aparte component.
 - Je een al gekozen of geüpload bestand wilt tonen: dat is de rol van de `File`-component. In een uploadstap zijn het geen alternatieven maar een paar, zie hieronder.
 
-## Best practices
+## Goed gebruik
 
 - **Koppel `FileInput` altijd aan `File`.** `FileInput` is het kiesmoment; wat er daarna met het bestand gebeurt (uploaden, geslaagd, geweigerd) toont `File`. Zonder die terugkoppeling ziet de gebruiker hooguit de tekst die de browser zelf naast de knop zet, en hoort een screenreadergebruiker niets over de afloop. Zie het patroon **Bestanden uploaden** onder Patronen/Formulieren, en het template **Form step: Upload**.
 - **Labels zijn verplicht.** Koppel altijd een `<label>` via `htmlFor`, of gebruik `FormFieldLabel` binnen een `FormField`-structuur.
@@ -30,7 +30,7 @@ De FileInput component biedt een consistent gestyled bestandsinvoerveld. De brow
 - **Bestandsvereisten in de description, met `<br>` per eis.** Zet de eisen (grootte, toegestane typen) in een [FormFieldDescription](/docs/components-formfielddescription--docs) met een `id` en koppel die via `aria-describedby`. Gebruik geen `UnorderedList` in de description: VoiceOver in Safari leest die helemaal niet voor. Zet de eisen in plaats daarvan met een `<br>` op eigen regels, met een spatie vóór en ná de `<br>`, zodat ze scanbaar zijn zonder dat er iets uit de aankondiging valt. Draait de hele stap om het uploaden, zet de eisen dan als echte lijst boven het form field: zo doet het template **Form step: Upload** het.
 - **Invalid state.** Visuele feedback bij een validatiefout wordt afgehandeld op het niveau van `FormField` (rode linkerborder), niet op de FileInput zelf. De `invalid` prop zet enkel `aria-invalid="true"` voor screenreaders.
 
-## In form field context
+## In een formulierveld
 
 Combineer FileInput met `FormFieldLabel` en een `FormFieldDescription` voor de bestandsvereisten. Geef de description een `id` en verwijs ernaar via `aria-describedby`. Elke eis staat op een eigen regel via een `<br>`, met een spatie vóór en ná die `<br>`:
 
@@ -79,7 +79,7 @@ Draait een hele formulierstap om het uploaden, dan mag de opsomming een echte li
 
 De knop (`::file-selector-button`) gebruikt de `--dsn-button-default-*`, `--dsn-button-size-default-*` en `--dsn-button-disabled-*` tokens rechtstreeks, zodat knopstijl altijd in sync blijft met de Button component.
 
-## Accessibility
+## Toegankelijkheid
 
 - Altijd een `<label>` koppelen via `htmlFor` of wrap in `FormField`.
 - De `invalid` prop zet `aria-invalid="true"` — visuele feedback voor invalid state wordt door `FormField` afgehandeld.

@@ -10,14 +10,14 @@ De FormFieldset component is de fieldset/legend variant van FormField. Het combi
 
 <!-- VOORBEELD -->
 
-## Use when
+## Wel gebruiken als...
 
 - Je een groep checkboxes hebt (CheckboxGroup).
 - Je een groep radio buttons hebt (RadioGroup).
 - Je een Date Input Group hebt (later).
 - Je semantisch correcte fieldset/legend markup wilt.
 
-## Don't use when
+## Niet gebruiken als...
 
 - Je een enkel tekst invoerveld hebt: gebruik [FormField](/docs/components-formfield--docs).
 - Je een enkele textarea hebt: gebruik FormField.
@@ -37,7 +37,7 @@ FormFieldset combineert deze sub-componenten in de juiste volgorde:
 
 Wanneer er een `error` prop aanwezig is, krijgt het hele FormFieldset een dikke rode border aan de linkerzijde en extra padding, net als FormField. Dit trekt visueel de aandacht naar het probleem.
 
-## Best practices
+## Goed gebruik
 
 ### Props
 
@@ -77,7 +77,7 @@ Plus de tokens van de sub-componenten:
 - FormFieldErrorMessage tokens voor error styling
 - FormFieldStatus tokens voor status styling
 
-## Accessibility
+## Toegankelijkheid
 
 - **fieldset/legend** - Semantisch correct voor groep controls
 - **legend element** - Wordt door screenreaders aangekondigd als groepslabel

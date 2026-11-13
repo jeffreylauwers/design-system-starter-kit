@@ -8,18 +8,18 @@ De BreadcrumbNavigation component geeft gebruikers inzicht in hun positie binnen
 
 <!-- VOORBEELD -->
 
-## Use when
+## Wel gebruiken als...
 
-- Op pagina's dieper dan één niveau in de sitestructuur.
-- Als aanvulling op de primaire navigatie: nooit als vervanging.
-- Wanneer gebruikers baat hebben bij context over waar zij zich bevinden in de hiërarchie.
+- De pagina dieper dan één niveau in de sitestructuur ligt.
+- De broodkruimel een aanvulling is op de primaire navigatie, nooit een vervanging.
+- Gebruikers baat hebben bij context over waar zij zich bevinden in de hiërarchie.
 
-## Don't use when
+## Niet gebruiken als...
 
-- Op de homepage of op pagina's van één niveau diep: voeg geen broodkruimel toe zonder hiërarchische context.
-- Als de sitestructuur plat is (minder dan twee niveaus): de component is dan overbodig.
+- Het om de homepage of een pagina van één niveau diep gaat: voeg geen broodkruimel toe zonder hiërarchische context.
+- De sitestructuur plat is (minder dan twee niveaus): de component is dan overbodig.
 
-## Best practices
+## Goed gebruik
 
 ### Plaatsing
 
@@ -40,7 +40,7 @@ De BreadcrumbNavigation component geeft gebruikers inzicht in hun positie binnen
 
 <!-- tokens: breadcrumb-navigation -->
 
-## Accessibility
+## Toegankelijkheid
 
 - `<nav>` met `aria-label` identificeert de breadcrumb als navigatielandmark. Gebruik een beschrijvend label (standaard: `"Broodkruimelpad"`) zodat deze te onderscheiden is van andere `<nav>` landmarks op de pagina.
 - `<ol>` signaleert aan screenreaders dat de volgorde van items semantisch betekenisvol is.

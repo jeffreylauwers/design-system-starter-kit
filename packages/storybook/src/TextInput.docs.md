@@ -8,19 +8,19 @@ De TextInput component is een gestandaardiseerd invoerveld voor single-line teks
 
 <!-- VOORBEELD -->
 
-## Use when
+## Wel gebruiken als...
 
 - Je een single-line tekst invoer nodig hebt (naam, email, URL, etc.).
 - Je native HTML input types wilt gebruiken met consistente styling.
 - Je de inline-size semantisch wilt aanpassen aan het type data.
 
-## Don't use when
+## Niet gebruiken als...
 
 - Je multi-line tekst invoer nodig hebt: gebruik dan [TextArea](/docs/components-textarea--docs).
 - Je gespecialiseerde inputs nodig hebt: gebruik NumberInput, EmailInput, etc.
 - Je alleen een label nodig hebt: gebruik FormFieldLabel.
 
-## Best practices
+## Goed gebruik
 
 - **Kies de juiste inline-size.** Gebruik `inlineSize` om de inline-size aan te passen aan het type data:
   - `xs` (10ch) - Zeer korte codes (postcode, jaar, CVV)
@@ -52,7 +52,7 @@ Niet elk invulveld biedt alle varianten. TextArea, EmailInput, PasswordInput, Te
 
 <!-- tokens: text-input --dsn-form-control-inline-size-xs --dsn-form-control-inline-size-sm --dsn-form-control-inline-size-md --dsn-form-control-inline-size-lg --dsn-form-control-inline-size-xl --dsn-form-control-inline-size-full -->
 
-## Accessibility
+## Toegankelijkheid
 
 - Altijd een `<label>` koppelen via `htmlFor` of wrap in FormField.
 - Invalid state wordt gecommuniceerd via `aria-invalid="true"`.

@@ -8,21 +8,21 @@ De UnorderedList component biedt een consistente, toegankelijke manier om lijste
 
 <!-- VOORBEELD -->
 
-## Use when
+## Wel gebruiken als...
 
 - Je een groep gerelateerde items wilt tonen waar de volgorde niet uitmaakt.
 - Je opties, kenmerken, of eigenschappen wilt opsommen.
 - Je een navigatiemenu wilt structureren (samen met links).
 - Je geneste hiërarchieën wilt weergeven (lijsten binnen lijsten).
 
-## Don't use when
+## Niet gebruiken als...
 
 - De volgorde van items belangrijk is: gebruik dan de [Ordered List](/docs/components-orderedlist--docs) component.
 - Je maar één enkel item hebt: gebruik dan gewoon tekst of een paragraph.
 - De items interactieve acties zijn: overweeg dan een menu of button group.
 - Je tabeldata wilt tonen: gebruik dan een tabel.
 
-## Best practices
+## Goed gebruik
 
 - **Houd items compact en scanbaar.** Lijstitems moeten kort en duidelijk zijn. Voor lange beschrijvingen, overweeg aparte paragraphs of secties.
 - **Gebruik consequent.** Als je ergens een lijst gebruikt voor een bepaald type content, doe dat dan overal.
@@ -34,7 +34,7 @@ De UnorderedList component biedt een consistente, toegankelijke manier om lijste
 
 <!-- tokens: unordered-list -->
 
-## Accessibility
+## Toegankelijkheid
 
 - De component gebruikt het semantische `<ul>` HTML element voor correcte structuur.
 - Screenreaders kondigen het aantal items in de lijst aan.

@@ -8,20 +8,20 @@ De Heading component biedt een consistente, toegankelijke manier om koppen weer 
 
 <!-- VOORBEELD -->
 
-## Use when
+## Wel gebruiken als...
 
 - Je secties wilt markeren en structuur wilt aanbrengen in je content.
 - Je een duidelijke visuele hiërarchie wilt creëren tussen verschillende contentlagen.
 - Je de semantische documentstructuur correct wilt houden voor screenreaders en SEO.
 - Je een visuele kop nodig hebt die niet matcht met de semantische level (gebruik `appearance`).
 
-## Don't use when
+## Niet gebruiken als...
 
 - Je lopende tekst wilt weergeven: gebruik dan de [Paragraph](/docs/components-paragraph--docs) component.
 - Je interactieve elementen wilt tonen: gebruik dan buttons of links.
 - De tekst puur decoratief is zonder structurele betekenis.
 
-## Best practices
+## Goed gebruik
 
 - **Eén h1 per pagina.** Gebruik precies één `level={1}` per pagina voor de hoofdtitel. Dit is belangrijk voor toegankelijkheid en SEO.
 - **Respecteer de heading hiërarchie.** Spring geen levels over (bijv. niet direct van h2 naar h5). Dit helpt screenreaders de documentstructuur te begrijpen.
@@ -35,7 +35,7 @@ De Heading component biedt een consistente, toegankelijke manier om koppen weer 
 
 <!-- tokens: heading -->
 
-## Accessibility
+## Toegankelijkheid
 
 - De component gebruikt semantische HTML heading elementen (h1-h6) voor correcte documentstructuur.
 - Screenreaders kunnen door headings navigeren om snel een overzicht van de pagina te krijgen.

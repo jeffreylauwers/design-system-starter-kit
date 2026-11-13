@@ -8,20 +8,20 @@ Het Drawer component toont een zijpaneel dat over de pagina-inhoud schuift. In t
 
 <!-- VOORBEELD -->
 
-## Use when
+## Wel gebruiken als...
 
 - De gebruiker rij- of itemdetails naast een lijst wil bekijken of bewerken.
 - Een filterpaneel live de resultaten op de achtergrondpagina moet bijwerken (non-modal).
 - Een subtaak uitgevoerd moet worden terwijl de context van de onderliggende pagina zichtbaar blijft.
 - Aanvullende navigatie- of instellingenopties getoond moeten worden naast de huidige pagina.
 
-## Don't use when
+## Niet gebruiken als...
 
 - De gebruiker de achtergrondpagina _niet_ nodig heeft: gebruik dan **ModalDialog**.
 - Een onomkeerbare actie bevestigd moet worden (bijv. verwijderen): gebruik dan **ModalDialog**.
 - De inhoud een volwaardige werkstroom is die een eigen URL rechtvaardigt: gebruik dan een aparte pagina.
 
-## Best practices
+## Goed gebruik
 
 ### Drawer vs. ModalDialog
 
@@ -124,7 +124,7 @@ De non-modale variant (`popover="manual"`) opent met `popovertarget="drawer-id"`
 
 <!-- tokens: drawer -->
 
-## Accessibility
+## Toegankelijkheid
 
 - Het zijpaneel gebruikt het native `<dialog>` element met impliciete `role="dialog"` semantiek.
 - `.showModal()` (modal variant) activeert automatisch `aria-modal`-gedrag en het `inert`-attribuut op de achtergrond.
@@ -152,4 +152,4 @@ Bij sluiten keert de focus terug naar het element dat het paneel opende. Bij `mo
 
 ### Naam, rol en waarde van de trigger
 
-Geef `triggerRef` mee zodat `aria-expanded` op de openknop synchroon loopt met de open-staat. Een screenreader leest de knop dan voor als "Zijpaneel, samengevouwen" of "Zijpaneel, uitgevouwen". Zie het kopje "Status van de trigger" onder Best practices voor een codevoorbeeld. Gerelateerd WCAG-succescriterium: [4.1.2 Naam, rol, waarde](https://nldesignsystem.nl/wcag/4.1.2/).
+Geef `triggerRef` mee zodat `aria-expanded` op de openknop synchroon loopt met de open-staat. Een screenreader leest de knop dan voor als "Zijpaneel, samengevouwen" of "Zijpaneel, uitgevouwen". Zie het kopje "Status van de trigger" onder Goed gebruik voor een codevoorbeeld. Gerelateerd WCAG-succescriterium: [4.1.2 Naam, rol, waarde](https://nldesignsystem.nl/wcag/4.1.2/).

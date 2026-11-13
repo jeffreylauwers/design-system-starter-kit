@@ -12,20 +12,20 @@ Het menu sluit bij Escape, bij een klik buiten het paneel, en zodra de gebruiker
 
 **Implementatiekeuze:** net als de Popover gebruikt PopoverMenu de HTML Popover API (`popover="auto"`) voor light dismiss en top-layer gedrag, met positionering via JavaScript. Dat gedrag delen de twee componenten; alleen de semantiek verschilt.
 
-## Use when
+## Wel gebruiken als...
 
-- Een actiemenu per tabelrij (Bewerken, Dupliceren, Verwijderen).
-- Accountnavigatie onder de gebruikersnaam in de PageHeader.
-- Een "Meer acties"-knop waarachter secundaire acties staan.
-- Elke korte lijst knoppen of links die bij één trigger hoort.
+- Je een actiemenu per tabelrij nodig hebt (Bewerken, Dupliceren, Verwijderen).
+- Je accountnavigatie onder de gebruikersnaam in de PageHeader wilt aanbieden.
+- Je secundaire acties achter een "Meer acties"-knop wilt plaatsen.
+- Je een korte lijst knoppen of links hebt die bij één trigger hoort.
 
-## Don't use when
+## Niet gebruiken als...
 
 - Het paneel een heading, formulier of andere controls bevat (bijv. filters): gebruik dan **Popover**, een niet-modale dialog.
 - Er maar één actie is: gebruik dan een gewone **Button**.
 - De lijst hoofdnavigatie is die altijd zichtbaar moet zijn: gebruik dan **Menu** in een `<nav>`.
 
-## Best practices
+## Goed gebruik
 
 ### PopoverMenu vs. Popover
 
@@ -93,7 +93,7 @@ Alle tokens delegeren naar de Popover, zodat beide panelen gelijk ogen: dezelfde
 
 <!-- tokens: popover-menu -->
 
-## Accessibility
+## Toegankelijkheid
 
 ### Structuur
 

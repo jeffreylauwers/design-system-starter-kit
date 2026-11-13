@@ -10,19 +10,19 @@ De RadioGroup component is een simpele container die meerdere RadioOption compon
 
 <!-- VOORBEELD -->
 
-## Use when
+## Wel gebruiken als...
 
 - Je meerdere radio button opties hebt die bij elkaar horen.
 - Je consistente spacing tussen radio buttons nodig hebt.
 - Je een lijst van mutually exclusive opties wilt tonen.
 
-## Don't use when
+## Niet gebruiken als...
 
 - Je een complete form field met label nodig hebt: wrap dan RadioGroup in [FormFieldset](/docs/components-formfieldset--docs).
 - Je maar één radio button hebt: een enkele radio button is zinloos, minimaal 2 opties nodig.
 - Je meerdere opties tegelijk wilt selecteren: gebruik dan [CheckboxGroup](/docs/components-checkboxgroup--docs).
 
-## Best practices
+## Goed gebruik
 
 - **Zelfde name attribuut.** Alle RadioOptions in een groep MOETEN hetzelfde `name` attribuut hebben.
 - **Groepeer logisch gerelateerde opties.** Radio opties in een groep zouden conceptueel bij elkaar moeten horen en elkaar uitsluiten.
@@ -35,7 +35,7 @@ De RadioGroup component is een simpele container die meerdere RadioOption compon
 
 <!-- tokens: radio-group -->
 
-## Accessibility
+## Toegankelijkheid
 
 - De component is een simpele div container zonder extra semantiek.
 - Voor semantisch correcte form groups gebruik FormFieldset met `<fieldset>` en `<legend>` elementen.

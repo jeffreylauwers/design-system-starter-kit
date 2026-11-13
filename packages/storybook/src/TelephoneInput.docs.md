@@ -8,17 +8,17 @@ De TelephoneInput component is een gespecialiseerd invoerveld voor telefoonnumme
 
 <!-- VOORBEELD -->
 
-## Use when
+## Wel gebruiken als...
 
 - Je een telefoonnummer van de gebruiker nodig hebt, bijv. voor een contactformulier of registratie.
 - Je wilt dat mobiele gebruikers direct het juiste toetsenbord krijgen.
 
-## Don't use when
+## Niet gebruiken als...
 
 - Het om een vrij tekstveld gaat: gebruik dan [TextInput](/docs/components-textinput--docs).
 - Je strikte format-validatie wilt afdwingen: doe dit via formuliervalidatie, niet via het inputtype.
 
-## Best practices
+## Goed gebruik
 
 - **Gebruik FormFieldDescription voor formaathints.** Als je het verwachte formaat wilt toelichten (bijv. `06 12345678` of `+31 6 12345678`), gebruik dan [FormFieldDescription](/docs/components-formfielddescription--docs): niet een placeholder. Placeholder tekst verdwijnt bij typen en is daarna niet meer zichtbaar.
 - **Dwing geen specifiek formaat af.** Gebruikers typen telefoonnummers op verschillende manieren. Valideer lengte en tekens, maar accepteer variaties in opmaak.
@@ -27,13 +27,13 @@ De TelephoneInput component is een gespecialiseerd invoerveld voor telefoonnumme
 - **Geef validatie feedback.** Gebruik de `invalid` prop in combinatie met `aria-invalid` en een `FormFieldErrorMessage`.
 - **Standaard `md`.** TelephoneInput krijgt standaard `inlineSize="md"` (20ch), genoeg voor een telefoonnummer met landcode. Kies `lg`, `xl` of `full` als dat beter in het formulier past. `xs` en `sm` bestaan bij TelephoneInput niet: een telefoonnummer past daar niet in.
 
-## Accessibility
+## Toegankelijkheid
 
 - `type="tel"` geeft op mobiel een toetsenbord met cijfers, koppeltekens en plusteken.
 - `autocomplete="tel"` maakt het voor gebruikers eenvoudig om hun telefoonnummer in te vullen.
 - Er wordt geen native browservalidatie afgedwongen: valideer zelf in het formulier.
 
-## States
+## Toestanden
 
 - **Default**: Leeg, klaar voor invoer
 - **Filled**: Bevat een telefoonnummer

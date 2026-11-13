@@ -12,23 +12,23 @@ In Storybook is `dsn-body` als global decorator toegepast op alle stories en 'Vo
 
 <!-- VOORBEELD -->
 
-## Use when
+## Wel gebruiken als...
 
 - Je de juiste document-level stijlen wilt instellen voor een pagina of applicatie.
 - Je in Storybook een geïsoleerde preview wilt wrappen met de juiste omgevingsstijlen.
 
-## Don't use when
+## Niet gebruiken als...
 
 - Je de stijlen voor een specifieke sectie wilt overschrijven: gebruik dan component-specifieke klassen of CSS custom properties.
 - Je een ander thema of een andere modus per sectie wilt toepassen: dit is een document-level wrapper, geen theming-component.
 
-## Best practices
+## Goed gebruik
 
 - **Pas `dsn-body` toe op `<body>`**: dit is de bedoelde use case. De CSS cascade werkt dan door voor de hele pagina.
 - **Gebruik `<Body>` als React-wrapper** wanneer je geen controle hebt over het `<body>` element (bijv. in geïsoleerde previews of micro-frontends).
 - **Voeg geen extra stijlen toe aan `dsn-body`**: de class dient uitsluitend als cascade-startpunt. Paginaspecifieke stijlen horen in layout-componenten.
 
-## Accessibility
+## Toegankelijkheid
 
 Body heeft geen directe invloed op toegankelijkheid. De tokens die het instelt: met name kleur en achtergrond: zijn afgestemd op een voldoende contrastverhouding volgens WCAG 2.2 AA.
 
