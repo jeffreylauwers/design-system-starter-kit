@@ -26,8 +26,16 @@ Vraag de gebruiker naar de volgende onderdelen. Meerdere secties mogen in één 
 ### 2a. Beschrijving en gebruik
 
 - **Beschrijving**: Wat doet het component en wanneer gebruik je het? (2–4 zinnen)
-- **Gebruik: wanneer wél**: 3–5 bulletpunten
-- **Gebruik: wanneer niet**: 1–2 gevallen waarbij een alternatief beter is
+- **Wel gebruiken als...**: 3–5 bulletpunten
+- **Niet gebruiken als...**: 1–3 gevallen waarbij een alternatief beter is, met dat alternatief na een dubbele punt
+
+> Formuleer elke bullet zo dat hij de zin na het kopje afmaakt, zodat hij één-op-één naar de `.docs.md` kan:
+>
+> - ✅ "Je een tijdstip wilt laten invoeren." / "De gebruiker een onomkeerbare actie moet bevestigen."
+> - ✅ "Het om vrije tekst gaat: gebruik dan TextInput."
+> - ❌ "Tabulaire data weergeven." / "Als visuele achtergrond achter een dialog."
+>
+> Herschrijf losse zinsdelen die de gebruiker aanlevert naar deze vorm. Lukt dat niet zonder dat de zin geforceerd leest, laat hem dan staan.
 
 ### 2b. HTML/CSS implementatie
 
@@ -94,14 +102,15 @@ Bouw de body op in deze volgorde. Vul in wat de gebruiker aanleverde; gebruik HT
 
 [één-alinea beschrijving van het component]
 
-## Gebruik
+## Wel gebruiken als...
 
-Het [ComponentName] component wordt gebruikt voor:
-- [use case 1]
+- [Je ... wilt ... / De gebruiker ... moet ...]
 - [use case 2]
 - [use case 3]
 
-> Gebruik [ComponentName] **niet** als [wanneer-niet-gebruik]. Gebruik in dat geval [alternatief].
+## Niet gebruiken als...
+
+- [situatie]: gebruik dan [alternatief].
 
 ## HTML/CSS
 
@@ -190,6 +199,8 @@ Het [ComponentName] component wordt gebruikt voor:
 ### Storybook
 
 - [ ] Drie bestanden aangemaakt: `.stories.tsx`, `.docs.mdx`, `.docs.md`
+- [ ] `.docs.md` volledig in het Nederlands, met de vaste kopjes in deze volgorde: `## Doel`, `## Wel gebruiken als...`, `## Niet gebruiken als...`, `## Goed gebruik`, `## Design tokens` (marker `<!-- tokens: [component-name] -->`), `## Toegankelijkheid`. Geen Engelse kopjes zoals Use when, Best practices, Accessibility, States of Anatomy
+- [ ] Bullets onder Wel/Niet gebruiken als... overgenomen uit dit issue en maken de zin na het kopje af
 - [ ] `// DEFAULT` sectie: `Default` story
 - [ ] `// VARIANTEN` sectie: per-prop/state stories (bijv. `WithDescription`, `Disabled`, `Invalid`)
 - [ ] `// OVERZICHTSSTORIES` sectie: `AllVariants` of `AllStates` (zie regel hieronder)
