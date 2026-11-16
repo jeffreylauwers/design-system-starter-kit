@@ -23,7 +23,113 @@
     {
       "name": "inlineSize",
       "values": ["md", "lg", "xl", "full"],
-      "default": "full"
+      "default": null
     }
-  ]
+  ],
+  "api": {
+    "props": [
+      {
+        "name": "invalid",
+        "type": "boolean",
+        "default": false,
+        "figma": [
+          {
+            "kind": "variant",
+            "property": "invalid"
+          }
+        ]
+      },
+      {
+        "name": "inlineSize",
+        "values": ["md", "lg", "xl", "full"],
+        "default": null,
+        "figma": [
+          {
+            "kind": "variant",
+            "property": "inlineSize",
+            "unset": "auto"
+          }
+        ]
+      },
+      {
+        "name": "value",
+        "type": "string",
+        "native": true,
+        "figma": [
+          {
+            "kind": "variant",
+            "property": "showValue"
+          },
+          {
+            "kind": "text",
+            "property": "value"
+          }
+        ]
+      },
+      {
+        "name": "placeholder",
+        "type": "string",
+        "native": true,
+        "figma": [
+          {
+            "kind": "variant",
+            "property": "showPlaceholder"
+          },
+          {
+            "kind": "text",
+            "property": "placeholder"
+          }
+        ]
+      },
+      {
+        "name": "disabled",
+        "type": "boolean",
+        "default": false,
+        "native": true,
+        "figma": [
+          {
+            "kind": "variant",
+            "property": "disabled"
+          }
+        ]
+      },
+      {
+        "name": "rows",
+        "type": "number",
+        "default": 4,
+        "native": true,
+        "figma": [
+          {
+            "kind": "none",
+            "reason": "Nog niet in de Figma-matrix van TextArea."
+          }
+        ]
+      }
+    ],
+    "slots": [],
+    "states": [
+      {
+        "name": "hover",
+        "selector": ":hover",
+        "figma": [
+          {
+            "kind": "variant",
+            "property": "state",
+            "value": "hover"
+          }
+        ]
+      },
+      {
+        "name": "focus",
+        "selector": ":focus",
+        "figma": [
+          {
+            "kind": "variant",
+            "property": "state",
+            "value": "focus"
+          }
+        ]
+      }
+    ]
+  }
 }

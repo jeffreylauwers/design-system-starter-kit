@@ -38,7 +38,8 @@ export function manifestComponent(name) {
 
 /**
  * De waarden van de prop die in Figma de as `axis` is, in de volgorde van de
- * manifest (en dus van de union in React).
+ * manifest (en dus van de union in React). Heeft de prop geen default, dan
+ * staat de waarde voor "niet gezet" (`unset`, zoals `auto`) vooraan.
  *
  * Gooit een fout als de manifest die as niet aan een prop met `values`
  * koppelt. Een matrix die stil terugvalt op een eigen lijst, is precies de
@@ -56,5 +57,8 @@ export function axisValues(componentName, axis) {
       `${componentName}: geen prop met values die in Figma de as '${axis}' is (api.props in de manifest)`
     );
   }
-  return [...prop.values];
+  const { unset } = prop.figma.find(
+    (binding) => binding.kind === 'variant' && binding.property === axis
+  );
+  return unset ? [unset, ...prop.values] : [...prop.values];
 }

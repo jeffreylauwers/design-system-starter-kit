@@ -350,6 +350,26 @@ describe('validateComponent: api block', () => {
     expect(errors.join('\n')).toContain('instance hoort alleen bij');
   });
 
+  it('accepts unset on a prop that owns a whole axis', () => {
+    const errors = withComponent((draft) => {
+      draft.api.props[0].figma = [
+        { kind: 'variant', property: 'size', unset: 'auto' },
+      ] as never;
+    });
+
+    expect(errors).toEqual([]);
+  });
+
+  it('rejects unset next to a value', () => {
+    const errors = withComponent((draft) => {
+      draft.api.props[0].figma = [
+        { kind: 'variant', property: 'size', value: 'small', unset: 'auto' },
+      ] as never;
+    });
+
+    expect(errors.join('\n')).toContain('unset hoort alleen bij');
+  });
+
   it('rejects a state that is not a variant', () => {
     const errors = withComponent((draft) => {
       draft.api.states[0].figma = [

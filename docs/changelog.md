@@ -10,6 +10,20 @@ All notable changes to this project are documented in this file.
 
 Nog niet gepubliceerde wijzigingen. Schrijf nieuwe changelog-entries hieronder; bij de volgende release wordt deze kop gepromoveerd naar het definitieve versienummer.
 
+### components-html: api-blok voor de formuliervelden
+
+TextInput, TextArea, Select, SearchInput, DateInput, TimeInput, FileInput, EmailInput, PasswordInput, NumberInput, TelephoneInput en DateInputGroup hebben een `api`-blok (#488).
+
+- **`unset`:** de `inlineSize`-as heeft in Figma een waarde `auto` voor "niet gezet". Een binding noemt die nu (`"unset": "auto"`), en de matrices van TextInput, TextArea, Select en SearchInput lezen de as met `axisValues` uit de manifest. De Figma-output van die vier is ongewijzigd.
+- **Nieuwe prop-types:** `function` (een callback zoals `onChange`) en `object` (de `value` van DateInputGroup).
+- **De React-lezer** staat in `tests/helpers/react-api.ts` en begrijpt nu ook types uit `@dsn-starter-kit/core` en `Exclude<…>`.
+- **EmailInput, PasswordInput, NumberInput en TelephoneInput** hebben geen eigen set in Figma; hun props hebben een binding `none` met die reden.
+
+Gevonden drift, nu gelijk aan React:
+
+- `inlineSize` had in de `primaryProps` van acht velden de default `full`, maar React zet geen default (in Figma heet dat `auto`). Alleen TelephoneInput heeft een default: `md`.
+- `passwordAutocomplete` van PasswordInput miste de waarde `off`.
+
 ### components-html: api-blok voor de formulieropties
 
 Checkbox, Radio, CheckboxOption, RadioOption, OptionLabel, CheckboxGroup en RadioGroup hebben een `api`-blok in hun manifest (#488). Het model kan daarvoor meer uitdrukken dan bij Button:
