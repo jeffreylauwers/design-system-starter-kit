@@ -7,13 +7,164 @@
   "primaryProps": [
     {
       "name": "href",
-      "type": "string",
-      "required": true
+      "type": "string"
     },
     {
       "name": "external",
       "type": "boolean",
       "default": false
     }
-  ]
+  ],
+  "api": {
+    "props": [
+      {
+        "name": "href",
+        "type": "string",
+        "native": true,
+        "figma": [
+          {
+            "kind": "none",
+            "reason": "De bestemming van de link, niet het uiterlijk."
+          }
+        ]
+      },
+      {
+        "name": "disabled",
+        "type": "boolean",
+        "default": false,
+        "figma": [
+          {
+            "kind": "variant",
+            "property": "disabled"
+          }
+        ]
+      },
+      {
+        "name": "current",
+        "type": "boolean",
+        "default": false,
+        "figma": [
+          {
+            "kind": "none",
+            "reason": "Nog niet in de Figma-matrix van Link.",
+            "open": true
+          }
+        ]
+      },
+      {
+        "name": "size",
+        "values": ["small", "default", "large"],
+        "figma": [
+          {
+            "kind": "variant",
+            "property": "size"
+          }
+        ]
+      },
+      {
+        "name": "iconStart",
+        "type": "ReactNode",
+        "slots": ["icon-start"]
+      },
+      {
+        "name": "iconEnd",
+        "type": "ReactNode",
+        "slots": ["icon-end"]
+      },
+      {
+        "name": "external",
+        "type": "boolean",
+        "default": false,
+        "figma": [
+          {
+            "kind": "none",
+            "reason": "Nog niet in de Figma-matrix van Link.",
+            "open": true
+          }
+        ]
+      },
+      {
+        "name": "children",
+        "type": "ReactNode",
+        "slots": ["label"]
+      }
+    ],
+    "slots": [
+      {
+        "name": "icon-start",
+        "element": "dsn-icon",
+        "description": "Icoon vóór de tekst.",
+        "figma": [
+          {
+            "kind": "boolean",
+            "property": "showIconStart"
+          },
+          {
+            "kind": "instance-swap",
+            "property": "iconStart"
+          }
+        ]
+      },
+      {
+        "name": "label",
+        "element": "dsn-link",
+        "description": "De tekst van de link.",
+        "figma": [
+          {
+            "kind": "text",
+            "property": "label"
+          }
+        ]
+      },
+      {
+        "name": "icon-end",
+        "element": "dsn-icon",
+        "description": "Icoon na de tekst.",
+        "figma": [
+          {
+            "kind": "boolean",
+            "property": "showIconEnd"
+          },
+          {
+            "kind": "instance-swap",
+            "property": "iconEnd"
+          }
+        ]
+      }
+    ],
+    "states": [
+      {
+        "name": "hover",
+        "selector": ":hover",
+        "figma": [
+          {
+            "kind": "variant",
+            "property": "state",
+            "value": "hover"
+          }
+        ]
+      },
+      {
+        "name": "active",
+        "selector": ":active",
+        "figma": [
+          {
+            "kind": "none",
+            "reason": "Nog niet in de Figma-matrix van Link.",
+            "open": true
+          }
+        ]
+      },
+      {
+        "name": "focus-visible",
+        "selector": ":focus-visible",
+        "figma": [
+          {
+            "kind": "none",
+            "reason": "In Figma kun je niet met de tabtoets door een prototype; Figma is voor het snel uitwerken van ideeën, niet voor toetsenbordgedrag."
+          }
+        ]
+      }
+    ]
+  }
 }

@@ -7,13 +7,155 @@
   "primaryProps": [
     {
       "name": "name",
-      "type": "string",
+      "values": [
+        "alert-triangle",
+        "archive",
+        "arrow-down",
+        "arrow-left",
+        "arrow-narrow-down",
+        "arrow-narrow-up",
+        "arrow-right",
+        "arrow-up",
+        "arrows-sort",
+        "bell",
+        "calendar-event",
+        "check",
+        "chevron-down",
+        "chevron-left",
+        "chevron-right",
+        "chevron-up",
+        "circle-check",
+        "clock",
+        "dots-vertical",
+        "download",
+        "edit",
+        "exclamation-circle",
+        "external-link",
+        "eye",
+        "file-description",
+        "folder",
+        "heart-filled",
+        "heart",
+        "home",
+        "info-circle",
+        "loader",
+        "mail",
+        "menu",
+        "message-circle",
+        "minus",
+        "paperclip",
+        "pencil",
+        "photo",
+        "plus",
+        "printer",
+        "search",
+        "selector",
+        "settings",
+        "sort-ascending",
+        "sort-descending",
+        "star-filled",
+        "star",
+        "trash",
+        "upload",
+        "user",
+        "x"
+      ],
       "required": true
     },
     {
       "name": "size",
-      "values": ["sm", "md", "lg", "xl"],
+      "values": ["sm", "md", "lg", "xl", "2xl", "3xl", "4xl"],
       "default": "md"
     }
-  ]
+  ],
+  "api": {
+    "props": [
+      {
+        "name": "name",
+        "values": [
+          "alert-triangle",
+          "archive",
+          "arrow-down",
+          "arrow-left",
+          "arrow-narrow-down",
+          "arrow-narrow-up",
+          "arrow-right",
+          "arrow-up",
+          "arrows-sort",
+          "bell",
+          "calendar-event",
+          "check",
+          "chevron-down",
+          "chevron-left",
+          "chevron-right",
+          "chevron-up",
+          "circle-check",
+          "clock",
+          "dots-vertical",
+          "download",
+          "edit",
+          "exclamation-circle",
+          "external-link",
+          "eye",
+          "file-description",
+          "folder",
+          "heart-filled",
+          "heart",
+          "home",
+          "info-circle",
+          "loader",
+          "mail",
+          "menu",
+          "message-circle",
+          "minus",
+          "paperclip",
+          "pencil",
+          "photo",
+          "plus",
+          "printer",
+          "search",
+          "selector",
+          "settings",
+          "sort-ascending",
+          "sort-descending",
+          "star-filled",
+          "star",
+          "trash",
+          "upload",
+          "user",
+          "x"
+        ],
+        "required": true,
+        "figma": [
+          {
+            "kind": "none",
+            "reason": "Geen set in Figma: de iconen staan als losse componenten op dsn/Icons, want een instance swap kiest uit componenten en niet uit varianten van één set."
+          }
+        ]
+      },
+      {
+        "name": "size",
+        "values": ["sm", "md", "lg", "xl", "2xl", "3xl", "4xl"],
+        "default": "md",
+        "figma": [
+          {
+            "kind": "none",
+            "reason": "Geen set in Figma: de iconen staan als losse componenten op dsn/Icons, want een instance swap kiest uit componenten en niet uit varianten van één set."
+          }
+        ]
+      },
+      {
+        "name": "aria-label",
+        "type": "string",
+        "figma": [
+          {
+            "kind": "none",
+            "reason": "Tekst voor schermlezers; niet zichtbaar."
+          }
+        ]
+      }
+    ],
+    "slots": [],
+    "states": []
+  }
 }

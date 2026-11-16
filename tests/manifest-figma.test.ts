@@ -55,32 +55,21 @@ const WITHOUT_API = new Set([
   'Body',
   'BreadcrumbNavigation',
   'BreakoutSection',
-  'ButtonLink',
   'Container',
   'Grid',
-  'Heading',
-  'HeadingGroup',
   'Hero',
-  'Icon',
-  'IconList',
-  'Link',
-  'LinkButton',
   'Logo',
   'Menu',
   'MenuButton',
   'MenuLink',
-  'OrderedList',
   'PageBody',
   'PageFooter',
   'PageHeader',
   'PageLayout',
-  'Paragraph',
   'PopoverMenu',
-  'PreHeading',
   'SkipLink',
   'Stack',
   'TableOfContents',
-  'UnorderedList',
 ]);
 
 const kebabCase = (name: string) =>
@@ -314,7 +303,13 @@ describe('manifest-api versus Figma-matrix', () => {
           expect(
             html,
             `${part.name}: ${block} staat in de markup van de matrix`
-          ).toMatch(new RegExp(`class="([^"]* )?${block}( |")`));
+          ).toMatch(
+            // Een klasse, of `data-figma-instance` als de klassen het blok
+            // niet tonen (de Heading in HeadingGroup).
+            new RegExp(
+              `class="([^"]* )?${block}( |")|data-figma-instance="${block}"`
+            )
+          );
           const nested = nestedMatrices.get(binding.instance);
           expect(nested, `matrix van ${binding.instance}`).toBeDefined();
           const property = nested?.componentProperties?.find(

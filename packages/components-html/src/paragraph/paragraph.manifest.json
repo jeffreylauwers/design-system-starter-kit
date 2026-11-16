@@ -6,9 +6,43 @@
   "platforms": ["html-css", "react", "web-components"],
   "primaryProps": [
     {
-      "name": "size",
+      "name": "variant",
       "values": ["default", "lead", "small-print"],
       "default": "default"
     }
-  ]
+  ],
+  "api": {
+    "props": [
+      {
+        "name": "variant",
+        "values": ["default", "lead", "small-print"],
+        "default": "default",
+        "figma": [
+          {
+            "kind": "variant",
+            "property": "appearance"
+          }
+        ]
+      },
+      {
+        "name": "children",
+        "type": "ReactNode",
+        "slots": ["label"]
+      }
+    ],
+    "slots": [
+      {
+        "name": "label",
+        "element": "dsn-paragraph",
+        "description": "De tekst.",
+        "figma": [
+          {
+            "kind": "text",
+            "property": "label"
+          }
+        ]
+      }
+    ],
+    "states": []
+  }
 }

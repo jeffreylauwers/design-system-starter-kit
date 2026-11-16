@@ -8,12 +8,69 @@
     {
       "name": "level",
       "values": [1, 2, 3, 4, 5, 6],
-      "required": true
+      "default": 2
     },
     {
       "name": "appearance",
-      "values": [1, 2, 3, 4, 5, 6],
-      "default": "matches level"
+      "values": [
+        "heading-1",
+        "heading-2",
+        "heading-3",
+        "heading-4",
+        "heading-5",
+        "heading-6"
+      ]
     }
-  ]
+  ],
+  "api": {
+    "props": [
+      {
+        "name": "level",
+        "values": [1, 2, 3, 4, 5, 6],
+        "default": 2,
+        "figma": [
+          {
+            "kind": "variant",
+            "property": "level"
+          }
+        ]
+      },
+      {
+        "name": "appearance",
+        "values": [
+          "heading-1",
+          "heading-2",
+          "heading-3",
+          "heading-4",
+          "heading-5",
+          "heading-6"
+        ],
+        "figma": [
+          {
+            "kind": "variant",
+            "property": "appearance"
+          }
+        ]
+      },
+      {
+        "name": "children",
+        "type": "ReactNode",
+        "slots": ["label"]
+      }
+    ],
+    "slots": [
+      {
+        "name": "label",
+        "element": "dsn-heading",
+        "description": "De tekst van de kop.",
+        "figma": [
+          {
+            "kind": "text",
+            "property": "label"
+          }
+        ]
+      }
+    ],
+    "states": []
+  }
 }

@@ -4,5 +4,84 @@
   "category": "content",
   "purpose": "Semantically a <button>, visually a Link; for low-prominence JavaScript actions.",
   "platforms": ["html-css", "react"],
-  "primaryProps": []
+  "primaryProps": [],
+  "api": {
+    "props": [
+      {
+        "name": "size",
+        "values": ["small", "default", "large"],
+        "figma": [
+          {
+            "kind": "none",
+            "reason": "Geen eigen set in Figma: in Figma is dit een Link (dezelfde CSS, een <button> in plaats van een <a>)."
+          }
+        ]
+      },
+      {
+        "name": "iconStart",
+        "type": "ReactNode",
+        "figma": [
+          {
+            "kind": "none",
+            "reason": "Geen eigen set in Figma: in Figma is dit een Link (dezelfde CSS, een <button> in plaats van een <a>)."
+          }
+        ]
+      },
+      {
+        "name": "iconEnd",
+        "type": "ReactNode",
+        "figma": [
+          {
+            "kind": "none",
+            "reason": "Geen eigen set in Figma: in Figma is dit een Link (dezelfde CSS, een <button> in plaats van een <a>)."
+          }
+        ]
+      },
+      {
+        "name": "type",
+        "type": "string",
+        "default": "button",
+        "native": true,
+        "figma": [
+          {
+            "kind": "none",
+            "reason": "Geen eigen set in Figma: in Figma is dit een Link (dezelfde CSS, een <button> in plaats van een <a>)."
+          }
+        ]
+      },
+      {
+        "name": "children",
+        "type": "ReactNode",
+        "figma": [
+          {
+            "kind": "none",
+            "reason": "Geen eigen set in Figma: in Figma is dit een Link (dezelfde CSS, een <button> in plaats van een <a>)."
+          }
+        ]
+      }
+    ],
+    "slots": [],
+    "states": [
+      {
+        "name": "hover",
+        "selector": ":hover",
+        "figma": [
+          {
+            "kind": "none",
+            "reason": "Geen eigen set in Figma: in Figma is dit een Link (dezelfde CSS, een <button> in plaats van een <a>)."
+          }
+        ]
+      },
+      {
+        "name": "active",
+        "selector": ":active",
+        "figma": [
+          {
+            "kind": "none",
+            "reason": "Geen eigen set in Figma: in Figma is dit een Link (dezelfde CSS, een <button> in plaats van een <a>)."
+          }
+        ]
+      }
+    ]
+  }
 }

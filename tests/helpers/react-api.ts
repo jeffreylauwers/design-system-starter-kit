@@ -231,7 +231,10 @@ function readOwnApi(name: string) {
   const props = new Map<string, ReactProp>();
   for (const member of members) {
     if (!ts.isPropertySignature(member) || !member.type) continue;
-    props.set(member.name.getText(source), {
+    const key = ts.isStringLiteral(member.name)
+      ? member.name.text
+      : member.name.getText(source);
+    props.set(key, {
       optional: Boolean(member.questionToken),
       described: describeType(member.type, source),
     });

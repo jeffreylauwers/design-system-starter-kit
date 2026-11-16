@@ -12,13 +12,77 @@
     },
     {
       "name": "appearance",
-      "values": [1, 2, 3, 4, 5, 6],
-      "default": "matches level"
+      "values": [
+        "heading-1",
+        "heading-2",
+        "heading-3",
+        "heading-4",
+        "heading-5",
+        "heading-6"
+      ]
     },
     {
       "name": "preHeading",
-      "type": "ReactNode",
-      "required": false
+      "type": "ReactNode"
     }
-  ]
+  ],
+  "api": {
+    "props": [
+      {
+        "name": "level",
+        "values": [1, 2, 3, 4, 5, 6],
+        "default": 2,
+        "figma": [
+          {
+            "kind": "none",
+            "reason": "Bepaalt het HTML-element van de kop; het uiterlijk zet je in Figma met appearance."
+          }
+        ]
+      },
+      {
+        "name": "appearance",
+        "values": [
+          "heading-1",
+          "heading-2",
+          "heading-3",
+          "heading-4",
+          "heading-5",
+          "heading-6"
+        ],
+        "figma": [
+          {
+            "kind": "variant",
+            "property": "appearance",
+            "values": ["heading-1", "heading-2", "heading-3", "heading-4"],
+            "reason": "heading-5 en heading-6 staan niet in de Figma-matrix van HeadingGroup.",
+            "open": true
+          }
+        ]
+      },
+      {
+        "name": "preHeading",
+        "type": "ReactNode",
+        "figma": [
+          {
+            "kind": "text",
+            "property": "label",
+            "instance": "PreHeading"
+          }
+        ]
+      },
+      {
+        "name": "children",
+        "type": "ReactNode",
+        "figma": [
+          {
+            "kind": "text",
+            "property": "label",
+            "instance": "Heading"
+          }
+        ]
+      }
+    ],
+    "slots": [],
+    "states": []
+  }
 }

@@ -8,13 +8,13 @@
     {
       "name": "variant",
       "values": [
-        "default",
         "strong",
-        "subtle",
         "strong-negative",
         "strong-positive",
+        "default",
         "default-negative",
         "default-positive",
+        "subtle",
         "subtle-negative",
         "subtle-positive"
       ],
@@ -22,13 +22,134 @@
     },
     {
       "name": "size",
-      "values": ["default", "small", "large"],
+      "values": ["small", "default", "large"],
       "default": "default"
     },
     {
       "name": "href",
-      "type": "string",
-      "required": true
+      "type": "string"
     }
-  ]
+  ],
+  "api": {
+    "props": [
+      {
+        "name": "href",
+        "type": "string",
+        "figma": [
+          {
+            "kind": "none",
+            "reason": "Geen eigen set in Figma: in Figma is dit een Button (dezelfde CSS, een <a> in plaats van een <button>)."
+          }
+        ]
+      },
+      {
+        "name": "variant",
+        "values": [
+          "strong",
+          "strong-negative",
+          "strong-positive",
+          "default",
+          "default-negative",
+          "default-positive",
+          "subtle",
+          "subtle-negative",
+          "subtle-positive"
+        ],
+        "default": "strong",
+        "figma": [
+          {
+            "kind": "none",
+            "reason": "Geen eigen set in Figma: in Figma is dit een Button (dezelfde CSS, een <a> in plaats van een <button>)."
+          }
+        ]
+      },
+      {
+        "name": "size",
+        "values": ["small", "default", "large"],
+        "default": "default",
+        "figma": [
+          {
+            "kind": "none",
+            "reason": "Geen eigen set in Figma: in Figma is dit een Button (dezelfde CSS, een <a> in plaats van een <button>)."
+          }
+        ]
+      },
+      {
+        "name": "fullWidth",
+        "type": "boolean",
+        "default": false,
+        "figma": [
+          {
+            "kind": "none",
+            "reason": "Geen eigen set in Figma: in Figma is dit een Button (dezelfde CSS, een <a> in plaats van een <button>)."
+          }
+        ]
+      },
+      {
+        "name": "iconOnly",
+        "type": "boolean",
+        "default": false,
+        "figma": [
+          {
+            "kind": "none",
+            "reason": "Geen eigen set in Figma: in Figma is dit een Button (dezelfde CSS, een <a> in plaats van een <button>)."
+          }
+        ]
+      },
+      {
+        "name": "iconStart",
+        "type": "ReactNode",
+        "figma": [
+          {
+            "kind": "none",
+            "reason": "Geen eigen set in Figma: in Figma is dit een Button (dezelfde CSS, een <a> in plaats van een <button>)."
+          }
+        ]
+      },
+      {
+        "name": "iconEnd",
+        "type": "ReactNode",
+        "figma": [
+          {
+            "kind": "none",
+            "reason": "Geen eigen set in Figma: in Figma is dit een Button (dezelfde CSS, een <a> in plaats van een <button>)."
+          }
+        ]
+      },
+      {
+        "name": "disabled",
+        "type": "boolean",
+        "default": false,
+        "figma": [
+          {
+            "kind": "none",
+            "reason": "Geen eigen set in Figma: in Figma is dit een Button (dezelfde CSS, een <a> in plaats van een <button>)."
+          }
+        ]
+      },
+      {
+        "name": "external",
+        "type": "boolean",
+        "default": false,
+        "figma": [
+          {
+            "kind": "none",
+            "reason": "Geen eigen set in Figma: in Figma is dit een Button (dezelfde CSS, een <a> in plaats van een <button>)."
+          }
+        ]
+      },
+      {
+        "name": "children",
+        "type": "ReactNode",
+        "figma": [
+          {
+            "kind": "none",
+            "reason": "Geen eigen set in Figma: in Figma is dit een Button (dezelfde CSS, een <a> in plaats van een <button>)."
+          }
+        ]
+      }
+    ],
+    "slots": [],
+    "states": []
+  }
 }
