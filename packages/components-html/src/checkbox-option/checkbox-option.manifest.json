@@ -20,5 +20,103 @@
       "type": "boolean",
       "default": false
     }
-  ]
+  ],
+  "api": {
+    "props": [
+      {
+        "name": "label",
+        "type": "string",
+        "required": true,
+        "figma": [
+          {
+            "kind": "text",
+            "property": "label",
+            "instance": "OptionLabel"
+          }
+        ]
+      },
+      {
+        "name": "invalid",
+        "type": "boolean",
+        "default": false,
+        "figma": [
+          {
+            "kind": "none",
+            "reason": "Nog niet in de Figma-matrix van CheckboxOption."
+          }
+        ]
+      },
+      {
+        "name": "indeterminate",
+        "type": "boolean",
+        "default": false,
+        "figma": [
+          {
+            "kind": "none",
+            "reason": "Nog niet in de Figma-matrix van CheckboxOption."
+          }
+        ]
+      },
+      {
+        "name": "checked",
+        "type": "boolean",
+        "default": false,
+        "native": true,
+        "figma": [
+          {
+            "kind": "variant",
+            "property": "state",
+            "value": "checked"
+          }
+        ]
+      },
+      {
+        "name": "disabled",
+        "type": "boolean",
+        "default": false,
+        "native": true,
+        "figma": [
+          {
+            "kind": "variant",
+            "property": "disabled"
+          }
+        ]
+      }
+    ],
+    "slots": [],
+    "states": [
+      {
+        "name": "hover",
+        "selector": ":hover",
+        "figma": [
+          {
+            "kind": "variant",
+            "property": "interaction",
+            "value": "hover"
+          }
+        ]
+      },
+      {
+        "name": "active",
+        "selector": ":active",
+        "figma": [
+          {
+            "kind": "variant",
+            "property": "interaction",
+            "value": "active"
+          }
+        ]
+      },
+      {
+        "name": "focus-visible",
+        "selector": ":focus-visible",
+        "figma": [
+          {
+            "kind": "none",
+            "reason": "In Figma kun je niet met de tabtoets door een prototype; Figma is voor het snel uitwerken van ideeën, niet voor toetsenbordgedrag."
+          }
+        ]
+      }
+    ]
+  }
 }

@@ -293,7 +293,76 @@
         { "name": "checked", "type": "boolean", "default": false },
         { "name": "disabled", "type": "boolean", "default": false },
         { "name": "indeterminate", "type": "boolean", "default": false }
-      ]
+      ],
+      "api": {
+        "props": [
+          {
+            "name": "invalid",
+            "type": "boolean",
+            "default": false,
+            "figma": [{ "kind": "variant", "property": "invalid" }]
+          },
+          {
+            "name": "indeterminate",
+            "type": "boolean",
+            "default": false,
+            "figma": [
+              {
+                "kind": "variant",
+                "property": "state",
+                "value": "indeterminate"
+              }
+            ]
+          },
+          {
+            "name": "checked",
+            "type": "boolean",
+            "default": false,
+            "native": true,
+            "figma": [
+              { "kind": "variant", "property": "state", "value": "checked" }
+            ]
+          },
+          {
+            "name": "disabled",
+            "type": "boolean",
+            "default": false,
+            "native": true,
+            "figma": [{ "kind": "variant", "property": "disabled" }]
+          }
+        ],
+        "slots": [],
+        "states": [
+          {
+            "name": "hover",
+            "selector": ":hover",
+            "figma": [
+              { "kind": "variant", "property": "interaction", "value": "hover" }
+            ]
+          },
+          {
+            "name": "active",
+            "selector": ":active",
+            "figma": [
+              {
+                "kind": "variant",
+                "property": "interaction",
+                "value": "active"
+              }
+            ]
+          },
+          {
+            "name": "focus-visible",
+            "selector": ":focus-visible",
+            "figma": [
+              {
+                "kind": "none",
+                "reason": "In Figma kun je niet met de tabtoets door een prototype; Figma is voor het snel uitwerken van ideeën, niet voor toetsenbordgedrag."
+              }
+            ]
+          }
+        ]
+      }
     },
     {
       "name": "CheckboxGroup",
@@ -301,7 +370,26 @@
       "category": "form-option",
       "purpose": "Container for a group of CheckboxOption items; wrap in FormFieldset for accessible labelling.",
       "platforms": ["html-css", "react"],
-      "primaryProps": []
+      "primaryProps": [],
+      "api": {
+        "props": [
+          {
+            "name": "children",
+            "type": "ReactNode",
+            "required": true,
+            "slots": ["options"]
+          }
+        ],
+        "slots": [
+          {
+            "name": "options",
+            "element": "dsn-checkbox-group",
+            "description": "De CheckboxOptions van de groep.",
+            "figma": [{ "kind": "slot", "property": "slot" }]
+          }
+        ],
+        "states": []
+      }
     },
     {
       "name": "CheckboxOption",
@@ -313,7 +401,88 @@
         { "name": "label", "type": "string", "required": true },
         { "name": "checked", "type": "boolean", "default": false },
         { "name": "disabled", "type": "boolean", "default": false }
-      ]
+      ],
+      "api": {
+        "props": [
+          {
+            "name": "label",
+            "type": "string",
+            "required": true,
+            "figma": [
+              { "kind": "text", "property": "label", "instance": "OptionLabel" }
+            ]
+          },
+          {
+            "name": "invalid",
+            "type": "boolean",
+            "default": false,
+            "figma": [
+              {
+                "kind": "none",
+                "reason": "Nog niet in de Figma-matrix van CheckboxOption."
+              }
+            ]
+          },
+          {
+            "name": "indeterminate",
+            "type": "boolean",
+            "default": false,
+            "figma": [
+              {
+                "kind": "none",
+                "reason": "Nog niet in de Figma-matrix van CheckboxOption."
+              }
+            ]
+          },
+          {
+            "name": "checked",
+            "type": "boolean",
+            "default": false,
+            "native": true,
+            "figma": [
+              { "kind": "variant", "property": "state", "value": "checked" }
+            ]
+          },
+          {
+            "name": "disabled",
+            "type": "boolean",
+            "default": false,
+            "native": true,
+            "figma": [{ "kind": "variant", "property": "disabled" }]
+          }
+        ],
+        "slots": [],
+        "states": [
+          {
+            "name": "hover",
+            "selector": ":hover",
+            "figma": [
+              { "kind": "variant", "property": "interaction", "value": "hover" }
+            ]
+          },
+          {
+            "name": "active",
+            "selector": ":active",
+            "figma": [
+              {
+                "kind": "variant",
+                "property": "interaction",
+                "value": "active"
+              }
+            ]
+          },
+          {
+            "name": "focus-visible",
+            "selector": ":focus-visible",
+            "figma": [
+              {
+                "kind": "none",
+                "reason": "In Figma kun je niet met de tabtoets door een prototype; Figma is voor het snel uitwerken van ideeën, niet voor toetsenbordgedrag."
+              }
+            ]
+          }
+        ]
+      }
     },
     {
       "name": "Container",
@@ -721,8 +890,33 @@
       "purpose": "Label element paired with a Checkbox or Radio control.",
       "platforms": ["html-css", "react"],
       "primaryProps": [
-        { "name": "htmlFor", "type": "string", "required": true }
-      ]
+        { "name": "disabled", "type": "boolean", "default": false }
+      ],
+      "api": {
+        "props": [
+          {
+            "name": "disabled",
+            "type": "boolean",
+            "default": false,
+            "figma": [{ "kind": "variant", "property": "disabled" }]
+          },
+          {
+            "name": "children",
+            "type": "ReactNode",
+            "native": true,
+            "slots": ["label"]
+          }
+        ],
+        "slots": [
+          {
+            "name": "label",
+            "element": "dsn-option-label",
+            "description": "De tekst van de optie.",
+            "figma": [{ "kind": "text", "property": "label" }]
+          }
+        ],
+        "states": []
+      }
     },
     {
       "name": "OrderedList",
@@ -849,7 +1043,64 @@
       "primaryProps": [
         { "name": "checked", "type": "boolean", "default": false },
         { "name": "disabled", "type": "boolean", "default": false }
-      ]
+      ],
+      "api": {
+        "props": [
+          {
+            "name": "invalid",
+            "type": "boolean",
+            "default": false,
+            "figma": [{ "kind": "variant", "property": "invalid" }]
+          },
+          {
+            "name": "checked",
+            "type": "boolean",
+            "default": false,
+            "native": true,
+            "figma": [
+              { "kind": "variant", "property": "state", "value": "checked" }
+            ]
+          },
+          {
+            "name": "disabled",
+            "type": "boolean",
+            "default": false,
+            "native": true,
+            "figma": [{ "kind": "variant", "property": "disabled" }]
+          }
+        ],
+        "slots": [],
+        "states": [
+          {
+            "name": "hover",
+            "selector": ":hover",
+            "figma": [
+              { "kind": "variant", "property": "interaction", "value": "hover" }
+            ]
+          },
+          {
+            "name": "active",
+            "selector": ":active",
+            "figma": [
+              {
+                "kind": "variant",
+                "property": "interaction",
+                "value": "active"
+              }
+            ]
+          },
+          {
+            "name": "focus-visible",
+            "selector": ":focus-visible",
+            "figma": [
+              {
+                "kind": "none",
+                "reason": "In Figma kun je niet met de tabtoets door een prototype; Figma is voor het snel uitwerken van ideeën, niet voor toetsenbordgedrag."
+              }
+            ]
+          }
+        ]
+      }
     },
     {
       "name": "RadioGroup",
@@ -857,7 +1108,26 @@
       "category": "form-option",
       "purpose": "Container for a group of RadioOption items; wrap in FormFieldset for accessible labelling.",
       "platforms": ["html-css", "react"],
-      "primaryProps": []
+      "primaryProps": [],
+      "api": {
+        "props": [
+          {
+            "name": "children",
+            "type": "ReactNode",
+            "required": true,
+            "slots": ["options"]
+          }
+        ],
+        "slots": [
+          {
+            "name": "options",
+            "element": "dsn-radio-group",
+            "description": "De RadioOptions van de groep.",
+            "figma": [{ "kind": "slot", "property": "slot" }]
+          }
+        ],
+        "states": []
+      }
     },
     {
       "name": "RadioOption",
@@ -869,7 +1139,77 @@
         { "name": "label", "type": "string", "required": true },
         { "name": "checked", "type": "boolean", "default": false },
         { "name": "disabled", "type": "boolean", "default": false }
-      ]
+      ],
+      "api": {
+        "props": [
+          {
+            "name": "label",
+            "type": "string",
+            "required": true,
+            "figma": [
+              { "kind": "text", "property": "label", "instance": "OptionLabel" }
+            ]
+          },
+          {
+            "name": "invalid",
+            "type": "boolean",
+            "default": false,
+            "figma": [
+              {
+                "kind": "none",
+                "reason": "Nog niet in de Figma-matrix van RadioOption."
+              }
+            ]
+          },
+          {
+            "name": "checked",
+            "type": "boolean",
+            "default": false,
+            "native": true,
+            "figma": [
+              { "kind": "variant", "property": "state", "value": "checked" }
+            ]
+          },
+          {
+            "name": "disabled",
+            "type": "boolean",
+            "default": false,
+            "native": true,
+            "figma": [{ "kind": "variant", "property": "disabled" }]
+          }
+        ],
+        "slots": [],
+        "states": [
+          {
+            "name": "hover",
+            "selector": ":hover",
+            "figma": [
+              { "kind": "variant", "property": "interaction", "value": "hover" }
+            ]
+          },
+          {
+            "name": "active",
+            "selector": ":active",
+            "figma": [
+              {
+                "kind": "variant",
+                "property": "interaction",
+                "value": "active"
+              }
+            ]
+          },
+          {
+            "name": "focus-visible",
+            "selector": ":focus-visible",
+            "figma": [
+              {
+                "kind": "none",
+                "reason": "In Figma kun je niet met de tabtoets door een prototype; Figma is voor het snel uitwerken van ideeën, niet voor toetsenbordgedrag."
+              }
+            ]
+          }
+        ]
+      }
     },
     {
       "name": "SearchInput",

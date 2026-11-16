@@ -347,22 +347,39 @@ component set:
 }
 ```
 
-A Figma binding is a `variant` (an axis of the component set), a component
-property (`boolean`, `text`, `instance-swap`), or `none` with a `reason` for a
-part that is deliberately not in Figma. A prop that fills a slot takes its
-binding from that slot. A native HTML attribute that the component passes
-through, such as `disabled`, is marked `"native": true`.
+A Figma binding is one of:
+
+| Kind                               | Meaning                                                                          | Example                                       |
+| ---------------------------------- | -------------------------------------------------------------------------------- | --------------------------------------------- |
+| `variant`                          | The prop, slot or state owns an axis of the component set                        | `size` on Button; a slot that is there or not |
+| `variant` with `value`             | One value of an axis shared by several props or states; one value stays the base | `checked` and `indeterminate` on `state`      |
+| `boolean`, `text`, `instance-swap` | A component property                                                             | `label`, `showIconStart`, `iconStart`         |
+| ... with `instance`                | A component property of a nested, exposed instance                               | the `label` of CheckboxOption, on OptionLabel |
+| `slot`                             | A Figma slot (`data-figma-children` in the matrix)                               | the options of CheckboxGroup                  |
+| `none` with `reason`               | Deliberately not in Figma                                                        | `loading` on Button (#323)                    |
+
+A prop that owns a whole axis has the axis values as its `values`; a boolean
+prop, or a prop whose presence is the axis (a filled-in value or not), owns a
+`false`/`true` axis. A prop that fills a slot takes its binding from that slot.
+A prop the component inherits from its element's React attributes, such as
+`disabled`, `checked` or `children`, is marked `"native": true`. Props a
+component inherits from another component (`CheckboxOptionProps extends
+CheckboxProps`) are listed without it. The `viewport` axis of a matrix is a
+choice of figma-sync, not part of the API, and needs no binding.
 
 Where `api` exists, three things are checked:
 
 - the validator: rules the schema cannot express, such as "`none` needs a
   reason" and "`primaryProps` may not contradict `api.props`"
 - `tests/manifest-react.test.ts`: `api.props` against the `{Name}Props` interface
-  in `components-react` (names, values in union order, optionality, defaults)
-- `tests/manifest-figma.test.ts`: the bindings against the axes and component
-  properties of the matrix in `figma-sync`
+  in `components-react`, including what it extends from other components
+  (names, values in union order, optionality, defaults)
+- `tests/manifest-figma.test.ts`: the bindings against the axes, component
+  properties and Figma slots of the matrix in `figma-sync`
 
-Button is the first component with an `api` block (issue #484).
+That test file also lists the components that do not have an `api` block yet
+(`WITHOUT_API`, issue #488). The list only shrinks: a new component gets an
+`api` block straight away.
 
 ## Assets
 

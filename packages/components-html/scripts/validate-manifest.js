@@ -240,7 +240,8 @@ function checkApi(component, at, errors) {
   // part of the API. Two parts claiming the same one is a copy-paste error.
   const claimed = new Map();
 
-  const checkBindings = (bindings, where, { isState = false } = {}) => {
+  const checkBindings = (bindings, where, { owner = 'prop' } = {}) => {
+    const isState = owner === 'state';
     if (!Array.isArray(bindings)) return;
     if (bindings.some((b) => b?.kind === 'none') && bindings.length > 1) {
       errors.push(
@@ -269,10 +270,32 @@ function checkApi(component, at, errors) {
           `${where}/figma: een state op een variant-as heeft een value nodig`
         );
       }
-      if (!isState && binding.value !== undefined) {
-        errors.push(`${where}/figma: value hoort alleen bij een state`);
+      // A prop can claim one value of a shared axis (checked and
+      // indeterminate on Checkbox's state axis); a slot claims a whole axis
+      // (present or not), and only a variant axis has values at all.
+      if (
+        binding.value !== undefined &&
+        (owner === 'slot' || binding.kind !== 'variant')
+      ) {
+        errors.push(
+          `${where}/figma: value hoort alleen bij een variant-binding van een prop of state`
+        );
       }
-      const key = `${binding.kind}:${binding.property}:${binding.value ?? ''}`;
+      if (
+        binding.instance !== undefined &&
+        !['boolean', 'text', 'instance-swap'].includes(binding.kind)
+      ) {
+        errors.push(
+          `${where}/figma: instance hoort alleen bij een component property (boolean, text, instance-swap)`
+        );
+      }
+      if (isState && binding.kind !== 'variant') {
+        errors.push(`${where}/figma: een state kan alleen een variant zijn`);
+      }
+      if (binding.kind === 'slot' && owner !== 'slot') {
+        errors.push(`${where}/figma: 'slot' hoort alleen bij api.slots`);
+      }
+      const key = `${binding.instance ?? ''}:${binding.kind}:${binding.property}:${binding.value ?? ''}`;
       if (claimed.has(key)) {
         errors.push(
           `${where}/figma: ${binding.kind} '${binding.property}' is al gekoppeld in ${claimed.get(key)}`
@@ -304,12 +327,12 @@ function checkApi(component, at, errors) {
   });
 
   slots.forEach((slot, index) => {
-    checkBindings(slot?.figma, `${at}/api/slots/${index}`);
+    checkBindings(slot?.figma, `${at}/api/slots/${index}`, { owner: 'slot' });
   });
 
   states.forEach((state, index) => {
     checkBindings(state?.figma, `${at}/api/states/${index}`, {
-      isState: true,
+      owner: 'state',
     });
   });
 

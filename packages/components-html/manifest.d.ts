@@ -53,25 +53,41 @@ export interface PropDefinition {
 /**
  * How a part of the API appears in the generated Figma component set.
  *
- * - `variant`: an axis of the component set (`property` names the axis)
+ * - `variant`: an axis of the component set (`property` names the axis), or
+ *   one value of it (`value`)
  * - `boolean`, `text`, `instance-swap`: a component property
+ * - `slot`: a Figma slot, `data-figma-children` in the matrix
  * - `none`: deliberately not in Figma; `reason` says why
  */
 export type FigmaBindingKind =
-  'variant' | 'boolean' | 'text' | 'instance-swap' | 'none';
+  'variant' | 'boolean' | 'text' | 'instance-swap' | 'slot' | 'none';
 
 export interface FigmaBinding {
   kind: FigmaBindingKind;
-  /** Axis or component property name in the Figma matrix. Absent for `none`. */
+  /** Axis, component property or slot name in the Figma matrix. Absent for `none`. */
   property?: string;
-  /** States only: the value on the axis that shows the state. */
+  /**
+   * Variant bindings of props and states: the one value on the axis this part
+   * stands for (`checked` on Checkbox's `state` axis). Without it, a prop owns
+   * the whole axis.
+   */
   value?: string;
+  /**
+   * A component property of a nested, exposed instance rather than of this
+   * set: the name of that component (the label of CheckboxOption lives on
+   * its OptionLabel).
+   */
+  instance?: string;
   /** Required for `none`; otherwise an optional explanation. */
   reason?: string;
 }
 
 export interface ApiProp extends PropDefinition {
-  /** A native HTML attribute the component passes through, such as `disabled`. */
+  /**
+   * Inherited from the element's React attributes (`disabled`, `checked`,
+   * `children`) rather than declared on the component's own props interface
+   * or on that of a component it extends.
+   */
   native?: boolean;
   /** Slots this prop fills. Such a prop takes its Figma binding from the slot. */
   slots?: string[];

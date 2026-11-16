@@ -293,6 +293,72 @@ describe('validateComponent: api block', () => {
 
     expect(errors.join('\n')).toContain("'tone' ontbreekt in api.props");
   });
+
+  it('accepts a prop that claims one value of a shared axis', () => {
+    const errors = withComponent((draft) => {
+      draft.api.props[0].figma = [
+        { kind: 'variant', property: 'state', value: 'checked' },
+      ] as never;
+    });
+
+    expect(errors).toEqual([]);
+  });
+
+  it('rejects a value on a slot binding', () => {
+    const errors = withComponent((draft) => {
+      draft.api.slots[0].figma = [
+        { kind: 'variant', property: 'label', value: 'with-label' },
+      ] as never;
+    });
+
+    expect(errors.join('\n')).toContain('value hoort alleen bij');
+  });
+
+  it('accepts a Figma slot on a slot', () => {
+    const errors = withComponent((draft) => {
+      draft.api.slots[0].figma = [{ kind: 'slot', property: 'slot' }] as never;
+    });
+
+    expect(errors).toEqual([]);
+  });
+
+  it('rejects a Figma slot on a prop', () => {
+    const errors = withComponent((draft) => {
+      draft.api.props[0].figma = [{ kind: 'slot', property: 'slot' }] as never;
+    });
+
+    expect(errors.join('\n')).toContain("'slot' hoort alleen bij api.slots");
+  });
+
+  it('accepts a property of a nested instance', () => {
+    const errors = withComponent((draft) => {
+      draft.api.slots[0].figma = [
+        { kind: 'text', property: 'label', instance: 'OptionLabel' },
+      ] as never;
+    });
+
+    expect(errors).toEqual([]);
+  });
+
+  it('rejects an instance on a variant binding', () => {
+    const errors = withComponent((draft) => {
+      draft.api.props[0].figma = [
+        { kind: 'variant', property: 'size', instance: 'OptionLabel' },
+      ] as never;
+    });
+
+    expect(errors.join('\n')).toContain('instance hoort alleen bij');
+  });
+
+  it('rejects a state that is not a variant', () => {
+    const errors = withComponent((draft) => {
+      draft.api.states[0].figma = [
+        { kind: 'boolean', property: 'hovered' },
+      ] as never;
+    });
+
+    expect(errors.join('\n')).toContain('een state kan alleen een variant');
+  });
 });
 
 describe('build-manifest', () => {
