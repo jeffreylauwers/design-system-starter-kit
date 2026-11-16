@@ -8,6 +8,18 @@
   "api": {
     "props": [
       {
+        "name": "start",
+        "type": "number",
+        "native": true,
+        "figma": [
+          {
+            "kind": "none",
+            "reason": "Nog niet in de Figma-matrix van OrderedList.",
+            "open": true
+          }
+        ]
+      },
+      {
         "name": "children",
         "type": "ReactNode",
         "slots": ["items"]

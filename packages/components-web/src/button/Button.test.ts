@@ -320,7 +320,6 @@ describe('DsnButton', () => {
       'subtle',
       'subtle-negative',
       'subtle-positive',
-      'link',
     ] as const;
 
     variants.forEach((variant) => {

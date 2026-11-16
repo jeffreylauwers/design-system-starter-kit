@@ -372,7 +372,7 @@ component inherits from another component (`CheckboxOptionProps extends
 CheckboxProps`) are listed without it. The `viewport` axis of a matrix is a
 choice of figma-sync, not part of the API, and needs no binding.
 
-Where `api` exists, three things are checked:
+Four things check the `api` block:
 
 - the validator: rules the schema cannot express, such as "`none` needs a
   reason" and "`primaryProps` may not contradict `api.props`"
@@ -381,6 +381,10 @@ Where `api` exists, three things are checked:
   (names, values in union order, optionality, defaults)
 - `tests/manifest-figma.test.ts`: the bindings against the axes, component
   properties and Figma slots of the matrix in `figma-sync`
+- `tests/manifest-web.test.ts`: for components with `web-components` in
+  `platforms`, the props against the `observedAttributes` of the web component
+  (kebab-case, or the prop's `attribute`), enum values against its types, and
+  its named `<slot>`s against `api.slots`
 
 Any binding can carry `"open": true` with a `reason`: something about it is
 not known yet, such as why a prop is not in Figma. That marks a question for

@@ -152,7 +152,8 @@
             "kind": "none",
             "reason": "Tekst voor schermlezers; niet zichtbaar."
           }
-        ]
+        ],
+        "attribute": "label"
       }
     ],
     "slots": [],
