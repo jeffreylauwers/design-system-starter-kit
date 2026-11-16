@@ -4,5 +4,90 @@
   "category": "navigation",
   "purpose": "Hierarchical navigation trail with a compact variant triggered via container query.",
   "platforms": ["html-css", "react"],
-  "primaryProps": []
+  "primaryProps": [
+    {
+      "name": "variant",
+      "values": ["default", "compact"],
+      "default": "default"
+    }
+  ],
+  "api": {
+    "props": [
+      {
+        "name": "aria-label",
+        "type": "string",
+        "default": "Broodkruimelpad",
+        "figma": [
+          {
+            "kind": "none",
+            "reason": "Tekst voor schermlezers; niet zichtbaar."
+          }
+        ]
+      },
+      {
+        "name": "variant",
+        "values": ["default", "compact"],
+        "default": "default",
+        "figma": [
+          {
+            "kind": "variant",
+            "property": "appearance"
+          }
+        ]
+      },
+      {
+        "name": "children",
+        "type": "ReactNode",
+        "required": true,
+        "slots": ["items"]
+      }
+    ],
+    "slots": [
+      {
+        "name": "items",
+        "element": "dsn-breadcrumb-navigation",
+        "description": "De kruimels (BreadcrumbNavigationItem).",
+        "figma": [
+          {
+            "kind": "none",
+            "reason": "Geen property: de inhoud pas je in een instance aan op de lagen zelf."
+          }
+        ]
+      }
+    ],
+    "states": [
+      {
+        "name": "hover",
+        "selector": ":hover",
+        "figma": [
+          {
+            "kind": "none",
+            "reason": "Nog niet in de Figma-matrix van BreadcrumbNavigation.",
+            "open": true
+          }
+        ]
+      },
+      {
+        "name": "active",
+        "selector": ":active",
+        "figma": [
+          {
+            "kind": "none",
+            "reason": "Nog niet in de Figma-matrix van BreadcrumbNavigation.",
+            "open": true
+          }
+        ]
+      },
+      {
+        "name": "focus-visible",
+        "selector": ":focus-visible",
+        "figma": [
+          {
+            "kind": "none",
+            "reason": "In Figma kun je niet met de tabtoets door een prototype; Figma is voor het snel uitwerken van ideeën, niet voor toetsenbordgedrag."
+          }
+        ]
+      }
+    ]
+  }
 }

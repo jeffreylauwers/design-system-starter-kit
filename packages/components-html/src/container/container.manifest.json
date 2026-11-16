@@ -4,5 +4,43 @@
   "category": "layout",
   "purpose": "Centring wrapper with max-width and inline padding for page layout.",
   "platforms": ["html-css", "react"],
-  "primaryProps": []
+  "primaryProps": [],
+  "api": {
+    "props": [
+      {
+        "name": "as",
+        "values": ["div", "section", "article", "aside"],
+        "default": "div",
+        "figma": [
+          {
+            "kind": "none",
+            "reason": "Geen set in Figma: een layoutcomponent tekent niets en plaatst alleen wat erin zit. Daar gebruik je in Figma auto layout voor."
+          }
+        ]
+      },
+      {
+        "name": "elevated",
+        "type": "boolean",
+        "default": false,
+        "figma": [
+          {
+            "kind": "none",
+            "reason": "Geen set in Figma: een layoutcomponent tekent niets en plaatst alleen wat erin zit. Daar gebruik je in Figma auto layout voor."
+          }
+        ]
+      },
+      {
+        "name": "children",
+        "type": "ReactNode",
+        "figma": [
+          {
+            "kind": "none",
+            "reason": "Geen set in Figma: een layoutcomponent tekent niets en plaatst alleen wat erin zit. Daar gebruik je in Figma auto layout voor."
+          }
+        ]
+      }
+    ],
+    "slots": [],
+    "states": []
+  }
 }

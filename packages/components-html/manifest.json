@@ -11,11 +11,43 @@
       "platforms": ["html-css", "react"],
       "primaryProps": [
         {
-          "name": "orientation",
+          "name": "direction",
           "values": ["horizontal", "vertical"],
           "default": "horizontal"
         }
-      ]
+      ],
+      "api": {
+        "props": [
+          {
+            "name": "direction",
+            "values": ["horizontal", "vertical"],
+            "default": "horizontal",
+            "figma": [{ "kind": "variant", "property": "direction" }]
+          },
+          {
+            "name": "aria-label",
+            "type": "string",
+            "default": "Acties",
+            "native": true,
+            "figma": [
+              {
+                "kind": "none",
+                "reason": "Tekst voor schermlezers; niet zichtbaar."
+              }
+            ]
+          },
+          { "name": "children", "type": "ReactNode", "slots": ["actions"] }
+        ],
+        "slots": [
+          {
+            "name": "actions",
+            "element": "dsn-action-group",
+            "description": "De knoppen en links.",
+            "figma": [{ "kind": "slot", "property": "slot" }]
+          }
+        ],
+        "states": []
+      }
     },
     {
       "name": "Alert",
@@ -126,7 +158,23 @@
       "category": "layout",
       "purpose": "Applies document-level cascade base styles (typography, colour, background) when placed on the <body> element.",
       "platforms": ["html-css", "react"],
-      "primaryProps": []
+      "primaryProps": [],
+      "api": {
+        "props": [
+          {
+            "name": "children",
+            "type": "ReactNode",
+            "figma": [
+              {
+                "kind": "none",
+                "reason": "Geen set in Figma: Body is de documentwortel, en zijn achtergrond- en tekstkleur zitten al in de plaat waar elke component set op staat."
+              }
+            ]
+          }
+        ],
+        "slots": [],
+        "states": []
+      }
     },
     {
       "name": "BreadcrumbNavigation",
@@ -134,7 +182,87 @@
       "category": "navigation",
       "purpose": "Hierarchical navigation trail with a compact variant triggered via container query.",
       "platforms": ["html-css", "react"],
-      "primaryProps": []
+      "primaryProps": [
+        {
+          "name": "variant",
+          "values": ["default", "compact"],
+          "default": "default"
+        }
+      ],
+      "api": {
+        "props": [
+          {
+            "name": "aria-label",
+            "type": "string",
+            "default": "Broodkruimelpad",
+            "figma": [
+              {
+                "kind": "none",
+                "reason": "Tekst voor schermlezers; niet zichtbaar."
+              }
+            ]
+          },
+          {
+            "name": "variant",
+            "values": ["default", "compact"],
+            "default": "default",
+            "figma": [{ "kind": "variant", "property": "appearance" }]
+          },
+          {
+            "name": "children",
+            "type": "ReactNode",
+            "required": true,
+            "slots": ["items"]
+          }
+        ],
+        "slots": [
+          {
+            "name": "items",
+            "element": "dsn-breadcrumb-navigation",
+            "description": "De kruimels (BreadcrumbNavigationItem).",
+            "figma": [
+              {
+                "kind": "none",
+                "reason": "Geen property: de inhoud pas je in een instance aan op de lagen zelf."
+              }
+            ]
+          }
+        ],
+        "states": [
+          {
+            "name": "hover",
+            "selector": ":hover",
+            "figma": [
+              {
+                "kind": "none",
+                "reason": "Nog niet in de Figma-matrix van BreadcrumbNavigation.",
+                "open": true
+              }
+            ]
+          },
+          {
+            "name": "active",
+            "selector": ":active",
+            "figma": [
+              {
+                "kind": "none",
+                "reason": "Nog niet in de Figma-matrix van BreadcrumbNavigation.",
+                "open": true
+              }
+            ]
+          },
+          {
+            "name": "focus-visible",
+            "selector": ":focus-visible",
+            "figma": [
+              {
+                "kind": "none",
+                "reason": "In Figma kun je niet met de tabtoets door een prototype; Figma is voor het snel uitwerken van ideeën, niet voor toetsenbordgedrag."
+              }
+            ]
+          }
+        ]
+      }
     },
     {
       "name": "BreakoutSection",
@@ -142,7 +270,34 @@
       "category": "layout",
       "purpose": "Breaks a section out of a constrained page width to span the full viewport width.",
       "platforms": ["html-css", "react"],
-      "primaryProps": []
+      "primaryProps": [],
+      "api": {
+        "props": [
+          {
+            "name": "as",
+            "values": ["div", "section", "article", "aside"],
+            "default": "section",
+            "figma": [
+              {
+                "kind": "none",
+                "reason": "Geen set in Figma: een layoutcomponent tekent niets en plaatst alleen wat erin zit. Daar gebruik je in Figma auto layout voor."
+              }
+            ]
+          },
+          {
+            "name": "children",
+            "type": "ReactNode",
+            "figma": [
+              {
+                "kind": "none",
+                "reason": "Geen set in Figma: een layoutcomponent tekent niets en plaatst alleen wat erin zit. Daar gebruik je in Figma auto layout voor."
+              }
+            ]
+          }
+        ],
+        "slots": [],
+        "states": []
+      }
     },
     {
       "name": "Button",
@@ -786,7 +941,45 @@
       "category": "layout",
       "purpose": "Centring wrapper with max-width and inline padding for page layout.",
       "platforms": ["html-css", "react"],
-      "primaryProps": []
+      "primaryProps": [],
+      "api": {
+        "props": [
+          {
+            "name": "as",
+            "values": ["div", "section", "article", "aside"],
+            "default": "div",
+            "figma": [
+              {
+                "kind": "none",
+                "reason": "Geen set in Figma: een layoutcomponent tekent niets en plaatst alleen wat erin zit. Daar gebruik je in Figma auto layout voor."
+              }
+            ]
+          },
+          {
+            "name": "elevated",
+            "type": "boolean",
+            "default": false,
+            "figma": [
+              {
+                "kind": "none",
+                "reason": "Geen set in Figma: een layoutcomponent tekent niets en plaatst alleen wat erin zit. Daar gebruik je in Figma auto layout voor."
+              }
+            ]
+          },
+          {
+            "name": "children",
+            "type": "ReactNode",
+            "figma": [
+              {
+                "kind": "none",
+                "reason": "Geen set in Figma: een layoutcomponent tekent niets en plaatst alleen wat erin zit. Daar gebruik je in Figma auto layout voor."
+              }
+            ]
+          }
+        ],
+        "slots": [],
+        "states": []
+      }
     },
     {
       "name": "DataList",
@@ -2034,7 +2227,34 @@
       "platforms": ["html-css", "react"],
       "primaryProps": [
         { "name": "contained", "type": "boolean", "default": false }
-      ]
+      ],
+      "api": {
+        "props": [
+          {
+            "name": "contained",
+            "type": "boolean",
+            "default": false,
+            "figma": [
+              {
+                "kind": "none",
+                "reason": "Geen set in Figma: een layoutcomponent tekent niets en plaatst alleen wat erin zit. Daar gebruik je in Figma auto layout voor."
+              }
+            ]
+          },
+          {
+            "name": "children",
+            "type": "ReactNode",
+            "figma": [
+              {
+                "kind": "none",
+                "reason": "Geen set in Figma: een layoutcomponent tekent niets en plaatst alleen wat erin zit. Daar gebruik je in Figma auto layout voor."
+              }
+            ]
+          }
+        ],
+        "slots": [],
+        "states": []
+      }
     },
     {
       "name": "Heading",
@@ -2170,12 +2390,62 @@
       "platforms": ["html-css", "react"],
       "primaryProps": [
         {
-          "name": "background",
+          "name": "variant",
           "values": ["default", "inverse", "image", "image-blend"],
           "default": "default"
         },
         { "name": "align", "values": ["start", "center"], "default": "start" }
-      ]
+      ],
+      "api": {
+        "props": [
+          {
+            "name": "variant",
+            "values": ["default", "inverse", "image", "image-blend"],
+            "default": "default",
+            "figma": [
+              {
+                "kind": "variant",
+                "property": "variant",
+                "values": ["default", "inverse", "image"],
+                "reason": "image-blend staat niet in de Figma-matrix van Hero.",
+                "open": true
+              }
+            ]
+          },
+          {
+            "name": "backgroundImage",
+            "type": "string",
+            "figma": [
+              {
+                "kind": "none",
+                "reason": "Nog niet in de Figma-matrix van Hero.",
+                "open": true
+              }
+            ]
+          },
+          {
+            "name": "align",
+            "values": ["start", "center"],
+            "default": "start",
+            "figma": [{ "kind": "variant", "property": "align" }]
+          },
+          { "name": "children", "type": "ReactNode", "slots": ["content"] }
+        ],
+        "slots": [
+          {
+            "name": "content",
+            "element": "dsn-hero",
+            "description": "De inhoud: kop, tekst en acties.",
+            "figma": [
+              {
+                "kind": "none",
+                "reason": "Geen property: de inhoud pas je in een instance aan op de lagen zelf."
+              }
+            ]
+          }
+        ],
+        "states": []
+      }
     },
     {
       "name": "Icon",
@@ -2726,8 +2996,25 @@
       "purpose": "Theme-aware inline SVG logo with design token colours that adapts automatically to every theme and colour mode.",
       "platforms": ["html-css", "react"],
       "primaryProps": [
-        { "name": "decorative", "type": "boolean", "default": false }
-      ]
+        { "name": "title", "type": "string", "default": "Starter Kit" }
+      ],
+      "api": {
+        "props": [
+          {
+            "name": "title",
+            "type": "string",
+            "default": "Starter Kit",
+            "figma": [
+              {
+                "kind": "none",
+                "reason": "De toegankelijke naam (<title> in de SVG); niet zichtbaar."
+              }
+            ]
+          }
+        ],
+        "slots": [],
+        "states": []
+      }
     },
     {
       "name": "Menu",
@@ -2741,7 +3028,49 @@
           "values": ["vertical", "horizontal"],
           "default": "vertical"
         }
-      ]
+      ],
+      "api": {
+        "props": [
+          {
+            "name": "orientation",
+            "values": ["vertical", "horizontal"],
+            "default": "vertical",
+            "figma": [{ "kind": "variant", "property": "orientation" }]
+          },
+          {
+            "name": "iconStart",
+            "type": "boolean",
+            "default": false,
+            "figma": [
+              {
+                "kind": "none",
+                "reason": "Nog niet in de Figma-matrix van Menu.",
+                "open": true
+              }
+            ]
+          },
+          {
+            "name": "children",
+            "type": "ReactNode",
+            "required": true,
+            "slots": ["items"]
+          }
+        ],
+        "slots": [
+          {
+            "name": "items",
+            "element": "dsn-menu",
+            "description": "De items (MenuLink, MenuButton).",
+            "figma": [
+              {
+                "kind": "none",
+                "reason": "Geen property: de inhoud pas je in een instance aan op de lagen zelf."
+              }
+            ]
+          }
+        ],
+        "states": []
+      }
     },
     {
       "name": "MenuButton",
@@ -2749,10 +3078,89 @@
       "category": "navigation",
       "purpose": "Navigation button for JavaScript actions (logout, open modal); semantically a <button>, visually consistent with MenuLink.",
       "platforms": ["html-css", "react"],
-      "primaryProps": [
-        { "name": "level", "values": [1, 2, 3, 4], "default": 1 },
-        { "name": "current", "type": "boolean", "default": false }
-      ]
+      "primaryProps": [],
+      "api": {
+        "props": [
+          { "name": "iconStart", "type": "ReactNode", "slots": ["icon-start"] },
+          { "name": "iconEnd", "type": "ReactNode", "slots": ["icon-end"] },
+          {
+            "name": "dotBadge",
+            "type": "ReactNode",
+            "figma": [
+              {
+                "kind": "none",
+                "reason": "Nog niet in de Figma-matrix van MenuButton.",
+                "open": true
+              }
+            ]
+          },
+          {
+            "name": "type",
+            "type": "string",
+            "default": "button",
+            "native": true,
+            "figma": [
+              {
+                "kind": "none",
+                "reason": "Bepaalt gedrag in een formulier, niet het uiterlijk."
+              }
+            ]
+          },
+          { "name": "children", "type": "ReactNode", "slots": ["label"] }
+        ],
+        "slots": [
+          {
+            "name": "icon-start",
+            "element": "dsn-icon",
+            "description": "Icoon vóór de tekst.",
+            "figma": [
+              { "kind": "boolean", "property": "showIconStart" },
+              { "kind": "instance-swap", "property": "iconStart" }
+            ]
+          },
+          {
+            "name": "label",
+            "element": "dsn-menu-button",
+            "description": "De tekst.",
+            "figma": [{ "kind": "text", "property": "label" }]
+          },
+          {
+            "name": "icon-end",
+            "element": "dsn-icon",
+            "description": "Icoon na de tekst.",
+            "figma": [
+              { "kind": "boolean", "property": "showIconEnd" },
+              { "kind": "instance-swap", "property": "iconEnd" }
+            ]
+          }
+        ],
+        "states": [
+          {
+            "name": "hover",
+            "selector": ":hover",
+            "figma": [
+              { "kind": "variant", "property": "state", "value": "hover" }
+            ]
+          },
+          {
+            "name": "active",
+            "selector": ":active",
+            "figma": [
+              { "kind": "variant", "property": "state", "value": "active" }
+            ]
+          },
+          {
+            "name": "focus-visible",
+            "selector": ":focus-visible",
+            "figma": [
+              {
+                "kind": "none",
+                "reason": "In Figma kun je niet met de tabtoets door een prototype; Figma is voor het snel uitwerken van ideeën, niet voor toetsenbordgedrag."
+              }
+            ]
+          }
+        ]
+      }
     },
     {
       "name": "MenuLink",
@@ -2761,10 +3169,157 @@
       "purpose": "Navigation link with level hierarchy (1–4), active page state, and expandable sub-navigation.",
       "platforms": ["html-css", "react"],
       "primaryProps": [
+        { "name": "href", "type": "string" },
         { "name": "level", "values": [1, 2, 3, 4], "default": 1 },
         { "name": "current", "type": "boolean", "default": false },
         { "name": "expanded", "type": "boolean", "default": false }
-      ]
+      ],
+      "api": {
+        "props": [
+          {
+            "name": "href",
+            "type": "string",
+            "figma": [
+              {
+                "kind": "none",
+                "reason": "De bestemming van de link, niet het uiterlijk."
+              }
+            ]
+          },
+          {
+            "name": "level",
+            "values": [1, 2, 3, 4],
+            "default": 1,
+            "figma": [
+              {
+                "kind": "variant",
+                "property": "level",
+                "values": ["1", "2", "3"],
+                "reason": "Level 4 staat niet in de Figma-matrix van MenuLink.",
+                "open": true
+              }
+            ]
+          },
+          {
+            "name": "current",
+            "type": "boolean",
+            "default": false,
+            "figma": [
+              { "kind": "variant", "property": "state", "value": "current" }
+            ]
+          },
+          {
+            "name": "iconStart",
+            "type": "ReactNode",
+            "figma": [
+              {
+                "kind": "none",
+                "reason": "Nog niet in de Figma-matrix van MenuLink.",
+                "open": true
+              }
+            ]
+          },
+          {
+            "name": "iconEnd",
+            "type": "ReactNode",
+            "figma": [
+              {
+                "kind": "none",
+                "reason": "Nog niet in de Figma-matrix van MenuLink.",
+                "open": true
+              }
+            ]
+          },
+          {
+            "name": "numberBadge",
+            "type": "ReactNode",
+            "figma": [
+              {
+                "kind": "none",
+                "reason": "Nog niet in de Figma-matrix van MenuLink.",
+                "open": true
+              }
+            ]
+          },
+          {
+            "name": "subItems",
+            "type": "boolean",
+            "default": false,
+            "figma": [
+              {
+                "kind": "variant",
+                "property": "expand",
+                "values": ["with-expand", "no-expand"]
+              }
+            ]
+          },
+          {
+            "name": "expanded",
+            "type": "boolean",
+            "default": false,
+            "figma": [
+              {
+                "kind": "none",
+                "reason": "Nog niet in de Figma-matrix van MenuLink.",
+                "open": true
+              }
+            ]
+          },
+          {
+            "name": "onExpandToggle",
+            "type": "function",
+            "figma": [{ "kind": "none", "reason": "Gedrag, geen uiterlijk." }]
+          },
+          { "name": "children", "type": "ReactNode", "slots": ["label"] }
+        ],
+        "slots": [
+          {
+            "name": "label",
+            "element": "dsn-menu-link",
+            "description": "De tekst van de link.",
+            "figma": [
+              {
+                "kind": "none",
+                "reason": "Geen property: de inhoud pas je in een instance aan op de lagen zelf."
+              }
+            ]
+          }
+        ],
+        "states": [
+          {
+            "name": "hover",
+            "selector": ":hover",
+            "figma": [
+              {
+                "kind": "none",
+                "reason": "Nog niet in de Figma-matrix van MenuLink.",
+                "open": true
+              }
+            ]
+          },
+          {
+            "name": "active",
+            "selector": ":active",
+            "figma": [
+              {
+                "kind": "none",
+                "reason": "Nog niet in de Figma-matrix van MenuLink.",
+                "open": true
+              }
+            ]
+          },
+          {
+            "name": "focus-visible",
+            "selector": ":focus-visible",
+            "figma": [
+              {
+                "kind": "none",
+                "reason": "In Figma kun je niet met de tabtoets door een prototype; Figma is voor het snel uitwerken van ideeën, niet voor toetsenbordgedrag."
+              }
+            ]
+          }
+        ]
+      }
     },
     {
       "name": "ModalDialog",
@@ -3153,7 +3708,24 @@
       "category": "navigation",
       "purpose": "Structural wrapper for main page content that fills available vertical space so PageFooter stays at the bottom.",
       "platforms": ["html-css", "react"],
-      "primaryProps": []
+      "primaryProps": [],
+      "api": {
+        "props": [
+          {
+            "name": "children",
+            "type": "ReactNode",
+            "required": true,
+            "figma": [
+              {
+                "kind": "none",
+                "reason": "Geen set in Figma: een layoutcomponent tekent niets en plaatst alleen wat erin zit. Daar gebruik je in Figma auto layout voor."
+              }
+            ]
+          }
+        ],
+        "slots": [],
+        "states": []
+      }
     },
     {
       "name": "PageFooter",
@@ -3161,7 +3733,74 @@
       "category": "navigation",
       "purpose": "Page footer with accent background, thick top border, and a 4-column grid layout.",
       "platforms": ["html-css", "react"],
-      "primaryProps": []
+      "primaryProps": [
+        {
+          "name": "colorScheme",
+          "values": ["default", "inverse"],
+          "default": "default"
+        }
+      ],
+      "api": {
+        "props": [
+          { "name": "slot1", "type": "ReactNode", "slots": ["column-1"] },
+          { "name": "slot2", "type": "ReactNode", "slots": ["column-2"] },
+          { "name": "slot3", "type": "ReactNode", "slots": ["column-3"] },
+          { "name": "slot4", "type": "ReactNode", "slots": ["column-4"] },
+          {
+            "name": "colorScheme",
+            "values": ["default", "inverse"],
+            "default": "default",
+            "figma": [{ "kind": "variant", "property": "colorScheme" }]
+          }
+        ],
+        "slots": [
+          {
+            "name": "column-1",
+            "element": "dsn-page-footer",
+            "description": "Kolom 1 van de footer.",
+            "figma": [
+              {
+                "kind": "none",
+                "reason": "Geen property: de inhoud pas je in een instance aan op de lagen zelf."
+              }
+            ]
+          },
+          {
+            "name": "column-2",
+            "element": "dsn-page-footer",
+            "description": "Kolom 2 van de footer.",
+            "figma": [
+              {
+                "kind": "none",
+                "reason": "Geen property: de inhoud pas je in een instance aan op de lagen zelf."
+              }
+            ]
+          },
+          {
+            "name": "column-3",
+            "element": "dsn-page-footer",
+            "description": "Kolom 3 van de footer.",
+            "figma": [
+              {
+                "kind": "none",
+                "reason": "Geen property: de inhoud pas je in een instance aan op de lagen zelf."
+              }
+            ]
+          },
+          {
+            "name": "column-4",
+            "element": "dsn-page-footer",
+            "description": "Kolom 4 van de footer.",
+            "figma": [
+              {
+                "kind": "none",
+                "reason": "Geen property: de inhoud pas je in een instance aan op de lagen zelf."
+              }
+            ]
+          }
+        ],
+        "states": []
+      }
     },
     {
       "name": "PageHeader",
@@ -3169,7 +3808,294 @@
       "category": "navigation",
       "purpose": "Page-wide header bar with logo, navigation, and actions slots; theme-aware background via design tokens.",
       "platforms": ["html-css", "react"],
-      "primaryProps": []
+      "primaryProps": [
+        {
+          "name": "layout",
+          "values": ["default", "compact"],
+          "default": "default"
+        },
+        {
+          "name": "colorScheme",
+          "values": ["default", "inverse"],
+          "default": "default"
+        },
+        {
+          "name": "sticky",
+          "values": ["none", "sticky", "auto-hide"],
+          "default": "none"
+        }
+      ],
+      "api": {
+        "props": [
+          {
+            "name": "logoSlot",
+            "type": "ReactNode",
+            "required": true,
+            "slots": ["logo"]
+          },
+          {
+            "name": "sticky",
+            "values": ["none", "sticky", "auto-hide"],
+            "default": "none",
+            "figma": [
+              {
+                "kind": "none",
+                "reason": "Nog niet in de Figma-matrix van PageHeader.",
+                "open": true
+              }
+            ]
+          },
+          {
+            "name": "layout",
+            "values": ["default", "compact"],
+            "default": "default",
+            "figma": [{ "kind": "variant", "property": "layout" }]
+          },
+          {
+            "name": "colorScheme",
+            "values": ["default", "inverse"],
+            "default": "default",
+            "figma": [{ "kind": "variant", "property": "colorScheme" }]
+          },
+          {
+            "name": "initialSearchOpen",
+            "type": "boolean",
+            "default": false,
+            "figma": [
+              {
+                "kind": "none",
+                "reason": "Nog niet in de Figma-matrix van PageHeader.",
+                "open": true
+              }
+            ]
+          },
+          {
+            "name": "primaryNavigation",
+            "type": "ReactNode",
+            "slots": ["primary-navigation"]
+          },
+          {
+            "name": "primaryNavigationLarge",
+            "type": "ReactNode",
+            "slots": ["primary-navigation"]
+          },
+          {
+            "name": "secondaryNavigation",
+            "type": "ReactNode",
+            "slots": ["secondary-navigation"]
+          },
+          {
+            "name": "secondaryNavigationLarge",
+            "type": "ReactNode",
+            "slots": ["secondary-navigation"]
+          },
+          {
+            "name": "searchSlot",
+            "type": "ReactNode",
+            "figma": [
+              {
+                "kind": "none",
+                "reason": "Nog niet in de Figma-matrix van PageHeader.",
+                "open": true
+              }
+            ]
+          },
+          {
+            "name": "menuButtonBadge",
+            "type": "ReactNode",
+            "figma": [
+              {
+                "kind": "none",
+                "reason": "Nog niet in de Figma-matrix van PageHeader.",
+                "open": true
+              }
+            ]
+          },
+          {
+            "name": "menuButtonBadgeLabel",
+            "type": "string",
+            "figma": [
+              {
+                "kind": "none",
+                "reason": "Tekst voor schermlezers; niet zichtbaar."
+              }
+            ]
+          },
+          {
+            "name": "onMenuOpen",
+            "type": "function",
+            "figma": [{ "kind": "none", "reason": "Gedrag, geen uiterlijk." }]
+          },
+          {
+            "name": "onMenuClose",
+            "type": "function",
+            "figma": [{ "kind": "none", "reason": "Gedrag, geen uiterlijk." }]
+          },
+          {
+            "name": "onSearchOpen",
+            "type": "function",
+            "figma": [{ "kind": "none", "reason": "Gedrag, geen uiterlijk." }]
+          },
+          {
+            "name": "onSearchClose",
+            "type": "function",
+            "figma": [{ "kind": "none", "reason": "Gedrag, geen uiterlijk." }]
+          },
+          {
+            "name": "menuButtonLabel",
+            "type": "string",
+            "default": "Menu",
+            "figma": [
+              {
+                "kind": "none",
+                "reason": "Nog niet in de Figma-matrix van PageHeader.",
+                "open": true
+              }
+            ]
+          },
+          {
+            "name": "searchButtonLabel",
+            "type": "string",
+            "default": "Zoeken",
+            "figma": [
+              {
+                "kind": "none",
+                "reason": "Nog niet in de Figma-matrix van PageHeader.",
+                "open": true
+              }
+            ]
+          },
+          {
+            "name": "closeButtonLabel",
+            "type": "string",
+            "default": "Sluiten",
+            "figma": [
+              {
+                "kind": "none",
+                "reason": "Nog niet in de Figma-matrix van PageHeader.",
+                "open": true
+              }
+            ]
+          },
+          {
+            "name": "searchInputPlaceholder",
+            "type": "string",
+            "default": "Zoeken…",
+            "figma": [
+              {
+                "kind": "none",
+                "reason": "Nog niet in de Figma-matrix van PageHeader.",
+                "open": true
+              }
+            ]
+          },
+          {
+            "name": "searchInputAriaLabel",
+            "type": "string",
+            "default": "Zoekopdracht",
+            "figma": [
+              {
+                "kind": "none",
+                "reason": "Tekst voor schermlezers; niet zichtbaar."
+              }
+            ]
+          },
+          {
+            "name": "searchSubmitLabel",
+            "type": "string",
+            "default": "Zoeken",
+            "figma": [
+              {
+                "kind": "none",
+                "reason": "Nog niet in de Figma-matrix van PageHeader.",
+                "open": true
+              }
+            ]
+          },
+          {
+            "name": "primaryNavAriaLabel",
+            "type": "string",
+            "default": "Hoofd-navigatie",
+            "figma": [
+              {
+                "kind": "none",
+                "reason": "Tekst voor schermlezers; niet zichtbaar."
+              }
+            ]
+          },
+          {
+            "name": "secondaryNavAriaLabel",
+            "type": "string",
+            "default": "Service-navigatie",
+            "figma": [
+              {
+                "kind": "none",
+                "reason": "Tekst voor schermlezers; niet zichtbaar."
+              }
+            ]
+          },
+          {
+            "name": "hideMenuButton",
+            "type": "boolean",
+            "default": false,
+            "figma": [
+              {
+                "kind": "none",
+                "reason": "Nog niet in de Figma-matrix van PageHeader.",
+                "open": true
+              }
+            ]
+          },
+          {
+            "name": "hideSearchButton",
+            "type": "boolean",
+            "default": false,
+            "figma": [
+              {
+                "kind": "none",
+                "reason": "Nog niet in de Figma-matrix van PageHeader.",
+                "open": true
+              }
+            ]
+          }
+        ],
+        "slots": [
+          {
+            "name": "logo",
+            "element": "dsn-page-header",
+            "description": "Het logo.",
+            "figma": [
+              {
+                "kind": "none",
+                "reason": "Geen property: de inhoud pas je in een instance aan op de lagen zelf."
+              }
+            ]
+          },
+          {
+            "name": "primary-navigation",
+            "element": "dsn-page-header",
+            "description": "De hoofdnavigatie, apart voor kleine en grote schermen.",
+            "figma": [
+              {
+                "kind": "none",
+                "reason": "Geen property: de inhoud pas je in een instance aan op de lagen zelf."
+              }
+            ]
+          },
+          {
+            "name": "secondary-navigation",
+            "element": "dsn-page-header",
+            "description": "De servicenavigatie, apart voor kleine en grote schermen.",
+            "figma": [
+              {
+                "kind": "none",
+                "reason": "Geen property: de inhoud pas je in een instance aan op de lagen zelf."
+              }
+            ]
+          }
+        ],
+        "states": []
+      }
     },
     {
       "name": "PageLayout",
@@ -3177,7 +4103,24 @@
       "category": "navigation",
       "purpose": "Full-page structural wrapper that vertically stacks PageHeader, PageBody, and PageFooter with min-height: 100dvh.",
       "platforms": ["html-css", "react"],
-      "primaryProps": []
+      "primaryProps": [],
+      "api": {
+        "props": [
+          {
+            "name": "children",
+            "type": "ReactNode",
+            "required": true,
+            "figma": [
+              {
+                "kind": "none",
+                "reason": "Geen set in Figma: een layoutcomponent tekent niets en plaatst alleen wat erin zit. Daar gebruik je in Figma auto layout voor."
+              }
+            ]
+          }
+        ],
+        "slots": [],
+        "states": []
+      }
     },
     {
       "name": "Paragraph",
@@ -3421,10 +4364,74 @@
       "primaryProps": [
         {
           "name": "placement",
-          "values": ["bottom", "top", "start", "end"],
+          "values": ["top", "bottom", "start", "end"],
           "default": "bottom"
         }
-      ]
+      ],
+      "api": {
+        "props": [
+          {
+            "name": "isOpen",
+            "type": "boolean",
+            "required": true,
+            "figma": [
+              {
+                "kind": "none",
+                "reason": "PopoverMenu heeft geen Figma-matrix, en staat ook niet in de lijst van bewust overgeslagen componenten.",
+                "open": true
+              }
+            ]
+          },
+          {
+            "name": "onClose",
+            "type": "function",
+            "figma": [{ "kind": "none", "reason": "Gedrag, geen uiterlijk." }]
+          },
+          {
+            "name": "triggerRef",
+            "type": "object",
+            "required": true,
+            "figma": [{ "kind": "none", "reason": "Gedrag, geen uiterlijk." }]
+          },
+          {
+            "name": "placement",
+            "values": ["top", "bottom", "start", "end"],
+            "default": "bottom",
+            "figma": [
+              {
+                "kind": "none",
+                "reason": "Nog niet in de Figma-matrix van PopoverMenu.",
+                "open": true
+              }
+            ]
+          },
+          {
+            "name": "iconStart",
+            "type": "boolean",
+            "default": false,
+            "figma": [
+              {
+                "kind": "none",
+                "reason": "Nog niet in de Figma-matrix van PopoverMenu.",
+                "open": true
+              }
+            ]
+          },
+          {
+            "name": "children",
+            "type": "ReactNode",
+            "figma": [
+              {
+                "kind": "none",
+                "reason": "Nog niet in de Figma-matrix van PopoverMenu.",
+                "open": true
+              }
+            ]
+          }
+        ],
+        "slots": [],
+        "states": []
+      }
     },
     {
       "name": "PreHeading",
@@ -3868,7 +4875,55 @@
       "category": "accessibility",
       "purpose": "First focusable element on the page, visible on keyboard focus to let users skip repeated navigation (WCAG 2.4.1).",
       "platforms": ["html-css", "react"],
-      "primaryProps": [{ "name": "href", "type": "string", "required": true }]
+      "primaryProps": [{ "name": "href", "type": "string", "required": true }],
+      "api": {
+        "props": [
+          {
+            "name": "href",
+            "type": "string",
+            "required": true,
+            "figma": [
+              {
+                "kind": "none",
+                "reason": "De bestemming van de link, niet het uiterlijk."
+              }
+            ]
+          },
+          {
+            "name": "children",
+            "type": "ReactNode",
+            "default": "Ga direct naar de hoofdinhoud",
+            "slots": ["label"]
+          }
+        ],
+        "slots": [
+          {
+            "name": "label",
+            "element": "dsn-skip-link",
+            "description": "De tekst van de link.",
+            "figma": [{ "kind": "text", "property": "label" }]
+          }
+        ],
+        "states": [
+          {
+            "name": "focus",
+            "selector": ":focus",
+            "figma": [
+              { "kind": "variant", "property": "state", "value": "focus" }
+            ]
+          },
+          {
+            "name": "focus-visible",
+            "selector": ":focus-visible",
+            "figma": [
+              {
+                "kind": "none",
+                "reason": "In Figma kun je niet met de tabtoets door een prototype; Figma is voor het snel uitwerken van ideeën, niet voor toetsenbordgedrag."
+              }
+            ]
+          }
+        ]
+      }
     },
     {
       "name": "Spinner",
@@ -3924,21 +4979,47 @@
       "primaryProps": [
         {
           "name": "space",
-          "values": [
-            "xs",
-            "sm",
-            "md",
-            "lg",
-            "xl",
-            "2xl",
-            "3xl",
-            "4xl",
-            "5xl",
-            "6xl"
-          ],
+          "values": ["sm", "md", "lg", "xl", "2xl", "3xl", "4xl", "5xl", "6xl"],
           "default": "md"
         }
-      ]
+      ],
+      "api": {
+        "props": [
+          {
+            "name": "space",
+            "values": [
+              "sm",
+              "md",
+              "lg",
+              "xl",
+              "2xl",
+              "3xl",
+              "4xl",
+              "5xl",
+              "6xl"
+            ],
+            "default": "md",
+            "figma": [
+              {
+                "kind": "none",
+                "reason": "Geen set in Figma: een layoutcomponent tekent niets en plaatst alleen wat erin zit. Daar gebruik je in Figma auto layout voor."
+              }
+            ]
+          },
+          {
+            "name": "children",
+            "type": "ReactNode",
+            "figma": [
+              {
+                "kind": "none",
+                "reason": "Geen set in Figma: een layoutcomponent tekent niets en plaatst alleen wat erin zit. Daar gebruik je in Figma auto layout voor."
+              }
+            ]
+          }
+        ],
+        "slots": [],
+        "states": []
+      }
     },
     {
       "name": "StatusBadge",
@@ -4092,8 +5173,62 @@
           "name": "appearance",
           "values": ["framed", "plain"],
           "default": "framed"
-        }
-      ]
+        },
+        { "name": "items", "type": "array", "required": true }
+      ],
+      "api": {
+        "props": [
+          {
+            "name": "heading",
+            "type": "string",
+            "default": "Op deze pagina",
+            "figma": [
+              {
+                "kind": "none",
+                "reason": "Nog niet in de Figma-matrix van TableOfContents.",
+                "open": true
+              }
+            ]
+          },
+          {
+            "name": "headingLevel",
+            "values": [1, 2, 3, 4, 5, 6],
+            "default": 2,
+            "figma": [
+              {
+                "kind": "none",
+                "reason": "Nog niet in de Figma-matrix van TableOfContents.",
+                "open": true
+              }
+            ]
+          },
+          {
+            "name": "appearance",
+            "values": ["framed", "plain"],
+            "default": "framed",
+            "figma": [
+              {
+                "kind": "variant",
+                "property": "appearance",
+                "values": ["default", "plain"]
+              }
+            ]
+          },
+          {
+            "name": "items",
+            "type": "array",
+            "required": true,
+            "figma": [
+              {
+                "kind": "none",
+                "reason": "Geen property: de inhoud pas je in een instance aan op de lagen zelf."
+              }
+            ]
+          }
+        ],
+        "slots": [],
+        "states": []
+      }
     },
     {
       "name": "TelephoneInput",

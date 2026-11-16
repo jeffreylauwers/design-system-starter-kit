@@ -6,7 +6,7 @@
   "platforms": ["html-css", "react"],
   "primaryProps": [
     {
-      "name": "background",
+      "name": "variant",
       "values": ["default", "inverse", "image", "image-blend"],
       "default": "default"
     },
@@ -15,5 +15,64 @@
       "values": ["start", "center"],
       "default": "start"
     }
-  ]
+  ],
+  "api": {
+    "props": [
+      {
+        "name": "variant",
+        "values": ["default", "inverse", "image", "image-blend"],
+        "default": "default",
+        "figma": [
+          {
+            "kind": "variant",
+            "property": "variant",
+            "values": ["default", "inverse", "image"],
+            "reason": "image-blend staat niet in de Figma-matrix van Hero.",
+            "open": true
+          }
+        ]
+      },
+      {
+        "name": "backgroundImage",
+        "type": "string",
+        "figma": [
+          {
+            "kind": "none",
+            "reason": "Nog niet in de Figma-matrix van Hero.",
+            "open": true
+          }
+        ]
+      },
+      {
+        "name": "align",
+        "values": ["start", "center"],
+        "default": "start",
+        "figma": [
+          {
+            "kind": "variant",
+            "property": "align"
+          }
+        ]
+      },
+      {
+        "name": "children",
+        "type": "ReactNode",
+        "slots": ["content"]
+      }
+    ],
+    "slots": [
+      {
+        "name": "content",
+        "element": "dsn-hero",
+        "description": "De inhoud: kop, tekst en acties.",
+        "figma": [
+          {
+            "kind": "none",
+            "reason": "Geen property: de inhoud pas je in een instance aan op de lagen zelf."
+          }
+        ]
+      }
+    ],
+    "states": []
+  }
 }

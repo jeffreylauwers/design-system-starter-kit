@@ -194,6 +194,7 @@ function readOwnApi(name: string) {
     if (node.kind === ts.SyntaxKind.NumberKeyword) return { type: 'number' };
     if (ts.isFunctionTypeNode(node)) return { type: 'function' };
     if (ts.isTypeLiteralNode(node)) return { type: 'object' };
+    if (ts.isArrayTypeNode(node)) return { type: 'array' };
     if (ts.isParenthesizedTypeNode(node)) return describeType(node.type, from);
     if (ts.isTypeReferenceNode(node)) {
       const ref = node.typeName.getText(from);
@@ -276,7 +277,10 @@ function readOwnApi(name: string) {
   for (const element of pattern?.elements ?? []) {
     const init = element.initializer;
     if (!init) continue;
-    const key = (element.propertyName ?? element.name).getText(source);
+    const keyNode = element.propertyName ?? element.name;
+    const key = ts.isStringLiteral(keyNode)
+      ? keyNode.text
+      : keyNode.getText(source);
     let value: unknown = `<${init.getText(source)}>`;
     if (ts.isStringLiteral(init)) value = init.text;
     else if (ts.isNumericLiteral(init)) value = Number(init.text);

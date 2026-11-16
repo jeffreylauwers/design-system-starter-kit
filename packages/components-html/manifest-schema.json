@@ -40,7 +40,8 @@
         "category",
         "purpose",
         "platforms",
-        "primaryProps"
+        "primaryProps",
+        "api"
       ],
       "properties": {
         "name": {
@@ -112,7 +113,8 @@
             "number",
             "ReactNode",
             "function",
-            "object"
+            "object",
+            "array"
           ]
         },
         "values": {
@@ -138,7 +140,7 @@
       "type": "object",
       "additionalProperties": false,
       "required": ["props", "slots", "states"],
-      "description": "The complete public API of the component, with how each part appears in Figma. Optional while the manifest is being completed; where present it is checked against the React props type and the Figma matrix of the component.",
+      "description": "The complete public API of the component, with how each part appears in Figma. Checked against the React props type and the Figma matrix of the component.",
       "properties": {
         "props": {
           "type": "array",
@@ -182,7 +184,8 @@
             "number",
             "ReactNode",
             "function",
-            "object"
+            "object",
+            "array"
           ]
         },
         "values": {

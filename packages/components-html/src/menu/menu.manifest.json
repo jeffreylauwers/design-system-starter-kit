@@ -10,5 +10,52 @@
       "values": ["vertical", "horizontal"],
       "default": "vertical"
     }
-  ]
+  ],
+  "api": {
+    "props": [
+      {
+        "name": "orientation",
+        "values": ["vertical", "horizontal"],
+        "default": "vertical",
+        "figma": [
+          {
+            "kind": "variant",
+            "property": "orientation"
+          }
+        ]
+      },
+      {
+        "name": "iconStart",
+        "type": "boolean",
+        "default": false,
+        "figma": [
+          {
+            "kind": "none",
+            "reason": "Nog niet in de Figma-matrix van Menu.",
+            "open": true
+          }
+        ]
+      },
+      {
+        "name": "children",
+        "type": "ReactNode",
+        "required": true,
+        "slots": ["items"]
+      }
+    ],
+    "slots": [
+      {
+        "name": "items",
+        "element": "dsn-menu",
+        "description": "De items (MenuLink, MenuButton).",
+        "figma": [
+          {
+            "kind": "none",
+            "reason": "Geen property: de inhoud pas je in een instance aan op de lagen zelf."
+          }
+        ]
+      }
+    ],
+    "states": []
+  }
 }

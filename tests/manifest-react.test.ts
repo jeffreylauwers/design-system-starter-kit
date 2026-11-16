@@ -14,9 +14,6 @@ import type { Described } from './helpers/react-api';
  * drift.
  *
  * `helpers/react-api.ts` leest de bron met de TypeScript-parser.
- *
- * Alleen componenten mét een `api` worden gecontroleerd. De rest van de
- * manifest heeft nog alleen de samenvatting in `primaryProps` (issue #488).
  */
 
 /** Elk component heeft className; die in elke manifest opnemen zegt niets. */
@@ -27,8 +24,8 @@ function manifestType(prop: ApiProp): Described {
   return prop.values ? { values: prop.values } : { type: String(prop.type) };
 }
 
-const covered = manifest.components.filter(
-  (component) => component.api && component.platforms.includes('react')
+const covered = manifest.components.filter((component) =>
+  component.platforms.includes('react')
 );
 
 describe('manifest-api versus React', () => {
@@ -39,7 +36,7 @@ describe('manifest-api versus React', () => {
   describe.each(covered.map((component) => [component.name, component]))(
     '%s',
     (name, component) => {
-      const api = component.api!;
+      const api = component.api;
       const react = readReactApi(name);
 
       it('noemt elke prop van het React-props-interface', () => {

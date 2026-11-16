@@ -20,7 +20,8 @@ import type {
  * binding `none` met een reden. Zo is "loading staat niet in Figma (#323)"
  * data, en geen commentaar dat stil kan verouderen.
  *
- * Alleen componenten mét een `api` en mét een matrix worden gecontroleerd.
+ * Alleen componenten mét een matrix worden gecontroleerd; de andere hebben
+ * in de manifest overal `none`, met de reden waarom ze geen set hebben.
  */
 
 const MATRICES = path.resolve(__dirname, '../packages/figma-sync/src/matrices');
@@ -45,33 +46,6 @@ const PROPERTY_KINDS: Record<string, FigmaBinding['kind']> = {
   INSTANCE_SWAP: 'instance-swap',
 };
 
-/**
- * Componenten die nog geen `api`-blok hebben (issue #488). Deze lijst krimpt
- * tot hij leeg is. Een nieuw component hoort er niet in: dat krijgt meteen
- * een `api`-blok.
- */
-const WITHOUT_API = new Set([
-  'ActionGroup',
-  'Body',
-  'BreadcrumbNavigation',
-  'BreakoutSection',
-  'Container',
-  'Grid',
-  'Hero',
-  'Logo',
-  'Menu',
-  'MenuButton',
-  'MenuLink',
-  'PageBody',
-  'PageFooter',
-  'PageHeader',
-  'PageLayout',
-  'PopoverMenu',
-  'SkipLink',
-  'Stack',
-  'TableOfContents',
-]);
-
 const kebabCase = (name: string) =>
   name.replace(/(?<!^)(?=[A-Z])/g, '-').toLowerCase();
 
@@ -85,9 +59,7 @@ const loadMatrix = async (name: string) =>
 // geladen.
 const covered = await Promise.all(
   manifest.components
-    .filter(
-      (component) => component.api && existsSync(matrixPath(component.name))
-    )
+    .filter((component) => existsSync(matrixPath(component.name)))
     .map(async (component) => ({
       component,
       matrix: await loadMatrix(component.name),
@@ -114,7 +86,7 @@ interface Claim {
 }
 
 function claimsOf(component: ComponentEntry): Claim[] {
-  const api = component.api!;
+  const api = component.api;
   return [
     ...api.props.map((part) => ({ part, owner: 'prop' as const })),
     ...api.slots.map((part) => ({ part, owner: 'slot' as const })),
@@ -227,13 +199,17 @@ describe('manifest-api versus Figma-matrix', () => {
             continue;
           }
 
-          // Verdeeld: elk onderdeel heeft een eigen waarde, en precies één
-          // waarde blijft over als basis (unchecked, default).
+          // Verdeeld: elk onderdeel heeft een eigen waarde, en hooguit één
+          // waarde blijft over als basis (unchecked, default). Geen basis kan
+          // ook: SkipLink bestaat in Figma alleen met focus.
           const taken = axisClaims.map((claim) => claim.binding.value!);
           const unknown = taken.filter((value) => !values.includes(value));
           expect(unknown, `waarden die as '${axis}' niet heeft`).toEqual([]);
           const base = values.filter((value) => !taken.includes(value));
-          expect(base, `as '${axis}': precies één basiswaarde`).toHaveLength(1);
+          expect(
+            base.length,
+            `as '${axis}': hooguit één basiswaarde`
+          ).toBeLessThanOrEqual(1);
         }
       });
 
@@ -261,7 +237,7 @@ describe('manifest-api versus Figma-matrix', () => {
         // een tekstveld): dat is een attribuut, geen inhoud.
         for (const property of matrix.componentProperties ?? []) {
           if (!property.slot) continue;
-          const owner = component.api!.slots.find((slot) =>
+          const owner = component.api.slots.find((slot) =>
             slot.figma.some(
               (binding) =>
                 !binding.instance && binding.property === property.name
@@ -323,20 +299,4 @@ describe('manifest-api versus Figma-matrix', () => {
       });
     }
   );
-});
-
-describe('voortgang van de api-blokken (#488)', () => {
-  it('elk component zonder api staat in WITHOUT_API', () => {
-    const missing = manifest.components
-      .filter((component) => !component.api && !WITHOUT_API.has(component.name))
-      .map((component) => component.name);
-    expect(missing, 'geef deze componenten een api-blok').toEqual([]);
-  });
-
-  it('WITHOUT_API noemt alleen componenten zonder api', () => {
-    const done = manifest.components
-      .filter((component) => component.api && WITHOUT_API.has(component.name))
-      .map((component) => component.name);
-    expect(done, 'haal deze uit WITHOUT_API').toEqual([]);
-  });
 });

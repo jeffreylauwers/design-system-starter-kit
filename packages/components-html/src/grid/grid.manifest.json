@@ -10,5 +10,32 @@
       "type": "boolean",
       "default": false
     }
-  ]
+  ],
+  "api": {
+    "props": [
+      {
+        "name": "contained",
+        "type": "boolean",
+        "default": false,
+        "figma": [
+          {
+            "kind": "none",
+            "reason": "Geen set in Figma: een layoutcomponent tekent niets en plaatst alleen wat erin zit. Daar gebruik je in Figma auto layout voor."
+          }
+        ]
+      },
+      {
+        "name": "children",
+        "type": "ReactNode",
+        "figma": [
+          {
+            "kind": "none",
+            "reason": "Geen set in Figma: een layoutcomponent tekent niets en plaatst alleen wat erin zit. Daar gebruik je in Figma auto layout voor."
+          }
+        ]
+      }
+    ],
+    "slots": [],
+    "states": []
+  }
 }

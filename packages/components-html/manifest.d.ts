@@ -43,7 +43,14 @@ export interface PropDefinition {
   /** Allowed string or number values for enum-style props. */
   values?: (string | number)[];
   /** Type for non-enum props. */
-  type?: 'string' | 'boolean' | 'number' | 'ReactNode' | 'function' | 'object';
+  type?:
+    | 'string'
+    | 'boolean'
+    | 'number'
+    | 'ReactNode'
+    | 'function'
+    | 'object'
+    | 'array';
   /** Default value. Null means the prop is optional with no default behaviour. */
   default?: string | number | boolean | null;
   /** Whether the prop is required. Omitting means optional. */
@@ -133,9 +140,8 @@ export interface ApiState {
 }
 
 /**
- * The complete public API of a component. Optional while the manifest is being
- * completed; where present, tests check it against the React props type and
- * the Figma matrix of the component.
+ * The complete public API of a component. Tests check it against the React
+ * props type and the Figma matrix of the component.
  */
 export interface ComponentApi {
   /** Every prop except `className`, which every component has. */
@@ -165,8 +171,8 @@ export interface ComponentEntry {
    * component's .docs.md otherwise.
    */
   primaryProps: PropDefinition[];
-  /** The complete API, with Figma bindings. Not every component has it yet. */
-  api?: ComponentApi;
+  /** The complete API, with Figma bindings. */
+  api: ComponentApi;
 }
 
 export interface Manifest {

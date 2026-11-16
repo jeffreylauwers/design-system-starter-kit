@@ -10,6 +10,21 @@ All notable changes to this project are documented in this file.
 
 Nog niet gepubliceerde wijzigingen. Schrijf nieuwe changelog-entries hieronder; bij de volgende release wordt deze kop gepromoveerd naar het definitieve versienummer.
 
+### components-html: elk component heeft een api-blok
+
+De laatste 19 componenten hebben een `api`-blok (#488): BreadcrumbNavigation, Menu, MenuButton, MenuLink, PageBody, PageFooter, PageHeader, PageLayout, PopoverMenu, TableOfContents, ActionGroup, Body, BreakoutSection, Container, Grid, Stack, Hero, Logo en SkipLink. Daarmee is `api` verplicht in `manifest-schema.json` en `manifest.d.ts`; een nieuw component krijgt er meteen een.
+
+De React-lezer kent nu ook array-props (`items` van TableOfContents, prop-type `array`) en defaults van prop-namen tussen aanhalingstekens (`'aria-label': ariaLabel = 'Acties'`). Een as die verdeeld is over waarden mag nu ook zonder basiswaarde: SkipLink bestaat in Figma alleen met focus.
+
+PopoverMenu heeft geen Figma-matrix en staat ook niet in de lijst van bewust overgeslagen componenten in de README van figma-sync. Dat staat als open punt.
+
+Gevonden drift, nu gelijk aan React:
+
+- MenuButton noemde in `primaryProps` de props `level` en `current`; die heeft MenuButton niet (MenuLink wel).
+- ActionGroup noemde `orientation`; in React heet die `direction`.
+- Hero noemde `background`; in React heet die `variant`.
+- Logo noemde `decorative`; die prop bestaat niet. Logo heeft `title`.
+
 ### components-html: api-blok voor content
 
 ButtonLink, Heading, HeadingGroup, Icon, IconList, Link, LinkButton, OrderedList, Paragraph, PreHeading en UnorderedList hebben een `api`-blok (#488). ButtonLink en LinkButton hebben geen eigen set in Figma (dat zijn Button en Link), Icon ook niet (de iconen zijn losse componenten op `dsn/Icons`). De `name` van Icon noemt alle 51 iconen; een nieuw icoon laat `tests/manifest-react.test.ts` falen tot het ook in de manifest staat.

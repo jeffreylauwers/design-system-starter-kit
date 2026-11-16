@@ -308,7 +308,7 @@ the checked-in `manifest.json` differs from what the parts produce.
 
 ### The `api` block
 
-`primaryProps` is a curated summary. A component can also carry an `api` block
+`primaryProps` is a curated summary. Every component also has an `api` block
 with its complete public API: every prop (except `className`), its slots, its
 interaction states, and how each of them appears in the generated Figma
 component set:
@@ -390,9 +390,9 @@ later instead of a guessed answer. List them all, as a Markdown table:
 pnpm --filter @dsn-starter-kit/components-html report:figma-open
 ```
 
-That test file also lists the components that do not have an `api` block yet
-(`WITHOUT_API`, issue #488). The list only shrinks: a new component gets an
-`api` block straight away.
+Every component has an `api` block; the schema requires it. A component
+without a Figma set (Body, Icon, the layout components, ButtonLink and the
+like) binds every part to `none`, with the reason it has no set.
 
 ## Assets
 

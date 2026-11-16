@@ -6,6 +6,10 @@
   "platforms": ["html-css", "react"],
   "primaryProps": [
     {
+      "name": "href",
+      "type": "string"
+    },
+    {
       "name": "level",
       "values": [1, 2, 3, 4],
       "default": 1
@@ -20,5 +24,164 @@
       "type": "boolean",
       "default": false
     }
-  ]
+  ],
+  "api": {
+    "props": [
+      {
+        "name": "href",
+        "type": "string",
+        "figma": [
+          {
+            "kind": "none",
+            "reason": "De bestemming van de link, niet het uiterlijk."
+          }
+        ]
+      },
+      {
+        "name": "level",
+        "values": [1, 2, 3, 4],
+        "default": 1,
+        "figma": [
+          {
+            "kind": "variant",
+            "property": "level",
+            "values": ["1", "2", "3"],
+            "reason": "Level 4 staat niet in de Figma-matrix van MenuLink.",
+            "open": true
+          }
+        ]
+      },
+      {
+        "name": "current",
+        "type": "boolean",
+        "default": false,
+        "figma": [
+          {
+            "kind": "variant",
+            "property": "state",
+            "value": "current"
+          }
+        ]
+      },
+      {
+        "name": "iconStart",
+        "type": "ReactNode",
+        "figma": [
+          {
+            "kind": "none",
+            "reason": "Nog niet in de Figma-matrix van MenuLink.",
+            "open": true
+          }
+        ]
+      },
+      {
+        "name": "iconEnd",
+        "type": "ReactNode",
+        "figma": [
+          {
+            "kind": "none",
+            "reason": "Nog niet in de Figma-matrix van MenuLink.",
+            "open": true
+          }
+        ]
+      },
+      {
+        "name": "numberBadge",
+        "type": "ReactNode",
+        "figma": [
+          {
+            "kind": "none",
+            "reason": "Nog niet in de Figma-matrix van MenuLink.",
+            "open": true
+          }
+        ]
+      },
+      {
+        "name": "subItems",
+        "type": "boolean",
+        "default": false,
+        "figma": [
+          {
+            "kind": "variant",
+            "property": "expand",
+            "values": ["with-expand", "no-expand"]
+          }
+        ]
+      },
+      {
+        "name": "expanded",
+        "type": "boolean",
+        "default": false,
+        "figma": [
+          {
+            "kind": "none",
+            "reason": "Nog niet in de Figma-matrix van MenuLink.",
+            "open": true
+          }
+        ]
+      },
+      {
+        "name": "onExpandToggle",
+        "type": "function",
+        "figma": [
+          {
+            "kind": "none",
+            "reason": "Gedrag, geen uiterlijk."
+          }
+        ]
+      },
+      {
+        "name": "children",
+        "type": "ReactNode",
+        "slots": ["label"]
+      }
+    ],
+    "slots": [
+      {
+        "name": "label",
+        "element": "dsn-menu-link",
+        "description": "De tekst van de link.",
+        "figma": [
+          {
+            "kind": "none",
+            "reason": "Geen property: de inhoud pas je in een instance aan op de lagen zelf."
+          }
+        ]
+      }
+    ],
+    "states": [
+      {
+        "name": "hover",
+        "selector": ":hover",
+        "figma": [
+          {
+            "kind": "none",
+            "reason": "Nog niet in de Figma-matrix van MenuLink.",
+            "open": true
+          }
+        ]
+      },
+      {
+        "name": "active",
+        "selector": ":active",
+        "figma": [
+          {
+            "kind": "none",
+            "reason": "Nog niet in de Figma-matrix van MenuLink.",
+            "open": true
+          }
+        ]
+      },
+      {
+        "name": "focus-visible",
+        "selector": ":focus-visible",
+        "figma": [
+          {
+            "kind": "none",
+            "reason": "In Figma kun je niet met de tabtoets door een prototype; Figma is voor het snel uitwerken van ideeën, niet voor toetsenbordgedrag."
+          }
+        ]
+      }
+    ]
+  }
 }

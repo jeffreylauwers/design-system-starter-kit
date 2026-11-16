@@ -4,16 +4,124 @@
   "category": "navigation",
   "purpose": "Navigation button for JavaScript actions (logout, open modal); semantically a <button>, visually consistent with MenuLink.",
   "platforms": ["html-css", "react"],
-  "primaryProps": [
-    {
-      "name": "level",
-      "values": [1, 2, 3, 4],
-      "default": 1
-    },
-    {
-      "name": "current",
-      "type": "boolean",
-      "default": false
-    }
-  ]
+  "primaryProps": [],
+  "api": {
+    "props": [
+      {
+        "name": "iconStart",
+        "type": "ReactNode",
+        "slots": ["icon-start"]
+      },
+      {
+        "name": "iconEnd",
+        "type": "ReactNode",
+        "slots": ["icon-end"]
+      },
+      {
+        "name": "dotBadge",
+        "type": "ReactNode",
+        "figma": [
+          {
+            "kind": "none",
+            "reason": "Nog niet in de Figma-matrix van MenuButton.",
+            "open": true
+          }
+        ]
+      },
+      {
+        "name": "type",
+        "type": "string",
+        "default": "button",
+        "native": true,
+        "figma": [
+          {
+            "kind": "none",
+            "reason": "Bepaalt gedrag in een formulier, niet het uiterlijk."
+          }
+        ]
+      },
+      {
+        "name": "children",
+        "type": "ReactNode",
+        "slots": ["label"]
+      }
+    ],
+    "slots": [
+      {
+        "name": "icon-start",
+        "element": "dsn-icon",
+        "description": "Icoon vóór de tekst.",
+        "figma": [
+          {
+            "kind": "boolean",
+            "property": "showIconStart"
+          },
+          {
+            "kind": "instance-swap",
+            "property": "iconStart"
+          }
+        ]
+      },
+      {
+        "name": "label",
+        "element": "dsn-menu-button",
+        "description": "De tekst.",
+        "figma": [
+          {
+            "kind": "text",
+            "property": "label"
+          }
+        ]
+      },
+      {
+        "name": "icon-end",
+        "element": "dsn-icon",
+        "description": "Icoon na de tekst.",
+        "figma": [
+          {
+            "kind": "boolean",
+            "property": "showIconEnd"
+          },
+          {
+            "kind": "instance-swap",
+            "property": "iconEnd"
+          }
+        ]
+      }
+    ],
+    "states": [
+      {
+        "name": "hover",
+        "selector": ":hover",
+        "figma": [
+          {
+            "kind": "variant",
+            "property": "state",
+            "value": "hover"
+          }
+        ]
+      },
+      {
+        "name": "active",
+        "selector": ":active",
+        "figma": [
+          {
+            "kind": "variant",
+            "property": "state",
+            "value": "active"
+          }
+        ]
+      },
+      {
+        "name": "focus-visible",
+        "selector": ":focus-visible",
+        "figma": [
+          {
+            "kind": "none",
+            "reason": "In Figma kun je niet met de tabtoets door een prototype; Figma is voor het snel uitwerken van ideeën, niet voor toetsenbordgedrag."
+          }
+        ]
+      }
+    ]
+  }
 }

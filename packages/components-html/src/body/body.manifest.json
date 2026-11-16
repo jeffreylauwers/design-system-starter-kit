@@ -4,5 +4,21 @@
   "category": "layout",
   "purpose": "Applies document-level cascade base styles (typography, colour, background) when placed on the <body> element.",
   "platforms": ["html-css", "react"],
-  "primaryProps": []
+  "primaryProps": [],
+  "api": {
+    "props": [
+      {
+        "name": "children",
+        "type": "ReactNode",
+        "figma": [
+          {
+            "kind": "none",
+            "reason": "Geen set in Figma: Body is de documentwortel, en zijn achtergrond- en tekstkleur zitten al in de plaat waar elke component set op staat."
+          }
+        ]
+      }
+    ],
+    "slots": [],
+    "states": []
+  }
 }

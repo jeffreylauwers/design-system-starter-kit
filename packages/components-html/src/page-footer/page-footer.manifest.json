@@ -4,5 +4,93 @@
   "category": "navigation",
   "purpose": "Page footer with accent background, thick top border, and a 4-column grid layout.",
   "platforms": ["html-css", "react"],
-  "primaryProps": []
+  "primaryProps": [
+    {
+      "name": "colorScheme",
+      "values": ["default", "inverse"],
+      "default": "default"
+    }
+  ],
+  "api": {
+    "props": [
+      {
+        "name": "slot1",
+        "type": "ReactNode",
+        "slots": ["column-1"]
+      },
+      {
+        "name": "slot2",
+        "type": "ReactNode",
+        "slots": ["column-2"]
+      },
+      {
+        "name": "slot3",
+        "type": "ReactNode",
+        "slots": ["column-3"]
+      },
+      {
+        "name": "slot4",
+        "type": "ReactNode",
+        "slots": ["column-4"]
+      },
+      {
+        "name": "colorScheme",
+        "values": ["default", "inverse"],
+        "default": "default",
+        "figma": [
+          {
+            "kind": "variant",
+            "property": "colorScheme"
+          }
+        ]
+      }
+    ],
+    "slots": [
+      {
+        "name": "column-1",
+        "element": "dsn-page-footer",
+        "description": "Kolom 1 van de footer.",
+        "figma": [
+          {
+            "kind": "none",
+            "reason": "Geen property: de inhoud pas je in een instance aan op de lagen zelf."
+          }
+        ]
+      },
+      {
+        "name": "column-2",
+        "element": "dsn-page-footer",
+        "description": "Kolom 2 van de footer.",
+        "figma": [
+          {
+            "kind": "none",
+            "reason": "Geen property: de inhoud pas je in een instance aan op de lagen zelf."
+          }
+        ]
+      },
+      {
+        "name": "column-3",
+        "element": "dsn-page-footer",
+        "description": "Kolom 3 van de footer.",
+        "figma": [
+          {
+            "kind": "none",
+            "reason": "Geen property: de inhoud pas je in een instance aan op de lagen zelf."
+          }
+        ]
+      },
+      {
+        "name": "column-4",
+        "element": "dsn-page-footer",
+        "description": "Kolom 4 van de footer.",
+        "figma": [
+          {
+            "kind": "none",
+            "reason": "Geen property: de inhoud pas je in een instance aan op de lagen zelf."
+          }
+        ]
+      }
+    ],
+    "states": []
+  }
 }
