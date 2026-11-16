@@ -106,7 +106,14 @@
         },
         "type": {
           "description": "Type for props that are not enum-style. Use values instead for a fixed set of options.",
-          "enum": ["string", "boolean", "number", "ReactNode"]
+          "enum": [
+            "string",
+            "boolean",
+            "number",
+            "ReactNode",
+            "function",
+            "object"
+          ]
         },
         "values": {
           "type": "array",
@@ -169,7 +176,14 @@
         },
         "type": {
           "description": "Type for props that are not enum-style. Use values instead for a fixed set of options.",
-          "enum": ["string", "boolean", "number", "ReactNode"]
+          "enum": [
+            "string",
+            "boolean",
+            "number",
+            "ReactNode",
+            "function",
+            "object"
+          ]
         },
         "values": {
           "type": "array",
@@ -295,6 +309,11 @@
           "type": "string",
           "pattern": "^[A-Z][A-Za-z0-9]*$",
           "description": "For a component property that belongs to a nested, exposed instance rather than to this component set: the name of that nested component."
+        },
+        "unset": {
+          "type": "string",
+          "minLength": 1,
+          "description": "Variant bindings of an enum prop without a default: the axis value that stands for the prop not being set (auto). It comes first on the axis, before the prop's values."
         }
       }
     }

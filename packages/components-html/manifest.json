@@ -508,7 +508,59 @@
       "platforms": ["html-css", "react"],
       "primaryProps": [
         { "name": "disabled", "type": "boolean", "default": false }
-      ]
+      ],
+      "api": {
+        "props": [
+          {
+            "name": "invalid",
+            "type": "boolean",
+            "default": false,
+            "figma": [{ "kind": "variant", "property": "invalid" }]
+          },
+          {
+            "name": "value",
+            "type": "string",
+            "native": true,
+            "figma": [
+              { "kind": "variant", "property": "showValue" },
+              { "kind": "text", "property": "value" }
+            ]
+          },
+          {
+            "name": "placeholder",
+            "type": "string",
+            "native": true,
+            "figma": [
+              { "kind": "variant", "property": "showPlaceholder" },
+              { "kind": "text", "property": "placeholder" }
+            ]
+          },
+          {
+            "name": "disabled",
+            "type": "boolean",
+            "default": false,
+            "native": true,
+            "figma": [{ "kind": "variant", "property": "disabled" }]
+          }
+        ],
+        "slots": [],
+        "states": [
+          {
+            "name": "hover",
+            "selector": ":hover",
+            "figma": [
+              { "kind": "variant", "property": "state", "value": "hover" }
+            ]
+          },
+          {
+            "name": "focus",
+            "selector": ":focus",
+            "figma": [
+              { "kind": "variant", "property": "state", "value": "focus" }
+            ]
+          }
+        ]
+      }
     },
     {
       "name": "DateInputGroup",
@@ -516,7 +568,55 @@
       "category": "form-input",
       "purpose": "Three separate day/month/year NumberInput fields; more accessible than a native date picker.",
       "platforms": ["html-css", "react"],
-      "primaryProps": []
+      "primaryProps": [],
+      "api": {
+        "props": [
+          {
+            "name": "value",
+            "type": "object",
+            "figma": [
+              {
+                "kind": "none",
+                "reason": "Nog niet in de Figma-matrix van DateInputGroup."
+              }
+            ]
+          },
+          {
+            "name": "onChange",
+            "type": "function",
+            "figma": [{ "kind": "none", "reason": "Gedrag, geen uiterlijk." }]
+          },
+          {
+            "name": "invalid",
+            "type": "boolean",
+            "default": false,
+            "figma": [{ "kind": "variant", "property": "invalid" }]
+          },
+          {
+            "name": "disabled",
+            "type": "boolean",
+            "default": false,
+            "figma": [
+              {
+                "kind": "none",
+                "reason": "Nog niet in de Figma-matrix van DateInputGroup."
+              }
+            ]
+          },
+          {
+            "name": "id",
+            "type": "string",
+            "figma": [
+              {
+                "kind": "none",
+                "reason": "Koppelt de velden aan hun label in code, niet aan het uiterlijk."
+              }
+            ]
+          }
+        ],
+        "slots": [],
+        "states": []
+      }
     },
     {
       "name": "Details",
@@ -566,9 +666,70 @@
         {
           "name": "inlineSize",
           "values": ["md", "lg", "xl", "full"],
-          "default": "full"
+          "default": null
         }
-      ]
+      ],
+      "api": {
+        "props": [
+          {
+            "name": "invalid",
+            "type": "boolean",
+            "default": false,
+            "figma": [
+              {
+                "kind": "none",
+                "reason": "Geen eigen set in Figma: in Figma is dit een TextInput (dezelfde dsn-text-input)."
+              }
+            ]
+          },
+          {
+            "name": "inlineSize",
+            "values": ["md", "lg", "xl", "full"],
+            "default": null,
+            "figma": [
+              {
+                "kind": "none",
+                "reason": "Geen eigen set in Figma: in Figma is dit een TextInput (dezelfde dsn-text-input)."
+              }
+            ]
+          },
+          {
+            "name": "disabled",
+            "type": "boolean",
+            "default": false,
+            "native": true,
+            "figma": [
+              {
+                "kind": "none",
+                "reason": "Geen eigen set in Figma: in Figma is dit een TextInput (dezelfde dsn-text-input)."
+              }
+            ]
+          }
+        ],
+        "slots": [],
+        "states": [
+          {
+            "name": "hover",
+            "selector": ":hover",
+            "figma": [
+              {
+                "kind": "none",
+                "reason": "Geen eigen set in Figma: in Figma is dit een TextInput (dezelfde dsn-text-input)."
+              }
+            ]
+          },
+          {
+            "name": "focus",
+            "selector": ":focus",
+            "figma": [
+              {
+                "kind": "none",
+                "reason": "Geen eigen set in Figma: in Figma is dit een TextInput (dezelfde dsn-text-input)."
+              }
+            ]
+          }
+        ]
+      }
     },
     {
       "name": "File",
@@ -603,7 +764,75 @@
       "primaryProps": [
         { "name": "multiple", "type": "boolean", "default": false },
         { "name": "accept", "type": "string", "default": null }
-      ]
+      ],
+      "api": {
+        "props": [
+          {
+            "name": "invalid",
+            "type": "boolean",
+            "default": false,
+            "figma": [{ "kind": "variant", "property": "invalid" }]
+          },
+          {
+            "name": "disabled",
+            "type": "boolean",
+            "default": false,
+            "native": true,
+            "figma": [{ "kind": "variant", "property": "disabled" }]
+          },
+          {
+            "name": "multiple",
+            "type": "boolean",
+            "default": false,
+            "native": true,
+            "figma": [
+              {
+                "kind": "none",
+                "reason": "Bepaalt welke bestanden je kunt kiezen, niet het uiterlijk."
+              }
+            ]
+          },
+          {
+            "name": "accept",
+            "type": "string",
+            "default": null,
+            "native": true,
+            "figma": [
+              {
+                "kind": "none",
+                "reason": "Bepaalt welke bestanden je kunt kiezen, niet het uiterlijk."
+              }
+            ]
+          }
+        ],
+        "slots": [],
+        "states": [
+          {
+            "name": "hover",
+            "selector": ":hover",
+            "figma": [
+              { "kind": "variant", "property": "state", "value": "hover" }
+            ]
+          },
+          {
+            "name": "focus",
+            "selector": ":focus",
+            "figma": [
+              { "kind": "variant", "property": "state", "value": "focus" }
+            ]
+          },
+          {
+            "name": "focus-visible",
+            "selector": ":focus-visible",
+            "figma": [
+              {
+                "kind": "none",
+                "reason": "In Figma kun je niet met de tabtoets door een prototype; Figma is voor het snel uitwerken van ideeën, niet voor toetsenbordgedrag."
+              }
+            ]
+          }
+        ]
+      }
     },
     {
       "name": "FormField",
@@ -879,9 +1108,81 @@
         {
           "name": "inlineSize",
           "values": ["xs", "sm", "md", "lg", "xl", "full"],
-          "default": "full"
+          "default": null
         }
-      ]
+      ],
+      "api": {
+        "props": [
+          {
+            "name": "invalid",
+            "type": "boolean",
+            "default": false,
+            "figma": [
+              {
+                "kind": "none",
+                "reason": "Geen eigen set in Figma: in Figma is dit een TextInput (dezelfde dsn-text-input)."
+              }
+            ]
+          },
+          {
+            "name": "inlineSize",
+            "values": ["xs", "sm", "md", "lg", "xl", "full"],
+            "default": null,
+            "figma": [
+              {
+                "kind": "none",
+                "reason": "Geen eigen set in Figma: in Figma is dit een TextInput (dezelfde dsn-text-input)."
+              }
+            ]
+          },
+          {
+            "name": "allowDecimals",
+            "type": "boolean",
+            "default": false,
+            "figma": [
+              {
+                "kind": "none",
+                "reason": "Geen eigen set in Figma: in Figma is dit een TextInput (dezelfde dsn-text-input)."
+              }
+            ]
+          },
+          {
+            "name": "disabled",
+            "type": "boolean",
+            "default": false,
+            "native": true,
+            "figma": [
+              {
+                "kind": "none",
+                "reason": "Geen eigen set in Figma: in Figma is dit een TextInput (dezelfde dsn-text-input)."
+              }
+            ]
+          }
+        ],
+        "slots": [],
+        "states": [
+          {
+            "name": "hover",
+            "selector": ":hover",
+            "figma": [
+              {
+                "kind": "none",
+                "reason": "Geen eigen set in Figma: in Figma is dit een TextInput (dezelfde dsn-text-input)."
+              }
+            ]
+          },
+          {
+            "name": "focus",
+            "selector": ":focus",
+            "figma": [
+              {
+                "kind": "none",
+                "reason": "Geen eigen set in Figma: in Figma is dit een TextInput (dezelfde dsn-text-input)."
+              }
+            ]
+          }
+        ]
+      }
     },
     {
       "name": "OptionLabel",
@@ -981,15 +1282,87 @@
       "primaryProps": [
         {
           "name": "passwordAutocomplete",
-          "values": ["current-password", "new-password"],
+          "values": ["current-password", "new-password", "off"],
           "default": "current-password"
         },
         {
           "name": "inlineSize",
           "values": ["md", "lg", "xl", "full"],
-          "default": "full"
+          "default": null
         }
-      ]
+      ],
+      "api": {
+        "props": [
+          {
+            "name": "invalid",
+            "type": "boolean",
+            "default": false,
+            "figma": [
+              {
+                "kind": "none",
+                "reason": "Geen eigen set in Figma: in Figma is dit een TextInput (dezelfde dsn-text-input)."
+              }
+            ]
+          },
+          {
+            "name": "inlineSize",
+            "values": ["md", "lg", "xl", "full"],
+            "default": null,
+            "figma": [
+              {
+                "kind": "none",
+                "reason": "Geen eigen set in Figma: in Figma is dit een TextInput (dezelfde dsn-text-input)."
+              }
+            ]
+          },
+          {
+            "name": "passwordAutocomplete",
+            "values": ["current-password", "new-password", "off"],
+            "default": "current-password",
+            "figma": [
+              {
+                "kind": "none",
+                "reason": "Geen eigen set in Figma: in Figma is dit een TextInput (dezelfde dsn-text-input)."
+              }
+            ]
+          },
+          {
+            "name": "disabled",
+            "type": "boolean",
+            "default": false,
+            "native": true,
+            "figma": [
+              {
+                "kind": "none",
+                "reason": "Geen eigen set in Figma: in Figma is dit een TextInput (dezelfde dsn-text-input)."
+              }
+            ]
+          }
+        ],
+        "slots": [],
+        "states": [
+          {
+            "name": "hover",
+            "selector": ":hover",
+            "figma": [
+              {
+                "kind": "none",
+                "reason": "Geen eigen set in Figma: in Figma is dit een TextInput (dezelfde dsn-text-input)."
+              }
+            ]
+          },
+          {
+            "name": "focus",
+            "selector": ":focus",
+            "figma": [
+              {
+                "kind": "none",
+                "reason": "Geen eigen set in Figma: in Figma is dit een TextInput (dezelfde dsn-text-input)."
+              }
+            ]
+          }
+        ]
+      }
     },
     {
       "name": "Popover",
@@ -1222,9 +1595,69 @@
         {
           "name": "inlineSize",
           "values": ["md", "lg", "xl", "full"],
-          "default": "full"
+          "default": null
         }
-      ]
+      ],
+      "api": {
+        "props": [
+          {
+            "name": "invalid",
+            "type": "boolean",
+            "default": false,
+            "figma": [{ "kind": "variant", "property": "invalid" }]
+          },
+          {
+            "name": "inlineSize",
+            "values": ["md", "lg", "xl", "full"],
+            "default": null,
+            "figma": [
+              { "kind": "variant", "property": "inlineSize", "unset": "auto" }
+            ]
+          },
+          {
+            "name": "value",
+            "type": "string",
+            "native": true,
+            "figma": [
+              { "kind": "variant", "property": "showValue" },
+              { "kind": "text", "property": "value" }
+            ]
+          },
+          {
+            "name": "placeholder",
+            "type": "string",
+            "native": true,
+            "figma": [
+              { "kind": "variant", "property": "showPlaceholder" },
+              { "kind": "text", "property": "placeholder" }
+            ]
+          },
+          {
+            "name": "disabled",
+            "type": "boolean",
+            "default": false,
+            "native": true,
+            "figma": [{ "kind": "variant", "property": "disabled" }]
+          }
+        ],
+        "slots": [],
+        "states": [
+          {
+            "name": "hover",
+            "selector": ":hover",
+            "figma": [
+              { "kind": "variant", "property": "state", "value": "hover" }
+            ]
+          },
+          {
+            "name": "focus",
+            "selector": ":focus",
+            "figma": [
+              { "kind": "variant", "property": "state", "value": "focus" }
+            ]
+          }
+        ]
+      }
     },
     {
       "name": "Select",
@@ -1238,9 +1671,68 @@
         {
           "name": "inlineSize",
           "values": ["xs", "sm", "md", "lg", "xl", "full"],
-          "default": "full"
+          "default": null
         }
-      ]
+      ],
+      "api": {
+        "props": [
+          {
+            "name": "invalid",
+            "type": "boolean",
+            "default": false,
+            "figma": [{ "kind": "variant", "property": "invalid" }]
+          },
+          {
+            "name": "inlineSize",
+            "values": ["xs", "sm", "md", "lg", "xl", "full"],
+            "default": null,
+            "figma": [
+              { "kind": "variant", "property": "inlineSize", "unset": "auto" }
+            ]
+          },
+          {
+            "name": "value",
+            "type": "string",
+            "native": true,
+            "figma": [{ "kind": "text", "property": "value" }]
+          },
+          {
+            "name": "children",
+            "type": "ReactNode",
+            "native": true,
+            "figma": [
+              {
+                "kind": "none",
+                "reason": "De opties staan in de keuzelijst van de browser; Figma toont alleen de gekozen waarde."
+              }
+            ]
+          },
+          {
+            "name": "disabled",
+            "type": "boolean",
+            "default": false,
+            "native": true,
+            "figma": [{ "kind": "variant", "property": "disabled" }]
+          }
+        ],
+        "slots": [],
+        "states": [
+          {
+            "name": "hover",
+            "selector": ":hover",
+            "figma": [
+              { "kind": "variant", "property": "state", "value": "hover" }
+            ]
+          },
+          {
+            "name": "focus",
+            "selector": ":focus",
+            "figma": [
+              { "kind": "variant", "property": "state", "value": "focus" }
+            ]
+          }
+        ]
+      }
     },
     {
       "name": "SkipLink",
@@ -1343,7 +1835,68 @@
           "values": ["md", "lg", "xl", "full"],
           "default": "md"
         }
-      ]
+      ],
+      "api": {
+        "props": [
+          {
+            "name": "invalid",
+            "type": "boolean",
+            "default": false,
+            "figma": [
+              {
+                "kind": "none",
+                "reason": "Geen eigen set in Figma: in Figma is dit een TextInput (dezelfde dsn-text-input)."
+              }
+            ]
+          },
+          {
+            "name": "inlineSize",
+            "values": ["md", "lg", "xl", "full"],
+            "default": "md",
+            "figma": [
+              {
+                "kind": "none",
+                "reason": "Geen eigen set in Figma: in Figma is dit een TextInput (dezelfde dsn-text-input)."
+              }
+            ]
+          },
+          {
+            "name": "disabled",
+            "type": "boolean",
+            "default": false,
+            "native": true,
+            "figma": [
+              {
+                "kind": "none",
+                "reason": "Geen eigen set in Figma: in Figma is dit een TextInput (dezelfde dsn-text-input)."
+              }
+            ]
+          }
+        ],
+        "slots": [],
+        "states": [
+          {
+            "name": "hover",
+            "selector": ":hover",
+            "figma": [
+              {
+                "kind": "none",
+                "reason": "Geen eigen set in Figma: in Figma is dit een TextInput (dezelfde dsn-text-input)."
+              }
+            ]
+          },
+          {
+            "name": "focus",
+            "selector": ":focus",
+            "figma": [
+              {
+                "kind": "none",
+                "reason": "Geen eigen set in Figma: in Figma is dit een TextInput (dezelfde dsn-text-input)."
+              }
+            ]
+          }
+        ]
+      }
     },
     {
       "name": "TextArea",
@@ -1358,9 +1911,81 @@
         {
           "name": "inlineSize",
           "values": ["md", "lg", "xl", "full"],
-          "default": "full"
+          "default": null
         }
-      ]
+      ],
+      "api": {
+        "props": [
+          {
+            "name": "invalid",
+            "type": "boolean",
+            "default": false,
+            "figma": [{ "kind": "variant", "property": "invalid" }]
+          },
+          {
+            "name": "inlineSize",
+            "values": ["md", "lg", "xl", "full"],
+            "default": null,
+            "figma": [
+              { "kind": "variant", "property": "inlineSize", "unset": "auto" }
+            ]
+          },
+          {
+            "name": "value",
+            "type": "string",
+            "native": true,
+            "figma": [
+              { "kind": "variant", "property": "showValue" },
+              { "kind": "text", "property": "value" }
+            ]
+          },
+          {
+            "name": "placeholder",
+            "type": "string",
+            "native": true,
+            "figma": [
+              { "kind": "variant", "property": "showPlaceholder" },
+              { "kind": "text", "property": "placeholder" }
+            ]
+          },
+          {
+            "name": "disabled",
+            "type": "boolean",
+            "default": false,
+            "native": true,
+            "figma": [{ "kind": "variant", "property": "disabled" }]
+          },
+          {
+            "name": "rows",
+            "type": "number",
+            "default": 4,
+            "native": true,
+            "figma": [
+              {
+                "kind": "none",
+                "reason": "Nog niet in de Figma-matrix van TextArea."
+              }
+            ]
+          }
+        ],
+        "slots": [],
+        "states": [
+          {
+            "name": "hover",
+            "selector": ":hover",
+            "figma": [
+              { "kind": "variant", "property": "state", "value": "hover" }
+            ]
+          },
+          {
+            "name": "focus",
+            "selector": ":focus",
+            "figma": [
+              { "kind": "variant", "property": "state", "value": "focus" }
+            ]
+          }
+        ]
+      }
     },
     {
       "name": "TextInput",
@@ -1374,9 +1999,81 @@
         {
           "name": "inlineSize",
           "values": ["xs", "sm", "md", "lg", "xl", "full"],
-          "default": "full"
+          "default": null
         }
-      ]
+      ],
+      "api": {
+        "props": [
+          {
+            "name": "invalid",
+            "type": "boolean",
+            "default": false,
+            "figma": [{ "kind": "variant", "property": "invalid" }]
+          },
+          {
+            "name": "inlineSize",
+            "values": ["xs", "sm", "md", "lg", "xl", "full"],
+            "default": null,
+            "figma": [
+              { "kind": "variant", "property": "inlineSize", "unset": "auto" }
+            ]
+          },
+          {
+            "name": "value",
+            "type": "string",
+            "native": true,
+            "figma": [
+              { "kind": "variant", "property": "showValue" },
+              { "kind": "text", "property": "value" }
+            ]
+          },
+          {
+            "name": "placeholder",
+            "type": "string",
+            "native": true,
+            "figma": [
+              { "kind": "variant", "property": "showPlaceholder" },
+              { "kind": "text", "property": "placeholder" }
+            ]
+          },
+          {
+            "name": "disabled",
+            "type": "boolean",
+            "default": false,
+            "native": true,
+            "figma": [{ "kind": "variant", "property": "disabled" }]
+          },
+          {
+            "name": "type",
+            "type": "string",
+            "default": "text",
+            "native": true,
+            "figma": [
+              {
+                "kind": "none",
+                "reason": "Het invoertype bepaalt gedrag en toetsenbord, niet het uiterlijk."
+              }
+            ]
+          }
+        ],
+        "slots": [],
+        "states": [
+          {
+            "name": "hover",
+            "selector": ":hover",
+            "figma": [
+              { "kind": "variant", "property": "state", "value": "hover" }
+            ]
+          },
+          {
+            "name": "focus",
+            "selector": ":focus",
+            "figma": [
+              { "kind": "variant", "property": "state", "value": "focus" }
+            ]
+          }
+        ]
+      }
     },
     {
       "name": "TimeInput",
@@ -1386,7 +2083,59 @@
       "platforms": ["html-css", "react"],
       "primaryProps": [
         { "name": "disabled", "type": "boolean", "default": false }
-      ]
+      ],
+      "api": {
+        "props": [
+          {
+            "name": "invalid",
+            "type": "boolean",
+            "default": false,
+            "figma": [{ "kind": "variant", "property": "invalid" }]
+          },
+          {
+            "name": "value",
+            "type": "string",
+            "native": true,
+            "figma": [
+              { "kind": "variant", "property": "showValue" },
+              { "kind": "text", "property": "value" }
+            ]
+          },
+          {
+            "name": "placeholder",
+            "type": "string",
+            "native": true,
+            "figma": [
+              { "kind": "variant", "property": "showPlaceholder" },
+              { "kind": "text", "property": "placeholder" }
+            ]
+          },
+          {
+            "name": "disabled",
+            "type": "boolean",
+            "default": false,
+            "native": true,
+            "figma": [{ "kind": "variant", "property": "disabled" }]
+          }
+        ],
+        "slots": [],
+        "states": [
+          {
+            "name": "hover",
+            "selector": ":hover",
+            "figma": [
+              { "kind": "variant", "property": "state", "value": "hover" }
+            ]
+          },
+          {
+            "name": "focus",
+            "selector": ":focus",
+            "figma": [
+              { "kind": "variant", "property": "state", "value": "focus" }
+            ]
+          }
+        ]
+      }
     },
     {
       "name": "UnorderedList",

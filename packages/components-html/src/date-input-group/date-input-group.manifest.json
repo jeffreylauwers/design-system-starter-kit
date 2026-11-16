@@ -4,5 +4,63 @@
   "category": "form-input",
   "purpose": "Three separate day/month/year NumberInput fields; more accessible than a native date picker.",
   "platforms": ["html-css", "react"],
-  "primaryProps": []
+  "primaryProps": [],
+  "api": {
+    "props": [
+      {
+        "name": "value",
+        "type": "object",
+        "figma": [
+          {
+            "kind": "none",
+            "reason": "Nog niet in de Figma-matrix van DateInputGroup."
+          }
+        ]
+      },
+      {
+        "name": "onChange",
+        "type": "function",
+        "figma": [
+          {
+            "kind": "none",
+            "reason": "Gedrag, geen uiterlijk."
+          }
+        ]
+      },
+      {
+        "name": "invalid",
+        "type": "boolean",
+        "default": false,
+        "figma": [
+          {
+            "kind": "variant",
+            "property": "invalid"
+          }
+        ]
+      },
+      {
+        "name": "disabled",
+        "type": "boolean",
+        "default": false,
+        "figma": [
+          {
+            "kind": "none",
+            "reason": "Nog niet in de Figma-matrix van DateInputGroup."
+          }
+        ]
+      },
+      {
+        "name": "id",
+        "type": "string",
+        "figma": [
+          {
+            "kind": "none",
+            "reason": "Koppelt de velden aan hun label in code, niet aan het uiterlijk."
+          }
+        ]
+      }
+    ],
+    "slots": [],
+    "states": []
+  }
 }

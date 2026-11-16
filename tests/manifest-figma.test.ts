@@ -59,14 +59,10 @@ const WITHOUT_API = new Set([
   'Card',
   'Container',
   'DataList',
-  'DateInput',
-  'DateInputGroup',
   'Details',
   'DotBadge',
   'Drawer',
-  'EmailInput',
   'File',
-  'FileInput',
   'FormField',
   'FormFieldDescription',
   'FormFieldErrorMessage',
@@ -90,30 +86,22 @@ const WITHOUT_API = new Set([
   'ModalDialog',
   'Note',
   'NumberBadge',
-  'NumberInput',
   'OrderedList',
   'PageBody',
   'PageFooter',
   'PageHeader',
   'PageLayout',
   'Paragraph',
-  'PasswordInput',
   'Popover',
   'PopoverMenu',
   'PreHeading',
   'ProgressBar',
-  'SearchInput',
-  'Select',
   'SkipLink',
   'Spinner',
   'Stack',
   'StatusBadge',
   'Table',
   'TableOfContents',
-  'TelephoneInput',
-  'TextArea',
-  'TextInput',
-  'TimeInput',
   'UnorderedList',
 ]);
 
@@ -236,9 +224,13 @@ describe('manifest-api versus Figma-matrix', () => {
               );
             } else {
               const prop = part as ApiProp;
-              // Een enum is zijn waarden; al het andere (een boolean, of de
-              // aanwezigheid van een tekst) is een vlag.
-              const expected = prop.values?.map(String) ?? FLAG;
+              // Een enum is zijn waarden, met de waarde voor "niet gezet"
+              // ervoor als de prop geen default heeft; al het andere (een
+              // boolean, of de aanwezigheid van een tekst) is een vlag.
+              const { unset } = whole[0].binding;
+              const expected = prop.values
+                ? [...(unset ? [unset] : []), ...prop.values.map(String)]
+                : FLAG;
               expect(values, `waarden van as '${axis}'`).toEqual(expected);
             }
             continue;
@@ -273,7 +265,9 @@ describe('manifest-api versus Figma-matrix', () => {
         expect(fromMatrix).toEqual(fromManifest);
       });
 
-      it('een slot-property hangt aan het slot met dezelfde naam', () => {
+      it('hangt een property aan een manifest-slot, dan heet dat slot zo', () => {
+        // Een property kan ook aan een prop hangen (value en placeholder van
+        // een tekstveld): dat is een attribuut, geen inhoud.
         for (const property of matrix.componentProperties ?? []) {
           if (!property.slot) continue;
           const owner = component.api!.slots.find((slot) =>
@@ -282,9 +276,11 @@ describe('manifest-api versus Figma-matrix', () => {
                 !binding.instance && binding.property === property.name
             )
           );
-          expect(owner?.name, `slot van '${property.name}'`).toBe(
-            property.slot
-          );
+          if (owner) {
+            expect(owner.name, `slot van '${property.name}'`).toBe(
+              property.slot
+            );
+          }
         }
       });
 

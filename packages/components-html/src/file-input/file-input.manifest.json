@@ -15,5 +15,91 @@
       "type": "string",
       "default": null
     }
-  ]
+  ],
+  "api": {
+    "props": [
+      {
+        "name": "invalid",
+        "type": "boolean",
+        "default": false,
+        "figma": [
+          {
+            "kind": "variant",
+            "property": "invalid"
+          }
+        ]
+      },
+      {
+        "name": "disabled",
+        "type": "boolean",
+        "default": false,
+        "native": true,
+        "figma": [
+          {
+            "kind": "variant",
+            "property": "disabled"
+          }
+        ]
+      },
+      {
+        "name": "multiple",
+        "type": "boolean",
+        "default": false,
+        "native": true,
+        "figma": [
+          {
+            "kind": "none",
+            "reason": "Bepaalt welke bestanden je kunt kiezen, niet het uiterlijk."
+          }
+        ]
+      },
+      {
+        "name": "accept",
+        "type": "string",
+        "default": null,
+        "native": true,
+        "figma": [
+          {
+            "kind": "none",
+            "reason": "Bepaalt welke bestanden je kunt kiezen, niet het uiterlijk."
+          }
+        ]
+      }
+    ],
+    "slots": [],
+    "states": [
+      {
+        "name": "hover",
+        "selector": ":hover",
+        "figma": [
+          {
+            "kind": "variant",
+            "property": "state",
+            "value": "hover"
+          }
+        ]
+      },
+      {
+        "name": "focus",
+        "selector": ":focus",
+        "figma": [
+          {
+            "kind": "variant",
+            "property": "state",
+            "value": "focus"
+          }
+        ]
+      },
+      {
+        "name": "focus-visible",
+        "selector": ":focus-visible",
+        "figma": [
+          {
+            "kind": "none",
+            "reason": "In Figma kun je niet met de tabtoets door een prototype; Figma is voor het snel uitwerken van ideeën, niet voor toetsenbordgedrag."
+          }
+        ]
+      }
+    ]
+  }
 }

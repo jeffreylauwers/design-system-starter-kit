@@ -43,7 +43,7 @@ export interface PropDefinition {
   /** Allowed string or number values for enum-style props. */
   values?: (string | number)[];
   /** Type for non-enum props. */
-  type?: 'string' | 'boolean' | 'number' | 'ReactNode';
+  type?: 'string' | 'boolean' | 'number' | 'ReactNode' | 'function' | 'object';
   /** Default value. Null means the prop is optional with no default behaviour. */
   default?: string | number | boolean | null;
   /** Whether the prop is required. Omitting means optional. */
@@ -78,6 +78,12 @@ export interface FigmaBinding {
    * its OptionLabel).
    */
   instance?: string;
+  /**
+   * An enum prop without a default: the axis value that stands for the prop
+   * not being set (`auto` on the `inlineSize` axis of TextInput). It comes
+   * first on the axis.
+   */
+  unset?: string;
   /** Required for `none`; otherwise an optional explanation. */
   reason?: string;
 }

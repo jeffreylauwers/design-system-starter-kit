@@ -18,7 +18,93 @@
     {
       "name": "inlineSize",
       "values": ["xs", "sm", "md", "lg", "xl", "full"],
-      "default": "full"
+      "default": null
     }
-  ]
+  ],
+  "api": {
+    "props": [
+      {
+        "name": "invalid",
+        "type": "boolean",
+        "default": false,
+        "figma": [
+          {
+            "kind": "variant",
+            "property": "invalid"
+          }
+        ]
+      },
+      {
+        "name": "inlineSize",
+        "values": ["xs", "sm", "md", "lg", "xl", "full"],
+        "default": null,
+        "figma": [
+          {
+            "kind": "variant",
+            "property": "inlineSize",
+            "unset": "auto"
+          }
+        ]
+      },
+      {
+        "name": "value",
+        "type": "string",
+        "native": true,
+        "figma": [
+          {
+            "kind": "text",
+            "property": "value"
+          }
+        ]
+      },
+      {
+        "name": "children",
+        "type": "ReactNode",
+        "native": true,
+        "figma": [
+          {
+            "kind": "none",
+            "reason": "De opties staan in de keuzelijst van de browser; Figma toont alleen de gekozen waarde."
+          }
+        ]
+      },
+      {
+        "name": "disabled",
+        "type": "boolean",
+        "default": false,
+        "native": true,
+        "figma": [
+          {
+            "kind": "variant",
+            "property": "disabled"
+          }
+        ]
+      }
+    ],
+    "slots": [],
+    "states": [
+      {
+        "name": "hover",
+        "selector": ":hover",
+        "figma": [
+          {
+            "kind": "variant",
+            "property": "state",
+            "value": "hover"
+          }
+        ]
+      },
+      {
+        "name": "focus",
+        "selector": ":focus",
+        "figma": [
+          {
+            "kind": "variant",
+            "property": "state",
+            "value": "focus"
+          }
+        ]
+      }
+    ]
+  }
 }

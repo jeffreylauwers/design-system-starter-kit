@@ -349,18 +349,22 @@ component set:
 
 A Figma binding is one of:
 
-| Kind                               | Meaning                                                                          | Example                                       |
-| ---------------------------------- | -------------------------------------------------------------------------------- | --------------------------------------------- |
-| `variant`                          | The prop, slot or state owns an axis of the component set                        | `size` on Button; a slot that is there or not |
-| `variant` with `value`             | One value of an axis shared by several props or states; one value stays the base | `checked` and `indeterminate` on `state`      |
-| `boolean`, `text`, `instance-swap` | A component property                                                             | `label`, `showIconStart`, `iconStart`         |
-| ... with `instance`                | A component property of a nested, exposed instance                               | the `label` of CheckboxOption, on OptionLabel |
-| `slot`                             | A Figma slot (`data-figma-children` in the matrix)                               | the options of CheckboxGroup                  |
-| `none` with `reason`               | Deliberately not in Figma                                                        | `loading` on Button (#323)                    |
+| Kind                               | Meaning                                                                                    | Example                                       |
+| ---------------------------------- | ------------------------------------------------------------------------------------------ | --------------------------------------------- |
+| `variant`                          | The prop, slot or state owns an axis of the component set                                  | `size` on Button; a slot that is there or not |
+| `variant` with `unset`             | An enum prop without a default; `unset` is the axis value for "not set", first on the axis | `auto` on the `inlineSize` axis of TextInput  |
+| `variant` with `value`             | One value of an axis shared by several props or states; one value stays the base           | `checked` and `indeterminate` on `state`      |
+| `boolean`, `text`, `instance-swap` | A component property                                                                       | `label`, `showIconStart`, `iconStart`         |
+| ... with `instance`                | A component property of a nested, exposed instance                                         | the `label` of CheckboxOption, on OptionLabel |
+| `slot`                             | A Figma slot (`data-figma-children` in the matrix)                                         | the options of CheckboxGroup                  |
+| `none` with `reason`               | Deliberately not in Figma                                                                  | `loading` on Button (#323)                    |
 
-A prop that owns a whole axis has the axis values as its `values`; a boolean
+A prop that owns a whole axis has the axis values as its `values` (after the
+`unset` value, if any); a boolean
 prop, or a prop whose presence is the axis (a filled-in value or not), owns a
-`false`/`true` axis. A prop that fills a slot takes its binding from that slot.
+`false`/`true` axis. A prop that fills a slot takes its binding from that slot. Besides `string`,
+`boolean`, `number` and `ReactNode`, a prop `type` can be `function` (a
+callback such as `onChange`) or `object` (DateInputGroup's `value`).
 A prop the component inherits from its element's React attributes, such as
 `disabled`, `checked` or `children`, is marked `"native": true`. Props a
 component inherits from another component (`CheckboxOptionProps extends

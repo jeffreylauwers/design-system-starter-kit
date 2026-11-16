@@ -289,6 +289,16 @@ function checkApi(component, at, errors) {
           `${where}/figma: instance hoort alleen bij een component property (boolean, text, instance-swap)`
         );
       }
+      if (
+        binding.unset !== undefined &&
+        (owner !== 'prop' ||
+          binding.kind !== 'variant' ||
+          binding.value !== undefined)
+      ) {
+        errors.push(
+          `${where}/figma: unset hoort alleen bij een prop die een hele variant-as heeft`
+        );
+      }
       if (isState && binding.kind !== 'variant') {
         errors.push(`${where}/figma: een state kan alleen een variant zijn`);
       }

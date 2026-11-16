@@ -20,5 +20,66 @@
       "values": ["md", "lg", "xl", "full"],
       "default": "md"
     }
-  ]
+  ],
+  "api": {
+    "props": [
+      {
+        "name": "invalid",
+        "type": "boolean",
+        "default": false,
+        "figma": [
+          {
+            "kind": "none",
+            "reason": "Geen eigen set in Figma: in Figma is dit een TextInput (dezelfde dsn-text-input)."
+          }
+        ]
+      },
+      {
+        "name": "inlineSize",
+        "values": ["md", "lg", "xl", "full"],
+        "default": "md",
+        "figma": [
+          {
+            "kind": "none",
+            "reason": "Geen eigen set in Figma: in Figma is dit een TextInput (dezelfde dsn-text-input)."
+          }
+        ]
+      },
+      {
+        "name": "disabled",
+        "type": "boolean",
+        "default": false,
+        "native": true,
+        "figma": [
+          {
+            "kind": "none",
+            "reason": "Geen eigen set in Figma: in Figma is dit een TextInput (dezelfde dsn-text-input)."
+          }
+        ]
+      }
+    ],
+    "slots": [],
+    "states": [
+      {
+        "name": "hover",
+        "selector": ":hover",
+        "figma": [
+          {
+            "kind": "none",
+            "reason": "Geen eigen set in Figma: in Figma is dit een TextInput (dezelfde dsn-text-input)."
+          }
+        ]
+      },
+      {
+        "name": "focus",
+        "selector": ":focus",
+        "figma": [
+          {
+            "kind": "none",
+            "reason": "Geen eigen set in Figma: in Figma is dit een TextInput (dezelfde dsn-text-input)."
+          }
+        ]
+      }
+    ]
+  }
 }

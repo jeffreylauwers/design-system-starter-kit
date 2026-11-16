@@ -14,6 +14,7 @@ import {
 import { TEKST } from '../text.js';
 
 import { FLAG, skipFlagCombinations } from '../flags.js';
+import { axisValues } from '../manifest.js';
 
 export default {
   component: 'TextArea',
@@ -34,7 +35,8 @@ export default {
     disabled: FLAG,
     invalid: FLAG,
     ...FIELD_TEXT_AXES,
-    inlineSize: ['auto', 'md', 'lg', 'xl', 'full'],
+    // Uit de manifest: `auto` (niet gezet) en daarna de maten uit React.
+    inlineSize: axisValues('TextArea', 'inlineSize'),
   },
 
   componentProperties: FIELD_TEXT_PROPERTIES,

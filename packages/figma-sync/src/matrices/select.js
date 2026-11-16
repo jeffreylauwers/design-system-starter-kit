@@ -14,6 +14,7 @@ import { icon } from '../icons.js';
 import { TEKST } from '../text.js';
 
 import { FLAG, skipFlagCombinations } from '../flags.js';
+import { axisValues } from '../manifest.js';
 
 export default {
   component: 'Select',
@@ -42,7 +43,8 @@ export default {
     state: ['default', 'hover', 'focus'],
     disabled: FLAG,
     invalid: FLAG,
-    inlineSize: ['auto', 'xs', 'sm', 'md', 'lg', 'xl', 'full'],
+    // Uit de manifest: `auto` (niet gezet) en daarna de maten uit React.
+    inlineSize: axisValues('Select', 'inlineSize'),
   },
 
   skipVariant: skipFlagCombinations({
