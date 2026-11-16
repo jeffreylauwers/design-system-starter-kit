@@ -101,7 +101,8 @@
         "figma": [
           {
             "kind": "none",
-            "reason": "Nog niet in de Figma-matrix van TextArea."
+            "reason": "Nog niet in de Figma-matrix van TextArea.",
+            "open": true
           }
         ]
       }

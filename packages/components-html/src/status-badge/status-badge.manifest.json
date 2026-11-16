@@ -7,8 +7,61 @@
   "primaryProps": [
     {
       "name": "variant",
-      "values": ["neutral", "info", "positive", "negative", "warning"],
+      "values": ["neutral", "positive", "negative", "warning", "info"],
       "default": "neutral"
     }
-  ]
+  ],
+  "api": {
+    "props": [
+      {
+        "name": "variant",
+        "values": ["neutral", "positive", "negative", "warning", "info"],
+        "default": "neutral",
+        "figma": [
+          {
+            "kind": "variant",
+            "property": "variant",
+            "values": ["neutral", "info", "positive", "negative", "warning"]
+          }
+        ]
+      },
+      {
+        "name": "iconStart",
+        "type": "ReactNode",
+        "slots": ["icon"]
+      },
+      {
+        "name": "children",
+        "type": "ReactNode",
+        "required": true,
+        "slots": ["label"]
+      }
+    ],
+    "slots": [
+      {
+        "name": "icon",
+        "element": "dsn-icon",
+        "description": "Icoon vóór de tekst.",
+        "figma": [
+          {
+            "kind": "variant",
+            "property": "icon",
+            "values": ["with-icon", "no-icon"]
+          }
+        ]
+      },
+      {
+        "name": "label",
+        "element": "dsn-status-badge",
+        "description": "De tekst.",
+        "figma": [
+          {
+            "kind": "text",
+            "property": "label"
+          }
+        ]
+      }
+    ],
+    "states": []
+  }
 }

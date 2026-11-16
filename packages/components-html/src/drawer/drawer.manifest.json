@@ -6,9 +6,130 @@
   "platforms": ["html-css", "react"],
   "primaryProps": [
     {
-      "name": "position",
-      "values": ["start", "end"],
-      "default": "end"
+      "name": "side",
+      "values": ["right", "left"],
+      "default": "right"
     }
-  ]
+  ],
+  "api": {
+    "props": [
+      {
+        "name": "isOpen",
+        "type": "boolean",
+        "required": true,
+        "figma": [
+          {
+            "kind": "none",
+            "reason": "Altijd open in Figma: open en dicht is gedrag."
+          }
+        ]
+      },
+      {
+        "name": "onClose",
+        "type": "function",
+        "figma": [
+          {
+            "kind": "none",
+            "reason": "Gedrag, geen uiterlijk."
+          }
+        ]
+      },
+      {
+        "name": "modal",
+        "type": "boolean",
+        "default": true,
+        "figma": [
+          {
+            "kind": "none",
+            "reason": "Nog niet in de Figma-matrix van Drawer.",
+            "open": true
+          }
+        ]
+      },
+      {
+        "name": "triggerRef",
+        "type": "object",
+        "figma": [
+          {
+            "kind": "none",
+            "reason": "Gedrag, geen uiterlijk."
+          }
+        ]
+      },
+      {
+        "name": "side",
+        "values": ["right", "left"],
+        "default": "right",
+        "figma": [
+          {
+            "kind": "variant",
+            "property": "side",
+            "values": ["left", "right"]
+          }
+        ]
+      },
+      {
+        "name": "children",
+        "type": "ReactNode",
+        "slots": ["header", "body", "footer"]
+      }
+    ],
+    "slots": [
+      {
+        "name": "header",
+        "element": "dsn-drawer__header",
+        "description": "De kop met de sluitknop (DrawerHeader).",
+        "figma": [
+          {
+            "kind": "none",
+            "reason": "De header is bewust geen slot: in code zet de header de sluitknop er altijd zelf in, en een slot zou toelaten dat een designer die weghaalt."
+          }
+        ]
+      },
+      {
+        "name": "body",
+        "element": "dsn-drawer__body",
+        "description": "De inhoud.",
+        "figma": [
+          {
+            "kind": "slot",
+            "property": "body"
+          }
+        ]
+      },
+      {
+        "name": "footer",
+        "element": "dsn-drawer__footer",
+        "description": "De acties onderaan.",
+        "figma": [
+          {
+            "kind": "slot",
+            "property": "footer"
+          }
+        ]
+      }
+    ],
+    "states": [
+      {
+        "name": "focus",
+        "selector": ":focus",
+        "figma": [
+          {
+            "kind": "none",
+            "reason": "In Figma kun je niet met de tabtoets door een prototype; Figma is voor het snel uitwerken van ideeën, niet voor toetsenbordgedrag."
+          }
+        ]
+      },
+      {
+        "name": "focus-visible",
+        "selector": ":focus-visible",
+        "figma": [
+          {
+            "kind": "none",
+            "reason": "In Figma kun je niet met de tabtoets door een prototype; Figma is voor het snel uitwerken van ideeën, niet voor toetsenbordgedrag."
+          }
+        ]
+      }
+    ]
+  }
 }

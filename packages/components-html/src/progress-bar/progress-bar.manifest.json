@@ -15,5 +15,80 @@
       "type": "number",
       "default": 100
     }
-  ]
+  ],
+  "api": {
+    "props": [
+      {
+        "name": "label",
+        "type": "string",
+        "required": true,
+        "figma": [
+          {
+            "kind": "none",
+            "reason": "Nog niet in de Figma-matrix van ProgressBar.",
+            "open": true
+          }
+        ]
+      },
+      {
+        "name": "value",
+        "type": "number",
+        "required": true,
+        "figma": [
+          {
+            "kind": "none",
+            "reason": "Nog niet in de Figma-matrix van ProgressBar.",
+            "open": true
+          }
+        ]
+      },
+      {
+        "name": "max",
+        "type": "number",
+        "default": 100,
+        "figma": [
+          {
+            "kind": "none",
+            "reason": "Nog niet in de Figma-matrix van ProgressBar.",
+            "open": true
+          }
+        ]
+      },
+      {
+        "name": "description",
+        "type": "ReactNode",
+        "figma": [
+          {
+            "kind": "variant",
+            "property": "description",
+            "values": ["with-description", "no-description"]
+          }
+        ]
+      },
+      {
+        "name": "id",
+        "type": "string",
+        "figma": [
+          {
+            "kind": "none",
+            "reason": "Koppelt elementen in code, niet het uiterlijk."
+          }
+        ]
+      },
+      {
+        "name": "hideValue",
+        "type": "boolean",
+        "default": false,
+        "figma": [
+          {
+            "kind": "variant",
+            "property": "value",
+            "values": ["with-value", "no-value"]
+          }
+        ]
+      }
+    ],
+    "slots": [],
+    "states": []
+  }
 }

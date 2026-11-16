@@ -6,6 +6,10 @@
   "platforms": ["html-css", "react"],
   "primaryProps": [
     {
+      "name": "ratio",
+      "values": ["16:9", "4:3", "1:1"]
+    },
+    {
       "name": "src",
       "type": "string",
       "required": true
@@ -16,14 +20,124 @@
       "required": true
     },
     {
-      "name": "aspectRatio",
-      "values": ["1/1", "4/3", "16/9", "3/2"],
-      "default": null
-    },
-    {
       "name": "priority",
       "type": "boolean",
       "default": false
     }
-  ]
+  ],
+  "api": {
+    "props": [
+      {
+        "name": "src",
+        "type": "string",
+        "required": true,
+        "figma": [
+          {
+            "kind": "none",
+            "reason": "Bepaalt welke afbeelding de browser laadt en hoe, niet het uiterlijk van het component."
+          }
+        ]
+      },
+      {
+        "name": "alt",
+        "type": "string",
+        "required": true,
+        "figma": [
+          {
+            "kind": "none",
+            "reason": "Tekst voor schermlezers; niet zichtbaar."
+          }
+        ]
+      },
+      {
+        "name": "width",
+        "type": "number",
+        "required": true,
+        "figma": [
+          {
+            "kind": "none",
+            "reason": "Bepaalt welke afbeelding de browser laadt en hoe, niet het uiterlijk van het component."
+          }
+        ]
+      },
+      {
+        "name": "height",
+        "type": "number",
+        "required": true,
+        "figma": [
+          {
+            "kind": "none",
+            "reason": "Bepaalt welke afbeelding de browser laadt en hoe, niet het uiterlijk van het component."
+          }
+        ]
+      },
+      {
+        "name": "ratio",
+        "values": ["16:9", "4:3", "1:1"],
+        "figma": [
+          {
+            "kind": "variant",
+            "property": "ratio",
+            "values": ["16-9", "4-3", "1-1"]
+          }
+        ]
+      },
+      {
+        "name": "objectFit",
+        "values": ["cover", "contain"],
+        "default": "cover",
+        "figma": [
+          {
+            "kind": "none",
+            "reason": "Nog niet in de Figma-matrix van Image.",
+            "open": true
+          }
+        ]
+      },
+      {
+        "name": "priority",
+        "type": "boolean",
+        "default": false,
+        "figma": [
+          {
+            "kind": "none",
+            "reason": "Bepaalt welke afbeelding de browser laadt en hoe, niet het uiterlijk van het component."
+          }
+        ]
+      },
+      {
+        "name": "caption",
+        "type": "ReactNode",
+        "figma": [
+          {
+            "kind": "variant",
+            "property": "caption",
+            "values": ["with-caption", "no-caption"]
+          }
+        ]
+      },
+      {
+        "name": "srcSet",
+        "type": "string",
+        "figma": [
+          {
+            "kind": "none",
+            "reason": "Bepaalt welke afbeelding de browser laadt en hoe, niet het uiterlijk van het component."
+          }
+        ]
+      },
+      {
+        "name": "sizes",
+        "type": "string",
+        "figma": [
+          {
+            "kind": "none",
+            "reason": "Bepaalt welke afbeelding de browser laadt en hoe, niet het uiterlijk van het component."
+          }
+        ]
+      }
+    ],
+    "slots": [],
+    "states": []
+  }
 }

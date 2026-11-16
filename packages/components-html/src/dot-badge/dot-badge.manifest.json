@@ -15,5 +15,35 @@
       "type": "boolean",
       "default": false
     }
-  ]
+  ],
+  "api": {
+    "props": [
+      {
+        "name": "variant",
+        "values": ["negative", "positive", "warning", "info", "neutral"],
+        "default": "negative",
+        "figma": [
+          {
+            "kind": "variant",
+            "property": "variant",
+            "values": ["neutral", "info", "positive", "negative", "warning"]
+          }
+        ]
+      },
+      {
+        "name": "pulse",
+        "type": "boolean",
+        "default": false,
+        "figma": [
+          {
+            "kind": "none",
+            "reason": "Nog niet in de Figma-matrix van DotBadge.",
+            "open": true
+          }
+        ]
+      }
+    ],
+    "slots": [],
+    "states": []
+  }
 }

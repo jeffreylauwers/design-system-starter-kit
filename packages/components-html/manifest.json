@@ -29,7 +29,71 @@
           "values": ["info", "positive", "negative", "warning"],
           "default": "info"
         }
-      ]
+      ],
+      "api": {
+        "props": [
+          {
+            "name": "variant",
+            "values": ["info", "positive", "negative", "warning"],
+            "default": "info",
+            "figma": [{ "kind": "variant", "property": "variant" }]
+          },
+          {
+            "name": "heading",
+            "type": "string",
+            "required": true,
+            "figma": [
+              { "kind": "text", "property": "label", "instance": "Heading" }
+            ]
+          },
+          {
+            "name": "headingLevel",
+            "values": [1, 2, 3, 4, 5, 6],
+            "default": 2,
+            "figma": [
+              {
+                "kind": "none",
+                "reason": "Bepaalt het HTML-element van de kop; die ziet er altijd uit als heading-3."
+              }
+            ]
+          },
+          { "name": "iconStart", "type": "ReactNode", "slots": ["icon"] },
+          {
+            "name": "variantLabel",
+            "type": "string",
+            "figma": [
+              {
+                "kind": "none",
+                "reason": "Tekst voor schermlezers; niet zichtbaar."
+              }
+            ]
+          },
+          { "name": "children", "type": "ReactNode", "slots": ["content"] }
+        ],
+        "slots": [
+          {
+            "name": "icon",
+            "element": "dsn-alert__icon",
+            "description": "Het icoon; standaard dat van de variant, null haalt het weg.",
+            "figma": [
+              {
+                "kind": "variant",
+                "property": "icon",
+                "values": ["with-icon", "no-icon"]
+              }
+            ]
+          },
+          {
+            "name": "content",
+            "element": "dsn-alert__content",
+            "description": "De tekst van de melding.",
+            "figma": [
+              { "kind": "text", "property": "label", "instance": "Paragraph" }
+            ]
+          }
+        ],
+        "states": []
+      }
     },
     {
       "name": "Backdrop",
@@ -37,7 +101,24 @@
       "category": "display-feedback",
       "purpose": "Fixed full-screen decorative overlay behind a Modal Dialog or Drawer; always aria-hidden.",
       "platforms": ["html-css", "react"],
-      "primaryProps": []
+      "primaryProps": [],
+      "api": {
+        "props": [
+          {
+            "name": "blur",
+            "type": "boolean",
+            "default": true,
+            "figma": [
+              {
+                "kind": "none",
+                "reason": "Geen set in Figma: een verduistering over het hele viewport met alleen een achtergrondkleur. In Figma is dat een rechthoek met een variable."
+              }
+            ]
+          }
+        ],
+        "slots": [],
+        "states": []
+      }
     },
     {
       "name": "Body",
@@ -281,7 +362,98 @@
       "category": "display-feedback",
       "purpose": "Configurable container for structured content (image, heading, description, action) with an optional stretched-link interaction.",
       "platforms": ["html-css", "react"],
-      "primaryProps": []
+      "primaryProps": [],
+      "api": {
+        "props": [
+          {
+            "name": "href",
+            "type": "string",
+            "figma": [
+              {
+                "kind": "none",
+                "reason": "Nog niet in de Figma-matrix van Card.",
+                "open": true
+              }
+            ]
+          },
+          {
+            "name": "children",
+            "type": "ReactNode",
+            "slots": ["pre-header", "header", "body", "footer"]
+          }
+        ],
+        "slots": [
+          {
+            "name": "pre-header",
+            "element": "dsn-card__pre-header",
+            "description": "Beeld boven de kop (CardPreHeader).",
+            "figma": [
+              {
+                "kind": "variant",
+                "property": "preHeader",
+                "values": ["with-pre-header", "no-pre-header"]
+              }
+            ]
+          },
+          {
+            "name": "header",
+            "element": "dsn-card__header",
+            "description": "De kop (CardHeader).",
+            "figma": [
+              {
+                "kind": "none",
+                "reason": "Geen property: de inhoud pas je in een instance aan op de lagen zelf."
+              }
+            ]
+          },
+          {
+            "name": "body",
+            "element": "dsn-card__body",
+            "description": "De inhoud (CardBody).",
+            "figma": [
+              {
+                "kind": "none",
+                "reason": "Geen property: de inhoud pas je in een instance aan op de lagen zelf."
+              }
+            ]
+          },
+          {
+            "name": "footer",
+            "element": "dsn-card__footer",
+            "description": "De voet (CardFooter).",
+            "figma": [
+              {
+                "kind": "variant",
+                "property": "footer",
+                "values": ["with-footer", "no-footer"]
+              }
+            ]
+          }
+        ],
+        "states": [
+          {
+            "name": "hover",
+            "selector": ":hover",
+            "figma": [
+              {
+                "kind": "none",
+                "reason": "Nog niet in de Figma-matrix van Card.",
+                "open": true
+              }
+            ]
+          },
+          {
+            "name": "focus-visible",
+            "selector": ":focus-visible",
+            "figma": [
+              {
+                "kind": "none",
+                "reason": "In Figma kun je niet met de tabtoets door een prototype; Figma is voor het snel uitwerken van ideeën, niet voor toetsenbordgedrag."
+              }
+            ]
+          }
+        ]
+      }
     },
     {
       "name": "Checkbox",
@@ -419,7 +591,8 @@
             "figma": [
               {
                 "kind": "none",
-                "reason": "Nog niet in de Figma-matrix van CheckboxOption."
+                "reason": "Nog niet in de Figma-matrix van CheckboxOption.",
+                "open": true
               }
             ]
           },
@@ -430,7 +603,8 @@
             "figma": [
               {
                 "kind": "none",
-                "reason": "Nog niet in de Figma-matrix van CheckboxOption."
+                "reason": "Nog niet in de Figma-matrix van CheckboxOption.",
+                "open": true
               }
             ]
           },
@@ -498,7 +672,54 @@
       "category": "display-feedback",
       "purpose": "Semantic key-value list (<dl>) for form summaries and metadata overviews with a responsive grid layout.",
       "platforms": ["html-css", "react"],
-      "primaryProps": []
+      "primaryProps": [],
+      "api": {
+        "props": [
+          {
+            "name": "noBorder",
+            "type": "boolean",
+            "default": false,
+            "figma": [
+              {
+                "kind": "variant",
+                "property": "border",
+                "values": ["with-border", "no-border"]
+              }
+            ]
+          },
+          {
+            "name": "children",
+            "type": "ReactNode",
+            "slots": ["rows", "actions"]
+          }
+        ],
+        "slots": [
+          {
+            "name": "rows",
+            "element": "dsn-data-list__row",
+            "description": "De rijen met een sleutel en een waarde (DataListRow).",
+            "figma": [
+              {
+                "kind": "none",
+                "reason": "Geen property: de inhoud pas je in een instance aan op de lagen zelf."
+              }
+            ]
+          },
+          {
+            "name": "actions",
+            "element": "dsn-data-list__actions",
+            "description": "Acties per rij (DataListActions).",
+            "figma": [
+              {
+                "kind": "variant",
+                "property": "actions",
+                "values": ["with-actions", "no-actions"]
+              }
+            ]
+          }
+        ],
+        "states": []
+      }
     },
     {
       "name": "DateInput",
@@ -577,7 +798,8 @@
             "figma": [
               {
                 "kind": "none",
-                "reason": "Nog niet in de Figma-matrix van DateInputGroup."
+                "reason": "Nog niet in de Figma-matrix van DateInputGroup.",
+                "open": true
               }
             ]
           },
@@ -599,7 +821,8 @@
             "figma": [
               {
                 "kind": "none",
-                "reason": "Nog niet in de Figma-matrix van DateInputGroup."
+                "reason": "Nog niet in de Figma-matrix van DateInputGroup.",
+                "open": true
               }
             ]
           },
@@ -627,7 +850,82 @@
       "primaryProps": [
         { "name": "summary", "type": "string", "required": true },
         { "name": "defaultOpen", "type": "boolean", "default": false }
-      ]
+      ],
+      "api": {
+        "props": [
+          {
+            "name": "summary",
+            "type": "string",
+            "required": true,
+            "figma": [{ "kind": "text", "property": "summary" }]
+          },
+          {
+            "name": "defaultOpen",
+            "type": "boolean",
+            "default": false,
+            "figma": [
+              {
+                "kind": "variant",
+                "property": "state",
+                "values": ["closed", "open"]
+              }
+            ]
+          },
+          {
+            "name": "onToggle",
+            "type": "function",
+            "figma": [{ "kind": "none", "reason": "Gedrag, geen uiterlijk." }]
+          },
+          { "name": "children", "type": "ReactNode", "slots": ["content"] }
+        ],
+        "slots": [
+          {
+            "name": "content",
+            "element": "dsn-details__content",
+            "description": "De inhoud die uitklapt.",
+            "figma": [
+              {
+                "kind": "none",
+                "reason": "Geen property: de inhoud pas je in een instance aan op de lagen zelf."
+              }
+            ]
+          }
+        ],
+        "states": [
+          {
+            "name": "hover",
+            "selector": ":hover",
+            "figma": [
+              {
+                "kind": "none",
+                "reason": "Nog niet in de Figma-matrix van Details.",
+                "open": true
+              }
+            ]
+          },
+          {
+            "name": "active",
+            "selector": ":active",
+            "figma": [
+              {
+                "kind": "none",
+                "reason": "Nog niet in de Figma-matrix van Details.",
+                "open": true
+              }
+            ]
+          },
+          {
+            "name": "focus-visible",
+            "selector": ":focus-visible",
+            "figma": [
+              {
+                "kind": "none",
+                "reason": "In Figma kun je niet met de tabtoets door een prototype; Figma is voor het snel uitwerken van ideeën, niet voor toetsenbordgedrag."
+              }
+            ]
+          }
+        ]
+      }
     },
     {
       "name": "DotBadge",
@@ -642,7 +940,37 @@
           "default": "negative"
         },
         { "name": "pulse", "type": "boolean", "default": false }
-      ]
+      ],
+      "api": {
+        "props": [
+          {
+            "name": "variant",
+            "values": ["negative", "positive", "warning", "info", "neutral"],
+            "default": "negative",
+            "figma": [
+              {
+                "kind": "variant",
+                "property": "variant",
+                "values": ["neutral", "info", "positive", "negative", "warning"]
+              }
+            ]
+          },
+          {
+            "name": "pulse",
+            "type": "boolean",
+            "default": false,
+            "figma": [
+              {
+                "kind": "none",
+                "reason": "Nog niet in de Figma-matrix van DotBadge.",
+                "open": true
+              }
+            ]
+          }
+        ],
+        "slots": [],
+        "states": []
+      }
     },
     {
       "name": "Drawer",
@@ -651,8 +979,109 @@
       "purpose": "Slide-in panel from the side of the viewport for secondary navigation or content.",
       "platforms": ["html-css", "react"],
       "primaryProps": [
-        { "name": "position", "values": ["start", "end"], "default": "end" }
-      ]
+        { "name": "side", "values": ["right", "left"], "default": "right" }
+      ],
+      "api": {
+        "props": [
+          {
+            "name": "isOpen",
+            "type": "boolean",
+            "required": true,
+            "figma": [
+              {
+                "kind": "none",
+                "reason": "Altijd open in Figma: open en dicht is gedrag."
+              }
+            ]
+          },
+          {
+            "name": "onClose",
+            "type": "function",
+            "figma": [{ "kind": "none", "reason": "Gedrag, geen uiterlijk." }]
+          },
+          {
+            "name": "modal",
+            "type": "boolean",
+            "default": true,
+            "figma": [
+              {
+                "kind": "none",
+                "reason": "Nog niet in de Figma-matrix van Drawer.",
+                "open": true
+              }
+            ]
+          },
+          {
+            "name": "triggerRef",
+            "type": "object",
+            "figma": [{ "kind": "none", "reason": "Gedrag, geen uiterlijk." }]
+          },
+          {
+            "name": "side",
+            "values": ["right", "left"],
+            "default": "right",
+            "figma": [
+              {
+                "kind": "variant",
+                "property": "side",
+                "values": ["left", "right"]
+              }
+            ]
+          },
+          {
+            "name": "children",
+            "type": "ReactNode",
+            "slots": ["header", "body", "footer"]
+          }
+        ],
+        "slots": [
+          {
+            "name": "header",
+            "element": "dsn-drawer__header",
+            "description": "De kop met de sluitknop (DrawerHeader).",
+            "figma": [
+              {
+                "kind": "none",
+                "reason": "De header is bewust geen slot: in code zet de header de sluitknop er altijd zelf in, en een slot zou toelaten dat een designer die weghaalt."
+              }
+            ]
+          },
+          {
+            "name": "body",
+            "element": "dsn-drawer__body",
+            "description": "De inhoud.",
+            "figma": [{ "kind": "slot", "property": "body" }]
+          },
+          {
+            "name": "footer",
+            "element": "dsn-drawer__footer",
+            "description": "De acties onderaan.",
+            "figma": [{ "kind": "slot", "property": "footer" }]
+          }
+        ],
+        "states": [
+          {
+            "name": "focus",
+            "selector": ":focus",
+            "figma": [
+              {
+                "kind": "none",
+                "reason": "In Figma kun je niet met de tabtoets door een prototype; Figma is voor het snel uitwerken van ideeën, niet voor toetsenbordgedrag."
+              }
+            ]
+          },
+          {
+            "name": "focus-visible",
+            "selector": ":focus-visible",
+            "figma": [
+              {
+                "kind": "none",
+                "reason": "In Figma kun je niet met de tabtoets door een prototype; Figma is voor het snel uitwerken van ideeën, niet voor toetsenbordgedrag."
+              }
+            ]
+          }
+        ]
+      }
     },
     {
       "name": "EmailInput",
@@ -739,7 +1168,7 @@
       "platforms": ["html-css", "react"],
       "primaryProps": [
         {
-          "name": "state",
+          "name": "status",
           "values": ["default", "loading", "uploaded", "error"],
           "default": "default"
         },
@@ -753,7 +1182,212 @@
           "values": ["document", "image"],
           "default": "document"
         }
-      ]
+      ],
+      "api": {
+        "props": [
+          {
+            "name": "fileName",
+            "type": "string",
+            "required": true,
+            "figma": [
+              {
+                "kind": "none",
+                "reason": "Nog niet in de Figma-matrix van File.",
+                "open": true
+              }
+            ]
+          },
+          {
+            "name": "fileType",
+            "type": "string",
+            "figma": [
+              {
+                "kind": "none",
+                "reason": "Nog niet in de Figma-matrix van File.",
+                "open": true
+              }
+            ]
+          },
+          {
+            "name": "fileSize",
+            "type": "string",
+            "figma": [
+              {
+                "kind": "none",
+                "reason": "Nog niet in de Figma-matrix van File.",
+                "open": true
+              }
+            ]
+          },
+          {
+            "name": "status",
+            "values": ["default", "loading", "uploaded", "error"],
+            "default": "default",
+            "figma": [
+              {
+                "kind": "variant",
+                "property": "variant",
+                "values": ["default", "error"],
+                "reason": "loading en uploaded staan nog niet in de Figma-matrix van File.",
+                "open": true
+              }
+            ]
+          },
+          {
+            "name": "errorMessage",
+            "type": "string",
+            "figma": [
+              {
+                "kind": "none",
+                "reason": "Nog niet in de Figma-matrix van File.",
+                "open": true
+              }
+            ]
+          },
+          { "name": "href", "type": "string", "slots": ["actions"] },
+          { "name": "onDelete", "type": "function", "slots": ["actions"] },
+          {
+            "name": "deleteLabel",
+            "type": "string",
+            "default": "Verwijder",
+            "figma": [
+              {
+                "kind": "none",
+                "reason": "Nog niet in de Figma-matrix van File.",
+                "open": true
+              }
+            ]
+          },
+          {
+            "name": "ctaVariant",
+            "values": ["view", "download"],
+            "default": "view",
+            "figma": [
+              {
+                "kind": "none",
+                "reason": "Nog niet in de Figma-matrix van File.",
+                "open": true
+              }
+            ]
+          },
+          {
+            "name": "ctaLabel",
+            "type": "string",
+            "figma": [
+              {
+                "kind": "none",
+                "reason": "Nog niet in de Figma-matrix van File.",
+                "open": true
+              }
+            ]
+          },
+          {
+            "name": "mediaType",
+            "values": ["document", "image"],
+            "default": "document",
+            "figma": [
+              {
+                "kind": "none",
+                "reason": "Nog niet in de Figma-matrix van File.",
+                "open": true
+              }
+            ]
+          },
+          {
+            "name": "previewSrc",
+            "type": "string",
+            "figma": [
+              {
+                "kind": "none",
+                "reason": "Nog niet in de Figma-matrix van File.",
+                "open": true
+              }
+            ]
+          },
+          {
+            "name": "loadingLabel",
+            "type": "string",
+            "default": "Bezig met uploaden",
+            "figma": [
+              {
+                "kind": "none",
+                "reason": "Nog niet in de Figma-matrix van File.",
+                "open": true
+              }
+            ]
+          },
+          {
+            "name": "uploadedLabel",
+            "type": "string",
+            "figma": [
+              {
+                "kind": "none",
+                "reason": "Nog niet in de Figma-matrix van File.",
+                "open": true
+              }
+            ]
+          },
+          {
+            "name": "errorLabel",
+            "type": "string",
+            "figma": [
+              {
+                "kind": "none",
+                "reason": "Nog niet in de Figma-matrix van File.",
+                "open": true
+              }
+            ]
+          }
+        ],
+        "slots": [
+          {
+            "name": "actions",
+            "element": "dsn-file__actions",
+            "description": "De knoppen om het bestand te bekijken of te verwijderen.",
+            "figma": [
+              {
+                "kind": "variant",
+                "property": "actions",
+                "values": ["with-actions", "no-actions"]
+              }
+            ]
+          }
+        ],
+        "states": [
+          {
+            "name": "hover",
+            "selector": ":hover",
+            "figma": [
+              {
+                "kind": "none",
+                "reason": "Nog niet in de Figma-matrix van File.",
+                "open": true
+              }
+            ]
+          },
+          {
+            "name": "active",
+            "selector": ":active",
+            "figma": [
+              {
+                "kind": "none",
+                "reason": "Nog niet in de Figma-matrix van File.",
+                "open": true
+              }
+            ]
+          },
+          {
+            "name": "focus-visible",
+            "selector": ":focus-visible",
+            "figma": [
+              {
+                "kind": "none",
+                "reason": "In Figma kun je niet met de tabtoets door een prototype; Figma is voor het snel uitwerken van ideeën, niet voor toetsenbordgedrag."
+              }
+            ]
+          }
+        ]
+      }
     },
     {
       "name": "FileInput",
@@ -991,15 +1625,126 @@
       "purpose": "Accessible image wrapper with lazy loading, fixed aspect ratios, and LCP priority support.",
       "platforms": ["html-css", "react"],
       "primaryProps": [
+        { "name": "ratio", "values": ["16:9", "4:3", "1:1"] },
         { "name": "src", "type": "string", "required": true },
         { "name": "alt", "type": "string", "required": true },
-        {
-          "name": "aspectRatio",
-          "values": ["1/1", "4/3", "16/9", "3/2"],
-          "default": null
-        },
         { "name": "priority", "type": "boolean", "default": false }
-      ]
+      ],
+      "api": {
+        "props": [
+          {
+            "name": "src",
+            "type": "string",
+            "required": true,
+            "figma": [
+              {
+                "kind": "none",
+                "reason": "Bepaalt welke afbeelding de browser laadt en hoe, niet het uiterlijk van het component."
+              }
+            ]
+          },
+          {
+            "name": "alt",
+            "type": "string",
+            "required": true,
+            "figma": [
+              {
+                "kind": "none",
+                "reason": "Tekst voor schermlezers; niet zichtbaar."
+              }
+            ]
+          },
+          {
+            "name": "width",
+            "type": "number",
+            "required": true,
+            "figma": [
+              {
+                "kind": "none",
+                "reason": "Bepaalt welke afbeelding de browser laadt en hoe, niet het uiterlijk van het component."
+              }
+            ]
+          },
+          {
+            "name": "height",
+            "type": "number",
+            "required": true,
+            "figma": [
+              {
+                "kind": "none",
+                "reason": "Bepaalt welke afbeelding de browser laadt en hoe, niet het uiterlijk van het component."
+              }
+            ]
+          },
+          {
+            "name": "ratio",
+            "values": ["16:9", "4:3", "1:1"],
+            "figma": [
+              {
+                "kind": "variant",
+                "property": "ratio",
+                "values": ["16-9", "4-3", "1-1"]
+              }
+            ]
+          },
+          {
+            "name": "objectFit",
+            "values": ["cover", "contain"],
+            "default": "cover",
+            "figma": [
+              {
+                "kind": "none",
+                "reason": "Nog niet in de Figma-matrix van Image.",
+                "open": true
+              }
+            ]
+          },
+          {
+            "name": "priority",
+            "type": "boolean",
+            "default": false,
+            "figma": [
+              {
+                "kind": "none",
+                "reason": "Bepaalt welke afbeelding de browser laadt en hoe, niet het uiterlijk van het component."
+              }
+            ]
+          },
+          {
+            "name": "caption",
+            "type": "ReactNode",
+            "figma": [
+              {
+                "kind": "variant",
+                "property": "caption",
+                "values": ["with-caption", "no-caption"]
+              }
+            ]
+          },
+          {
+            "name": "srcSet",
+            "type": "string",
+            "figma": [
+              {
+                "kind": "none",
+                "reason": "Bepaalt welke afbeelding de browser laadt en hoe, niet het uiterlijk van het component."
+              }
+            ]
+          },
+          {
+            "name": "sizes",
+            "type": "string",
+            "figma": [
+              {
+                "kind": "none",
+                "reason": "Bepaalt welke afbeelding de browser laadt en hoe, niet het uiterlijk van het component."
+              }
+            ]
+          }
+        ],
+        "slots": [],
+        "states": []
+      }
     },
     {
       "name": "Link",
@@ -1073,7 +1818,96 @@
       "category": "display-feedback",
       "purpose": "Modal dialog for short focused actions; blocks the background via native <dialog> with a focus trap.",
       "platforms": ["html-css", "react"],
-      "primaryProps": []
+      "primaryProps": [],
+      "api": {
+        "props": [
+          {
+            "name": "isOpen",
+            "type": "boolean",
+            "required": true,
+            "figma": [
+              {
+                "kind": "none",
+                "reason": "Altijd open in Figma: open en dicht is gedrag."
+              }
+            ]
+          },
+          {
+            "name": "onClose",
+            "type": "function",
+            "figma": [{ "kind": "none", "reason": "Gedrag, geen uiterlijk." }]
+          },
+          {
+            "name": "triggerRef",
+            "type": "object",
+            "figma": [{ "kind": "none", "reason": "Gedrag, geen uiterlijk." }]
+          },
+          {
+            "name": "alert",
+            "type": "boolean",
+            "default": false,
+            "figma": [
+              {
+                "kind": "none",
+                "reason": "Nog niet in de Figma-matrix van ModalDialog.",
+                "open": true
+              }
+            ]
+          },
+          {
+            "name": "children",
+            "type": "ReactNode",
+            "slots": ["header", "body", "footer"]
+          }
+        ],
+        "slots": [
+          {
+            "name": "header",
+            "element": "dsn-modal-dialog__header",
+            "description": "De kop met de sluitknop (ModalDialogHeader).",
+            "figma": [
+              {
+                "kind": "none",
+                "reason": "De header is bewust geen slot: in code zet de header de sluitknop er altijd zelf in, en een slot zou toelaten dat een designer die weghaalt."
+              }
+            ]
+          },
+          {
+            "name": "body",
+            "element": "dsn-modal-dialog__body",
+            "description": "De inhoud.",
+            "figma": [{ "kind": "slot", "property": "body" }]
+          },
+          {
+            "name": "footer",
+            "element": "dsn-modal-dialog__footer",
+            "description": "De acties onderaan.",
+            "figma": [{ "kind": "slot", "property": "footer" }]
+          }
+        ],
+        "states": [
+          {
+            "name": "focus",
+            "selector": ":focus",
+            "figma": [
+              {
+                "kind": "none",
+                "reason": "In Figma kun je niet met de tabtoets door een prototype; Figma is voor het snel uitwerken van ideeën, niet voor toetsenbordgedrag."
+              }
+            ]
+          },
+          {
+            "name": "focus-visible",
+            "selector": ":focus-visible",
+            "figma": [
+              {
+                "kind": "none",
+                "reason": "In Figma kun je niet met de tabtoets door een prototype; Figma is voor het snel uitwerken van ideeën, niet voor toetsenbordgedrag."
+              }
+            ]
+          }
+        ]
+      }
     },
     {
       "name": "Note",
@@ -1087,7 +1921,84 @@
           "values": ["neutral", "info", "positive", "negative", "warning"],
           "default": "neutral"
         }
-      ]
+      ],
+      "api": {
+        "props": [
+          {
+            "name": "as",
+            "values": ["div", "aside", "nav", "section"],
+            "default": "div",
+            "figma": [
+              {
+                "kind": "none",
+                "reason": "Bepaalt het HTML-element, niet het uiterlijk."
+              }
+            ]
+          },
+          {
+            "name": "variant",
+            "values": ["neutral", "info", "positive", "negative", "warning"],
+            "default": "neutral",
+            "figma": [{ "kind": "variant", "property": "variant" }]
+          },
+          {
+            "name": "heading",
+            "type": "string",
+            "figma": [
+              {
+                "kind": "variant",
+                "property": "heading",
+                "values": ["with-heading", "no-heading"]
+              },
+              { "kind": "text", "property": "label", "instance": "Heading" }
+            ]
+          },
+          {
+            "name": "headingLevel",
+            "values": [1, 2, 3, 4, 5, 6],
+            "default": 3,
+            "figma": [
+              {
+                "kind": "none",
+                "reason": "Bepaalt het HTML-element van de kop; die ziet er altijd uit als heading-3."
+              }
+            ]
+          },
+          {
+            "name": "iconStart",
+            "type": "ReactNode",
+            "figma": [
+              {
+                "kind": "none",
+                "reason": "Nog niet in de Figma-matrix van Note.",
+                "open": true
+              }
+            ]
+          },
+          {
+            "name": "variantLabel",
+            "type": "string",
+            "figma": [
+              {
+                "kind": "none",
+                "reason": "Tekst voor schermlezers; niet zichtbaar."
+              }
+            ]
+          },
+          { "name": "children", "type": "ReactNode", "slots": ["content"] }
+        ],
+        "slots": [
+          {
+            "name": "content",
+            "element": "dsn-note__content",
+            "description": "De tekst van de notitie.",
+            "figma": [
+              { "kind": "text", "property": "label", "instance": "Paragraph" }
+            ]
+          }
+        ],
+        "states": []
+      }
     },
     {
       "name": "NumberBadge",
@@ -1095,7 +2006,48 @@
       "category": "display-feedback",
       "purpose": "Compact inline element displaying a count (unread messages, pending tasks) inside a button or menu item.",
       "platforms": ["html-css", "react"],
-      "primaryProps": []
+      "primaryProps": [],
+      "api": {
+        "props": [
+          {
+            "name": "variant",
+            "values": ["negative", "positive", "warning", "info", "neutral"],
+            "default": "negative",
+            "figma": [
+              {
+                "kind": "variant",
+                "property": "variant",
+                "values": ["neutral", "info", "positive", "negative", "warning"]
+              }
+            ]
+          },
+          {
+            "name": "maxCount",
+            "type": "number",
+            "figma": [
+              {
+                "kind": "none",
+                "reason": "Bepaalt welk getal er staat ({maxCount}+); de tekst pas je in Figma aan via label."
+              }
+            ]
+          },
+          {
+            "name": "children",
+            "type": "ReactNode",
+            "native": true,
+            "slots": ["label"]
+          }
+        ],
+        "slots": [
+          {
+            "name": "label",
+            "element": "dsn-number-badge",
+            "description": "Het getal.",
+            "figma": [{ "kind": "text", "property": "label" }]
+          }
+        ],
+        "states": []
+      }
     },
     {
       "name": "NumberInput",
@@ -1370,7 +2322,107 @@
       "category": "display-feedback",
       "purpose": "Non-modal dialog anchored to a trigger element, light-dismissed via the HTML Popover API. For a list of actions or links, use PopoverMenu.",
       "platforms": ["html-css", "react"],
-      "primaryProps": []
+      "primaryProps": [],
+      "api": {
+        "props": [
+          {
+            "name": "isOpen",
+            "type": "boolean",
+            "required": true,
+            "figma": [
+              {
+                "kind": "none",
+                "reason": "Altijd open in Figma: open en dicht is gedrag."
+              }
+            ]
+          },
+          {
+            "name": "onClose",
+            "type": "function",
+            "figma": [{ "kind": "none", "reason": "Gedrag, geen uiterlijk." }]
+          },
+          {
+            "name": "triggerRef",
+            "type": "object",
+            "required": true,
+            "figma": [{ "kind": "none", "reason": "Gedrag, geen uiterlijk." }]
+          },
+          {
+            "name": "placement",
+            "values": ["top", "bottom", "start", "end"],
+            "default": "bottom",
+            "figma": [
+              {
+                "kind": "none",
+                "reason": "Nog niet in de Figma-matrix van Popover.",
+                "open": true
+              }
+            ]
+          },
+          {
+            "name": "label",
+            "type": "string",
+            "figma": [
+              {
+                "kind": "none",
+                "reason": "Toegankelijke naam (aria-label); niet zichtbaar."
+              }
+            ]
+          },
+          {
+            "name": "children",
+            "type": "ReactNode",
+            "slots": ["header", "body", "footer"]
+          }
+        ],
+        "slots": [
+          {
+            "name": "header",
+            "element": "dsn-popover__header",
+            "description": "De kop met de sluitknop (PopoverHeader).",
+            "figma": [
+              {
+                "kind": "none",
+                "reason": "De header is bewust geen slot: in code zet de header de sluitknop er altijd zelf in, en een slot zou toelaten dat een designer die weghaalt."
+              }
+            ]
+          },
+          {
+            "name": "body",
+            "element": "dsn-popover__body",
+            "description": "De inhoud.",
+            "figma": [{ "kind": "slot", "property": "body" }]
+          },
+          {
+            "name": "footer",
+            "element": "dsn-popover__footer",
+            "description": "De acties onderaan.",
+            "figma": [{ "kind": "slot", "property": "footer" }]
+          }
+        ],
+        "states": [
+          {
+            "name": "focus",
+            "selector": ":focus",
+            "figma": [
+              {
+                "kind": "none",
+                "reason": "In Figma kun je niet met de tabtoets door een prototype; Figma is voor het snel uitwerken van ideeën, niet voor toetsenbordgedrag."
+              }
+            ]
+          },
+          {
+            "name": "focus-visible",
+            "selector": ":focus-visible",
+            "figma": [
+              {
+                "kind": "none",
+                "reason": "In Figma kun je niet met de tabtoets door een prototype; Figma is voor het snel uitwerken van ideeën, niet voor toetsenbordgedrag."
+              }
+            ]
+          }
+        ]
+      }
     },
     {
       "name": "PopoverMenu",
@@ -1405,7 +2457,82 @@
       "primaryProps": [
         { "name": "value", "type": "number", "required": true },
         { "name": "max", "type": "number", "default": 100 }
-      ]
+      ],
+      "api": {
+        "props": [
+          {
+            "name": "label",
+            "type": "string",
+            "required": true,
+            "figma": [
+              {
+                "kind": "none",
+                "reason": "Nog niet in de Figma-matrix van ProgressBar.",
+                "open": true
+              }
+            ]
+          },
+          {
+            "name": "value",
+            "type": "number",
+            "required": true,
+            "figma": [
+              {
+                "kind": "none",
+                "reason": "Nog niet in de Figma-matrix van ProgressBar.",
+                "open": true
+              }
+            ]
+          },
+          {
+            "name": "max",
+            "type": "number",
+            "default": 100,
+            "figma": [
+              {
+                "kind": "none",
+                "reason": "Nog niet in de Figma-matrix van ProgressBar.",
+                "open": true
+              }
+            ]
+          },
+          {
+            "name": "description",
+            "type": "ReactNode",
+            "figma": [
+              {
+                "kind": "variant",
+                "property": "description",
+                "values": ["with-description", "no-description"]
+              }
+            ]
+          },
+          {
+            "name": "id",
+            "type": "string",
+            "figma": [
+              {
+                "kind": "none",
+                "reason": "Koppelt elementen in code, niet het uiterlijk."
+              }
+            ]
+          },
+          {
+            "name": "hideValue",
+            "type": "boolean",
+            "default": false,
+            "figma": [
+              {
+                "kind": "variant",
+                "property": "value",
+                "values": ["with-value", "no-value"]
+              }
+            ]
+          }
+        ],
+        "slots": [],
+        "states": []
+      }
     },
     {
       "name": "Radio",
@@ -1530,7 +2657,8 @@
             "figma": [
               {
                 "kind": "none",
-                "reason": "Nog niet in de Figma-matrix van RadioOption."
+                "reason": "Nog niet in de Figma-matrix van RadioOption.",
+                "open": true
               }
             ]
           },
@@ -1755,7 +2883,37 @@
           "default": "default"
         },
         { "name": "hideLabel", "type": "boolean", "default": false }
-      ]
+      ],
+      "api": {
+        "props": [
+          {
+            "name": "label",
+            "type": "string",
+            "required": true,
+            "figma": [{ "kind": "text", "property": "label" }]
+          },
+          {
+            "name": "hideLabel",
+            "type": "boolean",
+            "default": false,
+            "figma": [
+              {
+                "kind": "none",
+                "reason": "Nog niet in de Figma-matrix van Spinner.",
+                "open": true
+              }
+            ]
+          },
+          {
+            "name": "size",
+            "values": ["default", "large"],
+            "default": "default",
+            "figma": [{ "kind": "variant", "property": "size" }]
+          }
+        ],
+        "slots": [],
+        "states": []
+      }
     },
     {
       "name": "Stack",
@@ -1791,10 +2949,54 @@
       "primaryProps": [
         {
           "name": "variant",
-          "values": ["neutral", "info", "positive", "negative", "warning"],
+          "values": ["neutral", "positive", "negative", "warning", "info"],
           "default": "neutral"
         }
-      ]
+      ],
+      "api": {
+        "props": [
+          {
+            "name": "variant",
+            "values": ["neutral", "positive", "negative", "warning", "info"],
+            "default": "neutral",
+            "figma": [
+              {
+                "kind": "variant",
+                "property": "variant",
+                "values": ["neutral", "info", "positive", "negative", "warning"]
+              }
+            ]
+          },
+          { "name": "iconStart", "type": "ReactNode", "slots": ["icon"] },
+          {
+            "name": "children",
+            "type": "ReactNode",
+            "required": true,
+            "slots": ["label"]
+          }
+        ],
+        "slots": [
+          {
+            "name": "icon",
+            "element": "dsn-icon",
+            "description": "Icoon vóór de tekst.",
+            "figma": [
+              {
+                "kind": "variant",
+                "property": "icon",
+                "values": ["with-icon", "no-icon"]
+              }
+            ]
+          },
+          {
+            "name": "label",
+            "element": "dsn-status-badge",
+            "description": "De tekst.",
+            "figma": [{ "kind": "text", "property": "label" }]
+          }
+        ],
+        "states": []
+      }
     },
     {
       "name": "Table",
@@ -1805,7 +3007,79 @@
       "primaryProps": [
         { "name": "caption", "type": "string", "required": true },
         { "name": "scrollable", "type": "boolean", "default": false }
-      ]
+      ],
+      "api": {
+        "props": [
+          {
+            "name": "caption",
+            "type": "string",
+            "required": true,
+            "figma": [
+              {
+                "kind": "variant",
+                "property": "caption",
+                "values": ["with-caption", "no-caption"],
+                "reason": "In React is caption verplicht, maar de Figma-matrix heeft ook een variant zonder.",
+                "open": true
+              }
+            ]
+          },
+          {
+            "name": "captionId",
+            "type": "string",
+            "figma": [
+              {
+                "kind": "none",
+                "reason": "Koppelt elementen in code, niet het uiterlijk."
+              }
+            ]
+          },
+          {
+            "name": "scrollable",
+            "type": "boolean",
+            "default": false,
+            "figma": [
+              {
+                "kind": "none",
+                "reason": "Nog niet in de Figma-matrix van Table.",
+                "open": true
+              }
+            ]
+          },
+          {
+            "name": "children",
+            "type": "ReactNode",
+            "native": true,
+            "slots": ["content", "column-header"]
+          }
+        ],
+        "slots": [
+          {
+            "name": "content",
+            "element": "dsn-table",
+            "description": "De rijen en cellen (thead, tbody, tfoot).",
+            "figma": [
+              {
+                "kind": "none",
+                "reason": "Geen property: de inhoud pas je in een instance aan op de lagen zelf."
+              }
+            ]
+          },
+          {
+            "name": "column-header",
+            "element": "dsn-table__header-cell",
+            "description": "Een kolomkop; is de kolom gesorteerd, dan toont die dat (aria-sort).",
+            "figma": [
+              {
+                "kind": "variant",
+                "property": "sort",
+                "values": ["unsorted", "ascending"]
+              }
+            ]
+          }
+        ],
+        "states": []
+      }
     },
     {
       "name": "TableOfContents",
@@ -1963,7 +3237,8 @@
             "figma": [
               {
                 "kind": "none",
-                "reason": "Nog niet in de Figma-matrix van TextArea."
+                "reason": "Nog niet in de Figma-matrix van TextArea.",
+                "open": true
               }
             ]
           }

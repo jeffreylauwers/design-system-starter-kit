@@ -4,5 +4,96 @@
   "category": "display-feedback",
   "purpose": "Configurable container for structured content (image, heading, description, action) with an optional stretched-link interaction.",
   "platforms": ["html-css", "react"],
-  "primaryProps": []
+  "primaryProps": [],
+  "api": {
+    "props": [
+      {
+        "name": "href",
+        "type": "string",
+        "figma": [
+          {
+            "kind": "none",
+            "reason": "Nog niet in de Figma-matrix van Card.",
+            "open": true
+          }
+        ]
+      },
+      {
+        "name": "children",
+        "type": "ReactNode",
+        "slots": ["pre-header", "header", "body", "footer"]
+      }
+    ],
+    "slots": [
+      {
+        "name": "pre-header",
+        "element": "dsn-card__pre-header",
+        "description": "Beeld boven de kop (CardPreHeader).",
+        "figma": [
+          {
+            "kind": "variant",
+            "property": "preHeader",
+            "values": ["with-pre-header", "no-pre-header"]
+          }
+        ]
+      },
+      {
+        "name": "header",
+        "element": "dsn-card__header",
+        "description": "De kop (CardHeader).",
+        "figma": [
+          {
+            "kind": "none",
+            "reason": "Geen property: de inhoud pas je in een instance aan op de lagen zelf."
+          }
+        ]
+      },
+      {
+        "name": "body",
+        "element": "dsn-card__body",
+        "description": "De inhoud (CardBody).",
+        "figma": [
+          {
+            "kind": "none",
+            "reason": "Geen property: de inhoud pas je in een instance aan op de lagen zelf."
+          }
+        ]
+      },
+      {
+        "name": "footer",
+        "element": "dsn-card__footer",
+        "description": "De voet (CardFooter).",
+        "figma": [
+          {
+            "kind": "variant",
+            "property": "footer",
+            "values": ["with-footer", "no-footer"]
+          }
+        ]
+      }
+    ],
+    "states": [
+      {
+        "name": "hover",
+        "selector": ":hover",
+        "figma": [
+          {
+            "kind": "none",
+            "reason": "Nog niet in de Figma-matrix van Card.",
+            "open": true
+          }
+        ]
+      },
+      {
+        "name": "focus-visible",
+        "selector": ":focus-visible",
+        "figma": [
+          {
+            "kind": "none",
+            "reason": "In Figma kun je niet met de tabtoets door een prototype; Figma is voor het snel uitwerken van ideeën, niet voor toetsenbordgedrag."
+          }
+        ]
+      }
+    ]
+  }
 }

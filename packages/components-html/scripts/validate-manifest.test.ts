@@ -370,6 +370,40 @@ describe('validateComponent: api block', () => {
     expect(errors.join('\n')).toContain('unset hoort alleen bij');
   });
 
+  it('accepts values on a slot that owns an axis', () => {
+    const errors = withComponent((draft) => {
+      draft.api.slots[0].figma = [
+        {
+          kind: 'variant',
+          property: 'label',
+          values: ['with-label', 'no-label'],
+        },
+      ] as never;
+    });
+
+    expect(errors).toEqual([]);
+  });
+
+  it('rejects values on a state', () => {
+    const errors = withComponent((draft) => {
+      draft.api.states[0].figma = [
+        { kind: 'variant', property: 'state', value: 'hover', values: ['a'] },
+      ] as never;
+    });
+
+    expect(errors.join('\n')).toContain('values hoort alleen bij');
+  });
+
+  it('requires a reason on an open binding', () => {
+    const errors = withComponent((draft) => {
+      draft.api.props[0].figma = [
+        { kind: 'variant', property: 'size', open: true },
+      ] as never;
+    });
+
+    expect(errors.join('\n')).toContain('open heeft een reason nodig');
+  });
+
   it('rejects a state that is not a variant', () => {
     const errors = withComponent((draft) => {
       draft.api.states[0].figma = [

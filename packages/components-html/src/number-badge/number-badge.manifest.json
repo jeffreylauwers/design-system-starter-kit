@@ -4,5 +4,51 @@
   "category": "display-feedback",
   "purpose": "Compact inline element displaying a count (unread messages, pending tasks) inside a button or menu item.",
   "platforms": ["html-css", "react"],
-  "primaryProps": []
+  "primaryProps": [],
+  "api": {
+    "props": [
+      {
+        "name": "variant",
+        "values": ["negative", "positive", "warning", "info", "neutral"],
+        "default": "negative",
+        "figma": [
+          {
+            "kind": "variant",
+            "property": "variant",
+            "values": ["neutral", "info", "positive", "negative", "warning"]
+          }
+        ]
+      },
+      {
+        "name": "maxCount",
+        "type": "number",
+        "figma": [
+          {
+            "kind": "none",
+            "reason": "Bepaalt welk getal er staat ({maxCount}+); de tekst pas je in Figma aan via label."
+          }
+        ]
+      },
+      {
+        "name": "children",
+        "type": "ReactNode",
+        "native": true,
+        "slots": ["label"]
+      }
+    ],
+    "slots": [
+      {
+        "name": "label",
+        "element": "dsn-number-badge",
+        "description": "Het getal.",
+        "figma": [
+          {
+            "kind": "text",
+            "property": "label"
+          }
+        ]
+      }
+    ],
+    "states": []
+  }
 }

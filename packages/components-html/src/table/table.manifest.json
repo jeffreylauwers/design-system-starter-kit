@@ -15,5 +15,77 @@
       "type": "boolean",
       "default": false
     }
-  ]
+  ],
+  "api": {
+    "props": [
+      {
+        "name": "caption",
+        "type": "string",
+        "required": true,
+        "figma": [
+          {
+            "kind": "variant",
+            "property": "caption",
+            "values": ["with-caption", "no-caption"],
+            "reason": "In React is caption verplicht, maar de Figma-matrix heeft ook een variant zonder.",
+            "open": true
+          }
+        ]
+      },
+      {
+        "name": "captionId",
+        "type": "string",
+        "figma": [
+          {
+            "kind": "none",
+            "reason": "Koppelt elementen in code, niet het uiterlijk."
+          }
+        ]
+      },
+      {
+        "name": "scrollable",
+        "type": "boolean",
+        "default": false,
+        "figma": [
+          {
+            "kind": "none",
+            "reason": "Nog niet in de Figma-matrix van Table.",
+            "open": true
+          }
+        ]
+      },
+      {
+        "name": "children",
+        "type": "ReactNode",
+        "native": true,
+        "slots": ["content", "column-header"]
+      }
+    ],
+    "slots": [
+      {
+        "name": "content",
+        "element": "dsn-table",
+        "description": "De rijen en cellen (thead, tbody, tfoot).",
+        "figma": [
+          {
+            "kind": "none",
+            "reason": "Geen property: de inhoud pas je in een instance aan op de lagen zelf."
+          }
+        ]
+      },
+      {
+        "name": "column-header",
+        "element": "dsn-table__header-cell",
+        "description": "Een kolomkop; is de kolom gesorteerd, dan toont die dat (aria-sort).",
+        "figma": [
+          {
+            "kind": "variant",
+            "property": "sort",
+            "values": ["unsorted", "ascending"]
+          }
+        ]
+      }
+    ],
+    "states": []
+  }
 }
