@@ -29,6 +29,28 @@
         ]
       },
       {
+        "name": "target",
+        "type": "string",
+        "native": true,
+        "figma": [
+          {
+            "kind": "none",
+            "reason": "Waar en hoe de link opent, niet het uiterlijk."
+          }
+        ]
+      },
+      {
+        "name": "rel",
+        "type": "string",
+        "native": true,
+        "figma": [
+          {
+            "kind": "none",
+            "reason": "Waar en hoe de link opent, niet het uiterlijk."
+          }
+        ]
+      },
+      {
         "name": "disabled",
         "type": "boolean",
         "default": false,

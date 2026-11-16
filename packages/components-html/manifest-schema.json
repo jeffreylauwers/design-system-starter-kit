@@ -221,6 +221,11 @@
         },
         "figma": {
           "$ref": "#/$defs/figmaBindings"
+        },
+        "attribute": {
+          "type": "string",
+          "pattern": "^[a-z][a-z0-9]*(-[a-z0-9]+)*$",
+          "description": "The attribute of the web component, when it is not the kebab-case form of the prop name (label for aria-label on Icon)."
         }
       }
     },

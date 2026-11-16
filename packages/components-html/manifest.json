@@ -2601,7 +2601,8 @@
                 "kind": "none",
                 "reason": "Tekst voor schermlezers; niet zichtbaar."
               }
-            ]
+            ],
+            "attribute": "label"
           }
         ],
         "slots": [],
@@ -2802,6 +2803,28 @@
               {
                 "kind": "none",
                 "reason": "De bestemming van de link, niet het uiterlijk."
+              }
+            ]
+          },
+          {
+            "name": "target",
+            "type": "string",
+            "native": true,
+            "figma": [
+              {
+                "kind": "none",
+                "reason": "Waar en hoe de link opent, niet het uiterlijk."
+              }
+            ]
+          },
+          {
+            "name": "rel",
+            "type": "string",
+            "native": true,
+            "figma": [
+              {
+                "kind": "none",
+                "reason": "Waar en hoe de link opent, niet het uiterlijk."
               }
             ]
           },
@@ -3689,6 +3712,18 @@
       "primaryProps": [],
       "api": {
         "props": [
+          {
+            "name": "start",
+            "type": "number",
+            "native": true,
+            "figma": [
+              {
+                "kind": "none",
+                "reason": "Nog niet in de Figma-matrix van OrderedList.",
+                "open": true
+              }
+            ]
+          },
           { "name": "children", "type": "ReactNode", "slots": ["items"] }
         ],
         "slots": [

@@ -116,6 +116,11 @@ export interface ApiProp extends PropDefinition {
    * or on that of a component it extends.
    */
   native?: boolean;
+  /**
+   * The attribute of the web component, when it is not the kebab-case form
+   * of the prop name (`label` for `aria-label` on Icon).
+   */
+  attribute?: string;
   /** Slots this prop fills. Such a prop takes its Figma binding from the slot. */
   slots?: string[];
   /** Present on every prop that does not fill a slot. */

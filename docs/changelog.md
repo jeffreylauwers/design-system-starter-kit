@@ -10,6 +10,14 @@ All notable changes to this project are documented in this file.
 
 Nog niet gepubliceerde wijzigingen. Schrijf nieuwe changelog-entries hieronder; bij de volgende release wordt deze kop gepromoveerd naar het definitieve versienummer.
 
+### components-web: gecontroleerd tegen de manifest
+
+`tests/manifest-web.test.ts` legt de zeven web components naast hun `api`-blok (#488): elk attribuut in `observedAttributes` hoort bij een prop (in kebab-case, of wat `attribute` zegt), elke prop met een waarde is een attribuut, de enum-waarden zijn gelijk, en elk named `<slot>` staat in `api.slots`.
+
+- **`attribute` op een prop:** de naam in de web component als die niet de kebab-case vorm is. Icon gebruikt `label` voor wat in React `aria-label` heet.
+- **Aangevuld in de manifest:** `target` en `rel` bij Link, en `start` bij OrderedList. Die attributen hadden de web components al.
+- **`<dsn-button variant="link">` bestaat niet meer.** `ButtonVariant` in components-web noemde een variant `link`, maar de klasse `dsn-button--link` bestaat nergens in de CSS: zo'n knop zag eruit als een knop zonder variant. React en de manifest kennen de variant niet. Wie hem gebruikt, krijgt nu een typefout.
+
 ### components-html: elk component heeft een api-blok
 
 De laatste 19 componenten hebben een `api`-blok (#488): BreadcrumbNavigation, Menu, MenuButton, MenuLink, PageBody, PageFooter, PageHeader, PageLayout, PopoverMenu, TableOfContents, ActionGroup, Body, BreakoutSection, Container, Grid, Stack, Hero, Logo en SkipLink. Daarmee is `api` verplicht in `manifest-schema.json` en `manifest.d.ts`; een nieuw component krijgt er meteen een.
