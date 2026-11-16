@@ -1,0 +1,24 @@
+{
+  "name": "Checkbox",
+  "cssBlock": "dsn-checkbox",
+  "category": "form-option",
+  "purpose": "Custom styled checkbox with a visual check indicator.",
+  "platforms": ["html-css", "react"],
+  "primaryProps": [
+    {
+      "name": "checked",
+      "type": "boolean",
+      "default": false
+    },
+    {
+      "name": "disabled",
+      "type": "boolean",
+      "default": false
+    },
+    {
+      "name": "indeterminate",
+      "type": "boolean",
+      "default": false
+    }
+  ]
+}

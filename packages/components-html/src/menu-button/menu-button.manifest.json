@@ -1,0 +1,19 @@
+{
+  "name": "MenuButton",
+  "cssBlock": "dsn-menu-button",
+  "category": "navigation",
+  "purpose": "Navigation button for JavaScript actions (logout, open modal); semantically a <button>, visually consistent with MenuLink.",
+  "platforms": ["html-css", "react"],
+  "primaryProps": [
+    {
+      "name": "level",
+      "values": [1, 2, 3, 4],
+      "default": 1
+    },
+    {
+      "name": "current",
+      "type": "boolean",
+      "default": false
+    }
+  ]
+}

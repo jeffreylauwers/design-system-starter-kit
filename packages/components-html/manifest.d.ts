@@ -15,6 +15,9 @@
  *
  * Or read it with any JSON-capable tool: it requires no build step.
  *
+ * manifest.json is generated from one src/<dir>/<name>.manifest.json file per
+ * component by scripts/build-manifest.js. Edit those files, not manifest.json.
+ *
  * manifest-schema.json describes the same structure as JSON Schema, for editors
  * and for the validation step in the build. Keep both in sync when the shape of
  * the manifest changes.
@@ -47,6 +50,64 @@ export interface PropDefinition {
   required?: boolean;
 }
 
+/**
+ * How a part of the API appears in the generated Figma component set.
+ *
+ * - `variant`: an axis of the component set (`property` names the axis)
+ * - `boolean`, `text`, `instance-swap`: a component property
+ * - `none`: deliberately not in Figma; `reason` says why
+ */
+export type FigmaBindingKind =
+  'variant' | 'boolean' | 'text' | 'instance-swap' | 'none';
+
+export interface FigmaBinding {
+  kind: FigmaBindingKind;
+  /** Axis or component property name in the Figma matrix. Absent for `none`. */
+  property?: string;
+  /** States only: the value on the axis that shows the state. */
+  value?: string;
+  /** Required for `none`; otherwise an optional explanation. */
+  reason?: string;
+}
+
+export interface ApiProp extends PropDefinition {
+  /** A native HTML attribute the component passes through, such as `disabled`. */
+  native?: boolean;
+  /** Slots this prop fills. Such a prop takes its Figma binding from the slot. */
+  slots?: string[];
+  /** Present on every prop that does not fill a slot. */
+  figma?: FigmaBinding[];
+}
+
+export interface ApiSlot {
+  /** kebab-case, equal to `data-figma-slot` in the Figma matrix. */
+  name: string;
+  /** Class of the element that forms the slot. */
+  element?: string;
+  description?: string;
+  figma: FigmaBinding[];
+}
+
+export interface ApiState {
+  /** kebab-case state name, e.g. `focus-visible`. */
+  name: string;
+  /** The pseudo-class that triggers it, e.g. `:focus-visible`. */
+  selector: string;
+  figma: FigmaBinding[];
+}
+
+/**
+ * The complete public API of a component. Optional while the manifest is being
+ * completed; where present, tests check it against the React props type and
+ * the Figma matrix of the component.
+ */
+export interface ComponentApi {
+  /** Every prop except `className`, which every component has. */
+  props: ApiProp[];
+  slots: ApiSlot[];
+  states: ApiState[];
+}
+
 export interface ComponentEntry {
   /** PascalCase component name matching the React export and the Storybook title. */
   name: string;
@@ -64,9 +125,12 @@ export interface ComponentEntry {
   platforms: Platform[];
   /**
    * The most important props an implementer needs to know about.
-   * Not exhaustive — see the component's .docs.md for the full props table.
+   * Not exhaustive: `api.props` holds the complete list where it exists, the
+   * component's .docs.md otherwise.
    */
   primaryProps: PropDefinition[];
+  /** The complete API, with Figma bindings. Not every component has it yet. */
+  api?: ComponentApi;
 }
 
 export interface Manifest {

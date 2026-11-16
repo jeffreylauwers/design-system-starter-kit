@@ -1,0 +1,14 @@
+{
+  "name": "ActionGroup",
+  "cssBlock": "dsn-action-group",
+  "category": "layout",
+  "purpose": "Groups related actions (buttons and links) horizontally or vertically with automatic wrapping.",
+  "platforms": ["html-css", "react"],
+  "primaryProps": [
+    {
+      "name": "orientation",
+      "values": ["horizontal", "vertical"],
+      "default": "horizontal"
+    }
+  ]
+}

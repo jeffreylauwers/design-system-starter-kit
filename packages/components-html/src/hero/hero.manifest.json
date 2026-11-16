@@ -1,0 +1,19 @@
+{
+  "name": "Hero",
+  "cssBlock": "dsn-hero",
+  "category": "section",
+  "purpose": "Prominent introduction section directly below the page header with full viewport width and configurable background.",
+  "platforms": ["html-css", "react"],
+  "primaryProps": [
+    {
+      "name": "background",
+      "values": ["default", "inverse", "image", "image-blend"],
+      "default": "default"
+    },
+    {
+      "name": "align",
+      "values": ["start", "center"],
+      "default": "start"
+    }
+  ]
+}

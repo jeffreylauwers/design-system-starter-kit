@@ -1,0 +1,8 @@
+{
+  "name": "FormFieldDescription",
+  "cssBlock": "dsn-form-field-description",
+  "category": "form-field",
+  "purpose": "Helper text below a form label that provides additional context for the input.",
+  "platforms": ["html-css", "react"],
+  "primaryProps": []
+}

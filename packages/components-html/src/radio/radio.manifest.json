@@ -1,0 +1,19 @@
+{
+  "name": "Radio",
+  "cssBlock": "dsn-radio",
+  "category": "form-option",
+  "purpose": "Custom styled radio button with an inner circle indicator.",
+  "platforms": ["html-css", "react"],
+  "primaryProps": [
+    {
+      "name": "checked",
+      "type": "boolean",
+      "default": false
+    },
+    {
+      "name": "disabled",
+      "type": "boolean",
+      "default": false
+    }
+  ]
+}

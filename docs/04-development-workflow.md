@@ -90,8 +90,11 @@ pnpm build
 
 **Key Features:**
 
-- `components-html` validates `manifest.json` against `manifest-schema.json` before
-  concatenating any CSS, so a typo in the manifest fails the build
+- `components-html` assembles `manifest.json` from the per-component
+  `src/*/*.manifest.json` files and validates everything against
+  `manifest-schema.json` before concatenating any CSS, so a typo in the manifest
+  fails the build. In CI it only checks, and fails when the checked-in
+  `manifest.json` is out of date; locally it rewrites the file
 - Icon registry is automatically generated before React component compilation
 - CSS from `components-html` is referenced by `components-react`
 - Dependencies are built before dependents (tokens → core → components)

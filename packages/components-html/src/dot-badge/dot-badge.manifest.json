@@ -1,0 +1,19 @@
+{
+  "name": "DotBadge",
+  "cssBlock": "dsn-dot-badge",
+  "category": "display-feedback",
+  "purpose": "Small coloured dot that draws attention to a status change on a parent element, with an optional pulse animation.",
+  "platforms": ["html-css", "react"],
+  "primaryProps": [
+    {
+      "name": "variant",
+      "values": ["negative", "positive", "warning", "info", "neutral"],
+      "default": "negative"
+    },
+    {
+      "name": "pulse",
+      "type": "boolean",
+      "default": false
+    }
+  ]
+}

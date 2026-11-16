@@ -1,0 +1,24 @@
+{
+  "name": "CheckboxOption",
+  "cssBlock": "dsn-checkbox-option",
+  "category": "form-option",
+  "purpose": "Composite of Checkbox and OptionLabel for a single labelled checkbox option.",
+  "platforms": ["html-css", "react"],
+  "primaryProps": [
+    {
+      "name": "label",
+      "type": "string",
+      "required": true
+    },
+    {
+      "name": "checked",
+      "type": "boolean",
+      "default": false
+    },
+    {
+      "name": "disabled",
+      "type": "boolean",
+      "default": false
+    }
+  ]
+}

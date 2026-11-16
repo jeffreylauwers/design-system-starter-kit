@@ -1,0 +1,14 @@
+{
+  "name": "Alert",
+  "cssBlock": "dsn-alert",
+  "category": "display-feedback",
+  "purpose": "Live region message that informs the user of an important status related to the current activity.",
+  "platforms": ["html-css", "react"],
+  "primaryProps": [
+    {
+      "name": "variant",
+      "values": ["info", "positive", "negative", "warning"],
+      "default": "info"
+    }
+  ]
+}

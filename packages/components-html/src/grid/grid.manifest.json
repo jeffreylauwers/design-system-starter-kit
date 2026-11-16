@@ -1,0 +1,14 @@
+{
+  "name": "Grid",
+  "cssBlock": "dsn-grid",
+  "category": "layout",
+  "purpose": "12-column CSS Grid container with gutter, margin, and optional constrained max-width.",
+  "platforms": ["html-css", "react"],
+  "primaryProps": [
+    {
+      "name": "contained",
+      "type": "boolean",
+      "default": false
+    }
+  ]
+}

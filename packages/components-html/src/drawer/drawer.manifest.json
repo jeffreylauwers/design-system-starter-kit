@@ -1,0 +1,14 @@
+{
+  "name": "Drawer",
+  "cssBlock": "dsn-drawer",
+  "category": "display-feedback",
+  "purpose": "Slide-in panel from the side of the viewport for secondary navigation or content.",
+  "platforms": ["html-css", "react"],
+  "primaryProps": [
+    {
+      "name": "position",
+      "values": ["start", "end"],
+      "default": "end"
+    }
+  ]
+}

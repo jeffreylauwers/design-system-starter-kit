@@ -1,0 +1,19 @@
+{
+  "name": "FormFieldset",
+  "cssBlock": "dsn-form-field",
+  "category": "form-field",
+  "purpose": "Fieldset/legend container for groups of form controls such as CheckboxGroup or RadioGroup.",
+  "platforms": ["html-css", "react"],
+  "primaryProps": [
+    {
+      "name": "legend",
+      "type": "string",
+      "required": true
+    },
+    {
+      "name": "invalid",
+      "type": "boolean",
+      "default": false
+    }
+  ]
+}

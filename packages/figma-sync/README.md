@@ -1078,6 +1078,33 @@ De `fonts`-lijst is niet optioneel als het component tekst bevat: zonder
 geladen webfont meet de browser met een systeemfont en kloppen de breedtes niet.
 De fontnaam moet ook in Figma beschikbaar zijn.
 
+### Assen uit de manifest
+
+Heeft het component een `api`-blok in zijn manifest-bestand
+(`components-html/src/{component}/{component}.manifest.json`), lees de waarden
+van een prop-as dan daaruit in plaats van ze over te typen:
+
+```js
+import { axisValues } from '../manifest.js';
+
+axes: {
+  variant: axisValues('Button', 'variant'),
+  size: axisValues('Button', 'size'),
+  state: ['default', 'hover', 'active'],
+},
+```
+
+`axisValues` zoekt de prop met een binding `{ kind: 'variant', property: 'size' }`
+en geeft zijn `values` terug, in de volgorde van de union in React. Is er geen
+zo'n prop, dan stopt de build: een stille terugval op een eigen lijst is precies
+de drift die dit voorkomt. Assen die geen prop zijn (`state`) en keuzes die
+alleen voor Figma gelden (`skipVariant`) blijven in de matrix.
+
+`tests/manifest-figma.test.ts` controleert daarnaast dat elke as en elke
+component property van de matrix bij een prop, slot of state in de manifest
+hoort, en andersom. Wat bewust niet in Figma staat, heeft daar een binding
+`none` met een reden, zoals `loading` en `fullWidth` van Button (#323).
+
 ### Wat een matrix zelf kan meegeven
 
 Twee velden die je zelden nodig hebt, maar zonder welke een component niet

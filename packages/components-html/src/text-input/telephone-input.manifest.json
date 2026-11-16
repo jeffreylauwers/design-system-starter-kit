@@ -1,0 +1,24 @@
+{
+  "name": "TelephoneInput",
+  "cssBlock": "dsn-text-input",
+  "category": "form-input",
+  "purpose": "Telephone number input with type=\"tel\"; extends TextInput styles.",
+  "platforms": ["html-css", "react"],
+  "primaryProps": [
+    {
+      "name": "disabled",
+      "type": "boolean",
+      "default": false
+    },
+    {
+      "name": "invalid",
+      "type": "boolean",
+      "default": false
+    },
+    {
+      "name": "inlineSize",
+      "values": ["md", "lg", "xl", "full"],
+      "default": "md"
+    }
+  ]
+}

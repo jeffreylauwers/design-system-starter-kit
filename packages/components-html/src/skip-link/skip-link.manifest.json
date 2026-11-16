@@ -1,0 +1,14 @@
+{
+  "name": "SkipLink",
+  "cssBlock": "dsn-skip-link",
+  "category": "accessibility",
+  "purpose": "First focusable element on the page, visible on keyboard focus to let users skip repeated navigation (WCAG 2.4.1).",
+  "platforms": ["html-css", "react"],
+  "primaryProps": [
+    {
+      "name": "href",
+      "type": "string",
+      "required": true
+    }
+  ]
+}

@@ -1,0 +1,19 @@
+{
+  "name": "Heading",
+  "cssBlock": "dsn-heading",
+  "category": "content",
+  "purpose": "Semantic heading element (h1–h6) with a decoupled visual appearance level.",
+  "platforms": ["html-css", "react", "web-components"],
+  "primaryProps": [
+    {
+      "name": "level",
+      "values": [1, 2, 3, 4, 5, 6],
+      "required": true
+    },
+    {
+      "name": "appearance",
+      "values": [1, 2, 3, 4, 5, 6],
+      "default": "matches level"
+    }
+  ]
+}

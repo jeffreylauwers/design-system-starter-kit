@@ -104,9 +104,10 @@ design-system-starter-kit/
 │   │               └── unordered-list.json
 │   ├── core/                    # @dsn-starter-kit/core
 │   ├── components-html/         # @dsn-starter-kit/components-html
-│   │   ├── manifest.json        # Framework-agnostic component manifest (AI + tooling)
+│   │   ├── manifest.json        # Framework-agnostic component manifest (AI + tooling), gegenereerd
 │   │   ├── manifest.d.ts        # TypeScript types for manifest.json
-│   │   └── manifest-schema.json # JSON Schema for manifest.json (editors + build validation)
+│   │   ├── manifest-schema.json # JSON Schema for manifest.json (editors + build validation)
+│   │   └── src/{component}/{component}.manifest.json # Bron: één manifest-entry per component
 │   ├── components-react/        # @dsn-starter-kit/components-react
 │   │   └── scripts/
 │   │       └── generate-icons.js # Icon registry generator

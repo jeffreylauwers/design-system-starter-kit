@@ -1,0 +1,24 @@
+{
+  "name": "HeadingGroup",
+  "cssBlock": "dsn-heading-group",
+  "category": "content",
+  "purpose": "Heading with an integrated pre-heading; renders as a flex-column hx element combining PreHeading and Heading in one API.",
+  "platforms": ["html-css", "react"],
+  "primaryProps": [
+    {
+      "name": "level",
+      "values": [1, 2, 3, 4, 5, 6],
+      "default": 2
+    },
+    {
+      "name": "appearance",
+      "values": [1, 2, 3, 4, 5, 6],
+      "default": "matches level"
+    },
+    {
+      "name": "preHeading",
+      "type": "ReactNode",
+      "required": false
+    }
+  ]
+}

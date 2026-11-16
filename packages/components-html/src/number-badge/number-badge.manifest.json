@@ -1,0 +1,8 @@
+{
+  "name": "NumberBadge",
+  "cssBlock": "dsn-number-badge",
+  "category": "display-feedback",
+  "purpose": "Compact inline element displaying a count (unread messages, pending tasks) inside a button or menu item.",
+  "platforms": ["html-css", "react"],
+  "primaryProps": []
+}

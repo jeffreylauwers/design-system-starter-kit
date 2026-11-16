@@ -1,0 +1,8 @@
+{
+  "name": "Card",
+  "cssBlock": "dsn-card",
+  "category": "display-feedback",
+  "purpose": "Configurable container for structured content (image, heading, description, action) with an optional stretched-link interaction.",
+  "platforms": ["html-css", "react"],
+  "primaryProps": []
+}

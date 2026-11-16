@@ -1,0 +1,29 @@
+{
+  "name": "Image",
+  "cssBlock": "dsn-image",
+  "category": "display-feedback",
+  "purpose": "Accessible image wrapper with lazy loading, fixed aspect ratios, and LCP priority support.",
+  "platforms": ["html-css", "react"],
+  "primaryProps": [
+    {
+      "name": "src",
+      "type": "string",
+      "required": true
+    },
+    {
+      "name": "alt",
+      "type": "string",
+      "required": true
+    },
+    {
+      "name": "aspectRatio",
+      "values": ["1/1", "4/3", "16/9", "3/2"],
+      "default": null
+    },
+    {
+      "name": "priority",
+      "type": "boolean",
+      "default": false
+    }
+  ]
+}

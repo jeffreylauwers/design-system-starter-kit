@@ -1,0 +1,8 @@
+{
+  "name": "FormFieldErrorMessage",
+  "cssBlock": "dsn-form-field-error-message",
+  "category": "form-field",
+  "purpose": "Inline error message shown below a form input when validation fails.",
+  "platforms": ["html-css", "react"],
+  "primaryProps": []
+}

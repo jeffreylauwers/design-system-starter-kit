@@ -1,0 +1,14 @@
+{
+  "name": "TimeInput",
+  "cssBlock": "dsn-text-input",
+  "category": "form-input",
+  "purpose": "Time input with an inline icon button that opens the native time picker.",
+  "platforms": ["html-css", "react"],
+  "primaryProps": [
+    {
+      "name": "disabled",
+      "type": "boolean",
+      "default": false
+    }
+  ]
+}

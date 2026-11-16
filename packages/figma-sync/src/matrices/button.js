@@ -10,6 +10,7 @@
 import { icon } from '../icons.js';
 import { TEKST } from '../text.js';
 import { FLAG, skipFlagCombinations } from '../flags.js';
+import { axisValues } from '../manifest.js';
 
 /**
  * De twee icoonslots.
@@ -71,26 +72,17 @@ export default {
   /**
    * De assen van de component set. Elke combinatie wordt één variant.
    * `state` bevat alleen toestanden die Figma als aparte variant kan tonen.
-   */
-  /**
-   * De volgorde volgt de `ButtonVariant`-union in `Button.tsx`, niet de
-   * volgorde in de CSS: Figma toont de waarden in de volgorde waarin ze
-   * binnenkomen, en zo staan de drie sentimenten van dezelfde nadruk bij
-   * elkaar. Een designer kiest immers eerst nadruk en dan sentiment.
+   *
+   * `variant` en `size` komen uit de manifest (`button.manifest.json`), in de
+   * volgorde van de `ButtonVariant`-union in `Button.tsx` en niet die van de
+   * CSS: Figma toont de waarden in de volgorde waarin ze binnenkomen, en zo
+   * staan de drie sentimenten van dezelfde nadruk bij elkaar. Een designer
+   * kiest immers eerst nadruk en dan sentiment. `manifest.test.ts` bewaakt
+   * dat manifest, React en deze matrix overeenkomen.
    */
   axes: {
-    variant: [
-      'strong',
-      'strong-negative',
-      'strong-positive',
-      'default',
-      'default-negative',
-      'default-positive',
-      'subtle',
-      'subtle-negative',
-      'subtle-positive',
-    ],
-    size: ['small', 'default', 'large'],
+    variant: axisValues('Button', 'variant'),
+    size: axisValues('Button', 'size'),
     state: ['default', 'hover', 'active'],
     disabled: FLAG,
     // Een as en geen BOOLEAN: icon-only heeft eigen padding-tokens

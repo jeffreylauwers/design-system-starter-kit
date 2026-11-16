@@ -1,0 +1,19 @@
+{
+  "name": "Icon",
+  "cssBlock": "dsn-icon",
+  "category": "content",
+  "purpose": "Renders a named SVG icon from the system's icon registry.",
+  "platforms": ["html-css", "react", "web-components"],
+  "primaryProps": [
+    {
+      "name": "name",
+      "type": "string",
+      "required": true
+    },
+    {
+      "name": "size",
+      "values": ["sm", "md", "lg", "xl"],
+      "default": "md"
+    }
+  ]
+}

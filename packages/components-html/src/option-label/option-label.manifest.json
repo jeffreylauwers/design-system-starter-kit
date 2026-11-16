@@ -1,0 +1,14 @@
+{
+  "name": "OptionLabel",
+  "cssBlock": "dsn-option-label",
+  "category": "form-option",
+  "purpose": "Label element paired with a Checkbox or Radio control.",
+  "platforms": ["html-css", "react"],
+  "primaryProps": [
+    {
+      "name": "htmlFor",
+      "type": "string",
+      "required": true
+    }
+  ]
+}

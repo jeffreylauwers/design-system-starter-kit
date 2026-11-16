@@ -287,6 +287,83 @@ for the validation step in the build. It is available as
 `@dsn-starter-kit/components-html/manifest-schema` if you want to validate your own
 additions against it.
 
+### One file per component
+
+`manifest.json` is generated. Each component describes itself in
+`src/<dir>/<name>.manifest.json`, next to its CSS: `src/button/button.manifest.json`.
+`<name>` is the kebab-case component name. A component without a directory of its
+own lives in the directory of its `cssBlock`, so `EmailInput` is
+`src/text-input/email-input.manifest.json`.
+
+`scripts/build-manifest.js` validates every part, sorts the components by name and
+writes `manifest.json`. That file stays checked in, so consumers, `figma-sync` and
+the tests can read it without a build. After changing a part, regenerate it:
+
+```bash
+pnpm --filter @dsn-starter-kit/components-html build:manifest
+```
+
+The regular build does the same. In CI (`CI=true`) it only checks, and fails when
+the checked-in `manifest.json` differs from what the parts produce.
+
+### The `api` block
+
+`primaryProps` is a curated summary. A component can also carry an `api` block
+with its complete public API: every prop (except `className`), its slots, its
+interaction states, and how each of them appears in the generated Figma
+component set:
+
+```json
+"api": {
+  "props": [
+    {
+      "name": "size",
+      "values": ["small", "default", "large"],
+      "default": "default",
+      "figma": [{ "kind": "variant", "property": "size" }]
+    },
+    {
+      "name": "loading",
+      "type": "boolean",
+      "default": false,
+      "figma": [{ "kind": "none", "reason": "Heeft eigen tokens en open vragen (#323)." }]
+    },
+    { "name": "children", "type": "ReactNode", "slots": ["label"] }
+  ],
+  "slots": [
+    {
+      "name": "label",
+      "element": "dsn-button__label",
+      "figma": [{ "kind": "text", "property": "label" }]
+    }
+  ],
+  "states": [
+    {
+      "name": "hover",
+      "selector": ":hover",
+      "figma": [{ "kind": "variant", "property": "state", "value": "hover" }]
+    }
+  ]
+}
+```
+
+A Figma binding is a `variant` (an axis of the component set), a component
+property (`boolean`, `text`, `instance-swap`), or `none` with a `reason` for a
+part that is deliberately not in Figma. A prop that fills a slot takes its
+binding from that slot. A native HTML attribute that the component passes
+through, such as `disabled`, is marked `"native": true`.
+
+Where `api` exists, three things are checked:
+
+- the validator: rules the schema cannot express, such as "`none` needs a
+  reason" and "`primaryProps` may not contradict `api.props`"
+- `tests/manifest-react.test.ts`: `api.props` against the `{Name}Props` interface
+  in `components-react` (names, values in union order, optionality, defaults)
+- `tests/manifest-figma.test.ts`: the bindings against the axes and component
+  properties of the matrix in `figma-sync`
+
+Button is the first component with an `api` block (issue #484).
+
 ## Assets
 
 SVG icons are available in `assets/icons/` for use as inline SVGs:
@@ -305,9 +382,10 @@ assets/icons/
 pnpm --filter @dsn-starter-kit/components-html build
 ```
 
-The build validates `manifest.json` against `manifest-schema.json` before it
-concatenates any CSS, so an invalid category, an unknown platform or a misspelled
-field fails the build instead of shipping. Run that check on its own with:
+The build validates every `*.manifest.json` part and the assembled
+`manifest.json` against `manifest-schema.json` before it concatenates any CSS, so
+an invalid category, an unknown platform or a misspelled field fails the build
+instead of shipping. Run that check on its own, without writing anything, with:
 
 ```bash
 pnpm --filter @dsn-starter-kit/components-html validate:manifest

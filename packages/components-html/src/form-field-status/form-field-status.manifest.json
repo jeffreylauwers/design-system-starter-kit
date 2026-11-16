@@ -1,0 +1,14 @@
+{
+  "name": "FormFieldStatus",
+  "cssBlock": "dsn-form-field-status",
+  "category": "form-field",
+  "purpose": "Status indicator for a form field showing default, positive, or warning state.",
+  "platforms": ["html-css", "react"],
+  "primaryProps": [
+    {
+      "name": "variant",
+      "values": ["default", "positive", "warning"],
+      "default": "default"
+    }
+  ]
+}

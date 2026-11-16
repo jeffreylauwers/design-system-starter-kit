@@ -1,0 +1,8 @@
+{
+  "name": "BreakoutSection",
+  "cssBlock": "dsn-breakout-section",
+  "category": "layout",
+  "purpose": "Breaks a section out of a constrained page width to span the full viewport width.",
+  "platforms": ["html-css", "react"],
+  "primaryProps": []
+}

@@ -1,0 +1,14 @@
+{
+  "name": "StatusBadge",
+  "cssBlock": "dsn-status-badge",
+  "category": "display-feedback",
+  "purpose": "Compact label communicating a status with a signal colour.",
+  "platforms": ["html-css", "react"],
+  "primaryProps": [
+    {
+      "name": "variant",
+      "values": ["neutral", "info", "positive", "negative", "warning"],
+      "default": "neutral"
+    }
+  ]
+}

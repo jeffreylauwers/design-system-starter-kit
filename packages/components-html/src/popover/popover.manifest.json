@@ -1,0 +1,8 @@
+{
+  "name": "Popover",
+  "cssBlock": "dsn-popover",
+  "category": "display-feedback",
+  "purpose": "Non-modal dialog anchored to a trigger element, light-dismissed via the HTML Popover API. For a list of actions or links, use PopoverMenu.",
+  "platforms": ["html-css", "react"],
+  "primaryProps": []
+}

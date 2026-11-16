@@ -1,0 +1,24 @@
+{
+  "name": "FormField",
+  "cssBlock": "dsn-form-field",
+  "category": "form-field",
+  "purpose": "Container that assembles FormFieldLabel, FormFieldDescription, FormFieldErrorMessage, FormFieldStatus, and a single form input.",
+  "platforms": ["html-css", "react"],
+  "primaryProps": [
+    {
+      "name": "label",
+      "type": "string",
+      "required": true
+    },
+    {
+      "name": "invalid",
+      "type": "boolean",
+      "default": false
+    },
+    {
+      "name": "required",
+      "type": "boolean",
+      "default": false
+    }
+  ]
+}

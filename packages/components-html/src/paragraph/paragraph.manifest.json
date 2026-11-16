@@ -1,0 +1,14 @@
+{
+  "name": "Paragraph",
+  "cssBlock": "dsn-paragraph",
+  "category": "content",
+  "purpose": "Body text with lead, default, and small-print size variants.",
+  "platforms": ["html-css", "react", "web-components"],
+  "primaryProps": [
+    {
+      "name": "size",
+      "values": ["default", "lead", "small-print"],
+      "default": "default"
+    }
+  ]
+}

@@ -1,0 +1,14 @@
+{
+  "name": "DateInput",
+  "cssBlock": "dsn-text-input",
+  "category": "form-input",
+  "purpose": "Date input with an inline calendar icon button that opens the native date picker.",
+  "platforms": ["html-css", "react"],
+  "primaryProps": [
+    {
+      "name": "disabled",
+      "type": "boolean",
+      "default": false
+    }
+  ]
+}

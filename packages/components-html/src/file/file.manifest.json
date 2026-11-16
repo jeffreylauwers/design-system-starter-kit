@@ -1,0 +1,24 @@
+{
+  "name": "File",
+  "cssBlock": "dsn-file",
+  "category": "display-feedback",
+  "purpose": "Displays file metadata (name, type, size) with contextual upload states and an optional interactive variant.",
+  "platforms": ["html-css", "react"],
+  "primaryProps": [
+    {
+      "name": "state",
+      "values": ["default", "loading", "uploaded", "error"],
+      "default": "default"
+    },
+    {
+      "name": "ctaVariant",
+      "values": ["view", "download"],
+      "default": "view"
+    },
+    {
+      "name": "mediaType",
+      "values": ["document", "image"],
+      "default": "document"
+    }
+  ]
+}
