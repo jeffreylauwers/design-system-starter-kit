@@ -57,13 +57,6 @@ const WITHOUT_API = new Set([
   'BreakoutSection',
   'ButtonLink',
   'Container',
-  'FormField',
-  'FormFieldDescription',
-  'FormFieldErrorMessage',
-  'FormFieldLabel',
-  'FormFieldLegend',
-  'FormFieldStatus',
-  'FormFieldset',
   'Grid',
   'Heading',
   'HeadingGroup',
@@ -151,6 +144,22 @@ function firstCombination(matrix: Matrix) {
   return Object.fromEntries(
     Object.entries(matrix.axes ?? {}).map(([axis, values]) => [axis, values[0]])
   );
+}
+
+/**
+ * De markup met elke waarde van elke as minstens één keer, de andere assen
+ * op hun eerste waarde. Een onderdeel dat alleen bij `invalid=true` bestaat
+ * (de foutmelding van FormField) staat er dan ook in.
+ */
+function everyValueMarkup(matrix: Matrix) {
+  const base = firstCombination(matrix);
+  const combinations = [
+    base,
+    ...Object.entries(matrix.axes ?? {}).flatMap(([axis, values]) =>
+      values.slice(1).map((value) => ({ ...base, [axis]: value }))
+    ),
+  ];
+  return combinations.map((combination) => matrix.render(combination)).join('');
 }
 
 describe('manifest-api versus Figma-matrix', () => {
@@ -289,7 +298,7 @@ describe('manifest-api versus Figma-matrix', () => {
       });
 
       it('een property van een geneste instance bestaat op dat component', () => {
-        const html = matrix.render(firstCombination(matrix));
+        const html = everyValueMarkup(matrix);
         for (const { binding, part } of claims) {
           if (!binding.instance) continue;
           // Alleen een matrix met `instances: true` maakt van een genest

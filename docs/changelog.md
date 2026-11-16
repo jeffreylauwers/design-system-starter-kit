@@ -10,6 +10,17 @@ All notable changes to this project are documented in this file.
 
 Nog niet gepubliceerde wijzigingen. Schrijf nieuwe changelog-entries hieronder; bij de volgende release wordt deze kop gepromoveerd naar het definitieve versienummer.
 
+### components-html: api-blok voor de formulieronderdelen
+
+FormField, FormFieldset, FormFieldLabel, FormFieldLegend, FormFieldDescription, FormFieldErrorMessage en FormFieldStatus hebben een `api`-blok (#488). Bij FormField hangen `label`, `labelSuffix`, `description` en `error` aan de properties van hun geneste instances. FormFieldset en FormFieldLegend hebben geen eigen set in Figma.
+
+De Figma-test bekijkt de markup van een matrix nu met elke waarde van elke as, zodat een onderdeel dat alleen bij `invalid=true` bestaat (de foutmelding van FormField) ook meetelt. De React-lezer volgt een import uit de map van een ander component (`../FormFieldStatus`).
+
+Gevonden drift, nu gelijk aan React:
+
+- FormField en FormFieldset noemden in `primaryProps` de props `invalid` en `required`; die bestaan niet. Een fout geef je door met `error`.
+- FormFieldLabel en FormFieldLegend noemden `required`; in React is dat `suffix`, zoals "(niet verplicht)".
+
 ### components-html: api-blok voor display-feedback, en open punten
 
 Alert, Backdrop, Card, DataList, Details, DotBadge, Drawer, File, Image, ModalDialog, Note, NumberBadge, Popover, ProgressBar, Spinner, StatusBadge en Table hebben een `api`-blok (#488).

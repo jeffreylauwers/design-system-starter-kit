@@ -1476,9 +1476,132 @@
       "platforms": ["html-css", "react"],
       "primaryProps": [
         { "name": "label", "type": "string", "required": true },
-        { "name": "invalid", "type": "boolean", "default": false },
-        { "name": "required", "type": "boolean", "default": false }
-      ]
+        { "name": "error", "type": "ReactNode" }
+      ],
+      "api": {
+        "props": [
+          {
+            "name": "label",
+            "type": "string",
+            "required": true,
+            "figma": [
+              {
+                "kind": "text",
+                "property": "label",
+                "instance": "FormFieldLabel"
+              }
+            ]
+          },
+          {
+            "name": "htmlFor",
+            "type": "string",
+            "figma": [
+              {
+                "kind": "none",
+                "reason": "Koppelt elementen in code, niet het uiterlijk."
+              }
+            ]
+          },
+          {
+            "name": "labelSuffix",
+            "type": "string",
+            "figma": [
+              {
+                "kind": "boolean",
+                "property": "showSuffix",
+                "instance": "FormFieldLabel"
+              },
+              {
+                "kind": "text",
+                "property": "suffix",
+                "instance": "FormFieldLabel"
+              }
+            ]
+          },
+          {
+            "name": "description",
+            "type": "ReactNode",
+            "figma": [
+              {
+                "kind": "variant",
+                "property": "description",
+                "values": ["with-description", "no-description"]
+              },
+              {
+                "kind": "text",
+                "property": "label",
+                "instance": "FormFieldDescription"
+              }
+            ]
+          },
+          {
+            "name": "error",
+            "type": "ReactNode",
+            "figma": [
+              { "kind": "variant", "property": "invalid" },
+              {
+                "kind": "text",
+                "property": "label",
+                "instance": "FormFieldErrorMessage"
+              }
+            ]
+          },
+          {
+            "name": "status",
+            "type": "ReactNode",
+            "figma": [
+              {
+                "kind": "none",
+                "reason": "Nog niet in de Figma-matrix van FormField.",
+                "open": true
+              }
+            ]
+          },
+          {
+            "name": "statusVariant",
+            "values": ["default", "positive", "warning"],
+            "default": "default",
+            "figma": [
+              {
+                "kind": "none",
+                "reason": "Nog niet in de Figma-matrix van FormField.",
+                "open": true
+              }
+            ]
+          },
+          {
+            "name": "statusLive",
+            "type": "boolean",
+            "default": false,
+            "figma": [
+              {
+                "kind": "none",
+                "reason": "Bepaalt of schermlezers een wijziging voorlezen (aria-live); niet zichtbaar."
+              }
+            ]
+          },
+          {
+            "name": "children",
+            "type": "ReactNode",
+            "required": true,
+            "slots": ["control"]
+          }
+        ],
+        "slots": [
+          {
+            "name": "control",
+            "element": "dsn-form-field",
+            "description": "Het formulierveld zelf, zoals een TextInput.",
+            "figma": [
+              {
+                "kind": "none",
+                "reason": "Geen property: de inhoud pas je in een instance aan op de lagen zelf."
+              }
+            ]
+          }
+        ],
+        "states": []
+      }
     },
     {
       "name": "FormFieldDescription",
@@ -1486,7 +1609,32 @@
       "category": "form-field",
       "purpose": "Helper text below a form label that provides additional context for the input.",
       "platforms": ["html-css", "react"],
-      "primaryProps": []
+      "primaryProps": [],
+      "api": {
+        "props": [
+          {
+            "name": "as",
+            "values": ["p", "div"],
+            "default": "p",
+            "figma": [
+              {
+                "kind": "none",
+                "reason": "Bepaalt het HTML-element, niet het uiterlijk."
+              }
+            ]
+          },
+          { "name": "children", "type": "ReactNode", "slots": ["label"] }
+        ],
+        "slots": [
+          {
+            "name": "label",
+            "element": "dsn-form-field-description",
+            "description": "De toelichting.",
+            "figma": [{ "kind": "text", "property": "label" }]
+          }
+        ],
+        "states": []
+      }
     },
     {
       "name": "FormFieldErrorMessage",
@@ -1494,7 +1642,33 @@
       "category": "form-field",
       "purpose": "Inline error message shown below a form input when validation fails.",
       "platforms": ["html-css", "react"],
-      "primaryProps": []
+      "primaryProps": [],
+      "api": {
+        "props": [
+          {
+            "name": "showIcon",
+            "type": "boolean",
+            "default": true,
+            "figma": [
+              {
+                "kind": "none",
+                "reason": "Nog niet in de Figma-matrix van FormFieldErrorMessage.",
+                "open": true
+              }
+            ]
+          },
+          { "name": "children", "type": "ReactNode", "slots": ["label"] }
+        ],
+        "slots": [
+          {
+            "name": "label",
+            "element": "dsn-form-field-error-message",
+            "description": "De foutmelding.",
+            "figma": [{ "kind": "text", "property": "label" }]
+          }
+        ],
+        "states": []
+      }
     },
     {
       "name": "FormFieldLabel",
@@ -1502,9 +1676,31 @@
       "category": "form-field",
       "purpose": "Label element for a single form input; always paired with a FormField container.",
       "platforms": ["html-css", "react"],
-      "primaryProps": [
-        { "name": "required", "type": "boolean", "default": false }
-      ]
+      "primaryProps": [{ "name": "suffix", "type": "string" }],
+      "api": {
+        "props": [
+          { "name": "suffix", "type": "string", "slots": ["suffix"] },
+          { "name": "children", "type": "ReactNode", "slots": ["label"] }
+        ],
+        "slots": [
+          {
+            "name": "label",
+            "element": "dsn-form-field-label",
+            "description": "De tekst van het label.",
+            "figma": [{ "kind": "text", "property": "label" }]
+          },
+          {
+            "name": "suffix",
+            "element": "dsn-form-field-label-suffix",
+            "description": "Toevoeging zoals (niet verplicht).",
+            "figma": [
+              { "kind": "boolean", "property": "showSuffix" },
+              { "kind": "text", "property": "suffix" }
+            ]
+          }
+        ],
+        "states": []
+      }
     },
     {
       "name": "FormFieldLegend",
@@ -1512,9 +1708,33 @@
       "category": "form-field",
       "purpose": "Legend element for a fieldset group; visually identical to FormFieldLabel.",
       "platforms": ["html-css", "react"],
-      "primaryProps": [
-        { "name": "required", "type": "boolean", "default": false }
-      ]
+      "primaryProps": [{ "name": "suffix", "type": "string" }],
+      "api": {
+        "props": [
+          {
+            "name": "suffix",
+            "type": "string",
+            "figma": [
+              {
+                "kind": "none",
+                "reason": "Geen eigen set in Figma: in Figma is dit een FormFieldLabel (dezelfde CSS, een <legend> in plaats van een <label>)."
+              }
+            ]
+          },
+          {
+            "name": "children",
+            "type": "ReactNode",
+            "figma": [
+              {
+                "kind": "none",
+                "reason": "Geen eigen set in Figma: in Figma is dit een FormFieldLabel (dezelfde CSS, een <legend> in plaats van een <label>)."
+              }
+            ]
+          }
+        ],
+        "slots": [],
+        "states": []
+      }
     },
     {
       "name": "FormFieldset",
@@ -1524,8 +1744,108 @@
       "platforms": ["html-css", "react"],
       "primaryProps": [
         { "name": "legend", "type": "string", "required": true },
-        { "name": "invalid", "type": "boolean", "default": false }
-      ]
+        { "name": "error", "type": "ReactNode" }
+      ],
+      "api": {
+        "props": [
+          {
+            "name": "legend",
+            "type": "string",
+            "required": true,
+            "figma": [
+              {
+                "kind": "none",
+                "reason": "Geen eigen set in Figma: in Figma is dit een FormField (dezelfde CSS, een <fieldset> in plaats van een <div>)."
+              }
+            ]
+          },
+          {
+            "name": "legendSuffix",
+            "type": "string",
+            "figma": [
+              {
+                "kind": "none",
+                "reason": "Geen eigen set in Figma: in Figma is dit een FormField (dezelfde CSS, een <fieldset> in plaats van een <div>)."
+              }
+            ]
+          },
+          {
+            "name": "description",
+            "type": "ReactNode",
+            "figma": [
+              {
+                "kind": "none",
+                "reason": "Geen eigen set in Figma: in Figma is dit een FormField (dezelfde CSS, een <fieldset> in plaats van een <div>)."
+              }
+            ]
+          },
+          {
+            "name": "error",
+            "type": "ReactNode",
+            "figma": [
+              {
+                "kind": "none",
+                "reason": "Geen eigen set in Figma: in Figma is dit een FormField (dezelfde CSS, een <fieldset> in plaats van een <div>)."
+              }
+            ]
+          },
+          {
+            "name": "status",
+            "type": "ReactNode",
+            "figma": [
+              {
+                "kind": "none",
+                "reason": "Geen eigen set in Figma: in Figma is dit een FormField (dezelfde CSS, een <fieldset> in plaats van een <div>)."
+              }
+            ]
+          },
+          {
+            "name": "statusVariant",
+            "values": ["default", "positive", "warning"],
+            "default": "default",
+            "figma": [
+              {
+                "kind": "none",
+                "reason": "Geen eigen set in Figma: in Figma is dit een FormField (dezelfde CSS, een <fieldset> in plaats van een <div>)."
+              }
+            ]
+          },
+          {
+            "name": "statusLive",
+            "type": "boolean",
+            "default": false,
+            "figma": [
+              {
+                "kind": "none",
+                "reason": "Geen eigen set in Figma: in Figma is dit een FormField (dezelfde CSS, een <fieldset> in plaats van een <div>)."
+              }
+            ]
+          },
+          {
+            "name": "id",
+            "type": "string",
+            "figma": [
+              {
+                "kind": "none",
+                "reason": "Koppelt elementen in code, niet het uiterlijk."
+              }
+            ]
+          },
+          {
+            "name": "children",
+            "type": "ReactNode",
+            "required": true,
+            "figma": [
+              {
+                "kind": "none",
+                "reason": "Geen eigen set in Figma: in Figma is dit een FormField (dezelfde CSS, een <fieldset> in plaats van een <div>)."
+              }
+            ]
+          }
+        ],
+        "slots": [],
+        "states": []
+      }
     },
     {
       "name": "FormFieldStatus",
@@ -1539,7 +1859,50 @@
           "values": ["default", "positive", "warning"],
           "default": "default"
         }
-      ]
+      ],
+      "api": {
+        "props": [
+          {
+            "name": "variant",
+            "values": ["default", "positive", "warning"],
+            "default": "default",
+            "figma": [{ "kind": "variant", "property": "variant" }]
+          },
+          {
+            "name": "showIcon",
+            "type": "boolean",
+            "default": true,
+            "figma": [
+              {
+                "kind": "none",
+                "reason": "Nog niet in de Figma-matrix van FormFieldStatus.",
+                "open": true
+              }
+            ]
+          },
+          {
+            "name": "live",
+            "type": "boolean",
+            "default": false,
+            "figma": [
+              {
+                "kind": "none",
+                "reason": "Bepaalt of schermlezers een wijziging voorlezen (aria-live); niet zichtbaar."
+              }
+            ]
+          },
+          { "name": "children", "type": "ReactNode", "slots": ["label"] }
+        ],
+        "slots": [
+          {
+            "name": "label",
+            "element": "dsn-form-field-status",
+            "description": "De statusmelding.",
+            "figma": [{ "kind": "text", "property": "label" }]
+          }
+        ],
+        "states": []
+      }
     },
     {
       "name": "Grid",

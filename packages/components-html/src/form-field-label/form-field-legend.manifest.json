@@ -6,9 +6,34 @@
   "platforms": ["html-css", "react"],
   "primaryProps": [
     {
-      "name": "required",
-      "type": "boolean",
-      "default": false
+      "name": "suffix",
+      "type": "string"
     }
-  ]
+  ],
+  "api": {
+    "props": [
+      {
+        "name": "suffix",
+        "type": "string",
+        "figma": [
+          {
+            "kind": "none",
+            "reason": "Geen eigen set in Figma: in Figma is dit een FormFieldLabel (dezelfde CSS, een <legend> in plaats van een <label>)."
+          }
+        ]
+      },
+      {
+        "name": "children",
+        "type": "ReactNode",
+        "figma": [
+          {
+            "kind": "none",
+            "reason": "Geen eigen set in Figma: in Figma is dit een FormFieldLabel (dezelfde CSS, een <legend> in plaats van een <label>)."
+          }
+        ]
+      }
+    ],
+    "slots": [],
+    "states": []
+  }
 }

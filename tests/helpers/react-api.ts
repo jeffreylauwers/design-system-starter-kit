@@ -112,7 +112,14 @@ function readOwnApi(name: string) {
       return;
     }
     const base = path.resolve(path.dirname(file), node.moduleSpecifier.text);
-    const target = [`${base}.ts`, `${base}.tsx`, path.join(base, 'index.ts')]
+    const target = [
+      `${base}.ts`,
+      `${base}.tsx`,
+      // `../FormFieldStatus`: de map van een component; de types staan in
+      // het componentbestand, index.ts exporteert ze alleen door.
+      path.join(base, `${path.basename(base)}.tsx`),
+      path.join(base, 'index.ts'),
+    ]
       .filter(existsSync)
       .at(0);
     if (!target) return;

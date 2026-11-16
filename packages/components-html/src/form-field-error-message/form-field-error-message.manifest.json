@@ -4,5 +4,40 @@
   "category": "form-field",
   "purpose": "Inline error message shown below a form input when validation fails.",
   "platforms": ["html-css", "react"],
-  "primaryProps": []
+  "primaryProps": [],
+  "api": {
+    "props": [
+      {
+        "name": "showIcon",
+        "type": "boolean",
+        "default": true,
+        "figma": [
+          {
+            "kind": "none",
+            "reason": "Nog niet in de Figma-matrix van FormFieldErrorMessage.",
+            "open": true
+          }
+        ]
+      },
+      {
+        "name": "children",
+        "type": "ReactNode",
+        "slots": ["label"]
+      }
+    ],
+    "slots": [
+      {
+        "name": "label",
+        "element": "dsn-form-field-error-message",
+        "description": "De foutmelding.",
+        "figma": [
+          {
+            "kind": "text",
+            "property": "label"
+          }
+        ]
+      }
+    ],
+    "states": []
+  }
 }

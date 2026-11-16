@@ -4,5 +4,39 @@
   "category": "form-field",
   "purpose": "Helper text below a form label that provides additional context for the input.",
   "platforms": ["html-css", "react"],
-  "primaryProps": []
+  "primaryProps": [],
+  "api": {
+    "props": [
+      {
+        "name": "as",
+        "values": ["p", "div"],
+        "default": "p",
+        "figma": [
+          {
+            "kind": "none",
+            "reason": "Bepaalt het HTML-element, niet het uiterlijk."
+          }
+        ]
+      },
+      {
+        "name": "children",
+        "type": "ReactNode",
+        "slots": ["label"]
+      }
+    ],
+    "slots": [
+      {
+        "name": "label",
+        "element": "dsn-form-field-description",
+        "description": "De toelichting.",
+        "figma": [
+          {
+            "kind": "text",
+            "property": "label"
+          }
+        ]
+      }
+    ],
+    "states": []
+  }
 }
