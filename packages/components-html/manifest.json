@@ -238,7 +238,7 @@
             "figma": [
               {
                 "kind": "none",
-                "reason": "Staat niet op de state-as van de Figma-matrix van Button."
+                "reason": "In Figma kun je niet met de tabtoets door een prototype; Figma is voor het snel uitwerken van ideeën, niet voor toetsenbordgedrag."
               }
             ]
           }
