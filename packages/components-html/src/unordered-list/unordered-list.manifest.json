@@ -4,5 +4,28 @@
   "category": "content",
   "purpose": "Styled unordered list.",
   "platforms": ["html-css", "react", "web-components"],
-  "primaryProps": []
+  "primaryProps": [],
+  "api": {
+    "props": [
+      {
+        "name": "children",
+        "type": "ReactNode",
+        "slots": ["items"]
+      }
+    ],
+    "slots": [
+      {
+        "name": "items",
+        "element": "dsn-unordered-list",
+        "description": "De items van de lijst.",
+        "figma": [
+          {
+            "kind": "slot",
+            "property": "slot"
+          }
+        ]
+      }
+    ],
+    "states": []
+  }
 }

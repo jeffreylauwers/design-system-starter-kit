@@ -10,6 +10,21 @@ All notable changes to this project are documented in this file.
 
 Nog niet gepubliceerde wijzigingen. Schrijf nieuwe changelog-entries hieronder; bij de volgende release wordt deze kop gepromoveerd naar het definitieve versienummer.
 
+### components-html: api-blok voor content
+
+ButtonLink, Heading, HeadingGroup, Icon, IconList, Link, LinkButton, OrderedList, Paragraph, PreHeading en UnorderedList hebben een `api`-blok (#488). ButtonLink en LinkButton hebben geen eigen set in Figma (dat zijn Button en Link), Icon ook niet (de iconen zijn losse componenten op `dsn/Icons`). De `name` van Icon noemt alle 51 iconen; een nieuw icoon laat `tests/manifest-react.test.ts` falen tot het ook in de manifest staat.
+
+De Figma-test herkent een geneste instance nu ook aan `data-figma-instance` (de Heading in HeadingGroup), en de React-lezer kent prop-namen tussen aanhalingstekens (`'aria-label'` bij Icon).
+
+Gevonden drift, nu gelijk aan React:
+
+- Heading en HeadingGroup noemden voor `appearance` de waarden `1` tot en met `6` met de default `"matches level"`; in React is dat `heading-1` tot en met `heading-6`, zonder default. Heading noemde `level` verplicht; in React is het optioneel met de default `2`.
+- Paragraph noemde `size`; in React heet die `variant`.
+- Icon noemde voor `size` alleen `sm` tot en met `xl`; React kent ook `2xl`, `3xl` en `4xl`. `name` is geen vrije string maar een van de 51 iconnamen.
+- ButtonLink noemde `href` verplicht; in React is die optioneel. De `variant`-waarden staan nu in de volgorde van de union.
+- Link noemde `href` verplicht; dat is in React een gewoon, optioneel attribuut van `<a>`.
+- PreHeading noemde `children` verplicht; in React is die optioneel.
+
 ### components-html: api-blok voor de formulieronderdelen
 
 FormField, FormFieldset, FormFieldLabel, FormFieldLegend, FormFieldDescription, FormFieldErrorMessage en FormFieldStatus hebben een `api`-blok (#488). Bij FormField hangen `label`, `labelSuffix`, `description` en `error` aan de properties van hun geneste instances. FormFieldset en FormFieldLegend hebben geen eigen set in Figma.

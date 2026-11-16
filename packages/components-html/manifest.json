@@ -336,13 +336,13 @@
         {
           "name": "variant",
           "values": [
-            "default",
             "strong",
-            "subtle",
             "strong-negative",
             "strong-positive",
+            "default",
             "default-negative",
             "default-positive",
+            "subtle",
             "subtle-negative",
             "subtle-positive"
           ],
@@ -350,11 +350,133 @@
         },
         {
           "name": "size",
-          "values": ["default", "small", "large"],
+          "values": ["small", "default", "large"],
           "default": "default"
         },
-        { "name": "href", "type": "string", "required": true }
-      ]
+        { "name": "href", "type": "string" }
+      ],
+      "api": {
+        "props": [
+          {
+            "name": "href",
+            "type": "string",
+            "figma": [
+              {
+                "kind": "none",
+                "reason": "Geen eigen set in Figma: in Figma is dit een Button (dezelfde CSS, een <a> in plaats van een <button>)."
+              }
+            ]
+          },
+          {
+            "name": "variant",
+            "values": [
+              "strong",
+              "strong-negative",
+              "strong-positive",
+              "default",
+              "default-negative",
+              "default-positive",
+              "subtle",
+              "subtle-negative",
+              "subtle-positive"
+            ],
+            "default": "strong",
+            "figma": [
+              {
+                "kind": "none",
+                "reason": "Geen eigen set in Figma: in Figma is dit een Button (dezelfde CSS, een <a> in plaats van een <button>)."
+              }
+            ]
+          },
+          {
+            "name": "size",
+            "values": ["small", "default", "large"],
+            "default": "default",
+            "figma": [
+              {
+                "kind": "none",
+                "reason": "Geen eigen set in Figma: in Figma is dit een Button (dezelfde CSS, een <a> in plaats van een <button>)."
+              }
+            ]
+          },
+          {
+            "name": "fullWidth",
+            "type": "boolean",
+            "default": false,
+            "figma": [
+              {
+                "kind": "none",
+                "reason": "Geen eigen set in Figma: in Figma is dit een Button (dezelfde CSS, een <a> in plaats van een <button>)."
+              }
+            ]
+          },
+          {
+            "name": "iconOnly",
+            "type": "boolean",
+            "default": false,
+            "figma": [
+              {
+                "kind": "none",
+                "reason": "Geen eigen set in Figma: in Figma is dit een Button (dezelfde CSS, een <a> in plaats van een <button>)."
+              }
+            ]
+          },
+          {
+            "name": "iconStart",
+            "type": "ReactNode",
+            "figma": [
+              {
+                "kind": "none",
+                "reason": "Geen eigen set in Figma: in Figma is dit een Button (dezelfde CSS, een <a> in plaats van een <button>)."
+              }
+            ]
+          },
+          {
+            "name": "iconEnd",
+            "type": "ReactNode",
+            "figma": [
+              {
+                "kind": "none",
+                "reason": "Geen eigen set in Figma: in Figma is dit een Button (dezelfde CSS, een <a> in plaats van een <button>)."
+              }
+            ]
+          },
+          {
+            "name": "disabled",
+            "type": "boolean",
+            "default": false,
+            "figma": [
+              {
+                "kind": "none",
+                "reason": "Geen eigen set in Figma: in Figma is dit een Button (dezelfde CSS, een <a> in plaats van een <button>)."
+              }
+            ]
+          },
+          {
+            "name": "external",
+            "type": "boolean",
+            "default": false,
+            "figma": [
+              {
+                "kind": "none",
+                "reason": "Geen eigen set in Figma: in Figma is dit een Button (dezelfde CSS, een <a> in plaats van een <button>)."
+              }
+            ]
+          },
+          {
+            "name": "children",
+            "type": "ReactNode",
+            "figma": [
+              {
+                "kind": "none",
+                "reason": "Geen eigen set in Figma: in Figma is dit een Button (dezelfde CSS, een <a> in plaats van een <button>)."
+              }
+            ]
+          }
+        ],
+        "slots": [],
+        "states": []
+      }
     },
     {
       "name": "Card",
@@ -1921,13 +2043,51 @@
       "purpose": "Semantic heading element (h1–h6) with a decoupled visual appearance level.",
       "platforms": ["html-css", "react", "web-components"],
       "primaryProps": [
-        { "name": "level", "values": [1, 2, 3, 4, 5, 6], "required": true },
+        { "name": "level", "values": [1, 2, 3, 4, 5, 6], "default": 2 },
         {
           "name": "appearance",
-          "values": [1, 2, 3, 4, 5, 6],
-          "default": "matches level"
+          "values": [
+            "heading-1",
+            "heading-2",
+            "heading-3",
+            "heading-4",
+            "heading-5",
+            "heading-6"
+          ]
         }
-      ]
+      ],
+      "api": {
+        "props": [
+          {
+            "name": "level",
+            "values": [1, 2, 3, 4, 5, 6],
+            "default": 2,
+            "figma": [{ "kind": "variant", "property": "level" }]
+          },
+          {
+            "name": "appearance",
+            "values": [
+              "heading-1",
+              "heading-2",
+              "heading-3",
+              "heading-4",
+              "heading-5",
+              "heading-6"
+            ],
+            "figma": [{ "kind": "variant", "property": "appearance" }]
+          },
+          { "name": "children", "type": "ReactNode", "slots": ["label"] }
+        ],
+        "slots": [
+          {
+            "name": "label",
+            "element": "dsn-heading",
+            "description": "De tekst van de kop.",
+            "figma": [{ "kind": "text", "property": "label" }]
+          }
+        ],
+        "states": []
+      }
     },
     {
       "name": "HeadingGroup",
@@ -1939,11 +2099,68 @@
         { "name": "level", "values": [1, 2, 3, 4, 5, 6], "default": 2 },
         {
           "name": "appearance",
-          "values": [1, 2, 3, 4, 5, 6],
-          "default": "matches level"
+          "values": [
+            "heading-1",
+            "heading-2",
+            "heading-3",
+            "heading-4",
+            "heading-5",
+            "heading-6"
+          ]
         },
-        { "name": "preHeading", "type": "ReactNode", "required": false }
-      ]
+        { "name": "preHeading", "type": "ReactNode" }
+      ],
+      "api": {
+        "props": [
+          {
+            "name": "level",
+            "values": [1, 2, 3, 4, 5, 6],
+            "default": 2,
+            "figma": [
+              {
+                "kind": "none",
+                "reason": "Bepaalt het HTML-element van de kop; het uiterlijk zet je in Figma met appearance."
+              }
+            ]
+          },
+          {
+            "name": "appearance",
+            "values": [
+              "heading-1",
+              "heading-2",
+              "heading-3",
+              "heading-4",
+              "heading-5",
+              "heading-6"
+            ],
+            "figma": [
+              {
+                "kind": "variant",
+                "property": "appearance",
+                "values": ["heading-1", "heading-2", "heading-3", "heading-4"],
+                "reason": "heading-5 en heading-6 staan niet in de Figma-matrix van HeadingGroup.",
+                "open": true
+              }
+            ]
+          },
+          {
+            "name": "preHeading",
+            "type": "ReactNode",
+            "figma": [
+              { "kind": "text", "property": "label", "instance": "PreHeading" }
+            ]
+          },
+          {
+            "name": "children",
+            "type": "ReactNode",
+            "figma": [
+              { "kind": "text", "property": "label", "instance": "Heading" }
+            ]
+          }
+        ],
+        "slots": [],
+        "states": []
+      }
     },
     {
       "name": "Hero",
@@ -1967,9 +2184,159 @@
       "purpose": "Renders a named SVG icon from the system's icon registry.",
       "platforms": ["html-css", "react", "web-components"],
       "primaryProps": [
-        { "name": "name", "type": "string", "required": true },
-        { "name": "size", "values": ["sm", "md", "lg", "xl"], "default": "md" }
-      ]
+        {
+          "name": "name",
+          "values": [
+            "alert-triangle",
+            "archive",
+            "arrow-down",
+            "arrow-left",
+            "arrow-narrow-down",
+            "arrow-narrow-up",
+            "arrow-right",
+            "arrow-up",
+            "arrows-sort",
+            "bell",
+            "calendar-event",
+            "check",
+            "chevron-down",
+            "chevron-left",
+            "chevron-right",
+            "chevron-up",
+            "circle-check",
+            "clock",
+            "dots-vertical",
+            "download",
+            "edit",
+            "exclamation-circle",
+            "external-link",
+            "eye",
+            "file-description",
+            "folder",
+            "heart-filled",
+            "heart",
+            "home",
+            "info-circle",
+            "loader",
+            "mail",
+            "menu",
+            "message-circle",
+            "minus",
+            "paperclip",
+            "pencil",
+            "photo",
+            "plus",
+            "printer",
+            "search",
+            "selector",
+            "settings",
+            "sort-ascending",
+            "sort-descending",
+            "star-filled",
+            "star",
+            "trash",
+            "upload",
+            "user",
+            "x"
+          ],
+          "required": true
+        },
+        {
+          "name": "size",
+          "values": ["sm", "md", "lg", "xl", "2xl", "3xl", "4xl"],
+          "default": "md"
+        }
+      ],
+      "api": {
+        "props": [
+          {
+            "name": "name",
+            "values": [
+              "alert-triangle",
+              "archive",
+              "arrow-down",
+              "arrow-left",
+              "arrow-narrow-down",
+              "arrow-narrow-up",
+              "arrow-right",
+              "arrow-up",
+              "arrows-sort",
+              "bell",
+              "calendar-event",
+              "check",
+              "chevron-down",
+              "chevron-left",
+              "chevron-right",
+              "chevron-up",
+              "circle-check",
+              "clock",
+              "dots-vertical",
+              "download",
+              "edit",
+              "exclamation-circle",
+              "external-link",
+              "eye",
+              "file-description",
+              "folder",
+              "heart-filled",
+              "heart",
+              "home",
+              "info-circle",
+              "loader",
+              "mail",
+              "menu",
+              "message-circle",
+              "minus",
+              "paperclip",
+              "pencil",
+              "photo",
+              "plus",
+              "printer",
+              "search",
+              "selector",
+              "settings",
+              "sort-ascending",
+              "sort-descending",
+              "star-filled",
+              "star",
+              "trash",
+              "upload",
+              "user",
+              "x"
+            ],
+            "required": true,
+            "figma": [
+              {
+                "kind": "none",
+                "reason": "Geen set in Figma: de iconen staan als losse componenten op dsn/Icons, want een instance swap kiest uit componenten en niet uit varianten van één set."
+              }
+            ]
+          },
+          {
+            "name": "size",
+            "values": ["sm", "md", "lg", "xl", "2xl", "3xl", "4xl"],
+            "default": "md",
+            "figma": [
+              {
+                "kind": "none",
+                "reason": "Geen set in Figma: de iconen staan als losse componenten op dsn/Icons, want een instance swap kiest uit componenten en niet uit varianten van één set."
+              }
+            ]
+          },
+          {
+            "name": "aria-label",
+            "type": "string",
+            "figma": [
+              {
+                "kind": "none",
+                "reason": "Tekst voor schermlezers; niet zichtbaar."
+              }
+            ]
+          }
+        ],
+        "slots": [],
+        "states": []
+      }
     },
     {
       "name": "IconList",
@@ -1979,7 +2346,43 @@
       "platforms": ["html-css", "react"],
       "primaryProps": [
         { "name": "as", "values": ["ul", "ol"], "default": "ul" }
-      ]
+      ],
+      "api": {
+        "props": [
+          {
+            "name": "as",
+            "values": ["ul", "ol"],
+            "default": "ul",
+            "figma": [
+              {
+                "kind": "none",
+                "reason": "Bepaalt het HTML-element, niet het uiterlijk."
+              }
+            ]
+          },
+          {
+            "name": "iconColor",
+            "type": "string",
+            "figma": [
+              {
+                "kind": "none",
+                "reason": "Nog niet in de Figma-matrix van IconList.",
+                "open": true
+              }
+            ]
+          },
+          { "name": "children", "type": "ReactNode", "slots": ["items"] }
+        ],
+        "slots": [
+          {
+            "name": "items",
+            "element": "dsn-icon-list",
+            "description": "De items van de lijst, elk met een icoon.",
+            "figma": [{ "kind": "slot", "property": "slot" }]
+          }
+        ],
+        "states": []
+      }
     },
     {
       "name": "Image",
@@ -2116,9 +2519,118 @@
       "purpose": "Hyperlink with optional icon support and automatic external link handling.",
       "platforms": ["html-css", "react", "web-components"],
       "primaryProps": [
-        { "name": "href", "type": "string", "required": true },
+        { "name": "href", "type": "string" },
         { "name": "external", "type": "boolean", "default": false }
-      ]
+      ],
+      "api": {
+        "props": [
+          {
+            "name": "href",
+            "type": "string",
+            "native": true,
+            "figma": [
+              {
+                "kind": "none",
+                "reason": "De bestemming van de link, niet het uiterlijk."
+              }
+            ]
+          },
+          {
+            "name": "disabled",
+            "type": "boolean",
+            "default": false,
+            "figma": [{ "kind": "variant", "property": "disabled" }]
+          },
+          {
+            "name": "current",
+            "type": "boolean",
+            "default": false,
+            "figma": [
+              {
+                "kind": "none",
+                "reason": "Nog niet in de Figma-matrix van Link.",
+                "open": true
+              }
+            ]
+          },
+          {
+            "name": "size",
+            "values": ["small", "default", "large"],
+            "figma": [{ "kind": "variant", "property": "size" }]
+          },
+          { "name": "iconStart", "type": "ReactNode", "slots": ["icon-start"] },
+          { "name": "iconEnd", "type": "ReactNode", "slots": ["icon-end"] },
+          {
+            "name": "external",
+            "type": "boolean",
+            "default": false,
+            "figma": [
+              {
+                "kind": "none",
+                "reason": "Nog niet in de Figma-matrix van Link.",
+                "open": true
+              }
+            ]
+          },
+          { "name": "children", "type": "ReactNode", "slots": ["label"] }
+        ],
+        "slots": [
+          {
+            "name": "icon-start",
+            "element": "dsn-icon",
+            "description": "Icoon vóór de tekst.",
+            "figma": [
+              { "kind": "boolean", "property": "showIconStart" },
+              { "kind": "instance-swap", "property": "iconStart" }
+            ]
+          },
+          {
+            "name": "label",
+            "element": "dsn-link",
+            "description": "De tekst van de link.",
+            "figma": [{ "kind": "text", "property": "label" }]
+          },
+          {
+            "name": "icon-end",
+            "element": "dsn-icon",
+            "description": "Icoon na de tekst.",
+            "figma": [
+              { "kind": "boolean", "property": "showIconEnd" },
+              { "kind": "instance-swap", "property": "iconEnd" }
+            ]
+          }
+        ],
+        "states": [
+          {
+            "name": "hover",
+            "selector": ":hover",
+            "figma": [
+              { "kind": "variant", "property": "state", "value": "hover" }
+            ]
+          },
+          {
+            "name": "active",
+            "selector": ":active",
+            "figma": [
+              {
+                "kind": "none",
+                "reason": "Nog niet in de Figma-matrix van Link.",
+                "open": true
+              }
+            ]
+          },
+          {
+            "name": "focus-visible",
+            "selector": ":focus-visible",
+            "figma": [
+              {
+                "kind": "none",
+                "reason": "In Figma kun je niet met de tabtoets door een prototype; Figma is voor het snel uitwerken van ideeën, niet voor toetsenbordgedrag."
+              }
+            ]
+          }
+        ]
+      }
     },
     {
       "name": "LinkButton",
@@ -2126,7 +2638,86 @@
       "category": "content",
       "purpose": "Semantically a <button>, visually a Link; for low-prominence JavaScript actions.",
       "platforms": ["html-css", "react"],
-      "primaryProps": []
+      "primaryProps": [],
+      "api": {
+        "props": [
+          {
+            "name": "size",
+            "values": ["small", "default", "large"],
+            "figma": [
+              {
+                "kind": "none",
+                "reason": "Geen eigen set in Figma: in Figma is dit een Link (dezelfde CSS, een <button> in plaats van een <a>)."
+              }
+            ]
+          },
+          {
+            "name": "iconStart",
+            "type": "ReactNode",
+            "figma": [
+              {
+                "kind": "none",
+                "reason": "Geen eigen set in Figma: in Figma is dit een Link (dezelfde CSS, een <button> in plaats van een <a>)."
+              }
+            ]
+          },
+          {
+            "name": "iconEnd",
+            "type": "ReactNode",
+            "figma": [
+              {
+                "kind": "none",
+                "reason": "Geen eigen set in Figma: in Figma is dit een Link (dezelfde CSS, een <button> in plaats van een <a>)."
+              }
+            ]
+          },
+          {
+            "name": "type",
+            "type": "string",
+            "default": "button",
+            "native": true,
+            "figma": [
+              {
+                "kind": "none",
+                "reason": "Geen eigen set in Figma: in Figma is dit een Link (dezelfde CSS, een <button> in plaats van een <a>)."
+              }
+            ]
+          },
+          {
+            "name": "children",
+            "type": "ReactNode",
+            "figma": [
+              {
+                "kind": "none",
+                "reason": "Geen eigen set in Figma: in Figma is dit een Link (dezelfde CSS, een <button> in plaats van een <a>)."
+              }
+            ]
+          }
+        ],
+        "slots": [],
+        "states": [
+          {
+            "name": "hover",
+            "selector": ":hover",
+            "figma": [
+              {
+                "kind": "none",
+                "reason": "Geen eigen set in Figma: in Figma is dit een Link (dezelfde CSS, een <button> in plaats van een <a>)."
+              }
+            ]
+          },
+          {
+            "name": "active",
+            "selector": ":active",
+            "figma": [
+              {
+                "kind": "none",
+                "reason": "Geen eigen set in Figma: in Figma is dit een Link (dezelfde CSS, een <button> in plaats van een <a>)."
+              }
+            ]
+          }
+        ]
+      }
     },
     {
       "name": "Logo",
@@ -2540,7 +3131,21 @@
       "category": "content",
       "purpose": "Styled ordered list.",
       "platforms": ["html-css", "react", "web-components"],
-      "primaryProps": []
+      "primaryProps": [],
+      "api": {
+        "props": [
+          { "name": "children", "type": "ReactNode", "slots": ["items"] }
+        ],
+        "slots": [
+          {
+            "name": "items",
+            "element": "dsn-ordered-list",
+            "description": "De items van de lijst.",
+            "figma": [{ "kind": "slot", "property": "slot" }]
+          }
+        ],
+        "states": []
+      }
     },
     {
       "name": "PageBody",
@@ -2582,11 +3187,31 @@
       "platforms": ["html-css", "react", "web-components"],
       "primaryProps": [
         {
-          "name": "size",
+          "name": "variant",
           "values": ["default", "lead", "small-print"],
           "default": "default"
         }
-      ]
+      ],
+      "api": {
+        "props": [
+          {
+            "name": "variant",
+            "values": ["default", "lead", "small-print"],
+            "default": "default",
+            "figma": [{ "kind": "variant", "property": "appearance" }]
+          },
+          { "name": "children", "type": "ReactNode", "slots": ["label"] }
+        ],
+        "slots": [
+          {
+            "name": "label",
+            "element": "dsn-paragraph",
+            "description": "De tekst.",
+            "figma": [{ "kind": "text", "property": "label" }]
+          }
+        ],
+        "states": []
+      }
     },
     {
       "name": "PasswordInput",
@@ -2807,9 +3432,21 @@
       "category": "content",
       "purpose": "Block-level span placed as first child inside a heading element; becomes part of the heading's accessible name.",
       "platforms": ["html-css", "react"],
-      "primaryProps": [
-        { "name": "children", "type": "ReactNode", "required": true }
-      ]
+      "primaryProps": [{ "name": "children", "type": "ReactNode" }],
+      "api": {
+        "props": [
+          { "name": "children", "type": "ReactNode", "slots": ["label"] }
+        ],
+        "slots": [
+          {
+            "name": "label",
+            "element": "dsn-pre-heading",
+            "description": "De tekst boven de kop.",
+            "figma": [{ "kind": "text", "property": "label" }]
+          }
+        ],
+        "states": []
+      }
     },
     {
       "name": "ProgressBar",
@@ -3781,7 +4418,21 @@
       "category": "content",
       "purpose": "Styled unordered list.",
       "platforms": ["html-css", "react", "web-components"],
-      "primaryProps": []
+      "primaryProps": [],
+      "api": {
+        "props": [
+          { "name": "children", "type": "ReactNode", "slots": ["items"] }
+        ],
+        "slots": [
+          {
+            "name": "items",
+            "element": "dsn-unordered-list",
+            "description": "De items van de lijst.",
+            "figma": [{ "kind": "slot", "property": "slot" }]
+          }
+        ],
+        "states": []
+      }
     }
   ]
 }

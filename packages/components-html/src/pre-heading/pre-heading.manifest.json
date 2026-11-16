@@ -7,8 +7,30 @@
   "primaryProps": [
     {
       "name": "children",
-      "type": "ReactNode",
-      "required": true
+      "type": "ReactNode"
     }
-  ]
+  ],
+  "api": {
+    "props": [
+      {
+        "name": "children",
+        "type": "ReactNode",
+        "slots": ["label"]
+      }
+    ],
+    "slots": [
+      {
+        "name": "label",
+        "element": "dsn-pre-heading",
+        "description": "De tekst boven de kop.",
+        "figma": [
+          {
+            "kind": "text",
+            "property": "label"
+          }
+        ]
+      }
+    ],
+    "states": []
+  }
 }

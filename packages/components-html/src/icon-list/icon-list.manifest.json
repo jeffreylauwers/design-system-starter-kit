@@ -10,5 +10,50 @@
       "values": ["ul", "ol"],
       "default": "ul"
     }
-  ]
+  ],
+  "api": {
+    "props": [
+      {
+        "name": "as",
+        "values": ["ul", "ol"],
+        "default": "ul",
+        "figma": [
+          {
+            "kind": "none",
+            "reason": "Bepaalt het HTML-element, niet het uiterlijk."
+          }
+        ]
+      },
+      {
+        "name": "iconColor",
+        "type": "string",
+        "figma": [
+          {
+            "kind": "none",
+            "reason": "Nog niet in de Figma-matrix van IconList.",
+            "open": true
+          }
+        ]
+      },
+      {
+        "name": "children",
+        "type": "ReactNode",
+        "slots": ["items"]
+      }
+    ],
+    "slots": [
+      {
+        "name": "items",
+        "element": "dsn-icon-list",
+        "description": "De items van de lijst, elk met een icoon.",
+        "figma": [
+          {
+            "kind": "slot",
+            "property": "slot"
+          }
+        ]
+      }
+    ],
+    "states": []
+  }
 }
