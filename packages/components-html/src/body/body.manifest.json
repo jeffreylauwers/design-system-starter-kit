@@ -1,0 +1,8 @@
+{
+  "name": "Body",
+  "cssBlock": "dsn-body",
+  "category": "layout",
+  "purpose": "Applies document-level cascade base styles (typography, colour, background) when placed on the <body> element.",
+  "platforms": ["html-css", "react"],
+  "primaryProps": []
+}

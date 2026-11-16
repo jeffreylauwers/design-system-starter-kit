@@ -1,0 +1,34 @@
+{
+  "name": "ButtonLink",
+  "cssBlock": "dsn-button",
+  "category": "content",
+  "purpose": "Semantically an <a> element, visually a Button; for navigation actions with high visual prominence.",
+  "platforms": ["html-css", "react"],
+  "primaryProps": [
+    {
+      "name": "variant",
+      "values": [
+        "default",
+        "strong",
+        "subtle",
+        "strong-negative",
+        "strong-positive",
+        "default-negative",
+        "default-positive",
+        "subtle-negative",
+        "subtle-positive"
+      ],
+      "default": "strong"
+    },
+    {
+      "name": "size",
+      "values": ["default", "small", "large"],
+      "default": "default"
+    },
+    {
+      "name": "href",
+      "type": "string",
+      "required": true
+    }
+  ]
+}

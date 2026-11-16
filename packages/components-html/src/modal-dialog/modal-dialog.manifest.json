@@ -1,0 +1,8 @@
+{
+  "name": "ModalDialog",
+  "cssBlock": "dsn-modal-dialog",
+  "category": "display-feedback",
+  "purpose": "Modal dialog for short focused actions; blocks the background via native <dialog> with a focus trap.",
+  "platforms": ["html-css", "react"],
+  "primaryProps": []
+}

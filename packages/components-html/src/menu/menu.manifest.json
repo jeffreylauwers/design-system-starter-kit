@@ -1,0 +1,14 @@
+{
+  "name": "Menu",
+  "cssBlock": "dsn-menu",
+  "category": "navigation",
+  "purpose": "Container for MenuLink and MenuButton items in a vertical or horizontal navigation list.",
+  "platforms": ["html-css", "react"],
+  "primaryProps": [
+    {
+      "name": "orientation",
+      "values": ["vertical", "horizontal"],
+      "default": "vertical"
+    }
+  ]
+}

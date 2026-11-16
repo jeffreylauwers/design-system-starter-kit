@@ -1,0 +1,19 @@
+{
+  "name": "NumberInput",
+  "cssBlock": "dsn-text-input",
+  "category": "form-input",
+  "purpose": "Numeric text input following the GOV.UK pattern; extends TextInput styles.",
+  "platforms": ["html-css", "react"],
+  "primaryProps": [
+    {
+      "name": "allowDecimals",
+      "type": "boolean",
+      "default": false
+    },
+    {
+      "name": "inlineSize",
+      "values": ["xs", "sm", "md", "lg", "xl", "full"],
+      "default": "full"
+    }
+  ]
+}

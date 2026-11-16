@@ -2,7 +2,7 @@
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "https://github.com/jeffreylauwers/design-system-starter-kit/blob/main/packages/components-html/manifest-schema.json",
   "title": "Design System Starter Kit component manifest",
-  "description": "Schema for manifest.json: the framework-agnostic register of every design system component. Keep this schema in sync with manifest.d.ts, which describes the same structure for TypeScript consumers.",
+  "description": "Schema for manifest.json: the framework-agnostic register of every design system component. manifest.json is generated from one src/<dir>/<name>.manifest.json file per component, each of which is a #/$defs/component. Keep this schema in sync with manifest.d.ts, which describes the same structure for TypeScript consumers.",
   "type": "object",
   "additionalProperties": false,
   "required": ["version", "description", "components"],
@@ -25,7 +25,9 @@
       "type": "array",
       "description": "Every component in the design system, in no guaranteed order.",
       "minItems": 1,
-      "items": { "$ref": "#/$defs/component" }
+      "items": {
+        "$ref": "#/$defs/component"
+      }
     }
   },
   "$defs": {
@@ -82,8 +84,13 @@
         },
         "primaryProps": {
           "type": "array",
-          "description": "The most important props an implementer needs. Not exhaustive: the component's .docs.md holds the full table. An empty array means the component has no notable props.",
-          "items": { "$ref": "#/$defs/prop" }
+          "description": "The most important props an implementer needs. Not exhaustive: api.props holds the complete list where it exists, the component's .docs.md otherwise. An empty array means the component has no notable props.",
+          "items": {
+            "$ref": "#/$defs/prop"
+          }
+        },
+        "api": {
+          "$ref": "#/$defs/api"
         }
       }
     },
@@ -117,6 +124,165 @@
         "required": {
           "type": "boolean",
           "description": "Whether the prop must be provided. Omitting it means optional."
+        }
+      }
+    },
+    "api": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["props", "slots", "states"],
+      "description": "The complete public API of the component, with how each part appears in Figma. Optional while the manifest is being completed; where present it is checked against the React props type and the Figma matrix of the component.",
+      "properties": {
+        "props": {
+          "type": "array",
+          "description": "Every prop of the component, not only the primary ones. className is left out: every component has it.",
+          "items": {
+            "$ref": "#/$defs/apiProp"
+          }
+        },
+        "slots": {
+          "type": "array",
+          "description": "Named content areas in the markup. An empty array means the component has none.",
+          "items": {
+            "$ref": "#/$defs/slot"
+          }
+        },
+        "states": {
+          "type": "array",
+          "description": "Interaction states that come from the browser (pseudo-classes) rather than from a prop. An empty array means the component has none.",
+          "items": {
+            "$ref": "#/$defs/state"
+          }
+        }
+      }
+    },
+    "apiProp": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["name"],
+      "description": "One prop. Needs either figma or slots: a prop that fills a slot takes its Figma binding from that slot.",
+      "properties": {
+        "name": {
+          "type": "string",
+          "minLength": 1,
+          "description": "Prop name as used in React (camelCase)."
+        },
+        "type": {
+          "description": "Type for props that are not enum-style. Use values instead for a fixed set of options.",
+          "enum": ["string", "boolean", "number", "ReactNode"]
+        },
+        "values": {
+          "type": "array",
+          "minItems": 1,
+          "uniqueItems": true,
+          "description": "Allowed values for enum-style props, in the order of the TypeScript union.",
+          "items": {
+            "type": ["string", "number"]
+          }
+        },
+        "default": {
+          "type": ["string", "number", "boolean", "null"],
+          "description": "Default value. Null means the prop is optional and has no default behaviour."
+        },
+        "required": {
+          "type": "boolean",
+          "description": "Whether the prop must be provided. Omitting it means optional."
+        },
+        "native": {
+          "type": "boolean",
+          "description": "True for a native HTML attribute that the component passes through (disabled, type). Its type comes from the HTML element, not from the component's own props interface."
+        },
+        "slots": {
+          "type": "array",
+          "minItems": 1,
+          "uniqueItems": true,
+          "description": "Names of the slots this prop fills.",
+          "items": {
+            "type": "string",
+            "minLength": 1
+          }
+        },
+        "figma": {
+          "$ref": "#/$defs/figmaBindings"
+        }
+      }
+    },
+    "slot": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["name", "figma"],
+      "properties": {
+        "name": {
+          "type": "string",
+          "pattern": "^[a-z][a-z0-9]*(-[a-z0-9]+)*$",
+          "description": "Slot name in kebab-case. The Figma matrix marks the same element with data-figma-slot."
+        },
+        "element": {
+          "type": "string",
+          "pattern": "^dsn-[a-z0-9]+(-[a-z0-9]+)*(__[a-z0-9]+(-[a-z0-9]+)*)?$",
+          "description": "The class of the element that forms the slot."
+        },
+        "description": {
+          "type": "string",
+          "minLength": 1,
+          "description": "What goes in the slot, in one sentence."
+        },
+        "figma": {
+          "$ref": "#/$defs/figmaBindings"
+        }
+      }
+    },
+    "state": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["name", "selector", "figma"],
+      "properties": {
+        "name": {
+          "type": "string",
+          "pattern": "^[a-z][a-z0-9]*(-[a-z0-9]+)*$",
+          "description": "State name in kebab-case."
+        },
+        "selector": {
+          "type": "string",
+          "pattern": "^:",
+          "description": "The pseudo-class that triggers the state."
+        },
+        "figma": {
+          "$ref": "#/$defs/figmaBindings"
+        }
+      }
+    },
+    "figmaBindings": {
+      "type": "array",
+      "minItems": 1,
+      "description": "How this part appears in the generated Figma component set. Use a single binding of kind none, with a reason, for a part that is deliberately left out of Figma.",
+      "items": {
+        "$ref": "#/$defs/figmaBinding"
+      }
+    },
+    "figmaBinding": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["kind"],
+      "properties": {
+        "kind": {
+          "enum": ["variant", "boolean", "text", "instance-swap", "none"],
+          "description": "variant: an axis of the component set. boolean, text and instance-swap: a component property. none: not in Figma."
+        },
+        "property": {
+          "type": "string",
+          "minLength": 1,
+          "description": "Name of the axis or component property in the Figma matrix. Required for every kind except none."
+        },
+        "value": {
+          "type": "string",
+          "minLength": 1,
+          "description": "States only: the value on the axis that shows this state."
+        },
+        "reason": {
+          "type": "string",
+          "minLength": 1,
+          "description": "Why the part is not in Figma, or why it is bound the way it is. Required for kind none."
         }
       }
     }

@@ -1,0 +1,8 @@
+{
+  "name": "Backdrop",
+  "cssBlock": "dsn-backdrop",
+  "category": "display-feedback",
+  "purpose": "Fixed full-screen decorative overlay behind a Modal Dialog or Drawer; always aria-hidden.",
+  "platforms": ["html-css", "react"],
+  "primaryProps": []
+}

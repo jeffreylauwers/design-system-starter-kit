@@ -1,0 +1,19 @@
+{
+  "name": "Table",
+  "cssBlock": "dsn-table",
+  "category": "display-feedback",
+  "purpose": "Accessible data table with a required caption, optional horizontal scroll wrapper, and CSS-based sort icon support.",
+  "platforms": ["html-css", "react"],
+  "primaryProps": [
+    {
+      "name": "caption",
+      "type": "string",
+      "required": true
+    },
+    {
+      "name": "scrollable",
+      "type": "boolean",
+      "default": false
+    }
+  ]
+}

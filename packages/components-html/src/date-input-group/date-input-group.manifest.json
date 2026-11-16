@@ -1,0 +1,8 @@
+{
+  "name": "DateInputGroup",
+  "cssBlock": "dsn-date-input-group",
+  "category": "form-input",
+  "purpose": "Three separate day/month/year NumberInput fields; more accessible than a native date picker.",
+  "platforms": ["html-css", "react"],
+  "primaryProps": []
+}

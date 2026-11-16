@@ -1,0 +1,14 @@
+{
+  "name": "FormFieldLegend",
+  "cssBlock": "dsn-form-field-label",
+  "category": "form-field",
+  "purpose": "Legend element for a fieldset group; visually identical to FormFieldLabel.",
+  "platforms": ["html-css", "react"],
+  "primaryProps": [
+    {
+      "name": "required",
+      "type": "boolean",
+      "default": false
+    }
+  ]
+}

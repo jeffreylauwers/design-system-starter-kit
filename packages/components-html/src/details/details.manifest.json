@@ -1,0 +1,19 @@
+{
+  "name": "Details",
+  "cssBlock": "dsn-details",
+  "category": "display-feedback",
+  "purpose": "Expandable content disclosure using the native <details>/<summary> HTML pattern.",
+  "platforms": ["html-css", "react"],
+  "primaryProps": [
+    {
+      "name": "summary",
+      "type": "string",
+      "required": true
+    },
+    {
+      "name": "defaultOpen",
+      "type": "boolean",
+      "default": false
+    }
+  ]
+}

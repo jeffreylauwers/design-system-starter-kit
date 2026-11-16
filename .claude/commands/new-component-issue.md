@@ -226,7 +226,7 @@ Bouw de body op in deze volgorde. Vul in wat de gebruiker aanleverde; gebruik HT
 - [ ] Export toegevoegd aan `packages/components-react/src/index.ts`
 - [ ] Export entry toegevoegd aan `packages/components-html/package.json` exports map
 - [ ] `Introduction.mdx` bijgewerkt (datum + componentnaam in de lijst)
-- [ ] Component manifest bijgewerkt: entry toegevoegd aan `packages/components-html/manifest.json`
+- [ ] Manifest aangemaakt: `packages/components-html/src/{component-name}/{component-name}.manifest.json`, daarna `manifest.json` opnieuw gegenereerd (`pnpm --filter @dsn-starter-kit/components-html build:manifest`)
 
 ### Kwaliteitscontrole
 

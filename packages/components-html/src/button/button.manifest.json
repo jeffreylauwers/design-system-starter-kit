@@ -1,0 +1,198 @@
+{
+  "name": "Button",
+  "cssBlock": "dsn-button",
+  "category": "content",
+  "purpose": "Triggers an action; communicates visual hierarchy and intent via variant.",
+  "platforms": ["html-css", "react", "web-components"],
+  "primaryProps": [
+    {
+      "name": "variant",
+      "values": [
+        "strong",
+        "strong-negative",
+        "strong-positive",
+        "default",
+        "default-negative",
+        "default-positive",
+        "subtle",
+        "subtle-negative",
+        "subtle-positive"
+      ],
+      "default": "strong"
+    },
+    {
+      "name": "size",
+      "values": ["small", "default", "large"],
+      "default": "default"
+    },
+    {
+      "name": "iconOnly",
+      "type": "boolean",
+      "default": false
+    },
+    {
+      "name": "loading",
+      "type": "boolean",
+      "default": false
+    },
+    {
+      "name": "fullWidth",
+      "type": "boolean",
+      "default": false
+    }
+  ],
+  "api": {
+    "props": [
+      {
+        "name": "variant",
+        "values": [
+          "strong",
+          "strong-negative",
+          "strong-positive",
+          "default",
+          "default-negative",
+          "default-positive",
+          "subtle",
+          "subtle-negative",
+          "subtle-positive"
+        ],
+        "default": "strong",
+        "figma": [{ "kind": "variant", "property": "variant" }]
+      },
+      {
+        "name": "size",
+        "values": ["small", "default", "large"],
+        "default": "default",
+        "figma": [{ "kind": "variant", "property": "size" }]
+      },
+      {
+        "name": "iconOnly",
+        "type": "boolean",
+        "default": false,
+        "figma": [
+          {
+            "kind": "variant",
+            "property": "iconOnly",
+            "reason": "Een as en geen boolean: icon-only heeft eigen padding-tokens, en een boolean kan alleen een laag aan- of uitzetten (#451)."
+          }
+        ]
+      },
+      {
+        "name": "loading",
+        "type": "boolean",
+        "default": false,
+        "figma": [
+          {
+            "kind": "none",
+            "reason": "Heeft eigen tokens en open vragen (#323)."
+          }
+        ]
+      },
+      {
+        "name": "fullWidth",
+        "type": "boolean",
+        "default": false,
+        "figma": [
+          {
+            "kind": "none",
+            "reason": "Heeft eigen tokens en open vragen (#323)."
+          }
+        ]
+      },
+      {
+        "name": "iconStart",
+        "type": "ReactNode",
+        "slots": ["icon-start", "icon"]
+      },
+      {
+        "name": "iconEnd",
+        "type": "ReactNode",
+        "slots": ["icon-end"]
+      },
+      {
+        "name": "children",
+        "type": "ReactNode",
+        "slots": ["label"]
+      },
+      {
+        "name": "disabled",
+        "type": "boolean",
+        "default": false,
+        "native": true,
+        "figma": [{ "kind": "variant", "property": "disabled" }]
+      },
+      {
+        "name": "type",
+        "values": ["button", "submit", "reset"],
+        "default": "button",
+        "native": true,
+        "figma": [
+          {
+            "kind": "none",
+            "reason": "Bepaalt gedrag in een formulier, niet het uiterlijk."
+          }
+        ]
+      }
+    ],
+    "slots": [
+      {
+        "name": "icon-start",
+        "element": "dsn-icon",
+        "description": "Icoon vóór het label.",
+        "figma": [
+          { "kind": "boolean", "property": "showIconStart" },
+          { "kind": "instance-swap", "property": "iconStart" }
+        ]
+      },
+      {
+        "name": "label",
+        "element": "dsn-button__label",
+        "description": "De tekst van de knop; bij icon-only visueel verborgen en dan de toegankelijke naam.",
+        "figma": [{ "kind": "text", "property": "label" }]
+      },
+      {
+        "name": "icon-end",
+        "element": "dsn-icon",
+        "description": "Icoon na het label.",
+        "figma": [
+          { "kind": "boolean", "property": "showIconEnd" },
+          { "kind": "instance-swap", "property": "iconEnd" }
+        ]
+      },
+      {
+        "name": "icon",
+        "element": "dsn-icon",
+        "description": "Het icoon van een icon-only knop. In React gevuld via iconStart samen met iconOnly.",
+        "figma": [
+          {
+            "kind": "instance-swap",
+            "property": "icon",
+            "reason": "Een eigen slot zonder boolean, zodat een nieuwe icon-only instance niet leeg is."
+          }
+        ]
+      }
+    ],
+    "states": [
+      {
+        "name": "hover",
+        "selector": ":hover",
+        "figma": [{ "kind": "variant", "property": "state", "value": "hover" }]
+      },
+      {
+        "name": "active",
+        "selector": ":active",
+        "figma": [{ "kind": "variant", "property": "state", "value": "active" }]
+      },
+      {
+        "name": "focus-visible",
+        "selector": ":focus-visible",
+        "figma": [
+          {
+            "kind": "none",
+            "reason": "Staat niet op de state-as van de Figma-matrix van Button."
+          }
+        ]
+      }
+    ]
+  }
+}

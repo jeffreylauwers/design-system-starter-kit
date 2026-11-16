@@ -1,0 +1,19 @@
+{
+  "name": "FileInput",
+  "cssBlock": "dsn-file-input",
+  "category": "form-input",
+  "purpose": "File upload input with drag-and-drop support and multiple file selection.",
+  "platforms": ["html-css", "react"],
+  "primaryProps": [
+    {
+      "name": "multiple",
+      "type": "boolean",
+      "default": false
+    },
+    {
+      "name": "accept",
+      "type": "string",
+      "default": null
+    }
+  ]
+}

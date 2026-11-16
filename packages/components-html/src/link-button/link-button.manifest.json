@@ -1,0 +1,8 @@
+{
+  "name": "LinkButton",
+  "cssBlock": "dsn-link-button",
+  "category": "content",
+  "purpose": "Semantically a <button>, visually a Link; for low-prominence JavaScript actions.",
+  "platforms": ["html-css", "react"],
+  "primaryProps": []
+}

@@ -1,0 +1,8 @@
+{
+  "name": "Container",
+  "cssBlock": "dsn-container",
+  "category": "layout",
+  "purpose": "Centring wrapper with max-width and inline padding for page layout.",
+  "platforms": ["html-css", "react"],
+  "primaryProps": []
+}

@@ -1,10 +1,12 @@
 #!/usr/bin/env node
 /**
- * Validates manifest.json against manifest-schema.json.
+ * Validates the component manifest against manifest-schema.json.
  *
  * The manifest is the source of truth for the platforms field of every
  * component, so a typo there is a silent bug rather than a build failure. This
- * script runs before the CSS build and turns such a typo into a hard error.
+ * module turns such a typo into a hard error. build-manifest.js runs it on
+ * every per-component file and on the assembled manifest.json, before the CSS
+ * build.
  *
  * It implements only the JSON Schema keywords manifest-schema.json actually
  * uses, so it needs no dependencies. An unknown keyword in the schema throws
@@ -16,8 +18,6 @@ const fs = require('fs');
 const path = require('path');
 
 const PACKAGE_DIR = path.resolve(__dirname, '..');
-const MANIFEST_PATH = path.join(PACKAGE_DIR, 'manifest.json');
-const SCHEMA_PATH = path.join(PACKAGE_DIR, 'manifest-schema.json');
 
 /** Keywords carrying no constraint; present for humans and editors. */
 const ANNOTATIONS = new Set([
@@ -187,25 +187,155 @@ function validateManifest(manifest, schema, { packageDir = PACKAGE_DIR } = {}) {
     seen.add(component?.name);
   }
 
+  (manifest?.components ?? []).forEach((component, index) => {
+    checkApi(component, `/components/${index}`, errors);
+  });
+
   return errors;
 }
 
-function main() {
-  const schema = readJson(SCHEMA_PATH);
-  const manifest = readJson(MANIFEST_PATH);
-  const errors = validateManifest(manifest, schema);
-
-  if (errors.length > 0) {
-    console.error('manifest.json voldoet niet aan manifest-schema.json:');
-    for (const error of errors) console.error(`  ${error}`);
-    process.exit(1);
-  }
-
-  console.log(
-    `Validated manifest.json: ${manifest.components.length} components.`
-  );
+/**
+ * Validates one component entry, as found in a src/<dir>/<name>.manifest.json
+ * file, against #/$defs/component. `at` prefixes every error, so a message can
+ * name the file instead of a position in the assembled array.
+ */
+function validateComponent(component, schema, at = '') {
+  const errors = [];
+  validate(component, schema.$defs.component, at, schema, errors);
+  checkApi(component, at, errors);
+  return errors;
 }
 
-if (require.main === module) main();
+/**
+ * The rules of the api block that the schema cannot express without keywords
+ * this validator does not implement (if/then, oneOf). Assumes nothing about
+ * the shape beyond what it tests, so a component that already failed the
+ * schema check does not make this throw.
+ */
+function checkApi(component, at, errors) {
+  const api = component?.api;
+  if (!isType(api, 'object')) return;
 
-module.exports = { validateManifest };
+  const props = Array.isArray(api.props) ? api.props : [];
+  const slots = Array.isArray(api.slots) ? api.slots : [];
+  const states = Array.isArray(api.states) ? api.states : [];
+
+  for (const [list, field] of [
+    [props, 'props'],
+    [slots, 'slots'],
+    [states, 'states'],
+  ]) {
+    const names = new Set();
+    for (const item of list) {
+      if (names.has(item?.name)) {
+        errors.push(`${at}/api/${field}: '${item.name}' staat er dubbel in`);
+      }
+      names.add(item?.name);
+    }
+  }
+
+  const slotNames = new Set(slots.map((slot) => slot?.name));
+
+  // Every axis value and component property in Figma belongs to exactly one
+  // part of the API. Two parts claiming the same one is a copy-paste error.
+  const claimed = new Map();
+
+  const checkBindings = (bindings, where, { isState = false } = {}) => {
+    if (!Array.isArray(bindings)) return;
+    if (bindings.some((b) => b?.kind === 'none') && bindings.length > 1) {
+      errors.push(
+        `${where}/figma: 'none' kan niet samen met een andere binding`
+      );
+    }
+    for (const binding of bindings) {
+      if (!isType(binding, 'object')) continue;
+      if (binding.kind === 'none') {
+        if (!binding.reason) {
+          errors.push(`${where}/figma: 'none' heeft een reason nodig`);
+        }
+        if (binding.property !== undefined) {
+          errors.push(`${where}/figma: 'none' heeft geen property`);
+        }
+        continue;
+      }
+      if (!binding.property) {
+        errors.push(
+          `${where}/figma: '${binding.kind}' heeft een property nodig`
+        );
+        continue;
+      }
+      if (isState && binding.kind === 'variant' && !binding.value) {
+        errors.push(
+          `${where}/figma: een state op een variant-as heeft een value nodig`
+        );
+      }
+      if (!isState && binding.value !== undefined) {
+        errors.push(`${where}/figma: value hoort alleen bij een state`);
+      }
+      const key = `${binding.kind}:${binding.property}:${binding.value ?? ''}`;
+      if (claimed.has(key)) {
+        errors.push(
+          `${where}/figma: ${binding.kind} '${binding.property}' is al gekoppeld in ${claimed.get(key)}`
+        );
+      }
+      claimed.set(key, where);
+    }
+  };
+
+  props.forEach((prop, index) => {
+    const where = `${at}/api/props/${index}`;
+    if (!isType(prop, 'object')) return;
+    if ((prop.type === undefined) === (prop.values === undefined)) {
+      errors.push(
+        `${where}: '${prop.name}' heeft precies één van type en values nodig`
+      );
+    }
+    if ((prop.figma === undefined) === (prop.slots === undefined)) {
+      errors.push(
+        `${where}: '${prop.name}' heeft precies één van figma en slots nodig (een prop die een slot vult, krijgt de binding van dat slot)`
+      );
+    }
+    for (const slot of Array.isArray(prop.slots) ? prop.slots : []) {
+      if (!slotNames.has(slot)) {
+        errors.push(`${where}/slots: slot '${slot}' staat niet in api.slots`);
+      }
+    }
+    checkBindings(prop.figma, where);
+  });
+
+  slots.forEach((slot, index) => {
+    checkBindings(slot?.figma, `${at}/api/slots/${index}`);
+  });
+
+  states.forEach((state, index) => {
+    checkBindings(state?.figma, `${at}/api/states/${index}`, {
+      isState: true,
+    });
+  });
+
+  // primaryProps is the curated summary of api.props, so it may not say
+  // anything that api.props contradicts.
+  const byName = new Map(props.map((prop) => [prop?.name, prop]));
+  const primaryProps = Array.isArray(component.primaryProps)
+    ? component.primaryProps
+    : [];
+  primaryProps.forEach((primary, index) => {
+    const where = `${at}/primaryProps/${index}`;
+    const full = byName.get(primary?.name);
+    if (!full) {
+      errors.push(`${where}: '${primary?.name}' ontbreekt in api.props`);
+      return;
+    }
+    for (const field of ['type', 'values', 'default', 'required']) {
+      const a = JSON.stringify(primary[field]);
+      const b = JSON.stringify(full[field]);
+      if (a !== b) {
+        errors.push(
+          `${where}: ${field} van '${primary.name}' is ${a ?? 'leeg'}, in api.props ${b ?? 'leeg'}`
+        );
+      }
+    }
+  });
+}
+
+module.exports = { validateManifest, validateComponent, readJson };

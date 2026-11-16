@@ -1,0 +1,19 @@
+{
+  "name": "ProgressBar",
+  "cssBlock": "dsn-progress-bar",
+  "category": "display-feedback",
+  "purpose": "Horizontal progress bar for determinate wait times with a visual percentage label.",
+  "platforms": ["html-css", "react"],
+  "primaryProps": [
+    {
+      "name": "value",
+      "type": "number",
+      "required": true
+    },
+    {
+      "name": "max",
+      "type": "number",
+      "default": 100
+    }
+  ]
+}

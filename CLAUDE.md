@@ -232,7 +232,8 @@ Elk nieuw component vereist exact deze bestanden:
 
 ```
 packages/components-html/src/{component-name}/
-  └── {component-name}.css              # HTML/CSS implementatie
+  ├── {component-name}.css              # HTML/CSS implementatie
+  └── {component-name}.manifest.json    # Manifest-entry (bron voor manifest.json)
 
 packages/components-react/src/{ComponentName}/
   ├── {ComponentName}.tsx               # React wrapper
@@ -248,6 +249,7 @@ packages/storybook/src/
 ### Exports en registraties
 
 - `packages/components-react/src/index.ts`: export toevoegen
+- `packages/components-html/manifest.json`: **niet** met de hand bewerken. Het wordt gegenereerd uit de `*.manifest.json`-bestanden; draai `pnpm --filter @dsn-starter-kit/components-html build:manifest` en commit het resultaat. CI faalt als het achterloopt. Met een `api`-blok (zie de README van `components-html`) vergelijken `tests/manifest-react.test.ts` en `tests/manifest-figma.test.ts` de manifest met React en met de Figma-matrix
 - `packages/components-html/package.json`: nieuwe entry toevoegen aan de `exports` map (`"./component-name": "./src/component-name/component-name.css"`) — de build-script pikt CSS automatisch op, maar de exports map niet
 - `packages/storybook/src/Introduction.mdx`: datum updaten + component in de lijst
 

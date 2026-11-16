@@ -1,0 +1,24 @@
+{
+  "name": "Select",
+  "cssBlock": "dsn-text-input",
+  "category": "form-input",
+  "purpose": "Native select dropdown with a custom chevron icon; extends TextInput wrapper styles.",
+  "platforms": ["html-css", "react"],
+  "primaryProps": [
+    {
+      "name": "disabled",
+      "type": "boolean",
+      "default": false
+    },
+    {
+      "name": "invalid",
+      "type": "boolean",
+      "default": false
+    },
+    {
+      "name": "inlineSize",
+      "values": ["xs", "sm", "md", "lg", "xl", "full"],
+      "default": "full"
+    }
+  ]
+}

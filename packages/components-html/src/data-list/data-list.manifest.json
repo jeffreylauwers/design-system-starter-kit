@@ -1,0 +1,8 @@
+{
+  "name": "DataList",
+  "cssBlock": "dsn-data-list",
+  "category": "display-feedback",
+  "purpose": "Semantic key-value list (<dl>) for form summaries and metadata overviews with a responsive grid layout.",
+  "platforms": ["html-css", "react"],
+  "primaryProps": []
+}

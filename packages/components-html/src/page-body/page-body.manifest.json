@@ -1,0 +1,8 @@
+{
+  "name": "PageBody",
+  "cssBlock": "dsn-page-body",
+  "category": "navigation",
+  "purpose": "Structural wrapper for main page content that fills available vertical space so PageFooter stays at the bottom.",
+  "platforms": ["html-css", "react"],
+  "primaryProps": []
+}

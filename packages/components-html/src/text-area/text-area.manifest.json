@@ -1,0 +1,29 @@
+{
+  "name": "TextArea",
+  "cssBlock": "dsn-text-area",
+  "category": "form-input",
+  "purpose": "Multi-line text input.",
+  "platforms": ["html-css", "react"],
+  "primaryProps": [
+    {
+      "name": "rows",
+      "type": "number",
+      "default": 4
+    },
+    {
+      "name": "disabled",
+      "type": "boolean",
+      "default": false
+    },
+    {
+      "name": "invalid",
+      "type": "boolean",
+      "default": false
+    },
+    {
+      "name": "inlineSize",
+      "values": ["md", "lg", "xl", "full"],
+      "default": "full"
+    }
+  ]
+}

@@ -303,8 +303,9 @@
     "css.d.ts"
   ],
   "scripts": {
-    "build": "node scripts/validate-manifest.js && node scripts/build.js",
-    "validate:manifest": "node scripts/validate-manifest.js",
+    "build": "node scripts/build-manifest.js && node scripts/build.js",
+    "build:manifest": "node scripts/build-manifest.js",
+    "validate:manifest": "node scripts/build-manifest.js --check",
     "clean": "rm -rf dist"
   },
   "keywords": [

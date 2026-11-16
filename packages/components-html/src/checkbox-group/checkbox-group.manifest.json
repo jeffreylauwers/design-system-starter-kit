@@ -1,0 +1,8 @@
+{
+  "name": "CheckboxGroup",
+  "cssBlock": "dsn-checkbox-group",
+  "category": "form-option",
+  "purpose": "Container for a group of CheckboxOption items; wrap in FormFieldset for accessible labelling.",
+  "platforms": ["html-css", "react"],
+  "primaryProps": []
+}

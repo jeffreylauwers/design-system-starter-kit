@@ -1,0 +1,14 @@
+{
+  "name": "Logo",
+  "cssBlock": "dsn-logo",
+  "category": "branding",
+  "purpose": "Theme-aware inline SVG logo with design token colours that adapts automatically to every theme and colour mode.",
+  "platforms": ["html-css", "react"],
+  "primaryProps": [
+    {
+      "name": "decorative",
+      "type": "boolean",
+      "default": false
+    }
+  ]
+}

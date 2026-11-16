@@ -10,6 +10,20 @@ All notable changes to this project are documented in this file.
 
 Nog niet gepubliceerde wijzigingen. Schrijf nieuwe changelog-entries hieronder; bij de volgende release wordt deze kop gepromoveerd naar het definitieve versienummer.
 
+### components-html: manifest per component, met een gecontroleerde API voor Button
+
+De manifest staat niet meer in één bestand van 900 regels. Elk component heeft een eigen `src/{component}/{component}.manifest.json` naast zijn CSS; `scripts/build-manifest.js` valideert die bestanden en voegt ze samen tot `manifest.json`. Dat bestand blijft ingecheckt en gepubliceerd, maar is nu gegenereerd: de componenten staan alfabetisch, en verder is de inhoud gelijk. In CI faalt de build als `manifest.json` achterloopt op de losse bestanden. Regenereren: `pnpm --filter @dsn-starter-kit/components-html build:manifest`.
+
+Nieuw is een optioneel `api`-blok (manifest-versie 1.1.0) met de volledige API: alle props, slots en states, en per onderdeel hoe het in Figma terugkomt (`variant`, `boolean`, `text`, `instance-swap`, of `none` met een reden). Button heeft het als eerste. Daarmee is bijvoorbeeld vastgelegd dat `loading` en `fullWidth` bewust niet in Figma staan (#323); tot nu toe stond dat alleen in een code-commentaar.
+
+Drie controles houden het eerlijk:
+
+- **Validator:** regels die het schema niet kan uitdrukken, zoals "`none` heeft een reden nodig" en "`primaryProps` mag `api.props` niet tegenspreken"
+- **`tests/manifest-react.test.ts`:** de manifest tegen `ButtonProps` (namen, union-waarden in volgorde, optioneel, defaults)
+- **`tests/manifest-figma.test.ts`:** de manifest tegen de assen en component properties van de Figma-matrix
+
+De Figma-matrix van Button leest de waarden van `variant` en `size` nu uit de manifest (`figma-sync/src/manifest.js`). De gegenereerde Figma-output is ongewijzigd. In `primaryProps` van Button staan de `variant`-waarden nu in de volgorde van de union in React. Zie [DR-2026-16](./decisions/DR-2026-16-manifest-als-gecontroleerde-api-beschrijving.md) voor de afweging tegen component contracts.
+
 ## Version 6.0.0 (November 13, 2026)
 
 Major release. 57 component-tokens die geen enkel component las, zijn verwijderd uit de design tokens. De weergave verandert niet, maar wie een van deze custom properties in eigen CSS uitleest, moet die verwijzing weghalen: zie "Component-tokens: 57 ongebruikte tokens verwijderd". Verder: bugfixes in File, UnorderedList en OrderedList, zichtbare randen op inverse vlakken in het wireframe-thema, beschrijvingen bij alle tokens, Nederlandstalige docs-pagina's met token-tabellen uit de design tokens, en in Figma schaduwen als effect styles en fluid maten die thema en viewport volgen.

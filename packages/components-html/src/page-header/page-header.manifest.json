@@ -1,0 +1,8 @@
+{
+  "name": "PageHeader",
+  "cssBlock": "dsn-page-header",
+  "category": "navigation",
+  "purpose": "Page-wide header bar with logo, navigation, and actions slots; theme-aware background via design tokens.",
+  "platforms": ["html-css", "react"],
+  "primaryProps": []
+}

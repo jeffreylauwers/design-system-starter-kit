@@ -1,0 +1,19 @@
+{
+  "name": "Link",
+  "cssBlock": "dsn-link",
+  "category": "content",
+  "purpose": "Hyperlink with optional icon support and automatic external link handling.",
+  "platforms": ["html-css", "react", "web-components"],
+  "primaryProps": [
+    {
+      "name": "href",
+      "type": "string",
+      "required": true
+    },
+    {
+      "name": "external",
+      "type": "boolean",
+      "default": false
+    }
+  ]
+}

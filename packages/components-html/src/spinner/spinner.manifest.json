@@ -1,0 +1,19 @@
+{
+  "name": "Spinner",
+  "cssBlock": "dsn-spinner",
+  "category": "display-feedback",
+  "purpose": "Circular loading indicator for indeterminate wait times with role=\"status\" and a required accessible label.",
+  "platforms": ["html-css", "react"],
+  "primaryProps": [
+    {
+      "name": "size",
+      "values": ["default", "large"],
+      "default": "default"
+    },
+    {
+      "name": "hideLabel",
+      "type": "boolean",
+      "default": false
+    }
+  ]
+}

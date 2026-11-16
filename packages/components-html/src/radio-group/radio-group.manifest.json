@@ -1,0 +1,8 @@
+{
+  "name": "RadioGroup",
+  "cssBlock": "dsn-radio-group",
+  "category": "form-option",
+  "purpose": "Container for a group of RadioOption items; wrap in FormFieldset for accessible labelling.",
+  "platforms": ["html-css", "react"],
+  "primaryProps": []
+}

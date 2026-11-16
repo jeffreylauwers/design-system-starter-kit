@@ -1,0 +1,19 @@
+{
+  "name": "SearchInput",
+  "cssBlock": "dsn-text-input",
+  "category": "form-input",
+  "purpose": "Search input with an inline search icon and a suppressed native clear button.",
+  "platforms": ["html-css", "react"],
+  "primaryProps": [
+    {
+      "name": "disabled",
+      "type": "boolean",
+      "default": false
+    },
+    {
+      "name": "inlineSize",
+      "values": ["md", "lg", "xl", "full"],
+      "default": "full"
+    }
+  ]
+}

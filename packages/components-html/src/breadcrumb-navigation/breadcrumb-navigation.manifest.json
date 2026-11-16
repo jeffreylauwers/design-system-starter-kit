@@ -1,0 +1,8 @@
+{
+  "name": "BreadcrumbNavigation",
+  "cssBlock": "dsn-breadcrumb-navigation",
+  "category": "navigation",
+  "purpose": "Hierarchical navigation trail with a compact variant triggered via container query.",
+  "platforms": ["html-css", "react"],
+  "primaryProps": []
+}

@@ -1,0 +1,14 @@
+{
+  "name": "Note",
+  "cssBlock": "dsn-note",
+  "category": "display-feedback",
+  "purpose": "Visually highlighted passive informational message; not a live region.",
+  "platforms": ["html-css", "react"],
+  "primaryProps": [
+    {
+      "name": "variant",
+      "values": ["neutral", "info", "positive", "negative", "warning"],
+      "default": "neutral"
+    }
+  ]
+}

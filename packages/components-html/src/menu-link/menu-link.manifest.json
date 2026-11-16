@@ -1,0 +1,24 @@
+{
+  "name": "MenuLink",
+  "cssBlock": "dsn-menu-link",
+  "category": "navigation",
+  "purpose": "Navigation link with level hierarchy (1–4), active page state, and expandable sub-navigation.",
+  "platforms": ["html-css", "react"],
+  "primaryProps": [
+    {
+      "name": "level",
+      "values": [1, 2, 3, 4],
+      "default": 1
+    },
+    {
+      "name": "current",
+      "type": "boolean",
+      "default": false
+    },
+    {
+      "name": "expanded",
+      "type": "boolean",
+      "default": false
+    }
+  ]
+}

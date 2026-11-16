@@ -1,0 +1,14 @@
+{
+  "name": "FormFieldLabel",
+  "cssBlock": "dsn-form-field-label",
+  "category": "form-field",
+  "purpose": "Label element for a single form input; always paired with a FormField container.",
+  "platforms": ["html-css", "react"],
+  "primaryProps": [
+    {
+      "name": "required",
+      "type": "boolean",
+      "default": false
+    }
+  ]
+}

@@ -1,0 +1,8 @@
+{
+  "name": "PageFooter",
+  "cssBlock": "dsn-page-footer",
+  "category": "navigation",
+  "purpose": "Page footer with accent background, thick top border, and a 4-column grid layout.",
+  "platforms": ["html-css", "react"],
+  "primaryProps": []
+}
