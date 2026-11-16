@@ -10,5 +10,62 @@
       "values": ["default", "positive", "warning"],
       "default": "default"
     }
-  ]
+  ],
+  "api": {
+    "props": [
+      {
+        "name": "variant",
+        "values": ["default", "positive", "warning"],
+        "default": "default",
+        "figma": [
+          {
+            "kind": "variant",
+            "property": "variant"
+          }
+        ]
+      },
+      {
+        "name": "showIcon",
+        "type": "boolean",
+        "default": true,
+        "figma": [
+          {
+            "kind": "none",
+            "reason": "Nog niet in de Figma-matrix van FormFieldStatus.",
+            "open": true
+          }
+        ]
+      },
+      {
+        "name": "live",
+        "type": "boolean",
+        "default": false,
+        "figma": [
+          {
+            "kind": "none",
+            "reason": "Bepaalt of schermlezers een wijziging voorlezen (aria-live); niet zichtbaar."
+          }
+        ]
+      },
+      {
+        "name": "children",
+        "type": "ReactNode",
+        "slots": ["label"]
+      }
+    ],
+    "slots": [
+      {
+        "name": "label",
+        "element": "dsn-form-field-status",
+        "description": "De statusmelding.",
+        "figma": [
+          {
+            "kind": "text",
+            "property": "label"
+          }
+        ]
+      }
+    ],
+    "states": []
+  }
 }

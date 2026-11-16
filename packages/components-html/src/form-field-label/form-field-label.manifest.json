@@ -6,9 +6,51 @@
   "platforms": ["html-css", "react"],
   "primaryProps": [
     {
-      "name": "required",
-      "type": "boolean",
-      "default": false
+      "name": "suffix",
+      "type": "string"
     }
-  ]
+  ],
+  "api": {
+    "props": [
+      {
+        "name": "suffix",
+        "type": "string",
+        "slots": ["suffix"]
+      },
+      {
+        "name": "children",
+        "type": "ReactNode",
+        "slots": ["label"]
+      }
+    ],
+    "slots": [
+      {
+        "name": "label",
+        "element": "dsn-form-field-label",
+        "description": "De tekst van het label.",
+        "figma": [
+          {
+            "kind": "text",
+            "property": "label"
+          }
+        ]
+      },
+      {
+        "name": "suffix",
+        "element": "dsn-form-field-label-suffix",
+        "description": "Toevoeging zoals (niet verplicht).",
+        "figma": [
+          {
+            "kind": "boolean",
+            "property": "showSuffix"
+          },
+          {
+            "kind": "text",
+            "property": "suffix"
+          }
+        ]
+      }
+    ],
+    "states": []
+  }
 }

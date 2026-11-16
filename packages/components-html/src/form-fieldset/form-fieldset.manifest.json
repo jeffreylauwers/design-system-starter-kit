@@ -11,9 +11,108 @@
       "required": true
     },
     {
-      "name": "invalid",
-      "type": "boolean",
-      "default": false
+      "name": "error",
+      "type": "ReactNode"
     }
-  ]
+  ],
+  "api": {
+    "props": [
+      {
+        "name": "legend",
+        "type": "string",
+        "required": true,
+        "figma": [
+          {
+            "kind": "none",
+            "reason": "Geen eigen set in Figma: in Figma is dit een FormField (dezelfde CSS, een <fieldset> in plaats van een <div>)."
+          }
+        ]
+      },
+      {
+        "name": "legendSuffix",
+        "type": "string",
+        "figma": [
+          {
+            "kind": "none",
+            "reason": "Geen eigen set in Figma: in Figma is dit een FormField (dezelfde CSS, een <fieldset> in plaats van een <div>)."
+          }
+        ]
+      },
+      {
+        "name": "description",
+        "type": "ReactNode",
+        "figma": [
+          {
+            "kind": "none",
+            "reason": "Geen eigen set in Figma: in Figma is dit een FormField (dezelfde CSS, een <fieldset> in plaats van een <div>)."
+          }
+        ]
+      },
+      {
+        "name": "error",
+        "type": "ReactNode",
+        "figma": [
+          {
+            "kind": "none",
+            "reason": "Geen eigen set in Figma: in Figma is dit een FormField (dezelfde CSS, een <fieldset> in plaats van een <div>)."
+          }
+        ]
+      },
+      {
+        "name": "status",
+        "type": "ReactNode",
+        "figma": [
+          {
+            "kind": "none",
+            "reason": "Geen eigen set in Figma: in Figma is dit een FormField (dezelfde CSS, een <fieldset> in plaats van een <div>)."
+          }
+        ]
+      },
+      {
+        "name": "statusVariant",
+        "values": ["default", "positive", "warning"],
+        "default": "default",
+        "figma": [
+          {
+            "kind": "none",
+            "reason": "Geen eigen set in Figma: in Figma is dit een FormField (dezelfde CSS, een <fieldset> in plaats van een <div>)."
+          }
+        ]
+      },
+      {
+        "name": "statusLive",
+        "type": "boolean",
+        "default": false,
+        "figma": [
+          {
+            "kind": "none",
+            "reason": "Geen eigen set in Figma: in Figma is dit een FormField (dezelfde CSS, een <fieldset> in plaats van een <div>)."
+          }
+        ]
+      },
+      {
+        "name": "id",
+        "type": "string",
+        "figma": [
+          {
+            "kind": "none",
+            "reason": "Koppelt elementen in code, niet het uiterlijk."
+          }
+        ]
+      },
+      {
+        "name": "children",
+        "type": "ReactNode",
+        "required": true,
+        "figma": [
+          {
+            "kind": "none",
+            "reason": "Geen eigen set in Figma: in Figma is dit een FormField (dezelfde CSS, een <fieldset> in plaats van een <div>)."
+          }
+        ]
+      }
+    ],
+    "slots": [],
+    "states": []
+  }
 }
