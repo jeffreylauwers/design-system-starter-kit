@@ -4,5 +4,52 @@
   "category": "display-feedback",
   "purpose": "Semantic key-value list (<dl>) for form summaries and metadata overviews with a responsive grid layout.",
   "platforms": ["html-css", "react"],
-  "primaryProps": []
+  "primaryProps": [],
+  "api": {
+    "props": [
+      {
+        "name": "noBorder",
+        "type": "boolean",
+        "default": false,
+        "figma": [
+          {
+            "kind": "variant",
+            "property": "border",
+            "values": ["with-border", "no-border"]
+          }
+        ]
+      },
+      {
+        "name": "children",
+        "type": "ReactNode",
+        "slots": ["rows", "actions"]
+      }
+    ],
+    "slots": [
+      {
+        "name": "rows",
+        "element": "dsn-data-list__row",
+        "description": "De rijen met een sleutel en een waarde (DataListRow).",
+        "figma": [
+          {
+            "kind": "none",
+            "reason": "Geen property: de inhoud pas je in een instance aan op de lagen zelf."
+          }
+        ]
+      },
+      {
+        "name": "actions",
+        "element": "dsn-data-list__actions",
+        "description": "Acties per rij (DataListActions).",
+        "figma": [
+          {
+            "kind": "variant",
+            "property": "actions",
+            "values": ["with-actions", "no-actions"]
+          }
+        ]
+      }
+    ],
+    "states": []
+  }
 }

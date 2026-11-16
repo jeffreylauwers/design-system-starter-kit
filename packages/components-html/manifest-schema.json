@@ -314,6 +314,20 @@
           "type": "string",
           "minLength": 1,
           "description": "Variant bindings of an enum prop without a default: the axis value that stands for the prop not being set (auto). It comes first on the axis, before the prop's values."
+        },
+        "values": {
+          "type": "array",
+          "minItems": 2,
+          "uniqueItems": true,
+          "items": {
+            "type": "string",
+            "minLength": 1
+          },
+          "description": "Variant bindings that own a whole axis: the axis values in Figma when they differ from what the prop implies, in axis order. Another spelling (16-9 for 16:9), a subset of an enum, labels for false and true of a boolean (with-border, no-border for noBorder), or for present and absent."
+        },
+        "open": {
+          "type": "boolean",
+          "description": "Something about this binding is not known yet: why the part is not in Figma (kind none), or what is missing from it (a subset of an enum). The reason says what. pnpm --filter @dsn-starter-kit/components-html report:figma-open lists every open binding."
         }
       }
     }

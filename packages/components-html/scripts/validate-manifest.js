@@ -259,6 +259,9 @@ function checkApi(component, at, errors) {
         }
         continue;
       }
+      if (binding.open && !binding.reason) {
+        errors.push(`${where}/figma: open heeft een reason nodig`);
+      }
       if (!binding.property) {
         errors.push(
           `${where}/figma: '${binding.kind}' heeft een property nodig`
@@ -297,6 +300,16 @@ function checkApi(component, at, errors) {
       ) {
         errors.push(
           `${where}/figma: unset hoort alleen bij een prop die een hele variant-as heeft`
+        );
+      }
+      if (
+        binding.values !== undefined &&
+        (owner === 'state' ||
+          binding.kind !== 'variant' ||
+          binding.value !== undefined)
+      ) {
+        errors.push(
+          `${where}/figma: values hoort alleen bij een prop of slot die een hele variant-as heeft`
         );
       }
       if (isState && binding.kind !== 'variant') {

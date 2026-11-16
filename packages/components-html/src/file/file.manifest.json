@@ -6,7 +6,7 @@
   "platforms": ["html-css", "react"],
   "primaryProps": [
     {
-      "name": "state",
+      "name": "status",
       "values": ["default", "loading", "uploaded", "error"],
       "default": "default"
     },
@@ -20,5 +20,218 @@
       "values": ["document", "image"],
       "default": "document"
     }
-  ]
+  ],
+  "api": {
+    "props": [
+      {
+        "name": "fileName",
+        "type": "string",
+        "required": true,
+        "figma": [
+          {
+            "kind": "none",
+            "reason": "Nog niet in de Figma-matrix van File.",
+            "open": true
+          }
+        ]
+      },
+      {
+        "name": "fileType",
+        "type": "string",
+        "figma": [
+          {
+            "kind": "none",
+            "reason": "Nog niet in de Figma-matrix van File.",
+            "open": true
+          }
+        ]
+      },
+      {
+        "name": "fileSize",
+        "type": "string",
+        "figma": [
+          {
+            "kind": "none",
+            "reason": "Nog niet in de Figma-matrix van File.",
+            "open": true
+          }
+        ]
+      },
+      {
+        "name": "status",
+        "values": ["default", "loading", "uploaded", "error"],
+        "default": "default",
+        "figma": [
+          {
+            "kind": "variant",
+            "property": "variant",
+            "values": ["default", "error"],
+            "reason": "loading en uploaded staan nog niet in de Figma-matrix van File.",
+            "open": true
+          }
+        ]
+      },
+      {
+        "name": "errorMessage",
+        "type": "string",
+        "figma": [
+          {
+            "kind": "none",
+            "reason": "Nog niet in de Figma-matrix van File.",
+            "open": true
+          }
+        ]
+      },
+      {
+        "name": "href",
+        "type": "string",
+        "slots": ["actions"]
+      },
+      {
+        "name": "onDelete",
+        "type": "function",
+        "slots": ["actions"]
+      },
+      {
+        "name": "deleteLabel",
+        "type": "string",
+        "default": "Verwijder",
+        "figma": [
+          {
+            "kind": "none",
+            "reason": "Nog niet in de Figma-matrix van File.",
+            "open": true
+          }
+        ]
+      },
+      {
+        "name": "ctaVariant",
+        "values": ["view", "download"],
+        "default": "view",
+        "figma": [
+          {
+            "kind": "none",
+            "reason": "Nog niet in de Figma-matrix van File.",
+            "open": true
+          }
+        ]
+      },
+      {
+        "name": "ctaLabel",
+        "type": "string",
+        "figma": [
+          {
+            "kind": "none",
+            "reason": "Nog niet in de Figma-matrix van File.",
+            "open": true
+          }
+        ]
+      },
+      {
+        "name": "mediaType",
+        "values": ["document", "image"],
+        "default": "document",
+        "figma": [
+          {
+            "kind": "none",
+            "reason": "Nog niet in de Figma-matrix van File.",
+            "open": true
+          }
+        ]
+      },
+      {
+        "name": "previewSrc",
+        "type": "string",
+        "figma": [
+          {
+            "kind": "none",
+            "reason": "Nog niet in de Figma-matrix van File.",
+            "open": true
+          }
+        ]
+      },
+      {
+        "name": "loadingLabel",
+        "type": "string",
+        "default": "Bezig met uploaden",
+        "figma": [
+          {
+            "kind": "none",
+            "reason": "Nog niet in de Figma-matrix van File.",
+            "open": true
+          }
+        ]
+      },
+      {
+        "name": "uploadedLabel",
+        "type": "string",
+        "figma": [
+          {
+            "kind": "none",
+            "reason": "Nog niet in de Figma-matrix van File.",
+            "open": true
+          }
+        ]
+      },
+      {
+        "name": "errorLabel",
+        "type": "string",
+        "figma": [
+          {
+            "kind": "none",
+            "reason": "Nog niet in de Figma-matrix van File.",
+            "open": true
+          }
+        ]
+      }
+    ],
+    "slots": [
+      {
+        "name": "actions",
+        "element": "dsn-file__actions",
+        "description": "De knoppen om het bestand te bekijken of te verwijderen.",
+        "figma": [
+          {
+            "kind": "variant",
+            "property": "actions",
+            "values": ["with-actions", "no-actions"]
+          }
+        ]
+      }
+    ],
+    "states": [
+      {
+        "name": "hover",
+        "selector": ":hover",
+        "figma": [
+          {
+            "kind": "none",
+            "reason": "Nog niet in de Figma-matrix van File.",
+            "open": true
+          }
+        ]
+      },
+      {
+        "name": "active",
+        "selector": ":active",
+        "figma": [
+          {
+            "kind": "none",
+            "reason": "Nog niet in de Figma-matrix van File.",
+            "open": true
+          }
+        ]
+      },
+      {
+        "name": "focus-visible",
+        "selector": ":focus-visible",
+        "figma": [
+          {
+            "kind": "none",
+            "reason": "In Figma kun je niet met de tabtoets door een prototype; Figma is voor het snel uitwerken van ideeën, niet voor toetsenbordgedrag."
+          }
+        ]
+      }
+    ]
+  }
 }

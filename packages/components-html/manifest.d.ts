@@ -84,6 +84,20 @@ export interface FigmaBinding {
    * first on the axis.
    */
   unset?: string;
+  /**
+   * A binding that owns a whole axis: the axis values in Figma when they
+   * differ from what the prop implies. Another spelling (`16-9` for `16:9`),
+   * a subset of an enum, or labels for `false` and `true` of a boolean
+   * (`with-border`, `no-border` for `noBorder`), or for present and absent.
+   */
+  values?: string[];
+  /**
+   * Something about this binding is not known yet: why the part is not in
+   * Figma (`none`), or what is missing from it (a subset of an enum). The
+   * `reason` says what. The script `report:figma-open` lists every open
+   * binding.
+   */
+  open?: boolean;
   /** Required for `none`; otherwise an optional explanation. */
   reason?: string;
 }

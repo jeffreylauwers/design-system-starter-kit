@@ -10,6 +10,23 @@ All notable changes to this project are documented in this file.
 
 Nog niet gepubliceerde wijzigingen. Schrijf nieuwe changelog-entries hieronder; bij de volgende release wordt deze kop gepromoveerd naar het definitieve versienummer.
 
+### components-html: api-blok voor display-feedback, en open punten
+
+Alert, Backdrop, Card, DataList, Details, DotBadge, Drawer, File, Image, ModalDialog, Note, NumberBadge, Popover, ProgressBar, Spinner, StatusBadge en Table hebben een `api`-blok (#488).
+
+- **`values` op een binding:** de waarden zoals Figma ze spelt. Een andere schrijfwijze (`16-9` voor `16:9` bij Image), een deel van een enum (File toont twee van de vier statussen), of labels voor false en true (`with-border`, `no-border` voor `noBorder` bij DataList).
+- **`open` op een binding:** iets is nog niet bekend, zoals waarom een prop niet in Figma staat. `pnpm --filter @dsn-starter-kit/components-html report:figma-open` zet alle open punten in een tabel, om later apart op te pakken.
+- **Geneste instances worden strenger gecontroleerd:** een property van een geneste instance kan alleen als de matrix `instances: true` heeft en het blok in de markup staat.
+- **De React-lezer** kent nu ook `type XProps = A & {…}` (Table), types uit relatieve imports (`PopoverPlacement`) en refs.
+
+Gevonden drift, nu gelijk aan React:
+
+- Image noemde in `primaryProps` een prop `aspectRatio` (`1/1`, `4/3`, `16/9`, `3/2`); in React heet die `ratio` (`16:9`, `4:3`, `1:1`).
+- File noemde `state`; in React heet die `status`.
+- Drawer noemde `position` (`start`, `end`); in React is dat `side` (`right`, `left`).
+
+Bij DotBadge, NumberBadge, StatusBadge en Drawer staan de varianten in Figma in een andere volgorde dan in de React-union. De binding noemt de Figma-volgorde; de Figma-output is ongewijzigd.
+
 ### components-html: api-blok voor de formuliervelden
 
 TextInput, TextArea, Select, SearchInput, DateInput, TimeInput, FileInput, EmailInput, PasswordInput, NumberInput, TelephoneInput en DateInputGroup hebben een `api`-blok (#488).

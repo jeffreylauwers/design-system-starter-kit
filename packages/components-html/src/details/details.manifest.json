@@ -15,5 +15,94 @@
       "type": "boolean",
       "default": false
     }
-  ]
+  ],
+  "api": {
+    "props": [
+      {
+        "name": "summary",
+        "type": "string",
+        "required": true,
+        "figma": [
+          {
+            "kind": "text",
+            "property": "summary"
+          }
+        ]
+      },
+      {
+        "name": "defaultOpen",
+        "type": "boolean",
+        "default": false,
+        "figma": [
+          {
+            "kind": "variant",
+            "property": "state",
+            "values": ["closed", "open"]
+          }
+        ]
+      },
+      {
+        "name": "onToggle",
+        "type": "function",
+        "figma": [
+          {
+            "kind": "none",
+            "reason": "Gedrag, geen uiterlijk."
+          }
+        ]
+      },
+      {
+        "name": "children",
+        "type": "ReactNode",
+        "slots": ["content"]
+      }
+    ],
+    "slots": [
+      {
+        "name": "content",
+        "element": "dsn-details__content",
+        "description": "De inhoud die uitklapt.",
+        "figma": [
+          {
+            "kind": "none",
+            "reason": "Geen property: de inhoud pas je in een instance aan op de lagen zelf."
+          }
+        ]
+      }
+    ],
+    "states": [
+      {
+        "name": "hover",
+        "selector": ":hover",
+        "figma": [
+          {
+            "kind": "none",
+            "reason": "Nog niet in de Figma-matrix van Details.",
+            "open": true
+          }
+        ]
+      },
+      {
+        "name": "active",
+        "selector": ":active",
+        "figma": [
+          {
+            "kind": "none",
+            "reason": "Nog niet in de Figma-matrix van Details.",
+            "open": true
+          }
+        ]
+      },
+      {
+        "name": "focus-visible",
+        "selector": ":focus-visible",
+        "figma": [
+          {
+            "kind": "none",
+            "reason": "In Figma kun je niet met de tabtoets door een prototype; Figma is voor het snel uitwerken van ideeën, niet voor toetsenbordgedrag."
+          }
+        ]
+      }
+    ]
+  }
 }

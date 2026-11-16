@@ -10,5 +10,99 @@
       "values": ["neutral", "info", "positive", "negative", "warning"],
       "default": "neutral"
     }
-  ]
+  ],
+  "api": {
+    "props": [
+      {
+        "name": "as",
+        "values": ["div", "aside", "nav", "section"],
+        "default": "div",
+        "figma": [
+          {
+            "kind": "none",
+            "reason": "Bepaalt het HTML-element, niet het uiterlijk."
+          }
+        ]
+      },
+      {
+        "name": "variant",
+        "values": ["neutral", "info", "positive", "negative", "warning"],
+        "default": "neutral",
+        "figma": [
+          {
+            "kind": "variant",
+            "property": "variant"
+          }
+        ]
+      },
+      {
+        "name": "heading",
+        "type": "string",
+        "figma": [
+          {
+            "kind": "variant",
+            "property": "heading",
+            "values": ["with-heading", "no-heading"]
+          },
+          {
+            "kind": "text",
+            "property": "label",
+            "instance": "Heading"
+          }
+        ]
+      },
+      {
+        "name": "headingLevel",
+        "values": [1, 2, 3, 4, 5, 6],
+        "default": 3,
+        "figma": [
+          {
+            "kind": "none",
+            "reason": "Bepaalt het HTML-element van de kop; die ziet er altijd uit als heading-3."
+          }
+        ]
+      },
+      {
+        "name": "iconStart",
+        "type": "ReactNode",
+        "figma": [
+          {
+            "kind": "none",
+            "reason": "Nog niet in de Figma-matrix van Note.",
+            "open": true
+          }
+        ]
+      },
+      {
+        "name": "variantLabel",
+        "type": "string",
+        "figma": [
+          {
+            "kind": "none",
+            "reason": "Tekst voor schermlezers; niet zichtbaar."
+          }
+        ]
+      },
+      {
+        "name": "children",
+        "type": "ReactNode",
+        "slots": ["content"]
+      }
+    ],
+    "slots": [
+      {
+        "name": "content",
+        "element": "dsn-note__content",
+        "description": "De tekst van de notitie.",
+        "figma": [
+          {
+            "kind": "text",
+            "property": "label",
+            "instance": "Paragraph"
+          }
+        ]
+      }
+    ],
+    "states": []
+  }
 }

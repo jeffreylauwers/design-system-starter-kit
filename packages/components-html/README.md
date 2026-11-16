@@ -349,15 +349,16 @@ component set:
 
 A Figma binding is one of:
 
-| Kind                               | Meaning                                                                                    | Example                                       |
-| ---------------------------------- | ------------------------------------------------------------------------------------------ | --------------------------------------------- |
-| `variant`                          | The prop, slot or state owns an axis of the component set                                  | `size` on Button; a slot that is there or not |
-| `variant` with `unset`             | An enum prop without a default; `unset` is the axis value for "not set", first on the axis | `auto` on the `inlineSize` axis of TextInput  |
-| `variant` with `value`             | One value of an axis shared by several props or states; one value stays the base           | `checked` and `indeterminate` on `state`      |
-| `boolean`, `text`, `instance-swap` | A component property                                                                       | `label`, `showIconStart`, `iconStart`         |
-| ... with `instance`                | A component property of a nested, exposed instance                                         | the `label` of CheckboxOption, on OptionLabel |
-| `slot`                             | A Figma slot (`data-figma-children` in the matrix)                                         | the options of CheckboxGroup                  |
-| `none` with `reason`               | Deliberately not in Figma                                                                  | `loading` on Button (#323)                    |
+| Kind                               | Meaning                                                                                                   | Example                                                      |
+| ---------------------------------- | --------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------ |
+| `variant`                          | The prop, slot or state owns an axis of the component set                                                 | `size` on Button; a slot that is there or not                |
+| `variant` with `unset`             | An enum prop without a default; `unset` is the axis value for "not set", first on the axis                | `auto` on the `inlineSize` axis of TextInput                 |
+| `variant` with `value`             | One value of an axis shared by several props or states; one value stays the base                          | `checked` and `indeterminate` on `state`                     |
+| `boolean`, `text`, `instance-swap` | A component property                                                                                      | `label`, `showIconStart`, `iconStart`                        |
+| ... with `instance`                | A component property of a nested, exposed instance; the matrix needs `instances: true`                    | the `label` of CheckboxOption, on OptionLabel                |
+| `variant` with `values`            | The axis values as Figma spells them: another spelling, a subset, labels for false/true or present/absent | `16-9` for `16:9`; `with-border`, `no-border` for `noBorder` |
+| `slot`                             | A Figma slot (`data-figma-children` in the matrix)                                                        | the options of CheckboxGroup                                 |
+| `none` with `reason`               | Deliberately not in Figma                                                                                 | `loading` on Button (#323)                                   |
 
 A prop that owns a whole axis has the axis values as its `values` (after the
 `unset` value, if any); a boolean
@@ -380,6 +381,14 @@ Where `api` exists, three things are checked:
   (names, values in union order, optionality, defaults)
 - `tests/manifest-figma.test.ts`: the bindings against the axes, component
   properties and Figma slots of the matrix in `figma-sync`
+
+Any binding can carry `"open": true` with a `reason`: something about it is
+not known yet, such as why a prop is not in Figma. That marks a question for
+later instead of a guessed answer. List them all, as a Markdown table:
+
+```bash
+pnpm --filter @dsn-starter-kit/components-html report:figma-open
+```
 
 That test file also lists the components that do not have an `api` block yet
 (`WITHOUT_API`, issue #488). The list only shrinks: a new component gets an

@@ -306,7 +306,8 @@
     "build": "node scripts/build-manifest.js && node scripts/build.js",
     "build:manifest": "node scripts/build-manifest.js",
     "validate:manifest": "node scripts/build-manifest.js --check",
-    "clean": "rm -rf dist"
+    "clean": "rm -rf dist",
+    "report:figma-open": "node scripts/report-figma-open.js"
   },
   "keywords": [
     "design-system",

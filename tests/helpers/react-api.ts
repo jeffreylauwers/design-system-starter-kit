@@ -99,10 +99,36 @@ function readOwnApi(name: string) {
   const interfaces = new Set<string>();
   const patterns: ts.ObjectBindingPattern[] = [];
   let propsInterface: ts.InterfaceDeclaration | undefined;
+  let propsAlias: ts.TypeNode | undefined;
+
+  // Types uit een relatief geïmporteerd bestand (`PopoverPlacement` uit
+  // `../utils/popover`).
+  source.forEachChild((node) => {
+    if (
+      !ts.isImportDeclaration(node) ||
+      !ts.isStringLiteral(node.moduleSpecifier) ||
+      !node.moduleSpecifier.text.startsWith('.')
+    ) {
+      return;
+    }
+    const base = path.resolve(path.dirname(file), node.moduleSpecifier.text);
+    const target = [`${base}.ts`, `${base}.tsx`, path.join(base, 'index.ts')]
+      .filter(existsSync)
+      .at(0);
+    if (!target) return;
+    const imported = parse(target);
+    imported.forEachChild((child) => {
+      if (ts.isTypeAliasDeclaration(child)) {
+        aliases.set(child.name.text, { node: child.type, source: imported });
+      }
+      if (ts.isInterfaceDeclaration(child)) interfaces.add(child.name.text);
+    });
+  });
 
   const visit = (node: ts.Node) => {
     if (ts.isTypeAliasDeclaration(node)) {
       aliases.set(node.name.text, { node: node.type, source });
+      if (node.name.text === `${name}Props`) propsAlias = node.type;
     }
     if (ts.isInterfaceDeclaration(node)) {
       interfaces.add(node.name.text);
@@ -115,7 +141,38 @@ function readOwnApi(name: string) {
   };
   visit(source);
 
-  if (!propsInterface) throw new Error(`${name}Props niet gevonden`);
+  // Een interface (`interface XProps extends A { ... }`) of een alias
+  // (`type XProps = A & { ... }`): in beide gevallen eigen members, plus
+  // types waar ze op voortbouwen.
+  const members: ts.TypeElement[] = [];
+  const bases: { target: string; typeArguments?: ts.NodeArray<ts.TypeNode> }[] =
+    [];
+  if (propsInterface) {
+    members.push(...propsInterface.members);
+    for (const clause of propsInterface.heritageClauses ?? []) {
+      for (const heritage of clause.types) {
+        bases.push({
+          target: heritage.expression.getText(source),
+          typeArguments: heritage.typeArguments,
+        });
+      }
+    }
+  } else if (propsAlias) {
+    const parts = ts.isIntersectionTypeNode(propsAlias)
+      ? propsAlias.types
+      : [propsAlias];
+    for (const part of parts) {
+      if (ts.isTypeLiteralNode(part)) members.push(...part.members);
+      else if (ts.isTypeReferenceNode(part)) {
+        bases.push({
+          target: part.typeName.getText(source),
+          typeArguments: part.typeArguments,
+        });
+      }
+    }
+  } else {
+    throw new Error(`${name}Props niet gevonden`);
+  }
 
   const literal = (node: ts.TypeNode) => {
     if (!ts.isLiteralTypeNode(node)) return undefined;
@@ -135,6 +192,9 @@ function readOwnApi(name: string) {
       const ref = node.typeName.getText(from);
       if (ref === 'React.ReactNode' || ref === 'ReactNode') {
         return { type: 'ReactNode' };
+      }
+      if (/^(React\.)?(Ref|RefObject|MutableRefObject)$/.test(ref)) {
+        return { type: 'object' };
       }
       // Exclude<Union, 'a' | 'b'>: de union zonder die waarden.
       if (ref === 'Exclude' && node.typeArguments?.length === 2) {
@@ -162,7 +222,7 @@ function readOwnApi(name: string) {
   };
 
   const props = new Map<string, ReactProp>();
-  for (const member of propsInterface.members) {
+  for (const member of members) {
     if (!ts.isPropertySignature(member) || !member.type) continue;
     props.set(member.name.getText(source), {
       optional: Boolean(member.questionToken),
@@ -170,29 +230,27 @@ function readOwnApi(name: string) {
     });
   }
 
-  // `extends CheckboxProps` of `extends Omit<CheckboxProps, 'id'>`: alleen
+  // `CheckboxProps` of `Omit<CheckboxProps, 'id'>`: alleen
   // interfaces van andere componenten in components-react. React.*Attributes
   // en andere types horen bij het element, niet bij de API.
   const extendsComponents: { component: string; omit: string[] }[] = [];
-  for (const clause of propsInterface.heritageClauses ?? []) {
-    for (const heritage of clause.types) {
-      let target = heritage.expression.getText(source);
-      let omit: string[] = [];
-      if (target === 'Omit' && heritage.typeArguments?.length === 2) {
-        const [base, keys] = heritage.typeArguments;
-        target = base.getText(source);
-        omit = (ts.isUnionTypeNode(keys) ? keys.types : [keys])
-          .map(literal)
-          .filter((key): key is string => typeof key === 'string');
-      }
-      const component = /^([A-Z]\w*)Props$/.exec(target)?.[1];
-      if (
-        component &&
-        component !== name &&
-        existsSync(path.join(REACT_SRC, component, `${component}.tsx`))
-      ) {
-        extendsComponents.push({ component, omit });
-      }
+  for (const base of bases) {
+    let { target } = base;
+    let omit: string[] = [];
+    if (target === 'Omit' && base.typeArguments?.length === 2) {
+      const [inner, keys] = base.typeArguments;
+      target = inner.getText(source);
+      omit = (ts.isUnionTypeNode(keys) ? keys.types : [keys])
+        .map(literal)
+        .filter((key): key is string => typeof key === 'string');
+    }
+    const component = /^([A-Z]\w*)Props$/.exec(target)?.[1];
+    if (
+      component &&
+      component !== name &&
+      existsSync(path.join(REACT_SRC, component, `${component}.tsx`))
+    ) {
+      extendsComponents.push({ component, omit });
     }
   }
 

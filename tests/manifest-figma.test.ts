@@ -31,6 +31,8 @@ interface Matrix {
   componentProperties?: { name: string; type: string; slot?: string }[];
   /** De as die viewports kiest: een keuze van figma-sync, geen API. */
   viewportAxis?: string;
+  /** Bouwt geneste componenten als instance (zie figma-sync/src/instances.js). */
+  instances?: boolean;
   render: (combination: Record<string, string>) => string;
 }
 
@@ -50,19 +52,11 @@ const PROPERTY_KINDS: Record<string, FigmaBinding['kind']> = {
  */
 const WITHOUT_API = new Set([
   'ActionGroup',
-  'Alert',
-  'Backdrop',
   'Body',
   'BreadcrumbNavigation',
   'BreakoutSection',
   'ButtonLink',
-  'Card',
   'Container',
-  'DataList',
-  'Details',
-  'DotBadge',
-  'Drawer',
-  'File',
   'FormField',
   'FormFieldDescription',
   'FormFieldErrorMessage',
@@ -76,31 +70,22 @@ const WITHOUT_API = new Set([
   'Hero',
   'Icon',
   'IconList',
-  'Image',
   'Link',
   'LinkButton',
   'Logo',
   'Menu',
   'MenuButton',
   'MenuLink',
-  'ModalDialog',
-  'Note',
-  'NumberBadge',
   'OrderedList',
   'PageBody',
   'PageFooter',
   'PageHeader',
   'PageLayout',
   'Paragraph',
-  'Popover',
   'PopoverMenu',
   'PreHeading',
-  'ProgressBar',
   'SkipLink',
-  'Spinner',
   'Stack',
-  'StatusBadge',
-  'Table',
   'TableOfContents',
   'UnorderedList',
 ]);
@@ -217,21 +202,29 @@ describe('manifest-api versus Figma-matrix', () => {
           if (whole.length > 0) {
             expect(axisClaims, `as '${axis}': één eigenaar`).toHaveLength(1);
             const [{ part, owner }] = whole;
-            if (owner === 'slot') {
-              // Een slot is er wel of niet: twee waarden.
-              expect(values, `as '${axis}' van slot ${part.name}`).toHaveLength(
-                2
-              );
-            } else {
-              const prop = part as ApiProp;
+            const { unset, values: spelled } = whole[0].binding;
+            const before = unset ? [unset] : [];
+            if (spelled) {
+              // De binding noemt de waarden zoals Figma ze spelt.
+              expect(values, `waarden van as '${axis}'`).toEqual([
+                ...before,
+                ...spelled,
+              ]);
+              continue;
+            }
+            const prop = owner === 'prop' ? (part as ApiProp) : undefined;
+            if (prop?.values) {
               // Een enum is zijn waarden, met de waarde voor "niet gezet"
-              // ervoor als de prop geen default heeft; al het andere (een
-              // boolean, of de aanwezigheid van een tekst) is een vlag.
-              const { unset } = whole[0].binding;
-              const expected = prop.values
-                ? [...(unset ? [unset] : []), ...prop.values.map(String)]
-                : FLAG;
-              expect(values, `waarden van as '${axis}'`).toEqual(expected);
+              // ervoor als de prop geen default heeft.
+              expect(values, `waarden van as '${axis}'`).toEqual([
+                ...before,
+                ...prop.values.map(String),
+              ]);
+            } else if (prop?.type === 'boolean') {
+              expect(values, `waarden van as '${axis}'`).toEqual(FLAG);
+            } else {
+              // Een slot, of een tekst die er wel of niet is: twee waarden.
+              expect(values, `as '${axis}' van ${part.name}`).toHaveLength(2);
             }
             continue;
           }
@@ -296,8 +289,23 @@ describe('manifest-api versus Figma-matrix', () => {
       });
 
       it('een property van een geneste instance bestaat op dat component', () => {
+        const html = matrix.render(firstCombination(matrix));
         for (const { binding, part } of claims) {
           if (!binding.instance) continue;
+          // Alleen een matrix met `instances: true` maakt van een genest
+          // component een instance; anders worden het gemeten lagen, zonder
+          // property.
+          expect(
+            matrix.instances,
+            `${part.name}: ${binding.instance} is alleen een instance met instances: true`
+          ).toBe(true);
+          const block = manifest.components.find(
+            (entry) => entry.name === binding.instance
+          )?.cssBlock;
+          expect(
+            html,
+            `${part.name}: ${block} staat in de markup van de matrix`
+          ).toMatch(new RegExp(`class="([^"]* )?${block}( |")`));
           const nested = nestedMatrices.get(binding.instance);
           expect(nested, `matrix van ${binding.instance}`).toBeDefined();
           const property = nested?.componentProperties?.find(

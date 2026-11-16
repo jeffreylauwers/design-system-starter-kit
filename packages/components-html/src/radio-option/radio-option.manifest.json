@@ -42,7 +42,8 @@
         "figma": [
           {
             "kind": "none",
-            "reason": "Nog niet in de Figma-matrix van RadioOption."
+            "reason": "Nog niet in de Figma-matrix van RadioOption.",
+            "open": true
           }
         ]
       },

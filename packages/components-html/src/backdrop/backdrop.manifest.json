@@ -4,5 +4,22 @@
   "category": "display-feedback",
   "purpose": "Fixed full-screen decorative overlay behind a Modal Dialog or Drawer; always aria-hidden.",
   "platforms": ["html-css", "react"],
-  "primaryProps": []
+  "primaryProps": [],
+  "api": {
+    "props": [
+      {
+        "name": "blur",
+        "type": "boolean",
+        "default": true,
+        "figma": [
+          {
+            "kind": "none",
+            "reason": "Geen set in Figma: een verduistering over het hele viewport met alleen een achtergrondkleur. In Figma is dat een rechthoek met een variable."
+          }
+        ]
+      }
+    ],
+    "slots": [],
+    "states": []
+  }
 }

@@ -4,5 +4,125 @@
   "category": "display-feedback",
   "purpose": "Non-modal dialog anchored to a trigger element, light-dismissed via the HTML Popover API. For a list of actions or links, use PopoverMenu.",
   "platforms": ["html-css", "react"],
-  "primaryProps": []
+  "primaryProps": [],
+  "api": {
+    "props": [
+      {
+        "name": "isOpen",
+        "type": "boolean",
+        "required": true,
+        "figma": [
+          {
+            "kind": "none",
+            "reason": "Altijd open in Figma: open en dicht is gedrag."
+          }
+        ]
+      },
+      {
+        "name": "onClose",
+        "type": "function",
+        "figma": [
+          {
+            "kind": "none",
+            "reason": "Gedrag, geen uiterlijk."
+          }
+        ]
+      },
+      {
+        "name": "triggerRef",
+        "type": "object",
+        "required": true,
+        "figma": [
+          {
+            "kind": "none",
+            "reason": "Gedrag, geen uiterlijk."
+          }
+        ]
+      },
+      {
+        "name": "placement",
+        "values": ["top", "bottom", "start", "end"],
+        "default": "bottom",
+        "figma": [
+          {
+            "kind": "none",
+            "reason": "Nog niet in de Figma-matrix van Popover.",
+            "open": true
+          }
+        ]
+      },
+      {
+        "name": "label",
+        "type": "string",
+        "figma": [
+          {
+            "kind": "none",
+            "reason": "Toegankelijke naam (aria-label); niet zichtbaar."
+          }
+        ]
+      },
+      {
+        "name": "children",
+        "type": "ReactNode",
+        "slots": ["header", "body", "footer"]
+      }
+    ],
+    "slots": [
+      {
+        "name": "header",
+        "element": "dsn-popover__header",
+        "description": "De kop met de sluitknop (PopoverHeader).",
+        "figma": [
+          {
+            "kind": "none",
+            "reason": "De header is bewust geen slot: in code zet de header de sluitknop er altijd zelf in, en een slot zou toelaten dat een designer die weghaalt."
+          }
+        ]
+      },
+      {
+        "name": "body",
+        "element": "dsn-popover__body",
+        "description": "De inhoud.",
+        "figma": [
+          {
+            "kind": "slot",
+            "property": "body"
+          }
+        ]
+      },
+      {
+        "name": "footer",
+        "element": "dsn-popover__footer",
+        "description": "De acties onderaan.",
+        "figma": [
+          {
+            "kind": "slot",
+            "property": "footer"
+          }
+        ]
+      }
+    ],
+    "states": [
+      {
+        "name": "focus",
+        "selector": ":focus",
+        "figma": [
+          {
+            "kind": "none",
+            "reason": "In Figma kun je niet met de tabtoets door een prototype; Figma is voor het snel uitwerken van ideeën, niet voor toetsenbordgedrag."
+          }
+        ]
+      },
+      {
+        "name": "focus-visible",
+        "selector": ":focus-visible",
+        "figma": [
+          {
+            "kind": "none",
+            "reason": "In Figma kun je niet met de tabtoets door een prototype; Figma is voor het snel uitwerken van ideeën, niet voor toetsenbordgedrag."
+          }
+        ]
+      }
+    ]
+  }
 }

@@ -15,5 +15,45 @@
       "type": "boolean",
       "default": false
     }
-  ]
+  ],
+  "api": {
+    "props": [
+      {
+        "name": "label",
+        "type": "string",
+        "required": true,
+        "figma": [
+          {
+            "kind": "text",
+            "property": "label"
+          }
+        ]
+      },
+      {
+        "name": "hideLabel",
+        "type": "boolean",
+        "default": false,
+        "figma": [
+          {
+            "kind": "none",
+            "reason": "Nog niet in de Figma-matrix van Spinner.",
+            "open": true
+          }
+        ]
+      },
+      {
+        "name": "size",
+        "values": ["default", "large"],
+        "default": "default",
+        "figma": [
+          {
+            "kind": "variant",
+            "property": "size"
+          }
+        ]
+      }
+    ],
+    "slots": [],
+    "states": []
+  }
 }
