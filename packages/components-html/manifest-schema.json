@@ -190,7 +190,7 @@
         },
         "native": {
           "type": "boolean",
-          "description": "True for a native HTML attribute that the component passes through (disabled, type). Its type comes from the HTML element, not from the component's own props interface."
+          "description": "True for a prop the component inherits from its element's React attributes (disabled, type, checked, children) instead of declaring it on its own props interface or on that of a component it extends."
         },
         "slots": {
           "type": "array",
@@ -266,8 +266,15 @@
       "required": ["kind"],
       "properties": {
         "kind": {
-          "enum": ["variant", "boolean", "text", "instance-swap", "none"],
-          "description": "variant: an axis of the component set. boolean, text and instance-swap: a component property. none: not in Figma."
+          "enum": [
+            "variant",
+            "boolean",
+            "text",
+            "instance-swap",
+            "slot",
+            "none"
+          ],
+          "description": "variant: an axis of the component set, or one value of it. boolean, text and instance-swap: a component property. slot: a Figma slot (data-figma-children in the matrix). none: not in Figma."
         },
         "property": {
           "type": "string",
@@ -277,12 +284,17 @@
         "value": {
           "type": "string",
           "minLength": 1,
-          "description": "States only: the value on the axis that shows this state."
+          "description": "Variant bindings of props and states only: the one value on the axis this part stands for. A prop without value owns the whole axis."
         },
         "reason": {
           "type": "string",
           "minLength": 1,
           "description": "Why the part is not in Figma, or why it is bound the way it is. Required for kind none."
+        },
+        "instance": {
+          "type": "string",
+          "pattern": "^[A-Z][A-Za-z0-9]*$",
+          "description": "For a component property that belongs to a nested, exposed instance rather than to this component set: the name of that nested component."
         }
       }
     }

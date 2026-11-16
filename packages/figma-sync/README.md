@@ -1100,9 +1100,11 @@ zo'n prop, dan stopt de build: een stille terugval op een eigen lijst is precies
 de drift die dit voorkomt. Assen die geen prop zijn (`state`) en keuzes die
 alleen voor Figma gelden (`skipVariant`) blijven in de matrix.
 
-`tests/manifest-figma.test.ts` controleert daarnaast dat elke as en elke
-component property van de matrix bij een prop, slot of state in de manifest
-hoort, en andersom. Wat bewust niet in Figma staat, heeft daar een binding
+`tests/manifest-figma.test.ts` controleert daarnaast dat elke as, elke waarde
+op een gedeelde as, elke component property en elk Figma-slot
+(`data-figma-children`) van de matrix bij een prop, slot of state in de
+manifest hoort, en andersom. De `viewportAxis` telt niet mee: die is een keuze
+van figma-sync, geen API. Wat bewust niet in Figma staat, heeft daar een binding
 `none` met een reden, zoals `loading` en `fullWidth` van Button (#323).
 
 ### Wat een matrix zelf kan meegeven

@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest';
-import { readFileSync } from 'fs';
+import { existsSync, readFileSync } from 'fs';
 import path from 'path';
 import ts from 'typescript';
 
@@ -35,13 +35,42 @@ interface ReactProp {
   described: Described;
 }
 
+interface ReactApi {
+  props: Map<string, ReactProp>;
+  defaults: Map<string, unknown>;
+}
+
 /**
- * De eigen members van `{Name}Props` en de defaults uit de destructuring.
+ * De props van `{Name}Props` en de defaults uit de destructuring.
  *
- * Geërfde members (`disabled` uit ButtonHTMLAttributes) staan niet in de body
- * van het interface; dat zijn in de manifest de `native` props.
+ * Breidt het interface dat van een ander component uit
+ * (`CheckboxOptionProps extends CheckboxProps`, ook via `Omit<...>`), dan
+ * tellen die props mee: ze zijn deel van de API, en de manifest noemt ze
+ * zonder `native`. Wat uit de React-attributen van het element komt
+ * (`disabled` uit ButtonHTMLAttributes) staat in geen van die interfaces;
+ * dat zijn in de manifest de `native` props.
  */
-function readReactApi(name: string) {
+function readReactApi(name: string): ReactApi {
+  const own = readOwnApi(name);
+  const props = new Map<string, ReactProp>();
+  const defaults = new Map<string, unknown>();
+
+  for (const { component, omit } of own.extendsComponents) {
+    const parent = readReactApi(component);
+    for (const [prop, info] of parent.props) {
+      if (!omit.includes(prop)) props.set(prop, info);
+    }
+    for (const [prop, value] of parent.defaults) {
+      if (!omit.includes(prop)) defaults.set(prop, value);
+    }
+  }
+  for (const [prop, info] of own.props) props.set(prop, info);
+  for (const [prop, value] of own.defaults) defaults.set(prop, value);
+
+  return { props, defaults };
+}
+
+function readOwnApi(name: string) {
   const file = path.join(REACT_SRC, name, `${name}.tsx`);
   const source = ts.createSourceFile(
     file,
@@ -105,6 +134,32 @@ function readReactApi(name: string) {
     });
   }
 
+  // `extends CheckboxProps` of `extends Omit<CheckboxProps, 'id'>`: alleen
+  // interfaces van andere componenten in components-react. React.*Attributes
+  // en andere types horen bij het element, niet bij de API.
+  const extendsComponents: { component: string; omit: string[] }[] = [];
+  for (const clause of propsInterface.heritageClauses ?? []) {
+    for (const heritage of clause.types) {
+      let target = heritage.expression.getText(source);
+      let omit: string[] = [];
+      if (target === 'Omit' && heritage.typeArguments?.length === 2) {
+        const [base, keys] = heritage.typeArguments;
+        target = base.getText(source);
+        omit = (ts.isUnionTypeNode(keys) ? keys.types : [keys])
+          .map(literal)
+          .filter((key): key is string => typeof key === 'string');
+      }
+      const component = /^([A-Z]\w*)Props$/.exec(target)?.[1];
+      if (
+        component &&
+        component !== name &&
+        existsSync(path.join(REACT_SRC, component, `${component}.tsx`))
+      ) {
+        extendsComponents.push({ component, omit });
+      }
+    }
+  }
+
   // De destructuring van het component is het patroon dat de meeste props
   // noemt; een callback verderop in het bestand kan er ook een hebben.
   const overlap = (pattern: ts.ObjectBindingPattern) =>
@@ -125,7 +180,7 @@ function readReactApi(name: string) {
     defaults.set(element.name.getText(source), value);
   }
 
-  return { props, defaults };
+  return { props, defaults, extendsComponents };
 }
 
 /** Wat de manifest over het type zegt, in de vorm van readReactApi. */
@@ -148,7 +203,7 @@ describe('manifest-api versus React', () => {
       const api = component.api!;
       const react = readReactApi(name);
 
-      it('noemt elke eigen prop van het React-props-interface', () => {
+      it('noemt elke prop van het React-props-interface', () => {
         const listed = new Set(api.props.map((prop) => prop.name));
         const missing = [...react.props.keys()].filter(
           (prop) => !UNIVERSAL_PROPS.has(prop) && !listed.has(prop)
@@ -163,7 +218,7 @@ describe('manifest-api versus React', () => {
         expect(unknown, 'wel in de manifest, niet in React').toEqual([]);
       });
 
-      it('markeert alleen geërfde HTML-attributen als native', () => {
+      it('markeert alleen attributen van het element als native', () => {
         const declared = api.props
           .filter((prop) => prop.native && react.props.has(prop.name))
           .map((prop) => prop.name);
@@ -185,9 +240,15 @@ describe('manifest-api versus React', () => {
         'prop %s: default komt overeen met de destructuring',
         (propName, prop) => {
           const expected = react.defaults.get(propName);
-          // Een native boolean zonder default in de destructuring (disabled)
-          // is volgens HTML false; dat mag de manifest zo noemen.
-          if (expected === undefined && prop.native && prop.default === false) {
+          // Een optionele boolean zonder default in de destructuring
+          // (disabled, invalid) is undefined, en dat werkt als false. Dat mag
+          // de manifest zo noemen.
+          if (
+            expected === undefined &&
+            prop.type === 'boolean' &&
+            !prop.required &&
+            prop.default === false
+          ) {
             return;
           }
           expect(prop.default ?? undefined).toEqual(expected);

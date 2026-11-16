@@ -4,5 +4,29 @@
   "category": "form-option",
   "purpose": "Container for a group of RadioOption items; wrap in FormFieldset for accessible labelling.",
   "platforms": ["html-css", "react"],
-  "primaryProps": []
+  "primaryProps": [],
+  "api": {
+    "props": [
+      {
+        "name": "children",
+        "type": "ReactNode",
+        "required": true,
+        "slots": ["options"]
+      }
+    ],
+    "slots": [
+      {
+        "name": "options",
+        "element": "dsn-radio-group",
+        "description": "De RadioOptions van de groep.",
+        "figma": [
+          {
+            "kind": "slot",
+            "property": "slot"
+          }
+        ]
+      }
+    ],
+    "states": []
+  }
 }

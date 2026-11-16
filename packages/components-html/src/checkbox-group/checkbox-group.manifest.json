@@ -4,5 +4,29 @@
   "category": "form-option",
   "purpose": "Container for a group of CheckboxOption items; wrap in FormFieldset for accessible labelling.",
   "platforms": ["html-css", "react"],
-  "primaryProps": []
+  "primaryProps": [],
+  "api": {
+    "props": [
+      {
+        "name": "children",
+        "type": "ReactNode",
+        "required": true,
+        "slots": ["options"]
+      }
+    ],
+    "slots": [
+      {
+        "name": "options",
+        "element": "dsn-checkbox-group",
+        "description": "De CheckboxOptions van de groep.",
+        "figma": [
+          {
+            "kind": "slot",
+            "property": "slot"
+          }
+        ]
+      }
+    ],
+    "states": []
+  }
 }

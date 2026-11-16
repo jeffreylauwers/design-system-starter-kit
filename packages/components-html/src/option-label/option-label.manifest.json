@@ -6,9 +6,44 @@
   "platforms": ["html-css", "react"],
   "primaryProps": [
     {
-      "name": "htmlFor",
-      "type": "string",
-      "required": true
+      "name": "disabled",
+      "type": "boolean",
+      "default": false
     }
-  ]
+  ],
+  "api": {
+    "props": [
+      {
+        "name": "disabled",
+        "type": "boolean",
+        "default": false,
+        "figma": [
+          {
+            "kind": "variant",
+            "property": "disabled"
+          }
+        ]
+      },
+      {
+        "name": "children",
+        "type": "ReactNode",
+        "native": true,
+        "slots": ["label"]
+      }
+    ],
+    "slots": [
+      {
+        "name": "label",
+        "element": "dsn-option-label",
+        "description": "De tekst van de optie.",
+        "figma": [
+          {
+            "kind": "text",
+            "property": "label"
+          }
+        ]
+      }
+    ],
+    "states": []
+  }
 }

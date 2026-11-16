@@ -10,6 +10,19 @@ All notable changes to this project are documented in this file.
 
 Nog niet gepubliceerde wijzigingen. Schrijf nieuwe changelog-entries hieronder; bij de volgende release wordt deze kop gepromoveerd naar het definitieve versienummer.
 
+### components-html: api-blok voor de formulieropties
+
+Checkbox, Radio, CheckboxOption, RadioOption, OptionLabel, CheckboxGroup en RadioGroup hebben een `api`-blok in hun manifest (#488). Het model kan daarvoor meer uitdrukken dan bij Button:
+
+- **Een waarde op een gedeelde as:** `checked` en `indeterminate` staan bij Checkbox samen op de as `state`, met `unchecked` als basis (`{ "kind": "variant", "property": "state", "value": "checked" }`)
+- **Figma-slots:** de opties van CheckboxGroup en RadioGroup (`"kind": "slot"`)
+- **Properties van een geneste instance:** het label van CheckboxOption staat op zijn OptionLabel (`"instance": "OptionLabel"`)
+- **Geërfde props:** `tests/manifest-react.test.ts` volgt `CheckboxOptionProps extends CheckboxProps`, zodat `invalid` en `indeterminate` ook bij CheckboxOption gecontroleerd worden
+
+De `primaryProps` van OptionLabel noemden een verplichte prop `htmlFor`, die het component niet heeft: OptionLabel is een `<span>`. Dat is nu `disabled`, zoals in React.
+
+`tests/manifest-figma.test.ts` houdt bij welke componenten nog geen `api`-blok hebben (`WITHOUT_API`). Die lijst kan alleen krimpen.
+
 ### components-html: manifest per component, met een gecontroleerde API voor Button
 
 De manifest staat niet meer in één bestand van 900 regels. Elk component heeft een eigen `src/{component}/{component}.manifest.json` naast zijn CSS; `scripts/build-manifest.js` valideert die bestanden en voegt ze samen tot `manifest.json`. Dat bestand blijft ingecheckt en gepubliceerd, maar is nu gegenereerd: de componenten staan alfabetisch, en verder is de inhoud gelijk. In CI faalt de build als `manifest.json` achterloopt op de losse bestanden. Regenereren: `pnpm --filter @dsn-starter-kit/components-html build:manifest`.
