@@ -18,6 +18,9 @@ export default defineConfig(
       '**/*.generated.*',
       '**/scripts/**/*.js',
       '**/config/**/*.js',
+      // Worktrees van Claude Code-sessies zijn volledige kopieën van de repo,
+      // vaak op een oudere commit. Ze horen niet bij deze checkout.
+      '.claude/worktrees/**',
     ],
   },
   js.configs.recommended,
