@@ -41,6 +41,9 @@ lerna-debug.log*
 *.sln
 *.sw?
 
+# Claude Code: worktrees van eerdere sessies, elk een volledige kopie van de repo
+.claude/worktrees/
+
 # Storybook
 storybook-static/
 
