@@ -4,5 +4,22 @@
   "category": "navigation",
   "purpose": "Full-page structural wrapper that vertically stacks PageHeader, PageBody, and PageFooter with min-height: 100dvh.",
   "platforms": ["html-css", "react"],
-  "primaryProps": []
+  "primaryProps": [],
+  "api": {
+    "props": [
+      {
+        "name": "children",
+        "type": "ReactNode",
+        "required": true,
+        "figma": [
+          {
+            "kind": "none",
+            "reason": "Geen set in Figma: een layoutcomponent tekent niets en plaatst alleen wat erin zit. Daar gebruik je in Figma auto layout voor."
+          }
+        ]
+      }
+    ],
+    "slots": [],
+    "states": []
+  }
 }

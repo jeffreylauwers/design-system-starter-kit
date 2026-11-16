@@ -6,9 +6,26 @@
   "platforms": ["html-css", "react"],
   "primaryProps": [
     {
-      "name": "decorative",
-      "type": "boolean",
-      "default": false
+      "name": "title",
+      "type": "string",
+      "default": "Starter Kit"
     }
-  ]
+  ],
+  "api": {
+    "props": [
+      {
+        "name": "title",
+        "type": "string",
+        "default": "Starter Kit",
+        "figma": [
+          {
+            "kind": "none",
+            "reason": "De toegankelijke naam (<title> in de SVG); niet zichtbaar."
+          }
+        ]
+      }
+    ],
+    "slots": [],
+    "states": []
+  }
 }

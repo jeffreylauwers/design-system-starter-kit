@@ -9,6 +9,64 @@
       "name": "appearance",
       "values": ["framed", "plain"],
       "default": "framed"
+    },
+    {
+      "name": "items",
+      "type": "array",
+      "required": true
     }
-  ]
+  ],
+  "api": {
+    "props": [
+      {
+        "name": "heading",
+        "type": "string",
+        "default": "Op deze pagina",
+        "figma": [
+          {
+            "kind": "none",
+            "reason": "Nog niet in de Figma-matrix van TableOfContents.",
+            "open": true
+          }
+        ]
+      },
+      {
+        "name": "headingLevel",
+        "values": [1, 2, 3, 4, 5, 6],
+        "default": 2,
+        "figma": [
+          {
+            "kind": "none",
+            "reason": "Nog niet in de Figma-matrix van TableOfContents.",
+            "open": true
+          }
+        ]
+      },
+      {
+        "name": "appearance",
+        "values": ["framed", "plain"],
+        "default": "framed",
+        "figma": [
+          {
+            "kind": "variant",
+            "property": "appearance",
+            "values": ["default", "plain"]
+          }
+        ]
+      },
+      {
+        "name": "items",
+        "type": "array",
+        "required": true,
+        "figma": [
+          {
+            "kind": "none",
+            "reason": "Geen property: de inhoud pas je in een instance aan op de lagen zelf."
+          }
+        ]
+      }
+    ],
+    "slots": [],
+    "states": []
+  }
 }

@@ -197,10 +197,10 @@ describe('validateComponent: api block', () => {
     expect(withComponent(() => {})).toEqual([]);
   });
 
-  it('accepts a component without an api block', () => {
+  it('rejects a component without an api block', () => {
     expect(
       withComponent((draft) => delete (draft as Partial<Draft>).api)
-    ).toEqual([]);
+    ).toContain("example.manifest.json: mist verplicht veld 'api'");
   });
 
   it('prefixes errors with the file name', () => {

@@ -6,9 +6,55 @@
   "platforms": ["html-css", "react"],
   "primaryProps": [
     {
-      "name": "orientation",
+      "name": "direction",
       "values": ["horizontal", "vertical"],
       "default": "horizontal"
     }
-  ]
+  ],
+  "api": {
+    "props": [
+      {
+        "name": "direction",
+        "values": ["horizontal", "vertical"],
+        "default": "horizontal",
+        "figma": [
+          {
+            "kind": "variant",
+            "property": "direction"
+          }
+        ]
+      },
+      {
+        "name": "aria-label",
+        "type": "string",
+        "default": "Acties",
+        "native": true,
+        "figma": [
+          {
+            "kind": "none",
+            "reason": "Tekst voor schermlezers; niet zichtbaar."
+          }
+        ]
+      },
+      {
+        "name": "children",
+        "type": "ReactNode",
+        "slots": ["actions"]
+      }
+    ],
+    "slots": [
+      {
+        "name": "actions",
+        "element": "dsn-action-group",
+        "description": "De knoppen en links.",
+        "figma": [
+          {
+            "kind": "slot",
+            "property": "slot"
+          }
+        ]
+      }
+    ],
+    "states": []
+  }
 }

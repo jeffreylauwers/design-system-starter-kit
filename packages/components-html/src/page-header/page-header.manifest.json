@@ -4,5 +4,322 @@
   "category": "navigation",
   "purpose": "Page-wide header bar with logo, navigation, and actions slots; theme-aware background via design tokens.",
   "platforms": ["html-css", "react"],
-  "primaryProps": []
+  "primaryProps": [
+    {
+      "name": "layout",
+      "values": ["default", "compact"],
+      "default": "default"
+    },
+    {
+      "name": "colorScheme",
+      "values": ["default", "inverse"],
+      "default": "default"
+    },
+    {
+      "name": "sticky",
+      "values": ["none", "sticky", "auto-hide"],
+      "default": "none"
+    }
+  ],
+  "api": {
+    "props": [
+      {
+        "name": "logoSlot",
+        "type": "ReactNode",
+        "required": true,
+        "slots": ["logo"]
+      },
+      {
+        "name": "sticky",
+        "values": ["none", "sticky", "auto-hide"],
+        "default": "none",
+        "figma": [
+          {
+            "kind": "none",
+            "reason": "Nog niet in de Figma-matrix van PageHeader.",
+            "open": true
+          }
+        ]
+      },
+      {
+        "name": "layout",
+        "values": ["default", "compact"],
+        "default": "default",
+        "figma": [
+          {
+            "kind": "variant",
+            "property": "layout"
+          }
+        ]
+      },
+      {
+        "name": "colorScheme",
+        "values": ["default", "inverse"],
+        "default": "default",
+        "figma": [
+          {
+            "kind": "variant",
+            "property": "colorScheme"
+          }
+        ]
+      },
+      {
+        "name": "initialSearchOpen",
+        "type": "boolean",
+        "default": false,
+        "figma": [
+          {
+            "kind": "none",
+            "reason": "Nog niet in de Figma-matrix van PageHeader.",
+            "open": true
+          }
+        ]
+      },
+      {
+        "name": "primaryNavigation",
+        "type": "ReactNode",
+        "slots": ["primary-navigation"]
+      },
+      {
+        "name": "primaryNavigationLarge",
+        "type": "ReactNode",
+        "slots": ["primary-navigation"]
+      },
+      {
+        "name": "secondaryNavigation",
+        "type": "ReactNode",
+        "slots": ["secondary-navigation"]
+      },
+      {
+        "name": "secondaryNavigationLarge",
+        "type": "ReactNode",
+        "slots": ["secondary-navigation"]
+      },
+      {
+        "name": "searchSlot",
+        "type": "ReactNode",
+        "figma": [
+          {
+            "kind": "none",
+            "reason": "Nog niet in de Figma-matrix van PageHeader.",
+            "open": true
+          }
+        ]
+      },
+      {
+        "name": "menuButtonBadge",
+        "type": "ReactNode",
+        "figma": [
+          {
+            "kind": "none",
+            "reason": "Nog niet in de Figma-matrix van PageHeader.",
+            "open": true
+          }
+        ]
+      },
+      {
+        "name": "menuButtonBadgeLabel",
+        "type": "string",
+        "figma": [
+          {
+            "kind": "none",
+            "reason": "Tekst voor schermlezers; niet zichtbaar."
+          }
+        ]
+      },
+      {
+        "name": "onMenuOpen",
+        "type": "function",
+        "figma": [
+          {
+            "kind": "none",
+            "reason": "Gedrag, geen uiterlijk."
+          }
+        ]
+      },
+      {
+        "name": "onMenuClose",
+        "type": "function",
+        "figma": [
+          {
+            "kind": "none",
+            "reason": "Gedrag, geen uiterlijk."
+          }
+        ]
+      },
+      {
+        "name": "onSearchOpen",
+        "type": "function",
+        "figma": [
+          {
+            "kind": "none",
+            "reason": "Gedrag, geen uiterlijk."
+          }
+        ]
+      },
+      {
+        "name": "onSearchClose",
+        "type": "function",
+        "figma": [
+          {
+            "kind": "none",
+            "reason": "Gedrag, geen uiterlijk."
+          }
+        ]
+      },
+      {
+        "name": "menuButtonLabel",
+        "type": "string",
+        "default": "Menu",
+        "figma": [
+          {
+            "kind": "none",
+            "reason": "Nog niet in de Figma-matrix van PageHeader.",
+            "open": true
+          }
+        ]
+      },
+      {
+        "name": "searchButtonLabel",
+        "type": "string",
+        "default": "Zoeken",
+        "figma": [
+          {
+            "kind": "none",
+            "reason": "Nog niet in de Figma-matrix van PageHeader.",
+            "open": true
+          }
+        ]
+      },
+      {
+        "name": "closeButtonLabel",
+        "type": "string",
+        "default": "Sluiten",
+        "figma": [
+          {
+            "kind": "none",
+            "reason": "Nog niet in de Figma-matrix van PageHeader.",
+            "open": true
+          }
+        ]
+      },
+      {
+        "name": "searchInputPlaceholder",
+        "type": "string",
+        "default": "Zoeken…",
+        "figma": [
+          {
+            "kind": "none",
+            "reason": "Nog niet in de Figma-matrix van PageHeader.",
+            "open": true
+          }
+        ]
+      },
+      {
+        "name": "searchInputAriaLabel",
+        "type": "string",
+        "default": "Zoekopdracht",
+        "figma": [
+          {
+            "kind": "none",
+            "reason": "Tekst voor schermlezers; niet zichtbaar."
+          }
+        ]
+      },
+      {
+        "name": "searchSubmitLabel",
+        "type": "string",
+        "default": "Zoeken",
+        "figma": [
+          {
+            "kind": "none",
+            "reason": "Nog niet in de Figma-matrix van PageHeader.",
+            "open": true
+          }
+        ]
+      },
+      {
+        "name": "primaryNavAriaLabel",
+        "type": "string",
+        "default": "Hoofd-navigatie",
+        "figma": [
+          {
+            "kind": "none",
+            "reason": "Tekst voor schermlezers; niet zichtbaar."
+          }
+        ]
+      },
+      {
+        "name": "secondaryNavAriaLabel",
+        "type": "string",
+        "default": "Service-navigatie",
+        "figma": [
+          {
+            "kind": "none",
+            "reason": "Tekst voor schermlezers; niet zichtbaar."
+          }
+        ]
+      },
+      {
+        "name": "hideMenuButton",
+        "type": "boolean",
+        "default": false,
+        "figma": [
+          {
+            "kind": "none",
+            "reason": "Nog niet in de Figma-matrix van PageHeader.",
+            "open": true
+          }
+        ]
+      },
+      {
+        "name": "hideSearchButton",
+        "type": "boolean",
+        "default": false,
+        "figma": [
+          {
+            "kind": "none",
+            "reason": "Nog niet in de Figma-matrix van PageHeader.",
+            "open": true
+          }
+        ]
+      }
+    ],
+    "slots": [
+      {
+        "name": "logo",
+        "element": "dsn-page-header",
+        "description": "Het logo.",
+        "figma": [
+          {
+            "kind": "none",
+            "reason": "Geen property: de inhoud pas je in een instance aan op de lagen zelf."
+          }
+        ]
+      },
+      {
+        "name": "primary-navigation",
+        "element": "dsn-page-header",
+        "description": "De hoofdnavigatie, apart voor kleine en grote schermen.",
+        "figma": [
+          {
+            "kind": "none",
+            "reason": "Geen property: de inhoud pas je in een instance aan op de lagen zelf."
+          }
+        ]
+      },
+      {
+        "name": "secondary-navigation",
+        "element": "dsn-page-header",
+        "description": "De servicenavigatie, apart voor kleine en grote schermen.",
+        "figma": [
+          {
+            "kind": "none",
+            "reason": "Geen property: de inhoud pas je in een instance aan op de lagen zelf."
+          }
+        ]
+      }
+    ],
+    "states": []
+  }
 }

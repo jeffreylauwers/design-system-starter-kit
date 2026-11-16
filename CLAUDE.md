@@ -249,7 +249,7 @@ packages/storybook/src/
 ### Exports en registraties
 
 - `packages/components-react/src/index.ts`: export toevoegen
-- `packages/components-html/manifest.json`: **niet** met de hand bewerken. Het wordt gegenereerd uit de `*.manifest.json`-bestanden; draai `pnpm --filter @dsn-starter-kit/components-html build:manifest` en commit het resultaat. CI faalt als het achterloopt. Met een `api`-blok (zie de README van `components-html`) vergelijken `tests/manifest-react.test.ts` en `tests/manifest-figma.test.ts` de manifest met React en met de Figma-matrix
+- `packages/components-html/manifest.json`: **niet** met de hand bewerken. Het wordt gegenereerd uit de `*.manifest.json`-bestanden; draai `pnpm --filter @dsn-starter-kit/components-html build:manifest` en commit het resultaat. CI faalt als het achterloopt. Elk manifest-bestand heeft een `api`-blok met alle props, slots en states, en per onderdeel hoe het in Figma terugkomt (zie de README van `components-html`). `tests/manifest-react.test.ts` en `tests/manifest-figma.test.ts` vergelijken dat met React en met de Figma-matrix. Weet je niet waarom iets niet in Figma staat, zet dan `"open": true` op de binding in plaats van een reden te verzinnen; `pnpm --filter @dsn-starter-kit/components-html report:figma-open` toont alle open punten
 - `packages/components-html/package.json`: nieuwe entry toevoegen aan de `exports` map (`"./component-name": "./src/component-name/component-name.css"`) — de build-script pikt CSS automatisch op, maar de exports map niet
 - `packages/storybook/src/Introduction.mdx`: datum updaten + component in de lijst
 

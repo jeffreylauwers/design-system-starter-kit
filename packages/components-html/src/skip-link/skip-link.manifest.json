@@ -10,5 +10,62 @@
       "type": "string",
       "required": true
     }
-  ]
+  ],
+  "api": {
+    "props": [
+      {
+        "name": "href",
+        "type": "string",
+        "required": true,
+        "figma": [
+          {
+            "kind": "none",
+            "reason": "De bestemming van de link, niet het uiterlijk."
+          }
+        ]
+      },
+      {
+        "name": "children",
+        "type": "ReactNode",
+        "default": "Ga direct naar de hoofdinhoud",
+        "slots": ["label"]
+      }
+    ],
+    "slots": [
+      {
+        "name": "label",
+        "element": "dsn-skip-link",
+        "description": "De tekst van de link.",
+        "figma": [
+          {
+            "kind": "text",
+            "property": "label"
+          }
+        ]
+      }
+    ],
+    "states": [
+      {
+        "name": "focus",
+        "selector": ":focus",
+        "figma": [
+          {
+            "kind": "variant",
+            "property": "state",
+            "value": "focus"
+          }
+        ]
+      },
+      {
+        "name": "focus-visible",
+        "selector": ":focus-visible",
+        "figma": [
+          {
+            "kind": "none",
+            "reason": "In Figma kun je niet met de tabtoets door een prototype; Figma is voor het snel uitwerken van ideeën, niet voor toetsenbordgedrag."
+          }
+        ]
+      }
+    ]
+  }
 }

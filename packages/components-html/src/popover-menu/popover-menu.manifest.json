@@ -7,8 +7,82 @@
   "primaryProps": [
     {
       "name": "placement",
-      "values": ["bottom", "top", "start", "end"],
+      "values": ["top", "bottom", "start", "end"],
       "default": "bottom"
     }
-  ]
+  ],
+  "api": {
+    "props": [
+      {
+        "name": "isOpen",
+        "type": "boolean",
+        "required": true,
+        "figma": [
+          {
+            "kind": "none",
+            "reason": "PopoverMenu heeft geen Figma-matrix, en staat ook niet in de lijst van bewust overgeslagen componenten.",
+            "open": true
+          }
+        ]
+      },
+      {
+        "name": "onClose",
+        "type": "function",
+        "figma": [
+          {
+            "kind": "none",
+            "reason": "Gedrag, geen uiterlijk."
+          }
+        ]
+      },
+      {
+        "name": "triggerRef",
+        "type": "object",
+        "required": true,
+        "figma": [
+          {
+            "kind": "none",
+            "reason": "Gedrag, geen uiterlijk."
+          }
+        ]
+      },
+      {
+        "name": "placement",
+        "values": ["top", "bottom", "start", "end"],
+        "default": "bottom",
+        "figma": [
+          {
+            "kind": "none",
+            "reason": "Nog niet in de Figma-matrix van PopoverMenu.",
+            "open": true
+          }
+        ]
+      },
+      {
+        "name": "iconStart",
+        "type": "boolean",
+        "default": false,
+        "figma": [
+          {
+            "kind": "none",
+            "reason": "Nog niet in de Figma-matrix van PopoverMenu.",
+            "open": true
+          }
+        ]
+      },
+      {
+        "name": "children",
+        "type": "ReactNode",
+        "figma": [
+          {
+            "kind": "none",
+            "reason": "Nog niet in de Figma-matrix van PopoverMenu.",
+            "open": true
+          }
+        ]
+      }
+    ],
+    "slots": [],
+    "states": []
+  }
 }
