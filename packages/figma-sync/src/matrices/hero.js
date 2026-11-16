@@ -13,6 +13,7 @@
  */
 
 import { HEADING, TEKST } from '../text.js';
+import { axisValues } from '../manifest.js';
 
 export default {
   component: 'Hero',
@@ -32,8 +33,8 @@ export default {
   wrapperStyle: 'width: 360px;',
 
   axes: {
-    variant: ['default', 'inverse', 'image'],
-    align: ['start', 'center'],
+    variant: axisValues('Hero', 'variant'),
+    align: axisValues('Hero', 'align'),
   },
 
   render({ variant, align }) {

@@ -7,6 +7,7 @@
  */
 
 import { TEKST } from '../text.js';
+import { axisValues } from '../manifest.js';
 
 export default {
   component: 'Paragraph',
@@ -21,7 +22,7 @@ export default {
   ],
 
   axes: {
-    appearance: ['default', 'lead', 'small-print'],
+    appearance: axisValues('Paragraph', 'appearance'),
   },
 
   componentProperties: [{ name: 'label', type: 'TEXT', slot: 'label' }],

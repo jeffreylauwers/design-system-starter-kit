@@ -25,6 +25,7 @@
 
 import { icon } from '../icons.js';
 import { TEKST } from '../text.js';
+import { axisValues } from '../manifest.js';
 
 export default {
   component: 'BreadcrumbNavigation',
@@ -40,7 +41,7 @@ export default {
   ],
 
   axes: {
-    appearance: ['default', 'compact'],
+    appearance: axisValues('BreadcrumbNavigation', 'appearance'),
     viewport: ['small', 'large'],
   },
 

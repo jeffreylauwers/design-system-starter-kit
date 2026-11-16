@@ -13,6 +13,7 @@
  */
 
 import { TEKST } from '../text.js';
+import { axisValues } from '../manifest.js';
 
 /** Eén grijze pixel; de verhouding komt van `aspect-ratio`, niet van de bron. */
 const PIXEL =
@@ -37,7 +38,7 @@ export default {
   ],
 
   axes: {
-    ratio: ['16-9', '4-3', '1-1'],
+    ratio: axisValues('Image', 'ratio'),
     caption: ['with-caption', 'no-caption'],
   },
 

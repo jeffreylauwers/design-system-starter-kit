@@ -18,6 +18,7 @@ const ICON_START = icon('chevron-left', { slot: 'icon-start' });
 const ICON_END = icon('chevron-right', { slot: 'icon-end' });
 
 import { FLAG, skipFlagCombinations } from '../flags.js';
+import { axisValues } from '../manifest.js';
 
 export default {
   component: 'Link',
@@ -33,7 +34,7 @@ export default {
   ],
 
   axes: {
-    size: ['small', 'default', 'large'],
+    size: axisValues('Link', 'size'),
     state: ['default', 'hover'],
     disabled: FLAG,
   },

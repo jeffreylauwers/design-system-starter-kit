@@ -12,6 +12,7 @@
 
 import { icon } from '../icons.js';
 import { TEKST } from '../text.js';
+import { axisValues } from '../manifest.js';
 
 const ICON_NAMES = {
   neutral: 'info-circle',
@@ -35,7 +36,7 @@ export default {
   ],
 
   axes: {
-    variant: ['neutral', 'info', 'positive', 'negative', 'warning'],
+    variant: axisValues('StatusBadge', 'variant'),
     icon: ['with-icon', 'no-icon'],
   },
 

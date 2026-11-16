@@ -1080,9 +1080,9 @@ De fontnaam moet ook in Figma beschikbaar zijn.
 
 ### Assen uit de manifest
 
-Heeft het component een `api`-blok in zijn manifest-bestand
-(`components-html/src/{component}/{component}.manifest.json`), lees de waarden
-van een prop-as dan daaruit in plaats van ze over te typen:
+Elke as die een enum-prop is, leest zijn waarden uit het manifest-bestand van
+het component (`components-html/src/{component}/{component}.manifest.json`).
+De waarden staan zo op één plek; een matrix typt ze nooit over:
 
 ```js
 import { axisValues } from '../manifest.js';
@@ -1095,10 +1095,26 @@ axes: {
 ```
 
 `axisValues` zoekt de prop met een binding `{ kind: 'variant', property: 'size' }`
-en geeft zijn `values` terug, in de volgorde van de union in React. Is er geen
-zo'n prop, dan stopt de build: een stille terugval op een eigen lijst is precies
-de drift die dit voorkomt. Assen die geen prop zijn (`state`) en keuzes die
-alleen voor Figma gelden (`skipVariant`) blijven in de matrix.
+en geeft zijn waarden terug, als tekst:
+
+- normaal de `values` van de prop, in de volgorde van de union in React;
+- spelt Figma ze anders, dan de `values` van de binding: `16-9` voor `16:9` bij
+  Image, een andere volgorde bij de badges, of een deel van de enum bij File;
+- heeft de prop geen default, dan eerst de waarde voor "niet gezet" (`unset`,
+  zoals `auto` bij `inlineSize`).
+
+Is er geen zo'n prop, dan stopt de build: een stille terugval op een eigen
+lijst is precies de drift die dit voorkomt. `tests/manifest-figma.test.ts`
+faalt ook als een matrix een enum-as toch overtypt. Wat geen enum-prop is,
+blijft in de matrix: een vlag (`disabled: FLAG`), een as voor aanwezigheid
+(`['with-icon', 'no-icon']`), toestanden (`state`) en keuzes die alleen voor
+Figma gelden (`skipVariant`).
+
+Omdat manifest en matrix nu samen veranderen, vangt geen test een fout in een
+detail dat alleen voor Figma bestaat (`values` of `unset` van een binding).
+Kijk bij zo'n wijziging dus naar de gegenereerde `dist/{component}.json`. De
+waarden zelf blijven bewaakt: `tests/manifest-react.test.ts` vergelijkt ze met
+React.
 
 `tests/manifest-figma.test.ts` controleert daarnaast dat elke as, elke waarde
 op een gedeelde as, elke component property en elk Figma-slot

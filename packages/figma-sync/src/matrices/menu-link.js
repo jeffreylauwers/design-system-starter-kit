@@ -11,6 +11,7 @@
 
 import { icon } from '../icons.js';
 import { TEKST } from '../text.js';
+import { axisValues } from '../manifest.js';
 
 export default {
   component: 'MenuLink',
@@ -33,7 +34,7 @@ export default {
   wrapperStyle: 'width: 328px;',
 
   axes: {
-    level: ['1', '2', '3'],
+    level: axisValues('MenuLink', 'level'),
     state: ['default', 'current'],
     expand: ['with-expand', 'no-expand'],
   },
