@@ -10,6 +10,7 @@
 
 import { icon } from '../icons.js';
 import { TEKST } from '../text.js';
+import { axisValues } from '../manifest.js';
 
 const ICON_NAMES = {
   positive: 'circle-check',
@@ -32,7 +33,7 @@ export default {
   wrapperStyle: 'width: 328px;',
 
   axes: {
-    variant: ['default', 'positive', 'warning'],
+    variant: axisValues('FormFieldStatus', 'variant'),
   },
 
   componentProperties: [{ name: 'label', type: 'TEXT', slot: 'label' }],

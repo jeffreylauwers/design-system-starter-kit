@@ -10,6 +10,7 @@
  */
 
 import { TEKST } from '../text.js';
+import { axisValues } from '../manifest.js';
 
 export default {
   component: 'Menu',
@@ -29,7 +30,7 @@ export default {
   wrapperStyle: 'width: 328px;',
 
   axes: {
-    orientation: ['vertical', 'horizontal'],
+    orientation: axisValues('Menu', 'orientation'),
   },
 
   render({ orientation }) {

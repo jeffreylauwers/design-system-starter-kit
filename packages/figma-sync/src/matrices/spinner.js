@@ -12,6 +12,8 @@
  * een statisch ontwerp.
  */
 
+import { axisValues } from '../manifest.js';
+
 const CIRCLE = `<svg class="dsn-spinner__circle" viewBox="0 0 24 24" aria-hidden="true">
   <circle class="dsn-spinner__track" cx="12" cy="12" r="10"></circle>
   <circle class="dsn-spinner__arc" cx="12" cy="12" r="10"></circle>
@@ -37,7 +39,7 @@ export default {
    * zonder label wil, zet de tekstlaag uit.
    */
   axes: {
-    size: ['default', 'large'],
+    size: axisValues('Spinner', 'size'),
   },
 
   componentProperties: [{ name: 'label', type: 'TEXT', slot: 'label' }],

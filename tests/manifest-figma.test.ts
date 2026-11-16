@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest';
-import { existsSync } from 'fs';
+import { existsSync, readFileSync } from 'fs';
 import path from 'path';
 
 import manifest from '../packages/components-html/manifest';
@@ -149,6 +149,25 @@ describe('manifest-api versus Figma-matrix', () => {
           (axis) => !claimed.has(axis)
         );
         expect(unclaimed, 'assen zonder prop, slot of state').toEqual([]);
+      });
+
+      it('een enum-as leest zijn waarden met axisValues', () => {
+        // Eén werkwijze: de waarden staan alleen in de manifest. Een matrix
+        // die ze overtypt, kan stil achterlopen zodra de manifest verandert.
+        const source = readFileSync(matrixPath(component.name), 'utf-8');
+        const typed = component.api.props
+          .filter((prop) => prop.values)
+          .flatMap((prop) => prop.figma ?? [])
+          .filter(
+            (binding) =>
+              binding.kind === 'variant' && binding.value === undefined
+          )
+          .map((binding) => binding.property!)
+          .filter(
+            (axis) =>
+              !source.includes(`axisValues('${component.name}', '${axis}')`)
+          );
+        expect(typed, 'assen zonder axisValues in de matrix').toEqual([]);
       });
 
       it('elke variant-binding wijst naar een bestaande as', () => {

@@ -18,6 +18,7 @@
 
 import { icon } from '../icons.js';
 import { HEADING, TEKST } from '../text.js';
+import { axisValues } from '../manifest.js';
 
 export default {
   component: 'Drawer',
@@ -48,7 +49,7 @@ export default {
   ],
 
   axes: {
-    side: ['left', 'right'],
+    side: axisValues('Drawer', 'side'),
   },
 
   render({ side }) {

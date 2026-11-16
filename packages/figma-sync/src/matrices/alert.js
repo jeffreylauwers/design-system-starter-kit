@@ -15,6 +15,7 @@
 
 import { icon as renderIcon } from '../icons.js';
 import { HEADING, TEKST } from '../text.js';
+import { axisValues } from '../manifest.js';
 
 /** Het icoon per variant; de naam wordt ook de naam van de laag in Figma. */
 const ICON_NAMES = {
@@ -49,7 +50,7 @@ export default {
   ],
 
   axes: {
-    variant: ['info', 'positive', 'negative', 'warning'],
+    variant: axisValues('Alert', 'variant'),
     icon: ['with-icon', 'no-icon'],
   },
 

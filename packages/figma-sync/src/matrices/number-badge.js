@@ -7,6 +7,8 @@
  * meteen in dezelfde variant.
  */
 
+import { axisValues } from '../manifest.js';
+
 export default {
   component: 'NumberBadge',
 
@@ -20,7 +22,7 @@ export default {
   ],
 
   axes: {
-    variant: ['neutral', 'info', 'positive', 'negative', 'warning'],
+    variant: axisValues('NumberBadge', 'variant'),
   },
 
   componentProperties: [{ name: 'label', type: 'TEXT', slot: 'label' }],

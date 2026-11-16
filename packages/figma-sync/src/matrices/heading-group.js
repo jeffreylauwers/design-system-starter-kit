@@ -27,6 +27,7 @@
  */
 
 import { HEADING, TEKST } from '../text.js';
+import { axisValues } from '../manifest.js';
 
 export default {
   component: 'HeadingGroup',
@@ -46,7 +47,7 @@ export default {
   wrapperStyle: 'width: 328px;',
 
   axes: {
-    appearance: ['heading-1', 'heading-2', 'heading-3', 'heading-4'],
+    appearance: axisValues('HeadingGroup', 'appearance'),
   },
 
   instances: true,

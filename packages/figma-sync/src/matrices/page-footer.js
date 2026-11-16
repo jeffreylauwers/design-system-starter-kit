@@ -30,6 +30,8 @@
  * ander samengesteld component; zie issue #369.
  */
 
+import { axisValues } from '../manifest.js';
+
 /** Het logo zoals PageFooter het in slot 1 krijgt. */
 const LOGO = `<a href="/">
   <svg class="dsn-logo" xmlns="http://www.w3.org/2000/svg" width="186" height="48" viewBox="0 0 186 48" fill="none" role="img" aria-label="Starter Kit">
@@ -67,7 +69,7 @@ export default {
   ],
 
   axes: {
-    colorScheme: ['default', 'inverse'],
+    colorScheme: axisValues('PageFooter', 'colorScheme'),
     viewport: ['small', 'large'],
   },
 

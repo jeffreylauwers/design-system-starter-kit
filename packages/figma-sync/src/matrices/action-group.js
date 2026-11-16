@@ -24,6 +24,7 @@
 
 import { icon } from '../icons.js';
 import { TEKST } from '../text.js';
+import { axisValues } from '../manifest.js';
 
 export default {
   component: 'ActionGroup',
@@ -44,7 +45,7 @@ export default {
   wrapperStyle: 'width: 328px;',
 
   axes: {
-    direction: ['horizontal', 'vertical'],
+    direction: axisValues('ActionGroup', 'direction'),
   },
 
   render({ direction }) {

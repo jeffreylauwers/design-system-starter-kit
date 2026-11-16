@@ -30,6 +30,7 @@
  */
 
 import { icon } from '../icons.js';
+import { axisValues } from '../manifest.js';
 
 /** De logo-svg zoals PageHeader hem plaatst. */
 const LOGO = `<div class="dsn-page-header__logo">
@@ -95,8 +96,8 @@ export default {
   ],
 
   axes: {
-    layout: ['default', 'compact'],
-    colorScheme: ['default', 'inverse'],
+    layout: axisValues('PageHeader', 'layout'),
+    colorScheme: axisValues('PageHeader', 'colorScheme'),
     viewport: ['small', 'large'],
   },
 

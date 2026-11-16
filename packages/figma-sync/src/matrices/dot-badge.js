@@ -11,6 +11,8 @@
  * onderscheiden zijn.
  */
 
+import { axisValues } from '../manifest.js';
+
 export default {
   component: 'DotBadge',
 
@@ -24,7 +26,7 @@ export default {
   ],
 
   axes: {
-    variant: ['neutral', 'info', 'positive', 'negative', 'warning'],
+    variant: axisValues('DotBadge', 'variant'),
   },
 
   render({ variant }) {

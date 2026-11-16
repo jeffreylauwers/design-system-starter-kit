@@ -12,6 +12,7 @@
 
 import { icon } from '../icons.js';
 import { TEKST } from '../text.js';
+import { axisValues } from '../manifest.js';
 
 export default {
   component: 'File',
@@ -31,7 +32,7 @@ export default {
   wrapperStyle: 'width: 328px;',
 
   axes: {
-    variant: ['default', 'error'],
+    variant: axisValues('File', 'variant'),
     actions: ['with-actions', 'no-actions'],
   },
 

@@ -15,6 +15,7 @@
 
 import { icon } from '../icons.js';
 import { HEADING, TEKST } from '../text.js';
+import { axisValues } from '../manifest.js';
 
 /** Het icoon per variant; gelijk aan PREFERRED_ICONS in Note.tsx. */
 const ICON_NAMES = {
@@ -55,7 +56,7 @@ export default {
   wrapperStyle: 'width: 328px;',
 
   axes: {
-    variant: ['neutral', 'info', 'positive', 'negative', 'warning'],
+    variant: axisValues('Note', 'variant'),
     heading: ['with-heading', 'no-heading'],
   },
 

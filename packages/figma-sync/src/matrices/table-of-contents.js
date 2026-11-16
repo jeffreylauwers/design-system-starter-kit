@@ -10,6 +10,7 @@
  */
 
 import { HEADING, TEKST } from '../text.js';
+import { axisValues } from '../manifest.js';
 
 export default {
   component: 'TableOfContents',
@@ -29,7 +30,7 @@ export default {
   wrapperStyle: 'width: 328px;',
 
   axes: {
-    appearance: ['default', 'plain'],
+    appearance: axisValues('TableOfContents', 'appearance'),
   },
 
   render({ appearance }) {

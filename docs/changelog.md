@@ -10,6 +10,12 @@ All notable changes to this project are documented in this file.
 
 Nog niet gepubliceerde wijzigingen. Schrijf nieuwe changelog-entries hieronder; bij de volgende release wordt deze kop gepromoveerd naar het definitieve versienummer.
 
+### figma-sync: alle enum-assen uit de manifest
+
+Elke as in een Figma-matrix die een enum-prop is, leest zijn waarden nu met `axisValues` uit de manifest: 31 assen in 27 matrices, waar dat eerst alleen bij Button en de vier velden met `inlineSize` zo was. `axisValues` geeft ook de waarden terug zoals Figma ze spelt (`values` op de binding, zoals `16-9` voor `16:9`), en zet getallen om naar tekst (`level` van Heading). `tests/manifest-figma.test.ts` faalt als een matrix een enum-as toch overtypt.
+
+De Figma-output van alle 60 component sets is ongewijzigd, op `generatedAt` na.
+
 ### components-web: gecontroleerd tegen de manifest
 
 `tests/manifest-web.test.ts` legt de zeven web components naast hun `api`-blok (#488): elk attribuut in `observedAttributes` hoort bij een prop (in kebab-case, of wat `attribute` zegt), elke prop met een waarde is een attribuut, de enum-waarden zijn gelijk, en elk named `<slot>` staat in `api.slots`.
