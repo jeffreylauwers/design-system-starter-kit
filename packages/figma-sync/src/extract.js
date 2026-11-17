@@ -197,10 +197,42 @@ function domWalker([properties, hiddenClass]) {
   const root = document.querySelector('[data-figma-root]');
   if (!root) throw new Error('geen [data-figma-root] gevonden');
 
+  // `text-decoration` erft niet, maar de browser tekent een onderstreping wel
+  // door over de tekst in een element: de `<span>` met het label van Link
+  // heeft zelf `none`, en staat toch onderstreept omdat de `<a>` eromheen dat
+  // is. Dit zoekt de voorouder waar de lijn vandaan komt. Een absoluut,
+  // zwevend of atomair inline element (inline-block, inline-flex) krijgt
+  // geen lijn van buiten, dus daar stopt het zoeken; ook bij de root, zodat
+  // de wrapper van de matrix niet meetelt.
+  const blocksDecoration = (style) =>
+    style.position === 'absolute' ||
+    style.position === 'fixed' ||
+    style.float !== 'none' ||
+    /^inline-(block|flex|grid|table)$/.test(style.display);
+
+  const propagatedDecoration = (element, computed) => {
+    let current = element;
+    let style = computed;
+    while (current !== root && !blocksDecoration(style)) {
+      const parent = current.parentElement;
+      if (!parent) break;
+      const parentStyle = getComputedStyle(parent);
+      if (parentStyle.textDecorationLine !== 'none') {
+        return parentStyle.textDecorationLine;
+      }
+      current = parent;
+      style = parentStyle;
+    }
+    return 'none';
+  };
+
   const readStyles = (element, pseudo = null) => {
     const computed = getComputedStyle(element, pseudo);
     const result = {};
     for (const property of properties) result[property] = computed[property];
+    if (!pseudo && result.textDecorationLine === 'none') {
+      result.textDecorationLine = propagatedDecoration(element, computed);
+    }
     return result;
   };
 

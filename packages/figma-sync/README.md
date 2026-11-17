@@ -387,6 +387,15 @@ ouder overnemen leverde daar de generieke `text/*` op. Een kale tekstnode erft
 wél van het element waarin hij staat, en een `<option>` ook: de browser tekent
 een dichte `<select>` met de stijl van het veld, niet met die van de optie.
 
+Een onderstreping erft niet, maar de browser tekent hem wel door over de
+tekst in een element. Het label van Link is een `<span>` met zelf
+`text-decoration-line: none`, binnen een `<a>` die onderstreept is. Staat er
+op een element zelf geen lijn, dan neemt de extractor die van de dichtstbijzijnde
+voorouder, tot aan de root. Een absoluut, zwevend of atomair inline element
+(`inline-block`, `inline-flex`) krijgt in de browser geen lijn van buiten, dus
+daar stopt het zoeken. Zonder deze regel stond Link in Figma nooit
+onderstreept.
+
 Een gewicht dat uit de stylesheet van de browser komt bindt niet. StatusBadge is
 een `<strong>`, en dat is vet zonder declaratie. De voorouder levert dan
 `text/font-weight/default` (400) terwijl er 700 gemeten is, en de verificatie
