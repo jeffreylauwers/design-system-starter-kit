@@ -9,6 +9,10 @@
  * uit "Wat wordt een as en wat wordt een property?". Daarmee heeft het item
  * geen assen, en kiest een designer per item een icoon.
  *
+ * `iconColor` staat hier als as, en niet op de lijst. In code geldt de kleur
+ * voor de hele lijst, maar in Figma staan de items in een slot, en wisselt een
+ * designer de kleur per item.
+ *
  * Geen geneste weergave: een IconList springt niet in (`padding-inline-start:
  * 0`) en tekent geen `::marker`.
  *
@@ -18,6 +22,22 @@
 
 import { icon } from '../icons.js';
 import { TEKST } from '../text.js';
+
+/**
+ * De statuskleuren uit de docs van IconList. `iconColor` is in code een vrije
+ * CSS-kleur en geen enum, dus de lijst staat hier en niet in de manifest;
+ * `default` is de accentkleur (geen override). `info` staat er niet bij: in de
+ * tokens is `info` een alias van `accent-1`, en dat is ook de standaardkleur
+ * van IconList, dus in elk thema hetzelfde als `default`.
+ */
+const ICON_COLORS = ['default', 'positive', 'negative', 'warning'];
+
+/** De statuskleur als inline custom property, zoals de `iconColor`-prop doet. */
+function iconColorStyle(iconColor) {
+  return iconColor === 'default'
+    ? ''
+    : ` style="--dsn-icon-list-icon-color: var(--dsn-color-${iconColor}-color-default)"`;
+}
 
 export default {
   component: 'IconListItem',
@@ -40,13 +60,17 @@ export default {
 
   wrapperStyle: 'width: 328px;',
 
+  axes: {
+    iconColor: ICON_COLORS,
+  },
+
   componentProperties: [
     { name: 'label', type: 'TEXT', slot: 'label' },
     { name: 'icon', type: 'INSTANCE_SWAP', slot: 'icon', default: 'check' },
   ],
 
-  render() {
-    return `<ul class="dsn-icon-list" role="list">
+  render({ iconColor }) {
+    return `<ul class="dsn-icon-list" role="list"${iconColorStyle(iconColor)}>
       <li class="dsn-icon-list__item" data-figma-root>
         ${icon('check', { className: 'dsn-icon-list__icon', slot: 'icon' })}
         <span data-figma-slot="label">${TEKST}</span>

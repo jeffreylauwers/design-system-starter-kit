@@ -60,6 +60,21 @@ export default {
     heading: ['with-heading', 'no-heading'],
   },
 
+  // Het icoon staat standaard aan, met het icoon van de variant. In code kan
+  // het weg (`iconStart={null}`): de gridkolom blijft dan ook in de browser
+  // staan (anders dan bij Alert, dat `--no-icon` heeft), dus een verborgen
+  // laag is hetzelfde. Geen INSTANCE_SWAP-property: die heeft één
+  // standaardwaarde voor de hele set, en zette in Figma elke variant op
+  // hetzelfde icoon. Een eigen icoon wisselt een designer op de laag zelf.
+  componentProperties: [
+    {
+      name: 'showIconStart',
+      type: 'BOOLEAN',
+      slot: 'icon-start',
+      default: true,
+    },
+  ],
+
   render({ variant, heading }) {
     const classes = [
       'dsn-note',
@@ -80,7 +95,7 @@ export default {
 
     return `<div class="${classes}" data-figma-root>
       <span class="dsn-note__icon" aria-hidden="true">
-        ${icon(ICON_NAMES[variant], { modifier: 'xl' })}
+        ${icon(ICON_NAMES[variant], { modifier: 'xl', slot: 'icon-start' })}
       </span>
       ${headingMarkup}
       <div class="dsn-note__content">

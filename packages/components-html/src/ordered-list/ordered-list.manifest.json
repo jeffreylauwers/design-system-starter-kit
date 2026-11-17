@@ -14,8 +14,7 @@
         "figma": [
           {
             "kind": "none",
-            "reason": "Nog niet in de Figma-matrix van OrderedList.",
-            "open": true
+            "reason": "Het nummer is een TEXT-property number op elk item. Een instance weet niet op welke plek hij staat, dus een designer nummert de items zelf; dat geldt ook voor een ander beginnummer."
           }
         ]
       },

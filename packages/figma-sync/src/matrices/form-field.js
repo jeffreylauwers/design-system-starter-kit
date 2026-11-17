@@ -42,6 +42,7 @@ export default {
     '@dsn-starter-kit/components-html/src/form-field-label/form-field-label.css',
     '@dsn-starter-kit/components-html/src/form-field-description/form-field-description.css',
     '@dsn-starter-kit/components-html/src/form-field-error-message/form-field-error-message.css',
+    '@dsn-starter-kit/components-html/src/form-field-status/form-field-status.css',
     '@dsn-starter-kit/components-html/src/text-input/text-input.css',
     '@dsn-starter-kit/components-html/src/form-field/form-field.css',
   ],
@@ -51,9 +52,17 @@ export default {
   axes: {
     invalid: FLAG,
     description: ['with-description', 'no-description'],
+    // `no-status` eerst: bij een herimport gaat een bestaande variant over in
+    // de eerste waarde van een nieuwe as, en die had geen status.
+    status: ['no-status', 'with-status'],
   },
 
-  render({ invalid: isInvalid, description }) {
+  // De statusregel onder het veld is een FormFieldStatus-instance. Een as en
+  // geen boolean: de varianten met een beschrijving hebben geen auto layout
+  // (de ruimte komt uit ongelijke marges), en daar liet een verborgen laag 32px
+  // lege ruimte onder het veld staan. De variant (`statusVariant` in code)
+  // kiest een designer op de instance; die is exposed.
+  render({ invalid: isInvalid, description, status }) {
     const invalid = isInvalid === 'true';
 
     const classes = ['dsn-form-field', invalid && 'dsn-form-field--invalid']
@@ -72,6 +81,11 @@ export default {
          </p>`
       : '';
 
+    const statusMarkup =
+      status === 'with-status'
+        ? `<p class="dsn-form-field-status"><span data-figma-slot="label">${TEKST}</span></p>`
+        : '';
+
     return `<div class="${classes}" data-figma-root>
       <label class="dsn-form-field-label">
         <span>${TEKST}</span>
@@ -80,6 +94,7 @@ export default {
       ${descriptionMarkup}
       ${errorMarkup}
       <input type="text" class="dsn-text-input" data-figma-variant="inlineSize=auto"${invalid ? ' aria-invalid="true"' : ''}>
+      ${statusMarkup}
     </div>`;
   },
 };

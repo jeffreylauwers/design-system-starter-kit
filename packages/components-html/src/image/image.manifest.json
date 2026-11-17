@@ -89,8 +89,7 @@
         "figma": [
           {
             "kind": "none",
-            "reason": "Nog niet in de Figma-matrix van Image.",
-            "open": true
+            "reason": "De set heeft geen echte afbeelding, alleen de verhouding en het kader. object-fit is in Figma de schaalmodus van de image fill die een designer er zelf in zet."
           }
         ]
       },

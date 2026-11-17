@@ -24,9 +24,8 @@
         "default": "Op deze pagina",
         "figma": [
           {
-            "kind": "none",
-            "reason": "Nog niet in de Figma-matrix van TableOfContents.",
-            "open": true
+            "kind": "text",
+            "property": "heading"
           }
         ]
       },
@@ -37,8 +36,7 @@
         "figma": [
           {
             "kind": "none",
-            "reason": "Nog niet in de Figma-matrix van TableOfContents.",
-            "open": true
+            "reason": "Alleen het HTML-element van de kop; het uiterlijk volgt de appearance van TableOfContents (heading-3 of heading-5)."
           }
         ]
       },

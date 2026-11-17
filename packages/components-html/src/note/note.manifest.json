@@ -65,13 +65,7 @@
       {
         "name": "iconStart",
         "type": "ReactNode",
-        "figma": [
-          {
-            "kind": "none",
-            "reason": "Nog niet in de Figma-matrix van Note.",
-            "open": true
-          }
-        ]
+        "slots": ["icon-start"]
       },
       {
         "name": "variantLabel",
@@ -99,6 +93,18 @@
             "kind": "text",
             "property": "label",
             "instance": "Paragraph"
+          }
+        ]
+      },
+      {
+        "name": "icon-start",
+        "element": "dsn-note__icon",
+        "description": "Het icoon vóór de kop; standaard het icoon van de variant.",
+        "figma": [
+          {
+            "kind": "boolean",
+            "property": "showIconStart",
+            "reason": "Alleen aan of uit, geen instance swap: die heeft één standaardwaarde voor de hele set en zette in Figma elke variant op hetzelfde icoon. Elke variant houdt zijn eigen icoon, zoals bij Alert; een ander icoon wisselt een designer op de laag zelf."
           }
         ]
       }

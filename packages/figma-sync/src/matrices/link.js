@@ -35,10 +35,12 @@ export default {
 
   axes: {
     size: axisValues('Link', 'size'),
-    state: ['default', 'hover', 'active'],
+    state: ['default', 'hover', 'active', 'current'],
     disabled: FLAG,
   },
 
+  // `current` (de huidige pagina) is een eigen stand in rust: geen
+  // onderstreping. Een uitgeschakelde link is nooit de huidige pagina.
   skipVariant: skipFlagCombinations({
     flags: ['disabled'],
     base: { state: 'default' },
@@ -69,10 +71,11 @@ export default {
     },
   ],
 
-  render({ size, disabled: isDisabled }) {
+  render({ size, state, disabled: isDisabled }) {
     const disabled = isDisabled === 'true' ? ' aria-disabled="true"' : '';
+    const current = state === 'current' ? ' aria-current="page"' : '';
 
-    return `<a href="#" class="dsn-link dsn-link--size-${size}"${disabled} data-figma-root>
+    return `<a href="#" class="dsn-link dsn-link--size-${size}"${disabled}${current} data-figma-root>
       ${ICON_START}
       <span data-figma-slot="label">${TEKST}</span>
       ${ICON_END}

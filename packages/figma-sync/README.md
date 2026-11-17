@@ -953,7 +953,11 @@ instance, zoals de chevron van de uitklapknop in MenuLink bij
 rendert bij `expanded=true` daarom `chevron-up`, via de instance swap `icon`
 van de Button.
 
-De maat en de plek van de instance komen uit de host. Staat een Heading in de
+De maat en de plek van de instance komen uit de host. Met één uitzondering:
+een instance die op FILL zou komen in een ouder die op HUG staat, houdt zijn
+eigen breedte (FIXED). Het veld in DateInputGroup vult zijn kolom, maar de
+kolom is zo breed als het veld; op FILL rekende Figma niet met de breedte van
+de `inlineSize`-variant, en stond het veld pas goed na "reset size". Staat een Heading in de
 host op FILL, dan krijgt zijn tekstlaag ook een FILL-override, anders breekt
 de tekst niet af.
 
