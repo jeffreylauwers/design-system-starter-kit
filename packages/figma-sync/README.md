@@ -1155,7 +1155,10 @@ dsn-heading-group"`, dus zonder override zouden Heading en HeadingGroup
   schuiven een niveau op. Voor een wrapper die alleen voor de semantiek
   bestaat, zoals de `<li>` om een knop in ActionGroup. Tekent het element zelf
   iets (padding, marge, rand of achtergrond), dan stopt de build: weglaten zou
-  dat uit Figma halen.
+  dat uit Figma halen. Is het weggelaten element een blok met precies één
+  inline kind, dan neemt dat kind zijn plek en breedte over. Zo blijft de kop
+  van Card op FILL als de `<h3>` wegvalt en de stretched link de tekstlaag
+  wordt: een inline `<a>` is anders maar zo breed als zijn tekst.
 - **`warnings`** zet een vaste waarschuwing in de spec, voor een beperking die
   de generator zelf niet kán zien. `::file-selector-button` is het voorbeeld:
   de knop van FileInput is een pseudo-element en dus geen DOM-node, dus er valt
