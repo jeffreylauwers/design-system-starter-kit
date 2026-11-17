@@ -35,10 +35,13 @@ export default {
     state: ['unchecked', 'checked'],
     interaction: ['default', 'hover', 'active'],
     disabled: FLAG,
+    invalid: FLAG,
   },
 
+  // Dezelfde assen en weglatingen als Radio: `invalid` heeft net als
+  // `disabled` geen eigen hover- of active-stijl.
   skipVariant: skipFlagCombinations({
-    flags: ['disabled'],
+    flags: ['disabled', 'invalid'],
     base: { interaction: 'default' },
   }),
 
@@ -49,9 +52,15 @@ export default {
 
   hugRoot: true,
 
-  render({ state, disabled: isDisabled }) {
+  render({ state, disabled: isDisabled, invalid }) {
     const checked = state === 'checked' ? ' checked' : '';
     const disabled = isDisabled === 'true' ? ' disabled' : '';
+    const inputClasses = [
+      'dsn-radio__input',
+      invalid === 'true' && 'dsn-radio__input--invalid',
+    ]
+      .filter(Boolean)
+      .join(' ');
     const labelClasses = [
       'dsn-option-label',
       isDisabled === 'true' && 'dsn-option-label--disabled',
@@ -61,7 +70,7 @@ export default {
 
     return `<label class="dsn-radio-option" data-figma-root>
       <span class="dsn-radio">
-        <input type="radio" name="demo" class="dsn-radio__input"${checked}${disabled}>
+        <input type="radio" name="demo" class="${inputClasses}"${checked}${disabled}>
         <span class="dsn-radio__control" aria-hidden="true">
           <span class="dsn-radio__inner-circle"></span>
         </span>

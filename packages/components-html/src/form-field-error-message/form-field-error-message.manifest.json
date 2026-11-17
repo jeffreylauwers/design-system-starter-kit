@@ -13,9 +13,8 @@
         "default": true,
         "figma": [
           {
-            "kind": "none",
-            "reason": "Nog niet in de Figma-matrix van FormFieldErrorMessage.",
-            "open": true
+            "kind": "boolean",
+            "property": "showIcon"
           }
         ]
       },
