@@ -235,8 +235,7 @@
             "figma": [
               {
                 "kind": "none",
-                "reason": "Nog niet in de Figma-matrix van BreadcrumbNavigation.",
-                "open": true
+                "reason": "Hover en active horen bij één link in het kruimelpad, niet bij de navigatie als geheel. Een variant met één gehoverde kruimel is geen keuze die een designer maakt; de kleuren zijn die van hover en active bij Link, en die staan wel in Figma."
               }
             ]
           },
@@ -246,8 +245,7 @@
             "figma": [
               {
                 "kind": "none",
-                "reason": "Nog niet in de Figma-matrix van BreadcrumbNavigation.",
-                "open": true
+                "reason": "Hover en active horen bij één link in het kruimelpad, niet bij de navigatie als geheel. Een variant met één gehoverde kruimel is geen keuze die een designer maakt; de kleuren zijn die van hover en active bij Link, en die staan wel in Figma."
               }
             ]
           },
@@ -648,8 +646,7 @@
             "figma": [
               {
                 "kind": "none",
-                "reason": "Nog niet in de Figma-matrix van Card.",
-                "open": true
+                "reason": "Maakt de card klikbaar. In rust verandert dat niets aan het uiterlijk; het verschil is de hover-variant op state."
               }
             ]
           },
@@ -712,11 +709,7 @@
             "name": "hover",
             "selector": ":hover",
             "figma": [
-              {
-                "kind": "none",
-                "reason": "Nog niet in de Figma-matrix van Card.",
-                "open": true
-              }
+              { "kind": "variant", "property": "state", "value": "hover" }
             ]
           },
           {
@@ -1211,11 +1204,7 @@
             "name": "hover",
             "selector": ":hover",
             "figma": [
-              {
-                "kind": "none",
-                "reason": "Nog niet in de Figma-matrix van Details.",
-                "open": true
-              }
+              { "kind": "variant", "property": "interaction", "value": "hover" }
             ]
           },
           {
@@ -1223,9 +1212,9 @@
             "selector": ":active",
             "figma": [
               {
-                "kind": "none",
-                "reason": "Nog niet in de Figma-matrix van Details.",
-                "open": true
+                "kind": "variant",
+                "property": "interaction",
+                "value": "active"
               }
             ]
           },
@@ -2905,11 +2894,7 @@
             "name": "active",
             "selector": ":active",
             "figma": [
-              {
-                "kind": "none",
-                "reason": "Nog niet in de Figma-matrix van Link.",
-                "open": true
-              }
+              { "kind": "variant", "property": "state", "value": "active" }
             ]
           },
           {
@@ -3313,11 +3298,7 @@
             "name": "hover",
             "selector": ":hover",
             "figma": [
-              {
-                "kind": "none",
-                "reason": "Nog niet in de Figma-matrix van MenuLink.",
-                "open": true
-              }
+              { "kind": "variant", "property": "interaction", "value": "hover" }
             ]
           },
           {
@@ -3325,9 +3306,9 @@
             "selector": ":active",
             "figma": [
               {
-                "kind": "none",
-                "reason": "Nog niet in de Figma-matrix van MenuLink.",
-                "open": true
+                "kind": "variant",
+                "property": "interaction",
+                "value": "active"
               }
             ]
           },

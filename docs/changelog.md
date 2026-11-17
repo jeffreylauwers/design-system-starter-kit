@@ -10,6 +10,20 @@ All notable changes to this project are documented in this file.
 
 Nog niet gepubliceerde wijzigingen. Schrijf nieuwe changelog-entries hieronder; bij de volgende release wordt deze kop gepromoveerd naar het definitieve versienummer.
 
+### figma-sync: hover en active bij Card, Details, Link en MenuLink
+
+Negen open punten uit #497 zijn opgelost:
+
+- **Link:** `state` krijgt `active`. 9 naar 12 varianten.
+- **Details:** een as `interaction` (`default`, `hover`, `active`), gemeten op de summary. 2 naar 6 varianten.
+- **MenuLink:** een as `interaction`, gemeten op de link en gekruist met `current`, dat eigen hover- en active-tokens heeft. 12 naar 36 varianten.
+- **Card:** een as `state` (`default`, `hover`). De matrix rendert de kop als stretched link, want alleen een card met `href` heeft hover. `href` zelf staat bewust niet in Figma: in rust verandert hij niets aan het uiterlijk. 4 naar 8 varianten.
+- **BreadcrumbNavigation:** `hover` en `active` staan bewust niet in Figma. Ze horen bij één link in het kruimelpad, niet bij de navigatie als geheel, en de kleuren zijn die van Link.
+
+Bestaande varianten zijn laag voor laag gelijk aan hun nieuwe `default`-tegenhanger, dus bij een herimport blijven geplaatste instances hangen.
+
+`data-figma-unwrap` op een blok met precies één inline kind geeft dat kind nu de plek en breedte van het blok. Zonder die regel verloor de kop van Card zijn FILL zodra er een `<a>` in stond.
+
 ### figma-sync: alle enum-assen uit de manifest
 
 Elke as in een Figma-matrix die een enum-prop is, leest zijn waarden nu met `axisValues` uit de manifest: 31 assen in 27 matrices, waar dat eerst alleen bij Button en de vier velden met `inlineSize` zo was. `axisValues` geeft ook de waarden terug zoals Figma ze spelt (`values` op de binding, zoals `16-9` voor `16:9`), en zet getallen om naar tekst (`level` van Heading). `tests/manifest-figma.test.ts` faalt als een matrix een enum-as toch overtypt.
