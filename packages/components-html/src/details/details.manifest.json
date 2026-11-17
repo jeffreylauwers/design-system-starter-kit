@@ -76,9 +76,9 @@
         "selector": ":hover",
         "figma": [
           {
-            "kind": "none",
-            "reason": "Nog niet in de Figma-matrix van Details.",
-            "open": true
+            "kind": "variant",
+            "property": "interaction",
+            "value": "hover"
           }
         ]
       },
@@ -87,9 +87,9 @@
         "selector": ":active",
         "figma": [
           {
-            "kind": "none",
-            "reason": "Nog niet in de Figma-matrix van Details.",
-            "open": true
+            "kind": "variant",
+            "property": "interaction",
+            "value": "active"
           }
         ]
       },

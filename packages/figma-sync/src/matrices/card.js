@@ -38,7 +38,13 @@ export default {
   axes: {
     preHeader: ['with-pre-header', 'no-pre-header'],
     footer: ['with-footer', 'no-footer'],
+    state: ['default', 'hover'],
   },
+
+  // Hover bestaat alleen bij een card met `href`, dus de kop is hier altijd
+  // een stretched link. In rust ziet die card er hetzelfde uit als een card
+  // zonder link.
+  pseudoStates: { hover: 'hover' },
 
   render({ preHeader, footer }) {
     const preHeaderMarkup =
@@ -57,7 +63,7 @@ export default {
 
     return `<div class="dsn-card" data-figma-root>
       <div class="dsn-card__header">
-        <h3 class="dsn-card__heading">${HEADING}</h3>
+        <h3 class="dsn-card__heading" data-figma-unwrap><a href="#" class="dsn-card__link">${HEADING}</a></h3>
       </div>
       ${preHeaderMarkup}
       <div class="dsn-card__body">

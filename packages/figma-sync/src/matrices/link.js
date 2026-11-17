@@ -35,7 +35,7 @@ export default {
 
   axes: {
     size: axisValues('Link', 'size'),
-    state: ['default', 'hover'],
+    state: ['default', 'hover', 'active'],
     disabled: FLAG,
   },
 
@@ -44,7 +44,7 @@ export default {
     base: { state: 'default' },
   }),
 
-  pseudoStates: { hover: 'hover' },
+  pseudoStates: { hover: 'hover', active: 'active' },
 
   componentProperties: [
     { name: 'label', type: 'TEXT', slot: 'label' },

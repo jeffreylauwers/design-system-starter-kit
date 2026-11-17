@@ -35,7 +35,13 @@ export default {
 
   axes: {
     state: ['closed', 'open'],
+    interaction: ['default', 'hover', 'active'],
   },
+
+  // De hover- en active-stijlen hangen aan de summary. Bij een open details
+  // valt het midden van de root in de inhoud, dus daar mikt de muis niet.
+  pseudoStates: { hover: 'hover', active: 'active' },
+  pseudoTarget: '.dsn-details__summary',
 
   // De summary en de content rekken mee met de breedte van het component. In
   // CSS doen ze dat niet (de summary is `width: fit-content`, de content heeft
