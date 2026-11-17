@@ -792,7 +792,21 @@ function domWalker([properties, hiddenClass]) {
             `data-figma-unwrap op .${child.classList[0] ?? child.tagName.toLowerCase()}, maar dat element tekent zelf iets (${drawn.join(', ')}). Weglaten zou dat uit Figma halen.`
           );
         }
-        node.children.push(...visit(child).children);
+        const unwrapped = visit(child);
+        // Een blok met één inline kind, zoals de kop van Card met de
+        // stretched link erin: het kind neemt de plek van het blok over. Een
+        // inline element is zo breed als zijn tekst, dus zonder dit verloor de
+        // kop zijn FILL en brak lange tekst in Figma niet meer af.
+        const [only] = unwrapped.children;
+        if (
+          unwrapped.children.length === 1 &&
+          only.rect &&
+          only.styles?.display === 'inline' &&
+          !childStyles.display.startsWith('inline')
+        ) {
+          only.rect = { ...unwrapped.rect };
+        }
+        node.children.push(...unwrapped.children);
         continue;
       }
       node.children.push(visit(child));

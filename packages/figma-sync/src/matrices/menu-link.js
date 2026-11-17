@@ -37,7 +37,13 @@ export default {
     level: axisValues('MenuLink', 'level'),
     state: ['default', 'current'],
     expand: ['with-expand', 'no-expand'],
+    interaction: ['default', 'hover', 'active'],
   },
+
+  // Hover en active hangen aan de link. Met een uitklapknop valt het midden
+  // van de root daar niet altijd in, dus de muis mikt op de link zelf.
+  pseudoStates: { hover: 'hover', active: 'active' },
+  pseudoTarget: '.dsn-menu-link__link',
 
   render({ level, state, expand }) {
     const classes = [

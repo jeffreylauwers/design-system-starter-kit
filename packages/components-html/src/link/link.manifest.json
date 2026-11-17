@@ -171,9 +171,9 @@
         "selector": ":active",
         "figma": [
           {
-            "kind": "none",
-            "reason": "Nog niet in de Figma-matrix van Link.",
-            "open": true
+            "kind": "variant",
+            "property": "state",
+            "value": "active"
           }
         ]
       },
