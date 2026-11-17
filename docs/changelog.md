@@ -19,7 +19,7 @@ In Figma erbij:
 - **DateInputGroup:** de velden zijn instances van TextInput (exposed, met `value` en `placeholder` per veld); ze waren lege frames. Nieuwe as `disabled`.
 - **FormField:** een as `status` met een FormFieldStatus-instance onder het veld; de variant kies je op de instance. Een as en geen boolean, omdat de varianten met beschrijving geen auto layout hebben en een verborgen laag daar lege ruimte achterliet.
 - **HeadingGroup:** `appearance` loopt nu tot en met heading-6.
-- **IconList:** een as `iconColor` (default, positive, negative, warning), ook op het item, zodat een designer de kleur per item in het slot kiest. `info` is in de tokens dezelfde kleur als de standaardkleur.
+- **IconList:** een as `iconColor` (default, positive, negative, warning) op het item, niet op de lijst: de items staan in een slot, en een designer wisselt de kleur per item. `info` is in de tokens dezelfde kleur als de standaardkleur.
 - **Link:** `state` krijgt `current` (geen onderstreping).
 - **Note:** `showIconStart` en `iconStart`.
 - **TableOfContents:** een TEXT-property `heading`.

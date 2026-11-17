@@ -9,10 +9,9 @@
  * uit "Wat wordt een as en wat wordt een property?". Daarmee heeft het item
  * geen assen, en kiest een designer per item een icoon.
  *
- * `iconColor` staat hier als as en niet alleen op de lijst. In code geldt de
- * kleur voor de hele lijst, maar in Figma staan de items in een slot: een item
- * dat een designer zelf toevoegt, kiest zijn kleur dan zelf, en de lijst zet
- * met dezelfde as alleen de standaardinhoud.
+ * `iconColor` staat hier als as, en niet op de lijst. In code geldt de kleur
+ * voor de hele lijst, maar in Figma staan de items in een slot, en wisselt een
+ * designer de kleur per item.
  *
  * Geen geneste weergave: een IconList springt niet in (`padding-inline-start:
  * 0`) en tekent geen `::marker`.
@@ -31,10 +30,10 @@ import { TEKST } from '../text.js';
  * tokens is `info` een alias van `accent-1`, en dat is ook de standaardkleur
  * van IconList, dus in elk thema hetzelfde als `default`.
  */
-export const ICON_COLORS = ['default', 'positive', 'negative', 'warning'];
+const ICON_COLORS = ['default', 'positive', 'negative', 'warning'];
 
 /** De statuskleur als inline custom property, zoals de `iconColor`-prop doet. */
-export function iconColorStyle(iconColor) {
+function iconColorStyle(iconColor) {
   return iconColor === 'default'
     ? ''
     : ` style="--dsn-icon-list-icon-color: var(--dsn-color-${iconColor}-color-default)"`;

@@ -13,7 +13,6 @@
 
 import { icon } from '../icons.js';
 import { TEKST } from '../text.js';
-import { ICON_COLORS, iconColorStyle } from './icon-list-item.js';
 import { ITEM_COUNT } from './unordered-list.js';
 
 export default {
@@ -33,13 +32,7 @@ export default {
 
   wrapperStyle: 'width: 328px;',
 
-  // Zet de kleur van de standaardinhoud; de items hebben dezelfde as, zie
-  // icon-list-item.js.
-  axes: {
-    iconColor: ICON_COLORS,
-  },
-
-  render({ iconColor }) {
+  render() {
     const items = Array.from(
       { length: ITEM_COUNT },
       () =>
@@ -49,6 +42,6 @@ export default {
          </li>`
     ).join('');
 
-    return `<ul class="dsn-icon-list" role="list"${iconColorStyle(iconColor)} data-figma-root data-figma-children="slot">${items}</ul>`;
+    return `<ul class="dsn-icon-list" role="list" data-figma-root data-figma-children="slot">${items}</ul>`;
   },
 };

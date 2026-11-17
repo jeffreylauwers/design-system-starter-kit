@@ -2584,10 +2584,8 @@
             "type": "string",
             "figma": [
               {
-                "kind": "variant",
-                "property": "iconColor",
-                "values": ["default", "positive", "negative", "warning"],
-                "reason": "Een vrije CSS-kleur in code; in Figma de statuskleuren uit de docs. default is de accentkleur, en info ontbreekt omdat dat in de tokens dezelfde kleur is (accent-1). Ook als as op het item, zodat een designer de kleur per item in het slot kiest."
+                "kind": "none",
+                "reason": "In Figma een as iconColor op het item (__item), niet op de lijst: de items staan in een slot, en een designer wisselt de kleur per item. Op het item de statuskleuren uit de docs (default, positive, negative, warning); info is in de tokens dezelfde kleur als default (accent-1)."
               }
             ]
           },
