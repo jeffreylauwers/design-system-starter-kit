@@ -25,8 +25,7 @@
         "figma": [
           {
             "kind": "none",
-            "reason": "Nog niet in de Figma-matrix van ProgressBar.",
-            "open": true
+            "reason": "Visueel verborgen; alleen voor screenreaders."
           }
         ]
       },
@@ -37,8 +36,7 @@
         "figma": [
           {
             "kind": "none",
-            "reason": "Nog niet in de Figma-matrix van ProgressBar.",
-            "open": true
+            "reason": "De vulling tekent <progress> in de shadow DOM, dus er valt niets van te meten; vulling en percentage zijn handwerk in Figma (zie de matrix)."
           }
         ]
       },
@@ -49,8 +47,7 @@
         "figma": [
           {
             "kind": "none",
-            "reason": "Nog niet in de Figma-matrix van ProgressBar.",
-            "open": true
+            "reason": "Bepaalt samen met value hoe ver de balk gevuld is; zie value."
           }
         ]
       },

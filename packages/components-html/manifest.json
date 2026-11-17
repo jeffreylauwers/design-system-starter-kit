@@ -1098,11 +1098,7 @@
             "name": "value",
             "type": "object",
             "figma": [
-              {
-                "kind": "none",
-                "reason": "Nog niet in de Figma-matrix van DateInputGroup.",
-                "open": true
-              }
+              { "kind": "text", "property": "value", "instance": "TextInput" }
             ]
           },
           {
@@ -1120,13 +1116,7 @@
             "name": "disabled",
             "type": "boolean",
             "default": false,
-            "figma": [
-              {
-                "kind": "none",
-                "reason": "Nog niet in de Figma-matrix van DateInputGroup.",
-                "open": true
-              }
-            ]
+            "figma": [{ "kind": "variant", "property": "disabled" }]
           },
           {
             "name": "id",
@@ -1303,8 +1293,7 @@
             "figma": [
               {
                 "kind": "none",
-                "reason": "Nog niet in de Figma-matrix van Drawer.",
-                "open": true
+                "reason": "Het zichtbare verschil is de verduistering erachter (::backdrop), en die komt als pseudo-element niet in Figma; zie de waarschuwing in de matrix. De rest is gedrag: focus, Escape en klikken buiten het paneel."
               }
             ]
           },
@@ -1848,9 +1837,9 @@
             "type": "ReactNode",
             "figma": [
               {
-                "kind": "none",
-                "reason": "Nog niet in de Figma-matrix van FormField.",
-                "open": true
+                "kind": "variant",
+                "property": "status",
+                "values": ["no-status", "with-status"]
               }
             ]
           },
@@ -1861,8 +1850,7 @@
             "figma": [
               {
                 "kind": "none",
-                "reason": "Nog niet in de Figma-matrix van FormField.",
-                "open": true
+                "reason": "De variant kiest een designer op de FormFieldStatus-instance onder het veld; die is exposed."
               }
             ]
           },
@@ -2323,15 +2311,7 @@
               "heading-5",
               "heading-6"
             ],
-            "figma": [
-              {
-                "kind": "variant",
-                "property": "appearance",
-                "values": ["heading-1", "heading-2", "heading-3", "heading-4"],
-                "reason": "heading-5 en heading-6 staan niet in de Figma-matrix van HeadingGroup.",
-                "open": true
-              }
-            ]
+            "figma": [{ "kind": "variant", "property": "appearance" }]
           },
           {
             "name": "preHeading",
@@ -2377,8 +2357,7 @@
                 "kind": "variant",
                 "property": "variant",
                 "values": ["default", "inverse", "image"],
-                "reason": "image-blend staat niet in de Figma-matrix van Hero.",
-                "open": true
+                "reason": "image-blend is een achtergrondkleur die met multiply over de afbeelding valt. De set heeft geen echte afbeelding; die zet een designer zelf als image fill, en de blend-modus daar ook."
               }
             ]
           },
@@ -2388,8 +2367,7 @@
             "figma": [
               {
                 "kind": "none",
-                "reason": "Nog niet in de Figma-matrix van Hero.",
-                "open": true
+                "reason": "De afbeelding zelf kiest een designer als image fill op de Hero; de set heeft geen echte afbeelding om te tonen."
               }
             ]
           },
@@ -2606,9 +2584,10 @@
             "type": "string",
             "figma": [
               {
-                "kind": "none",
-                "reason": "Nog niet in de Figma-matrix van IconList.",
-                "open": true
+                "kind": "variant",
+                "property": "iconColor",
+                "values": ["default", "positive", "negative", "warning"],
+                "reason": "Een vrije CSS-kleur in code; in Figma de statuskleuren uit de docs. default is de accentkleur, en info ontbreekt omdat dat in de tokens dezelfde kleur is (accent-1). Ook als as op het item, zodat een designer de kleur per item in het slot kiest."
               }
             ]
           },
@@ -2701,8 +2680,7 @@
             "figma": [
               {
                 "kind": "none",
-                "reason": "Nog niet in de Figma-matrix van Image.",
-                "open": true
+                "reason": "De set heeft geen echte afbeelding, alleen de verhouding en het kader. object-fit is in Figma de schaalmodus van de image fill die een designer er zelf in zet."
               }
             ]
           },
@@ -2809,11 +2787,7 @@
             "type": "boolean",
             "default": false,
             "figma": [
-              {
-                "kind": "none",
-                "reason": "Nog niet in de Figma-matrix van Link.",
-                "open": true
-              }
+              { "kind": "variant", "property": "state", "value": "current" }
             ]
           },
           {
@@ -2830,8 +2804,7 @@
             "figma": [
               {
                 "kind": "none",
-                "reason": "Nog niet in de Figma-matrix van Link.",
-                "open": true
+                "reason": "Voegt alleen de tekst ' (opent nieuw tabblad)' achter het label toe, plus target en rel. In Figma typt een designer die tekst in het label."
               }
             ]
           },
@@ -3317,8 +3290,7 @@
             "figma": [
               {
                 "kind": "none",
-                "reason": "Nog niet in de Figma-matrix van ModalDialog.",
-                "open": true
+                "reason": "Alleen role=\"alertdialog\" en aria-describedby; in de CSS staat er geen eigen stijl voor."
               }
             ]
           },
@@ -3432,17 +3404,7 @@
               }
             ]
           },
-          {
-            "name": "iconStart",
-            "type": "ReactNode",
-            "figma": [
-              {
-                "kind": "none",
-                "reason": "Nog niet in de Figma-matrix van Note.",
-                "open": true
-              }
-            ]
-          },
+          { "name": "iconStart", "type": "ReactNode", "slots": ["icon-start"] },
           {
             "name": "variantLabel",
             "type": "string",
@@ -3462,6 +3424,15 @@
             "description": "De tekst van de notitie.",
             "figma": [
               { "kind": "text", "property": "label", "instance": "Paragraph" }
+            ]
+          },
+          {
+            "name": "icon-start",
+            "element": "dsn-note__icon",
+            "description": "Het icoon vóór de kop; standaard het icoon van de variant.",
+            "figma": [
+              { "kind": "boolean", "property": "showIconStart" },
+              { "kind": "instance-swap", "property": "iconStart" }
             ]
           }
         ],
@@ -3655,8 +3626,7 @@
             "figma": [
               {
                 "kind": "none",
-                "reason": "Nog niet in de Figma-matrix van OrderedList.",
-                "open": true
+                "reason": "Het nummer is een TEXT-property number op elk item. Een instance weet niet op welke plek hij staat, dus een designer nummert de items zelf; dat geldt ook voor een ander beginnummer."
               }
             ]
           },
@@ -4438,8 +4408,7 @@
             "figma": [
               {
                 "kind": "none",
-                "reason": "Nog niet in de Figma-matrix van ProgressBar.",
-                "open": true
+                "reason": "Visueel verborgen; alleen voor screenreaders."
               }
             ]
           },
@@ -4450,8 +4419,7 @@
             "figma": [
               {
                 "kind": "none",
-                "reason": "Nog niet in de Figma-matrix van ProgressBar.",
-                "open": true
+                "reason": "De vulling tekent <progress> in de shadow DOM, dus er valt niets van te meten; vulling en percentage zijn handwerk in Figma (zie de matrix)."
               }
             ]
           },
@@ -4462,8 +4430,7 @@
             "figma": [
               {
                 "kind": "none",
-                "reason": "Nog niet in de Figma-matrix van ProgressBar.",
-                "open": true
+                "reason": "Bepaalt samen met value hoe ver de balk gevuld is; zie value."
               }
             ]
           },
@@ -4912,8 +4879,7 @@
             "figma": [
               {
                 "kind": "none",
-                "reason": "Nog niet in de Figma-matrix van Spinner.",
-                "open": true
+                "reason": "Een visueel verborgen label slaat de extractor over, en dan heeft de label-property in die variant geen laag. Wie in Figma een spinner zonder label wil, zet de tekstlaag uit (zie de matrix)."
               }
             ]
           },
@@ -5131,13 +5097,7 @@
             "name": "heading",
             "type": "string",
             "default": "Op deze pagina",
-            "figma": [
-              {
-                "kind": "none",
-                "reason": "Nog niet in de Figma-matrix van TableOfContents.",
-                "open": true
-              }
-            ]
+            "figma": [{ "kind": "text", "property": "heading" }]
           },
           {
             "name": "headingLevel",
@@ -5146,8 +5106,7 @@
             "figma": [
               {
                 "kind": "none",
-                "reason": "Nog niet in de Figma-matrix van TableOfContents.",
-                "open": true
+                "reason": "Alleen het HTML-element van de kop; het uiterlijk volgt de appearance van TableOfContents (heading-3 of heading-5)."
               }
             ]
           },
@@ -5321,8 +5280,7 @@
             "figma": [
               {
                 "kind": "none",
-                "reason": "Nog niet in de Figma-matrix van TextArea.",
-                "open": true
+                "reason": "Bepaalt alleen de hoogte. De set staat op de standaard van 4 regels, en in Figma maakt een designer het veld zelf hoger of lager."
               }
             ]
           }

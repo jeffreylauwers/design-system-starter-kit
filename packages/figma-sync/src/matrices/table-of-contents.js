@@ -33,6 +33,8 @@ export default {
     appearance: axisValues('TableOfContents', 'appearance'),
   },
 
+  componentProperties: [{ name: 'heading', type: 'TEXT', slot: 'heading' }],
+
   render({ appearance }) {
     const plain = appearance === 'plain';
 
@@ -46,7 +48,7 @@ export default {
     const item = () => `<li><a href="#" class="dsn-link">${TEKST}</a></li>`;
 
     return `<nav class="${classes}" data-figma-root>
-      <h2 class="dsn-heading dsn-heading--${plain ? 'heading-5' : 'heading-3'} dsn-table-of-contents__heading">${HEADING}</h2>
+      <h2 class="dsn-heading dsn-heading--${plain ? 'heading-5' : 'heading-3'} dsn-table-of-contents__heading" data-figma-slot="heading">${HEADING}</h2>
       <ul class="dsn-unordered-list">${item()}${item()}${item()}</ul>
     </nav>`;
   },

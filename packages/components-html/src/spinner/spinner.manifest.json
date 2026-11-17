@@ -36,8 +36,7 @@
         "figma": [
           {
             "kind": "none",
-            "reason": "Nog niet in de Figma-matrix van Spinner.",
-            "open": true
+            "reason": "Een visueel verborgen label slaat de extractor over, en dan heeft de label-property in die variant geen laag. Wie in Figma een spinner zonder label wil, zet de tekstlaag uit (zie de matrix)."
           }
         ]
       },

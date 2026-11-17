@@ -60,6 +60,25 @@ export default {
     heading: ['with-heading', 'no-heading'],
   },
 
+  // Het icoon staat standaard aan, met het icoon van de variant. In code kan
+  // het weg (`iconStart={null}`): de gridkolom blijft dan ook in de browser
+  // staan, dus een verborgen laag is hetzelfde. Een eigen icoon kiest een
+  // designer via `iconStart`.
+  componentProperties: [
+    {
+      name: 'showIconStart',
+      type: 'BOOLEAN',
+      slot: 'icon-start',
+      default: true,
+    },
+    {
+      name: 'iconStart',
+      type: 'INSTANCE_SWAP',
+      slot: 'icon-start',
+      default: 'info-circle',
+    },
+  ],
+
   render({ variant, heading }) {
     const classes = [
       'dsn-note',
@@ -80,7 +99,7 @@ export default {
 
     return `<div class="${classes}" data-figma-root>
       <span class="dsn-note__icon" aria-hidden="true">
-        ${icon(ICON_NAMES[variant], { modifier: 'xl' })}
+        ${icon(ICON_NAMES[variant], { modifier: 'xl', slot: 'icon-start' })}
       </span>
       ${headingMarkup}
       <div class="dsn-note__content">

@@ -10,6 +10,22 @@ All notable changes to this project are documented in this file.
 
 Nog niet gepubliceerde wijzigingen. Schrijf nieuwe changelog-entries hieronder; bij de volgende release wordt deze kop gepromoveerd naar het definitieve versienummer.
 
+### figma-sync: de kleine open punten tussen manifest en Figma
+
+22 open punten uit #497 zijn opgelost; alleen File en PageHeader staan nog open.
+
+In Figma erbij:
+
+- **DateInputGroup:** de velden zijn instances van TextInput (exposed, met `value` en `placeholder` per veld); ze waren lege frames. Nieuwe as `disabled`.
+- **FormField:** een as `status` met een FormFieldStatus-instance onder het veld; de variant kies je op de instance. Een as en geen boolean, omdat de varianten met beschrijving geen auto layout hebben en een verborgen laag daar lege ruimte achterliet.
+- **HeadingGroup:** `appearance` loopt nu tot en met heading-6.
+- **IconList:** een as `iconColor` (default, positive, negative, warning), ook op het item, zodat een designer de kleur per item in het slot kiest. `info` is in de tokens dezelfde kleur als de standaardkleur.
+- **Link:** `state` krijgt `current` (geen onderstreping).
+- **Note:** `showIconStart` en `iconStart`.
+- **TableOfContents:** een TEXT-property `heading`.
+
+Bewust niet in Figma, met de reden in de manifest: Drawer `modal`, FormField `statusVariant` (op de instance), Hero `image-blend` en `backgroundImage`, Image `objectFit`, Link `external`, ModalDialog `alert`, OrderedList `start`, ProgressBar `label`, `value` en `max`, Spinner `hideLabel`, TableOfContents `headingLevel` en TextArea `rows`.
+
 ### figma-sync: Link staat in Figma weer onderstreept
 
 De rustvarianten van Link hadden in Figma geen onderstreping. `text-decoration` erft niet: de lijn staat op de `<a>`, en de extractor las de `<span>` met het label, die zelf `none` heeft. De extractor neemt de lijn nu over van de voorouder waar de browser hem vandaan haalt. Alleen de drie rustvarianten van Link veranderen; de andere 59 sets zijn ongewijzigd.

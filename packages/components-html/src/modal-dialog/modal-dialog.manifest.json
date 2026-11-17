@@ -45,8 +45,7 @@
         "figma": [
           {
             "kind": "none",
-            "reason": "Nog niet in de Figma-matrix van ModalDialog.",
-            "open": true
+            "reason": "Alleen role=\"alertdialog\" en aria-describedby; in de CSS staat er geen eigen stijl voor."
           }
         ]
       },

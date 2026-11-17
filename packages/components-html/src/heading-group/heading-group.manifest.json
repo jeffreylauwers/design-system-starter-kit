@@ -52,10 +52,7 @@
         "figma": [
           {
             "kind": "variant",
-            "property": "appearance",
-            "values": ["heading-1", "heading-2", "heading-3", "heading-4"],
-            "reason": "heading-5 en heading-6 staan niet in de Figma-matrix van HeadingGroup.",
-            "open": true
+            "property": "appearance"
           }
         ]
       },

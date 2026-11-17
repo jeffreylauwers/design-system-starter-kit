@@ -41,8 +41,7 @@
         "figma": [
           {
             "kind": "none",
-            "reason": "Nog niet in de Figma-matrix van Drawer.",
-            "open": true
+            "reason": "Het zichtbare verschil is de verduistering erachter (::backdrop), en die komt als pseudo-element niet in Figma; zie de waarschuwing in de matrix. De rest is gedrag: focus, Escape en klikken buiten het paneel."
           }
         ]
       },

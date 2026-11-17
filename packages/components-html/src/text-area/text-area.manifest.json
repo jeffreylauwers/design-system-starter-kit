@@ -101,8 +101,7 @@
         "figma": [
           {
             "kind": "none",
-            "reason": "Nog niet in de Figma-matrix van TextArea.",
-            "open": true
+            "reason": "Bepaalt alleen de hoogte. De set staat op de standaard van 4 regels, en in Figma maakt een designer het veld zelf hoger of lager."
           }
         ]
       }

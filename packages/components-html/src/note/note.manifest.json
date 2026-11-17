@@ -65,13 +65,7 @@
       {
         "name": "iconStart",
         "type": "ReactNode",
-        "figma": [
-          {
-            "kind": "none",
-            "reason": "Nog niet in de Figma-matrix van Note.",
-            "open": true
-          }
-        ]
+        "slots": ["icon-start"]
       },
       {
         "name": "variantLabel",
@@ -99,6 +93,21 @@
             "kind": "text",
             "property": "label",
             "instance": "Paragraph"
+          }
+        ]
+      },
+      {
+        "name": "icon-start",
+        "element": "dsn-note__icon",
+        "description": "Het icoon vóór de kop; standaard het icoon van de variant.",
+        "figma": [
+          {
+            "kind": "boolean",
+            "property": "showIconStart"
+          },
+          {
+            "kind": "instance-swap",
+            "property": "iconStart"
           }
         ]
       }

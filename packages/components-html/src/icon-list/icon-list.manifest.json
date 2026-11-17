@@ -29,9 +29,10 @@
         "type": "string",
         "figma": [
           {
-            "kind": "none",
-            "reason": "Nog niet in de Figma-matrix van IconList.",
-            "open": true
+            "kind": "variant",
+            "property": "iconColor",
+            "values": ["default", "positive", "negative", "warning"],
+            "reason": "Een vrije CSS-kleur in code; in Figma de statuskleuren uit de docs. default is de accentkleur, en info ontbreekt omdat dat in de tokens dezelfde kleur is (accent-1). Ook als as op het item, zodat een designer de kleur per item in het slot kiest."
           }
         ]
       },

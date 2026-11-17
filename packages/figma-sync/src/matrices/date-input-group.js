@@ -5,8 +5,11 @@
  * De buitenste flexrij lijnt uit op `flex-end`, zodat de velden op één lijn
  * staan ook als een label over twee regels loopt.
  *
- * De velden hierin zijn gemeten lagen en geen instances van de TextInput-set;
- * zie issue #369.
+ * De velden zijn instances van de TextInput-set, exposed: per veld staan
+ * `showValue`, `showPlaceholder`, `value` en `placeholder` in het paneel. De
+ * matrix toont ze ingevuld. De breedte kiest geen variant (een vaste breedte
+ * is ook een override), dus `inlineSize` staat er met `data-figma-variant`
+ * bij.
  */
 
 /** Zoals in DateInputGroup.tsx: dag en maand krijgen `xs`, het jaar `sm`. */
@@ -16,7 +19,8 @@ const FIELDS = [
   { label: 'Jaar', inlineSize: 'sm', value: '2026' },
 ];
 
-import { FLAG } from '../flags.js';
+import { FLAG, skipFlagCombinations } from '../flags.js';
+import { fieldTextAttributes } from '../field-text.js';
 
 export default {
   component: 'DateInputGroup',
@@ -34,18 +38,25 @@ export default {
 
   wrapperStyle: 'width: 328px;',
 
+  instances: true,
+
   axes: {
+    disabled: FLAG,
     invalid: FLAG,
   },
 
-  render({ invalid: isInvalid }) {
+  // Een veld is niet tegelijk uitgeschakeld en ongeldig, net als bij TextInput.
+  skipVariant: skipFlagCombinations({ flags: ['disabled', 'invalid'] }),
+
+  render({ disabled: isDisabled, invalid: isInvalid }) {
     const invalid = isInvalid === 'true' ? ' aria-invalid="true"' : '';
+    const disabled = isDisabled === 'true' ? ' disabled' : '';
 
     const fields = FIELDS.map(
       ({ label, inlineSize, value }) =>
         `<div class="dsn-date-input-group__field">
            <label class="dsn-date-input-group__label">${label}</label>
-           <input type="text" inputmode="numeric" class="dsn-text-input dsn-text-input--inline-size-${inlineSize}" value="${value}"${invalid}>
+           <input type="text" inputmode="numeric" class="dsn-text-input dsn-text-input--inline-size-${inlineSize}" data-figma-variant="inlineSize=${inlineSize}"${fieldTextAttributes({ showValue: 'true' }, { value })}${disabled}${invalid}>
          </div>`
     ).join('');
 

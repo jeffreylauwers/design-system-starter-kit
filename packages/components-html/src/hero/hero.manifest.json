@@ -27,8 +27,7 @@
             "kind": "variant",
             "property": "variant",
             "values": ["default", "inverse", "image"],
-            "reason": "image-blend staat niet in de Figma-matrix van Hero.",
-            "open": true
+            "reason": "image-blend is een achtergrondkleur die met multiply over de afbeelding valt. De set heeft geen echte afbeelding; die zet een designer zelf als image fill, en de blend-modus daar ook."
           }
         ]
       },
@@ -38,8 +37,7 @@
         "figma": [
           {
             "kind": "none",
-            "reason": "Nog niet in de Figma-matrix van Hero.",
-            "open": true
+            "reason": "De afbeelding zelf kiest een designer als image fill op de Hero; de set heeft geen echte afbeelding om te tonen."
           }
         ]
       },
