@@ -34,11 +34,16 @@ export default {
   // los component. Zie "Een matrix zonder assen" in de README.
   hugRoot: true,
 
-  componentProperties: [{ name: 'label', type: 'TEXT', slot: 'label' }],
+  // `showIcon` zet alleen de icoonlaag aan of uit; zonder icoon is er ook
+  // geen gap, dus er verandert geen token. Daarom een property en geen as.
+  componentProperties: [
+    { name: 'label', type: 'TEXT', slot: 'label' },
+    { name: 'showIcon', type: 'BOOLEAN', slot: 'icon', default: true },
+  ],
 
   render() {
     return `<p class="dsn-form-field-error-message" data-figma-root>
-      ${icon('exclamation-circle')}
+      ${icon('exclamation-circle', { slot: 'icon' })}
       <span data-figma-slot="label">${TEKST}</span>
     </p>`;
   },
