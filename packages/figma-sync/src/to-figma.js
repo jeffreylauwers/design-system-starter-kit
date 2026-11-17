@@ -1537,6 +1537,37 @@ function targetRootSlot(target) {
  * krijgt een vaste, gebonden breedte. Hetzelfde resultaat bij elke viewport,
  * zonder een track te hoeven binden.
  */
+/**
+ * Een instance op FILL in een ouder die op HUG staat, krijgt zijn eigen breedte.
+ *
+ * Het veld in DateInputGroup vult in de browser zijn kolom, maar de kolom is
+ * zo breed als het veld: de breedte komt van het veld (`inline-size-xs`), niet
+ * van de kolom. Gemeten is dat niet te onderscheiden, dus kwam de instance op
+ * FILL, en in een HUG-ouder rekent Figma dan niet met de breedte van het
+ * component. Daar stonden de velden op de verkeerde breedte, tot een designer
+ * "reset size" koos. Een vaste breedte gelijk aan de gemeten breedte is
+ * precies wat die reset doet.
+ *
+ * Alleen in de breedte en alleen voor instances: een tekstlaag op FILL breekt
+ * af op de breedte die de andere kinderen geven, en dat is wat hij moet doen.
+ */
+function fixInstancesInHuggingParents(node) {
+  if (node.type === 'INSTANCE') return;
+  for (const child of node.children ?? []) {
+    if (
+      node.layoutSizingHorizontal === 'HUG' &&
+      node.layoutMode &&
+      node.layoutMode !== 'NONE' &&
+      child.type === 'INSTANCE' &&
+      child.layoutSizingHorizontal === 'FILL' &&
+      child.layoutPositioning !== 'ABSOLUTE'
+    ) {
+      child.layoutSizingHorizontal = 'FIXED';
+    }
+    fixInstancesInHuggingParents(child);
+  }
+}
+
 function hugTracksOfSizedItems(node) {
   const tracks = node.layoutMode === 'GRID' ? node.gridColumnSizes : null;
   for (const child of node.children ?? []) {
@@ -2286,6 +2317,7 @@ export function toComponentSet(
         node.boundVariables = bindVariables(node, tree.tokens, bindings);
       }
       hugTracksOfSizedItems(node);
+      fixInstancesInHuggingParents(node);
       sizeFromTokens(node);
       dropUnfixedSizeBindings(node);
       checkSlotDepth(node, pathLabel);
