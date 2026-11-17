@@ -20,8 +20,7 @@
         "figma": [
           {
             "kind": "none",
-            "reason": "PopoverMenu heeft geen Figma-matrix, en staat ook niet in de lijst van bewust overgeslagen componenten.",
-            "open": true
+            "reason": "Altijd open in Figma: open en dicht is gedrag."
           }
         ]
       },
@@ -53,8 +52,7 @@
         "figma": [
           {
             "kind": "none",
-            "reason": "Nog niet in de Figma-matrix van PopoverMenu.",
-            "open": true
+            "reason": "De plek ten opzichte van de trigger. In Figma is de set alleen het paneel, en zet een designer dat zelf op zijn plek."
           }
         ]
       },
@@ -65,7 +63,7 @@
         "figma": [
           {
             "kind": "none",
-            "reason": "Nog niet in de Figma-matrix van PopoverMenu.",
+            "reason": "Gaat door naar Menu (dsn-menu--icon-start), en volgt daarom het open punt iconStart bij Menu.",
             "open": true
           }
         ]
@@ -73,16 +71,22 @@
       {
         "name": "children",
         "type": "ReactNode",
+        "slots": ["items"]
+      }
+    ],
+    "slots": [
+      {
+        "name": "items",
+        "element": "dsn-menu",
+        "description": "De lijst met MenuButtons of MenuLinks.",
         "figma": [
           {
-            "kind": "none",
-            "reason": "Nog niet in de Figma-matrix van PopoverMenu.",
-            "open": true
+            "kind": "slot",
+            "property": "items"
           }
         ]
       }
     ],
-    "slots": [],
     "states": []
   }
 }

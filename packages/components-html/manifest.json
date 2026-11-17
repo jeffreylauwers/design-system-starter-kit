@@ -4320,8 +4320,7 @@
             "figma": [
               {
                 "kind": "none",
-                "reason": "Nog niet in de Figma-matrix van Popover.",
-                "open": true
+                "reason": "De plek ten opzichte van de trigger. In Figma is de set alleen het paneel, en zet een designer dat zelf op zijn plek."
               }
             ]
           },
@@ -4412,8 +4411,7 @@
             "figma": [
               {
                 "kind": "none",
-                "reason": "PopoverMenu heeft geen Figma-matrix, en staat ook niet in de lijst van bewust overgeslagen componenten.",
-                "open": true
+                "reason": "Altijd open in Figma: open en dicht is gedrag."
               }
             ]
           },
@@ -4435,8 +4433,7 @@
             "figma": [
               {
                 "kind": "none",
-                "reason": "Nog niet in de Figma-matrix van PopoverMenu.",
-                "open": true
+                "reason": "De plek ten opzichte van de trigger. In Figma is de set alleen het paneel, en zet een designer dat zelf op zijn plek."
               }
             ]
           },
@@ -4447,24 +4444,21 @@
             "figma": [
               {
                 "kind": "none",
-                "reason": "Nog niet in de Figma-matrix van PopoverMenu.",
+                "reason": "Gaat door naar Menu (dsn-menu--icon-start), en volgt daarom het open punt iconStart bij Menu.",
                 "open": true
               }
             ]
           },
+          { "name": "children", "type": "ReactNode", "slots": ["items"] }
+        ],
+        "slots": [
           {
-            "name": "children",
-            "type": "ReactNode",
-            "figma": [
-              {
-                "kind": "none",
-                "reason": "Nog niet in de Figma-matrix van PopoverMenu.",
-                "open": true
-              }
-            ]
+            "name": "items",
+            "element": "dsn-menu",
+            "description": "De lijst met MenuButtons of MenuLinks.",
+            "figma": [{ "kind": "slot", "property": "items" }]
           }
         ],
-        "slots": [],
         "states": []
       }
     },
@@ -5130,15 +5124,7 @@
             "name": "caption",
             "type": "string",
             "required": true,
-            "figma": [
-              {
-                "kind": "variant",
-                "property": "caption",
-                "values": ["with-caption", "no-caption"],
-                "reason": "In React is caption verplicht, maar de Figma-matrix heeft ook een variant zonder.",
-                "open": true
-              }
-            ]
+            "figma": [{ "kind": "text", "property": "caption" }]
           },
           {
             "name": "captionId",
@@ -5157,8 +5143,7 @@
             "figma": [
               {
                 "kind": "none",
-                "reason": "Nog niet in de Figma-matrix van Table.",
-                "open": true
+                "reason": "De scrollschaduwen hangen af van de scrollpositie, en die bestaat in een statisch Figma-component niet. Breedte en afknippen regelt een designer met het frame eromheen."
               }
             ]
           },
