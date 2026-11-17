@@ -24,11 +24,8 @@
         "required": true,
         "figma": [
           {
-            "kind": "variant",
-            "property": "caption",
-            "values": ["with-caption", "no-caption"],
-            "reason": "In React is caption verplicht, maar de Figma-matrix heeft ook een variant zonder.",
-            "open": true
+            "kind": "text",
+            "property": "caption"
           }
         ]
       },
@@ -49,8 +46,7 @@
         "figma": [
           {
             "kind": "none",
-            "reason": "Nog niet in de Figma-matrix van Table.",
-            "open": true
+            "reason": "De scrollschaduwen hangen af van de scrollpositie, en die bestaat in een statisch Figma-component niet. Breedte en afknippen regelt een designer met het frame eromheen."
           }
         ]
       },
