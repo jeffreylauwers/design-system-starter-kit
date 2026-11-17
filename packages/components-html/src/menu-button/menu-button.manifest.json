@@ -20,13 +20,7 @@
       {
         "name": "dotBadge",
         "type": "ReactNode",
-        "figma": [
-          {
-            "kind": "none",
-            "reason": "Nog niet in de Figma-matrix van MenuButton.",
-            "open": true
-          }
-        ]
+        "slots": ["dot-badge"]
       },
       {
         "name": "type",
@@ -85,6 +79,17 @@
           {
             "kind": "instance-swap",
             "property": "iconEnd"
+          }
+        ]
+      },
+      {
+        "name": "dot-badge",
+        "element": "dsn-dot-badge",
+        "description": "Een DotBadge in de hoek van de knop.",
+        "figma": [
+          {
+            "kind": "boolean",
+            "property": "showDotBadge"
           }
         ]
       }

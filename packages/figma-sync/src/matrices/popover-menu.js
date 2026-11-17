@@ -23,7 +23,8 @@ export default {
   component: 'PopoverMenu',
 
   // De items zijn instances van de MenuButton-set, in dezelfde opbouw als
-  // die set, zodat ze geen overrides nodig hebben.
+  // die set (ook met de DotBadge, die daar standaard uit staat), zodat ze
+  // geen overrides nodig hebben.
   instances: true,
 
   fonts: [
@@ -35,6 +36,7 @@ export default {
     '@dsn-starter-kit/components-html/src/icon/icon.css',
     '@dsn-starter-kit/components-html/src/button/button.css',
     '@dsn-starter-kit/components-html/src/menu-link/menu-link.css',
+    '@dsn-starter-kit/components-html/src/dot-badge/dot-badge.css',
     '@dsn-starter-kit/components-html/src/menu-button/menu-button.css',
     '@dsn-starter-kit/components-html/src/menu/menu.css',
     '@dsn-starter-kit/components-html/src/popover-menu/popover-menu.css',
@@ -54,6 +56,7 @@ export default {
          <button type="button" class="dsn-menu-button__button">
            ${icon('settings', { slot: 'icon-start' })}
            <span class="dsn-menu-button__label" data-figma-slot="label">${TEKST}</span>
+           <span class="dsn-dot-badge dsn-dot-badge--negative" aria-hidden="true" data-figma-slot="dot-badge"></span>
            ${icon('chevron-right', { slot: 'icon-end' })}
          </button>
        </li>`;

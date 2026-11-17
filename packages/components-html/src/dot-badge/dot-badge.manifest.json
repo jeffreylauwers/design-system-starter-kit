@@ -37,8 +37,7 @@
         "figma": [
           {
             "kind": "none",
-            "reason": "Nog niet in de Figma-matrix van DotBadge.",
-            "open": true
+            "reason": "Een animatie die na 4,5 seconden stopt en eindigt op de stand zonder pulse. In een statisch component is er niets van te zien."
           }
         ]
       }

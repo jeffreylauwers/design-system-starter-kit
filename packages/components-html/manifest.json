@@ -1260,8 +1260,7 @@
             "figma": [
               {
                 "kind": "none",
-                "reason": "Nog niet in de Figma-matrix van DotBadge.",
-                "open": true
+                "reason": "Een animatie die na 4,5 seconden stopt en eindigt op de stand zonder pulse. In een statisch component is er niets van te zien."
               }
             ]
           }
@@ -3031,13 +3030,7 @@
             "name": "iconStart",
             "type": "boolean",
             "default": false,
-            "figma": [
-              {
-                "kind": "none",
-                "reason": "Nog niet in de Figma-matrix van Menu.",
-                "open": true
-              }
-            ]
+            "figma": [{ "kind": "variant", "property": "iconStart" }]
           },
           {
             "name": "children",
@@ -3073,17 +3066,7 @@
         "props": [
           { "name": "iconStart", "type": "ReactNode", "slots": ["icon-start"] },
           { "name": "iconEnd", "type": "ReactNode", "slots": ["icon-end"] },
-          {
-            "name": "dotBadge",
-            "type": "ReactNode",
-            "figma": [
-              {
-                "kind": "none",
-                "reason": "Nog niet in de Figma-matrix van MenuButton.",
-                "open": true
-              }
-            ]
-          },
+          { "name": "dotBadge", "type": "ReactNode", "slots": ["dot-badge"] },
           {
             "name": "type",
             "type": "string",
@@ -3122,6 +3105,12 @@
               { "kind": "boolean", "property": "showIconEnd" },
               { "kind": "instance-swap", "property": "iconEnd" }
             ]
+          },
+          {
+            "name": "dot-badge",
+            "element": "dsn-dot-badge",
+            "description": "Een DotBadge in de hoek van de knop.",
+            "figma": [{ "kind": "boolean", "property": "showDotBadge" }]
           }
         ],
         "states": [
@@ -4391,8 +4380,7 @@
             "figma": [
               {
                 "kind": "none",
-                "reason": "Gaat door naar Menu (dsn-menu--icon-start), en volgt daarom het open punt iconStart bij Menu.",
-                "open": true
+                "reason": "De items staan in een slot, en de inspringing hoort bij het MenuLink-item zelf. Een as op het paneel heeft daar in Figma geen invloed op. Bij Menu staat iconStart wel als as."
               }
             ]
           },

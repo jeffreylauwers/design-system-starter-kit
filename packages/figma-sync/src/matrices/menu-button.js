@@ -21,6 +21,17 @@ import { TEKST } from '../text.js';
 export default {
   component: 'MenuButton',
 
+  // De DotBadge is een instance van zijn eigen set; de variant kiest een
+  // designer daar. Hij staat direct in de knop, zoals in menu-button.css:
+  // hij is absoluut gepositioneerd ten opzichte van de knop. React zet hem in
+  // het label, maar dat label is geen positioneringscontext, dus het beeld is
+  // hetzelfde.
+  instances: true,
+
+  // De dot hangt met `inset-inline-end` en `inset-block-start` in de
+  // rechterbovenhoek van de knop, en blijft daar als de knop breder wordt.
+  absoluteConstraints: { 'dot-badge': { horizontal: 'MAX', vertical: 'MIN' } },
+
   fonts: [
     'https://fonts.googleapis.com/css2?family=Fira+Sans:wght@400;700&display=swap',
   ],
@@ -28,6 +39,7 @@ export default {
   css: [
     '@dsn-starter-kit/design-tokens/dist/css/start-light-default.css',
     '@dsn-starter-kit/components-html/src/icon/icon.css',
+    '@dsn-starter-kit/components-html/src/dot-badge/dot-badge.css',
     '@dsn-starter-kit/components-html/src/menu-button/menu-button.css',
   ],
 
@@ -59,6 +71,12 @@ export default {
       default: 'settings',
     },
     {
+      name: 'showDotBadge',
+      type: 'BOOLEAN',
+      slot: 'dot-badge',
+      default: false,
+    },
+    {
       name: 'showIconEnd',
       type: 'BOOLEAN',
       slot: 'icon-end',
@@ -77,6 +95,7 @@ export default {
       <button type="button" class="dsn-menu-button__button">
         ${icon('settings', { slot: 'icon-start' })}
         <span class="dsn-menu-button__label" data-figma-slot="label">${TEKST}</span>
+        <span class="dsn-dot-badge dsn-dot-badge--negative" aria-hidden="true" data-figma-slot="dot-badge"></span>
         ${icon('chevron-right', { slot: 'icon-end' })}
       </button>
     </li>`;
