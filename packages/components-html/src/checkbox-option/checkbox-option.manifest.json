@@ -41,9 +41,8 @@
         "default": false,
         "figma": [
           {
-            "kind": "none",
-            "reason": "Nog niet in de Figma-matrix van CheckboxOption.",
-            "open": true
+            "kind": "variant",
+            "property": "invalid"
           }
         ]
       },
@@ -53,9 +52,9 @@
         "default": false,
         "figma": [
           {
-            "kind": "none",
-            "reason": "Nog niet in de Figma-matrix van CheckboxOption.",
-            "open": true
+            "kind": "variant",
+            "property": "state",
+            "value": "indeterminate"
           }
         ]
       },
