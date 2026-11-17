@@ -858,13 +858,7 @@
             "name": "invalid",
             "type": "boolean",
             "default": false,
-            "figma": [
-              {
-                "kind": "none",
-                "reason": "Nog niet in de Figma-matrix van CheckboxOption.",
-                "open": true
-              }
-            ]
+            "figma": [{ "kind": "variant", "property": "invalid" }]
           },
           {
             "name": "indeterminate",
@@ -872,9 +866,9 @@
             "default": false,
             "figma": [
               {
-                "kind": "none",
-                "reason": "Nog niet in de Figma-matrix van CheckboxOption.",
-                "open": true
+                "kind": "variant",
+                "property": "state",
+                "value": "indeterminate"
               }
             ]
           },
@@ -1953,13 +1947,7 @@
             "name": "showIcon",
             "type": "boolean",
             "default": true,
-            "figma": [
-              {
-                "kind": "none",
-                "reason": "Nog niet in de Figma-matrix van FormFieldErrorMessage.",
-                "open": true
-              }
-            ]
+            "figma": [{ "kind": "boolean", "property": "showIcon" }]
           },
           { "name": "children", "type": "ReactNode", "slots": ["label"] }
         ],
@@ -2176,13 +2164,7 @@
             "name": "showIcon",
             "type": "boolean",
             "default": true,
-            "figma": [
-              {
-                "kind": "none",
-                "reason": "Nog niet in de Figma-matrix van FormFieldStatus.",
-                "open": true
-              }
-            ]
+            "figma": [{ "kind": "boolean", "property": "showIcon" }]
           },
           {
             "name": "live",
@@ -4677,13 +4659,7 @@
             "name": "invalid",
             "type": "boolean",
             "default": false,
-            "figma": [
-              {
-                "kind": "none",
-                "reason": "Nog niet in de Figma-matrix van RadioOption.",
-                "open": true
-              }
-            ]
+            "figma": [{ "kind": "variant", "property": "invalid" }]
           },
           {
             "name": "checked",

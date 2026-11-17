@@ -24,6 +24,18 @@ Bestaande varianten zijn laag voor laag gelijk aan hun nieuwe `default`-tegenhan
 
 `data-figma-unwrap` op een blok met precies één inline kind geeft dat kind nu de plek en breedte van het blok. Zonder die regel verloor de kop van Card zijn FILL zodra er een `<a>` in stond.
 
+### figma-sync: formulieropties en meldingen compleet in Figma
+
+Vijf van de open punten uit #497 staan nu in de Figma-matrix, met hun binding in de manifest:
+
+- **CheckboxOption:** `state` krijgt `indeterminate` en er komt een as `invalid`, dezelfde assen als Checkbox. 8 naar 15 varianten.
+- **RadioOption:** een as `invalid`, net als Radio. 8 naar 10 varianten.
+- **FormFieldErrorMessage en FormFieldStatus:** een BOOLEAN-property `showIcon` (standaard aan) op de icoonlaag. Bij FormFieldStatus is hij `optional`, want `default` heeft geen icoon.
+
+Bestaande varianten van CheckboxOption en RadioOption gaan bij een herimport over in de variant met `invalid=false`; geplaatste instances blijven hangen. CheckboxGroup en RadioGroup wijzen daardoor naar de nieuwe variantnamen en moeten na de optie-sets opnieuw geïmporteerd worden.
+
+Gevonden drift: de `positive`-variant van FormFieldStatus had in Figma het icoon `circle-check`, terwijl React, Storybook en de CSS `check` gebruiken. Figma toont nu ook `check`.
+
 ### figma-sync: alle enum-assen uit de manifest
 
 Elke as in een Figma-matrix die een enum-prop is, leest zijn waarden nu met `axisValues` uit de manifest: 31 assen in 27 matrices, waar dat eerst alleen bij Button en de vier velden met `inlineSize` zo was. `axisValues` geeft ook de waarden terug zoals Figma ze spelt (`values` op de binding, zoals `16-9` voor `16:9`), en zet getallen om naar tekst (`level` van Heading). `tests/manifest-figma.test.ts` faalt als een matrix een enum-as toch overtypt.
