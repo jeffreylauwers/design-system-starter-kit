@@ -10,6 +10,17 @@ All notable changes to this project are documented in this file.
 
 Nog niet gepubliceerde wijzigingen. Schrijf nieuwe changelog-entries hieronder; bij de volgende release wordt deze kop gepromoveerd naar het definitieve versienummer.
 
+### figma-sync: MenuLink compleet in Figma
+
+Vijf open punten uit #497 zijn opgelost, allemaal bij MenuLink:
+
+- **`level`:** de as loopt nu tot en met 4, zoals in code.
+- **`iconStart` en `iconEnd`:** `showIconStart`, `iconStart`, `showIconEnd` en `iconEnd`, net als MenuButton. Standaard uit.
+- **`numberBadge`:** een NumberBadge-instance achter het label, met `showNumberBadge` (standaard uit). Variant en getal kiest een designer op de instance.
+- **`expanded`:** een as `expanded`, alleen bij `expand=with-expand` en `interaction=default`. In code draait de chevron 180 graden; een draaiing gaat in een geneste instance niet als override mee, dus de matrix rendert `chevron-up`.
+
+36 naar 56 varianten. De labeltekst staat nu op HUG in plaats van FILL: er staan lagen achter, en in de CSS heeft het label bewust geen `flex: 1`, zodat badge en icoon direct achter de tekst staan.
+
 ### figma-sync: Table-caption gelijk aan React, PopoverMenu krijgt een set
 
 Zes open punten uit #497 zijn opgelost:

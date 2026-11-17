@@ -3180,15 +3180,7 @@
             "name": "level",
             "values": [1, 2, 3, 4],
             "default": 1,
-            "figma": [
-              {
-                "kind": "variant",
-                "property": "level",
-                "values": ["1", "2", "3"],
-                "reason": "Level 4 staat niet in de Figma-matrix van MenuLink.",
-                "open": true
-              }
-            ]
+            "figma": [{ "kind": "variant", "property": "level" }]
           },
           {
             "name": "current",
@@ -3198,38 +3190,12 @@
               { "kind": "variant", "property": "state", "value": "current" }
             ]
           },
-          {
-            "name": "iconStart",
-            "type": "ReactNode",
-            "figma": [
-              {
-                "kind": "none",
-                "reason": "Nog niet in de Figma-matrix van MenuLink.",
-                "open": true
-              }
-            ]
-          },
-          {
-            "name": "iconEnd",
-            "type": "ReactNode",
-            "figma": [
-              {
-                "kind": "none",
-                "reason": "Nog niet in de Figma-matrix van MenuLink.",
-                "open": true
-              }
-            ]
-          },
+          { "name": "iconStart", "type": "ReactNode", "slots": ["icon-start"] },
+          { "name": "iconEnd", "type": "ReactNode", "slots": ["icon-end"] },
           {
             "name": "numberBadge",
             "type": "ReactNode",
-            "figma": [
-              {
-                "kind": "none",
-                "reason": "Nog niet in de Figma-matrix van MenuLink.",
-                "open": true
-              }
-            ]
+            "slots": ["number-badge"]
           },
           {
             "name": "subItems",
@@ -3247,13 +3213,7 @@
             "name": "expanded",
             "type": "boolean",
             "default": false,
-            "figma": [
-              {
-                "kind": "none",
-                "reason": "Nog niet in de Figma-matrix van MenuLink.",
-                "open": true
-              }
-            ]
+            "figma": [{ "kind": "variant", "property": "expanded" }]
           },
           {
             "name": "onExpandToggle",
@@ -3272,6 +3232,30 @@
                 "kind": "none",
                 "reason": "Geen property: de inhoud pas je in een instance aan op de lagen zelf."
               }
+            ]
+          },
+          {
+            "name": "icon-start",
+            "element": "dsn-icon",
+            "description": "Icoon vóór het label.",
+            "figma": [
+              { "kind": "boolean", "property": "showIconStart" },
+              { "kind": "instance-swap", "property": "iconStart" }
+            ]
+          },
+          {
+            "name": "number-badge",
+            "element": "dsn-number-badge",
+            "description": "Een NumberBadge achter het label.",
+            "figma": [{ "kind": "boolean", "property": "showNumberBadge" }]
+          },
+          {
+            "name": "icon-end",
+            "element": "dsn-icon",
+            "description": "Icoon achter het label.",
+            "figma": [
+              { "kind": "boolean", "property": "showIconEnd" },
+              { "kind": "instance-swap", "property": "iconEnd" }
             ]
           }
         ],
