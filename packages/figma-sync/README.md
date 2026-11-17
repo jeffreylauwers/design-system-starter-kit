@@ -938,6 +938,12 @@ overrides zijn tijdens het meten al geverifieerd, dus de eigenschap uit
 DR-2026-06 blijft staan: een misrekening kan een binding missen, maar geen
 verkeerde leggen.
 
+Een draaiing is geen override. Draait de CSS een laag binnen een geneste
+instance, zoals de chevron van de uitklapknop in MenuLink bij
+`aria-expanded="true"`, dan staat die laag in de instance recht. MenuLink
+rendert bij `expanded=true` daarom `chevron-up`, via de instance swap `icon`
+van de Button.
+
 De maat en de plek van de instance komen uit de host. Staat een Heading in de
 host op FILL, dan krijgt zijn tekstlaag ook een FILL-override, anders breekt
 de tekst niet af.
