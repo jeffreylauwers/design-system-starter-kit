@@ -63,8 +63,7 @@
         "figma": [
           {
             "kind": "none",
-            "reason": "Gaat door naar Menu (dsn-menu--icon-start), en volgt daarom het open punt iconStart bij Menu.",
-            "open": true
+            "reason": "De items staan in een slot, en de inspringing hoort bij het MenuLink-item zelf. Een as op het paneel heeft daar in Figma geen invloed op. Bij Menu staat iconStart wel als as."
           }
         ]
       },

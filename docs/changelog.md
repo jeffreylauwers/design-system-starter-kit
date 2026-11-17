@@ -10,6 +10,17 @@ All notable changes to this project are documented in this file.
 
 Nog niet gepubliceerde wijzigingen. Schrijf nieuwe changelog-entries hieronder; bij de volgende release wordt deze kop gepromoveerd naar het definitieve versienummer.
 
+### figma-sync: iconen en badges in Menu, MenuButton en DotBadge
+
+Vier open punten uit #497 zijn opgelost:
+
+- **Menu `iconStart`:** een as `iconStart`, alleen in de verticale stand (een horizontaal Menu heeft geen levels). De verticale stand heeft nu een level-2-item, zodat te zien is wat `iconStart` doet: het springt in met de breedte van een icoon plus de gap. 2 naar 3 varianten.
+- **PopoverMenu `iconStart`:** bewust niet in Figma. De items staan in een slot, en de inspringing hoort bij het MenuLink-item zelf.
+- **MenuButton `dotBadge`:** een DotBadge-instance in de rechterbovenhoek, met `showDotBadge` (standaard uit).
+- **DotBadge `pulse`:** bewust niet in Figma. Het is een animatie die na 4,5 seconden stopt en eindigt op de stand zonder pulse.
+
+Nieuw in figma-sync: `absoluteConstraints` in een matrix geeft een absolute laag met een `data-figma-slot` zijn constraints, zodat de dot van MenuButton in de hoek blijft als een designer de knop breder maakt. De items van PopoverMenu renderen de dot ook, anders verschilt hun opbouw van de MenuButton-set.
+
 ### figma-sync: Table-caption gelijk aan React, PopoverMenu krijgt een set
 
 Zes open punten uit #497 zijn opgelost:

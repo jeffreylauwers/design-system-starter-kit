@@ -1533,6 +1533,11 @@ constraints staan in de matrix en niet in de meting: de browser geeft
 rand of in het midden hangt. De tekst blijft dan het laatste kind in de rij
 en hugt; de padding aan de rechterkant is die van het veld.
 
+Voor een absolute laag buiten zo'n veld is er `absoluteConstraints`, per
+`data-figma-slot`: `{ 'dot-badge': { horizontal: 'MAX', vertical: 'MIN' } }`
+houdt de DotBadge van MenuButton in de rechterbovenhoek als een designer de
+knop breder maakt. Staat het slot niet absoluut, dan stopt de build.
+
 De set heet in die gevallen naar het component en niet naar de wrapper-div:
 `setName: 'dsn-select'` in plaats van `dsn-select-wrapper`.
 

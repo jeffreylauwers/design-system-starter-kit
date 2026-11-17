@@ -1737,6 +1737,36 @@ function checkComponentProperties(declared, components, warnings) {
  * DateInput), zodat die rechts uitlijnt. Staat de versiering ervoor
  * (SearchInput), dan hugt de tekst, net als in een gewoon tekstveld.
  */
+/**
+ * Geeft absolute lagen met een `data-figma-slot` hun constraints.
+ *
+ * Zonder constraints hangt een absolute laag in Figma links bovenaan: de dot
+ * in de hoek van MenuButton bleef zo op zijn gemeten plek staan als een
+ * designer de knop breder maakte. Net als bij `absoluteAdornments` staan de
+ * constraints in de matrix en niet in de meting: de browser geeft insets terug
+ * als pixels, en daaraan is niet te zien aan welke rand de laag hangt.
+ *
+ * @param {object} node de root van een variant
+ * @param {Record<string, {horizontal: string, vertical: string}>} bySlot
+ */
+function pinAbsoluteSlots(node, bySlot, label) {
+  const visit = (current) => {
+    const constraints = current.componentSlot
+      ? bySlot[current.componentSlot]
+      : undefined;
+    if (constraints) {
+      if (current.layoutPositioning !== 'ABSOLUTE') {
+        throw new Error(
+          `${label}: absoluteConstraints noemt het slot "${current.componentSlot}", maar die laag is niet absoluut gepositioneerd`
+        );
+      }
+      current.constraints = constraints;
+    }
+    if (current.type !== 'INSTANCE') current.children?.forEach(visit);
+  };
+  visit(node);
+}
+
 function mergeAdornments(root, tree, warnings, label, pinned) {
   const domChildren = tree.children ?? [];
   const outOfFlow = (node) =>
@@ -2234,6 +2264,11 @@ export function toComponentSet(
           pathLabel,
           matrix.absoluteAdornments
         );
+      }
+      // Absolute lagen die aan een rand van hun ouder blijven hangen, zie
+      // `pinAbsoluteSlots`.
+      if (matrix.absoluteConstraints) {
+        pinAbsoluteSlots(node, matrix.absoluteConstraints, pathLabel);
       }
       // Een blok dat in Figma met zijn eigen inhoud moet meegroeien, zie
       // `hugRootWidth`.
