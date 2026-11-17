@@ -103,11 +103,8 @@
         "figma": [
           {
             "kind": "boolean",
-            "property": "showIconStart"
-          },
-          {
-            "kind": "instance-swap",
-            "property": "iconStart"
+            "property": "showIconStart",
+            "reason": "Alleen aan of uit, geen instance swap: die heeft één standaardwaarde voor de hele set en zette in Figma elke variant op hetzelfde icoon. Elke variant houdt zijn eigen icoon, zoals bij Alert; een ander icoon wisselt een designer op de laag zelf."
           }
         ]
       }

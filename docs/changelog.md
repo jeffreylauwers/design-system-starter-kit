@@ -21,7 +21,7 @@ In Figma erbij:
 - **HeadingGroup:** `appearance` loopt nu tot en met heading-6.
 - **IconList:** een as `iconColor` (default, positive, negative, warning) op het item, niet op de lijst: de items staan in een slot, en een designer wisselt de kleur per item. `info` is in de tokens dezelfde kleur als de standaardkleur.
 - **Link:** `state` krijgt `current` (geen onderstreping).
-- **Note:** `showIconStart` en `iconStart`.
+- **Note:** `showIconStart`. Geen instance swap `iconStart`: die heeft in Figma één standaardwaarde voor de hele set en zette elke variant op hetzelfde icoon. Elke variant houdt zijn eigen icoon, zoals bij Alert.
 - **TableOfContents:** een TEXT-property `heading`.
 
 Bewust niet in Figma, met de reden in de manifest: Drawer `modal`, FormField `statusVariant` (op de instance), Hero `image-blend` en `backgroundImage`, Image `objectFit`, Link `external`, ModalDialog `alert`, OrderedList `start`, ProgressBar `label`, `value` en `max`, Spinner `hideLabel`, TableOfContents `headingLevel` en TextArea `rows`.

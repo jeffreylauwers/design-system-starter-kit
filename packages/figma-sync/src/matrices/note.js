@@ -62,20 +62,16 @@ export default {
 
   // Het icoon staat standaard aan, met het icoon van de variant. In code kan
   // het weg (`iconStart={null}`): de gridkolom blijft dan ook in de browser
-  // staan, dus een verborgen laag is hetzelfde. Een eigen icoon kiest een
-  // designer via `iconStart`.
+  // staan (anders dan bij Alert, dat `--no-icon` heeft), dus een verborgen
+  // laag is hetzelfde. Geen INSTANCE_SWAP-property: die heeft één
+  // standaardwaarde voor de hele set, en zette in Figma elke variant op
+  // hetzelfde icoon. Een eigen icoon wisselt een designer op de laag zelf.
   componentProperties: [
     {
       name: 'showIconStart',
       type: 'BOOLEAN',
       slot: 'icon-start',
       default: true,
-    },
-    {
-      name: 'iconStart',
-      type: 'INSTANCE_SWAP',
-      slot: 'icon-start',
-      default: 'info-circle',
     },
   ],
 
