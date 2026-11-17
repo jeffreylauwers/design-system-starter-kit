@@ -10,6 +10,10 @@ All notable changes to this project are documented in this file.
 
 Nog niet gepubliceerde wijzigingen. Schrijf nieuwe changelog-entries hieronder; bij de volgende release wordt deze kop gepromoveerd naar het definitieve versienummer.
 
+### figma-sync: Link staat in Figma weer onderstreept
+
+De rustvarianten van Link hadden in Figma geen onderstreping. `text-decoration` erft niet: de lijn staat op de `<a>`, en de extractor las de `<span>` met het label, die zelf `none` heeft. De extractor neemt de lijn nu over van de voorouder waar de browser hem vandaan haalt. Alleen de drie rustvarianten van Link veranderen; de andere 59 sets zijn ongewijzigd.
+
 ### figma-sync: iconen en badges in Menu, MenuButton en DotBadge
 
 Vier open punten uit #497 zijn opgelost:
