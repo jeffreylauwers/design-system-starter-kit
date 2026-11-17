@@ -13,7 +13,7 @@ import { TEKST } from '../text.js';
 import { axisValues } from '../manifest.js';
 
 const ICON_NAMES = {
-  positive: 'circle-check',
+  positive: 'check',
   warning: 'alert-triangle',
 };
 
@@ -36,7 +36,18 @@ export default {
     variant: axisValues('FormFieldStatus', 'variant'),
   },
 
-  componentProperties: [{ name: 'label', type: 'TEXT', slot: 'label' }],
+  // `showIcon` zet alleen de icoonlaag aan of uit, dus een property en geen
+  // as. `default` heeft geen icoon, vandaar `optional`.
+  componentProperties: [
+    { name: 'label', type: 'TEXT', slot: 'label' },
+    {
+      name: 'showIcon',
+      type: 'BOOLEAN',
+      slot: 'icon',
+      default: true,
+      optional: true,
+    },
+  ],
 
   render({ variant }) {
     const classes = [
@@ -46,7 +57,9 @@ export default {
       .filter(Boolean)
       .join(' ');
 
-    const iconMarkup = ICON_NAMES[variant] ? icon(ICON_NAMES[variant]) : '';
+    const iconMarkup = ICON_NAMES[variant]
+      ? icon(ICON_NAMES[variant], { slot: 'icon' })
+      : '';
 
     return `<p class="${classes}" data-figma-root>
       ${iconMarkup}

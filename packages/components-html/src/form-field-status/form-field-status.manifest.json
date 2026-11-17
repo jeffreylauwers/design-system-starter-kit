@@ -30,9 +30,8 @@
         "default": true,
         "figma": [
           {
-            "kind": "none",
-            "reason": "Nog niet in de Figma-matrix van FormFieldStatus.",
-            "open": true
+            "kind": "boolean",
+            "property": "showIcon"
           }
         ]
       },

@@ -38,13 +38,16 @@ export default {
   wrapperStyle: 'width: 328px;',
 
   axes: {
-    state: ['unchecked', 'checked'],
+    state: ['unchecked', 'checked', 'indeterminate'],
     interaction: ['default', 'hover', 'active'],
     disabled: FLAG,
+    invalid: FLAG,
   },
 
+  // Dezelfde assen en weglatingen als Checkbox: `invalid` heeft net als
+  // `disabled` geen eigen hover- of active-stijl.
   skipVariant: skipFlagCombinations({
-    flags: ['disabled'],
+    flags: ['disabled', 'invalid'],
     base: { interaction: 'default' },
   }),
 
@@ -54,11 +57,27 @@ export default {
   // het midden van de root valt in de tekst en raakt de input niet.
   pseudoTarget: '.dsn-checkbox__input',
 
+  // `:indeterminate` is een DOM-property; zie de matrix van Checkbox.
+  domSetup: `
+    for (const input of document.querySelectorAll('input[data-indeterminate]')) {
+      input.indeterminate = true;
+    }
+  `,
+
   hugRoot: true,
 
-  render({ state, disabled: isDisabled }) {
+  render({ state, disabled: isDisabled, invalid }) {
     const checked = state === 'checked' ? ' checked' : '';
     const disabled = isDisabled === 'true' ? ' disabled' : '';
+    const indeterminate =
+      state === 'indeterminate' ? ' data-indeterminate' : '';
+    const inputClasses = [
+      'dsn-checkbox__input',
+      invalid === 'true' && 'dsn-checkbox__input--invalid',
+    ]
+      .filter(Boolean)
+      .join(' ');
+    const iconName = state === 'indeterminate' ? 'minus' : 'check';
     const labelClasses = [
       'dsn-option-label',
       isDisabled === 'true' && 'dsn-option-label--disabled',
@@ -68,9 +87,9 @@ export default {
 
     return `<label class="dsn-checkbox-option" data-figma-root>
       <span class="dsn-checkbox">
-        <input type="checkbox" class="dsn-checkbox__input"${checked}${disabled}>
+        <input type="checkbox" class="${inputClasses}"${checked}${disabled}${indeterminate}>
         <span class="dsn-checkbox__control" aria-hidden="true">
-          ${icon('check', { className: 'dsn-checkbox__icon' })}
+          ${icon(iconName, { className: 'dsn-checkbox__icon' })}
         </span>
       </span>
       <span class="${labelClasses}">${TEKST}</span>
