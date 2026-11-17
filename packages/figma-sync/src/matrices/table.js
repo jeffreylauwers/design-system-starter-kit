@@ -42,15 +42,15 @@ export default {
   wrapperStyle: 'width: 328px;',
 
   axes: {
-    caption: ['with-caption', 'no-caption'],
     sort: ['unsorted', 'ascending'],
   },
 
-  render({ caption, sort }) {
-    const captionMarkup =
-      caption === 'with-caption'
-        ? `<caption class="dsn-table__caption">${TEKST}</caption>`
-        : '';
+  // De caption is in code verplicht en altijd zichtbaar, dus hij staat in
+  // elke variant. De tekst is een property, geen as.
+  componentProperties: [{ name: 'caption', type: 'TEXT', slot: 'caption' }],
+
+  render({ sort }) {
+    const captionMarkup = `<caption class="dsn-table__caption" data-figma-slot="caption">${TEKST}</caption>`;
 
     // Alle drie de iconen staan in de knop; de CSS kiest op `aria-sort` welke
     // er zichtbaar is. Dat is ook waarom `sort` een as is en geen property: de

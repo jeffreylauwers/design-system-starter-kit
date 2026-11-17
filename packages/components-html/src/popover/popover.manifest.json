@@ -46,8 +46,7 @@
         "figma": [
           {
             "kind": "none",
-            "reason": "Nog niet in de Figma-matrix van Popover.",
-            "open": true
+            "reason": "De plek ten opzichte van de trigger. In Figma is de set alleen het paneel, en zet een designer dat zelf op zijn plek."
           }
         ]
       },

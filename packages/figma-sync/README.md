@@ -1720,6 +1720,13 @@ trigger 0x0, met de popover er absoluut aan, buiten beeld. Een designer zet
 hem zelf op zijn plek. De set heet daardoor `dsn-popover`: een nieuwe set in
 Figma, naast de oude `dsn-popover-wrapper`.
 
+PopoverMenu volgt dezelfde regel: de root is het paneel, en `placement`
+(boven, onder, begin of eind van de trigger) is daardoor geen as. Het paneel
+heeft één slot, `items`: de lijst zelf, een kind van de root. Die lijst is
+bewust geen Menu-instance (`data-figma-instance="none"`). De Menu-set bestaat
+uit MenuLinks, en in het slot van een instance kan een designer niets kwijt.
+De standaardinhoud is drie MenuButton-instances.
+
 In de footer van Popover staan de knoppen op de standaardmaat, de
 standaardinhoud van ActionGroup. In code zijn ze daar vaak `small`, maar een
 andere maat is een andere opbouw dan de ActionGroup-set, en dan kan hij geen

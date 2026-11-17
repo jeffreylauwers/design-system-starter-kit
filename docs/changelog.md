@@ -10,6 +10,17 @@ All notable changes to this project are documented in this file.
 
 Nog niet gepubliceerde wijzigingen. Schrijf nieuwe changelog-entries hieronder; bij de volgende release wordt deze kop gepromoveerd naar het definitieve versienummer.
 
+### figma-sync: Table-caption gelijk aan React, PopoverMenu krijgt een set
+
+Zes open punten uit #497 zijn opgelost:
+
+- **Table `caption`:** de as `caption` (`with-caption`, `no-caption`) is weg. De caption staat in elke variant, met een TEXT-property `caption`, net als in React waar hij verplicht is. 4 naar 2 varianten. Bij een herimport gaan de varianten met caption over in de nieuwe; de twee zonder caption blijven in Figma staan en ruimt een designer zelf op.
+- **Table `scrollable`:** bewust niet in Figma. De scrollschaduwen hangen af van de scrollpositie, en die bestaat in een statisch component niet.
+- **PopoverMenu:** een nieuwe set `dsn-popover-menu`: het paneel met een slot `items` en drie MenuButton-instances als standaardinhoud. `isOpen` staat niet in Figma (altijd open, zoals Popover), `children` vult het slot.
+- **`placement` bij Popover en PopoverMenu:** bewust niet in Figma. De set is alleen het paneel, en een designer zet dat zelf op zijn plek.
+
+`iconStart` van PopoverMenu blijft open: hij gaat door naar Menu en volgt het open punt `iconStart` daar.
+
 ### figma-sync: hover en active bij Card, Details, Link en MenuLink
 
 Negen open punten uit #497 zijn opgelost:
