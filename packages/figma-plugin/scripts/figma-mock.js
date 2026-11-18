@@ -165,10 +165,19 @@ class Node {
     this.y = 0;
     this.layoutMode = 'NONE';
     this.fills = [];
+    this._pluginData = new Map();
     // Zoals in Figma: een nieuw grid heeft FLEX-tracks, dus wie ze niet zet
     // krijgt gelijke kolommen.
     this.gridColumnSizes = [];
     this.gridRowSizes = [];
+  }
+  // Zoals in Figma: tekst die een plugin op een laag bewaart, per sleutel.
+  setPluginData(key, value) {
+    this._pluginData.set(key, String(value));
+  }
+
+  getPluginData(key) {
+    return this._pluginData.get(key) ?? '';
   }
 
   set name(value) {

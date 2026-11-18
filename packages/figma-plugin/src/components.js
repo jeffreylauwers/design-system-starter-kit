@@ -474,6 +474,9 @@ function buildIcon(spec, parent, context) {
   return node;
 }
 
+/** Waar de SVG van een vector zonder icoon onthouden wordt; zie `buildShapes`. */
+const SVG_KEY = 'dsn-svg';
+
 /**
  * Een SVG die geen icoon is, zoals de cirkels van Spinner of de vlakken van
  * Logo.
@@ -489,8 +492,13 @@ function buildIcon(spec, parent, context) {
  * welke vorm is, en blijft het bij wat de SVG zelf meegaf.
  */
 function buildShapes(spec, parent, context) {
-  const node = figma.createNodeFromSvg(spec.svg);
-  parent.appendChild(node);
+  // De vector van de vorige import, als die dezelfde SVG had; zie
+  // `resetVariant`.
+  const reused = context.reusableSvg;
+  context.reusableSvg = null;
+  const node = reused ?? figma.createNodeFromSvg(spec.svg);
+  if (node.parent !== parent) parent.appendChild(node);
+  node.setPluginData?.(SVG_KEY, spec.svg);
   node.name = spec.name ?? 'vector';
   if (spec.width && spec.height) node.resize(spec.width, spec.height);
 
@@ -952,9 +960,14 @@ function clearBoundVariables(node) {
  * Anders houdt een variant een rand, een radius of een gap uit de vorige
  * import die in de nieuwe spec niet meer voorkomt.
  */
-async function resetVariant(component, context, { keepText = false } = {}) {
+async function resetVariant(
+  component,
+  context,
+  { keepText = false, keepSvg = null } = {}
+) {
   context.reusable = new Map();
   context.reusableText = null;
+  context.reusableSvg = null;
 
   // Een slot blijft staan; zie `buildContentSlot`. Ook een slot dieper in de
   // variant, zoals de navigatie van PageHeader: dat wordt eerst naar de
@@ -998,6 +1011,17 @@ async function resetVariant(component, context, { keepText = false } = {}) {
     }
   }
 
+  // Hetzelfde voor een component dat tot één SVG inklapt die geen icoon is
+  // (Logo): een instance in PageHeader heeft overrides op die vector en zijn
+  // vormen (de maat, de kleuren in inverse). Alleen als de SVG niet
+  // veranderd is; anders kloppen de vormen niet meer met de spec.
+  if (keepSvg) {
+    const svg = component.children.find(
+      (child) => child.getPluginData?.(SVG_KEY) === keepSvg
+    );
+    if (svg) context.reusableSvg = svg;
+  }
+
   // Ook de instances die dieper zitten, in een frame binnen de variant: een
   // Paragraph in de content van een Alert, een icoon in de control van een
   // Checkbox. Ze worden naar de variant zelf verhangen voordat de rest weggaat,
@@ -1037,7 +1061,9 @@ async function resetVariant(component, context, { keepText = false } = {}) {
 
   for (const child of [...component.children]) {
     if (pooled.has(child) || keptSlots.has(child)) continue;
-    if (child !== context.reusableText) child.remove();
+    if (child !== context.reusableText && child !== context.reusableSvg) {
+      child.remove();
+    }
   }
 
   clearBoundVariables(component);
@@ -1797,6 +1823,10 @@ export async function importComponentSet(payload, log, options = {}) {
     if (known) {
       await resetVariant(wrapper, context, {
         keepText: component.node.type === 'TEXT',
+        keepSvg:
+          component.node.type === 'VECTOR' && component.node.shapes
+            ? component.node.svg
+            : null,
       });
       updated += 1;
     } else {
@@ -1805,6 +1835,7 @@ export async function importComponentSet(payload, log, options = {}) {
       // variant in deze belanden.
       context.reusable = new Map();
       context.reusableText = null;
+      context.reusableSvg = null;
       context.reusableSlots = new Map();
       context.pooled = new Set();
       context.keptSlots = new Set();

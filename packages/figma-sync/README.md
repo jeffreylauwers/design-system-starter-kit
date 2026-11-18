@@ -1021,6 +1021,24 @@ de `inlineSize`-variant, en stond het veld pas goed na "reset size". Staat een H
 host op FILL, dan krijgt zijn tekstlaag ook een FILL-override, anders breekt
 de tekst niet af.
 
+Een icoon of een SVG die geen icoon is (het logo) draagt zijn kleur niet op
+de laag zelf maar op de vormen erin. Een andere kleur in de host gaat daarom
+op die vormen: bij een icoon kleurt de plugin de vectoren in de
+icoon-instance (`icon: true` op de override), bij het logo krijgt elke vorm
+een override op `[0, i]`, zoals het Logo in een inverse PageHeader. Zodat
+die overrides een nieuwe import van `logo.json` overleven, houdt de plugin de
+vector van het logo zolang zijn SVG niet verandert (`resetVariant`, net als
+de tekstlaag van een Heading).
+
+Een geneste instance moet in de host dezelfde overrides hebben als in de
+doelvariant, anders is het een andere opbouw. Maten die aan een token hangen
+tellen daarbij niet: op een andere viewport geeft een fluid token een andere
+waarde, maar het blijft hetzelfde token. Zo is de NumberBadge in een MenuLink
+van PageHeader op 1440px dezelfde als in de MenuLink-set. Een kleur telt wel.
+Een geneste instance die in de host verborgen staat (de NumberBadge die in
+een MenuLink uit staat) krijgt geen maat als override: die is gemeten terwijl
+hij weggeknipt was.
+
 Een instance van een set met eigen component properties is **exposed**: de
 `label` van de Heading staat dan in het paneel van de HeadingGroup. De host
 declareert die properties dus niet opnieuw.

@@ -183,6 +183,33 @@ function withoutSizing(overrides) {
     .filter((override) => Object.keys(override).length > 1);
 }
 
+/**
+ * Overrides zonder de maten die aan een token hangen.
+ *
+ * Een geneste instance die op een andere viewport gemeten is (de NumberBadge
+ * in een MenuLink van PageHeader op 1440px) krijgt van de fluid tokens een
+ * andere padding en lettergrootte dan in de set, die op de smalle viewport
+ * gemeten is. Dat is hetzelfde token in een andere mode, geen andere opbouw.
+ * Een kleur telt wel: daar is een andere binding een ander uiterlijk.
+ */
+function withoutTokenSizes(overrides) {
+  const KEEP = new Set(['fills', 'strokes', 'effects']);
+  return overrides
+    .map((override) => {
+      const rest = { ...override };
+      const bindings = { ...(override.boundVariables ?? {}) };
+      for (const field of Object.keys(bindings)) {
+        if (KEEP.has(field)) continue;
+        delete rest[field];
+        delete bindings[field];
+      }
+      if (Object.keys(bindings).length) rest.boundVariables = bindings;
+      else delete rest.boundVariables;
+      return rest;
+    })
+    .filter((override) => Object.keys(override).length > 1);
+}
+
 /** Tekstinhoud telt niet mee voor de keuze van een variant, wel als override. */
 const CONTENT_FIELDS = new Set(['characters']);
 
@@ -232,7 +259,10 @@ function structuralDifference(measured, target, label, swaps = new Map()) {
       return `${label}: instance van ${measured.component} (${measured.variant}) tegenover ${target.component} (${target.variant})`;
     }
     if (
-      !same(withoutSizing(measured.overrides), withoutSizing(target.overrides))
+      !same(
+        withoutTokenSizes(withoutSizing(measured.overrides)),
+        withoutTokenSizes(withoutSizing(target.overrides))
+      )
     ) {
       return `${label}: geneste instance met andere overrides`;
     }
@@ -340,7 +370,28 @@ function collectDifferences(
   // al gelijk bevonden (zie `structuralDifference`); wat aan sizing verschilt
   // gaat als override op de laag binnen die instance, met het pad erdoorheen.
   if (measured.type === 'INSTANCE') {
-    collectSizingDifferences(measured, target, nodePath, into);
+    // Een verborgen geneste instance (de NumberBadge die in een MenuLink uit
+    // staat) is gemeten terwijl hij weggeknipt was. Zijn maat zegt niets; als
+    // override zou hij de badge 1px maken zodra een designer hem aanzet.
+    if (measured.visible !== false) {
+      collectSizingDifferences(measured, target, nodePath, into);
+    }
+    return into;
+  }
+
+  // Een SVG die geen icoon is (het logo) draagt zijn kleuren per vorm. In
+  // Figma is elke vorm een laag in de vector; een andere kleur daar, zoals
+  // het logo in een inverse PageHeader, is een override op die laag.
+  if (measured.shapes && target.shapes?.length === measured.shapes.length) {
+    measured.shapes.forEach((shape, index) =>
+      collectDifferences(
+        shape,
+        target.shapes[index],
+        [...nodePath, index],
+        into,
+        tally
+      )
+    );
     return into;
   }
 
@@ -635,6 +686,9 @@ export function toInstance(measured, node, target, label) {
   for (const field of PLACEMENT_FIELDS) {
     if (measured[field] !== undefined) instance[field] = measured[field];
   }
+  // Visueel verborgen in de host, zoals de NumberBadge die in een MenuLink
+  // uit staat; zie `collectDifferences`.
+  if (measured.visible === false) instance.visible = false;
 
   // De sizing van de instance komt uit de host. Een component dat tot tekst
   // inklapt heeft er zelf geen (een tekstlaag hugt), en staat in de host dan

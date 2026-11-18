@@ -29,9 +29,11 @@
  * sluitknop. Alleen op small en in de compact-layout; de large-layout heeft
  * het zoekveld altijd in de balk.
  *
- * De knoppen zijn Button-instances en de zoekvelden SearchInput-instances,
- * exposed, zodat een designer de labels en de placeholder op de instance
- * aanpast. Het logo en de twee navigaties zijn slots (zie `LOGO` en `menu`).
+ * Net als in React zijn de onderdelen componenten: het logo een Logo, de
+ * navigatie-items MenuLinks, de knoppen Buttons en de zoekvelden SearchInputs,
+ * allemaal instances. De knoppen en zoekvelden zijn exposed, zodat een
+ * designer de labels en de placeholder op de instance aanpast. Het logo en de
+ * twee navigaties staan in slots (zie `LOGO` en `menu`).
  */
 
 import { icon } from '../icons.js';
@@ -44,7 +46,7 @@ import { fieldTextAttributes } from '../field-text.js';
  * er het logo van zijn eigen organisatie in, zoals `logoSlot` in React.
  */
 const LOGO = `<div class="dsn-page-header__logo" data-figma-children="logo">
-  ${logo()}
+  ${logo('data-figma-instance="dsn-logo"')}
 </div>`;
 
 /** De items van de hoofdnavigatie; dezelfde als in de Storybook-template. */
@@ -59,30 +61,6 @@ const PRIMARY_ITEMS = [
 const SECONDARY_ITEMS = [{ label: 'English' }, { label: 'Mijn omgeving' }];
 
 /**
- * Een navigatie als slot (`primary-navigation`, `secondary-navigation`): een
- * designer voegt er items aan toe of haalt ze weg, zoals met
- * `primaryNavigation` en `secondaryNavigation` in React.
- *
- * De items zijn gemeten lagen en geen MenuLink-instances: de horizontale
- * items wijken in opbouw af van de MenuLink-set (geen icoon- en
- * expand-lagen). Een item erbij is in Figma een bestaand item dupliceren.
- */
-const menu = (
-  items,
-  slot
-) => `<ul class="dsn-menu dsn-menu--horizontal" data-figma-instance="none" data-figma-children="${slot}">
-  ${items
-    .map(
-      (item) => `<li class="dsn-menu-link" data-figma-instance="none">
-      <a class="dsn-menu-link__link" href="/"${item.current ? ' aria-current="page"' : ''}>
-        <span class="dsn-menu-link__label">${item.label}</span>
-      </a>
-    </li>`
-    )
-    .join('\n  ')}
-</ul>`;
-
-/**
  * Een icoon dat in de Button-set een laag is maar hier niet getoond wordt. De
  * set heeft een icoon vooraan en achteraan; een instance moet die lagen ook
  * hebben. In de browser nemen ze zo geen ruimte in, in Figma staan ze uit.
@@ -92,6 +70,36 @@ const hiddenIcon = (name, slot) =>
     '<svg ',
     '<svg style="position: absolute; clip-path: inset(50%);" '
   );
+
+/**
+ * Een navigatie als slot (`primary-navigation`, `secondary-navigation`): een
+ * designer voegt er items aan toe of haalt ze weg, zoals met
+ * `primaryNavigation` en `secondaryNavigation` in React.
+ *
+ * De items zijn MenuLink-instances, zoals `<MenuLink>` in React. Het icoon
+ * vooraan, de badge en het icoon achteraan staan in de set uit; hier staan ze
+ * visueel verborgen in de markup. In een horizontaal menu staat de indicator
+ * onderaan in plaats van links: dat gaat als override mee.
+ */
+const menu = (
+  items,
+  slot
+) => `<ul class="dsn-menu dsn-menu--horizontal" data-figma-instance="none" data-figma-children="${slot}">
+  ${items
+    .map(
+      (
+        item
+      ) => `<li class="dsn-menu-link" data-figma-variant="level=1,state=${item.current ? 'current' : 'default'},expand=no-expand,interaction=default,expanded=false">
+      <a class="dsn-menu-link__link" href="/"${item.current ? ' aria-current="page"' : ''}>
+        ${hiddenIcon('settings', 'icon-start')}
+        <span class="dsn-menu-link__label">${item.label}</span>
+        <span class="dsn-number-badge dsn-number-badge--negative" aria-hidden="true" data-figma-slot="number-badge" style="position: absolute; clip-path: inset(50%);"><span data-figma-slot="label">5</span></span>
+        ${hiddenIcon('chevron-right', 'icon-end')}
+      </a>
+    </li>`
+    )
+    .join('\n  ')}
+</ul>`;
 
 /**
  * Een knop als instance van de Button-set, met het icoon vooraan aan.
@@ -153,6 +161,7 @@ export default {
     '@dsn-starter-kit/components-html/src/button/button.css',
     '@dsn-starter-kit/components-html/src/logo/logo.css',
     '@dsn-starter-kit/components-html/src/menu/menu.css',
+    '@dsn-starter-kit/components-html/src/number-badge/number-badge.css',
     '@dsn-starter-kit/components-html/src/menu-link/menu-link.css',
     '@dsn-starter-kit/components-html/src/text-input/text-input.css',
     '@dsn-starter-kit/components-html/src/search-input/search-input.css',
