@@ -542,6 +542,37 @@ function chooseVariant(measured, target, explicit, label) {
  * stil de eerste. Een `<h2>` wordt `level=2`; de meting kiest dan alleen nog
  * de appearance. Wijst `data-figma-variant` die as zelf aan, dan wint dat.
  */
+/**
+ * Booleans die de matrix op een instance zet met `data-figma-properties`:
+ * `showIconStart=true`. Een icoon wisselen volgt uit de meting (zie
+ * `collectSwaps`), maar of een laag aan of uit staat niet: een zichtbare
+ * chevron in de host kan net zo goed de standaardopbouw van de set zijn. Daarom
+ * expliciet, net als `data-figma-variant`.
+ */
+function explicitProperties(node, target, label) {
+  if (!node.instanceProperties) return {};
+  const declared = new Map(
+    (target.properties ?? []).map((property) => [property.name, property])
+  );
+  const result = {};
+  for (const part of node.instanceProperties.split(',')) {
+    const [name, value] = part.split('=').map((piece) => piece.trim());
+    const property = declared.get(name);
+    if (!property || property.type !== 'BOOLEAN') {
+      throw new Error(
+        `${label}: data-figma-properties noemt "${name}", maar ${target.name} heeft geen BOOLEAN-property met die naam`
+      );
+    }
+    if (value !== 'true' && value !== 'false') {
+      throw new Error(
+        `${label}: data-figma-properties "${name}=${value}" is geen true of false`
+      );
+    }
+    result[name] = value === 'true';
+  }
+  return result;
+}
+
 function variantHint(node, target, label) {
   const explicit = node.instanceVariant;
   const rule = target.variantFromTag;
@@ -644,7 +675,11 @@ export function toInstance(measured, node, target, label) {
   }
 
   if (overrides.length) instance.overrides = overrides;
-  if (Object.keys(properties ?? {}).length) instance.properties = properties;
+  const all = {
+    ...properties,
+    ...explicitProperties(node, target, label),
+  };
+  if (Object.keys(all).length) instance.properties = all;
   // Een instance van een component met eigen properties wordt "exposed": dan
   // staan de label en de opties van de Heading gewoon in het paneel van de
   // HeadingGroup, zonder dat de host ze opnieuw hoeft te declareren.

@@ -15,7 +15,9 @@ Nog niet gepubliceerde wijzigingen. Schrijf nieuwe changelog-entries hieronder; 
 De File-set is opnieuw opgebouwd, en de 15 open punten van File uit #497 zijn opgelost. De oude set toonde een leeg media-vlak, een vinkje en een verwijderknop tegelijk, en kende geen loading, uploaded of klikbare rij.
 
 - **Assen:** `status` (default, loading, uploaded, error), `actions` (none, delete, view, download) en `state` (hover en active, alleen bij view). Alleen de combinaties die React rendert: 10 varianten. De oude as `variant` heet nu `status`, en `actions` heeft andere waarden. Geplaatste instances moet een designer na de herimport nalopen.
-- **Properties:** `fileName`, `meta` (type en grootte als één tekst), `deleteLabel`, `ctaLabel`, `mediaIcon` (file-description of photo) en `showPreview` (een preview-laag waar een designer een image fill in zet). De foutmelding is een FormFieldErrorMessage-instance.
+- **Properties:** `fileName`, `meta` (type en grootte als één tekst), `mediaIcon` (file-description of photo) en `showPreview` (een preview-laag waar een designer een image fill in zet).
+- **Instances:** de verwijder- en de downloadknop zijn Link-instances met het icoon vooraan aan (`deleteLabel` en `ctaLabel` zijn hun label), de foutmelding is een FormFieldErrorMessage-instance.
+- **Nieuw in figma-sync:** `data-figma-properties="showIconStart=true"` zet een BOOLEAN-property op een geneste instance; de plugin zet hem met `setProperties`.
 - **Bewust niet:** `loadingLabel`, `uploadedLabel` en `errorLabel` (visueel verborgen), en `ctaVariant` (zit in de as `actions`).
 
 ### figma-sync: de kleine open punten tussen manifest en Figma

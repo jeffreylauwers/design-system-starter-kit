@@ -1502,7 +1502,7 @@
             "name": "deleteLabel",
             "type": "string",
             "default": "Verwijder",
-            "figma": [{ "kind": "text", "property": "deleteLabel" }]
+            "slots": ["action-label"]
           },
           {
             "name": "ctaVariant",
@@ -1515,11 +1515,7 @@
               }
             ]
           },
-          {
-            "name": "ctaLabel",
-            "type": "string",
-            "figma": [{ "kind": "text", "property": "ctaLabel" }]
-          },
+          { "name": "ctaLabel", "type": "string", "slots": ["action-label"] },
           {
             "name": "mediaType",
             "values": ["document", "image"],
@@ -1593,6 +1589,14 @@
                 "values": ["none", "delete", "view", "download"],
                 "reason": "In React volgen de acties uit onDelete (delete), href (view) en ctaVariant=download (download)."
               }
+            ]
+          },
+          {
+            "name": "action-label",
+            "element": "dsn-link",
+            "description": "Het label van de knop in de actie-kolom: verwijderen (deleteLabel) of downloaden (ctaLabel). In Figma de label van de Link-instance.",
+            "figma": [
+              { "kind": "text", "property": "label", "instance": "Link" }
             ]
           }
         ],

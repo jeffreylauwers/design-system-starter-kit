@@ -23,11 +23,11 @@
  * zodra er een beeld in staat. Dat is een keuze voor Figma, geen nagebootste
  * CSS: daarom staat de positionering inline in de matrix.
  *
- * De naam, de knoppen, de Spinner en de foutmelding: de naam en de knoppen
- * dragen `dsn-link`, maar hebben een andere opbouw dan de Link-set, en de
- * Spinner heeft hier geen zichtbaar label. Die blijven gemeten lagen
- * (`data-figma-instance="none"`). De foutmelding is wel een instance van
- * FormFieldErrorMessage.
+ * De knoppen in de actie-kolom zijn instances van de Link-set (zie
+ * `linkInstance`), de foutmelding een instance van FormFieldErrorMessage. De
+ * naam draagt `dsn-link` maar heeft een andere opbouw dan de Link-set, en de
+ * Spinner heeft hier geen zichtbaar label: die blijven gemeten lagen
+ * (`data-figma-instance="none"`).
  */
 
 import { icon } from '../icons.js';
@@ -41,6 +41,28 @@ const SPINNER = `<div class="dsn-spinner" role="status" data-figma-instance="non
     <circle class="dsn-spinner__arc" cx="12" cy="12" r="10"></circle>
   </svg>
 </div>`;
+
+/**
+ * Een knop in de actie-kolom als instance van de Link-set: de verwijderknop is
+ * in code een LinkButton (`<button class="dsn-link dsn-link-button">`), de
+ * downloadknop een `<a class="dsn-link">`. LinkButton heeft geen eigen set; in
+ * Figma is het een Link (zie "Welke componenten wel en niet een matrix
+ * krijgen").
+ *
+ * De opbouw is die van de Link-set: icoon vooraan, label, icoon achteraan.
+ * Het icoon vooraan staat aan (`data-figma-properties`) en wordt het icoon van
+ * de knop via de instance swap. Het icoon achteraan staat in de set uit, en
+ * staat hier visueel verborgen in de markup, zodat het in de browser geen
+ * ruimte inneemt.
+ */
+function linkInstance(tag, iconName, label) {
+  const href = tag === 'a' ? ' href="#"' : ' type="button"';
+  return `<${tag}${href} class="dsn-link${tag === 'button' ? ' dsn-link-button' : ''} dsn-link--size-default" data-figma-instance="dsn-link" data-figma-properties="showIconStart=true">
+      ${icon(iconName, { slot: 'icon-start' })}
+      <span data-figma-slot="label">${label}</span>
+      ${icon('chevron-right', { slot: 'icon-end' }).replace('<svg ', '<svg style="position: absolute; clip-path: inset(50%);" ')}
+    </${tag}>`;
+}
 
 export default {
   component: 'File',
@@ -99,13 +121,6 @@ export default {
       default: 'file-description',
     },
     { name: 'showPreview', type: 'BOOLEAN', slot: 'preview', default: false },
-    {
-      name: 'deleteLabel',
-      type: 'TEXT',
-      slot: 'delete-label',
-      optional: true,
-    },
-    { name: 'ctaLabel', type: 'TEXT', slot: 'cta-label', optional: true },
   ],
 
   render({ status, actions }) {
@@ -138,15 +153,9 @@ export default {
     // staan, maar wordt geen laag: een leeg frame van 0x0 weigert Figma.
     let action = '';
     if (actions === 'delete') {
-      action = `<button type="button" class="dsn-link dsn-link-button dsn-link--size-default" data-figma-instance="none">
-          ${icon('trash')}
-          <span data-figma-slot="delete-label">Verwijder</span>
-        </button>`;
+      action = linkInstance('button', 'trash', 'Verwijder');
     } else if (actions === 'download') {
-      action = `<a class="dsn-link" href="#" data-figma-instance="none">
-          ${icon('download')}
-          <span data-figma-slot="cta-label">Download</span>
-        </a>`;
+      action = linkInstance('a', 'download', 'Download');
     } else if (actions === 'none' && status === 'loading') {
       action = SPINNER;
     } else if (actions === 'none' && status === 'uploaded') {

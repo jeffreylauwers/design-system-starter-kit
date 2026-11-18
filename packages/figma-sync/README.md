@@ -1167,6 +1167,12 @@ dsn-heading-group"`, dus zonder override zouden Heading en HeadingGroup
   `{ axis: 'level', tags: { h1: '1', … } }`. De build controleert dat de as en
   de waarden bestaan. Zie "Een as uit de tag" onder "Geneste componenten
   worden instances".
+- **`data-figma-properties="showIconStart=true"`** zet een BOOLEAN-property op
+  een geneste instance. Een ander icoon volgt uit de meting (instance swap),
+  maar of een laag aan of uit staat niet: een zichtbare chevron in de host kan
+  net zo goed de standaardopbouw van de set zijn. Daarom expliciet, net als
+  `data-figma-variant`. De verwijderknop van File is zo een Link met het icoon
+  vooraan aan. Een naam die geen BOOLEAN van de doelset is, stopt de build.
 - **`data-figma-children="slot"`** zet de kinderen van een element in een
   Figma-slot, zodat een designer er zelf items of opties bij zet of uit haalt;
   zie "Slots".
