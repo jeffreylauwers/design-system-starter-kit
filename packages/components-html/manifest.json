@@ -1475,58 +1475,24 @@
             "name": "fileName",
             "type": "string",
             "required": true,
-            "figma": [
-              {
-                "kind": "none",
-                "reason": "Nog niet in de Figma-matrix van File.",
-                "open": true
-              }
-            ]
+            "figma": [{ "kind": "text", "property": "fileName" }]
           },
-          {
-            "name": "fileType",
-            "type": "string",
-            "figma": [
-              {
-                "kind": "none",
-                "reason": "Nog niet in de Figma-matrix van File.",
-                "open": true
-              }
-            ]
-          },
-          {
-            "name": "fileSize",
-            "type": "string",
-            "figma": [
-              {
-                "kind": "none",
-                "reason": "Nog niet in de Figma-matrix van File.",
-                "open": true
-              }
-            ]
-          },
+          { "name": "fileType", "type": "string", "slots": ["meta"] },
+          { "name": "fileSize", "type": "string", "slots": ["meta"] },
           {
             "name": "status",
             "values": ["default", "loading", "uploaded", "error"],
             "default": "default",
-            "figma": [
-              {
-                "kind": "variant",
-                "property": "variant",
-                "values": ["default", "error"],
-                "reason": "loading en uploaded staan nog niet in de Figma-matrix van File.",
-                "open": true
-              }
-            ]
+            "figma": [{ "kind": "variant", "property": "status" }]
           },
           {
             "name": "errorMessage",
             "type": "string",
             "figma": [
               {
-                "kind": "none",
-                "reason": "Nog niet in de Figma-matrix van File.",
-                "open": true
+                "kind": "text",
+                "property": "label",
+                "instance": "FormFieldErrorMessage"
               }
             ]
           },
@@ -1536,13 +1502,7 @@
             "name": "deleteLabel",
             "type": "string",
             "default": "Verwijder",
-            "figma": [
-              {
-                "kind": "none",
-                "reason": "Nog niet in de Figma-matrix van File.",
-                "open": true
-              }
-            ]
+            "figma": [{ "kind": "text", "property": "deleteLabel" }]
           },
           {
             "name": "ctaVariant",
@@ -1551,21 +1511,14 @@
             "figma": [
               {
                 "kind": "none",
-                "reason": "Nog niet in de Figma-matrix van File.",
-                "open": true
+                "reason": "Zit in de as actions: view (de hele rij klikbaar) of download (een aparte knop)."
               }
             ]
           },
           {
             "name": "ctaLabel",
             "type": "string",
-            "figma": [
-              {
-                "kind": "none",
-                "reason": "Nog niet in de Figma-matrix van File.",
-                "open": true
-              }
-            ]
+            "figma": [{ "kind": "text", "property": "ctaLabel" }]
           },
           {
             "name": "mediaType",
@@ -1573,9 +1526,9 @@
             "default": "document",
             "figma": [
               {
-                "kind": "none",
-                "reason": "Nog niet in de Figma-matrix van File.",
-                "open": true
+                "kind": "instance-swap",
+                "property": "mediaIcon",
+                "reason": "Verandert alleen het icoon in het media-vlak (file-description of photo), geen token."
               }
             ]
           },
@@ -1584,9 +1537,9 @@
             "type": "string",
             "figma": [
               {
-                "kind": "none",
-                "reason": "Nog niet in de Figma-matrix van File.",
-                "open": true
+                "kind": "boolean",
+                "property": "showPreview",
+                "reason": "Zet een preview-laag over het media-vlak; de afbeelding zelf zet een designer erin als image fill."
               }
             ]
           },
@@ -1597,8 +1550,7 @@
             "figma": [
               {
                 "kind": "none",
-                "reason": "Nog niet in de Figma-matrix van File.",
-                "open": true
+                "reason": "Visueel verborgen: het label van de Spinner of de tekst in de aria-live regio. Er is niets van te zien."
               }
             ]
           },
@@ -1608,8 +1560,7 @@
             "figma": [
               {
                 "kind": "none",
-                "reason": "Nog niet in de Figma-matrix van File.",
-                "open": true
+                "reason": "Visueel verborgen: het label van de Spinner of de tekst in de aria-live regio. Er is niets van te zien."
               }
             ]
           },
@@ -1619,13 +1570,18 @@
             "figma": [
               {
                 "kind": "none",
-                "reason": "Nog niet in de Figma-matrix van File.",
-                "open": true
+                "reason": "Visueel verborgen: het label van de Spinner of de tekst in de aria-live regio. Er is niets van te zien."
               }
             ]
           }
         ],
         "slots": [
+          {
+            "name": "meta",
+            "element": "dsn-file__meta",
+            "description": "Bestandstype en -grootte als één tekst, zoals React ze samenvoegt: \"PDF · 1,2 MB\".",
+            "figma": [{ "kind": "text", "property": "meta" }]
+          },
           {
             "name": "actions",
             "element": "dsn-file__actions",
@@ -1634,7 +1590,8 @@
               {
                 "kind": "variant",
                 "property": "actions",
-                "values": ["with-actions", "no-actions"]
+                "values": ["none", "delete", "view", "download"],
+                "reason": "In React volgen de acties uit onDelete (delete), href (view) en ctaVariant=download (download)."
               }
             ]
           }
@@ -1645,9 +1602,10 @@
             "selector": ":hover",
             "figma": [
               {
-                "kind": "none",
-                "reason": "Nog niet in de Figma-matrix van File.",
-                "open": true
+                "kind": "variant",
+                "property": "state",
+                "value": "hover",
+                "reason": "Alleen bij actions=view: alleen de klikbare rij heeft deze stijlen."
               }
             ]
           },
@@ -1656,9 +1614,10 @@
             "selector": ":active",
             "figma": [
               {
-                "kind": "none",
-                "reason": "Nog niet in de Figma-matrix van File.",
-                "open": true
+                "kind": "variant",
+                "property": "state",
+                "value": "active",
+                "reason": "Alleen bij actions=view: alleen de klikbare rij heeft deze stijlen."
               }
             ]
           },
