@@ -43,6 +43,7 @@ De File-set is opnieuw opgebouwd, en de 15 open punten van File uit #497 zijn op
 Een set die een andere als instance gebruikt, legt overrides op de lagen van die instance: het label "Sluiten" op de knop van een Drawer, de labels van de Link in File, de nummers in een OrderedList. Na een nieuwe import van de doelset (`button.json`, `link.json`) waren die weg, omdat de plugin de lagen in elke variant opnieuw aanmaakte. Figma koppelt een override aan de laag zelf.
 
 - De plugin hergebruikt bij een herimport elk frame en elke tekstlaag op dezelfde plek in de variant, net als al gebeurde met geneste instances, slots en de tekstlaag van Heading. Een hergebruikte laag wordt eerst teruggezet op de stand van een verse laag.
+- De plugin zet randdiktes per zijde (`strokeWeights`) ook als de spec geen `strokes` noemt. Een override die alleen de zijde van een rand verlegt, zoals de indicator van een MenuLink in een horizontaal menu, kwam anders niet aan.
 - De smoke test controleert na een nieuwe import van elke doelset niet alleen de sizing, maar ook de tekst, de gebonden variables en de randen per zijde van de geneste lagen. Zonder het hergebruik valt die controle 11 keer om.
 
 ### figma-sync: Spinner en Logo krijgen hun eigen kleuren in Figma
