@@ -1576,6 +1576,42 @@ for (const composed of allComposed) {
             `${spec.variant} > ${override.path}: ${layer?.layoutSizingHorizontal} i.p.v. ${override.layoutSizingHorizontal}`
           );
         }
+        // Niet alleen de sizing: elke override op een geneste laag, zoals de
+        // inverse kleur van een label of de rand onderaan van een MenuLink in
+        // PageHeader. Een laag die bij de nieuwe import opnieuw gemaakt is,
+        // heeft ze niet meer.
+        if (
+          override.characters !== undefined &&
+          layer?.characters !== override.characters
+        ) {
+          lost.push(
+            `${spec.variant} > ${override.path}: tekst "${layer?.characters}" i.p.v. "${override.characters}"`
+          );
+        }
+        for (const [field, weight] of Object.entries(
+          override.strokeWeights ?? {}
+        )) {
+          if (layer?.[field] !== weight) {
+            lost.push(
+              `${spec.variant} > ${override.path}.${field}: ${layer?.[field]} i.p.v. ${weight}`
+            );
+          }
+        }
+        for (const [field, reference] of Object.entries(
+          override.boundVariables ?? {}
+        )) {
+          if (override.icon && field === 'fills') continue;
+          const alias =
+            field === 'fills' || field === 'strokes'
+              ? layer?.[field]?.[0]?.boundVariables?.color
+              : layer?.boundVariables?.[field];
+          const name = alias && byId.get(alias.id)?.name;
+          if (name !== reference.name) {
+            lost.push(
+              `${spec.variant} > ${override.path}.${field}: ${name ?? 'niets'} i.p.v. ${reference.name}`
+            );
+          }
+        }
       }
     }
     check(

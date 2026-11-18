@@ -409,14 +409,28 @@ de naam willen lezen levert overal `undefined` op, en dan wordt elke property
 opnieuw aangemaakt. Figma weigert dat niet maar hernoemt de nieuwe naar
 "label 2", bij de volgende import naar "label 3".
 
-**Wat wél verloren gaat:** overrides die een designer op de geneste lagen van
-een instance heeft gelegd. De lagen binnen een variant worden opnieuw
-opgebouwd, en Figma zoekt die overrides terug via het laagpad. Dat is de prijs
-van een import die de CSS daadwerkelijk doorzet; het alternatief (de bestaande
-lagen één voor één bijwerken) vereist een betrouwbare identiteit per laag die
-een gemeten boom niet heeft. De instance blijft wel aan zijn component hangen,
-en dát is het verschil tussen een import die je kunt draaien en een die je niet
-kunt draaien.
+**De lagen binnen een variant blijven ook staan.** Een override, van een
+designer of van een andere set die deze als instance gebruikt, hangt in Figma
+aan de laag zelf. Een laag die bij een import opnieuw gemaakt wordt, heeft hem
+niet meer. Zo viel de tekst van een Heading in een HeadingGroup na een nieuwe
+import van `heading.json` terug op HUG (gemeten in Figma Desktop), en zou een
+MenuLink in PageHeader na een nieuwe import van `menu-link.json` zijn
+indicator onderaan en zijn kleuren in inverse verliezen.
+
+`resetVariant` onthoudt daarom elk frame en elke tekstlaag op hun plek in de
+variant (het pad van indexen; `collectLayers`) en zet ze opzij. Bij het bouwen
+pakt `takeLayer` de laag op dezelfde plek terug, als het type klopt en bij een
+frame ook de naam. `resetLayer` zet hem eerst terug op de stand van een verse
+laag, zodat er niets uit de vorige import blijft hangen. Wat aan het eind niet
+is teruggepakt, gaat weg. Lagen in een instance (van zijn eigen component) en
+in een slot (de inhoud is van de designer) doen niet mee.
+
+Verandert de opbouw van een variant, dan krijgt een laag op een plek die nu
+iets anders voorstelt een nieuwe laag, en gaan de overrides op die ene laag
+alsnog verloren. Bij een gewone herimport, waar alleen waarden veranderen,
+blijft alles staan. De smoke test controleert dat per samengestelde set: na
+een nieuwe import van elke doelset dragen de geneste lagen nog hun tekst, hun
+gebonden variables, hun sizing en hun randen per zijde.
 
 **De geneste instances blijven staan, en dat is geen detail.** Een icoon in een
 variant is een instance van het icooncomponent, en zijn kleur is een override op
