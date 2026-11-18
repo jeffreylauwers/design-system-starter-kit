@@ -258,6 +258,38 @@ function domWalker([properties, hiddenClass]) {
    * generator de strokes per vorm kan binden. De lijndikte is wat er in beeld
    * staat: de waarde uit de CSS keer de schaal van de viewBox.
    */
+  /**
+   * Een cirkel met één streep (de boog van Spinner) als boogpad.
+   *
+   * Figma legt een streepjespatroon per bochtsegment van de vector, en een
+   * cirkel bestaat daar uit vier segmenten: `47 16` werden vier korte
+   * streepjes in plaats van één boog. Past er maar één streep op de omtrek,
+   * dan is het een boog, en die tekent een pad zonder streepjes in elk
+   * programma hetzelfde. Hij begint waar de browser een cirkel begint (rechts,
+   * op drie uur) en loopt met de klok mee.
+   */
+  const singleDashArc = (shape, computed) => {
+    if (shape.tagName.toLowerCase() !== 'circle') return null;
+    const dashes = userUnits(computed.strokeDasharray).split(/\s+/).map(Number);
+    if (dashes.length !== 2 || dashes.some(Number.isNaN)) return null;
+    if (Number.parseFloat(computed.strokeDashoffset) !== 0) return null;
+
+    const cx = shape.cx.baseVal.value;
+    const cy = shape.cy.baseVal.value;
+    const r = shape.r.baseVal.value;
+    const [dash, gap] = dashes;
+    if (dash + gap < 2 * Math.PI * r - 0.5 || dash >= 2 * Math.PI * r) {
+      return null;
+    }
+
+    const angle = dash / r;
+    const round = (value) => Math.round(value * 1000) / 1000;
+    const endX = round(cx + r * Math.cos(angle));
+    const endY = round(cy + r * Math.sin(angle));
+    const large = angle > Math.PI ? 1 : 0;
+    return `M${round(cx + r)} ${round(cy)}A${r} ${r} 0 ${large} 1 ${endX} ${endY}`;
+  };
+
   const readShapes = (svg) => {
     const shapes = Array.from(svg.querySelectorAll(SHAPE_SELECTOR));
     if (!shapes.length) return null;
@@ -272,6 +304,17 @@ function domWalker([properties, hiddenClass]) {
       const computed = getComputedStyle(shape);
       for (const [property, attribute] of SHAPE_STYLES) {
         copies[index].setAttribute(attribute, userUnits(computed[property]));
+      }
+      const arc = singleDashArc(shape, computed);
+      if (arc) {
+        const path = document.createElementNS(svg.namespaceURI, 'path');
+        for (const { name, value } of copies[index].attributes) {
+          if (!['cx', 'cy', 'r', 'stroke-dasharray'].includes(name)) {
+            path.setAttribute(name, value);
+          }
+        }
+        path.setAttribute('d', arc);
+        copies[index].replaceWith(path);
       }
       const scale = shape.getScreenCTM()?.a ?? 1;
       return {

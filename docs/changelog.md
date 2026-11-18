@@ -16,7 +16,9 @@ De cirkels van Spinner en de vlakken van Logo zijn SVG's die hun stijl uit de CS
 
 - De extractor schrijft per vorm de computed stijl (vulling, lijn, lijndikte, streepjes, lijneinden) in de SVG, en geeft per vorm de kleuren en lijndikte met hun tokens mee.
 - De plugin zoekt zo'n SVG niet meer op in de iconset, en bindt per laag: bij Spinner `spinner/track-color` en `spinner/color` op de lijnen, en `spinner/stroke-width` waar de spinner op ware grootte staat; bij Logo `logo/color/primary` en `logo/color/label`.
-- In Figma veranderen Spinner, Logo, en PageHeader en PageFooter (die het logo tonen). Importeer ze opnieuw.
+- De boog van Spinner is één boogpad. Met `stroke-dasharray` maakte Figma er vier streepjes van, omdat het patroon per bochtsegment van de cirkel loopt.
+- Het logo in Logo, PageHeader en PageFooter komt uit `logo_starter-kit.svg`, met de letters "Starter Kit". De matrices hadden een overgetypte rechthoek zonder letters.
+- In Figma veranderen Spinner, Logo, en PageHeader en PageFooter (die het logo tonen). Bouw de plugin opnieuw (`pnpm --filter @dsn-starter-kit/figma-plugin build`) en importeer ze opnieuw.
 
 ### figma-sync: de kleine open punten tussen manifest en Figma
 

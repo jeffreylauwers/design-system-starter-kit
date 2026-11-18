@@ -872,6 +872,15 @@ met hun tokens. De plugin legt die op de lagen die `createNodeFromSvg` maakt,
 in de volgorde van de SVG, en bindt ze. Een icoon heeft één kleur
 (`currentColor`); deze vormen hebben er elk een eigen.
 
+Een cirkel met één streep (de boog van Spinner, `stroke-dasharray: 47 16`)
+wordt een boogpad zonder streepjes. Figma legt een streepjespatroon per
+bochtsegment, en een cirkel heeft er daar vier: de boog werd vier korte
+streepjes.
+
+Het logo komt in Logo, PageHeader en PageFooter uit `src/logo.js`, dat
+`components-html/src/logo/logo_starter-kit.svg` leest, met de letters erbij.
+De vaste kleuren in dat bestand worden de klassen uit `Logo.tsx`.
+
 De lijndikte bindt alleen waar de SVG op ware grootte staat. Bij de grote
 Spinner is de viewBox twee keer zo groot getekend, en staat er een lijn van
 4px tegenover een token van 2px; die houdt een vaste waarde.

@@ -31,13 +31,11 @@
  */
 
 import { axisValues } from '../manifest.js';
+import { logo } from '../logo.js';
 
 /** Het logo zoals PageFooter het in slot 1 krijgt. */
 const LOGO = `<a href="/">
-  <svg class="dsn-logo" xmlns="http://www.w3.org/2000/svg" width="186" height="48" viewBox="0 0 186 48" fill="none" role="img" aria-label="Starter Kit">
-    <path class="dsn-logo__primary" d="M0 0h185.491v48H0z"/>
-    <path class="dsn-logo__label" d="M8 8h169.491v32H8z"/>
-  </svg>
+  ${logo()}
 </a>`;
 
 const linkList = (items) => `<ul class="dsn-unordered-list">
