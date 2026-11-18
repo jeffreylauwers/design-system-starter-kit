@@ -20,6 +20,16 @@ De File-set is opnieuw opgebouwd, en de 15 open punten van File uit #497 zijn op
 - **Nieuw in figma-sync:** `data-figma-properties="showIconStart=true"` zet een BOOLEAN-property op een geneste instance; de plugin zet hem met `setProperties`.
 - **Bewust niet:** `loadingLabel`, `uploadedLabel` en `errorLabel` (visueel verborgen), en `ctaVariant` (zit in de as `actions`).
 
+### figma-sync: Spinner en Logo krijgen hun eigen kleuren in Figma
+
+De cirkels van Spinner en de vlakken van Logo zijn SVG's die hun stijl uit de CSS halen. Die stijl ging niet mee naar Figma: de plugin behandelde ze als icoon, zocht ze tevergeefs in de iconset (de melding "Icoon dsn-spinner__circle staat niet op de pagina dsn/Icons") en kleurde ze in één kleur, gebonden aan de documentkleur.
+
+- De extractor schrijft per vorm de computed stijl (vulling, lijn, lijndikte, streepjes, lijneinden) in de SVG, en geeft per vorm de kleuren en lijndikte met hun tokens mee.
+- De plugin zoekt zo'n SVG niet meer op in de iconset, en bindt per laag: bij Spinner `spinner/track-color` en `spinner/color` op de lijnen, en `spinner/stroke-width` waar de spinner op ware grootte staat; bij Logo `logo/color/primary` en `logo/color/label`.
+- De boog van Spinner is één boogpad. Met `stroke-dasharray` maakte Figma er vier streepjes van, omdat het patroon per bochtsegment van de cirkel loopt.
+- Het logo in Logo, PageHeader en PageFooter komt uit `logo_starter-kit.svg`, met de letters "Starter Kit". De matrices hadden een overgetypte rechthoek zonder letters.
+- In Figma veranderen Spinner, Logo, en PageHeader en PageFooter (die het logo tonen). Bouw de plugin opnieuw (`pnpm --filter @dsn-starter-kit/figma-plugin build`) en importeer ze opnieuw.
+
 ### figma-sync: de kleine open punten tussen manifest en Figma
 
 22 open punten uit #497 zijn opgelost; alleen File en PageHeader staan nog open.

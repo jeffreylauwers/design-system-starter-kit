@@ -1613,6 +1613,39 @@ console.log('\n=== icon-only Button ===');
   );
 }
 
+console.log('\n=== Spinner: een SVG die geen icoon is ===');
+{
+  const spinnerSet = state.root.children
+    .find((page) => page.name === 'dsn/Spinner')
+    ?.children.find((node) => node.type === 'COMPONENT_SET');
+  const walk = (node) => [node, ...(node?.children ?? []).flatMap(walk)];
+  const layers = walk(spinnerSet).filter((node) =>
+    ['dsn-spinner__track', 'dsn-spinner__arc'].includes(node.name)
+  );
+  check(
+    'elke cirkel is een eigen laag',
+    layers.length === 4,
+    `${layers.length} lagen in 2 varianten`
+  );
+  check(
+    'de lijnkleur van elke cirkel hangt aan een variable',
+    layers.length > 0 &&
+      layers.every((layer) => layer.strokes[0]?.boundVariables?.color),
+    layers
+      .filter((layer) => !layer.strokes[0]?.boundVariables?.color)
+      .map((layer) => layer.name)
+      .join(', ')
+  );
+  check(
+    'de cirkels hebben geen vulling',
+    layers.every((layer) => layer.fills.length === 0)
+  );
+  check(
+    'de cirkel wordt niet als icoon gemeld',
+    !problems.some((problem) => problem.message.includes('dsn-spinner__circle'))
+  );
+}
+
 // Gemeten in Figma bij issue #450: zolang het slot zelf blijft staan, houdt een
 // geplaatste instance de items die een designer erin zette. Een slot dat weg
 // en opnieuw gemaakt wordt zet hem terug op de standaardinhoud.

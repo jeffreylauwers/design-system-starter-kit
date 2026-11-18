@@ -475,6 +475,53 @@ function buildIcon(spec, parent, context) {
 }
 
 /**
+ * Een SVG die geen icoon is, zoals de cirkels van Spinner of de vlakken van
+ * Logo.
+ *
+ * Die staat niet in de iconset, dus er valt niets op te zoeken of te wisselen.
+ * De SVG uit de spec draagt zijn stijl al als attributen (zie `readShapes` in
+ * de extractor); hier krijgt elke vorm daarbovenop zijn kleuren en lijndikte
+ * uit de spec, met de bindingen erop. Zo volgt een Spinner de
+ * theme-schakelaar, net als in de browser.
+ *
+ * Figma maakt van elke vorm een eigen laag, in de volgorde van de SVG. Komt
+ * het aantal lagen niet overeen met de spec, dan is niet te zeggen welke laag
+ * welke vorm is, en blijft het bij wat de SVG zelf meegaf.
+ */
+function buildShapes(spec, parent, context) {
+  const node = figma.createNodeFromSvg(spec.svg);
+  parent.appendChild(node);
+  node.name = spec.name ?? 'vector';
+  if (spec.width && spec.height) node.resize(spec.width, spec.height);
+
+  const layers = [];
+  const collect = (current) => {
+    if (current.children?.length) current.children.forEach(collect);
+    else layers.push(current);
+  };
+  node.children.forEach(collect);
+
+  if (layers.length !== spec.shapes.length) {
+    context.log.warn(
+      `${spec.name}: Figma maakte ${layers.length} lagen van ${spec.shapes.length} vormen; de kleuren zijn niet aan tokens gebonden`
+    );
+    return node;
+  }
+
+  spec.shapes.forEach((shape, index) => {
+    const layer = layers[index];
+    layer.name = shape.name;
+    layer.fills = shape.fills ?? [];
+    layer.strokes = shape.strokes ?? [];
+    if (shape.strokeWeight !== undefined) {
+      layer.strokeWeight = shape.strokeWeight;
+    }
+    applyBindings(layer, shape, context);
+  });
+  return node;
+}
+
+/**
  * Een instance van een andere set uit de bibliotheek.
  *
  * Net als bij de iconen eerst kijken of de vorige import hier al een instance
@@ -650,6 +697,15 @@ function buildNode(spec, parent, context, parentSpec) {
 
   if (spec.type === 'SLOT') {
     return buildContentSlot(spec, parent, context, parentSpec);
+  }
+
+  if (spec.type === 'VECTOR' && spec.shapes) {
+    const node = buildShapes(spec, parent, context);
+    applyPlacement(node, spec, log, parentSpec, context.pinned);
+    applySizeBindings(node, spec, context, { count: true });
+    applyRotation(node, spec, log);
+    registerSlot(node, spec, context);
+    return node;
   }
 
   if (spec.type === 'VECTOR') {
