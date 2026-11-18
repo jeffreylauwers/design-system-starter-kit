@@ -2168,20 +2168,26 @@ check(
 // geven, zoals de knoppen van een inverse PageHeader. Die lagen tellen in de
 // meting als "anders dan de variant", en horen dat ook te doen: zoveel als er
 // zulke overrides in de specs staan, niet meer.
-const hostIconColors = fs
+const hostOverrides = fs
   .readdirSync(path.join(monorepoRoot, 'packages/figma-sync/dist'))
   .filter((file) => file.endsWith('.json') && file !== 'icons.json')
   .map((file) => read(`packages/figma-sync/dist/${file}`))
   .flatMap((spec) => instanceSpecsOf(spec.componentSet))
   .filter((instance) => instance.component === 'dsn-button')
   .flatMap((instance) => instance.overrides ?? [])
-  .filter((override) => override.icon && override.boundVariables?.fills).length;
+  .filter((override) => override.boundVariables?.fills);
+const hostIconColors = hostOverrides.filter((override) => override.icon).length;
+// Tekst: de labelkleur van een knop in een inverse PageHeader. Die blijft
+// sinds het hergebruik van lagen ook op een geplaatste instance staan.
+const hostTextColors = hostOverrides.filter(
+  (override) => !override.icon && override.characters !== undefined
+).length;
 check(
   'op een geplaatste instance draagt elke laag de kleur uit de spec',
   diagnosis?.placed > 0 &&
     diagnosis.before.iconInstanceWrong === hostIconColors &&
-    diagnosis.before.textInstanceWrong === 0,
-  `${diagnosis?.placed} instances gemeten, ${diagnosis?.before.instanceWrong} lagen anders dan de variant (${diagnosis?.before.iconInstanceWrong} icoon, waarvan ${hostIconColors} bewust door de host; ${diagnosis?.before.textInstanceWrong} tekst)`
+    diagnosis.before.textInstanceWrong === hostTextColors,
+  `${diagnosis?.placed} instances gemeten, ${diagnosis?.before.instanceWrong} lagen anders dan de variant (${diagnosis?.before.iconInstanceWrong} icoon, waarvan ${hostIconColors} bewust door de host; ${diagnosis?.before.textInstanceWrong} tekst, waarvan ${hostTextColors} bewust door de host)`
 );
 
 // =============================================================================

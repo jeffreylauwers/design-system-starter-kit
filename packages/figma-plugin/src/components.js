@@ -110,13 +110,16 @@ function applyPaints(target, spec) {
     target.strokes = spec.strokes;
     if (spec.strokeWeight !== undefined)
       target.strokeWeight = spec.strokeWeight;
-    // Na strokeWeight: dat veld zet in Figma alle vier de zijden tegelijk, dus
-    // de losse diktes moeten erna komen. Zonder deze stap loopt de accentrand
-    // van een Note rondom in plaats van alleen aan de inline-start.
-    for (const [field, weight] of Object.entries(spec.strokeWeights ?? {})) {
-      target[field] = weight;
-    }
     if (spec.dashPattern) target.dashPattern = spec.dashPattern;
+  }
+  // Na strokeWeight: dat veld zet in Figma alle vier de zijden tegelijk, dus
+  // de losse diktes moeten erna komen. Zonder deze stap loopt de accentrand
+  // van een Note rondom in plaats van alleen aan de inline-start. Ook zonder
+  // `strokes`: een override die alleen de zijde verlegt (de indicator van een
+  // MenuLink in een horizontaal menu, onderaan in plaats van links) noemt de
+  // kleur niet, want die is gelijk.
+  for (const [field, weight] of Object.entries(spec.strokeWeights ?? {})) {
+    target[field] = weight;
   }
 }
 

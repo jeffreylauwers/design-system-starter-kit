@@ -732,6 +732,27 @@ export function toInstance(measured, node, target, label) {
     else overrides.push({ path: [0], layoutSizingHorizontal: 'FILL' });
   }
 
+  // Een instance die in de host zijn inhoud hugt, terwijl een kind in de
+  // doelset de breedte vult. De MenuLink-set is gemeten in een verticaal menu,
+  // waar de link het hele item vult; in het horizontale menu van PageHeader
+  // is het item zo breed als zijn link. Een FILL-kind in een HUG-instance
+  // rekt het item in Figma op, dus het kind hugt hier ook.
+  if (
+    instance.layoutSizingHorizontal === 'HUG' &&
+    component.node.layoutMode === 'HORIZONTAL'
+  ) {
+    (component.node.children ?? []).forEach((child, index) => {
+      if (child.layoutSizingHorizontal !== 'FILL') return;
+      const sizing =
+        child.layoutMode && child.layoutMode !== 'NONE' ? 'HUG' : 'FIXED';
+      const existing = overrides.find(
+        (override) => override.path.length === 1 && override.path[0] === index
+      );
+      if (existing) existing.layoutSizingHorizontal = sizing;
+      else overrides.push({ path: [index], layoutSizingHorizontal: sizing });
+    });
+  }
+
   if (overrides.length) instance.overrides = overrides;
   const all = {
     ...properties,

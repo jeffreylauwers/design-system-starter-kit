@@ -1030,6 +1030,12 @@ die overrides een nieuwe import van `logo.json` overleven, houdt de plugin de
 vector van het logo zolang zijn SVG niet verandert (`resetVariant`, net als
 de tekstlaag van een Heading).
 
+Een instance die in de host zijn inhoud hugt, terwijl een kind in de
+doelset de breedte vult, krijgt op dat kind een override naar HUG. De
+MenuLink-set is gemeten in een verticaal menu, waar de link het hele item
+vult; in het horizontale menu van PageHeader is een item zo breed als zijn
+link. Zonder die override rekt Figma de items op.
+
 Een geneste instance moet in de host dezelfde overrides hebben als in de
 doelvariant, anders is het een andere opbouw. Maten die aan een token hangen
 tellen daarbij niet: op een andere viewport geeft een fluid token een andere

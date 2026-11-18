@@ -214,6 +214,16 @@ export function applyOverrides(instance, spec, context, helpers) {
       for (const field of PLAIN_FIELDS) {
         if (override[field] !== undefined) node[field] = override[field];
       }
+      // Een andere maat, zoals het logo in PageHeader (32px hoog in plaats
+      // van 48px). Eerst de vaste waarde, dan de binding hieronder; anders
+      // staat de laag op de maat van het component zolang de binding niet
+      // aankomt.
+      if (override.width !== undefined || override.height !== undefined) {
+        node.resize(
+          override.width ?? node.width,
+          override.height ?? node.height
+        );
+      }
       if (override.letterSpacing !== undefined) {
         node.letterSpacing = { unit: 'PIXELS', value: override.letterSpacing };
       }
