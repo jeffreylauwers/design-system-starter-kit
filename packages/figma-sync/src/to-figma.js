@@ -1603,8 +1603,9 @@ function convertElement(
  * dan komt er binnen de root een frame `slot` met de richting en de
  * tussenruimte van de root, inclusief de binding; de root houdt zijn padding.
  * Staat hij op een kind van de root (de footer van ModalDialog), dan wórdt dat
- * kind het slot, met zijn eigen padding en rand. Dieper mag niet; zie
- * `checkSlotDepth`.
+ * kind het slot, met zijn eigen padding en rand. Dieper wordt het element
+ * zelf het slot, zoals de navigatie van PageHeader; de plugin bewaart het bij
+ * een herimport net zo (zie `resetVariant`).
  */
 function withContentSlot(frame, name, root, label) {
   if (frame.layoutMode === 'GRID') {
@@ -1681,26 +1682,6 @@ function withContentSlot(frame, name, root, label) {
     boundVariables: Object.keys(rootBindings).length ? rootBindings : undefined,
     children: [slot],
   };
-}
-
-/**
- * Een slot hoort direct onder de root te hangen.
- *
- * Bij een tweede import bouwt de plugin een variant van binnen opnieuw op, en
- * alleen een slot dat zelf blijft staan houdt de inhoud die een designer erin
- * zette. Een slot in een frame dat opnieuw wordt opgebouwd krijgt een ander
- * pad, en daar raakt Figma een override op kwijt; zo verloren de iconen eerder
- * hun kleur (issue #388).
- */
-function checkSlotDepth(node, label, depth = 0) {
-  for (const child of node.children ?? []) {
-    if (child.type === 'SLOT' && depth > 0) {
-      throw new Error(
-        `${label}: het slot "${child.name}" hangt niet direct onder de root. Zet data-figma-children op de root of op een kind ervan.`
-      );
-    }
-    if (child.type !== 'INSTANCE') checkSlotDepth(child, label, depth + 1);
-  }
 }
 
 /**
@@ -2553,7 +2534,6 @@ export function toComponentSet(
       fixInstancesInHuggingParents(node);
       sizeFromTokens(node);
       dropUnfixedSizeBindings(node);
-      checkSlotDepth(node, pathLabel);
       checkSpreadClip(node, warnings, pathLabel);
       return { name: label, variantProperties: variant, node };
     }

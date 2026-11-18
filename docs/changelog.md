@@ -22,6 +22,7 @@ De laatste 11 open punten uit #497: er staan geen open Figma-bindingen meer in d
 - Een binding met `instance` kan een `layer` hebben: de `data-figma-slot` van de juiste instance als er meer van hetzelfde component zijn.
 - Een grid van één rij met kolommen van `auto` en `fr` wordt horizontale auto layout: de balk en de compact-layout van PageHeader, en File. Het logo van PageHeader staat daardoor verticaal in het midden.
 - Een blok dat in CSS met `margin-inline: auto` gecentreerd staat, staat in Figma ook in het midden: de masthead, de navbar en de compact-layout van PageHeader, en PageFooter.
+- **Slots:** `logo`, `primary-navigation` en `secondary-navigation`. Een designer zet er zijn eigen logo in, en voegt navigatie-items toe of haalt ze weg, zoals met `logoSlot`, `primaryNavigation` en `secondaryNavigation` in React. Een slot mag nu dieper in de variant hangen dan direct onder de root; de plugin bewaart het bij een herimport, met wat een designer erin zette.
 - De kleur van een icoon in een geneste instance (de knoppen van een inverse PageHeader) gaat op de vectoren van het icoon, niet meer als vulling op de icoon-instance zelf. Dat gaf een wit vlak achter het icoon.
 
 ### figma-sync: File volgt de opbouw van React

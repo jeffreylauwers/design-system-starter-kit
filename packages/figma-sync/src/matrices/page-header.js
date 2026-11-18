@@ -31,7 +31,7 @@
  *
  * De knoppen zijn Button-instances en de zoekvelden SearchInput-instances,
  * exposed, zodat een designer de labels en de placeholder op de instance
- * aanpast. De navigatie blijft een gemeten laag (zie `menu`).
+ * aanpast. Het logo en de twee navigaties zijn slots (zie `LOGO` en `menu`).
  */
 
 import { icon } from '../icons.js';
@@ -39,8 +39,11 @@ import { axisValues } from '../manifest.js';
 import { logo } from '../logo.js';
 import { fieldTextAttributes } from '../field-text.js';
 
-/** De logo-svg zoals PageHeader hem plaatst. */
-const LOGO = `<div class="dsn-page-header__logo">
+/**
+ * Het logo zoals PageHeader het plaatst, in het slot `logo`: een designer zet
+ * er het logo van zijn eigen organisatie in, zoals `logoSlot` in React.
+ */
+const LOGO = `<div class="dsn-page-header__logo" data-figma-children="logo">
   ${logo()}
 </div>`;
 
@@ -56,13 +59,18 @@ const PRIMARY_ITEMS = [
 const SECONDARY_ITEMS = [{ label: 'English' }, { label: 'Mijn omgeving' }];
 
 /**
- * De navigatie blijft een gemeten laag. De horizontale menu-items wijken in
- * opbouw af van de MenuLink-set (geen icoon- en expand-lagen), en dat valt
- * buiten de open punten van #497.
+ * Een navigatie als slot (`primary-navigation`, `secondary-navigation`): een
+ * designer voegt er items aan toe of haalt ze weg, zoals met
+ * `primaryNavigation` en `secondaryNavigation` in React.
+ *
+ * De items zijn gemeten lagen en geen MenuLink-instances: de horizontale
+ * items wijken in opbouw af van de MenuLink-set (geen icoon- en
+ * expand-lagen). Een item erbij is in Figma een bestaand item dupliceren.
  */
 const menu = (
-  items
-) => `<ul class="dsn-menu dsn-menu--horizontal" data-figma-instance="none">
+  items,
+  slot
+) => `<ul class="dsn-menu dsn-menu--horizontal" data-figma-instance="none" data-figma-children="${slot}">
   ${items
     .map(
       (item) => `<li class="dsn-menu-link" data-figma-instance="none">
@@ -240,14 +248,14 @@ export default {
         <div class="dsn-page-header__masthead-inner">
           ${LOGO}
           <div class="dsn-page-header__secondary-nav">
-            <nav aria-label="Service-navigatie">${menu(SECONDARY_ITEMS)}</nav>
+            <nav aria-label="Service-navigatie">${menu(SECONDARY_ITEMS, 'secondary-navigation')}</nav>
             ${SEARCHBOX}
           </div>
         </div>
       </div>
       <div class="dsn-page-header__navbar">
         <div class="dsn-page-header__navbar-inner">
-          <nav aria-label="Hoofd-navigatie">${menu(PRIMARY_ITEMS)}</nav>
+          <nav aria-label="Hoofd-navigatie">${menu(PRIMARY_ITEMS, 'primary-navigation')}</nav>
         </div>
       </div>
     </div>`;
@@ -256,10 +264,10 @@ export default {
       <div class="dsn-page-header__compact-inner">
         ${LOGO}
         <div class="dsn-page-header__compact-primary-nav">
-          <nav aria-label="Hoofd-navigatie">${menu(PRIMARY_ITEMS)}</nav>
+          <nav aria-label="Hoofd-navigatie">${menu(PRIMARY_ITEMS, 'primary-navigation')}</nav>
         </div>
         <div class="dsn-page-header__compact-secondary">
-          <nav aria-label="Service-navigatie">${menu(SECONDARY_ITEMS)}</nav>
+          <nav aria-label="Service-navigatie">${menu(SECONDARY_ITEMS, 'secondary-navigation')}</nav>
           ${compactSearchButton}
         </div>
       </div>

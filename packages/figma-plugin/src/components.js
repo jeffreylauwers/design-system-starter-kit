@@ -956,14 +956,25 @@ async function resetVariant(component, context, { keepText = false } = {}) {
   context.reusable = new Map();
   context.reusableText = null;
 
-  // Een slot blijft staan; zie `buildContentSlot`. Het hangt altijd direct
-  // onder de variant (de generator weigert het dieper), dus hier zoeken is
-  // genoeg. Zijn standaardinhoud gaat er bij het bouwen uit.
-  context.reusableSlots = new Map(
-    component.children
-      .filter((child) => child.type === 'SLOT')
-      .map((slot) => [slot.name, slot])
-  );
+  // Een slot blijft staan; zie `buildContentSlot`. Ook een slot dieper in de
+  // variant, zoals de navigatie van PageHeader: dat wordt eerst naar de
+  // variant zelf verhangen, net als de geneste instances hieronder, anders
+  // verdwijnt het met zijn ouder en is wat een designer erin zette weg. Niet
+  // in een instance (die lagen zijn van zijn eigen component) en niet in een
+  // ander slot (dat blijft zelf staan). Zijn standaardinhoud gaat er bij het
+  // bouwen uit.
+  const slots = [];
+  const collectSlots = (node) => {
+    for (const child of node.children ?? []) {
+      if (child.type === 'SLOT') slots.push(child);
+      else if (child.type !== 'INSTANCE') collectSlots(child);
+    }
+  };
+  collectSlots(component);
+  for (const slot of slots) {
+    if (slot.parent !== component) component.appendChild(slot);
+  }
+  context.reusableSlots = new Map(slots.map((slot) => [slot.name, slot]));
   const keptSlots = new Set(context.reusableSlots.values());
   context.keptSlots = keptSlots;
   // Een slot dat blijft staan houdt anders zijn cel bezet; zie `stepAside`.

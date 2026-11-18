@@ -1162,7 +1162,11 @@ function deriveMirror(source) {
   // opnieuw afgeleid, zodat hij de laag volgt waar hij vanaf hangt. Alleen een
   // spiegel uit `createInstance` blijft staan zoals hij is: dáár zit wat een
   // designer of de plugin erop heeft gelegd.
-  copy._derived = true;
+  const markDerived = (node) => {
+    node._derived = true;
+    for (const child of node.children ?? []) markDerived(child);
+  };
+  markDerived(copy);
 
   if (source.type === 'INSTANCE' && source.mainComponent) {
     copy.mainComponent = source.mainComponent;
@@ -1188,17 +1192,48 @@ function deriveMirror(source) {
  * stap deze functie opnieuw aan.
  */
 function syncInstance(component, instance) {
+  // Op elke diepte, op de laag zelf en niet op het pad ernaartoe: een laag die
+  // in het component naar een andere ouder verhuist, houdt in de instance wat
+  // erop lag. Zo bleek het in Figma bij #388: een hergebruikte icoon-instance
+  // die `resetVariant` verhangt, houdt zijn kleuroverride. Een slot dat de
+  // plugin zo verhangt (de navigatie van PageHeader) houdt dus ook wat een
+  // designer erin zette. Binnen een geneste instance wordt niet gezocht: die
+  // lagen zijn van zijn eigen component.
   const kept = new Map();
-  for (const mirror of instance.children) {
-    if (mirror._source && !mirror._derived) kept.set(mirror._source, mirror);
-  }
+  const collect = (node) => {
+    for (const mirror of node.children ?? []) {
+      if (!mirror._source || mirror._derived) continue;
+      kept.set(mirror._source, mirror);
+      if (mirror.type !== 'INSTANCE' && mirror.type !== 'SLOT') collect(mirror);
+    }
+  };
+  collect(instance);
 
-  instance.children = component.children.map((source) => {
-    const mirror = kept.get(source) ?? deriveMirror(source);
+  // Een bewaarde laag houdt wat erop ligt. Een slot houdt ook zijn inhoud:
+  // die is van de designer. Een frame krijgt zijn lagen opnieuw uit het
+  // component, met de bewaarde lagen op hun nieuwe plek.
+  const build = (source, parent) => {
+    let mirror = kept.get(source);
+    if (!mirror) {
+      if (source.type === 'INSTANCE' || source.type === 'SLOT') {
+        mirror = deriveMirror(source);
+      } else {
+        mirror = cloneNode(source);
+        mirror._derived = true;
+        mirror.children = [];
+      }
+    }
     mirror._source = source;
-    mirror.parent = instance;
+    mirror.parent = parent;
+    if (mirror.type !== 'INSTANCE' && mirror.type !== 'SLOT') {
+      mirror.children = source.children.map((child) => build(child, mirror));
+    }
     return mirror;
-  });
+  };
+
+  instance.children = component.children.map((source) =>
+    build(source, instance)
+  );
 }
 
 /** De auto layout van een laag, zoals een instance die van zijn component erft. */
@@ -1245,6 +1280,9 @@ function cloneNode(node) {
   // Een gespiegelde instance blijft aan hetzelfde component hangen; zonder dit
   // is een geneste instance in een kopie niet meer als instance te herkennen.
   if (node.mainComponent) copy.mainComponent = node.mainComponent;
+  // Van welke laag deze kopie een spiegel is, op elke diepte; zie
+  // `syncInstance`.
+  copy._source = node;
   for (const child of node.children) copy.appendChild(cloneNode(child));
   return copy;
 }

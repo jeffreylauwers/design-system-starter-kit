@@ -1714,6 +1714,51 @@ console.log('\n=== slots bij een tweede import ===');
     `${slotOf(placed)?.children.length} items, verwacht ${designerCount}`
   );
 
+  // Een slot dieper in de variant: de navigatie van PageHeader hangt in de
+  // navbar, niet direct onder de root. De plugin verhangt het voor het
+  // herbouwen, zodat het dezelfde node blijft.
+  {
+    const headerFile = 'page-header.json';
+    const headerPayload = read(`packages/figma-sync/dist/${headerFile}`);
+    const headerSet = state.root.children
+      .find((page) => page.name === headerPayload.componentSet.page)
+      ?.children.find((node) => node.type === 'COMPONENT_SET');
+    const large = headerSet?.children.find((variant) =>
+      variant.name.startsWith(
+        'layout=default, colorScheme=default, viewport=large'
+      )
+    );
+    const deepSlot = (node) => {
+      for (const child of node?.children ?? []) {
+        if (child.type === 'SLOT' && child.name === 'primary-navigation') {
+          return child;
+        }
+        const found = deepSlot(child);
+        if (found) return found;
+      }
+      return undefined;
+    };
+    const navBefore = deepSlot(large);
+    const placedHeader = large.createInstance();
+    state.page.appendChild(placedHeader);
+    deepSlot(placedHeader)?.appendChild(figma.createFrame());
+    const headerItems = deepSlot(placedHeader)?.children.length;
+
+    await importComponentSet(headerPayload, log);
+    large.instances; // de spiegel bijwerken, zoals Figma dat vanzelf doet
+
+    check(
+      'een dieper slot blijft na een tweede import dezelfde node',
+      Boolean(navBefore) && deepSlot(large) === navBefore,
+      navBefore ? deepSlot(large)?.parent?.name : 'geen slot gevonden'
+    );
+    check(
+      'wat een designer in een dieper slot zette blijft staan',
+      deepSlot(placedHeader)?.children.length === headerItems,
+      `${deepSlot(placedHeader)?.children.length} items, verwacht ${headerItems}`
+    );
+  }
+
   // Een slot dat uit de spec verdwijnt gaat weg, met zijn property: Figma laat
   // die zelf als wees staan.
   const withoutSlot = read(`packages/figma-sync/dist/${listFile}`);

@@ -1778,11 +1778,16 @@ en daar volgt de opbouw uit:
   instance van ActionGroup als standaardinhoud. De header is bewust geen
   slot: in code zet de header de sluitknop er altijd zelf in, en een slot zou
   toelaten dat een designer die weghaalt.
-- **Dieper niet.** Bij een tweede import bouwt de plugin een variant van
-  binnen opnieuw op. Wat een designer in het slot van een instance zette
-  blijft alleen staan als het slot zelf blijft staan, en een slot in een frame
-  dat opnieuw wordt opgebouwd krijgt een ander pad. De generator weigert een
-  dieper slot daarom met een fout.
+- **Dieper wordt het element zelf het slot.** De navigatie van PageHeader
+  zit in de navbar en de masthead, en het logo in de balk: daar wordt de
+  `<ul>` of de `<div>` met `data-figma-children` het slot. Bij een tweede
+  import bouwt de plugin een variant van binnen opnieuw op; een slot blijft
+  alleen staan als het zelf blijft staan. `resetVariant` verhangt daarom elk
+  slot, op elke diepte, eerst naar de variant, net als de geneste instances,
+  en `buildContentSlot` zet het daarna weer op zijn plek. Dat Figma een
+  override aan de laag zelf koppelt en niet aan het pad, bleek bij #388: een
+  hergebruikte icoon-instance die zo verhangen wordt houdt zijn kleur. Voor
+  een slot is dat in Figma nog niet gemeten.
 - **Geen grid.** Figma weigert een slot met grid-layout, en de generator ook.
 - **Afbreken mag wel.** Een slot draagt `layoutWrap: WRAP` en de gap tussen
   de rijen (`counterAxisSpacing`), beide aan hun variable gebonden. Gemeten
