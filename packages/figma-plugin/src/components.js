@@ -597,8 +597,8 @@ function buildInstance(spec, parent, context, parentSpec) {
 /**
  * Zet de properties die de generator voor deze instance meegeeft: een ander
  * icoon via een instance swap, zoals `x` op de sluitknop van ModalDialog
- * (issue #451). De waarde is de naam van het icoon; Figma wil het id van het
- * icooncomponent.
+ * (issue #451), of een boolean uit `data-figma-properties`. Bij een icoon is de
+ * waarde de naam van het icoon; Figma wil het id van het icooncomponent.
  *
  * Na `applyOverrides`: een hergebruikte instance is daar met
  * `resetOverrides` teruggezet, en dat zet ook zijn properties terug.
@@ -613,8 +613,19 @@ function applyInstanceProperties(instance, spec, context) {
     );
     if (!key) {
       log.error(
-        `${label}: ${spec.component} heeft geen property "${name}"; het icoon ${iconName} is niet gezet. Importeer ${spec.component} opnieuw.`
+        `${label}: ${spec.component} heeft geen property "${name}"; ${iconName} is niet gezet. Importeer ${spec.component} opnieuw.`
       );
+      continue;
+    }
+    // Een boolean uit `data-figma-properties`, zoals `showIconStart` op de
+    // verwijderknop van File: die zet een laag aan of uit, geen icoon.
+    if (typeof iconName === 'boolean') {
+      if (current[key].value === iconName) continue;
+      try {
+        instance.setProperties({ [key]: iconName });
+      } catch (error) {
+        log.error(`${label}: ${iconName} niet gezet: ${error.message}`);
+      }
       continue;
     }
     const icon = context.icons.get(iconName);

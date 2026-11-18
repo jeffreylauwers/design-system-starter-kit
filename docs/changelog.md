@@ -10,6 +10,16 @@ All notable changes to this project are documented in this file.
 
 Nog niet gepubliceerde wijzigingen. Schrijf nieuwe changelog-entries hieronder; bij de volgende release wordt deze kop gepromoveerd naar het definitieve versienummer.
 
+### figma-sync: File volgt de opbouw van React
+
+De File-set is opnieuw opgebouwd, en de 15 open punten van File uit #497 zijn opgelost. De oude set toonde een leeg media-vlak, een vinkje en een verwijderknop tegelijk, en kende geen loading, uploaded of klikbare rij.
+
+- **Assen:** `status` (default, loading, uploaded, error), `actions` (none, delete, view, download) en `state` (hover en active, alleen bij view). Alleen de combinaties die React rendert: 10 varianten. De oude as `variant` heet nu `status`, en `actions` heeft andere waarden. Geplaatste instances moet een designer na de herimport nalopen.
+- **Properties:** `fileName`, `meta` (type en grootte als één tekst), `mediaIcon` (file-description of photo) en `showPreview` (een preview-laag waar een designer een image fill in zet).
+- **Instances:** de verwijder- en de downloadknop zijn Link-instances met het icoon vooraan aan (`deleteLabel` en `ctaLabel` zijn hun label), de foutmelding is een FormFieldErrorMessage-instance.
+- **Nieuw in figma-sync:** `data-figma-properties="showIconStart=true"` zet een BOOLEAN-property op een geneste instance; de plugin zet hem met `setProperties`.
+- **Bewust niet:** `loadingLabel`, `uploadedLabel` en `errorLabel` (visueel verborgen), en `ctaVariant` (zit in de as `actions`).
+
 ### figma-sync: Spinner en Logo krijgen hun eigen kleuren in Figma
 
 De cirkels van Spinner en de vlakken van Logo zijn SVG's die hun stijl uit de CSS halen. Die stijl ging niet mee naar Figma: de plugin behandelde ze als icoon, zocht ze tevergeefs in de iconset (de melding "Icoon dsn-spinner__circle staat niet op de pagina dsn/Icons") en kleurde ze in één kleur, gebonden aan de documentkleur.

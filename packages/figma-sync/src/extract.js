@@ -767,6 +767,7 @@ function domWalker([properties, hiddenClass]) {
       // "Geneste componenten" in de README.
       instance: element.dataset.figmaInstance || null,
       instanceVariant: element.dataset.figmaVariant || null,
+      instanceProperties: element.dataset.figmaProperties || null,
       // De kinderen van dit element komen in een Figma-slot, zodat een
       // designer er zelf items of opties bij zet of uit haalt. De waarde is de
       // naam van het slot. Zie "Slots" in de README.
