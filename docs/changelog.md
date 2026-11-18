@@ -10,6 +10,14 @@ All notable changes to this project are documented in this file.
 
 Nog niet gepubliceerde wijzigingen. Schrijf nieuwe changelog-entries hieronder; bij de volgende release wordt deze kop gepromoveerd naar het definitieve versienummer.
 
+### figma-sync: Spinner en Logo krijgen hun eigen kleuren in Figma
+
+De cirkels van Spinner en de vlakken van Logo zijn SVG's die hun stijl uit de CSS halen. Die stijl ging niet mee naar Figma: de plugin behandelde ze als icoon, zocht ze tevergeefs in de iconset (de melding "Icoon dsn-spinner__circle staat niet op de pagina dsn/Icons") en kleurde ze in één kleur, gebonden aan de documentkleur.
+
+- De extractor schrijft per vorm de computed stijl (vulling, lijn, lijndikte, streepjes, lijneinden) in de SVG, en geeft per vorm de kleuren en lijndikte met hun tokens mee.
+- De plugin zoekt zo'n SVG niet meer op in de iconset, en bindt per laag: bij Spinner `spinner/track-color` en `spinner/color` op de lijnen, en `spinner/stroke-width` waar de spinner op ware grootte staat; bij Logo `logo/color/primary` en `logo/color/label`.
+- In Figma veranderen Spinner, Logo, en PageHeader en PageFooter (die het logo tonen). Importeer ze opnieuw.
+
 ### figma-sync: de kleine open punten tussen manifest en Figma
 
 22 open punten uit #497 zijn opgelost; alleen File en PageHeader staan nog open.

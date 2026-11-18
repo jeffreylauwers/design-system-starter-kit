@@ -55,6 +55,10 @@ export const TRACKED_PROPERTIES = [
   // Een schaduw wordt een effect style (één token voor de hele waarde) of
   // losse effects met per veld een binding; zie effects.js.
   'box-shadow',
+  // De vormen in een SVG die geen icoon is, zoals de cirkels van Spinner.
+  'fill',
+  'stroke',
+  'stroke-width',
 ];
 
 /**
@@ -73,6 +77,9 @@ export function createTokenReader(trackedProperties) {
     'font-size',
     'font-weight',
     'line-height',
+    'fill',
+    'stroke',
+    'stroke-width',
   ]);
 
   const BORDER_STYLES = new Set([

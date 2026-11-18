@@ -120,6 +120,21 @@ const TEXT_FIELDS = [
   { field: 'fontWeight', property: 'font-weight', kind: 'number' },
 ];
 
+/**
+ * Een vorm in een SVG die geen icoon is (de cirkels van Spinner). Een `fill:
+ * none` komt uit geen token, en dat is geen gemis.
+ */
+const SHAPE_FIELDS = [
+  { field: 'fills', property: 'fill', kind: 'paint', optional: true },
+  { field: 'strokes', property: 'stroke', kind: 'paint' },
+  {
+    field: 'strokeWeight',
+    property: 'stroke-width',
+    kind: 'number',
+    optional: true,
+  },
+];
+
 const VECTOR_FIELDS = [
   { field: 'fills', property: 'color', kind: 'paint', materialise: true },
   ...sizeFields(),
@@ -269,9 +284,14 @@ export function bindingsFor(spec, sources, index, report) {
   const fields =
     spec.type === 'TEXT'
       ? TEXT_FIELDS
-      : spec.type === 'VECTOR'
-        ? VECTOR_FIELDS
-        : [...FRAME_FIELDS, ...strokeFieldsFor(spec)];
+      : spec.type === 'SHAPE'
+        ? SHAPE_FIELDS
+        : spec.type === 'VECTOR'
+          ? // Een SVG met eigen vormen draagt zijn kleuren per vorm.
+            spec.shapes
+            ? sizeFields()
+            : VECTOR_FIELDS
+          : [...FRAME_FIELDS, ...strokeFieldsFor(spec)];
 
   const bound = {};
 

@@ -4,7 +4,9 @@
  * De enige component in deze reeks met een eigen SVG die geen icoon uit de
  * assets-map is: twee cirkels waarvan de ene een `stroke-dasharray` heeft.
  * Dat is precies wat de spinner zijn vorm geeft, dus hij gaat als markup mee
- * in plaats van via de icoonhelper.
+ * in plaats van via de icoonhelper. De extractor neemt de stijl uit
+ * `spinner.css` per cirkel mee, en de plugin bindt de lijnkleuren aan hun
+ * tokens; zie "Een SVG die geen icoon is" in de README.
  *
  * De rotatie zelf komt niet mee. De meetpagina zet animaties uit, want
  * `getComputedStyle` leest tijdens een animatie de tussenwaarde; in Figma

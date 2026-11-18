@@ -226,6 +226,69 @@ function domWalker([properties, hiddenClass]) {
     return 'none';
   };
 
+  // Een SVG-vorm die zijn stijl uit de CSS krijgt. Wat er per vorm meegaat:
+  // de presentatie-eigenschappen die de vorm tekenen.
+  const SHAPE_SELECTOR = 'circle, ellipse, line, path, polygon, polyline, rect';
+  const SHAPE_STYLES = [
+    ['fill', 'fill'],
+    ['fillOpacity', 'fill-opacity'],
+    ['stroke', 'stroke'],
+    ['strokeOpacity', 'stroke-opacity'],
+    ['strokeWidth', 'stroke-width'],
+    ['strokeDasharray', 'stroke-dasharray'],
+    ['strokeDashoffset', 'stroke-dashoffset'],
+    ['strokeLinecap', 'stroke-linecap'],
+    ['strokeLinejoin', 'stroke-linejoin'],
+  ];
+  // Lengtes staan in de computed style in px, en in een SVG-attribuut zijn
+  // dat gebruikerseenheden van de viewBox: `2px` wordt `2`.
+  const userUnits = (value) =>
+    String(value).replace(/px/g, '').replace(/,\s*/g, ' ');
+
+  /**
+   * De vormen van een SVG die geen icoon is, met hun stijl uit de CSS.
+   *
+   * Een icoon draagt zijn tekening in de markup en neemt zijn kleur van
+   * `currentColor`. De cirkels van Spinner niet: kleur, lijndikte en streepjes
+   * staan in `spinner.css`, en `outerHTML` heeft daar niets van. Dit schrijft
+   * die stijl als attributen in een kopie van de SVG, met de gemeten maat als
+   * `width` en `height`, zodat Figma de lijnen meeschaalt zoals de browser.
+   *
+   * Per vorm gaan ook de kleuren en de lijndikte mee, met hun tokens, zodat de
+   * generator de strokes per vorm kan binden. De lijndikte is wat er in beeld
+   * staat: de waarde uit de CSS keer de schaal van de viewBox.
+   */
+  const readShapes = (svg) => {
+    const shapes = Array.from(svg.querySelectorAll(SHAPE_SELECTOR));
+    if (!shapes.length) return null;
+
+    const rect = svg.getBoundingClientRect();
+    const copy = svg.cloneNode(true);
+    copy.setAttribute('width', String(Math.round(rect.width * 100) / 100));
+    copy.setAttribute('height', String(Math.round(rect.height * 100) / 100));
+    const copies = Array.from(copy.querySelectorAll(SHAPE_SELECTOR));
+
+    const measured = shapes.map((shape, index) => {
+      const computed = getComputedStyle(shape);
+      for (const [property, attribute] of SHAPE_STYLES) {
+        copies[index].setAttribute(attribute, userUnits(computed[property]));
+      }
+      const scale = shape.getScreenCTM()?.a ?? 1;
+      return {
+        name: shape.classList[0] ?? shape.tagName.toLowerCase(),
+        fill: computed.fill,
+        stroke: computed.stroke,
+        strokeWeight:
+          Math.round(Number.parseFloat(computed.strokeWidth) * scale * 100) /
+          100,
+        tokens: window.__dsnReadTokenSources(shape),
+      };
+    });
+
+    // Pas na het meten: de attributen staan dan op de kopie.
+    return { svg: copy.outerHTML, shapes: measured };
+  };
+
   const readStyles = (element, pseudo = null) => {
     const computed = getComputedStyle(element, pseudo);
     const result = {};
@@ -722,6 +785,15 @@ function domWalker([properties, hiddenClass]) {
       // Zonder naam heet elke icoonlaag in Figma "icon" en is een designer de
       // rest van het bestand aan het opentrekken om te zien wélk icoon het is.
       node.iconName = element.dataset.icon || null;
+      // Een SVG die geen icoon is (de cirkels van Spinner) krijgt zijn stijl
+      // uit de CSS, en die gaat niet mee in `outerHTML`. Zie `readShapes`.
+      if (!node.iconName) {
+        const shapes = readShapes(element);
+        if (shapes) {
+          node.shapes = shapes.shapes;
+          node.svg = shapes.svg;
+        }
+      }
       return node;
     }
 
