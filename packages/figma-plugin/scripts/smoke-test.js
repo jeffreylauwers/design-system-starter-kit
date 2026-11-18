@@ -38,6 +38,24 @@ function check(label, condition, detail) {
   if (!condition) process.exitCode = 1;
 }
 
+/** De eerste laag met een vulling, in deze lagen of dieper. */
+function firstPainted(nodes) {
+  for (const node of nodes) {
+    if (node.fills?.length) return node;
+    const found = firstPainted(node.children ?? []);
+    if (found) return found;
+  }
+  return undefined;
+}
+
+/** Alle INSTANCE-specs in een component set, ook genest. */
+function instanceSpecsOf(value) {
+  if (Array.isArray(value)) return value.flatMap(instanceSpecsOf);
+  if (!value || typeof value !== 'object') return [];
+  const own = value.type === 'INSTANCE' ? [value] : [];
+  return [...own, ...Object.values(value).flatMap(instanceSpecsOf)];
+}
+
 function read(relative) {
   return JSON.parse(fs.readFileSync(path.join(monorepoRoot, relative), 'utf8'));
 }
@@ -1184,9 +1202,20 @@ for (const file of componentFiles) {
         for (const [field, reference] of Object.entries(
           override.boundVariables ?? {}
         )) {
+          // Bij een icoon zit de kleur op de vectoren erin, niet op de
+          // instance zelf; die moet leeg blijven.
+          const painted =
+            override.icon && field === 'fills'
+              ? firstPainted(layer.children ?? [])
+              : layer;
+          if (override.icon && field === 'fills' && layer.fills?.length) {
+            wrongOverrides.push(
+              `${spec.name} > ${override.path}: het icoon zelf heeft een vulling`
+            );
+          }
           const alias =
             field === 'fills' || field === 'strokes'
-              ? layer[field]?.[0]?.boundVariables?.color
+              ? painted?.[field]?.[0]?.boundVariables?.color
               : layer.boundVariables?.[field];
           const variable = alias && byId.get(alias.id);
           if (variable?.name !== reference.name) {
@@ -2054,10 +2083,24 @@ check(
 // Deze regel wordt rood zodra `resetVariant` de icoon-instances weer weggooit
 // in plaats van ze te hergebruiken. Dat is precies wat de mock hiervoor niet
 // kon zien.
+// Een host mag een icoon in een geplaatste Button bewust een andere kleur
+// geven, zoals de knoppen van een inverse PageHeader. Die lagen tellen in de
+// meting als "anders dan de variant", en horen dat ook te doen: zoveel als er
+// zulke overrides in de specs staan, niet meer.
+const hostIconColors = fs
+  .readdirSync(path.join(monorepoRoot, 'packages/figma-sync/dist'))
+  .filter((file) => file.endsWith('.json') && file !== 'icons.json')
+  .map((file) => read(`packages/figma-sync/dist/${file}`))
+  .flatMap((spec) => instanceSpecsOf(spec.componentSet))
+  .filter((instance) => instance.component === 'dsn-button')
+  .flatMap((instance) => instance.overrides ?? [])
+  .filter((override) => override.icon && override.boundVariables?.fills).length;
 check(
   'op een geplaatste instance draagt elke laag de kleur uit de spec',
-  diagnosis?.placed > 0 && diagnosis.before.instanceWrong === 0,
-  `${diagnosis?.placed} instances gemeten, ${diagnosis?.before.instanceWrong} lagen fout (${diagnosis?.before.iconInstanceWrong} icoon, ${diagnosis?.before.textInstanceWrong} tekst)`
+  diagnosis?.placed > 0 &&
+    diagnosis.before.iconInstanceWrong === hostIconColors &&
+    diagnosis.before.textInstanceWrong === 0,
+  `${diagnosis?.placed} instances gemeten, ${diagnosis?.before.instanceWrong} lagen anders dan de variant (${diagnosis?.before.iconInstanceWrong} icoon, waarvan ${hostIconColors} bewust door de host; ${diagnosis?.before.textInstanceWrong} tekst)`
 );
 
 // =============================================================================

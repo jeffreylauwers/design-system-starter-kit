@@ -271,6 +271,23 @@ is in Figma geen laag, maar de rij bleef wel staan als lege track. Alleen aan
 het eind: een lege rij tussen twee gevulde in houdt de nummering van de cellen
 overeind.
 
+**Een grid van één rij wordt een rij.** Een grid met één rij, één kind per
+kolom en kolommen van `auto` en `fr` is in Figma handiger als horizontale auto
+layout dan als grid: de balk van PageHeader (`1fr auto 1fr`), de compact-layout
+(`auto 1fr auto`) en File (`48px 1fr auto`). Een `fr`-kolom wordt FILL, een
+`auto`-kolom hugt zijn inhoud, de gap wordt `itemSpacing` (met zijn token), en
+`align-items` wordt de uitlijning op de kruisas. In een Figma-grid stonden de
+kinderen bovenin hun cel: het logo van PageHeader hing daardoor te hoog.
+
+Welke kolom `fr` is, leest `rowGridLayoutFrom` uit de geschreven
+`grid-template-columns` (de token-lezer kent die declaratie). De tweede meting
+ziet het niet als de rij al tegen zijn `max-inline-size` aan loopt, zoals de
+compact-layout op 1440px. Alleen als het niets verandert: geen kind met een
+eigen cel, en de `fr`-kolommen even breed (Figma kent geen `2fr`). Een lege
+`auto`-kolom achteraan mag: die is 0 breed en van hem blijft alleen de gap
+over, en die komt bij de padding. Zo blijft een File zonder actie dezelfde rij
+als een File met; zijn padding rechts hangt dan niet meer aan het token.
+
 **Figma kent geen subgrid.** Een rij die in CSS de kolommen van zijn ouder
 overneemt (`grid-template-columns: subgrid`, zoals de rij van DataList in de
 brede weergave) geeft uit de browser geen pixelmaten terug maar het woord
@@ -643,6 +660,12 @@ absoluut gepositioneerde kinderen, en lag de rest op 0,0: bij een FormField
 met beschrijving stonden het label, de beschrijving en het veld over elkaar. Dat gebeurt bijvoorbeeld bij de
 `invalid`-variant van FormField, waar de marge onder het label verandert zodra
 er een beschrijving achter staat.
+
+Staan alle kinderen in het midden, met evenveel ruimte links als rechts, dan
+centreert het frame ze (`counterAxisAlignItems: CENTER`). Zo centreert CSS een
+blok met een maximale breedte: `margin-inline: auto`, zoals de inner van de
+masthead, de navbar en de compact-layout van PageHeader, en de inner van
+PageFooter. Zonder dit stonden ze links.
 
 Eén ding blijft daarbij liggen: de ruimte tussen blokken komt uit de marges van
 de kinderen en niet uit een `gap`, en de binder leest alleen gaps. De waarde

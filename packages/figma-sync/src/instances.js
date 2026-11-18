@@ -326,6 +326,10 @@ function collectDifferences(
   ) {
     into.push({
       path: nodePath,
+      // Een icoon is in Figma een instance met vectoren erin; zijn kleur hoort
+      // op die vectoren en niet op de instance zelf. Zie `applyOverrides` in
+      // de plugin.
+      ...(target.type === 'VECTOR' ? { icon: true } : {}),
       ...fields,
       ...(Object.keys(bindings).length ? { boundVariables: bindings } : {}),
       ...(unbind.length ? { unbind } : {}),

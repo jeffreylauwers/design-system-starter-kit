@@ -20,6 +20,9 @@ De laatste 11 open punten uit #497: er staan geen open Figma-bindingen meer in d
 - Bewust niet in Figma, met de reden in de manifest: `sticky` (scrollgedrag) en `menuButtonBadge` (de badge staat in het label van een Button).
 - Een SearchInput kan nu in elke set een instance zijn: de host voegt veld en icoon samen zoals de SearchInput-set zelf.
 - Een binding met `instance` kan een `layer` hebben: de `data-figma-slot` van de juiste instance als er meer van hetzelfde component zijn.
+- Een grid van één rij met kolommen van `auto` en `fr` wordt horizontale auto layout: de balk en de compact-layout van PageHeader, en File. Het logo van PageHeader staat daardoor verticaal in het midden.
+- Een blok dat in CSS met `margin-inline: auto` gecentreerd staat, staat in Figma ook in het midden: de masthead, de navbar en de compact-layout van PageHeader, en PageFooter.
+- De kleur van een icoon in een geneste instance (de knoppen van een inverse PageHeader) gaat op de vectoren van het icoon, niet meer als vulling op de icoon-instance zelf. Dat gaf een wit vlak achter het icoon.
 
 ### figma-sync: File volgt de opbouw van React
 

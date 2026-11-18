@@ -567,6 +567,8 @@ function buildInstance(spec, parent, context, parentSpec) {
     applyBindings,
     applyEffects,
     applyPaints,
+    paintsForVector,
+    recolorVectors,
     fontFor: (override, current) =>
       context.fonts.get(`${override.fontFamily}|${fontFor(override).style}`) ??
       current,

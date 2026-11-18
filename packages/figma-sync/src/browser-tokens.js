@@ -55,6 +55,9 @@ export const TRACKED_PROPERTIES = [
   // Een schaduw wordt een effect style (één token voor de hele waarde) of
   // losse effects met per veld een binding; zie effects.js.
   'box-shadow',
+  // Niet om te binden, maar om `fr` te zien: computed is elke kolom een
+  // pixelmaat. Zie `rowGridLayoutFrom` in to-figma.js.
+  'grid-template-columns',
   // De vormen in een SVG die geen icoon is, zoals de cirkels van Spinner.
   'fill',
   'stroke',

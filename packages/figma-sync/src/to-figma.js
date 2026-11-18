@@ -239,6 +239,95 @@ function gridLayoutFrom(styles, wideStyles, warnings, pathLabel) {
   };
 }
 
+/**
+ * Een grid van één rij, met één kind per kolom, als horizontale auto layout.
+ *
+ * Zo'n grid is in CSS een rij met kolommen van `auto` en `fr`: de balk van
+ * PageHeader (`1fr auto 1fr`, het logo in het midden) en de compact-layout
+ * (`auto 1fr auto`). In Figma is dat met auto layout te maken, en dat is daar
+ * handiger dan een grid: een kolom van `fr` wordt FILL, een kolom van `auto`
+ * hugt zijn inhoud, en de kinderen staan op hun kruisas uitgelijnd zoals
+ * `align-items` het zegt. In een Figma-grid staan ze bovenin hun cel.
+ *
+ * Alleen als dat niets verandert: geen kind met een eigen cel of span, en de
+ * `fr`-kolommen even breed. Figma verdeelt de ruimte gelijk over FILL-kinderen
+ * en kent geen `2fr`.
+ */
+function rowGridLayoutFrom(node, styles, wideStyles) {
+  if (/^subgrid\b/.test(styles.gridTemplateColumns ?? '')) return null;
+  if (trackSizes(styles.gridTemplateRows ?? '').length > 1) return null;
+
+  const columns =
+    authoredTracks(node.tokens?.['grid-template-columns']?.value) ??
+    trackSizesFrom(styles.gridTemplateColumns, wideStyles?.gridTemplateColumns);
+  const children = (node.children ?? []).filter(
+    (child) =>
+      child.styles &&
+      child.styles.position !== 'absolute' &&
+      child.styles.position !== 'fixed'
+  );
+  // Minder kinderen dan kolommen kan, als de lege kolommen achteraan `auto`
+  // zijn: zo'n kolom is 0 breed, en van hem blijft in CSS alleen de gap over.
+  // Die komt bij de padding aan het eind. Zo blijft een File zonder actie
+  // dezelfde rij als een File met.
+  if (!children.length || children.length > columns.length) return null;
+  const empty = columns.slice(children.length);
+  if (empty.some((track) => track.type === 'FLEX')) return null;
+  if (
+    children.some(
+      (child) =>
+        child.styles.gridColumnStart !== 'auto' ||
+        child.styles.gridRowStart !== 'auto'
+    )
+  ) {
+    return null;
+  }
+  if (!columns.some((track) => track.type === 'FLEX')) return null;
+
+  const flexWidths = children
+    .filter((_, index) => columns[index].type === 'FLEX')
+    .map((child) => child.rect.width);
+  if (Math.max(...flexWidths) - Math.min(...flexWidths) > STACK_TOLERANCE) {
+    return null;
+  }
+
+  children.forEach((child, index) => {
+    child.gridTrack = columns[index].type;
+  });
+
+  const stretch =
+    styles.alignItems === 'normal' || styles.alignItems === 'stretch';
+  const gap = px(styles.columnGap ?? styles.gap, 0);
+  const padding = paddingFrom(styles);
+  if (empty.length) padding.paddingRight += gap * empty.length;
+  return {
+    layoutMode: 'HORIZONTAL',
+    layoutWrap: 'NO_WRAP',
+    itemSpacing: gap,
+    itemReverseZIndex: false,
+    ...padding,
+    primaryAxisAlignItems: 'MIN',
+    counterAxisAlignItems: COUNTER_AXIS_ALIGN[styles.alignItems] ?? 'MIN',
+    stretchChildren: stretch,
+    reversed: false,
+  };
+}
+
+/**
+ * De kolommen zoals de CSS ze schrijft: `auto 1fr auto`. Alleen een lijst van
+ * losse maten; met `repeat()`, `minmax()` of een `var()` is uit de tekst niet
+ * af te lezen wat er gerenderd wordt, en geldt de meting.
+ */
+function authoredTracks(template) {
+  if (!template || !/^[\w\s.%-]+$/.test(template.trim())) return null;
+  const tracks = template.trim().split(/\s+/);
+  const fractions = tracks.filter((track) => /^[\d.]+fr$/.test(track));
+  if (new Set(fractions).size > 1) return null;
+  return tracks.map((track) =>
+    /fr$/.test(track) ? { type: 'FLEX', value: 1 } : { type: 'HUG' }
+  );
+}
+
 /** De vier paddings als Figma ze verwacht. */
 function paddingFrom(styles) {
   return {
@@ -312,7 +401,41 @@ function blockLayoutFrom(node, styles, warnings, pathLabel) {
     );
   }
 
-  return { ...base, layoutMode, itemSpacing: gap };
+  return {
+    ...base,
+    layoutMode,
+    itemSpacing: gap,
+    ...(layoutMode === 'VERTICAL' && centersChildren(node, styles)
+      ? { counterAxisAlignItems: 'CENTER' }
+      : {}),
+  };
+}
+
+/**
+ * Staan alle kinderen van dit blok horizontaal in het midden?
+ *
+ * Zo centreert CSS een blok met een maximale breedte: `margin-inline: auto`,
+ * zoals de inner van de masthead en de navbar van PageHeader. In Figma is dat
+ * de uitlijning CENTER op de ouder. Een kind dat de hele breedte vult staat
+ * ook in het midden; minstens één kind moet er echt ruimte naast hebben.
+ */
+function centersChildren(node, styles) {
+  const left =
+    node.rect.x + px(styles.borderLeftWidth, 0) + px(styles.paddingLeft, 0);
+  const right =
+    node.rect.x +
+    node.rect.width -
+    px(styles.borderRightWidth, 0) -
+    px(styles.paddingRight, 0);
+  let indented = false;
+  for (const child of node.children ?? []) {
+    if (!child.rect) continue;
+    const before = child.rect.x - left;
+    const after = right - (child.rect.x + child.rect.width);
+    if (Math.abs(before - after) > 1) return false;
+    if (before > 1) indented = true;
+  }
+  return indented;
 }
 
 /**
@@ -355,7 +478,10 @@ function stackSpacing(children, direction) {
 /** Bouwt de auto layout-eigenschappen uit de flexbox computed styles. */
 function autoLayoutFrom(node, styles, wideStyles, warnings, pathLabel) {
   if (styles.display === 'grid' || styles.display === 'inline-grid') {
-    return gridLayoutFrom(styles, wideStyles, warnings, pathLabel);
+    return (
+      rowGridLayoutFrom(node, styles, wideStyles) ??
+      gridLayoutFrom(styles, wideStyles, warnings, pathLabel)
+    );
   }
 
   const isFlex = styles.display === 'flex' || styles.display === 'inline-flex';
@@ -754,6 +880,22 @@ function applyChildPlacement(
     Math.abs(child.rect.width - parentContentWidth) < 1
   ) {
     converted.layoutSizingHorizontal = 'FILL';
+  }
+
+  // Een kind in een `fr`-kolom van een grid dat een rij werd; zie
+  // `rowGridLayoutFrom`.
+  if (
+    !outOfFlow &&
+    parentLayout.layoutMode === 'HORIZONTAL' &&
+    child.gridTrack
+  ) {
+    // Een `auto`-kolom is zo breed als zijn inhoud: HUG, als de laag zelf
+    // auto layout heeft. Anders houdt hij zijn gemeten breedte.
+    if (child.gridTrack === 'FLEX') {
+      converted.layoutSizingHorizontal = 'FILL';
+    } else if (converted.layoutMode && converted.layoutMode !== 'NONE') {
+      converted.layoutSizingHorizontal = 'HUG';
+    }
   }
 
   // `flex-grow` in een rij is in Figma FILL: het kind neemt de ruimte die
