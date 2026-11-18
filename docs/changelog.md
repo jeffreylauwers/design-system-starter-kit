@@ -20,6 +20,13 @@ De File-set is opnieuw opgebouwd, en de 15 open punten van File uit #497 zijn op
 - **Nieuw in figma-sync:** `data-figma-properties="showIconStart=true"` zet een BOOLEAN-property op een geneste instance; de plugin zet hem met `setProperties`.
 - **Bewust niet:** `loadingLabel`, `uploadedLabel` en `errorLabel` (visueel verborgen), en `ctaVariant` (zit in de as `actions`).
 
+### figma-plugin: overrides op geneste lagen overleven een herimport
+
+Een set die een andere als instance gebruikt, legt overrides op de lagen van die instance: het label "Sluiten" op de knop van een Drawer, de labels van de Link in File, de nummers in een OrderedList. Na een nieuwe import van de doelset (`button.json`, `link.json`) waren die weg, omdat de plugin de lagen in elke variant opnieuw aanmaakte. Figma koppelt een override aan de laag zelf.
+
+- De plugin hergebruikt bij een herimport elk frame en elke tekstlaag op dezelfde plek in de variant, net als al gebeurde met geneste instances, slots en de tekstlaag van Heading. Een hergebruikte laag wordt eerst teruggezet op de stand van een verse laag.
+- De smoke test controleert na een nieuwe import van elke doelset niet alleen de sizing, maar ook de tekst, de gebonden variables en de randen per zijde van de geneste lagen. Zonder het hergebruik valt die controle 11 keer om.
+
 ### figma-sync: Spinner en Logo krijgen hun eigen kleuren in Figma
 
 De cirkels van Spinner en de vlakken van Logo zijn SVG's die hun stijl uit de CSS halen. Die stijl ging niet mee naar Figma: de plugin behandelde ze als icoon, zocht ze tevergeefs in de iconset (de melding "Icoon dsn-spinner__circle staat niet op de pagina dsn/Icons") en kleurde ze in één kleur, gebonden aan de documentkleur.

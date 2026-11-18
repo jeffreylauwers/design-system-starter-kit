@@ -243,6 +243,103 @@ function rejoinFlow(node) {
 }
 
 /**
+ * De frames en tekstlagen van een variant, op hun pad van indexen.
+ *
+ * Bij een tweede import bouwt de plugin een variant van binnen opnieuw op.
+ * Een laag die daarbij nieuw wordt gemaakt, verliest elke override die een
+ * andere set op hem had gelegd: Figma koppelt een override aan de laag zelf.
+ * Zo viel de tekst van een Heading in een HeadingGroup terug op HUG, en
+ * verloor een MenuLink in PageHeader zijn indicator onderaan na een nieuwe
+ * import van menu-link.json. Daarom worden de lagen eerst onthouden en bij
+ * het bouwen op dezelfde plek hergebruikt; zie `takeLayer`.
+ *
+ * Niet binnen een instance (die lagen zijn van zijn eigen component) en niet
+ * binnen een slot (dat blijft zelf staan, en zijn inhoud is van de designer).
+ */
+function collectLayers(component) {
+  const layers = new Map();
+  const walk = (node, path) => {
+    (node.children ?? []).forEach((child, index) => {
+      const childPath = [...path, index];
+      if (child.type === 'INSTANCE' || child.type === 'SLOT') return;
+      if (child.type !== 'FRAME' && child.type !== 'TEXT') return;
+      layers.set(childPath.join('/'), child);
+      if (child.type === 'FRAME') walk(child, childPath);
+    });
+  };
+  walk(component, []);
+  return layers;
+}
+
+/**
+ * De laag van de vorige import op deze plek, als hij nog past.
+ *
+ * Passen is: hetzelfde type, en bij een frame dezelfde naam. Zo komt een
+ * laag die in de nieuwe spec iets anders voorstelt niet op de verkeerde plek
+ * terecht; die wordt gewoon opnieuw gemaakt.
+ */
+function takeLayer(context, type, name) {
+  const key = (context.layerPath ?? []).join('/');
+  const layer = context.reusableLayers?.get(key);
+  if (!layer || layer.type !== type) return null;
+  if (type === 'FRAME' && layer.name !== name) return null;
+  context.reusableLayers.delete(key);
+  return layer;
+}
+
+/**
+ * Zet een hergebruikte laag terug op de stand van een verse laag.
+ *
+ * Wat de bouw alleen zet als de spec het noemt, moet hier weg; anders houdt
+ * de laag een rand, een radius of een verborgen stand uit de vorige import.
+ * Dezelfde lijst als voor de variant zelf in `resetVariant`.
+ */
+function resetLayer(layer) {
+  clearBoundVariables(layer);
+  layer.componentPropertyReferences = {};
+  layer.visible = true;
+  if (layer.rotation) layer.rotation = 0;
+  if (layer.type === 'TEXT') {
+    layer.textDecoration = 'NONE';
+    layer.textCase = 'ORIGINAL';
+    return;
+  }
+  for (const field of ['minWidth', 'minHeight']) {
+    try {
+      layer[field] = null;
+    } catch {
+      // Zonder auto layout is er ook geen minimum-maat.
+    }
+  }
+  layer.strokes = [];
+  layer.dashPattern = [];
+  layer.cornerRadius = 0;
+  layer.effects = [];
+  layer.opacity = 1;
+  layer.clipsContent = true;
+}
+
+/**
+ * Hangt een hergebruikte laag op zijn nieuwe plek in de stroom.
+ *
+ * Wat er nog in een frame hangt en niet hergebruikt wordt, gaat eruit; de
+ * bouw zet zijn kinderen opnieuw neer.
+ */
+function placeReused(layer, parent, context) {
+  parent.appendChild(layer);
+  rejoinFlow(layer);
+  resetLayer(layer);
+  const kept = new Set([
+    ...(context.reusableLayers?.values() ?? []),
+    ...(context.pooled ?? []),
+    ...(context.keptSlots ?? []),
+  ]);
+  for (const child of [...(layer.children ?? [])]) {
+    if (!kept.has(child)) child.remove();
+  }
+}
+
+/**
  * Minimum-maten uit de CSS.
  *
  * Een HUG-frame rekent zijn maat opnieuw uit content plus padding, dus zonder
@@ -660,8 +757,10 @@ function buildNode(spec, parent, context, parentSpec) {
     // tweede import; zie `resetVariant`.
     const reused = context.reusableText;
     context.reusableText = null;
-    const text = reused ?? figma.createText();
-    if (!reused) parent.appendChild(text);
+    const layer = reused ? null : takeLayer(context, 'TEXT');
+    const text = reused ?? layer ?? figma.createText();
+    if (layer) placeReused(layer, parent, context);
+    else if (!reused) parent.appendChild(text);
 
     const key = `${spec.fontFamily}|${fontFor(spec).style}`;
     text.fontName = fonts.get(key) ?? FALLBACK_FONT;
@@ -731,8 +830,10 @@ function buildNode(spec, parent, context, parentSpec) {
     return node;
   }
 
-  const frame = figma.createFrame();
-  parent.appendChild(frame);
+  const layer = takeLayer(context, 'FRAME', spec.name ?? 'Frame');
+  const frame = layer ?? figma.createFrame();
+  if (layer) placeReused(layer, parent, context);
+  else parent.appendChild(frame);
   applyFrame(frame, spec, context);
 
   applyPlacement(frame, spec, log, parentSpec, context.pinned);
@@ -887,9 +988,13 @@ function applyFrame(frame, spec, context, name = spec.name ?? 'Frame') {
   applyMinimumSizes(frame, spec, context.log);
   applyBindings(frame, spec, context);
 
-  for (const child of spec.children ?? []) {
+  // Het pad naar elk kind, voor `takeLayer`.
+  const path = context.layerPath ?? [];
+  (spec.children ?? []).forEach((child, index) => {
+    context.layerPath = [...path, index];
     buildNode(child, frame, context, spec);
-  }
+  });
+  context.layerPath = path;
 }
 
 /**
@@ -953,6 +1058,17 @@ function clearBoundVariables(node) {
 async function resetVariant(component, context, { keepText = false } = {}) {
   context.reusable = new Map();
   context.reusableText = null;
+
+  // Elk frame en elke tekstlaag op zijn plek in de variant, vóórdat er iets
+  // verhuist; zie `takeLayer`. Een component dat tot één tekstlaag inklapt
+  // heeft daar `keepText` voor.
+  const layers = keepText ? new Map() : collectLayers(component);
+  context.reusableLayers = layers;
+  const keptLayers = new Set(layers.values());
+  for (const layer of keptLayers) {
+    if (layer.parent !== component) component.appendChild(layer);
+    stepAside(layer, context.log);
+  }
 
   // Een slot blijft staan; zie `buildContentSlot`. Het hangt altijd direct
   // onder de variant (de generator weigert het dieper), dus hier zoeken is
@@ -1023,7 +1139,9 @@ async function resetVariant(component, context, { keepText = false } = {}) {
   context.pooled = pooled;
 
   for (const child of [...component.children]) {
-    if (pooled.has(child) || keptSlots.has(child)) continue;
+    if (pooled.has(child) || keptSlots.has(child) || keptLayers.has(child)) {
+      continue;
+    }
     if (child !== context.reusableText) child.remove();
   }
 
@@ -1792,6 +1910,7 @@ export async function importComponentSet(payload, log, options = {}) {
       // variant in deze belanden.
       context.reusable = new Map();
       context.reusableText = null;
+      context.reusableLayers = new Map();
       context.reusableSlots = new Map();
       context.pooled = new Set();
       context.keptSlots = new Set();
@@ -1810,6 +1929,7 @@ export async function importComponentSet(payload, log, options = {}) {
     // een laag terug via zijn pad vanaf de variant, en dat pad is er niet
     // zonder te weten bij welke variant een laag hoort.
     const checksBefore = context.colorChecks.length;
+    context.layerPath = [];
 
     // Het root-element wórdt het component. Een extra frame eromheen zou een
     // lege laag met dezelfde auto layout toevoegen, en dat is precies de
@@ -1839,6 +1959,8 @@ export async function importComponentSet(payload, log, options = {}) {
 
     // Wat er niet uit de pool is opgehaald hoort niet meer bij deze variant.
     dropUnusedIcons(context);
+    for (const layer of context.reusableLayers?.values() ?? []) layer.remove();
+    context.reusableLayers = new Map();
     for (const [name, slot] of context.reusableSlots) {
       slot.remove();
       context.staleSlots.add(name);
