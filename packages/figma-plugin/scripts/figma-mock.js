@@ -1522,10 +1522,15 @@ export const figma = {
     // De echte API levert vector-kinderen op. Die zijn nodig om te kunnen
     // controleren of de icoonkleur daadwerkelijk wordt doorgezet: in de
     // browser erft een icoon `currentColor`, in Figma wordt het zwart.
-    const vector = new Node('VECTOR');
-    vector.fills = [];
-    vector.strokes = [{ type: 'SOLID', color: { r: 0, g: 0, b: 0 } }];
-    node.appendChild(vector);
+    // Eén laag per vorm, zoals in Figma; een icoon met één pad levert er één.
+    const shapes =
+      svg.match(/<(circle|ellipse|line|path|polygon|polyline|rect)\b/g) ?? [];
+    for (let index = 0; index < Math.max(shapes.length, 1); index += 1) {
+      const vector = new Node('VECTOR');
+      vector.fills = [];
+      vector.strokes = [{ type: 'SOLID', color: { r: 0, g: 0, b: 0 } }];
+      node.appendChild(vector);
+    }
     return node;
   },
   /**

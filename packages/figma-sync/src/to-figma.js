@@ -650,6 +650,46 @@ function textStyleFrom(styles, sources, index) {
   };
 }
 
+/**
+ * Zet de kleuren in de attributen van een SVG om naar hex.
+ *
+ * De extractor schrijft de computed kleur in de SVG, en die is in dit design
+ * system vaak `oklch()`. Of `figma.createNodeFromSvg` dat leest is niet
+ * zeker; hex leest elke SVG-parser. Een doorzichtige kleur zet zijn alpha in
+ * het bijbehorende `-opacity`-attribuut.
+ */
+function svgWithHexColors(svg) {
+  const hex = (channel) =>
+    Math.round(channel * 255)
+      .toString(16)
+      .padStart(2, '0');
+
+  return svg.replace(/<[^>]+>/g, (tag) => {
+    let result = tag;
+    for (const attribute of ['fill', 'stroke']) {
+      const pattern = new RegExp(`\\s${attribute}="([^"]+)"`);
+      const value = result.match(pattern)?.[1];
+      const color = value && value !== 'none' ? parseCssColor(value) : null;
+      if (!color) continue;
+      result = result.replace(
+        pattern,
+        ` ${attribute}="#${hex(color.r)}${hex(color.g)}${hex(color.b)}"`
+      );
+      if (color.a === undefined || color.a >= 1) continue;
+      const opacity = new RegExp(`\\s${attribute}-opacity="([^"]+)"`);
+      const current = Number(result.match(opacity)?.[1] ?? 1);
+      const combined = Math.round(current * color.a * 1000) / 1000;
+      result = opacity.test(result)
+        ? result.replace(opacity, ` ${attribute}-opacity="${combined}"`)
+        : result.replace(
+            /\s*\/?>$/,
+            (end) => ` ${attribute}-opacity="${combined}"${end}`
+          );
+    }
+    return result;
+  });
+}
+
 function paintFrom(cssColor) {
   const color = parseCssColor(cssColor);
   if (!color || color.a === 0) return [];
@@ -1043,9 +1083,27 @@ function convertElement(
       width: node.rect.width,
       height: node.rect.height,
       // De plugin importeert dit met figma.createNodeFromSvg().
-      svg: node.svg,
-      fills: paintFrom(node.styles.color),
+      svg: node.shapes ? svgWithHexColors(node.svg) : node.svg,
     };
+    if (node.shapes) {
+      // Geen icoon: de kleuren en lijndiktes zitten per vorm, elk met een
+      // eigen token. De plugin zoekt zo'n SVG niet op in de iconset.
+      vector.shapes = node.shapes.map((shape) => {
+        const strokes = paintFrom(shape.stroke);
+        const spec = {
+          type: 'SHAPE',
+          name: shape.name,
+          fills: paintFrom(shape.fill),
+          strokes,
+          // Zonder lijn is er geen dikte om te zetten of te binden.
+          ...(strokes.length ? { strokeWeight: shape.strokeWeight } : {}),
+        };
+        spec.boundVariables = bindVariables(spec, shape.tokens, bindings);
+        return spec;
+      });
+    } else {
+      vector.fills = paintFrom(node.styles.color);
+    }
     const vectorRotation = rotationFrom(
       node.styles.transform,
       warnings,
@@ -2344,6 +2402,10 @@ export function toComponentSet(
     ownBindings(node) +
     (node.overrides ?? []).reduce(
       (total, override) => total + ownBindings(override),
+      0
+    ) +
+    (node.shapes ?? []).reduce(
+      (total, shape) => total + ownBindings(shape),
       0
     ) +
     (node.children ?? []).reduce(

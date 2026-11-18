@@ -852,8 +852,38 @@ Paden met de hand overtypen in een matrix werkt, maar levert een tweede
 waarheid op: een icoon dat in de assets-map wordt bijgewerkt verandert dan wel
 in de iconset en niet in de componenten die hem tonen.
 
-Een SVG die géén icoon uit die set is (de cirkel van Spinner) heeft geen
-`data-icon` en krijgt zijn laagnaam uit zijn eigen klasse.
+### Een SVG die geen icoon is
+
+Een SVG die géén icoon uit die set is (de cirkels van Spinner, de vlakken van
+Logo) heeft geen `data-icon` en krijgt zijn laagnaam uit zijn eigen klasse.
+De plugin zoekt hem niet op in de iconset en meldt hem dus ook niet als
+ingebakken icoon.
+
+Zo'n SVG tekent zich met de CSS: `stroke`, `stroke-width` en
+`stroke-dasharray` van Spinner staan in `spinner.css`, de vulling van Logo in
+`logo.css`. `outerHTML` neemt daar niets van mee. De extractor schrijft daarom
+per vorm de computed presentatie-eigenschappen als attributen in een kopie van
+de SVG, met de gemeten maat als `width` en `height`, zodat Figma de lijnen bij
+een grotere Spinner meeschaalt zoals de browser. De generator zet de kleuren in
+die SVG om naar hex: de computed kleur is vaak `oklch()`.
+
+Per vorm gaan ook de vulling, de lijnkleur en de lijndikte mee in `shapes`,
+met hun tokens. De plugin legt die op de lagen die `createNodeFromSvg` maakt,
+in de volgorde van de SVG, en bindt ze. Een icoon heeft één kleur
+(`currentColor`); deze vormen hebben er elk een eigen.
+
+Een cirkel met één streep (de boog van Spinner, `stroke-dasharray: 47 16`)
+wordt een boogpad zonder streepjes. Figma legt een streepjespatroon per
+bochtsegment, en een cirkel heeft er daar vier: de boog werd vier korte
+streepjes.
+
+Het logo komt in Logo, PageHeader en PageFooter uit `src/logo.js`, dat
+`components-html/src/logo/logo_starter-kit.svg` leest, met de letters erbij.
+De vaste kleuren in dat bestand worden de klassen uit `Logo.tsx`.
+
+De lijndikte bindt alleen waar de SVG op ware grootte staat. Bij de grote
+Spinner is de viewBox twee keer zo groot getekend, en staat er een lijn van
+4px tegenover een token van 2px; die houdt een vaste waarde.
 
 ### Geneste componenten worden instances
 
