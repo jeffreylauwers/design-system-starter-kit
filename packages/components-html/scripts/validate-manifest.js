@@ -318,7 +318,12 @@ function checkApi(component, at, errors) {
       if (binding.kind === 'slot' && owner !== 'slot') {
         errors.push(`${where}/figma: 'slot' hoort alleen bij api.slots`);
       }
-      const key = `${binding.instance ?? ''}:${binding.kind}:${binding.property}:${binding.value ?? ''}`;
+      if (binding.layer !== undefined && binding.instance === undefined) {
+        errors.push(
+          `${where}/figma: layer hoort alleen bij een binding met instance`
+        );
+      }
+      const key = `${binding.instance ?? ''}:${binding.layer ?? ''}:${binding.kind}:${binding.property}:${binding.value ?? ''}`;
       if (claimed.has(key)) {
         errors.push(
           `${where}/figma: ${binding.kind} '${binding.property}' is al gekoppeld in ${claimed.get(key)}`

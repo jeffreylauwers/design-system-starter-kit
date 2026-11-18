@@ -3745,8 +3745,7 @@
             "figma": [
               {
                 "kind": "none",
-                "reason": "Nog niet in de Figma-matrix van PageHeader.",
-                "open": true
+                "reason": "Scrollgedrag: position sticky, het verbergen bij auto-hide en de schaduw zodra de pagina gescrold is bestaan alleen tijdens het scrollen. Wie de schaduw wil tonen, legt hem zelf op de instance."
               }
             ]
           },
@@ -3768,9 +3767,10 @@
             "default": false,
             "figma": [
               {
-                "kind": "none",
-                "reason": "Nog niet in de Figma-matrix van PageHeader.",
-                "open": true
+                "kind": "variant",
+                "property": "searchOpen",
+                "values": ["closed", "open"],
+                "reason": "Het zoekpaneel onder de balk, en de zoekknop wordt een sluitknop. Alleen waar het paneel bestaat: op small en in de compact-layout."
               }
             ]
           },
@@ -3799,9 +3799,9 @@
             "type": "ReactNode",
             "figma": [
               {
-                "kind": "none",
-                "reason": "Nog niet in de Figma-matrix van PageHeader.",
-                "open": true
+                "kind": "boolean",
+                "property": "showSearchbox",
+                "reason": "Het zoekveld in de large-layout, een SearchInput-instance. Zonder searchSlot rendert React het niet."
               }
             ]
           },
@@ -3811,8 +3811,7 @@
             "figma": [
               {
                 "kind": "none",
-                "reason": "Nog niet in de Figma-matrix van PageHeader.",
-                "open": true
+                "reason": "De badge staat in React binnen het label van de menuknop, en een Button-instance heeft daar één tekstlaag. Een designer legt de badge zelf neer."
               }
             ]
           },
@@ -3852,9 +3851,10 @@
             "default": "Menu",
             "figma": [
               {
-                "kind": "none",
-                "reason": "Nog niet in de Figma-matrix van PageHeader.",
-                "open": true
+                "kind": "text",
+                "property": "label",
+                "instance": "Button",
+                "layer": "menu-button"
               }
             ]
           },
@@ -3862,25 +3862,13 @@
             "name": "searchButtonLabel",
             "type": "string",
             "default": "Zoeken",
-            "figma": [
-              {
-                "kind": "none",
-                "reason": "Nog niet in de Figma-matrix van PageHeader.",
-                "open": true
-              }
-            ]
+            "slots": ["search-button-label"]
           },
           {
             "name": "closeButtonLabel",
             "type": "string",
             "default": "Sluiten",
-            "figma": [
-              {
-                "kind": "none",
-                "reason": "Nog niet in de Figma-matrix van PageHeader.",
-                "open": true
-              }
-            ]
+            "slots": ["search-button-label"]
           },
           {
             "name": "searchInputPlaceholder",
@@ -3888,9 +3876,9 @@
             "default": "Zoeken…",
             "figma": [
               {
-                "kind": "none",
-                "reason": "Nog niet in de Figma-matrix van PageHeader.",
-                "open": true
+                "kind": "text",
+                "property": "placeholder",
+                "instance": "SearchInput"
               }
             ]
           },
@@ -3911,9 +3899,10 @@
             "default": "Zoeken",
             "figma": [
               {
-                "kind": "none",
-                "reason": "Nog niet in de Figma-matrix van PageHeader.",
-                "open": true
+                "kind": "text",
+                "property": "label",
+                "instance": "Button",
+                "layer": "search-submit"
               }
             ]
           },
@@ -3945,9 +3934,9 @@
             "default": false,
             "figma": [
               {
-                "kind": "none",
-                "reason": "Nog niet in de Figma-matrix van PageHeader.",
-                "open": true
+                "kind": "boolean",
+                "property": "showMenuButton",
+                "reason": "Omgekeerd: showMenuButton aan is hideMenuButton uit."
               }
             ]
           },
@@ -3957,9 +3946,9 @@
             "default": false,
             "figma": [
               {
-                "kind": "none",
-                "reason": "Nog niet in de Figma-matrix van PageHeader.",
-                "open": true
+                "kind": "boolean",
+                "property": "showSearchButton",
+                "reason": "Omgekeerd: showSearchButton aan is hideSearchButton uit."
               }
             ]
           }
@@ -3995,6 +3984,19 @@
               {
                 "kind": "none",
                 "reason": "Geen property: de inhoud pas je in een instance aan op de lagen zelf."
+              }
+            ]
+          },
+          {
+            "name": "search-button-label",
+            "element": "dsn-button",
+            "description": "Het label van de zoekknop: Zoeken (searchButtonLabel) of, met het zoekpaneel open, Sluiten (closeButtonLabel). In Figma het label van de Button-instance.",
+            "figma": [
+              {
+                "kind": "text",
+                "property": "label",
+                "instance": "Button",
+                "layer": "search-button"
               }
             ]
           }

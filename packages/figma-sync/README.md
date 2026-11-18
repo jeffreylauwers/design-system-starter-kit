@@ -895,6 +895,13 @@ laag zijn set, en werkt een wijziging aan Heading overal door. Het patroon is
 hetzelfde als bij de iconen, maar dan voor elke set uit de bibliotheek, en op
 elke diepte: Checkbox in CheckboxOption in CheckboxGroup.
 
+Een set die zijn veld en versiering samenvoegt (`mergeAdornments`, zoals
+SearchInput) doet dat ook als instance in een andere set: de host voegt de
+gemeten wrapper eerst op dezelfde manier samen, en houdt daarbij de plek van
+de wrapper in zijn ouder. Het veld zelf krijgt `data-figma-instance="none"`,
+anders herkent de generator het eerst als TextInput (beide hebben het blok
+`dsn-text-input`). Zie de zoekvelden van PageHeader.
+
 `src/instances.js` doet dat in drie stappen.
 
 **1. Herkennen.** Een element waarvan een klasse precies een `cssBlock` uit

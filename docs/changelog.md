@@ -10,6 +10,17 @@ All notable changes to this project are documented in this file.
 
 Nog niet gepubliceerde wijzigingen. Schrijf nieuwe changelog-entries hieronder; bij de volgende release wordt deze kop gepromoveerd naar het definitieve versienummer.
 
+### figma-sync: PageHeader compleet in Figma
+
+De laatste 11 open punten uit #497: er staan geen open Figma-bindingen meer in de manifest.
+
+- **As `searchOpen`** (`initialSearchOpen`): het zoekpaneel onder de balk, en de zoekknop wordt een sluitknop. Alleen op small en in de compact-layout; de set gaat van 8 naar 14 varianten.
+- **Instances:** de menuknop, de zoekknop en de zoekknop in het paneel zijn Button-instances, de zoekvelden SearchInput-instances. Exposed, zodat de labels (`menuButtonLabel`, `searchButtonLabel`, `closeButtonLabel`, `searchSubmitLabel`) en de placeholder (`searchInputPlaceholder`) op de instance staan.
+- **Aan en uit:** `showMenuButton` (`hideMenuButton`), `showSearchButton` (`hideSearchButton`) en `showSearchbox` (`searchSlot`).
+- Bewust niet in Figma, met de reden in de manifest: `sticky` (scrollgedrag) en `menuButtonBadge` (de badge staat in het label van een Button).
+- Een SearchInput kan nu in elke set een instance zijn: de host voegt veld en icoon samen zoals de SearchInput-set zelf.
+- Een binding met `instance` kan een `layer` hebben: de `data-figma-slot` van de juiste instance als er meer van hetzelfde component zijn.
+
 ### figma-sync: File volgt de opbouw van React
 
 De File-set is opnieuw opgebouwd, en de 15 open punten van File uit #497 zijn opgelost. De oude set toonde een leeg media-vlak, een vinkje en een verwijderknop tegelijk, en kende geen loading, uploaded of klikbare rij.

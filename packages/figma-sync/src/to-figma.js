@@ -1856,6 +1856,24 @@ function pinAbsoluteSlots(node, bySlot, label) {
   visit(node);
 }
 
+/** De velden die de plek van een laag in zijn ouder beschrijven. */
+const PLACEMENT_FIELDS = [
+  'layoutSizingHorizontal',
+  'layoutSizingVertical',
+  'layoutGrow',
+  'layoutAlign',
+  'layoutPositioning',
+  'constraints',
+];
+
+function placementOf(spec) {
+  return Object.fromEntries(
+    PLACEMENT_FIELDS.filter((field) => spec[field] !== undefined).map(
+      (field) => [field, spec[field]]
+    )
+  );
+}
+
 function mergeAdornments(root, tree, warnings, label, pinned) {
   const domChildren = tree.children ?? [];
   const outOfFlow = (node) =>
@@ -2293,10 +2311,25 @@ export function toComponentSet(
     // die niet, dus de gemeten subboom krijgt eerst dezelfde vorm; anders
     // lijkt geen enkele variant op de meting.
     const rootSlot = targetRootSlot(target);
-    const comparable =
+    let comparable =
       rootSlot && !converted.children?.some((child) => child.type === 'SLOT')
         ? withContentSlot(converted, rootSlot, true, label)
         : converted;
+
+    // Een doelset die zijn veld en versiering tot één frame samenvoegt
+    // (SearchInput) heeft die vorm ook als instance nodig. De plek in de host
+    // blijft die van de wrapper: een zoekveld dat in de balk de ruimte vult,
+    // vult die ook als instance.
+    if (target.mergeAdornments) {
+      const merged = mergeAdornments(
+        comparable,
+        node,
+        warnings,
+        label,
+        target.absoluteAdornments
+      );
+      comparable = { ...merged, ...placementOf(comparable) };
+    }
 
     return toInstance(comparable, node, target, label);
   };
@@ -2464,6 +2497,16 @@ export function toComponentSet(
       // de doelen van zijn instances. De plugin weigert zonder.
       ...(dependsOn.size ? { dependsOn: [...dependsOn.values()] } : {}),
       variantAxes: matrix.axes ?? {},
+      // Voor een instance van deze set in een andere: de host voegt het veld
+      // en zijn versiering op dezelfde manier samen. Zie `mergeAdornments`.
+      ...(matrix.mergeAdornments
+        ? {
+            mergeAdornments: true,
+            ...(matrix.absoluteAdornments
+              ? { absoluteAdornments: matrix.absoluteAdornments }
+              : {}),
+          }
+        : {}),
       // Voor een instance van deze set in een andere: welke as uit de tag van
       // het element volgt. Zie `variantFromTag` in de README.
       ...(matrix.variantFromTag

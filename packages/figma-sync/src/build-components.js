@@ -89,6 +89,8 @@ function targetFrom(spec) {
     exposed: (set.componentProperties ?? []).length > 0,
     properties: set.componentProperties ?? [],
     variantFromTag: set.variantFromTag,
+    mergeAdornments: set.mergeAdornments,
+    absoluteAdornments: set.absoluteAdornments,
     // Van slot naar property, voor de iconen die een instance swap zijn: een
     // ander icoon daar is een property op de instance en geen andere opbouw.
     swaps: new Map(
