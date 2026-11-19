@@ -20,9 +20,7 @@
 
 import { parseBoxShadow } from '../../design-tokens/src/config/shadow.js';
 import { parseCssColor } from './css-color.js';
-
-const NUMBER_TOLERANCE = 0.05;
-const CHANNEL_TOLERANCE = 0.005;
+import { CHANNEL_TOLERANCE, NUMBER_TOLERANCE } from './tolerances.js';
 
 /** De velden van een schaduw, in de volgorde van de lengtes in CSS. */
 const LENGTH_FIELDS = ['offsetX', 'offsetY', 'radius', 'spread'];

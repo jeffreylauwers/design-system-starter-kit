@@ -589,15 +589,6 @@ function chooseVariant(measured, target, explicit, label) {
 }
 
 /**
- * De variant die de markup al vastlegt, voordat er gemeten wordt.
- *
- * Meestal alleen `data-figma-variant`. Een set met `variantFromTag` (Heading)
- * haalt daarnaast een as uit de tag: zes levels van dezelfde appearance zien
- * er hetzelfde uit, dus de meting kan er niet tussen kiezen en pakt anders
- * stil de eerste. Een `<h2>` wordt `level=2`; de meting kiest dan alleen nog
- * de appearance. Wijst `data-figma-variant` die as zelf aan, dan wint dat.
- */
-/**
  * Booleans die de matrix op een instance zet met `data-figma-properties`:
  * `showIconStart=true`. Een icoon wisselen volgt uit de meting (zie
  * `collectSwaps`), maar of een laag aan of uit staat niet: een zichtbare
@@ -628,6 +619,15 @@ function explicitProperties(node, target, label) {
   return result;
 }
 
+/**
+ * De variant die de markup al vastlegt, voordat er gemeten wordt.
+ *
+ * Meestal alleen `data-figma-variant`. Een set met `variantFromTag` (Heading)
+ * haalt daarnaast een as uit de tag: zes levels van dezelfde appearance zien
+ * er hetzelfde uit, dus de meting kan er niet tussen kiezen en pakt anders
+ * stil de eerste. Een `<h2>` wordt `level=2`; de meting kiest dan alleen nog
+ * de appearance. Wijst `data-figma-variant` die as zelf aan, dan wint dat.
+ */
 function variantHint(node, target, label) {
   const explicit = node.instanceVariant;
   const rule = target.variantFromTag;
@@ -645,7 +645,7 @@ function variantHint(node, target, label) {
 }
 
 /** De velden die over de plek van de instance in de host gaan. */
-const PLACEMENT_FIELDS = [
+const HOST_PLACEMENT_FIELDS = [
   'x',
   'y',
   'width',
@@ -683,7 +683,7 @@ export function toInstance(measured, node, target, label) {
     page: target.page,
     variant: component.name,
   };
-  for (const field of PLACEMENT_FIELDS) {
+  for (const field of HOST_PLACEMENT_FIELDS) {
     if (measured[field] !== undefined) instance[field] = measured[field];
   }
   // Visueel verborgen in de host, zoals de NumberBadge die in een MenuLink

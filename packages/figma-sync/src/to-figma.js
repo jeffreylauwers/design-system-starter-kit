@@ -864,13 +864,6 @@ function paintFrom(cssColor) {
 }
 
 /**
- * Zet de plaatsing van een kind binnen zijn ouder.
- *
- * Twee gevallen die niet in de gewone auto layout-stroom passen:
- * een absoluut gepositioneerd kind (Figma: layoutPositioning ABSOLUTE) en een
- * kind met een expliciete cel in een grid (Figma: grid anchors).
- */
-/**
  * Mag de tekst aan het eind van deze rij de resterende breedte vullen?
  *
  * In CSS is tekst in een flex-rij een item dat mag krimpen, en dus afbreekt
@@ -890,6 +883,13 @@ function fillsRemainingRow(styles, layout) {
   );
 }
 
+/**
+ * Zet de plaatsing van een kind binnen zijn ouder.
+ *
+ * Twee gevallen die niet in de gewone auto layout-stroom passen:
+ * een absoluut gepositioneerd kind (Figma: layoutPositioning ABSOLUTE) en een
+ * kind met een expliciete cel in een grid (Figma: grid anchors).
+ */
 function applyChildPlacement(
   converted,
   child,
@@ -1137,19 +1137,6 @@ function convertNode(
 }
 
 /**
- * Laat rijen aan het eind van een grid weg waar geen enkele laag in staat.
- *
- * Een Note zonder kop houdt twee rijen over terwijl er maar één gevuld is. In
- * de computed `grid-template-rows` staan ze er allebei: het icoon spant met
- * `grid-row: 1 / span 2` in de tweede, en bij de varianten met een voorlees-
- * label staat dat visueel verborgen spanje er ook nog in. Dat label haalt de
- * walker eruit (het is in Figma geen laag), maar de rij bleef staan, en in het
- * grid van Figma is dat een lege track.
- *
- * Alleen aan het eind: een lege rij tussen twee gevulde in houdt de nummering
- * overeind, en de kinderen dragen hun eigen rijnummer.
- */
-/**
  * Geeft een subgrid-rij de kolommen van zijn ouder.
  *
  * Figma kent geen subgrid: een rij die in CSS de kolommen van de lijst
@@ -1181,6 +1168,19 @@ function resolveSubgrid(frame) {
   }
 }
 
+/**
+ * Laat rijen aan het eind van een grid weg waar geen enkele laag in staat.
+ *
+ * Een Note zonder kop houdt twee rijen over terwijl er maar één gevuld is. In
+ * de computed `grid-template-rows` staan ze er allebei: het icoon spant met
+ * `grid-row: 1 / span 2` in de tweede, en bij de varianten met een voorlees-
+ * label staat dat visueel verborgen spanje er ook nog in. Dat label haalt de
+ * walker eruit (het is in Figma geen laag), maar de rij bleef staan, en in het
+ * grid van Figma is dat een lege track.
+ *
+ * Alleen aan het eind: een lege rij tussen twee gevulde in houdt de nummering
+ * overeind, en de kinderen dragen hun eigen rijnummer.
+ */
 function trimEmptyTrailingRows(frame) {
   const rows = frame.gridRowSizes;
   if (!rows || rows.length < 2) return;
@@ -1760,19 +1760,6 @@ function targetRootSlot(target) {
 }
 
 /**
- * Een vaste grid-kolom die precies de maat van zijn item heeft, wordt HUG.
- *
- * Alert en Note schrijven `grid-template-columns: var(--dsn-alert-icon-size)
- * 1fr`. In Figma wordt de eerste kolom een vaste 30px, en een track kan niet
- * aan een variable gebonden worden. Het icoon vult die kolom, dus ook zijn
- * gebonden maat zou op `vp-large` niet breder kunnen worden dan 30.
- *
- * Komt de breedte van het item uit een token en is die gelijk aan de kolom,
- * dan bepaalt het item de kolom en niet andersom: de kolom hugt, het item
- * krijgt een vaste, gebonden breedte. Hetzelfde resultaat bij elke viewport,
- * zonder een track te hoeven binden.
- */
-/**
  * Een instance op FILL in een ouder die op HUG staat, krijgt zijn eigen breedte.
  *
  * Het veld in DateInputGroup vult in de browser zijn kolom, maar de kolom is
@@ -1803,6 +1790,19 @@ function fixInstancesInHuggingParents(node) {
   }
 }
 
+/**
+ * Een vaste grid-kolom die precies de maat van zijn item heeft, wordt HUG.
+ *
+ * Alert en Note schrijven `grid-template-columns: var(--dsn-alert-icon-size)
+ * 1fr`. In Figma wordt de eerste kolom een vaste 30px, en een track kan niet
+ * aan een variable gebonden worden. Het icoon vult die kolom, dus ook zijn
+ * gebonden maat zou op `vp-large` niet breder kunnen worden dan 30.
+ *
+ * Komt de breedte van het item uit een token en is die gelijk aan de kolom,
+ * dan bepaalt het item de kolom en niet andersom: de kolom hugt, het item
+ * krijgt een vaste, gebonden breedte. Hetzelfde resultaat bij elke viewport,
+ * zonder een track te hoeven binden.
+ */
 function hugTracksOfSizedItems(node) {
   const tracks = node.layoutMode === 'GRID' ? node.gridColumnSizes : null;
   for (const child of node.children ?? []) {
@@ -1985,25 +1985,6 @@ function checkComponentProperties(declared, components, warnings) {
 }
 
 /**
- * Voegt een veld en zijn versiering samen tot één frame met auto layout.
- *
- * In de DOM is een SearchInput een wrapper met een absoluut geplaatst icoon en
- * daaronder het veld, dat met een extra `padding-inline-start` ruimte voor dat
- * icoon vrijhoudt. Eén op één vertaald levert dat in Figma drie lagen op waarin
- * het icoon achter het veld verdwijnt, en een designer die de tekst langer
- * maakt schuift niets op.
- *
- * Hier wordt het één frame: het veld levert zijn achtergrond, rand, radius en
- * bindingen, en het icoon of de knop komt als gewoon kind in de rij te staan.
- * De volgorde en de ruimte komen uit de meting, niet uit een aanname: de
- * padding is de afstand van de rand tot het eerste kind, en `itemSpacing` de
- * afstand tussen de kinderen.
- *
- * De tekst vult de rest van de rij zodra er versiering áchter staat (Select,
- * DateInput), zodat die rechts uitlijnt. Staat de versiering ervoor
- * (SearchInput), dan hugt de tekst, net als in een gewoon tekstveld.
- */
-/**
  * Geeft absolute lagen met een `data-figma-slot` hun constraints.
  *
  * Zonder constraints hangt een absolute laag in Figma links bovenaan: de dot
@@ -2033,8 +2014,12 @@ function pinAbsoluteSlots(node, bySlot, label) {
   visit(node);
 }
 
-/** De velden die de plek van een laag in zijn ouder beschrijven. */
-const PLACEMENT_FIELDS = [
+/**
+ * Hoe een laag zich in de layout van zijn ouder gedraagt: sizing, uitlijning
+ * en positionering. Niet te verwarren met `HOST_PLACEMENT_FIELDS` in
+ * `instances.js`, dat over de plek van een instance in de host gaat.
+ */
+const PARENT_LAYOUT_FIELDS = [
   'layoutSizingHorizontal',
   'layoutSizingVertical',
   'layoutGrow',
@@ -2045,12 +2030,31 @@ const PLACEMENT_FIELDS = [
 
 function placementOf(spec) {
   return Object.fromEntries(
-    PLACEMENT_FIELDS.filter((field) => spec[field] !== undefined).map(
+    PARENT_LAYOUT_FIELDS.filter((field) => spec[field] !== undefined).map(
       (field) => [field, spec[field]]
     )
   );
 }
 
+/**
+ * Voegt een veld en zijn versiering samen tot één frame met auto layout.
+ *
+ * In de DOM is een SearchInput een wrapper met een absoluut geplaatst icoon en
+ * daaronder het veld, dat met een extra `padding-inline-start` ruimte voor dat
+ * icoon vrijhoudt. Eén op één vertaald levert dat in Figma drie lagen op waarin
+ * het icoon achter het veld verdwijnt, en een designer die de tekst langer
+ * maakt schuift niets op.
+ *
+ * Hier wordt het één frame: het veld levert zijn achtergrond, rand, radius en
+ * bindingen, en het icoon of de knop komt als gewoon kind in de rij te staan.
+ * De volgorde en de ruimte komen uit de meting, niet uit een aanname: de
+ * padding is de afstand van de rand tot het eerste kind, en `itemSpacing` de
+ * afstand tussen de kinderen.
+ *
+ * De tekst vult de rest van de rij zodra er versiering áchter staat (Select,
+ * DateInput), zodat die rechts uitlijnt. Staat de versiering ervoor
+ * (SearchInput), dan hugt de tekst, net als in een gewoon tekstveld.
+ */
 function mergeAdornments(root, tree, warnings, label, pinned) {
   const domChildren = tree.children ?? [];
   const outOfFlow = (node) =>
@@ -2305,29 +2309,6 @@ function summariseWarnings(warnings) {
 }
 
 /**
- * Bouwt een complete Figma component set uit de geëxtraheerde varianten.
- *
- * @param {object} matrix de matrixdefinitie
- * @param {Array<{variant: object, tree: object}>} extracted
- * @param {Map<number, object>|object} [variableIndexes] een index per gemeten
- *   breedte, uit variable-index.js, of één index die voor elke variant geldt.
- *   Ontbreken ze, dan worden er geen variables gebonden en houdt alles zijn
- *   vaste waarde.
- */
-/**
- * Zet de root van een variant op HUG in de breedte.
- *
- * Een component dat in CSS een blok is pakt de volle breedte van de
- * meetwrapper, en die breedte zegt niets over het component zelf: hij is
- * `wrapperStyle`. In Figma is zo'n frame handiger op HUG, want dan groeit het
- * mee met de tekst die de designer er zelf in typt. Dat is de reden dat de
- * tekstlengte bij deze componenten ook geen as meer is: één variant plus HUG
- * dekt wat twee varianten eerder lieten zien.
- *
- * Een kind dat die wrapperbreedte precies vulde staat op FILL, en FILL in een
- * HUG-ouder weigert Figma. Die kinderen gaan daarom mee naar HUG.
- */
-/**
  * Zet de directe kinderen van de root op FILL in de breedte.
  *
  * Bij Details rekt in Figma niets mee: de summary is in CSS
@@ -2359,6 +2340,19 @@ function fillRootChildren(node, warnings, label) {
   }
 }
 
+/**
+ * Zet de root van een variant op HUG in de breedte.
+ *
+ * Een component dat in CSS een blok is pakt de volle breedte van de
+ * meetwrapper, en die breedte zegt niets over het component zelf: hij is
+ * `wrapperStyle`. In Figma is zo'n frame handiger op HUG, want dan groeit het
+ * mee met de tekst die de designer er zelf in typt. Dat is de reden dat de
+ * tekstlengte bij deze componenten ook geen as meer is: één variant plus HUG
+ * dekt wat twee varianten eerder lieten zien.
+ *
+ * Een kind dat die wrapperbreedte precies vulde staat op FILL, en FILL in een
+ * HUG-ouder weigert Figma. Die kinderen gaan daarom mee naar HUG.
+ */
 function hugRootWidth(node, warnings, label) {
   // Een root die tot één tekstlaag inklapt groeit al met zijn inhoud mee; daar
   // is geen frame om op HUG te zetten.
@@ -2378,23 +2372,6 @@ function hugRootWidth(node, warnings, label) {
   }
 }
 
-/**
- * De naam van de component set.
- *
- * De naam die een designer in Figma terugvindt is de CSS-klasse, niet de
- * matrixnaam: `dsn-button` is waar hij in de code op zoekt. Klapt de root om
- * welke reden dan ook niet naar een `dsn-`-element, dan blijft de matrixnaam
- * over.
- *
- * `setName` overschrijft dat. Nodig zodra de root meerdere blokklassen
- * draagt: HeadingGroup is `class="dsn-heading dsn-heading--2
- * dsn-heading-group"`, en de eerste klasse wint, dus zonder override zouden
- * Heading en HeadingGroup allebei `dsn-heading` heten. Twee sets met dezelfde
- * naam is voor een designer die op de klasse zoekt geen keuze maar een gok.
- *
- * De klasse komt uit de DOM en niet uit de laagnaam van de root: een root die
- * tot tekst inklapt (Heading, Paragraph) heet als laag "Tekst".
- */
 /**
  * De naam van de set zoals een designer hem in Figma ziet.
  *
@@ -2443,6 +2420,23 @@ function checkVariantFromTag(matrix) {
   return { axis, tags };
 }
 
+/**
+ * De naam van de component set.
+ *
+ * De naam die een designer in Figma terugvindt is de CSS-klasse, niet de
+ * matrixnaam: `dsn-button` is waar hij in de code op zoekt. Klapt de root om
+ * welke reden dan ook niet naar een `dsn-`-element, dan blijft de matrixnaam
+ * over.
+ *
+ * `setName` overschrijft dat. Nodig zodra de root meerdere blokklassen
+ * draagt: HeadingGroup is `class="dsn-heading dsn-heading--2
+ * dsn-heading-group"`, en de eerste klasse wint, dus zonder override zouden
+ * Heading en HeadingGroup allebei `dsn-heading` heten. Twee sets met dezelfde
+ * naam is voor een designer die op de klasse zoekt geen keuze maar een gok.
+ *
+ * De klasse komt uit de DOM en niet uit de laagnaam van de root: een root die
+ * tot tekst inklapt (Heading, Paragraph) heet als laag "Tekst".
+ */
 export function setNameFor(matrix, extracted) {
   const rootClass = extracted[0]?.tree.classes?.[0];
   return (
@@ -2451,6 +2445,16 @@ export function setNameFor(matrix, extracted) {
   );
 }
 
+/**
+ * Bouwt een complete Figma component set uit de geëxtraheerde varianten.
+ *
+ * @param {object} matrix de matrixdefinitie
+ * @param {Array<{variant: object, tree: object}>} extracted
+ * @param {Map<number, object>|object} [variableIndexes] een index per gemeten
+ *   breedte, uit variable-index.js, of één index die voor elke variant geldt.
+ *   Ontbreken ze, dan worden er geen variables gebonden en houdt alles zijn
+ *   vaste waarde.
+ */
 export function toComponentSet(
   matrix,
   extracted,

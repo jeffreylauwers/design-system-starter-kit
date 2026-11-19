@@ -43,6 +43,20 @@ const WEIGHT_TO_STYLE = {
 
 const FALLBACK_FONT = { family: 'Inter', style: 'Regular' };
 
+/** De vier paddingzijden; bestaan alleen op een frame met auto layout. */
+const PADDING_FIELDS = [
+  'paddingTop',
+  'paddingRight',
+  'paddingBottom',
+  'paddingLeft',
+];
+
+/**
+ * De minimum- en maximummaten die uit de CSS kunnen komen. Een vers frame
+ * heeft ze niet; zie `applyMinimumSizes`, `resetLayer` en `resetVariant`.
+ */
+const SIZE_LIMIT_FIELDS = ['minWidth', 'minHeight', 'maxWidth'];
+
 /**
  * Geeft de sandbox even lucht zodat een voortgangsmelding de UI kan bereiken.
  *
@@ -189,12 +203,7 @@ function applyAutoLayout(frame, spec, log, context) {
     frame.counterAxisAlignItems = spec.counterAxisAlignItems ?? 'MIN';
   }
 
-  for (const side of [
-    'paddingTop',
-    'paddingRight',
-    'paddingBottom',
-    'paddingLeft',
-  ]) {
+  for (const side of PADDING_FIELDS) {
     frame[side] = spec[side] ?? 0;
   }
 }
@@ -307,7 +316,7 @@ function resetLayer(layer) {
     layer.textCase = 'ORIGINAL';
     return;
   }
-  for (const field of ['minWidth', 'minHeight', 'maxWidth']) {
+  for (const field of SIZE_LIMIT_FIELDS) {
     try {
       layer[field] = null;
     } catch {
@@ -350,7 +359,7 @@ function placeReused(layer, parent, context) {
  * onder zijn aanraakdoel uitkomen.
  */
 function applyMinimumSizes(frame, spec, log) {
-  for (const field of ['minWidth', 'minHeight', 'maxWidth']) {
+  for (const field of SIZE_LIMIT_FIELDS) {
     if (spec[field] === undefined) continue;
     try {
       frame[field] = spec[field];
@@ -592,12 +601,8 @@ const SVG_KEY = 'dsn-svg';
  * welke vorm is, en blijft het bij wat de SVG zelf meegaf.
  */
 function buildShapes(spec, parent, context) {
-  // De vector van de vorige import, als die dezelfde SVG had; zie
-  // `resetVariant`.
-  const reused = context.reusableSvg;
-  context.reusableSvg = null;
-  const node = reused ?? figma.createNodeFromSvg(spec.svg);
-  if (node.parent !== parent) parent.appendChild(node);
+  const node = figma.createNodeFromSvg(spec.svg);
+  parent.appendChild(node);
   node.setPluginData?.(SVG_KEY, spec.svg);
   node.name = spec.name ?? 'vector';
   if (spec.width && spec.height) node.resize(spec.width, spec.height);
@@ -1143,7 +1148,6 @@ async function resetVariant(
 ) {
   context.reusable = new Map();
   context.reusableText = null;
-  context.reusableSvg = null;
   context.keptSvgShapes = null;
 
   // Elk frame en elke tekstlaag op zijn plek in de variant, vóórdat er iets
@@ -1249,9 +1253,7 @@ async function resetVariant(
       continue;
     }
     if (context.keptSvgShapes?.has(child)) continue;
-    if (child !== context.reusableText && child !== context.reusableSvg) {
-      child.remove();
-    }
+    if (child !== context.reusableText) child.remove();
   }
 
   clearBoundVariables(component);
@@ -1259,7 +1261,7 @@ async function resetVariant(
 
   // Zoals een vers frame: geen minimum-maat. Zet de spec er een, dan komt
   // die terug in `applyMinimumSizes`.
-  for (const field of ['minWidth', 'minHeight', 'maxWidth']) {
+  for (const field of SIZE_LIMIT_FIELDS) {
     try {
       component[field] = null;
     } catch {
@@ -1281,23 +1283,6 @@ async function resetVariant(
   component.clipsContent = true;
 }
 
-/**
- * Zet de icoonkleuren nog een keer, als allerlaatste stap van de import.
- *
- * Een icoon is een instance van het icooncomponent, en zijn kleur is een
- * override op de geneste `Group > Shape`. Alles wat Figma daarna met die
- * instance doet kan die override wegvagen: een instance swap property zet het
- * `mainComponent` van de laag, en bij zo'n verwisseling gooit Figma de
- * overrides weg. Het icoon valt dan terug op de neutrale kleur van het
- * icooncomponent, en dat is precies wat er in Figma gebeurde.
- *
- * Wie het laatst schrijft wint, dus schrijft de kleur het laatst. Dat scheelt
- * ook het uitzoeken wélke stap ertussen de override precies opruimt: de
- * volgorde doet er daarna niet meer toe.
- *
- * `node.children` wordt hier opnieuw gelezen en niet hergebruikt: na een
- * verwisseling zijn het andere lagen dan tijdens de bouw.
- */
 /**
  * Zet de constraints van absolute lagen, als alle maten vastliggen.
  *
@@ -1322,6 +1307,23 @@ function pinAbsolute(context) {
   }
 }
 
+/**
+ * Zet de icoonkleuren nog een keer, als allerlaatste stap van de import.
+ *
+ * Een icoon is een instance van het icooncomponent, en zijn kleur is een
+ * override op de geneste `Group > Shape`. Alles wat Figma daarna met die
+ * instance doet kan die override wegvagen: een instance swap property zet het
+ * `mainComponent` van de laag, en bij zo'n verwisseling gooit Figma de
+ * overrides weg. Het icoon valt dan terug op de neutrale kleur van het
+ * icooncomponent, en dat is precies wat er in Figma gebeurde.
+ *
+ * Wie het laatst schrijft wint, dus schrijft de kleur het laatst. Dat scheelt
+ * ook het uitzoeken wélke stap ertussen de override precies opruimt: de
+ * volgorde doet er daarna niet meer toe.
+ *
+ * `node.children` wordt hier opnieuw gelezen en niet hergebruikt: na een
+ * verwisseling zijn het andere lagen dan tijdens de bouw.
+ */
 function recolorIcons(context) {
   for (const job of context.recolors) {
     recolorVectors(job.node.children ?? [], job.paints);
@@ -1760,14 +1762,7 @@ function applyComponentProperties(set, properties, variants, context) {
   return applied;
 }
 
-/**
- * Het canvasframe van een los component, opgezocht of aangemaakt.
- *
- * Een component set is zelf de plaat waar zijn varianten op staan. Een los
- * component (een matrix zonder assen) heeft die plaat niet, en zonder frame
- * eromheen staat hij in `start-dark` onleesbaar op het grijs van Figma. Het
- * frame draagt dezelfde naam als het component, net zoals een set dat doet.
- */
+/** `size=small, state=hover` -> `['size', 'state']`. */
 function axesOf(variantName) {
   return variantName
     .split(',')
@@ -1799,6 +1794,14 @@ function placeBesideOthers(page, node) {
   node.y = Math.min(...others.map((child) => child.y));
 }
 
+/**
+ * Het canvasframe van een los component, opgezocht of aangemaakt.
+ *
+ * Een component set is zelf de plaat waar zijn varianten op staan. Een los
+ * component (een matrix zonder assen) heeft die plaat niet, en zonder frame
+ * eromheen staat hij in `start-dark` onleesbaar op het grijs van Figma. Het
+ * frame draagt dezelfde naam als het component, net zoals een set dat doet.
+ */
 function findOrCreateCanvasFrame(page, name) {
   const existing = page.children.find(
     (node) => node.type === 'FRAME' && node.name === name
@@ -1838,12 +1841,7 @@ function applyCanvas(set, canvas, context) {
 
   set.itemSpacing = canvas.itemSpacing;
   // Na layoutMode: Figma kent padding alleen op een auto-layout frame.
-  for (const side of [
-    'paddingTop',
-    'paddingRight',
-    'paddingBottom',
-    'paddingLeft',
-  ]) {
+  for (const side of PADDING_FIELDS) {
     set[side] = canvas.padding;
   }
 
@@ -2023,7 +2021,6 @@ export async function importComponentSet(payload, log, options = {}) {
       // variant in deze belanden.
       context.reusable = new Map();
       context.reusableText = null;
-      context.reusableSvg = null;
       context.reusableLayers = new Map();
       context.reusableSlots = new Map();
       context.pooled = new Set();
