@@ -667,6 +667,17 @@ blok met een maximale breedte: `margin-inline: auto`, zoals de inner van de
 masthead, de navbar en de compact-layout van PageHeader, en de inner van
 PageFooter. Zonder dit stonden ze links.
 
+Zo'n blok krijgt bovendien zijn maximale breedte mee: `max-inline-size:
+var(--dsn-page-max-inline-size); margin-inline: auto` wordt FILL met een
+`maxWidth`, gebonden aan `page/max-inline-size`. Op een smalle variant vult
+het blok de breedte, op een brede blijft het 1200px en staat het in het
+midden, net als in de browser. De ouder centreert ook op een smalle variant,
+zodat het blok in het midden blijft als een designer de variant breder
+maakt. Alleen met `margin-inline: auto`: een formulierveld heeft ook een
+maximale breedte, maar staat links. Het zoekpaneel van PageHeader is in CSS
+een grid zonder kolommen (alleen voor de uitklapanimatie); zo'n grid met één
+rij wordt een blok, zodat zijn inner hetzelfde gedrag krijgt.
+
 Eén ding blijft daarbij liggen: de ruimte tussen blokken komt uit de marges van
 de kinderen en niet uit een `gap`, en de binder leest alleen gaps. De waarde
 klopt dus wel, maar `itemSpacing` hangt aan niets. Dat wordt per variant als
@@ -889,6 +900,12 @@ per vorm de computed presentatie-eigenschappen als attributen in een kopie van
 de SVG, met de gemeten maat als `width` en `height`, zodat Figma de lijnen bij
 een grotere Spinner meeschaalt zoals de browser. De generator zet de kleuren in
 die SVG om naar hex: de computed kleur is vaak `oklch()`.
+
+Is zo'n SVG het hele component (Logo), dan is het component zelf het vlak
+met de vormen erin, zonder frame ertussen. Elke vorm schaalt mee (`SCALE`) en
+de verhouding staat vast, zodat een instance op 124x32 in PageHeader niet
+uitrekt. Zo'n instance krijgt een vaste maat met de hoogte aan zijn token, en
+de kleuren in een inverse header als override op de vormen.
 
 Per vorm gaan ook de vulling, de lijnkleur en de lijndikte mee in `shapes`,
 met hun tokens. De plugin legt die op de lagen die `createNodeFromSvg` maakt,

@@ -434,6 +434,12 @@ function centersChildren(node, styles) {
     const after = right - (child.rect.x + child.rect.width);
     if (Math.abs(before - after) > 1) return false;
     if (before > 1) indented = true;
+    // Een kind dat de CSS met `margin-inline: auto` centreert, ook als het
+    // op deze breedte de hele ouder vult: in Figma kan een designer de
+    // variant breder maken, en dan hoort het in het midden te blijven.
+    if (maxWidthFrom(child.styles ?? {}, child.tokens).maxWidth) {
+      indented = true;
+    }
   }
   return indented;
 }
@@ -478,6 +484,20 @@ function stackSpacing(children, direction) {
 /** Bouwt de auto layout-eigenschappen uit de flexbox computed styles. */
 function autoLayoutFrom(node, styles, wideStyles, warnings, pathLabel) {
   if (styles.display === 'grid' || styles.display === 'inline-grid') {
+    // Een grid zonder kolommen en met één rij zet zijn kinderen onder elkaar,
+    // net als een blok. Het zoekpaneel van PageHeader is zo'n grid, alleen
+    // voor de uitklapanimatie (`grid-template-rows: 0fr` naar `1fr`).
+    const noColumns =
+      !(node.tokens?.['grid-template-columns']?.value ?? '').trim() ||
+      /^none$/.test(node.tokens?.['grid-template-columns']?.value?.trim());
+    if (
+      noColumns &&
+      trackSizes(styles.gridTemplateRows ?? '').length <= 1 &&
+      (node.children ?? []).filter((child) => child.styles).length <= 1
+    ) {
+      const block = blockLayoutFrom(node, styles, warnings, pathLabel);
+      if (block) return block;
+    }
     return (
       rowGridLayoutFrom(node, styles, wideStyles) ??
       gridLayoutFrom(styles, wideStyles, warnings, pathLabel)
@@ -633,6 +653,27 @@ function minimumSizesFrom(styles, layout) {
     minWidth: pixels(styles.minWidth),
     minHeight: pixels(styles.minHeight),
   };
+}
+
+/**
+ * De maximale breedte van een blok dat CSS in het midden zet.
+ *
+ * `max-inline-size: var(--dsn-page-max-inline-size); margin-inline: auto` is
+ * hoe de inner van PageHeader en PageFooter op een brede pagina 1200px breed
+ * blijft en in het midden staat, en op een smalle pagina de hele breedte
+ * vult. In Figma is dat een kind op FILL met een `maxWidth`, in een ouder die
+ * centreert; zie de plaatsing en `centersChildren`. De `maxWidth` hangt aan
+ * het token.
+ *
+ * Alleen met `margin-inline: auto`, zoals de CSS het schrijft: een
+ * formulierveld heeft ook een maximale breedte, maar staat links en vult
+ * zijn ouder niet. Die blijft zoals hij was.
+ */
+function maxWidthFrom(styles, tokens) {
+  const auto = (side) => tokens?.[`margin-${side}`]?.value?.trim() === 'auto';
+  if (!auto('left') || !auto('right')) return {};
+  if (!/^[\d.]+px$/.test(String(styles.maxWidth ?? '').trim())) return {};
+  return { maxWidth: px(styles.maxWidth) };
 }
 
 /** Figma scheidt kleur en alpha: opacity zit op de paint, niet in de kleur. */
@@ -878,6 +919,18 @@ function applyChildPlacement(
     parentLayout.layoutMode !== 'NONE' &&
     parentContentWidth !== undefined &&
     Math.abs(child.rect.width - parentContentWidth) < 1
+  ) {
+    converted.layoutSizingHorizontal = 'FILL';
+  }
+
+  // Een blok met een maximale breedte dat CSS in het midden zet: FILL, en de
+  // `maxWidth` houdt hem op een brede pagina smal. Zie `maxWidthFrom`.
+  if (
+    !outOfFlow &&
+    converted.maxWidth !== undefined &&
+    parentLayout.layoutMode &&
+    parentLayout.layoutMode !== 'NONE' &&
+    parentLayout.layoutMode !== 'GRID'
   ) {
     converted.layoutSizingHorizontal = 'FILL';
   }
@@ -1363,6 +1416,7 @@ function convertElement(
       ? { primaryAxisAlignItems: 'CENTER', counterAxisAlignItems: 'MIN' }
       : {}),
     ...minimumSizesFrom(styles, autoLayout),
+    ...maxWidthFrom(styles, node.tokens),
     ...cornerRadiusFrom(styles, node.rect),
     fills: paintFrom(styles.backgroundColor),
     ...(strokes ?? {}),

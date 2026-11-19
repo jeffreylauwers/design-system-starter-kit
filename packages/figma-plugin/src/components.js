@@ -307,7 +307,7 @@ function resetLayer(layer) {
     layer.textCase = 'ORIGINAL';
     return;
   }
-  for (const field of ['minWidth', 'minHeight']) {
+  for (const field of ['minWidth', 'minHeight', 'maxWidth']) {
     try {
       layer[field] = null;
     } catch {
@@ -350,7 +350,7 @@ function placeReused(layer, parent, context) {
  * onder zijn aanraakdoel uitkomen.
  */
 function applyMinimumSizes(frame, spec, log) {
-  for (const field of ['minWidth', 'minHeight']) {
+  for (const field of ['minWidth', 'minHeight', 'maxWidth']) {
     if (spec[field] === undefined) continue;
     try {
       frame[field] = spec[field];
@@ -616,6 +616,12 @@ function buildShapes(spec, parent, context) {
     return node;
   }
 
+  paintShapes(layers, spec, context);
+  return node;
+}
+
+/** Zet de kleuren en lijndiktes uit de spec op de vormen, met bindingen. */
+function paintShapes(layers, spec, context) {
   spec.shapes.forEach((shape, index) => {
     const layer = layers[index];
     layer.name = shape.name;
@@ -626,7 +632,66 @@ function buildShapes(spec, parent, context) {
     }
     applyBindings(layer, shape, context);
   });
-  return node;
+}
+
+/**
+ * Een component dat in zijn geheel één SVG is die geen icoon is (Logo).
+ *
+ * De vormen hangen direct in het component, zonder frame ertussen: dat frame
+ * (wat `createNodeFromSvg` oplevert) was een laag die niets toevoegde. Elke
+ * vorm schaalt mee (`SCALE`) en de verhouding staat vast, zodat een instance
+ * die kleiner of groter wordt gezet, zoals het logo van 124x32 in PageHeader,
+ * niet uitrekt.
+ *
+ * Bij een tweede import met dezelfde SVG blijven de vormen staan: een
+ * instance in PageHeader heeft er overrides op (de kleuren in inverse). Zie
+ * `resetVariant`.
+ */
+function buildSvgComponent(component, spec, context) {
+  component.layoutMode = 'NONE';
+  component.fills = [];
+  component.clipsContent = false;
+  component.name = spec.name ?? component.name;
+
+  const kept =
+    component.getPluginData?.(SVG_KEY) === spec.svg &&
+    component.children.length === spec.shapes.length;
+
+  let layers;
+  if (kept) {
+    layers = [...component.children];
+    for (const layer of layers) clearBoundVariables(layer);
+  } else {
+    for (const child of [...component.children]) child.remove();
+    component.resize(spec.width, spec.height);
+    const source = figma.createNodeFromSvg(spec.svg);
+    layers = [];
+    const collect = (current) => {
+      if (current.children?.length) current.children.forEach(collect);
+      else layers.push(current);
+    };
+    source.children.forEach(collect);
+    for (const layer of layers) component.appendChild(layer);
+    source.remove();
+  }
+
+  if (layers.length !== spec.shapes.length) {
+    context.log.warn(
+      `${spec.name}: Figma maakte ${layers.length} lagen van ${spec.shapes.length} vormen; de kleuren zijn niet aan tokens gebonden`
+    );
+  } else {
+    paintShapes(layers, spec, context);
+  }
+
+  for (const layer of layers) {
+    layer.constraints = { horizontal: 'SCALE', vertical: 'SCALE' };
+  }
+  if (typeof component.lockAspectRatio === 'function') {
+    component.lockAspectRatio();
+  } else {
+    component.constrainProportions = true;
+  }
+  component.setPluginData?.(SVG_KEY, spec.svg);
 }
 
 /**
@@ -669,7 +734,10 @@ function buildInstance(spec, parent, context, parentSpec) {
   // eigen maat krijgt. Een CheckboxOption in een CheckboxGroup is daar het
   // voorbeeld van: in de groep vult zijn label de breedte.
   applyPlacement(instance, spec, context.log, parentSpec, context.pinned);
-  applySizing(instance, spec, context.log, context);
+  applyMeasuredSize(instance, spec, context.log);
+  // Een maat die aan een token hangt, zoals de hoogte van een Logo in
+  // PageHeader. Die telt mee: er is geen `applyBindings` voor de instance.
+  applySizeBindings(instance, spec, context, { count: true });
 
   applyOverrides(instance, spec, context, {
     applyBindings,
@@ -1076,6 +1144,7 @@ async function resetVariant(
   context.reusable = new Map();
   context.reusableText = null;
   context.reusableSvg = null;
+  context.keptSvgShapes = null;
 
   // Elk frame en elke tekstlaag op zijn plek in de variant, vóórdat er iets
   // verhuist; zie `takeLayer`. Een component dat tot één tekstlaag of één
@@ -1134,11 +1203,8 @@ async function resetVariant(
   // (Logo): een instance in PageHeader heeft overrides op die vector en zijn
   // vormen (de maat, de kleuren in inverse). Alleen als de SVG niet
   // veranderd is; anders kloppen de vormen niet meer met de spec.
-  if (keepSvg) {
-    const svg = component.children.find(
-      (child) => child.getPluginData?.(SVG_KEY) === keepSvg
-    );
-    if (svg) context.reusableSvg = svg;
+  if (keepSvg && component.getPluginData?.(SVG_KEY) === keepSvg) {
+    context.keptSvgShapes = new Set(component.children);
   }
 
   // Ook de instances die dieper zitten, in een frame binnen de variant: een
@@ -1182,6 +1248,7 @@ async function resetVariant(
     if (pooled.has(child) || keptSlots.has(child) || keptLayers.has(child)) {
       continue;
     }
+    if (context.keptSvgShapes?.has(child)) continue;
     if (child !== context.reusableText && child !== context.reusableSvg) {
       child.remove();
     }
@@ -1192,7 +1259,7 @@ async function resetVariant(
 
   // Zoals een vers frame: geen minimum-maat. Zet de spec er een, dan komt
   // die terug in `applyMinimumSizes`.
-  for (const field of ['minWidth', 'minHeight']) {
+  for (const field of ['minWidth', 'minHeight', 'maxWidth']) {
     try {
       component[field] = null;
     } catch {
@@ -1984,8 +2051,12 @@ export async function importComponentSet(payload, log, options = {}) {
     if (component.node.type === 'FRAME') {
       applyFrame(wrapper, component.node, context, component.name);
       applySizing(wrapper, component.node, log, context);
+    } else if (component.node.type === 'VECTOR' && component.node.shapes) {
+      // Een SVG die geen icoon is (Logo): het component is zelf het vlak met
+      // de vormen erin; zie `buildSvgComponent`.
+      buildSvgComponent(wrapper, component.node, context);
     } else {
-      // Een component dat in zijn geheel tot tekst of een vector inklapt kan
+      // Een component dat in zijn geheel tot tekst of een icoon inklapt kan
       // zichzelf niet zijn; die krijgt wel een frame om zich heen.
       wrapper.layoutMode = 'HORIZONTAL';
       wrapper.primaryAxisSizingMode = 'AUTO';

@@ -723,6 +723,24 @@ export function toInstance(measured, node, target, label) {
     instance.layoutSizingVertical = 'HUG';
   }
 
+  // Een Logo: een vaste maat, en de verhouding staat in het component vast.
+  // Op FILL of HUG zou Figma de vormen in één richting uitrekken. De hoogte
+  // hangt aan zijn token (`page-header/logo/max-block-size`), zoals in de
+  // CSS. De rest van de verschillen zit op de vormen; zie `collectDifferences`.
+  if (target.flatSvg) {
+    instance.layoutSizingHorizontal = 'FIXED';
+    instance.layoutSizingVertical = 'FIXED';
+    const size = Object.fromEntries(
+      Object.entries(measured.boundVariables ?? {}).filter(([field]) =>
+        ['width', 'height'].includes(field)
+      )
+    );
+    if (Object.keys(size).length) instance.boundVariables = size;
+    const rest = overrides.filter((override) => override.path.length > 0);
+    overrides.length = 0;
+    overrides.push(...rest);
+  }
+
   // De tekst binnen zo'n instance moet meerekken, anders breekt hij niet af
   // als de instance in de host de breedte vult. Dat is een override op de
   // geneste laag, en een van de dingen die in Figma zelf te bevestigen zijn.

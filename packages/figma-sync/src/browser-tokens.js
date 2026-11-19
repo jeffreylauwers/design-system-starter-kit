@@ -55,6 +55,11 @@ export const TRACKED_PROPERTIES = [
   // Een schaduw wordt een effect style (één token voor de hele waarde) of
   // losse effects met per veld een binding; zie effects.js.
   'box-shadow',
+  // De maximale breedte van een gecentreerd blok, en de marges die het
+  // centreren (`margin-inline: auto`); zie `maxWidthFrom` in to-figma.js.
+  'max-width',
+  'margin-left',
+  'margin-right',
   // Niet om te binden, maar om `fr` te zien: computed is elke kolom een
   // pixelmaat. Zie `rowGridLayoutFrom` in to-figma.js.
   'grid-template-columns',
@@ -366,6 +371,34 @@ export function createTokenReader(trackedProperties) {
       const side = sides[borderLogicalSide[1]];
       if (!borderLogicalSide[2]) return expandBorder([side], value);
       return [[`border-${side}${borderLogicalSide[2]}`, value]];
+    }
+
+    // -- margin ---------------------------------------------------------------
+    if (name === 'margin') {
+      return fourValues(parts).map((part, index) => [
+        `margin-${ALL_SIDES[index]}`,
+        part,
+      ]);
+    }
+    if (name === 'margin-block' || name === 'margin-inline') {
+      const axis = name.slice('margin-'.length);
+      const [start, end = start] = parts;
+      return [
+        [`margin-${sides[`${axis}-start`]}`, start],
+        [`margin-${sides[`${axis}-end`]}`, end],
+      ];
+    }
+    const marginLogical = name.match(
+      /^margin-((?:block|inline)-(?:start|end))$/
+    );
+    if (marginLogical) {
+      return [[`margin-${sides[marginLogical[1]]}`, value]];
+    }
+
+    // -- max-size -------------------------------------------------------------
+    const maxLogical = name.match(/^max-(block|inline)-size$/);
+    if (maxLogical) {
+      return [[maxLogical[1] === 'block' ? 'max-height' : 'max-width', value]];
     }
 
     // -- min-size -------------------------------------------------------------

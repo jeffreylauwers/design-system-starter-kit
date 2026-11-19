@@ -580,6 +580,13 @@ class Node {
   get minWidth() {
     return this._minWidth;
   }
+  set maxWidth(value) {
+    this.#assertAutoLayoutField('maxWidth');
+    this._maxWidth = value === null ? undefined : value;
+  }
+  get maxWidth() {
+    return this._maxWidth;
+  }
   set minHeight(value) {
     this.#assertAutoLayoutField('minHeight');
     this._minHeight = value === null ? undefined : value;
