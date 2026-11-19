@@ -326,8 +326,8 @@ export function buildNode(spec, parent, context, parentSpec) {
   if (spec.type === 'TEXT') {
     // Een component dat uit één tekstlaag bestaat houdt die laag bij een
     // tweede import; zie `resetVariant`.
-    const reused = context.reusableText;
-    context.reusableText = null;
+    const reused = context.variant.reusableText;
+    context.variant.reusableText = null;
     const layer = reused ? null : takeLayer(context, 'TEXT');
     const text = reused ?? layer ?? figma.createText();
     if (layer) placeReused(layer, parent, context);
@@ -434,19 +434,20 @@ export function buildNode(spec, parent, context, parentSpec) {
  * property.
  */
 function buildContentSlot(spec, parent, context, parentSpec) {
-  let slot = context.reusableSlots?.get(spec.name);
+  const { variant } = context;
+  let slot = variant.reusableSlots.get(spec.name);
   if (slot) {
-    context.reusableSlots.delete(spec.name);
+    variant.reusableSlots.delete(spec.name);
     // Alles behalve de instances in de pool: die haalt het bouwen hieronder
-    // weer op, en wat er niet opgehaald wordt ruimt `dropUnusedIcons` op.
+    // weer op, en wat er niet opgehaald wordt ruimt `dropUnused` op.
     for (const child of [...slot.children]) {
-      if (!context.pooled?.has(child)) child.remove();
+      if (!variant.pooled.has(child)) child.remove();
     }
     clearBoundVariables(slot);
     parent.appendChild(slot);
     rejoinFlow(slot);
   } else {
-    const component = context.component;
+    const { component } = variant;
     if (typeof component?.createSlot !== 'function') {
       throw new Error(
         `Slot "${spec.name}": deze Figma kent geen slots (createSlot ontbreekt). Werk Figma bij.`
@@ -505,7 +506,7 @@ export function dropStaleContentSlots(owner, names, log) {
  * stilletjes aan de verkeerde laag komen te hangen.
  */
 function registerSlot(node, spec, context) {
-  if (spec.componentSlot) context.slots.set(spec.componentSlot, node);
+  if (spec.componentSlot) context.variant.slots.set(spec.componentSlot, node);
 }
 
 /**
@@ -551,10 +552,11 @@ export function applyFrame(frame, spec, context, name = spec.name ?? 'Frame') {
   applyBindings(frame, spec, context);
 
   // Het pad naar elk kind, voor `takeLayer`.
-  const path = context.layerPath ?? [];
+  const { variant } = context;
+  const path = variant.layerPath;
   (spec.children ?? []).forEach((child, index) => {
-    context.layerPath = [...path, index];
+    variant.layerPath = [...path, index];
     buildNode(child, frame, context, spec);
   });
-  context.layerPath = path;
+  variant.layerPath = path;
 }
