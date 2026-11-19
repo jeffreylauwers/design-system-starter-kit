@@ -18,6 +18,9 @@
 
 import { parseColor } from './color.js';
 import { parseBoxShadow } from './shadow.js';
+// Het formaat dat de Figma-plugin inleest. Alleen tijdens de build: dit
+// bestand gaat niet mee in het npm-pakket.
+import { SCHEMAS } from '../../../figma-plugin/src/contract.js';
 
 // =============================================================================
 // CONSTANTEN
@@ -988,7 +991,7 @@ export async function buildFigmaVariables({
   });
 
   return {
-    $schema: 'dsn-figma-variables/1',
+    $schema: SCHEMAS.variables,
     generatedAt: new Date().toISOString(),
     meta: {
       rootFontSize: ROOT_FONT_SIZE,

@@ -133,16 +133,6 @@
 <div id="log">Nog niets geïmporteerd.</div>
 
 <script>
-  // Het schema bepaalt wat er geïmporteerd wordt, niet de bestandsnaam.
-  // De volgorde is die van de afhankelijkheden: componenten binden aan
-  // variables, en hun iconen zijn instances van de iconset.
-  const KINDS = {
-    'dsn-figma-variables/1': 'variables',
-    'dsn-figma-icons/1': 'icons',
-    'dsn-figma-components/1': 'components',
-  };
-  const ORDER = ['variables', 'icons', 'components'];
-
   const logElement = document.getElementById('log');
   const drop = document.getElementById('drop');
   const fileInput = document.getElementById('file');
@@ -186,77 +176,29 @@
   }
 
   /**
-   * Zet componenten met instances ná de sets waar ze instances van bevatten:
-   * een HeadingGroup na Heading en PreHeading. Andersom weigert de plugin. De
-   * volgorde van variables en iconen blijft staan, want die staan vooraan.
+   * Leest de gekozen bestanden en geeft ze aan de plugin. Welke soort een
+   * bestand is en in welke volgorde ze gaan, bepaalt de plugin met
+   * `contract.js`; deze pagina wordt niet gebundeld en kan dat niet importeren.
    */
-  function inDependencyOrder(jobs) {
-    const bySet = new Map(
-      jobs
-        .filter((job) => job.kind === 'components')
-        // Op pagina én naam: `__item` staat op meer pagina's.
-        .map((job) => [
-          `${job.payload.componentSet?.page}|${job.payload.componentSet?.name}`,
-          job,
-        ])
-    );
-    const ordered = [];
-    const done = new Set();
-    const visit = (job) => {
-      if (done.has(job)) return;
-      done.add(job);
-      for (const { name, page } of job.payload.componentSet?.dependsOn ?? []) {
-        const dependency = bySet.get(`${page}|${name}`);
-        if (dependency) visit(dependency);
-      }
-      ordered.push(job);
-    };
-    for (const job of jobs) visit(job);
-    return ordered;
-  }
-
   async function handleFiles(files) {
-    const jobs = [];
+    const parsed = [];
 
     for (const file of files) {
-      let payload;
       try {
-        payload = JSON.parse(await file.text());
+        parsed.push({
+          name: file.name,
+          payload: JSON.parse(await file.text()),
+        });
       } catch (error) {
         write(`${file.name}: geen geldige JSON (${error.message})`, 'error');
-        continue;
       }
-
-      const kind = KINDS[payload.$schema] ?? null;
-      if (!kind) {
-        write(
-          `${file.name}: onbekend $schema "${payload.$schema ?? 'ontbreekt'}"`,
-          'error'
-        );
-        continue;
-      }
-
-      jobs.push({ name: file.name, kind, payload });
     }
 
-    // Een selectie in de bestandskiezer komt op alfabetische volgorde binnen,
-    // en dan zou button.json vóór variables.json gaan en geweigerd worden.
-    jobs.sort((a, b) => ORDER.indexOf(a.kind) - ORDER.indexOf(b.kind));
-
-    for (const job of inDependencyOrder(jobs)) {
-      write(`> ${job.name}`);
-      showProgress(`${job.name} inlezen`);
-      parent.postMessage(
-        {
-          pluginMessage: {
-            type: 'import',
-            kind: job.kind,
-            payload: job.payload,
-          },
-        },
-        '*'
-      );
-    }
+    if (!parsed.length) return;
+    parent.postMessage(
+      { pluginMessage: { type: 'import-files', files: parsed } },
+      '*'
+    );
   }
 
   drop.addEventListener('dragover', (event) => {
@@ -283,6 +225,11 @@
   onmessage = (event) => {
     const message = event.data.pluginMessage;
     if (!message) return;
+    if (message.type === 'start') {
+      write(`> ${message.name}`);
+      showProgress(`${message.name} inlezen`);
+    }
+    if (message.type === 'line') write(message.message, message.level);
     if (message.type === 'log') write(`  ${message.message}`, message.level);
     if (message.type === 'progress') showProgress(message.label);
     if (message.type === 'done') {

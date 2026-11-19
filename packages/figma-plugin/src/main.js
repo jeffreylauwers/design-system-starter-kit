@@ -6,6 +6,7 @@
  * Daarmee heeft de plugin geen netwerktoegang en geen token nodig.
  */
 
+import { planImports } from './contract.js';
 import { importVariables } from './variables.js';
 import { importComponentSet } from './components.js';
 import { importIconSet } from './icons.js';
@@ -72,17 +73,30 @@ async function handleImport(message) {
 }
 
 /**
- * Meerdere bestanden tegelijk laten vallen levert meerdere berichten op. Die
- * moeten op volgorde blijven: componenten binden aan variables die er al
- * moeten zijn, en straks aan iconen die er al moeten staan. Zonder deze wachtrij
- * lopen de imports door elkaar heen en hangt het van de bestandsgrootte af of
- * de volgorde klopt.
+ * De imports draaien één voor één: componenten binden aan variables die er al
+ * moeten zijn, en hun iconen zijn instances van de iconset. Zonder deze
+ * wachtrij lopen de imports door elkaar heen en hangt het van de
+ * bestandsgrootte af of de volgorde klopt. Een tweede selectie terwijl de
+ * eerste nog loopt, sluit achteraan aan.
  */
 let queue = Promise.resolve();
 
 figma.ui.onmessage = (message) => {
-  if (message.type === 'import') {
-    queue = queue.then(() => handleImport(message));
+  if (message.type === 'import-files') {
+    const { jobs, rejected } = planImports(message.files);
+    for (const { name, schema } of rejected) {
+      figma.ui.postMessage({
+        type: 'line',
+        level: 'error',
+        message: `${name}: onbekend $schema "${schema ?? 'ontbreekt'}"`,
+      });
+    }
+    for (const job of jobs) {
+      queue = queue.then(() => {
+        figma.ui.postMessage({ type: 'start', name: job.name });
+        return handleImport(job);
+      });
+    }
     return queue;
   }
   if (message.type === 'close') return figma.closePlugin();

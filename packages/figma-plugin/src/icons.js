@@ -19,21 +19,12 @@ import {
   paintsForVector,
   requireCollections,
 } from './bindings.js';
+import { assertSchema, ICON_PAGE } from './contract.js';
 import { findOrCreatePage, openPage, sortManagedPages } from './pages.js';
 
 /** Hoeveel iconen naast elkaar, en hoeveel ruimte eromheen. */
 const COLUMNS = 10;
 const CELL = 72;
-
-/**
- * De pagina waar de iconset op staat.
- *
- * Ook nodig bij een componentimport, die de iconen als instances plaatst en
- * dus zonder icons.json in de hand moet weten waar ze staan. De generator zet
- * dezelfde naam in de payload; `importIconSet` meldt het als die twee uit
- * elkaar lopen.
- */
-export const ICON_PAGE = 'dsn/Icons';
 
 /**
  * Zet de strepen van een lijn-icoon om naar vlakken.
@@ -186,11 +177,7 @@ export async function loadIconIndex(pageName = ICON_PAGE) {
  * @param {object} log verzamelaar met .info/.warn/.error
  */
 export async function importIconSet(payload, log) {
-  if (payload.$schema !== 'dsn-figma-icons/1') {
-    throw new Error(
-      `Onbekend formaat: ${payload.$schema ?? 'geen $schema'}. Verwacht dsn-figma-icons/1.`
-    );
-  }
+  assertSchema(payload, 'icons');
 
   const spec = payload.iconSet;
 
