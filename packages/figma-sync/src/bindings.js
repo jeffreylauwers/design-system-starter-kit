@@ -12,9 +12,7 @@
  * werkelijk de gemeten waarde oplevert.
  */
 
-/** Zoveel mag de waarde van het token van de gemeten waarde afwijken. */
-const NUMBER_TOLERANCE = 0.05;
-const CHANNEL_TOLERANCE = 0.005;
+import { CHANNEL_TOLERANCE, NUMBER_TOLERANCE } from './tolerances.js';
 
 /**
  * De maat van een node, als de CSS die vastzet (`inline-size:

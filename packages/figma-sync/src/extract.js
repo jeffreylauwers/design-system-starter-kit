@@ -986,12 +986,6 @@ function domWalker([properties, hiddenClass]) {
 /* c8 ignore stop */
 
 /**
- * Rendert elke cel van de matrix en levert de computed boom per variant.
- *
- * @param {object} matrix Een matrixdefinitie uit src/matrices/
- * @returns {Promise<Array<{variant: object, tree: object}>>}
- */
-/**
  * Documentstijlen die altijd meegeladen worden.
  *
  * body.css zet de basis-font-family. Zonder dit erft elk element dat zelf geen
@@ -1061,6 +1055,12 @@ function checkDeclaredDependencies(files, warnings) {
   }
 }
 
+/**
+ * Rendert elke cel van de matrix en levert de computed boom per variant.
+ *
+ * @param {object} matrix Een matrixdefinitie uit src/matrices/
+ * @returns {Promise<Array<{variant: object, tree: object}>>}
+ */
 export async function extractMatrix(matrix) {
   const files = [...BASE_CSS, ...matrix.css].map(resolveCssPath);
   checkDeclaredDependencies(files, matrix.warnings ?? (matrix.warnings = []));
