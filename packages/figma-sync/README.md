@@ -144,6 +144,29 @@ bestaansrecht, en opruimen zou weggooien wat er hoort te staan.
 
 ## Hoe de componentgeneratie werkt
 
+### Opbouw van de code
+
+| Bestand                              | Wat                                                                 |
+| ------------------------------------ | ------------------------------------------------------------------- |
+| `build-components.js`                | Runner: matrices laden, meten, in afhankelijkheidsvolgorde omzetten |
+| `extract.js`                         | Elke variant renderen in Chromium en de computed boom ophalen       |
+| `dom-walker.js`                      | Het deel dat in de browser draait; staat volledig op zichzelf       |
+| `browser-tokens.js`                  | Welk token een gemeten waarde leverde                               |
+| `to-figma.js`                        | Per variant omzetten en de component set-spec samenstellen          |
+| `convert.js`                         | Element voor element een node spec maken                            |
+| `layout-from-css.js`                 | Flexbox, grid en block layout naar auto layout                      |
+| `styles-from-css.js`                 | Randen, hoekradius, tekststijl en rotatie                           |
+| `values.js`                          | Pixels, afronden, kleuren                                           |
+| `post-process.js`                    | Bewerkingen op de boom van een hele variant                         |
+| `instances.js`                       | Een gemeten subboom als instance van een andere set                 |
+| `bindings.js`, `effects.js`          | Variable-bindingen op lagen en schaduwen, met verificatie           |
+| `variable-index.js`, `tolerances.js` | De variables per mode, en hoeveel een tokenwaarde mag afwijken      |
+| `build-icons.js`                     | De iconset                                                          |
+| `matrices/` en de helpers ernaast    | Wat er gemeten wordt (`icons.js`, `logo.js`, `manifest.js`, ...)    |
+
+Wat de JSON voor de plugin betekent (schema's, paginanamen, de rootregel)
+staat in `figma-plugin/src/contract.js`.
+
 De CSS parsen om Figma-nodes te bouwen werkt niet: cascade, custom properties,
 `clamp()` en media queries bepalen samen pas de eindwaarde. In plaats daarvan
 rendert `extract.js` elke variant in een echte browser en leest de _computed_
