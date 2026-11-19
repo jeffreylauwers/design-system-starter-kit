@@ -227,7 +227,7 @@ export function effectFromSpec(spec, resolve, onError) {
  *
  * Een effect style komt hier níet: `setEffectStyleIdAsync` is asynchroon en
  * de bouw is dat niet. De style wordt aan het eind van de import gelegd (zie
- * `applyEffectStyles` in components.js); tot die tijd staan de gemeten
+ * `applyEffectStyles` in finalize.js); tot die tijd staan de gemeten
  * effects erop, en die zijn gelijk aan de style.
  */
 export function applyEffects(node, spec, context) {
