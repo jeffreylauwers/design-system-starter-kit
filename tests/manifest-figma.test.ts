@@ -305,6 +305,14 @@ describe('manifest-api versus Figma-matrix', () => {
               `class="([^"]* )?${block}( |")|data-figma-instance="${block}"`
             )
           );
+          // Bij meer instances van hetzelfde component wijst `layer` de laag
+          // aan; die moet als data-figma-slot in de markup staan.
+          if (binding.layer) {
+            expect(
+              html,
+              `${part.name}: laag ${binding.layer} staat in de markup van de matrix`
+            ).toContain(`data-figma-slot="${binding.layer}"`);
+          }
           const nested = nestedMatrices.get(binding.instance);
           expect(nested, `matrix van ${binding.instance}`).toBeDefined();
           const property = nested?.componentProperties?.find(

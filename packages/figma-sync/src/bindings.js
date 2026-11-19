@@ -76,6 +76,10 @@ const FRAME_FIELDS = [
   ...sizeFields(),
   { field: 'minWidth', property: 'min-width', kind: 'number' },
   { field: 'minHeight', property: 'min-height', kind: 'number' },
+  // Alleen als de laag een `maxWidth` heeft (een gecentreerd blok, zie
+  // `maxWidthFrom` in to-figma.js); een alinea met een maximale breedte
+  // krijgt er in Figma geen, en dan valt er ook niets te binden of te missen.
+  { field: 'maxWidth', property: 'max-width', kind: 'number', ifPresent: true },
   { field: 'paddingTop', property: 'padding-top', kind: 'number' },
   { field: 'paddingRight', property: 'padding-right', kind: 'number' },
   { field: 'paddingBottom', property: 'padding-bottom', kind: 'number' },
@@ -297,6 +301,7 @@ export function bindingsFor(spec, sources, index, report) {
 
   const consider = (entry) => {
     const { field, property } = entry;
+    if (entry.ifPresent && spec[field] === undefined) return;
     const source = sources[property];
     if (!source) return;
 

@@ -271,6 +271,23 @@ is in Figma geen laag, maar de rij bleef wel staan als lege track. Alleen aan
 het eind: een lege rij tussen twee gevulde in houdt de nummering van de cellen
 overeind.
 
+**Een grid van één rij wordt een rij.** Een grid met één rij, één kind per
+kolom en kolommen van `auto` en `fr` is in Figma handiger als horizontale auto
+layout dan als grid: de balk van PageHeader (`1fr auto 1fr`), de compact-layout
+(`auto 1fr auto`) en File (`48px 1fr auto`). Een `fr`-kolom wordt FILL, een
+`auto`-kolom hugt zijn inhoud, de gap wordt `itemSpacing` (met zijn token), en
+`align-items` wordt de uitlijning op de kruisas. In een Figma-grid stonden de
+kinderen bovenin hun cel: het logo van PageHeader hing daardoor te hoog.
+
+Welke kolom `fr` is, leest `rowGridLayoutFrom` uit de geschreven
+`grid-template-columns` (de token-lezer kent die declaratie). De tweede meting
+ziet het niet als de rij al tegen zijn `max-inline-size` aan loopt, zoals de
+compact-layout op 1440px. Alleen als het niets verandert: geen kind met een
+eigen cel, en de `fr`-kolommen even breed (Figma kent geen `2fr`). Een lege
+`auto`-kolom achteraan mag: die is 0 breed en van hem blijft alleen de gap
+over, en die komt bij de padding. Zo blijft een File zonder actie dezelfde rij
+als een File met; zijn padding rechts hangt dan niet meer aan het token.
+
 **Figma kent geen subgrid.** Een rij die in CSS de kolommen van zijn ouder
 overneemt (`grid-template-columns: subgrid`, zoals de rij van DataList in de
 brede weergave) geeft uit de browser geen pixelmaten terug maar het woord
@@ -644,6 +661,23 @@ met beschrijving stonden het label, de beschrijving en het veld over elkaar. Dat
 `invalid`-variant van FormField, waar de marge onder het label verandert zodra
 er een beschrijving achter staat.
 
+Staan alle kinderen in het midden, met evenveel ruimte links als rechts, dan
+centreert het frame ze (`counterAxisAlignItems: CENTER`). Zo centreert CSS een
+blok met een maximale breedte: `margin-inline: auto`, zoals de inner van de
+masthead, de navbar en de compact-layout van PageHeader, en de inner van
+PageFooter. Zonder dit stonden ze links.
+
+Zo'n blok krijgt bovendien zijn maximale breedte mee: `max-inline-size:
+var(--dsn-page-max-inline-size); margin-inline: auto` wordt FILL met een
+`maxWidth`, gebonden aan `page/max-inline-size`. Op een smalle variant vult
+het blok de breedte, op een brede blijft het 1200px en staat het in het
+midden, net als in de browser. De ouder centreert ook op een smalle variant,
+zodat het blok in het midden blijft als een designer de variant breder
+maakt. Alleen met `margin-inline: auto`: een formulierveld heeft ook een
+maximale breedte, maar staat links. Het zoekpaneel van PageHeader is in CSS
+een grid zonder kolommen (alleen voor de uitklapanimatie); zo'n grid met één
+rij wordt een blok, zodat zijn inner hetzelfde gedrag krijgt.
+
 Eén ding blijft daarbij liggen: de ruimte tussen blokken komt uit de marges van
 de kinderen en niet uit een `gap`, en de binder leest alleen gaps. De waarde
 klopt dus wel, maar `itemSpacing` hangt aan niets. Dat wordt per variant als
@@ -867,6 +901,12 @@ de SVG, met de gemeten maat als `width` en `height`, zodat Figma de lijnen bij
 een grotere Spinner meeschaalt zoals de browser. De generator zet de kleuren in
 die SVG om naar hex: de computed kleur is vaak `oklch()`.
 
+Is zo'n SVG het hele component (Logo), dan is het component zelf het vlak
+met de vormen erin, zonder frame ertussen. Elke vorm schaalt mee (`SCALE`) en
+de verhouding staat vast, zodat een instance op 124x32 in PageHeader niet
+uitrekt. Zo'n instance krijgt een vaste maat met de hoogte aan zijn token, en
+de kleuren in een inverse header als override op de vormen.
+
 Per vorm gaan ook de vulling, de lijnkleur en de lijndikte mee in `shapes`,
 met hun tokens. De plugin legt die op de lagen die `createNodeFromSvg` maakt,
 in de volgorde van de SVG, en bindt ze. Een icoon heeft één kleur
@@ -894,6 +934,13 @@ bij Checkbox gebeurde dat al met een overgetypt vinkje. Als instance volgt de
 laag zijn set, en werkt een wijziging aan Heading overal door. Het patroon is
 hetzelfde als bij de iconen, maar dan voor elke set uit de bibliotheek, en op
 elke diepte: Checkbox in CheckboxOption in CheckboxGroup.
+
+Een set die zijn veld en versiering samenvoegt (`mergeAdornments`, zoals
+SearchInput) doet dat ook als instance in een andere set: de host voegt de
+gemeten wrapper eerst op dezelfde manier samen, en houdt daarbij de plek van
+de wrapper in zijn ouder. Het veld zelf krijgt `data-figma-instance="none"`,
+anders herkent de generator het eerst als TextInput (beide hebben het blok
+`dsn-text-input`). Zie de zoekvelden van PageHeader.
 
 `src/instances.js` doet dat in drie stappen.
 
@@ -990,6 +1037,30 @@ kolom is zo breed als het veld; op FILL rekende Figma niet met de breedte van
 de `inlineSize`-variant, en stond het veld pas goed na "reset size". Staat een Heading in de
 host op FILL, dan krijgt zijn tekstlaag ook een FILL-override, anders breekt
 de tekst niet af.
+
+Een icoon of een SVG die geen icoon is (het logo) draagt zijn kleur niet op
+de laag zelf maar op de vormen erin. Een andere kleur in de host gaat daarom
+op die vormen: bij een icoon kleurt de plugin de vectoren in de
+icoon-instance (`icon: true` op de override), bij het logo krijgt elke vorm
+een override op `[0, i]`, zoals het Logo in een inverse PageHeader. Zodat
+die overrides een nieuwe import van `logo.json` overleven, houdt de plugin de
+vector van het logo zolang zijn SVG niet verandert (`resetVariant`, net als
+de tekstlaag van een Heading).
+
+Een instance die in de host zijn inhoud hugt, terwijl een kind in de
+doelset de breedte vult, krijgt op dat kind een override naar HUG. De
+MenuLink-set is gemeten in een verticaal menu, waar de link het hele item
+vult; in het horizontale menu van PageHeader is een item zo breed als zijn
+link. Zonder die override rekt Figma de items op.
+
+Een geneste instance moet in de host dezelfde overrides hebben als in de
+doelvariant, anders is het een andere opbouw. Maten die aan een token hangen
+tellen daarbij niet: op een andere viewport geeft een fluid token een andere
+waarde, maar het blijft hetzelfde token. Zo is de NumberBadge in een MenuLink
+van PageHeader op 1440px dezelfde als in de MenuLink-set. Een kleur telt wel.
+Een geneste instance die in de host verborgen staat (de NumberBadge die in
+een MenuLink uit staat) krijgt geen maat als override: die is gemeten terwijl
+hij weggeknipt was.
 
 Een instance van een set met eigen component properties is **exposed**: de
 `label` van de Heading staat dan in het paneel van de HeadingGroup. De host
@@ -1748,11 +1819,16 @@ en daar volgt de opbouw uit:
   instance van ActionGroup als standaardinhoud. De header is bewust geen
   slot: in code zet de header de sluitknop er altijd zelf in, en een slot zou
   toelaten dat een designer die weghaalt.
-- **Dieper niet.** Bij een tweede import bouwt de plugin een variant van
-  binnen opnieuw op. Wat een designer in het slot van een instance zette
-  blijft alleen staan als het slot zelf blijft staan, en een slot in een frame
-  dat opnieuw wordt opgebouwd krijgt een ander pad. De generator weigert een
-  dieper slot daarom met een fout.
+- **Dieper wordt het element zelf het slot.** De navigatie van PageHeader
+  zit in de navbar en de masthead, en het logo in de balk: daar wordt de
+  `<ul>` of de `<div>` met `data-figma-children` het slot. Bij een tweede
+  import bouwt de plugin een variant van binnen opnieuw op; een slot blijft
+  alleen staan als het zelf blijft staan. `resetVariant` verhangt daarom elk
+  slot, op elke diepte, eerst naar de variant, net als de geneste instances,
+  en `buildContentSlot` zet het daarna weer op zijn plek. Dat Figma een
+  override aan de laag zelf koppelt en niet aan het pad, bleek bij #388: een
+  hergebruikte icoon-instance die zo verhangen wordt houdt zijn kleur. Voor
+  een slot is dat in Figma nog niet gemeten.
 - **Geen grid.** Figma weigert een slot met grid-layout, en de generator ook.
 - **Afbreken mag wel.** Een slot draagt `layoutWrap: WRAP` en de gap tussen
   de rijen (`counterAxisSpacing`), beide aan hun variable gebonden. Gemeten

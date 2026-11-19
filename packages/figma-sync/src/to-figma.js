@@ -239,6 +239,95 @@ function gridLayoutFrom(styles, wideStyles, warnings, pathLabel) {
   };
 }
 
+/**
+ * Een grid van één rij, met één kind per kolom, als horizontale auto layout.
+ *
+ * Zo'n grid is in CSS een rij met kolommen van `auto` en `fr`: de balk van
+ * PageHeader (`1fr auto 1fr`, het logo in het midden) en de compact-layout
+ * (`auto 1fr auto`). In Figma is dat met auto layout te maken, en dat is daar
+ * handiger dan een grid: een kolom van `fr` wordt FILL, een kolom van `auto`
+ * hugt zijn inhoud, en de kinderen staan op hun kruisas uitgelijnd zoals
+ * `align-items` het zegt. In een Figma-grid staan ze bovenin hun cel.
+ *
+ * Alleen als dat niets verandert: geen kind met een eigen cel of span, en de
+ * `fr`-kolommen even breed. Figma verdeelt de ruimte gelijk over FILL-kinderen
+ * en kent geen `2fr`.
+ */
+function rowGridLayoutFrom(node, styles, wideStyles) {
+  if (/^subgrid\b/.test(styles.gridTemplateColumns ?? '')) return null;
+  if (trackSizes(styles.gridTemplateRows ?? '').length > 1) return null;
+
+  const columns =
+    authoredTracks(node.tokens?.['grid-template-columns']?.value) ??
+    trackSizesFrom(styles.gridTemplateColumns, wideStyles?.gridTemplateColumns);
+  const children = (node.children ?? []).filter(
+    (child) =>
+      child.styles &&
+      child.styles.position !== 'absolute' &&
+      child.styles.position !== 'fixed'
+  );
+  // Minder kinderen dan kolommen kan, als de lege kolommen achteraan `auto`
+  // zijn: zo'n kolom is 0 breed, en van hem blijft in CSS alleen de gap over.
+  // Die komt bij de padding aan het eind. Zo blijft een File zonder actie
+  // dezelfde rij als een File met.
+  if (!children.length || children.length > columns.length) return null;
+  const empty = columns.slice(children.length);
+  if (empty.some((track) => track.type === 'FLEX')) return null;
+  if (
+    children.some(
+      (child) =>
+        child.styles.gridColumnStart !== 'auto' ||
+        child.styles.gridRowStart !== 'auto'
+    )
+  ) {
+    return null;
+  }
+  if (!columns.some((track) => track.type === 'FLEX')) return null;
+
+  const flexWidths = children
+    .filter((_, index) => columns[index].type === 'FLEX')
+    .map((child) => child.rect.width);
+  if (Math.max(...flexWidths) - Math.min(...flexWidths) > STACK_TOLERANCE) {
+    return null;
+  }
+
+  children.forEach((child, index) => {
+    child.gridTrack = columns[index].type;
+  });
+
+  const stretch =
+    styles.alignItems === 'normal' || styles.alignItems === 'stretch';
+  const gap = px(styles.columnGap ?? styles.gap, 0);
+  const padding = paddingFrom(styles);
+  if (empty.length) padding.paddingRight += gap * empty.length;
+  return {
+    layoutMode: 'HORIZONTAL',
+    layoutWrap: 'NO_WRAP',
+    itemSpacing: gap,
+    itemReverseZIndex: false,
+    ...padding,
+    primaryAxisAlignItems: 'MIN',
+    counterAxisAlignItems: COUNTER_AXIS_ALIGN[styles.alignItems] ?? 'MIN',
+    stretchChildren: stretch,
+    reversed: false,
+  };
+}
+
+/**
+ * De kolommen zoals de CSS ze schrijft: `auto 1fr auto`. Alleen een lijst van
+ * losse maten; met `repeat()`, `minmax()` of een `var()` is uit de tekst niet
+ * af te lezen wat er gerenderd wordt, en geldt de meting.
+ */
+function authoredTracks(template) {
+  if (!template || !/^[\w\s.%-]+$/.test(template.trim())) return null;
+  const tracks = template.trim().split(/\s+/);
+  const fractions = tracks.filter((track) => /^[\d.]+fr$/.test(track));
+  if (new Set(fractions).size > 1) return null;
+  return tracks.map((track) =>
+    /fr$/.test(track) ? { type: 'FLEX', value: 1 } : { type: 'HUG' }
+  );
+}
+
 /** De vier paddings als Figma ze verwacht. */
 function paddingFrom(styles) {
   return {
@@ -312,7 +401,47 @@ function blockLayoutFrom(node, styles, warnings, pathLabel) {
     );
   }
 
-  return { ...base, layoutMode, itemSpacing: gap };
+  return {
+    ...base,
+    layoutMode,
+    itemSpacing: gap,
+    ...(layoutMode === 'VERTICAL' && centersChildren(node, styles)
+      ? { counterAxisAlignItems: 'CENTER' }
+      : {}),
+  };
+}
+
+/**
+ * Staan alle kinderen van dit blok horizontaal in het midden?
+ *
+ * Zo centreert CSS een blok met een maximale breedte: `margin-inline: auto`,
+ * zoals de inner van de masthead en de navbar van PageHeader. In Figma is dat
+ * de uitlijning CENTER op de ouder. Een kind dat de hele breedte vult staat
+ * ook in het midden; minstens één kind moet er echt ruimte naast hebben.
+ */
+function centersChildren(node, styles) {
+  const left =
+    node.rect.x + px(styles.borderLeftWidth, 0) + px(styles.paddingLeft, 0);
+  const right =
+    node.rect.x +
+    node.rect.width -
+    px(styles.borderRightWidth, 0) -
+    px(styles.paddingRight, 0);
+  let indented = false;
+  for (const child of node.children ?? []) {
+    if (!child.rect) continue;
+    const before = child.rect.x - left;
+    const after = right - (child.rect.x + child.rect.width);
+    if (Math.abs(before - after) > 1) return false;
+    if (before > 1) indented = true;
+    // Een kind dat de CSS met `margin-inline: auto` centreert, ook als het
+    // op deze breedte de hele ouder vult: in Figma kan een designer de
+    // variant breder maken, en dan hoort het in het midden te blijven.
+    if (maxWidthFrom(child.styles ?? {}, child.tokens).maxWidth) {
+      indented = true;
+    }
+  }
+  return indented;
 }
 
 /**
@@ -355,7 +484,24 @@ function stackSpacing(children, direction) {
 /** Bouwt de auto layout-eigenschappen uit de flexbox computed styles. */
 function autoLayoutFrom(node, styles, wideStyles, warnings, pathLabel) {
   if (styles.display === 'grid' || styles.display === 'inline-grid') {
-    return gridLayoutFrom(styles, wideStyles, warnings, pathLabel);
+    // Een grid zonder kolommen en met één rij zet zijn kinderen onder elkaar,
+    // net als een blok. Het zoekpaneel van PageHeader is zo'n grid, alleen
+    // voor de uitklapanimatie (`grid-template-rows: 0fr` naar `1fr`).
+    const noColumns =
+      !(node.tokens?.['grid-template-columns']?.value ?? '').trim() ||
+      /^none$/.test(node.tokens?.['grid-template-columns']?.value?.trim());
+    if (
+      noColumns &&
+      trackSizes(styles.gridTemplateRows ?? '').length <= 1 &&
+      (node.children ?? []).filter((child) => child.styles).length <= 1
+    ) {
+      const block = blockLayoutFrom(node, styles, warnings, pathLabel);
+      if (block) return block;
+    }
+    return (
+      rowGridLayoutFrom(node, styles, wideStyles) ??
+      gridLayoutFrom(styles, wideStyles, warnings, pathLabel)
+    );
   }
 
   const isFlex = styles.display === 'flex' || styles.display === 'inline-flex';
@@ -507,6 +653,27 @@ function minimumSizesFrom(styles, layout) {
     minWidth: pixels(styles.minWidth),
     minHeight: pixels(styles.minHeight),
   };
+}
+
+/**
+ * De maximale breedte van een blok dat CSS in het midden zet.
+ *
+ * `max-inline-size: var(--dsn-page-max-inline-size); margin-inline: auto` is
+ * hoe de inner van PageHeader en PageFooter op een brede pagina 1200px breed
+ * blijft en in het midden staat, en op een smalle pagina de hele breedte
+ * vult. In Figma is dat een kind op FILL met een `maxWidth`, in een ouder die
+ * centreert; zie de plaatsing en `centersChildren`. De `maxWidth` hangt aan
+ * het token.
+ *
+ * Alleen met `margin-inline: auto`, zoals de CSS het schrijft: een
+ * formulierveld heeft ook een maximale breedte, maar staat links en vult
+ * zijn ouder niet. Die blijft zoals hij was.
+ */
+function maxWidthFrom(styles, tokens) {
+  const auto = (side) => tokens?.[`margin-${side}`]?.value?.trim() === 'auto';
+  if (!auto('left') || !auto('right')) return {};
+  if (!/^[\d.]+px$/.test(String(styles.maxWidth ?? '').trim())) return {};
+  return { maxWidth: px(styles.maxWidth) };
 }
 
 /** Figma scheidt kleur en alpha: opacity zit op de paint, niet in de kleur. */
@@ -754,6 +921,34 @@ function applyChildPlacement(
     Math.abs(child.rect.width - parentContentWidth) < 1
   ) {
     converted.layoutSizingHorizontal = 'FILL';
+  }
+
+  // Een blok met een maximale breedte dat CSS in het midden zet: FILL, en de
+  // `maxWidth` houdt hem op een brede pagina smal. Zie `maxWidthFrom`.
+  if (
+    !outOfFlow &&
+    converted.maxWidth !== undefined &&
+    parentLayout.layoutMode &&
+    parentLayout.layoutMode !== 'NONE' &&
+    parentLayout.layoutMode !== 'GRID'
+  ) {
+    converted.layoutSizingHorizontal = 'FILL';
+  }
+
+  // Een kind in een `fr`-kolom van een grid dat een rij werd; zie
+  // `rowGridLayoutFrom`.
+  if (
+    !outOfFlow &&
+    parentLayout.layoutMode === 'HORIZONTAL' &&
+    child.gridTrack
+  ) {
+    // Een `auto`-kolom is zo breed als zijn inhoud: HUG, als de laag zelf
+    // auto layout heeft. Anders houdt hij zijn gemeten breedte.
+    if (child.gridTrack === 'FLEX') {
+      converted.layoutSizingHorizontal = 'FILL';
+    } else if (converted.layoutMode && converted.layoutMode !== 'NONE') {
+      converted.layoutSizingHorizontal = 'HUG';
+    }
   }
 
   // `flex-grow` in een rij is in Figma FILL: het kind neemt de ruimte die
@@ -1221,6 +1416,7 @@ function convertElement(
       ? { primaryAxisAlignItems: 'CENTER', counterAxisAlignItems: 'MIN' }
       : {}),
     ...minimumSizesFrom(styles, autoLayout),
+    ...maxWidthFrom(styles, node.tokens),
     ...cornerRadiusFrom(styles, node.rect),
     fills: paintFrom(styles.backgroundColor),
     ...(strokes ?? {}),
@@ -1461,8 +1657,9 @@ function convertElement(
  * dan komt er binnen de root een frame `slot` met de richting en de
  * tussenruimte van de root, inclusief de binding; de root houdt zijn padding.
  * Staat hij op een kind van de root (de footer van ModalDialog), dan wórdt dat
- * kind het slot, met zijn eigen padding en rand. Dieper mag niet; zie
- * `checkSlotDepth`.
+ * kind het slot, met zijn eigen padding en rand. Dieper wordt het element
+ * zelf het slot, zoals de navigatie van PageHeader; de plugin bewaart het bij
+ * een herimport net zo (zie `resetVariant`).
  */
 function withContentSlot(frame, name, root, label) {
   if (frame.layoutMode === 'GRID') {
@@ -1539,26 +1736,6 @@ function withContentSlot(frame, name, root, label) {
     boundVariables: Object.keys(rootBindings).length ? rootBindings : undefined,
     children: [slot],
   };
-}
-
-/**
- * Een slot hoort direct onder de root te hangen.
- *
- * Bij een tweede import bouwt de plugin een variant van binnen opnieuw op, en
- * alleen een slot dat zelf blijft staan houdt de inhoud die een designer erin
- * zette. Een slot in een frame dat opnieuw wordt opgebouwd krijgt een ander
- * pad, en daar raakt Figma een override op kwijt; zo verloren de iconen eerder
- * hun kleur (issue #388).
- */
-function checkSlotDepth(node, label, depth = 0) {
-  for (const child of node.children ?? []) {
-    if (child.type === 'SLOT' && depth > 0) {
-      throw new Error(
-        `${label}: het slot "${child.name}" hangt niet direct onder de root. Zet data-figma-children op de root of op een kind ervan.`
-      );
-    }
-    if (child.type !== 'INSTANCE') checkSlotDepth(child, label, depth + 1);
-  }
 }
 
 /**
@@ -1854,6 +2031,24 @@ function pinAbsoluteSlots(node, bySlot, label) {
     if (current.type !== 'INSTANCE') current.children?.forEach(visit);
   };
   visit(node);
+}
+
+/** De velden die de plek van een laag in zijn ouder beschrijven. */
+const PLACEMENT_FIELDS = [
+  'layoutSizingHorizontal',
+  'layoutSizingVertical',
+  'layoutGrow',
+  'layoutAlign',
+  'layoutPositioning',
+  'constraints',
+];
+
+function placementOf(spec) {
+  return Object.fromEntries(
+    PLACEMENT_FIELDS.filter((field) => spec[field] !== undefined).map(
+      (field) => [field, spec[field]]
+    )
+  );
 }
 
 function mergeAdornments(root, tree, warnings, label, pinned) {
@@ -2293,10 +2488,25 @@ export function toComponentSet(
     // die niet, dus de gemeten subboom krijgt eerst dezelfde vorm; anders
     // lijkt geen enkele variant op de meting.
     const rootSlot = targetRootSlot(target);
-    const comparable =
+    let comparable =
       rootSlot && !converted.children?.some((child) => child.type === 'SLOT')
         ? withContentSlot(converted, rootSlot, true, label)
         : converted;
+
+    // Een doelset die zijn veld en versiering tot één frame samenvoegt
+    // (SearchInput) heeft die vorm ook als instance nodig. De plek in de host
+    // blijft die van de wrapper: een zoekveld dat in de balk de ruimte vult,
+    // vult die ook als instance.
+    if (target.mergeAdornments) {
+      const merged = mergeAdornments(
+        comparable,
+        node,
+        warnings,
+        label,
+        target.absoluteAdornments
+      );
+      comparable = { ...merged, ...placementOf(comparable) };
+    }
 
     return toInstance(comparable, node, target, label);
   };
@@ -2378,7 +2588,6 @@ export function toComponentSet(
       fixInstancesInHuggingParents(node);
       sizeFromTokens(node);
       dropUnfixedSizeBindings(node);
-      checkSlotDepth(node, pathLabel);
       checkSpreadClip(node, warnings, pathLabel);
       return { name: label, variantProperties: variant, node };
     }
@@ -2464,6 +2673,16 @@ export function toComponentSet(
       // de doelen van zijn instances. De plugin weigert zonder.
       ...(dependsOn.size ? { dependsOn: [...dependsOn.values()] } : {}),
       variantAxes: matrix.axes ?? {},
+      // Voor een instance van deze set in een andere: de host voegt het veld
+      // en zijn versiering op dezelfde manier samen. Zie `mergeAdornments`.
+      ...(matrix.mergeAdornments
+        ? {
+            mergeAdornments: true,
+            ...(matrix.absoluteAdornments
+              ? { absoluteAdornments: matrix.absoluteAdornments }
+              : {}),
+          }
+        : {}),
       // Voor een instance van deze set in een andere: welke as uit de tag van
       // het element volgt. Zie `variantFromTag` in de README.
       ...(matrix.variantFromTag

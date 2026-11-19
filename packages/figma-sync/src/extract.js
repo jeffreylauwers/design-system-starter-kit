@@ -139,6 +139,9 @@ const CAPTURED_PROPERTIES = [
   'paddingLeft',
   'minWidth',
   'minHeight',
+  // Een blok dat met een maximale breedte in het midden staat (de inner van
+  // PageHeader en PageFooter); zie `maxWidthFrom` in to-figma.js.
+  'maxWidth',
   'backgroundColor',
   'borderTopWidth',
   'borderRightWidth',

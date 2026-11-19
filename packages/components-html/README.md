@@ -356,6 +356,7 @@ A Figma binding is one of:
 | `variant` with `value`             | One value of an axis shared by several props or states; one value stays the base                          | `checked` and `indeterminate` on `state`                     |
 | `boolean`, `text`, `instance-swap` | A component property                                                                                      | `label`, `showIconStart`, `iconStart`                        |
 | ... with `instance`                | A component property of a nested, exposed instance; the matrix needs `instances: true`                    | the `label` of CheckboxOption, on OptionLabel                |
+| ... and `layer`                    | Several instances of that component with the same property: the `data-figma-slot` of the one meant        | the menu and search buttons of PageHeader, both a Button     |
 | `variant` with `values`            | The axis values as Figma spells them: another spelling, a subset, labels for false/true or present/absent | `16-9` for `16:9`; `with-border`, `no-border` for `noBorder` |
 | `slot`                             | A Figma slot (`data-figma-children` in the matrix)                                                        | the options of CheckboxGroup                                 |
 | `none` with `reason`               | Deliberately not in Figma                                                                                 | `loading` on Button (#323)                                   |

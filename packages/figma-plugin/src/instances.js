@@ -157,6 +157,14 @@ function nodeAt(instance, path) {
   return node;
 }
 
+/** `bindings` zonder `field`, of `undefined` als er niets overblijft. */
+function withoutField(bindings, field) {
+  if (!bindings) return bindings;
+  const rest = { ...bindings };
+  delete rest[field];
+  return Object.keys(rest).length ? rest : undefined;
+}
+
 /** Velden die als gewone toewijzing op de laag gaan. */
 const PLAIN_FIELDS = [
   'cornerRadius',
@@ -206,17 +214,45 @@ export function applyOverrides(instance, spec, context, helpers) {
       for (const field of PLAIN_FIELDS) {
         if (override[field] !== undefined) node[field] = override[field];
       }
+      // Een andere maat, zoals het logo in PageHeader (32px hoog in plaats
+      // van 48px). Eerst de vaste waarde, dan de binding hieronder; anders
+      // staat de laag op de maat van het component zolang de binding niet
+      // aankomt.
+      if (override.width !== undefined || override.height !== undefined) {
+        node.resize(
+          override.width ?? node.width,
+          override.height ?? node.height
+        );
+      }
       if (override.letterSpacing !== undefined) {
         node.letterSpacing = { unit: 'PIXELS', value: override.letterSpacing };
       }
-      helpers.applyPaints(node, override);
-      if (override.fills !== undefined) node.fills = override.fills;
+      // Een icoon: de kleur gaat op de vectoren erin, zoals bij een icoon
+      // dat de host zelf plaatst. Op de instance zelf zou hij een gevuld
+      // vlak achter het glyph opleveren.
+      if (override.icon && override.fills !== undefined) {
+        const paints = helpers.paintsForVector(
+          { ...override, name: label },
+          context
+        );
+        helpers.recolorVectors(node.children ?? [], paints);
+      } else {
+        helpers.applyPaints(node, override);
+        if (override.fills !== undefined) node.fills = override.fills;
+      }
 
       for (const field of override.unbind ?? []) {
         if (field === 'fills' || field === 'strokes') continue;
         node.setBoundVariable(field, null);
       }
-      helpers.applyBindings(node, { ...override, name: label }, context);
+      const bound = override.icon
+        ? withoutField(override.boundVariables, 'fills')
+        : override.boundVariables;
+      helpers.applyBindings(
+        node,
+        { ...override, boundVariables: bound, name: label },
+        context
+      );
       helpers.applyEffects(node, { ...override, name: label }, context);
 
       // Als laatste: FILL vraagt een auto-layout ouder, en dat is de

@@ -85,10 +85,23 @@ function targetFrom(spec) {
     name: set.name,
     page: set.page,
     components: set.components,
-    wrapped: set.components[0]?.node.type !== 'FRAME',
+    // Een SVG die geen icoon is (Logo) wordt in de plugin zelf het component,
+    // met de vormen er direct in; zie `buildSvgComponent`. Geen frame
+    // eromheen, dus ook geen laag `[0]`.
+    flatSvg: Boolean(
+      set.components[0]?.node.type === 'VECTOR' && set.components[0].node.shapes
+    ),
+    wrapped:
+      set.components[0]?.node.type !== 'FRAME' &&
+      !(
+        set.components[0]?.node.type === 'VECTOR' &&
+        set.components[0].node.shapes
+      ),
     exposed: (set.componentProperties ?? []).length > 0,
     properties: set.componentProperties ?? [],
     variantFromTag: set.variantFromTag,
+    mergeAdornments: set.mergeAdornments,
+    absoluteAdornments: set.absoluteAdornments,
     // Van slot naar property, voor de iconen die een instance swap zijn: een
     // ander icoon daar is een property op de instance en geen andere opbouw.
     swaps: new Map(

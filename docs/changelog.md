@@ -10,6 +10,26 @@ All notable changes to this project are documented in this file.
 
 Nog niet gepubliceerde wijzigingen. Schrijf nieuwe changelog-entries hieronder; bij de volgende release wordt deze kop gepromoveerd naar het definitieve versienummer.
 
+### figma-sync: PageHeader compleet in Figma
+
+De laatste 11 open punten uit #497: er staan geen open Figma-bindingen meer in de manifest.
+
+- **As `searchOpen`** (`initialSearchOpen`): het zoekpaneel onder de balk, en de zoekknop wordt een sluitknop. Alleen op small en in de compact-layout; de set gaat van 8 naar 14 varianten.
+- **Instances:** de menuknop, de zoekknop en de zoekknop in het paneel zijn Button-instances, de zoekvelden SearchInput-instances. Exposed, zodat de labels (`menuButtonLabel`, `searchButtonLabel`, `closeButtonLabel`, `searchSubmitLabel`) en de placeholder (`searchInputPlaceholder`) op de instance staan.
+- **Aan en uit:** `showMenuButton` (`hideMenuButton`), `showSearchButton` (`hideSearchButton`) en `showSearchbox` (`searchSlot`).
+- Bewust niet in Figma, met de reden in de manifest: `sticky` (scrollgedrag) en `menuButtonBadge` (de badge staat in het label van een Button).
+- Een SearchInput kan nu in elke set een instance zijn: de host voegt veld en icoon samen zoals de SearchInput-set zelf.
+- Een binding met `instance` kan een `layer` hebben: de `data-figma-slot` van de juiste instance als er meer van hetzelfde component zijn.
+- Een grid van één rij met kolommen van `auto` en `fr` wordt horizontale auto layout: de balk en de compact-layout van PageHeader, en File. Het logo van PageHeader staat daardoor verticaal in het midden.
+- Een blok dat in CSS met `margin-inline: auto` gecentreerd staat, staat in Figma ook in het midden: de masthead, de navbar en de compact-layout van PageHeader, en PageFooter.
+- **Logo zonder extra laag:** de Logo-component is zelf het vlak met de vormen erin (geen frame ertussen), de vormen schalen mee en de verhouding staat vast. Een Logo-instance in PageHeader heeft een vaste maat van 124x32, met de hoogte aan `page-header/logo/max-block-size`.
+- **Maximale breedte als variable:** een blok met `max-inline-size` en `margin-inline: auto` (de inner van de masthead, de navbar, de compact-layout, het zoekpaneel en de balk van PageHeader, de inner van PageFooter en Hero) is FILL met een `maxWidth`, gebonden aan `page/max-inline-size`, en staat in het midden. Het zoekpaneel vulde eerst de hele breedte.
+- **Uitgerekte MenuLinks en logo:** een MenuLink hugt in PageHeader zijn link (in de set vult de link het item), en het logo krijgt zijn hoogte van 32px als echte maat; de plugin past een `width` of `height` op een laag binnen een instance nu toe.
+- **Randen per zijde zonder kleur:** de plugin zette `strokeWeights` alleen als er ook een `strokes` in de spec stond. De indicator van een MenuLink in een horizontaal menu (onderaan in plaats van links) kwam daardoor niet aan.
+- **Logo en MenuLink als instance:** het logo is een Logo-instance en de navigatie-items zijn MenuLink-instances, zoals `<Logo>` en `<MenuLink>` in React. De indicator onderaan (horizontaal menu) en de kleuren in inverse gaan als override mee; bij het logo per vorm. De plugin houdt de vector van Logo bij een nieuwe import van `logo.json`, zodat die overrides blijven staan.
+- **Slots:** `logo`, `primary-navigation` en `secondary-navigation`. Een designer zet er zijn eigen logo in, en voegt navigatie-items toe of haalt ze weg, zoals met `logoSlot`, `primaryNavigation` en `secondaryNavigation` in React. Een slot mag nu dieper in de variant hangen dan direct onder de root; de plugin bewaart het bij een herimport, met wat een designer erin zette.
+- De kleur van een icoon in een geneste instance (de knoppen van een inverse PageHeader) gaat op de vectoren van het icoon, niet meer als vulling op de icoon-instance zelf. Dat gaf een wit vlak achter het icoon.
+
 ### figma-sync: File volgt de opbouw van React
 
 De File-set is opnieuw opgebouwd, en de 15 open punten van File uit #497 zijn opgelost. De oude set toonde een leeg media-vlak, een vinkje en een verwijderknop tegelijk, en kende geen loading, uploaded of klikbare rij.
