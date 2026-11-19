@@ -44,6 +44,9 @@ lerna-debug.log*
 # Claude Code: worktrees van eerdere sessies, elk een volledige kopie van de repo
 .claude/worktrees/
 
+# Baseline van pnpm figma:snapshot: een momentopname van de eigen werkkopie
+.figma-snapshot/
+
 # Storybook
 storybook-static/
 
