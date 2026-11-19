@@ -18,6 +18,7 @@ import {
   modesForMatrix,
   VARIABLES_FILE,
 } from './variable-index.js';
+import { rootShapeOf } from '../../figma-plugin/src/contract.js';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const outputDir = path.join(__dirname, '..', 'dist');
@@ -73,30 +74,24 @@ function pruneStaleSpecs(matrices) {
 
 /**
  * Wat een instance van een set moet weten: de naam, de pagina, de varianten
- * om mee te vergelijken, en of de plugin er een frame omheen zet.
+ * om mee te vergelijken, en hoe de plugin de root bouwt (`rootShapeOf` in het
+ * contract).
  *
  * Een component dat tot één tekstlaag of icoon inklapt (Heading, Paragraph)
  * kan in Figma zichzelf niet zijn: de plugin zet er een frame omheen, en dan
- * zit de tekst binnen de instance één laag dieper. Dat is `wrapped`.
+ * zit de tekst binnen de instance één laag dieper. Dat is `wrapped`. Een SVG
+ * die geen icoon is (Logo) wordt zelf het component, met de vormen er direct
+ * in: geen frame eromheen, dus ook geen laag `[0]`. Dat is `flatSvg`.
  */
 function targetFrom(spec) {
   const set = spec.componentSet;
+  const rootShape = rootShapeOf(set.components[0]?.node);
   return {
     name: set.name,
     page: set.page,
     components: set.components,
-    // Een SVG die geen icoon is (Logo) wordt in de plugin zelf het component,
-    // met de vormen er direct in; zie `buildSvgComponent`. Geen frame
-    // eromheen, dus ook geen laag `[0]`.
-    flatSvg: Boolean(
-      set.components[0]?.node.type === 'VECTOR' && set.components[0].node.shapes
-    ),
-    wrapped:
-      set.components[0]?.node.type !== 'FRAME' &&
-      !(
-        set.components[0]?.node.type === 'VECTOR' &&
-        set.components[0].node.shapes
-      ),
+    flatSvg: rootShape === 'svg',
+    wrapped: rootShape === 'wrapped',
     exposed: (set.componentProperties ?? []).length > 0,
     properties: set.componentProperties ?? [],
     variantFromTag: set.variantFromTag,

@@ -15,6 +15,7 @@ import {
 } from './bindings.js';
 import { blockOf, toInstance } from './instances.js';
 import { effectsFor } from './effects.js';
+import { pageNameFor, SCHEMAS } from '../../figma-plugin/src/contract.js';
 
 /** Heeft de spec afgeronde hoeken? */
 function hasRoundedCorners(figmaNode) {
@@ -2208,22 +2209,6 @@ function round(value) {
 // =============================================================================
 
 /**
- * De pagina waar een component set op komt te staan.
- *
- * Eén pagina per component, met dezelfde `dsn/`-vorm als `dsn/Icons`. Alles op
- * één pagina zetten werkt alleen zolang het er vijf zijn: bij de volle
- * bibliotheek is een pagina per component de enige indeling waarin een designer
- * een component terugvindt zonder eerst het hele canvas af te scrollen.
- *
- * De naam volgt de matrix en niet de CSS-klasse. De set zelf heet `dsn-button`,
- * want dat is waar een designer in de code op zoekt; een paginalijst leest
- * prettiger als `dsn/Button`, en de plugin sorteert die lijst alfabetisch.
- */
-export function pageNameFor(component) {
-  return `dsn/${component}`;
-}
-
-/**
  * De ruimte rond en tussen de varianten op het canvas.
  *
  * Bewust een vast getal en geen token: dit is de presentatie van de
@@ -2660,7 +2645,7 @@ export function toComponentSet(
   const canvas = canvasFor(defaultIndex, report);
 
   return {
-    $schema: 'dsn-figma-components/1',
+    $schema: SCHEMAS.components,
     generatedAt: new Date().toISOString(),
     componentSet: {
       // Eén pagina per component; de plugin maakt hem aan en zet de

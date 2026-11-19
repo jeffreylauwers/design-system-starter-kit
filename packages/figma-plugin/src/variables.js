@@ -11,6 +11,7 @@
  */
 
 import { effectFromSpec } from './bindings.js';
+import { assertSchema } from './contract.js';
 
 /** Zoekt een bestaande collection op naam, of maakt hem aan. */
 async function ensureCollection(name) {
@@ -150,11 +151,7 @@ async function loadVariableFonts(payload, log) {
  * @param {object} log verzamelaar met .info/.warn/.error
  */
 export async function importVariables(payload, log) {
-  if (payload.$schema !== 'dsn-figma-variables/1') {
-    throw new Error(
-      `Onbekend formaat: ${payload.$schema ?? 'geen $schema'}. Verwacht dsn-figma-variables/1.`
-    );
-  }
+  assertSchema(payload, 'variables');
 
   const state = new Map();
 

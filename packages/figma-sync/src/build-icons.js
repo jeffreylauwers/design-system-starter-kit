@@ -13,6 +13,8 @@ import fs from 'fs';
 import path from 'path';
 import { fileURLToPath } from 'url';
 
+import { ICON_PAGE, SCHEMAS } from '../../figma-plugin/src/contract.js';
+
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const packageRoot = path.join(__dirname, '..');
 const monorepoRoot = path.join(packageRoot, '..', '..');
@@ -26,17 +28,6 @@ const registryFile = path.join(
   'packages/components-react/src/Icon/icon-registry.generated.ts'
 );
 const outputDir = path.join(packageRoot, 'dist');
-
-/**
- * De pagina waar de iconen komen te staan.
- *
- * Bewust een eigen pagina en 51 losse componenten, geen component set met een
- * `icon`-as. Een instance swap property kiest uit componenten; een set van 51
- * varianten levert in die keuzelijst één regel op waarna de designer alsnog
- * via de variant-dropdown moet zoeken. Losse componenten zijn precies wat de
- * swap-picker verwacht.
- */
-const PAGE_NAME = 'dsn/Icons';
 
 /**
  * Iconen zijn in de browser `currentColor`; Figma kent dat begrip niet en maakt
@@ -178,10 +169,10 @@ function main() {
   }
 
   const payload = {
-    $schema: 'dsn-figma-icons/1',
+    $schema: SCHEMAS.icons,
     generatedAt: new Date().toISOString(),
     iconSet: {
-      page: PAGE_NAME,
+      page: ICON_PAGE,
       size: SIZE,
       icons,
     },
@@ -198,7 +189,7 @@ function main() {
   );
 
   console.log(
-    `   ${String(icons.length).padStart(3)} iconen op pagina ${PAGE_NAME}  -> dist/icons.json`
+    `   ${String(icons.length).padStart(3)} iconen op pagina ${ICON_PAGE}  -> dist/icons.json`
   );
   console.log(
     `   ${' '.repeat(3)} kleur gebonden aan ${COLOR.collection} / ${COLOR.name}`

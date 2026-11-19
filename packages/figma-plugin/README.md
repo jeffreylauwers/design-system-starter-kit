@@ -61,6 +61,28 @@ vóór er een pagina of variant is aangeraakt. Doorgaan met een gemeten laag zou
 een kopie opleveren die er goed uitziet en niet meebeweegt; zie "Geneste
 componenten" hieronder.
 
+## Het contract met de generators
+
+Wat de JSON betekent staat op één plek: `src/contract.js`. De generators
+(`design-tokens/src/config/figma.js`, `figma-sync/src/build-icons.js`,
+`build-components.js` en `to-figma.js`) importeren het, de plugin ook:
+
+- de `$schema` per soort bestand, en de volgorde waarin de soorten moeten
+  (`SCHEMAS`, `IMPORT_ORDER`, `kindOf`, `assertSchema`)
+- de paginanamen (`PAGE_PREFIX`, `pageNameFor`, `ICON_PAGE`)
+- hoe de plugin de root van een variant bouwt (`rootShapeOf`): de generator
+  moet dat weten om de lagen van een instance terug te vinden
+- de importvolgorde van een selectie (`planImports`, `dependencyOrder`)
+
+Het bestand staat in de plugin omdat de plugin geen afhankelijkheden heeft:
+de generators importeren het met een relatief pad, zonder kringverwijzing
+tussen packages, en esbuild bundelt het mee. Het gebruikt daarom geen `figma`
+en geen Node.
+
+De UI (`src/ui.html`) wordt niet gebundeld en kan het niet importeren. Die
+leest daarom alleen de bestanden en stuurt ze door; welke soort een bestand is
+en in welke volgorde ze gaan, beslist de plugin.
+
 ## Bindingen aan variables
 
 Een gegenereerde laag krijgt geen vaste kleur maar een verwijzing naar de

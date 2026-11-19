@@ -24,7 +24,8 @@ import {
 } from './bindings.js';
 import { recolorVectors } from './svg.js';
 import { diagnoseColors } from './diagnose.js';
-import { ICON_PAGE, loadIconIndex } from './icons.js';
+import { assertSchema, ICON_PAGE, rootShapeOf } from './contract.js';
+import { loadIconIndex } from './icons.js';
 import { findOrCreatePage, openPage, sortManagedPages } from './pages.js';
 import { applyOverrides, resolveInstanceTargets } from './instances.js';
 
@@ -1863,11 +1864,7 @@ function applyCanvas(set, canvas, context) {
  * @param {object} [options] `{ diagnose }`; zie `diagnoseColors`
  */
 export async function importComponentSet(payload, log, options = {}) {
-  if (payload.$schema !== 'dsn-figma-components/1') {
-    throw new Error(
-      `Onbekend formaat: ${payload.$schema ?? 'geen $schema'}. Verwacht dsn-figma-components/1.`
-    );
-  }
+  assertSchema(payload, 'components');
 
   const spec = payload.componentSet;
 
@@ -2006,13 +2003,13 @@ export async function importComponentSet(payload, log, options = {}) {
     // het root-element eroverheen zet.
     wrapper.name = component.name;
 
+    // Hoe de root gebouwd wordt; de generator rekent met dezelfde regel.
+    const rootShape = rootShapeOf(component.node);
+
     if (known) {
       await resetVariant(wrapper, context, {
         keepText: component.node.type === 'TEXT',
-        keepSvg:
-          component.node.type === 'VECTOR' && component.node.shapes
-            ? component.node.svg
-            : null,
+        keepSvg: rootShape === 'svg' ? component.node.svg : null,
       });
       updated += 1;
     } else {
@@ -2045,10 +2042,10 @@ export async function importComponentSet(payload, log, options = {}) {
     // Het root-element wórdt het component. Een extra frame eromheen zou een
     // lege laag met dezelfde auto layout toevoegen, en dat is precies de
     // nesting die een Figma-library onwerkbaar maakt.
-    if (component.node.type === 'FRAME') {
+    if (rootShape === 'frame') {
       applyFrame(wrapper, component.node, context, component.name);
       applySizing(wrapper, component.node, log, context);
-    } else if (component.node.type === 'VECTOR' && component.node.shapes) {
+    } else if (rootShape === 'svg') {
       // Een SVG die geen icoon is (Logo): het component is zelf het vlak met
       // de vormen erin; zie `buildSvgComponent`.
       buildSvgComponent(wrapper, component.node, context);

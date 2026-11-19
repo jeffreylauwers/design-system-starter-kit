@@ -7,8 +7,7 @@
  * komen.
  */
 
-/** Alleen pagina's met deze prefix worden door de plugin geordend. */
-export const MANAGED_PREFIX = 'dsn/';
+import { PAGE_PREFIX } from './contract.js';
 
 /**
  * `figma.root.children` is pas te lezen na `loadAllPagesAsync` in een bestand
@@ -72,7 +71,7 @@ export async function sortManagedPages() {
   const managed = [];
 
   pages.forEach((page, index) => {
-    if (page.name.startsWith(MANAGED_PREFIX)) {
+    if (page.name.startsWith(PAGE_PREFIX)) {
       slots.push(index);
       managed.push(page);
     }

@@ -12,6 +12,7 @@ import { fileURLToPath } from 'url';
 
 import { figma, state } from './figma-mock.js';
 import { serializeState } from './serialize-mock.js';
+import { dependencyOrder, planImports } from '../src/contract.js';
 
 // De modules praten tegen een globale `figma`, net als in de sandbox.
 globalThis.figma = figma;
@@ -96,31 +97,13 @@ function propertyNameOf(key) {
  * De componentbestanden, in de volgorde waarin een designer ze moet
  * importeren: een set die instances van een andere bevat komt ná die andere.
  * Andersom weigert de plugin, en dan zou de test een situatie testen die in
- * Figma niet voorkomt.
+ * Figma niet voorkomt. Dezelfde volgorde als de plugin zelf kiest.
  */
 function inDependencyOrder(files) {
   const specs = new Map(
     files.map((file) => [file, read(`packages/figma-sync/dist/${file}`)])
   );
-  const fileForSet = new Map(
-    [...specs].map(([file, spec]) => [
-      `${spec.componentSet.page}|${spec.componentSet.name}`,
-      file,
-    ])
-  );
-  const ordered = [];
-  const done = new Set();
-  const visit = (file) => {
-    if (done.has(file)) return;
-    done.add(file);
-    for (const { name, page } of specs.get(file).componentSet.dependsOn ?? []) {
-      const dependency = fileForSet.get(`${page}|${name}`);
-      if (dependency) visit(dependency);
-    }
-    ordered.push(file);
-  };
-  for (const file of files) visit(file);
-  return ordered;
+  return dependencyOrder(files, (file) => specs.get(file).componentSet);
 }
 
 const componentFiles = inDependencyOrder(
@@ -141,6 +124,57 @@ function pairInstances(node, spec, into = []) {
     pairInstances(node?.children?.[index], childSpec, into)
   );
   return into;
+}
+
+// =============================================================================
+// Volgorde van een selectie
+// =============================================================================
+
+// Wat de plugin doet met alles tegelijk gekozen bestanden: de bestandskiezer
+// levert ze alfabetisch aan, en dan staat button.json vóór variables.json.
+{
+  const selection = [
+    ...[...componentFiles, 'icons.json'].map((file) => ({
+      name: file,
+      payload: read(`packages/figma-sync/dist/${file}`),
+    })),
+    {
+      name: 'variables.json',
+      payload: read('packages/design-tokens/dist/figma/variables.json'),
+    },
+    { name: 'iets-anders.json', payload: { $schema: 'iets/1' } },
+  ].sort((a, b) => a.name.localeCompare(b.name));
+
+  const { jobs, rejected } = planImports(selection);
+  const kinds = jobs.map((job) => job.kind);
+  check(
+    'een selectie gaat op volgorde: variables, dan iconen, dan componenten',
+    kinds[0] === 'variables' &&
+      kinds[1] === 'icons' &&
+      kinds.slice(2).every((kind) => kind === 'components'),
+    kinds.slice(0, 3).join(', ')
+  );
+
+  const position = new Map(
+    jobs.map((job, index) => [
+      `${job.payload.componentSet?.page}|${job.payload.componentSet?.name}`,
+      index,
+    ])
+  );
+  const tooEarly = jobs.filter((job, index) =>
+    (job.payload.componentSet?.dependsOn ?? []).some(
+      ({ name, page }) => position.get(`${page}|${name}`) > index
+    )
+  );
+  check(
+    'een set komt ná de sets waar hij instances van bevat',
+    tooEarly.length === 0,
+    tooEarly.map((job) => job.name).join(', ')
+  );
+  check(
+    'een onbekend schema wordt geweigerd en niet geïmporteerd',
+    rejected.length === 1 && rejected[0].name === 'iets-anders.json'
+  );
 }
 
 // =============================================================================
