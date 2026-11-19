@@ -61,6 +61,27 @@ vóór er een pagina of variant is aangeraakt. Doorgaan met een gemeten laag zou
 een kopie opleveren die er goed uitziet en niet meebeweegt; zie "Geneste
 componenten" hieronder.
 
+## Opbouw van de code
+
+| Bestand                          | Wat                                                               |
+| -------------------------------- | ----------------------------------------------------------------- |
+| `main.js`                        | Entry point: berichten van de UI, de wachtrij van imports         |
+| `contract.js`                    | Wat de JSON betekent, gedeeld met de generators (zie hieronder)   |
+| `variables.js`                   | Import van `variables.json`: collections, modes, aliassen, styles |
+| `icons.js`                       | Import van `icons.json`: de iconset                               |
+| `components.js`                  | Import van een component set: alleen de volgorde van de stappen   |
+| `fonts.js`                       | Welke fonts een set nodig heeft, en ze laden                      |
+| `reuse.js`                       | Een bestaande variant terugzetten zonder zijn lagen te verliezen  |
+| `build.js`                       | De lagen van een variant bouwen uit de spec                       |
+| `layout.js`                      | Stijl, auto layout, plaatsing en sizing van één laag              |
+| `instances.js`                   | Geneste instances opzoeken en hun overrides leggen                |
+| `properties.js`                  | Component properties, en bestaande varianten terugvinden          |
+| `canvas.js`                      | De plaat onder de varianten en de plek op de pagina               |
+| `finalize.js`                    | Wat pas aan het eind kan: pinnen, effect styles, icoonkleuren     |
+| `bindings.js`                    | Variable-bindingen op lagen, paints en effects                    |
+| `nodes.js`, `svg.js`, `pages.js` | Kleine hulpfuncties voor nodes, vectoren en pagina's              |
+| `diagnose.js`                    | Meting van de icoonkleuren; alleen via de smoke test              |
+
 ## Het contract met de generators
 
 Wat de JSON betekent staat op één plek: `src/contract.js`. De generators

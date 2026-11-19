@@ -8,6 +8,11 @@
  * in plaats van een nagebouwde kopie te zijn die er stil van kan afwijken.
  */
 
+import { applyBindings, applyEffects, paintsForVector } from './bindings.js';
+import { fontFor } from './fonts.js';
+import { applyPaints } from './layout.js';
+import { recolorVectors } from './svg.js';
+
 /** Alle INSTANCE-specs in een boom. */
 function collectInstanceSpecs(node, into = []) {
   if (node.type === 'INSTANCE') into.push(node);
@@ -188,10 +193,10 @@ const PLAIN_FIELDS = [
 /**
  * Legt de overrides uit de spec op de lagen van een instance.
  *
- * `helpers` komt uit components.js (fonts, bindingen), zodat dit module geen
- * kringverwijzing met de bouwcode krijgt.
+ * Het font van een tekstlaag komt uit de fonts die de import vooraf laadde
+ * (`context.fonts`); staat het er niet tussen, dan houdt de laag zijn eigen.
  */
-export function applyOverrides(instance, spec, context, helpers) {
+export function applyOverrides(instance, spec, context) {
   for (const override of spec.overrides ?? []) {
     const node = nodeAt(instance, override.path);
     const label = `${spec.name} > ${override.path.join(' > ') || 'root'}`;
@@ -206,7 +211,10 @@ export function applyOverrides(instance, spec, context, helpers) {
       // Eerst het font, dan de tekst: `characters` vereist een geladen font,
       // en een ander gewicht is een ander font.
       if (node.type === 'TEXT' && override.fontFamily !== undefined) {
-        node.fontName = helpers.fontFor(override, node.fontName);
+        node.fontName =
+          context.fonts.get(
+            `${override.fontFamily}|${fontFor(override).style}`
+          ) ?? node.fontName;
       }
       if (node.type === 'TEXT' && override.characters !== undefined) {
         node.characters = override.characters;
@@ -231,13 +239,10 @@ export function applyOverrides(instance, spec, context, helpers) {
       // dat de host zelf plaatst. Op de instance zelf zou hij een gevuld
       // vlak achter het glyph opleveren.
       if (override.icon && override.fills !== undefined) {
-        const paints = helpers.paintsForVector(
-          { ...override, name: label },
-          context
-        );
-        helpers.recolorVectors(node.children ?? [], paints);
+        const paints = paintsForVector({ ...override, name: label }, context);
+        recolorVectors(node.children ?? [], paints);
       } else {
-        helpers.applyPaints(node, override);
+        applyPaints(node, override);
         if (override.fills !== undefined) node.fills = override.fills;
       }
 
@@ -248,12 +253,12 @@ export function applyOverrides(instance, spec, context, helpers) {
       const bound = override.icon
         ? withoutField(override.boundVariables, 'fills')
         : override.boundVariables;
-      helpers.applyBindings(
+      applyBindings(
         node,
         { ...override, boundVariables: bound, name: label },
         context
       );
-      helpers.applyEffects(node, { ...override, name: label }, context);
+      applyEffects(node, { ...override, name: label }, context);
 
       // Als laatste: FILL vraagt een auto-layout ouder, en dat is de
       // instance (of een frame daarin), die er nu staat.
