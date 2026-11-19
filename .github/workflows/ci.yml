@@ -46,6 +46,42 @@ jobs:
       - name: Test
         run: pnpm test
 
+  figma:
+    name: Figma generator + plugin smoke test
+    runs-on: ubuntu-latest
+    needs: [ci]
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v7
+
+      - name: Install pnpm
+        uses: pnpm/action-setup@v6
+
+      - name: Setup Node.js 24
+        uses: actions/setup-node@v7
+        with:
+          node-version: 24
+          cache: pnpm
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      # De generator meet de componenten in een echte browser.
+      - name: Install Playwright Chromium
+        run: pnpm --filter @dsn-starter-kit/figma-sync exec playwright install --with-deps chromium
+
+      - name: Build Figma specs and plugin
+        run: pnpm build:figma
+
+      # De smoke test vergelijkt de iconset met de registry van components-react,
+      # en die wordt pas bij een build gegenereerd.
+      - name: Generate icon registry
+        run: pnpm --filter @dsn-starter-kit/components-react generate:icons
+
+      - name: Plugin smoke test
+        run: pnpm test:figma-plugin
+
   storybook-tests:
     name: Storybook tests
     runs-on: ubuntu-latest

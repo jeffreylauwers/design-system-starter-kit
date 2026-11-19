@@ -582,6 +582,29 @@ daarna is de mock naar die meting gevormd. Dat de mock nu hetzelfde patroon
 oplevert als Figma (twee icoonlagen fout, de tekstlaag aan dezelfde variable
 goed, op één geplaatste instance) is de controle daarop.
 
+De smoke test draait in CI, in een eigen job die eerst `pnpm build:figma`
+uitvoert.
+
+### Vangnet bij een refactor
+
+De smoke test controleert of de import klopt, niet of hij na een herschikking
+van de code nog precies hetzelfde oplevert. Daarvoor is er een snapshot:
+
+```bash
+pnpm figma:snapshot           # vóór de refactor: legt de baseline vast
+pnpm figma:snapshot:compare   # erna: moet gelijk zijn
+```
+
+Beide bouwen eerst alles opnieuw (`pnpm build:figma`). Vastgelegd wordt de
+generator-output (`variables.json` en elke `figma-sync/dist/*.json`, zonder
+`generatedAt`) en de eindstand van de mock na de smoke test, met elke laag,
+variable en property (`scripts/serialize-mock.js`). Een refactor die het gedrag
+niet verandert, laat alles byte voor byte gelijk; anders noemt de vergelijking
+het bestand en de eerste regel die afwijkt.
+
+De baseline staat in `.figma-snapshot/` en hoort niet in git: het is een
+momentopname van je eigen werkkopie.
+
 ## Wat dit nog niet doet
 
 - **Overrides op gewone lagen bewaren.** Een bijgewerkte variant wordt van

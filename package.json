@@ -25,6 +25,8 @@
     "build:figma-components": "pnpm --filter @dsn-starter-kit/figma-sync build",
     "build:figma-plugin": "pnpm --filter @dsn-starter-kit/figma-plugin build",
     "test:figma-plugin": "pnpm --filter @dsn-starter-kit/figma-plugin test",
+    "figma:snapshot": "pnpm build:figma && node scripts/figma-snapshot.mjs save",
+    "figma:snapshot:compare": "pnpm build:figma && node scripts/figma-snapshot.mjs compare",
     "dev": "pnpm --filter @dsn-starter-kit/storybook dev",
     "storybook": "pnpm --filter @dsn-starter-kit/storybook dev",
     "test": "vitest run",

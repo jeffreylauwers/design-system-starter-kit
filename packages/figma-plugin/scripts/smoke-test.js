@@ -11,6 +11,7 @@ import path from 'path';
 import { fileURLToPath } from 'url';
 
 import { figma, state } from './figma-mock.js';
+import { serializeState } from './serialize-mock.js';
 
 // De modules praten tegen een globale `figma`, net als in de sandbox.
 globalThis.figma = figma;
@@ -2622,6 +2623,15 @@ console.log('\n=== een as eraf (Drawer) ===');
   check(
     'een geplaatste instance hangt nog aan dezelfde variant',
     instance.mainComponent?.id === idVoor
+  );
+}
+
+// De eindstand van de mock, voor `scripts/figma-snapshot.mjs`: een refactor van
+// de plugin hoort precies dezelfde lagen op te leveren.
+if (process.env.FIGMA_SNAPSHOT) {
+  fs.writeFileSync(
+    process.env.FIGMA_SNAPSHOT,
+    `${JSON.stringify(serializeState(state), null, 2)}\n`
   );
 }
 
