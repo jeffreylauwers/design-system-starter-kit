@@ -113,17 +113,21 @@ design-system-starter-kit/
 │   │       └── generate-icons.js # Icon registry generator
 │   ├── components-web/          # @dsn-starter-kit/components-web
 │   ├── figma-sync/              # Genereert Figma node specs uit de HTML/CSS-laag
-│   │   └── src/
-│   │       ├── extract.js       # Headless render, leest computed styles
-│   │       ├── to-figma.js      # Computed DOM -> Figma node spec
+│   │   └── src/                 # Volledige indeling: "Opbouw van de code" in de README
+│   │       ├── extract.js       # Headless render per variant
+│   │       ├── dom-walker.js    # Draait in de browser, leest computed styles
+│   │       ├── convert.js       # Computed DOM -> Figma node spec
+│   │       ├── to-figma.js      # Stelt de spec van de component set samen
 │   │       ├── browser-tokens.js # Cascade nabootsen: welk token leverde de waarde
 │   │       ├── variable-index.js # CSS custom property -> Figma variable
 │   │       ├── bindings.js      # Figma-veld kiezen, waarde verifiëren, report
 │   │       └── matrices/        # Variant-matrix per component
 │   ├── figma-plugin/            # Schrijft de gegenereerde JSON naar Figma
 │   │   ├── manifest.json        # Plugin-manifest (importeren in Figma Desktop)
-│   │   ├── scripts/             # Mock van de Plugin API + smoke test
-│   │   └── src/
+│   │   ├── scripts/             # Mock van de Plugin API, smoke test, kleurmeting
+│   │   └── src/                 # Volledige indeling: "Opbouw van de code" in de README
+│   │       ├── contract.js      # Wat de JSON betekent, gedeeld met de generators
+│   │       └── components.js    # Import van een component set (volgorde van de stappen)
 │   └── storybook/               # Documentation site
 │       ├── .storybook/
 │       │   ├── main.ts          # Storybook config + multilevel-sort
