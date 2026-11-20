@@ -21,9 +21,14 @@
  * De TEXT-laag gaat mee omdat hij aan dezelfde variable hangt als de iconen.
  * Verliest het icoon zijn kleur en de tekst niet, dan is het iets van de geneste
  * instance en niet van de binding in het algemeen.
+ *
+ * Staat bij de smoke test en niet in de plugin: in Figma werd hij alleen
+ * gebruikt om #388 te vinden, en sinds de fix is hij de controle in de smoke
+ * test die op een geplaatste instance kijkt. De lagen komen uit
+ * `colorChecks` in het resultaat van `importComponentSet`.
  */
 
-import { nodeAt, paintedNode } from './nodes.js';
+import { nodeAt, paintedNode } from '../src/nodes.js';
 
 /** Hoe lang er gewacht wordt voordat er een tweede keer gemeten wordt. */
 const SETTLE_MS = 400;
@@ -103,10 +108,10 @@ async function placedInstancesOf(variant) {
 }
 
 /** De lagen die de import aan een kleur-variable had moeten binden. */
-function buildProbes(context) {
+function buildProbes(colorChecks) {
   const probes = [];
 
-  for (const check of context.colorChecks ?? []) {
+  for (const check of colorChecks ?? []) {
     if (!check.variant) continue;
 
     const painted = paintedNode(check.node);
@@ -239,13 +244,14 @@ function sampleLines(allRows, log) {
 /**
  * Meet de kleuren, wacht een tick, en meet ze nog een keer.
  *
- * @param {object} context de importcontext, met `colorChecks` en `variables`
+ * @param {object} input `{ colorChecks, variables }`: de `colorChecks` uit het
+ *   resultaat van `importComponentSet`, en de index van `loadVariableIndex`
  * @param {object} log verzamelaar met .info/.warn/.error
  * @param {string} name de naam van de component set, voor de kop in de log
  */
-export async function diagnoseColors(context, log, name) {
-  const byId = namesById(context.variables);
-  const probes = buildProbes(context);
+export async function diagnoseColors({ colorChecks, variables }, log, name) {
+  const byId = namesById(variables);
+  const probes = buildProbes(colorChecks);
 
   if (!probes.length) {
     log.warn(`DIAGNOSE ${name}: geen gebonden kleurlagen om te meten`);

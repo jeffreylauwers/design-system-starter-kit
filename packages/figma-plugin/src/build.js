@@ -503,7 +503,8 @@ function registerSlot(node, spec, context) {
 /**
  * Onthoudt elke laag waarvan de spec een kleur-variable noemt.
  *
- * Alleen voor `diagnoseColors`, en dus voor de tekstlagen net zo goed als voor
+ * Alleen voor de kleurmeting van de smoke test (`scripts/diagnose.js`), en dus
+ * voor de tekstlagen net zo goed als voor
  * de iconen: die twee hangen aan dezelfde variable, en of ze zich hetzelfde
  * gedragen is precies wat er gemeten moet worden. `recolors` is hier niet
  * bruikbaar voor, want daar staan alleen de iconen in.

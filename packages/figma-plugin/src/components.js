@@ -41,7 +41,6 @@ import {
   placeBesideOthers,
 } from './canvas.js';
 import { assertSchema, rootShapeOf } from './contract.js';
-import { diagnoseColors } from './diagnose.js';
 import {
   applyEffectStyles,
   pinAbsolute,
@@ -72,9 +71,8 @@ import { createVariantState, dropUnused, resetVariant } from './reuse.js';
  *
  * @param {object} payload de inhoud van een {component}.json
  * @param {object} log verzamelaar met .info/.warn/.error
- * @param {object} [options] `{ diagnose }`; zie `diagnoseColors`
  */
-export async function importComponentSet(payload, log, options = {}) {
+export async function importComponentSet(payload, log) {
   assertSchema(payload, 'components');
 
   const spec = payload.componentSet;
@@ -116,7 +114,8 @@ export async function importComponentSet(payload, log, options = {}) {
     recolors: [],
     // Absolute lagen met constraints; aan het eind gezet, zie `pinAbsolute`.
     pinned: [],
-    // Elke laag met een kleur-variable, iconen én tekst; zie `diagnoseColors`.
+    // Elke laag met een kleur-variable, iconen én tekst. Alleen voor de
+    // kleurmeting van de smoke test (`scripts/diagnose.js`).
     colorChecks: [],
     // Lagen die een effect style krijgen; aan het eind gelegd, zie
     // `applyEffectStyles`.
@@ -404,13 +403,6 @@ export async function importComponentSet(payload, log, options = {}) {
   const recolored = recolorIcons(context);
   const lostColors = verifyIconColors(context);
 
-  // Alleen wanneer erom gevraagd wordt: de meting wacht een tick en leest elke
-  // laag twee keer terug, en bij 81 varianten is dat een lange log voor iemand
-  // die alleen een import wil draaien.
-  const diagnosis = options.diagnose
-    ? await diagnoseColors(context, log, spec.name)
-    : null;
-
   if (payload.warnings && payload.warnings.length) {
     for (const warning of payload.warnings) log.warn(warning);
   }
@@ -431,7 +423,8 @@ export async function importComponentSet(payload, log, options = {}) {
     orphans,
     recolored,
     lostColors,
-    diagnosis,
+    // Voor de kleurmeting van de smoke test; zie `scripts/diagnose.js`.
+    colorChecks: context.colorChecks,
     combined: !single,
     single,
     bindings: { ...stats, missing: [...stats.missing] },
