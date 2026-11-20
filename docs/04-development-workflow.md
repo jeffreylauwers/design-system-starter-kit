@@ -33,9 +33,12 @@ pnpm build:storybook   # Storybook static site
 
 pnpm build:figma       # Hele Figma-keten: tokens, variables, componenten, plugin
 pnpm build:figma-variables   # dist/figma/variables.json
+pnpm build:figma-icons       # dist/icons.json (de iconset)
 pnpm build:figma-components  # Node specs per component
 pnpm build:figma-plugin      # Plugin-bundle
 pnpm test:figma-plugin       # Smoke test met een mock van de Figma Plugin API
+pnpm figma:snapshot          # Bouwt de Figma-keten en legt een baseline vast
+pnpm figma:snapshot:compare  # Bouwt opnieuw en vergelijkt met die baseline
 
 # Watch design tokens for changes
 pnpm --filter @dsn-starter-kit/design-tokens watch
@@ -764,8 +767,27 @@ GitHub Actions workflow (`.github/workflows/ci.yml`):
 2. **Type-check** - TypeScript compilation
 3. **Test** - Run all tests
 4. **Build** - Build all packages
+5. **Figma** - Bouwt de Figma-keten (`pnpm build:figma`, met Playwright Chromium) en draait `pnpm test:figma-plugin`. Een aparte job na de rest, omdat hij een browser nodig heeft.
 
 All checks must pass before merging to main.
+
+### Figma-plugin wijzigen: het snapshot-vangnet
+
+De smoke test controleert gedrag dat iemand heeft bedacht. Wat hij niet ziet, is dat een refactor de uitkomst ergens anders een fractie verschuift. Daarvoor is er een golden master, alleen lokaal:
+
+```bash
+pnpm figma:snapshot          # vóór je wijziging: baseline in .figma-snapshot/
+pnpm figma:snapshot:compare  # na je wijziging: noemt elk bestand dat afwijkt
+```
+
+Vastgelegd worden de JSON van de generators (zonder `generatedAt`) en de eindstand van de mock na de smoke test, met elke laag, variable en property. Een refactor die het gedrag niet verandert, laat alles byte voor byte gelijk.
+
+- **Leg de baseline vast op code waar je nog niets aan veranderd hebt.** Staan er al wijzigingen, zet ze dan eerst opzij met `git stash -u`.
+- **Wil je de uitkomst bewust veranderen,** maak dan na je wijziging een nieuwe baseline.
+- **Verschillen van een fractie van een pixel in tekstbreedtes** (bijv. `207.23` tegenover `207.84`) komen meestal van het netwerk: de matrices laden Fira Sans van Google Fonts, en zonder dat font meet Chromium met een fallback. Controleer dan of `main` zelf ook afwijkt.
+- **Zonder netwerk** kun je de plugin alsnog vergelijken: draai de smoke test op beide versies tegen dezelfde JSON, met `FIGMA_SNAPSHOT=<bestand> pnpm test:figma-plugin`, en vergelijk de twee bestanden.
+
+Het vangnet draait niet in CI. De baseline is een momentopname van jouw werkkopie, en de meting hangt af van het font en de browser op die machine.
 
 ---
 

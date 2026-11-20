@@ -10,6 +10,16 @@ All notable changes to this project are documented in this file.
 
 Nog niet gepubliceerde wijzigingen. Schrijf nieuwe changelog-entries hieronder; bij de volgende release wordt deze kop gepromoveerd naar het definitieve versienummer.
 
+### figma-plugin en figma-sync: de code opnieuw ingedeeld
+
+Een interne herindeling van de Figma-plugin en de generator (#509 t/m #515). De uitkomst in Figma is gelijk gebleven: elke stap is vergeleken met een snapshot van de vorige, en in Figma getest. Bouw de plugin opnieuw (`pnpm build:figma`), verder hoeft er niets.
+
+- **Vangnet:** `pnpm figma:snapshot` en `pnpm figma:snapshot:compare` leggen de JSON van de generators en de eindstand van de plugin-mock vast, en vergelijken ze na een wijziging. Een nieuwe CI-job `figma` bouwt de Figma-keten en draait de smoke test. Zie "Figma-plugin wijzigen" in `docs/04-development-workflow.md`.
+- **Contract:** `figma-plugin/src/contract.js` is de enige plek voor de schema-namen, de paginanamen, de importvolgorde en hoe de plugin de root van een variant bouwt. De generators importeren het; de UI sorteert de gekozen bestanden niet meer zelf maar laat dat aan de plugin. Zie [DR-2026-17](decisions/DR-2026-17-figma-contract-in-de-plugin.md).
+- **Kleinere bestanden:** `components.js` in de plugin (2300 regels) en `to-figma.js` en `extract.js` in de generator (2700 en 1300 regels) zijn opgesplitst in modules met één taak. De indeling staat onder "Opbouw van de code" in beide README's.
+- **State per variant:** wat de plugin per variant onthoudt, staat in `context.variant` en wordt per variant vers gemaakt (`createVariantState`). Eerst werden ongeveer tien losse velden op twee plekken teruggezet.
+- **Opgeruimd:** dode code en dubbele hulpfuncties weg; de toleranties van de bindingen in `figma-sync/src/tolerances.js`. De kleurmeting (`diagnoseColors`) is verhuisd naar `figma-plugin/scripts/`: in Figma werd hij nooit aangezet, in de smoke test is hij de controle op #388.
+
 ### figma-sync: PageHeader compleet in Figma
 
 De laatste 11 open punten uit #497: er staan geen open Figma-bindingen meer in de manifest.
