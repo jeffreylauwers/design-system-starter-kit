@@ -1,10 +1,21 @@
 # Nieuw component issue aanmaken
 
-Maak een nieuw GitHub issue aan voor een **nieuw design system component**. Het issue volgt het vaste componentspec-formaat: inclusief HTML/CSS-structuur, React API, toegankelijkheidsvereisten en component tokens.
+Maak een nieuw GitHub issue aan voor een **nieuw design system component**. Het issue volgt het vaste componentspec-formaat: HTML/CSS-structuur, React API, toegankelijkheidsvereisten, component tokens, het manifest-`api`-blok en de Figma-matrix.
 
 Optionele context meegegeven door de gebruiker (componentnaam, beschrijving, etc.):
 
 > $ARGUMENTS
+
+---
+
+## Stap 0: Lees de bronnen
+
+Lees vóór je iets voorstelt:
+
+- `docs/06-css-naming-conventions.md` en `docs/03-components.md` (BEM, bestaande componenten)
+- De sectie "Component manifest" in `packages/components-html/README.md` (het `api`-blok en de Figma-bindingen)
+- De secties "Een component toevoegen", "Component properties", "Welke componenten wel en niet een matrix krijgen", "Slots" en "Onderdelen van een component" in `packages/figma-sync/README.md`
+- Een vergelijkbaar bestaand component als referentie: zijn `*.manifest.json`, zijn `packages/figma-sync/src/matrices/*.js` en zijn token-JSON
 
 ---
 
@@ -21,13 +32,13 @@ Stel de titel op: `feat(ComponentName): korte beschrijving`
 
 ## Stap 2: Verzamel de spec
 
-Vraag de gebruiker naar de volgende onderdelen. Meerdere secties mogen in één keer worden aangeleverd; sluit geen enkel onderdeel over: gebruik HTML-commentaren als er niets is.
+Vraag de gebruiker naar de volgende onderdelen. Meerdere secties mogen in één keer worden aangeleverd. Sla geen onderdeel over: gebruik HTML-commentaren als er niets is.
 
 ### 2a. Beschrijving en gebruik
 
-- **Beschrijving**: Wat doet het component en wanneer gebruik je het? (2–4 zinnen)
-- **Wel gebruiken als...**: 3–5 bulletpunten
-- **Niet gebruiken als...**: 1–3 gevallen waarbij een alternatief beter is, met dat alternatief na een dubbele punt
+- **Beschrijving**: Wat doet het component en wanneer gebruik je het? (2 tot 4 zinnen)
+- **Wel gebruiken als...**: 3 tot 5 bulletpunten
+- **Niet gebruiken als...**: 1 tot 3 gevallen waarbij een alternatief beter is, met dat alternatief na een dubbele punt
 
 > Formuleer elke bullet zo dat hij de zin na het kopje afmaakt, zodat hij één-op-één naar de `.docs.md` kan:
 >
@@ -41,6 +52,7 @@ Vraag de gebruiker naar de volgende onderdelen. Meerdere secties mogen in één 
 
 - **HTML-structuur**: De basis HTML-markup met alle CSS-klassen. Toon relevante varianten (bijv. standaard, open, met modifier).
 - **CSS-klassenoverzicht**: tabel met `Klasse | Element | Beschrijving` voor alle `dsn-{component}*` klassen.
+- **Afhankelijkheden**: gebruikt de markup klassen van een ander component (bijv. `dsn-button` in een tabelkop)? Dan krijgt de CSS bovenaan een `/* @dsn-depends-on: {component} */`-comment. Noem welke.
 
 > Regels uit het design system:
 >
@@ -54,7 +66,8 @@ Vraag de gebruiker naar de volgende onderdelen. Meerdere secties mogen in één 
 ### 2c. React component
 
 - **Code voorbeelden**: basis gebruik + eventuele varianten
-- **Props tabel**: `Prop | Type | Default | Beschrijving` voor alle props
+- **Props tabel**: `Prop | Type | Default | Beschrijving` voor alle props, in de volgorde en met de union-volgorde die ook in de `{Name}Props`-interface komt (het manifest wordt daar letterlijk tegen getest)
+- **Web component**: komt er ook een variant in `components-web`? Zo ja, dan hoort `web-components` in de `platforms` van het manifest.
 
 ### 2d. Toegankelijkheidsvereisten
 
@@ -67,29 +80,62 @@ Vraag specifiek naar:
 
 ### 2e. Component tokens (voorstel)
 
-- JSON-structuur voor alle `dsn.{component}.*` tokens
+- JSON-structuur voor alle `dsn.{component}.*` tokens, in DTCG-formaat: `$value`, `$type` en `$description`
 - Welke globale tokens worden gerefereerd?
-- Ontwerpkeuzes achter de tokenwaarden (1–3 regels per niet-voor-de-hand-liggende keuze)
+- Ontwerpkeuzes achter de tokenwaarden (1 tot 3 regels per niet-voor-de-hand-liggende keuze)
 - Markeer onzekere waarden met een ⚠️ opmerking
 
-> **Token schrijfwijze: altijd controleren:**
-> Sub-groepen (zoals `icon`, `label`, `control`) worden als geneste objecten geschreven, niet als geflattende sleutels met koppeltekens:
+> **Elk token heeft een `$description`.** Die komt in de tokentabel in Storybook en in Figma. Volg de schrijfregels: een rol-zin (wat het token doet), bij kleur een contrastzin, geen waarden, geen componentnaam, CSS-termen in het Nederlands ("Lijndikte van de rand aan de beginkant.", niet "border-inline-start-width van de Note").
+>
+> **Sub-groepen schrijf je genest, niet als platte sleutel met koppeltekens:**
 >
 > ```json
 > // ✅ Correct: geneste structuur
 > "icon": {
->   "color": { "value": "...", "type": "color" },
->   "size":  { "value": "...", "type": "dimension" },
->   "gap":   { "value": "...", "type": "spacing" }
+>   "color": { "$value": "...", "$type": "color", "$description": "..." },
+>   "size":  { "$value": "...", "$type": "dimension", "$description": "..." },
+>   "gap":   { "$value": "...", "$type": "dimension", "$description": "..." }
 > }
 >
-> // ❌ Fout: geflattend
-> "icon-color": { "value": "...", "type": "color" },
-> "icon-size":  { "value": "...", "type": "dimension" }
+> // ❌ Fout: plat
+> "icon-color": { "$value": "...", "$type": "color" },
+> "icon-size":  { "$value": "...", "$type": "dimension" }
 > ```
 >
-> De gegenereerde CSS custom properties zijn in beide gevallen identiek (`--dsn-{component}-icon-color`, etc.), maar de JSON-schrijfwijze volgt altijd de geneste structuur.
+> De CSS custom property is in beide gevallen `--dsn-{component}-icon-color`, maar in Figma niet: genest wordt een variable-groep (`{component}/icon/color`), plat blijft één losse naam (`{component}/icon-size`). Een handvol bestaande componenten heeft nog platte `icon-*`-sleutels; die zijn geen voorbeeld om te volgen.
 > Controleer elk tokenvoorstel hierop voordat het issue wordt aangemaakt.
+
+### 2f. Manifest en Figma (voorstel)
+
+Leid dit zoveel mogelijk zelf af uit 2b en 2c, en leg het aan de gebruiker voor. Het manifest-schema eist een `api`-blok; `tests/manifest-react.test.ts` en `tests/manifest-figma.test.ts` vergelijken het met React en met de Figma-matrix.
+
+1. **Manifest-basis**: `cssBlock`, `category` (een van `accessibility`, `branding`, `content`, `display-feedback`, `form-field`, `form-input`, `form-option`, `layout`, `navigation`, `section`), `purpose` (één Engelse zin, zoals de bestaande entries), `platforms`. Bepaal de bestandslocatie: `packages/components-html/src/{component-name}/{component-name}.manifest.json`, of de map van de `cssBlock` als het component geen eigen map heeft.
+
+2. **Krijgt het een Figma-matrix?** De regel: elk component in het manifest krijgt een matrix, behalve:
+   - layoutcomponenten zonder eigen verschijning (zoals Stack, Grid, Container); ActionGroup is de uitzondering omdat zijn slot iets draagt
+   - componenten die het canvas zelf zijn (Body, Icon)
+   - componenten met dezelfde CSS als een bestaand component op een ander HTML-element (ButtonLink naast Button, EmailInput naast TextInput)
+   - overig: Backdrop, patronen en templates
+
+   Valt het component hierbuiten, dan krijgt het geen matrix. Zet dat in het issue met de reden, en noteer dat het component dan in de lijst in `packages/figma-sync/README.md` ("Welke componenten wel en niet een matrix krijgen") moet komen. Alle onderdelen van het `api`-blok krijgen dan een binding `none` met die reden.
+
+3. **Per prop, slot en state een Figma-binding**, als tabel `Onderdeel | Soort | Figma-binding | Toelichting`:
+
+   | Binding                              | Wanneer                                                                         |
+   | ------------------------------------ | ------------------------------------------------------------------------------- |
+   | `variant` (`property`)               | Enum-prop of state die een as van de component set wordt                        |
+   | `variant` met `values`               | Figma spelt de waarden anders, gebruikt een deel, of labels voor true/false     |
+   | `variant` met `value`                | Eén waarde van een as die meerdere props of states delen (`checked` op `state`) |
+   | `variant` met `unset`                | Enum-prop zonder default; `unset` is de waarde voor "niet gezet"                |
+   | `boolean` / `text` / `instance-swap` | Een component property in het rechterpaneel (laag aan/uit, tekst, icoon)        |
+   | `slot`                               | Kinderen die een designer zelf toevoegt of weghaalt (opties, items)             |
+   | `none` met `reason`                  | Bewust niet in Figma, met de reden                                              |
+
+   Elke binding kan daarnaast `"open": true` met een `reason` krijgen: er is iets nog onbekend. **Verzin nooit een reden**: zet dan `open` en zet de vraag bij Notities.
+
+   Vuistregel voor as of property: verandert iets de gemeten layout (andere rijverdeling, andere maten), dan is het een as. Is het alleen een laag aan of uit, dan een boolean property.
+
+4. **Matrix-schets** (alleen als er een matrix komt): welke assen (enum-assen altijd via `axisValues('{Name}', '{prop}')`, nooit overgetypt), toestanden (`state`, pseudo-states), combinaties die weg moeten (`skipVariant`, bijv. disabled zonder hover), component properties, slots (`data-figma-children`), geneste componenten als instances (`instances: true`), en of het een onderdeel van een ander component is (`partOf`, dan geen eigen manifest-entry).
 
 ---
 
@@ -118,7 +164,7 @@ Bouw de body op in deze volgorde. Vul in wat de gebruiker aanleverde; gebruik HT
 
 ```html
 [basis HTML-markup]
-````
+```
 
 ### [Variant/Optie naam, indien van toepassing]
 
@@ -131,6 +177,8 @@ Bouw de body op in deze volgorde. Vul in wat de gebruiker aanleverde; gebruik HT
 | Klasse            | Element       | Beschrijving   |
 | ----------------- | ------------- | -------------- |
 | `dsn-[component]` | `<[element]>` | [beschrijving] |
+
+<!-- Indien van toepassing: Afhankelijk van de CSS van [component] (`@dsn-depends-on: [component]`). -->
 
 ## React
 
@@ -161,13 +209,17 @@ Bouw de body op in deze volgorde. Vul in wat de gebruiker aanleverde; gebruik HT
 
 ## Component tokens (voorstel)
 
-> ⚠️ **Review vereist vóór implementatie**: akkoord geven op deze tabel voordat de bouw begint.
+> ⚠️ **Review vereist vóór implementatie**: akkoord geven op dit voorstel voordat de bouw begint.
 
 ```json
 {
   "dsn": {
     "[component]": {
-      "[token]": { "value": "{dsn.[referentie]}", "type": "[type]" }
+      "[token]": {
+        "$value": "{dsn.[referentie]}",
+        "$type": "[type]",
+        "$description": "[rol-zin]"
+      }
     }
   }
 }
@@ -177,139 +229,117 @@ Bouw de body op in deze volgorde. Vul in wat de gebruiker aanleverde; gebruik HT
 
 - [keuze en motivatie]
 
+## Manifest en Figma (voorstel)
+
+> ⚠️ **Review vereist vóór implementatie**, net als de tokens.
+
+- **Categorie:** `[category]` · **Platforms:** `[html-css, react, ...]`
+- **Purpose:** [één Engelse zin]
+- **Figma-matrix:** [ja / nee, omdat ...]
+
+| Onderdeel | Soort         | Figma-binding                         | Toelichting   |
+| --------- | ------------- | ------------------------------------- | ------------- |
+| `[prop]`  | prop          | `variant` → `[as]`                    |               |
+| `[slot]`  | slot          | `text` → `[property]`                 |               |
+| `[state]` | state         | `variant` → `state` = `[waarde]`      |               |
+| `[prop]`  | prop          | `none`                                | [reden]       |
+| `[prop]`  | prop          | `none`, `open`                        | [open vraag]  |
+
+**Matrix-schets:** <!-- assen, skipVariant, component properties, slots, instances; of weglaten bij geen matrix -->
+
 ---
 
 ## Acceptatiecriteria
 
 ### HTML/CSS
 
-- [ ] Component tokens JSON (`[component].json`)
+- [ ] Component tokens JSON (`[component].json`), elk token met `$description`
 - [ ] CSS implementatie (`[component].css`)
   - [ ] [specifiek CSS-onderdeel]
   - [ ] [specifiek CSS-onderdeel]
+- [ ] `@dsn-depends-on`-comment bovenaan de CSS <!-- alleen als het klassen van een ander component gebruikt -->
+- [ ] Export entry toegevoegd aan `packages/components-html/package.json` exports map
 
 ### React
 
 - [ ] `[ComponentName]` component met [props opsomming]
 - [ ] `React.forwardRef<HTML[Element]Element>`
-- [ ] `index.ts` barrel file aangemaakt in de componentdirectory (exporteert component + prop types)
+- [ ] `index.ts` barrel file in de componentdirectory (exporteert component + prop types)
 - [ ] Export toegevoegd aan `packages/components-react/src/index.ts`
-- [ ] Export entry toegevoegd aan `packages/components-html/package.json` exports map
+
+### Manifest
+
+- [ ] `[component-name].manifest.json` met `api`-blok zoals hierboven voorgesteld (props, slots, states, elk met Figma-binding)
+- [ ] `manifest.json` opnieuw gegenereerd: `pnpm --filter @dsn-starter-kit/components-html build:manifest`
+- [ ] Open bindingen (`"open": true`) staan in `report:figma-open` en als vraag in dit issue
+
+### Figma <!-- of: "Geen matrix: [reden]. Component toegevoegd aan de lijst in packages/figma-sync/README.md" -->
+
+- [ ] Matrix `packages/figma-sync/src/matrices/[component-name].js`, enum-assen via `axisValues`
+- [ ] `pnpm build:figma-components [component-name]` draait zonder fouten of waarschuwingen
+- [ ] Gegenereerde `dist/[component-name].json` nagekeken (bindingen, `values`/`unset` die geen test ziet)
 
 ### Storybook
 
 - [ ] Drie bestanden aangemaakt: `.stories.tsx`, `.docs.mdx`, `.docs.md`
-- [ ] `.docs.md` volledig in het Nederlands, met de vaste kopjes in deze volgorde: `## Doel`, `## Wel gebruiken als...`, `## Niet gebruiken als...`, `## Goed gebruik`, `## Design tokens` (marker `<!-- tokens: [component-name] -->`), `## Toegankelijkheid`. Geen Engelse kopjes zoals Use when, Best practices, Accessibility, States of Anatomy
-- [ ] Bullets onder Wel/Niet gebruiken als... overgenomen uit dit issue en maken de zin na het kopje af
-- [ ] `// DEFAULT` sectie: `Default` story
-- [ ] `// VARIANTEN` sectie: per-prop/state stories (bijv. `WithDescription`, `Disabled`, `Invalid`)
-- [ ] `// OVERZICHTSSTORIES` sectie: `AllVariants` of `AllStates` (zie regel hieronder)
-- [ ] `// TEKST VARIANTEN` sectie: `ShortText` + `LongText` (alleen bij componenten met zichtbare tekstinhoud) — `LongText` gebruikt `VEEL_TEKST` uit `story-helpers.tsx`
-- [ ] `// RTL` sectie: `RTL` + `RTLLongText` (alleen bij componenten met tekst of richtingsgevoelige layout)
-- [ ] Alle story-namen in het Engels
+- [ ] `.docs.md` volledig in het Nederlands, met de vaste kopjes in deze volgorde: `## Doel`, `## Wel gebruiken als...`, `## Niet gebruiken als...`, `## Goed gebruik`, `## Design tokens` (marker `<!-- tokens: [component-name] -->`), `## Toegankelijkheid`
+- [ ] Bullets onder Wel/Niet gebruiken als... overgenomen uit dit issue
+- [ ] Stories volgens de vaste secties: [concreet invullen, bijv. `Default`, `WithDescription`, `Disabled`, `AllStates`, `ShortText`, `LongText`, `RTL`, `RTLLongText`]
+- [ ] `Introduction.mdx` bijgewerkt (datum + componentnaam in de lijst)
 
 ---
 
 ## Definition of Done
 
-### Voorbereiding
-
-- [ ] Feature branch aangemaakt: `git checkout -b feature/[component-name]`
-
-### Werkzaamheden
-
-- [ ] Implementatie afgerond
-
-### Bij nieuw component
-
-- [ ] Drie Storybook-bestanden aangemaakt (`.stories.tsx`, `.docs.mdx`, `.docs.md`)
-- [ ] Export toegevoegd aan `packages/components-react/src/index.ts`
-- [ ] Export entry toegevoegd aan `packages/components-html/package.json` exports map
-- [ ] `Introduction.mdx` bijgewerkt (datum + componentnaam in de lijst)
-- [ ] Manifest aangemaakt: `packages/components-html/src/{component-name}/{component-name}.manifest.json`, daarna `manifest.json` opnieuw gegenereerd (`pnpm --filter @dsn-starter-kit/components-html build:manifest`)
-
-### Kwaliteitscontrole
-
-- [ ] Tests groen: `pnpm test`
-- [ ] TypeScript schoon: `pnpm build && pnpm type-check`
-- [ ] Lint schoon: `pnpm lint`
-
-### Documentatie
-
+- [ ] Feature branch: `git checkout -b feature/[component-name]`
+- [ ] Alle acceptatiecriteria afgevinkt
+- [ ] Kwaliteitscontrole in CI-volgorde groen: `pnpm lint`, `pnpm format:check`, `pnpm build`, `pnpm type-check`, `pnpm test` (inclusief `tests/manifest-react.test.ts` en `tests/manifest-figma.test.ts`, en `tests/manifest-web.test.ts` bij een web component)
 - [ ] `MEMORY.md` bijgewerkt indien nieuw patroon of architectuurkeuze
-- [ ] Relevante `.docs.md` bijgewerkt
-
-### Oplevering
-
-- [ ] PR aangemaakt: `gh pr create`
-- [ ] CI groen op de branch
-- [ ] PR gemerged: `gh pr merge --merge`
+- [ ] PR aangemaakt (`gh pr create`), CI groen, gemerged (`gh pr merge --merge`)
 
 ## Notities / Open vragen
 
-<!-- Edge cases, twijfels, tokenwaarden die nog bepaald moeten worden, dingen om op te letten tijdens refinement. -->
-
+<!-- Edge cases, twijfels, tokenwaarden die nog bepaald moeten worden, open Figma-bindingen, dingen om op te letten tijdens refinement. -->
 ````
 
 **Let op bij het invullen:**
-- Acceptatiecriteria **genereer je** op basis van wat de gebruiker in stap 2 heeft opgegeven: maak ze concreet en specifiek
-- Storybook stories leiden af uit de HTML/CSS-varianten die beschreven zijn
-- Ontbrekende secties krijgen een HTML-commentaar, niet worden weggelaten
-- Tokens die nog niet bepaald zijn, markeer je expliciet met een ⚠️-opmerking in de Notities sectie
 
-**Storybook story-structuur: vaste regels:**
+- Acceptatiecriteria **genereer je** op basis van wat de gebruiker in stap 2 heeft opgegeven: maak ze concreet en specifiek, en haal criteria weg die niet van toepassing zijn (bijv. het Figma-blok wordt één regel als er geen matrix komt)
+- Storybook stories leid je af uit de HTML/CSS-varianten die beschreven zijn
+- Ontbrekende secties krijgen een HTML-commentaar, ze worden niet weggelaten
+- Tokens die nog niet bepaald zijn en open Figma-bindingen markeer je expliciet in de Notities sectie
+
+**Storybook story-structuur: vaste regels**
 
 Elke `.stories.tsx` volgt altijd deze sectievolgorde (met `// ===` comments als scheidslijn):
 
 1. `// DEFAULT`: altijd één `Default` story
 2. `// VARIANTEN`: individuele stories per prop of state
 3. `// OVERZICHTSSTORIES`: één overzichtsstory:
-   - `AllVariants` / `'All variants'` → voor componenten met **visuele kleur- of stijlvarianten** (bijv. `variant="info|warning|error"`)
-   - `AllStates` / `'All states'` → voor componenten met **interactieve states** (bijv. default, disabled, invalid, read-only)
-4. `// TEKST VARIANTEN`: `ShortText` + `LongText`: **alleen** bij componenten met zichtbare tekstinhoud; weglaten bij icoon-only of puur visuele componenten (DotBadge, Icon, Checkbox, Radio) — `LongText` gebruikt altijd `VEEL_TEKST` uit `story-helpers.tsx`
-5. `// RTL`: `RTL` + `RTLLongText`: **alleen** bij componenten met tekst of richtingsgevoelige layout
+   - `AllVariants` voor componenten met **visuele kleur- of stijlvarianten** (bijv. `variant="info|warning|error"`)
+   - `AllStates` voor componenten met **interactieve states** (bijv. default, disabled, invalid, read-only)
+4. `// TEKST VARIANTEN`: `ShortText` + `LongText`, **alleen** bij componenten met zichtbare tekstinhoud; weglaten bij icoon-only of puur visuele componenten (DotBadge, Icon, Checkbox, Radio). `LongText` gebruikt altijd `VEEL_TEKST` uit `story-helpers.tsx`
+5. `// RTL`: `RTL` + `RTLLongText`, **alleen** bij componenten met tekst of richtingsgevoelige layout
 
 Geen `// HIGH CONTRAST` sectie: daar zijn we van af gestapt.
 
-**Story `name:` properties: altijd Engels:**
+**Story-namen: Engels, en geen redundante `name`**
 
-De `export const` naam en de optionele `name:` string in het story-object moeten **altijd Engels** zijn. Dit geldt ook als de `export const` naam zichzelf al beschrijft: gebruik dan géén `name:` property.
+Storybook leidt de naam in de sidebar af uit de export-naam (`AllStates` wordt "All States"). De export-naam is dus altijd Engels. Een `name:` voeg je **alleen** toe als die afwijkt van wat Storybook zelf afleidt; anders klaagt de eslint-regel `storybook/no-redundant-story-name`.
 
 ```ts
-// ✅ Correct: Engelse name property
-export const WithIconStart: Story = {
-  name: 'With icon start',
-  // ...
-};
+// ✅ Geen name nodig
+export const AllStates: Story = {/* ... */};
 
-export const AllStates: Story = {
-  name: 'All states',
-  // ...
-};
-
+// ✅ name wijkt af van de afgeleide naam ('Current')
 export const Current: Story = {
   name: 'Current (active page)',
-  // ...
 };
 
-// ❌ Fout: Nederlandse name property
-export const WithIconStart: Story = {
-  name: 'Met icoon start', // ❌
-};
-
-export const AllStates: Story = {
-  name: 'Alle staten', // ❌
-};
+// ❌ Nederlandse export-naam of name
+export const AlleStaten: Story = {/* ... */};
+export const WithIconStart: Story = { name: 'Met icoon start' };
 ```
-
-Veelgebruikte Engelse vertalingen:
-- `'Met icoon start'` → `'With icon start'`
-- `'Met icoon end'` → `'With icon end'`
-- `'Alle staten'` → `'All states'`
-- `'Alle varianten'` → `'All variants'`
-- `'Volledig navigatiemenu'` → `'Full navigation menu'`
-- `'Niveau-hiërarchie'` → `'Level hierarchy'`
-- `'Uitgevouwen met subpagina's'` → `'Expanded with sub-pages'`
 
 ---
 
@@ -328,7 +358,7 @@ gh issue create \
   --title "feat(ComponentName): korte beschrijving" \
   --label "feat,component,needs refinement" \
   --body "BODY"
-````
+```
 
 Rapporteer de URL van het aangemaakte issue.
 
@@ -339,8 +369,9 @@ Rapporteer de URL van het aangemaakte issue.
 - Gebruik **altijd** het volledige template: sla geen secties over
 - **Genereer** de acceptatiecriteria op basis van de spec: kopieer ze niet blind uit eerdere issues
 - Voeg **geen** verzonnen implementatiedetails toe: als iets onbekend is, gebruik HTML-commentaar of ⚠️
+- **Verzin geen reden** voor een Figma-binding `none`: weet je het niet, gebruik `"open": true` en zet de vraag bij Notities
 - Vraag altijd om **expliciete bevestiging** voordat het issue aangemaakt wordt
 - Labels zijn altijd `feat,component,needs refinement`: geen uitzonderingen voor nieuwe componenten
-- **Geen Figma-verwijzingen**: er is geen Figma in dit project; schrijf nooit "valideren in Figma", "zie Figma" of soortgelijke verwijzingen
-- **Token schrijfwijze**: controleer altijd of sub-groepen als geneste objecten zijn geschreven (zie stap 2e)
-- **Story namen altijd Engels**: zowel `export const` namen als `name:` properties in story-objecten zijn altijd Engelstalig; Nederlandse `name:` properties zijn een bug (zie voorbeelden in de Storybook story-structuur sectie hierboven)
+- **Token-formaat**: DTCG (`$value`, `$type`, `$description`), sub-groepen genest (zie stap 2e)
+- **Story-namen altijd Engels**, zonder redundante `name:` (zie de story-structuur hierboven)
+- **Geen em dashes** in de issue-tekst: gebruik een komma, dubbele punt of haakjes
