@@ -4,6 +4,7 @@
  * de bindingen rapporteren.
  */
 
+import { paintedNode } from './nodes.js';
 import { recolorVectors } from './svg.js';
 
 /**
@@ -77,16 +78,7 @@ export function verifyIconColors(context) {
     const expected = job.paints?.[0]?.boundVariables?.color?.id;
     if (!expected) continue;
 
-    const find = (node) => {
-      if (Array.isArray(node.fills) && node.fills.length) return node.fills[0];
-      for (const child of node.children ?? []) {
-        const found = find(child);
-        if (found) return found;
-      }
-      return undefined;
-    };
-
-    const paint = find(job.node);
+    const paint = paintedNode(job.node)?.fills[0];
     if (paint?.boundVariables?.color?.id !== expected) {
       lost.push(job.name ?? 'icon');
     }

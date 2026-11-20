@@ -28,6 +28,7 @@ import {
 import {
   clearBoundVariables,
   insideContentSlot,
+  leafLayers,
   propertyNameOf,
   rejoinFlow,
   SVG_KEY,
@@ -101,12 +102,7 @@ function buildShapes(spec, parent, context) {
   node.name = spec.name ?? 'vector';
   if (spec.width && spec.height) node.resize(spec.width, spec.height);
 
-  const layers = [];
-  const collect = (current) => {
-    if (current.children?.length) current.children.forEach(collect);
-    else layers.push(current);
-  };
-  node.children.forEach(collect);
+  const layers = leafLayers(node);
 
   if (layers.length !== spec.shapes.length) {
     context.log.warn(
@@ -164,12 +160,7 @@ export function buildSvgComponent(component, spec, context) {
     for (const child of [...component.children]) child.remove();
     component.resize(spec.width, spec.height);
     const source = figma.createNodeFromSvg(spec.svg);
-    layers = [];
-    const collect = (current) => {
-      if (current.children?.length) current.children.forEach(collect);
-      else layers.push(current);
-    };
-    source.children.forEach(collect);
+    layers = leafLayers(source);
     for (const layer of layers) component.appendChild(layer);
     source.remove();
   }

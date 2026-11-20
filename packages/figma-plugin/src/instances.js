@@ -11,6 +11,8 @@
 import { applyBindings, applyEffects, paintsForVector } from './bindings.js';
 import { fontFor } from './fonts.js';
 import { applyPaints } from './layout.js';
+import { nodeAt } from './nodes.js';
+import { loadAllPages } from './pages.js';
 import { recolorVectors } from './svg.js';
 
 /** Alle INSTANCE-specs in een boom. */
@@ -93,9 +95,7 @@ export async function resolveInstanceTargets(spec, log) {
   );
   if (!required.length && !instances.length) return new Map();
 
-  if (typeof figma.loadAllPagesAsync === 'function') {
-    await figma.loadAllPagesAsync();
-  }
+  await loadAllPages();
 
   const sets = new Map();
   const missingSets = [];
@@ -151,15 +151,6 @@ export async function resolveInstanceTargets(spec, log) {
   }
 
   return resolved;
-}
-
-/** De laag binnen een instance waar een override op hoort. */
-function nodeAt(instance, path) {
-  let node = instance;
-  for (const index of path) {
-    node = node?.children?.[index];
-  }
-  return node;
 }
 
 /** `bindings` zonder `field`, of `undefined` als er niets overblijft. */

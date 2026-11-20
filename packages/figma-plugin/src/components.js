@@ -54,24 +54,13 @@ import { loadIconIndex } from './icons.js';
 import { resolveInstanceTargets } from './instances.js';
 import { applySizing } from './layout.js';
 import { findOrCreatePage, openPage, sortManagedPages } from './pages.js';
+import { YIELD_EVERY, yieldToUi } from './progress.js';
 import {
   applyComponentProperties,
   axesOf,
   variantFinder,
 } from './properties.js';
 import { createVariantState, dropUnused, resetVariant } from './reuse.js';
-
-/**
- * Geeft de sandbox even lucht zodat een voortgangsmelding de UI kan bereiken.
- *
- * Een verse import heeft in de variantlus geen enkel await-punt: alles wordt
- * dan pas bezorgd als de hele set al klaar is, en dan staat de indicator de
- * hele tijd stil op de eerste variant. Bij een tweede import is er wél een
- * await, maar daarop leunen zou betekenen dat de voortgang alleen werkt in het
- * geval waar je hem het minst nodig hebt.
- */
-const YIELD_EVERY = 8;
-const yieldToUi = () => new Promise((resolve) => setTimeout(resolve, 0));
 
 /**
  * Importeert een volledige component set: nieuw of bijgewerkt.

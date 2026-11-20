@@ -1,8 +1,8 @@
 /**
  * Kleine bewerkingen op een Figma-node die door de hele componentimport
  * gebruikt worden: een laag tijdelijk uit de layout halen en terugzetten,
- * bindingen losmaken, en de naam van een component property uit zijn sleutel
- * lezen.
+ * bindingen losmaken, de naam van een component property uit zijn sleutel
+ * lezen, en een laag in een boom terugvinden.
  */
 
 /** Haalt een laag uit de stroom van zijn ouder, als die auto layout heeft. */
@@ -81,4 +81,49 @@ export function clearBoundVariables(node) {
 export function propertyNameOf(key) {
   const suffix = key.lastIndexOf('#');
   return suffix === -1 ? key : key.slice(0, suffix);
+}
+
+/**
+ * De laag op `path` (kind-indexen) onder `root`, of `undefined` als het pad
+ * daar niet bestaat.
+ *
+ * Op index en niet op naam: een instance spiegelt de lagen van zijn component
+ * op volgorde, en laagnamen zijn niet uniek.
+ */
+export function nodeAt(root, path) {
+  let node = root;
+  for (const index of path) {
+    node = node?.children?.[index];
+  }
+  return node;
+}
+
+/**
+ * De diepste laag die echt een vulling draagt, of `null`.
+ *
+ * Bij een icoon is dat de `Shape` binnen de `Group` binnen de instance; het
+ * kader eromheen heeft geen vulling. Bij een tekstlaag is het de laag zelf.
+ */
+export function paintedNode(node) {
+  if (!node) return null;
+  if (Array.isArray(node.fills) && node.fills.length) return node;
+  for (const child of node.children ?? []) {
+    const found = paintedNode(child);
+    if (found) return found;
+  }
+  return null;
+}
+
+/**
+ * De bladlagen onder `node`, in de volgorde van de boom: de vormen die
+ * `createNodeFromSvg` van een SVG maakt, zonder de groepen ertussen.
+ */
+export function leafLayers(node) {
+  const layers = [];
+  const collect = (current) => {
+    if (current.children?.length) current.children.forEach(collect);
+    else layers.push(current);
+  };
+  node.children.forEach(collect);
+  return layers;
 }

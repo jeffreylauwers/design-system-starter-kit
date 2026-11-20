@@ -14,7 +14,7 @@ import { PAGE_PREFIX } from './contract.js';
  * met dynamic page loading; zonder die aanroep gooit Figma daar sinds 2024 een
  * fout op.
  */
-async function loadAllPages() {
+export async function loadAllPages() {
   if (typeof figma.loadAllPagesAsync === 'function') {
     await figma.loadAllPagesAsync();
   }

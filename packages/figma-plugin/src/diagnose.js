@@ -23,6 +23,8 @@
  * instance en niet van de binding in het algemeen.
  */
 
+import { nodeAt, paintedNode } from './nodes.js';
+
 /** Hoe lang er gewacht wordt voordat er een tweede keer gemeten wordt. */
 const SETTLE_MS = 400;
 
@@ -73,33 +75,6 @@ function pathTo(root, node) {
   }
 
   return current === root ? path : null;
-}
-
-/** De laag op `path` onder `root`, of null als het pad daar niet bestaat. */
-function nodeAt(root, path) {
-  let current = root;
-  for (const index of path) {
-    const children = current && current.children;
-    if (!children || !children[index]) return null;
-    current = children[index];
-  }
-  return current;
-}
-
-/**
- * De diepste laag die echt een vulling draagt.
- *
- * Bij een icoon is dat de `Shape` binnen de `Group` binnen de instance; het
- * kader eromheen heeft geen vulling. Bij een tekstlaag is het de laag zelf.
- */
-function paintedNode(node) {
-  if (!node) return null;
-  if (Array.isArray(node.fills) && node.fills.length) return node;
-  for (const child of node.children ?? []) {
-    const found = paintedNode(child);
-    if (found) return found;
-  }
-  return null;
 }
 
 /** De variable-id die aan de eerste vulling van deze laag hangt. */

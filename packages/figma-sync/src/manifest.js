@@ -26,10 +26,15 @@ const MANIFEST = path.resolve(
 
 let components;
 
+/** Alle componenten uit de manifest; één keer gelezen per build. */
+export function manifestComponents() {
+  components ??= JSON.parse(fs.readFileSync(MANIFEST, 'utf8')).components;
+  return components;
+}
+
 /** De manifest-entry van een component, of een fout als die er niet is. */
 export function manifestComponent(name) {
-  components ??= JSON.parse(fs.readFileSync(MANIFEST, 'utf8')).components;
-  const component = components.find((entry) => entry.name === name);
+  const component = manifestComponents().find((entry) => entry.name === name);
   if (!component) {
     throw new Error(`${name} staat niet in components-html/manifest.json`);
   }

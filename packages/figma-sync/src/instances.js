@@ -31,14 +31,9 @@ import fs from 'fs';
 import path from 'path';
 import { fileURLToPath } from 'url';
 
+import { manifestComponents } from './manifest.js';
+
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
-const MANIFEST = path.resolve(
-  __dirname,
-  '..',
-  '..',
-  'components-html',
-  'manifest.json'
-);
 
 /**
  * Blokken die nooit een instance worden.
@@ -67,9 +62,8 @@ let manifestBlocks;
 /** Alle `cssBlock`s uit de manifest die een instance kunnen worden. */
 export function instanceBlocks() {
   if (!manifestBlocks) {
-    const { components } = JSON.parse(fs.readFileSync(MANIFEST, 'utf8'));
     manifestBlocks = new Set(
-      components
+      manifestComponents()
         .filter(
           (component) =>
             !SKIPPED_CATEGORIES.has(component.category) ||
