@@ -82,6 +82,18 @@ componenten" hieronder.
 | `nodes.js`, `svg.js`, `pages.js` | Kleine hulpfuncties voor nodes, vectoren en pagina's              |
 | `diagnose.js`                    | Meting van de icoonkleuren; alleen via de smoke test              |
 
+Alle stappen van een componentimport krijgen één `context` mee. Die heeft twee
+lagen:
+
+- **de import**: fonts, variables, iconen, de log en de tellers, plus de wachtrijen
+  die pas aan het eind afgehandeld worden (`recolors`, `pinned`,
+  `effectStyleQueue`, `colorChecks`, `staleSlots`)
+- **de variant die nu gebouwd wordt**, in `context.variant`: het component, zijn
+  slots, het laagpad, en de pool van lagen en instances uit de vorige import.
+  Elke variant krijgt een verse via `createVariantState` in `reuse.js`, en
+  `resetVariant` vult hem bij een bestaande variant. Buiten de bouwlus is hij
+  `null`.
+
 ## Het contract met de generators
 
 Wat de JSON betekent staat op één plek: `src/contract.js`. De generators

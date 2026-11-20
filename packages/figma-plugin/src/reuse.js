@@ -6,6 +6,9 @@
  * variant daarom terug naar de staat van een vers component, maar bewaart de
  * lagen, geneste instances en slots die op dezelfde plek terugkomen; zie
  * `resetVariant`.
+ *
+ * Wat er per variant onthouden wordt staat in één object, `context.variant`;
+ * zie `createVariantState`. De rest van `context` geldt voor de hele import.
  */
 
 import { SIZE_LIMIT_FIELDS } from './layout.js';
@@ -15,6 +18,40 @@ import {
   stepAside,
   SVG_KEY,
 } from './nodes.js';
+
+/**
+ * De state van één variant terwijl hij gebouwd wordt.
+ *
+ * Elke variant begint met een lege, ook als de vorige variant iets in de pool
+ * liet liggen: anders zou een icoon uit die variant in deze belanden. Bij een
+ * bestaande variant vult `resetVariant` de pool daarna met wat er al stond.
+ *
+ * @param {ComponentNode} component de variant
+ */
+export function createVariantState(component) {
+  return {
+    // Het component dat nu gebouwd wordt: alleen daarop bestaat `createSlot`.
+    component,
+    // Elke variant heeft zijn eigen lagen, dus ook zijn eigen slots; zie
+    // `registerSlot`.
+    slots: new Map(),
+    // Het pad van indexen naar de laag die nu gebouwd wordt; zie `takeLayer`.
+    layerPath: [],
+    // De geneste instances van de vorige import, op component-id; zie
+    // `takeReusable`.
+    reusable: new Map(),
+    // Alle instances in die pool, ook nadat ze eruit zijn opgehaald.
+    pooled: new Set(),
+    // De ene tekstlaag van een component dat tot tekst inklapt.
+    reusableText: null,
+    // De frames en tekstlagen van de vorige import, op hun pad.
+    reusableLayers: new Map(),
+    // De slots van de vorige import, op naam; zie `buildContentSlot`.
+    reusableSlots: new Map(),
+    // Alle slots die blijven staan, ook nadat ze zijn opgehaald.
+    keptSlots: new Set(),
+  };
+}
 
 /**
  * De frames en tekstlagen van een variant, op hun pad van indexen.
@@ -53,11 +90,12 @@ function collectLayers(component) {
  * terecht; die wordt gewoon opnieuw gemaakt.
  */
 export function takeLayer(context, type, name) {
-  const key = (context.layerPath ?? []).join('/');
-  const layer = context.reusableLayers?.get(key);
+  const { variant } = context;
+  const key = variant.layerPath.join('/');
+  const layer = variant.reusableLayers.get(key);
   if (!layer || layer.type !== type) return null;
   if (type === 'FRAME' && layer.name !== name) return null;
-  context.reusableLayers.delete(key);
+  variant.reusableLayers.delete(key);
   return layer;
 }
 
@@ -103,10 +141,11 @@ export function placeReused(layer, parent, context) {
   parent.appendChild(layer);
   rejoinFlow(layer);
   resetLayer(layer);
+  const { variant } = context;
   const kept = new Set([
-    ...(context.reusableLayers?.values() ?? []),
-    ...(context.pooled ?? []),
-    ...(context.keptSlots ?? []),
+    ...variant.reusableLayers.values(),
+    ...variant.pooled,
+    ...variant.keptSlots,
   ]);
   for (const child of [...(layer.children ?? [])]) {
     if (!kept.has(child)) child.remove();
@@ -137,23 +176,36 @@ async function mainComponentOf(instance, context) {
 
 /** Haalt een bewaarde instance van dit component uit de pool, of niets. */
 export function takeReusable(context, component) {
-  const pool = context.reusable?.get(component.id);
+  const pool = context.variant.reusable.get(component.id);
   return pool && pool.length ? pool.shift() : null;
 }
 
 /**
- * Ruimt op wat er na het bouwen in de pool is blijven liggen.
+ * Ruimt op wat er na het bouwen van een variant niet is opgehaald: het hoort
+ * niet meer bij deze variant.
  *
  * Een variant die in de nieuwe spec minder iconen heeft, of een ander icoon op
  * die plek, houdt anders een laag over die nergens meer bij hoort. Ze hangen op
  * dat moment nog gewoon in de variant, want `resetVariant` heeft ze juist láten
- * staan.
+ * staan. Hetzelfde voor frames, tekstlagen en slots.
+ *
+ * Een slot dat zo verdwijnt, gaat naar `context.staleSlots`: zijn property
+ * staat op de set en kan pas weg als geen enkele variant hem nog heeft; zie
+ * `dropStaleContentSlots`.
  */
-export function dropUnusedIcons(context) {
-  for (const pool of context.reusable?.values() ?? []) {
+export function dropUnused(context) {
+  const { variant } = context;
+  for (const pool of variant.reusable.values()) {
     for (const instance of pool) instance.remove();
   }
-  context.reusable = new Map();
+  variant.reusable = new Map();
+  for (const layer of variant.reusableLayers.values()) layer.remove();
+  variant.reusableLayers = new Map();
+  for (const [name, slot] of variant.reusableSlots) {
+    slot.remove();
+    context.staleSlots.add(name);
+  }
+  variant.reusableSlots = new Map();
 }
 
 /**
@@ -185,9 +237,11 @@ export function dropUnusedIcons(context) {
  * tekstlaag heeft die tussenlaag niet; zijn vulling is een eigenschap van de
  * laag zelf en spiegelt gewoon mee. Zie issue #388.
  *
- * De instances gaan daarom naar `context.reusable`, waar `buildIcon` ze weer
- * ophaalt. Wat daar niet uit opgehaald wordt gaat na het bouwen alsnog weg; zie
- * `dropUnusedIcons`.
+ * De instances gaan daarom naar `context.variant.reusable`, waar `buildIcon` ze
+ * weer ophaalt. Wat daar niet uit opgehaald wordt gaat na het bouwen alsnog
+ * weg; zie `dropUnused`.
+ *
+ * Vult `context.variant`, die al vers moet zijn; zie `createVariantState`.
  *
  * Alles wat `applyFrame` alleen zet wanneer de spec het noemt moet hier weg.
  * Anders houdt een variant een rand, een radius of een gap uit de vorige
@@ -198,15 +252,14 @@ export async function resetVariant(
   context,
   { keepText = false, keepSvg = null } = {}
 ) {
-  context.reusable = new Map();
-  context.reusableText = null;
-  context.keptSvgShapes = null;
+  const { variant } = context;
+  let keptSvgShapes = null;
 
   // Elk frame en elke tekstlaag op zijn plek in de variant, vóórdat er iets
   // verhuist; zie `takeLayer`. Een component dat tot één tekstlaag of één
   // SVG inklapt heeft daar `keepText` en `keepSvg` voor.
   const layers = keepText || keepSvg ? new Map() : collectLayers(component);
-  context.reusableLayers = layers;
+  variant.reusableLayers = layers;
   const keptLayers = new Set(layers.values());
   for (const layer of keptLayers) {
     if (layer.parent !== component) component.appendChild(layer);
@@ -231,9 +284,9 @@ export async function resetVariant(
   for (const slot of slots) {
     if (slot.parent !== component) component.appendChild(slot);
   }
-  context.reusableSlots = new Map(slots.map((slot) => [slot.name, slot]));
-  const keptSlots = new Set(context.reusableSlots.values());
-  context.keptSlots = keptSlots;
+  variant.reusableSlots = new Map(slots.map((slot) => [slot.name, slot]));
+  const keptSlots = new Set(variant.reusableSlots.values());
+  variant.keptSlots = keptSlots;
   // Een slot dat blijft staan houdt anders zijn cel bezet; zie `stepAside`.
   for (const slot of keptSlots) stepAside(slot, context.log);
 
@@ -251,7 +304,7 @@ export async function resetVariant(
     const text = component.children.find((child) => child.type === 'TEXT');
     if (text) {
       clearBoundVariables(text);
-      context.reusableText = text;
+      variant.reusableText = text;
     }
   }
 
@@ -260,7 +313,7 @@ export async function resetVariant(
   // vormen (de maat, de kleuren in inverse). Alleen als de SVG niet
   // veranderd is; anders kloppen de vormen niet meer met de spec.
   if (keepSvg && component.getPluginData?.(SVG_KEY) === keepSvg) {
-    context.keptSvgShapes = new Set(component.children);
+    keptSvgShapes = new Set(component.children);
   }
 
   // Ook de instances die dieper zitten, in een frame binnen de variant: een
@@ -293,19 +346,19 @@ export async function resetVariant(
     // instance die erbij komt anders een rij bij, en die rij kon daarna niet
     // meer weg: "Cannot delete occupied row/column".
     if (instance.parent === component) stepAside(instance, context.log);
-    const pool = context.reusable.get(main.id) ?? [];
+    const pool = variant.reusable.get(main.id) ?? [];
     pool.push(instance);
-    context.reusable.set(main.id, pool);
+    variant.reusable.set(main.id, pool);
     pooled.add(instance);
   }
-  context.pooled = pooled;
+  variant.pooled = pooled;
 
   for (const child of [...component.children]) {
     if (pooled.has(child) || keptSlots.has(child) || keptLayers.has(child)) {
       continue;
     }
-    if (context.keptSvgShapes?.has(child)) continue;
-    if (child !== context.reusableText) child.remove();
+    if (keptSvgShapes?.has(child)) continue;
+    if (child !== variant.reusableText) child.remove();
   }
 
   clearBoundVariables(component);

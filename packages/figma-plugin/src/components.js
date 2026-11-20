@@ -59,7 +59,7 @@ import {
   axesOf,
   variantFinder,
 } from './properties.js';
-import { dropUnusedIcons, resetVariant } from './reuse.js';
+import { createVariantState, dropUnused, resetVariant } from './reuse.js';
 
 /**
  * Geeft de sandbox even lucht zodat een voortgangsmelding de UI kan bereiken.
@@ -111,6 +111,8 @@ export async function importComponentSet(payload, log, options = {}) {
   log.progress?.(`${spec.name}: geneste componenten zoeken`);
   const instanceTargets = await resolveInstanceTargets(spec, log);
 
+  // Wat voor de hele import geldt. Wat per variant geldt staat in
+  // `context.variant`, dat elke variant vers krijgt; zie `createVariantState`.
   const stats = createStats();
   const context = {
     fonts: loaded,
@@ -119,6 +121,7 @@ export async function importComponentSet(payload, log, options = {}) {
     stats,
     icons,
     instanceTargets,
+    // Iconen die al als ingebakken gemeld zijn; één melding per icoon.
     inlinedIcons: new Set(),
     // Per icoonlaag de paints die eroverheen moeten; aan het eind herhaald.
     recolors: [],
@@ -129,16 +132,10 @@ export async function importComponentSet(payload, log, options = {}) {
     // Lagen die een effect style krijgen; aan het eind gelegd, zie
     // `applyEffectStyles`.
     effectStyleQueue: [],
-    // De geneste instances van de variant die nu gebouwd wordt, op component-id.
-    reusable: new Map(),
-    // Per variant opnieuw gevuld; zie de bouwlus hieronder.
-    slots: new Map(),
-    // Het component dat nu gebouwd wordt: alleen daarop bestaat `createSlot`.
-    component: null,
-    // De slots van de vorige import, op naam; zie `buildContentSlot`.
-    reusableSlots: new Map(),
     // Namen van slots die uit de spec verdwenen; zie `dropStaleContentSlots`.
     staleSlots: new Set(),
+    // De variant die nu gebouwd wordt; alleen gezet tijdens de bouwlus.
+    variant: null,
   };
 
   // Eén pagina per component. `createNodeFromSvg` (voor de ingebakken iconen)
@@ -228,6 +225,8 @@ export async function importComponentSet(payload, log, options = {}) {
     // Hoe de root gebouwd wordt; de generator rekent met dezelfde regel.
     const rootShape = rootShapeOf(component.node);
 
+    context.variant = createVariantState(wrapper);
+
     if (known) {
       await resetVariant(wrapper, context, {
         keepText: component.node.type === 'TEXT',
@@ -235,15 +234,6 @@ export async function importComponentSet(payload, log, options = {}) {
       });
       updated += 1;
     } else {
-      // Een verse variant heeft niets om te hergebruiken, maar de pool van de
-      // vorige variant mag hier niet blijven staan: dan zou een icoon uit die
-      // variant in deze belanden.
-      context.reusable = new Map();
-      context.reusableText = null;
-      context.reusableLayers = new Map();
-      context.reusableSlots = new Map();
-      context.pooled = new Set();
-      context.keptSlots = new Set();
       // Een nieuwe variant hangt meteen in de set als die er al is; anders op
       // de pagina, waar `combineAsVariants` hem straks ophaalt. De naam staat
       // er al op, want een set met een ongeldig genoemd kind is stuk.
@@ -251,15 +241,10 @@ export async function importComponentSet(payload, log, options = {}) {
       created += 1;
     }
 
-    // Elke variant heeft zijn eigen lagen, dus ook zijn eigen slots.
-    context.slots = new Map();
-    context.component = wrapper;
-
     // Waar de lagen van deze variant in `colorChecks` beginnen. De meting leest
     // een laag terug via zijn pad vanaf de variant, en dat pad is er niet
     // zonder te weten bij welke variant een laag hoort.
     const checksBefore = context.colorChecks.length;
-    context.layerPath = [];
 
     // Het root-element wórdt het component. Een extra frame eromheen zou een
     // lege laag met dezelfde auto layout toevoegen, en dat is precies de
@@ -291,23 +276,16 @@ export async function importComponentSet(payload, log, options = {}) {
       if ((index + 1) % 6 === 0) cursorX = 0;
     }
 
-    // Wat er niet uit de pool is opgehaald hoort niet meer bij deze variant.
-    dropUnusedIcons(context);
-    for (const layer of context.reusableLayers?.values() ?? []) layer.remove();
-    context.reusableLayers = new Map();
-    for (const [name, slot] of context.reusableSlots) {
-      slot.remove();
-      context.staleSlots.add(name);
-    }
-    context.reusableSlots = new Map();
+    dropUnused(context);
 
     for (const check of context.colorChecks.slice(checksBefore)) {
       check.variant = wrapper;
     }
 
     components.push(wrapper);
-    variantSlots.push({ component: wrapper, slots: context.slots });
+    variantSlots.push({ component: wrapper, slots: context.variant.slots });
   }
+  context.variant = null;
 
   let set = target;
   if (single) {

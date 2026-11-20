@@ -128,8 +128,9 @@ export function applyAutoLayout(frame, spec, log, context) {
  * nieuwe plek krijgen.
  */
 function releasePooled(frame, context) {
+  const { pooled, keptSlots } = context.variant;
   for (const child of frame.children ?? []) {
-    if (context?.pooled?.has(child) || context?.keptSlots?.has(child)) {
+    if (pooled.has(child) || keptSlots.has(child)) {
       stepAside(child, context.log);
     }
   }
