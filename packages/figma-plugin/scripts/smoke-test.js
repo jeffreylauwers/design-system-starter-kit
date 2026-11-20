@@ -20,6 +20,8 @@ globalThis.figma = figma;
 const { importVariables } = await import('../src/variables.js');
 const { importComponentSet } = await import('../src/components.js');
 const { importIconSet } = await import('../src/icons.js');
+const { loadVariableIndex } = await import('../src/bindings.js');
+const { diagnoseColors } = await import('./diagnose.js');
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const monorepoRoot = path.resolve(__dirname, '..', '..', '..');
@@ -2155,17 +2157,18 @@ check(
 // De kleurmeting
 // =============================================================================
 
-// `diagnoseColors` bestaat om in Figma vast te stellen wát er met de
-// kleuroverride gebeurt, en niet om hier iets te bewijzen: de mock kan het
-// mechanisme nog niet nadoen. Wat hier gecontroleerd wordt is dat de meting
-// draait en de goede lagen te pakken heeft, zodat hij niet stilletjes stukgaat
-// tussen twee sessies in Figma door.
+// `diagnoseColors` (in `diagnose.js` hiernaast) leest elke gebonden kleurlaag
+// terug op de variant en op elke geplaatste instance ervan. Eerst wordt
+// gecontroleerd dat de meting de goede lagen te pakken heeft, daarna wat hij
+// meet; zie issue #388 hieronder.
 console.log('\n=== kleurmeting ===');
 
-const measured = await importComponentSet(rerunPayload, log, {
-  diagnose: true,
-});
-const diagnosis = measured.diagnosis;
+const measured = await importComponentSet(rerunPayload, log);
+const diagnosis = await diagnoseColors(
+  { colorChecks: measured.colorChecks, variables: await loadVariableIndex() },
+  log,
+  measured.name
+);
 
 // De gebonden kleurlagen: per variant de iconen en de tekst. Een variant met
 // tekst heeft er drie, een icon-only variant twee.

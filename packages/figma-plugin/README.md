@@ -80,14 +80,14 @@ componenten" hieronder.
 | `finalize.js`                    | Wat pas aan het eind kan: pinnen, effect styles, icoonkleuren     |
 | `bindings.js`                    | Variable-bindingen op lagen, paints en effects                    |
 | `nodes.js`, `svg.js`, `pages.js` | Kleine hulpfuncties voor nodes, vectoren en pagina's              |
-| `diagnose.js`                    | Meting van de icoonkleuren; alleen via de smoke test              |
 
 Alle stappen van een componentimport krijgen één `context` mee. Die heeft twee
 lagen:
 
 - **de import**: fonts, variables, iconen, de log en de tellers, plus de wachtrijen
   die pas aan het eind afgehandeld worden (`recolors`, `pinned`,
-  `effectStyleQueue`, `colorChecks`, `staleSlots`)
+  `effectStyleQueue`, `staleSlots`) en `colorChecks`, die alleen de kleurmeting
+  van de smoke test leest
 - **de variant die nu gebouwd wordt**, in `context.variant`: het component, zijn
   slots, het laagpad, en de pool van lagen en instances uit de vorige import.
   Elke variant krijgt een verse via `createVariantState` in `reuse.js`, en
@@ -512,15 +512,15 @@ verwisseling, en die wist de overrides op die instance.
 
 Dit is de kant die de terugleescontrole na afloop níet ziet: die kijkt naar de
 laag in de variant, en die klopte altijd al. Naar de andere kant kijkt
-`diagnoseColors` in `src/diagnose.js`. Dat leest elke gebonden kleurlaag terug
-op de variant én op elke geplaatste instance ervan, en nog een keer na een tick,
-en zet er in de log naast wat de spec vroeg.
+`diagnoseColors` in `scripts/diagnose.js`. Dat leest elke gebonden kleurlaag
+terug op de variant én op elke geplaatste instance ervan, en nog een keer na
+een tick, en zet er in de log naast wat de spec vroeg.
 
-Die meting staat niet in de UI, want sinds de fix bewaakt de smoke test dit en
-is het niets waar een designer tijdens zijn werk een knop voor nodig heeft. Ze
-blijft wel staan, omdat ze de bug in één run aanwees waar vier rondes redeneren
-dat niet deden. Aanzetten is één argument: geef `importComponentSet` een derde
-argument `{ diagnose: true }` in `src/main.js` en bouw opnieuw.
+Die meting wees de bug in één run aan waar vier rondes redeneren dat niet
+deden. Sinds de fix is ze de controle in de smoke test die op een geplaatste
+instance kijkt, en daarom staat ze bij de smoke test en niet in de plugin. De
+lagen die ze meet krijgt ze uit `colorChecks` in het resultaat van
+`importComponentSet`.
 
 **De standaardwaarde van een bestaande `INSTANCE_SWAP` blijft staan.** Wat Figma
 daar opslaat is niet per se de `key` of de node-id die de plugin aanleverde, dus

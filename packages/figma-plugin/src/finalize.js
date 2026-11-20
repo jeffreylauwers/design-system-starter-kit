@@ -4,6 +4,7 @@
  * de bindingen rapporteren.
  */
 
+import { paintedNode } from './nodes.js';
 import { recolorVectors } from './svg.js';
 
 /**
@@ -64,11 +65,9 @@ export function recolorIcons(context) {
  * **Wat deze controle niet ziet.** Hij kijkt naar de laag ín de variant, en die
  * klopte bij issue #388 altijd al: de kleur ging pas verloren op een geplaatste
  * instance ervan. Een blijvend groene uitkomst hier is dus geen bewijs dat een
- * designer de goede kleur ziet. Die kant wordt met `diagnoseColors` gemeten, en
- * blijft daar omdat het een import bij 81 varianten anderhalve seconde langer
- * maakt voor iets wat sinds de fix niet meer stuk kan zonder dat de smoke test
- * het merkt. Om die reden blijft dit ook een waarschuwing en geen harde fout:
- * hij meet niet de plek waar het misging.
+ * designer de goede kleur ziet. Die kant meet de smoke test, met
+ * `scripts/diagnose.js`. Om die reden blijft dit ook een waarschuwing en geen
+ * harde fout: hij meet niet de plek waar het misging.
  */
 export function verifyIconColors(context) {
   const lost = [];
@@ -77,16 +76,7 @@ export function verifyIconColors(context) {
     const expected = job.paints?.[0]?.boundVariables?.color?.id;
     if (!expected) continue;
 
-    const find = (node) => {
-      if (Array.isArray(node.fills) && node.fills.length) return node.fills[0];
-      for (const child of node.children ?? []) {
-        const found = find(child);
-        if (found) return found;
-      }
-      return undefined;
-    };
-
-    const paint = find(job.node);
+    const paint = paintedNode(job.node)?.fills[0];
     if (paint?.boundVariables?.color?.id !== expected) {
       lost.push(job.name ?? 'icon');
     }

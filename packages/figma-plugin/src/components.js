@@ -41,7 +41,6 @@ import {
   placeBesideOthers,
 } from './canvas.js';
 import { assertSchema, rootShapeOf } from './contract.js';
-import { diagnoseColors } from './diagnose.js';
 import {
   applyEffectStyles,
   pinAbsolute,
@@ -54,24 +53,13 @@ import { loadIconIndex } from './icons.js';
 import { resolveInstanceTargets } from './instances.js';
 import { applySizing } from './layout.js';
 import { findOrCreatePage, openPage, sortManagedPages } from './pages.js';
+import { YIELD_EVERY, yieldToUi } from './progress.js';
 import {
   applyComponentProperties,
   axesOf,
   variantFinder,
 } from './properties.js';
 import { createVariantState, dropUnused, resetVariant } from './reuse.js';
-
-/**
- * Geeft de sandbox even lucht zodat een voortgangsmelding de UI kan bereiken.
- *
- * Een verse import heeft in de variantlus geen enkel await-punt: alles wordt
- * dan pas bezorgd als de hele set al klaar is, en dan staat de indicator de
- * hele tijd stil op de eerste variant. Bij een tweede import is er wél een
- * await, maar daarop leunen zou betekenen dat de voortgang alleen werkt in het
- * geval waar je hem het minst nodig hebt.
- */
-const YIELD_EVERY = 8;
-const yieldToUi = () => new Promise((resolve) => setTimeout(resolve, 0));
 
 /**
  * Importeert een volledige component set: nieuw of bijgewerkt.
@@ -83,9 +71,8 @@ const yieldToUi = () => new Promise((resolve) => setTimeout(resolve, 0));
  *
  * @param {object} payload de inhoud van een {component}.json
  * @param {object} log verzamelaar met .info/.warn/.error
- * @param {object} [options] `{ diagnose }`; zie `diagnoseColors`
  */
-export async function importComponentSet(payload, log, options = {}) {
+export async function importComponentSet(payload, log) {
   assertSchema(payload, 'components');
 
   const spec = payload.componentSet;
@@ -127,7 +114,8 @@ export async function importComponentSet(payload, log, options = {}) {
     recolors: [],
     // Absolute lagen met constraints; aan het eind gezet, zie `pinAbsolute`.
     pinned: [],
-    // Elke laag met een kleur-variable, iconen én tekst; zie `diagnoseColors`.
+    // Elke laag met een kleur-variable, iconen én tekst. Alleen voor de
+    // kleurmeting van de smoke test (`scripts/diagnose.js`).
     colorChecks: [],
     // Lagen die een effect style krijgen; aan het eind gelegd, zie
     // `applyEffectStyles`.
@@ -415,13 +403,6 @@ export async function importComponentSet(payload, log, options = {}) {
   const recolored = recolorIcons(context);
   const lostColors = verifyIconColors(context);
 
-  // Alleen wanneer erom gevraagd wordt: de meting wacht een tick en leest elke
-  // laag twee keer terug, en bij 81 varianten is dat een lange log voor iemand
-  // die alleen een import wil draaien.
-  const diagnosis = options.diagnose
-    ? await diagnoseColors(context, log, spec.name)
-    : null;
-
   if (payload.warnings && payload.warnings.length) {
     for (const warning of payload.warnings) log.warn(warning);
   }
@@ -442,7 +423,8 @@ export async function importComponentSet(payload, log, options = {}) {
     orphans,
     recolored,
     lostColors,
-    diagnosis,
+    // Voor de kleurmeting van de smoke test; zie `scripts/diagnose.js`.
+    colorChecks: context.colorChecks,
     combined: !single,
     single,
     bindings: { ...stats, missing: [...stats.missing] },

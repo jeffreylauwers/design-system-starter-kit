@@ -20,7 +20,13 @@ import {
   requireCollections,
 } from './bindings.js';
 import { assertSchema, ICON_PAGE } from './contract.js';
-import { findOrCreatePage, openPage, sortManagedPages } from './pages.js';
+import {
+  findOrCreatePage,
+  loadAllPages,
+  openPage,
+  sortManagedPages,
+} from './pages.js';
+import { YIELD_EVERY, yieldToUi } from './progress.js';
 
 /** Hoeveel iconen naast elkaar, en hoeveel ruimte eromheen. */
 const COLUMNS = 10;
@@ -154,9 +160,7 @@ function fillWithSvg(component, icon, context) {
  * @returns {Promise<Map<string, ComponentNode>>}
  */
 export async function loadIconIndex(pageName = ICON_PAGE) {
-  if (typeof figma.loadAllPagesAsync === 'function') {
-    await figma.loadAllPagesAsync();
-  }
+  await loadAllPages();
 
   const page = figma.root.children.find(
     (candidate) => candidate.type === 'PAGE' && candidate.name === pageName
@@ -227,10 +231,8 @@ export async function importIconSet(payload, log) {
         `icoon ${index + 1} van ${spec.icons.length}: ${icon.name}`
       );
       // Zonder await-punt in deze lus bereikt geen enkele melding de UI voordat
-      // alle 51 iconen klaar zijn; zie `yieldToUi` in components.js.
-      if (index && index % 8 === 0) {
-        await new Promise((resolve) => setTimeout(resolve, 0));
-      }
+      // alle 51 iconen klaar zijn; zie `yieldToUi`.
+      if (index && index % YIELD_EVERY === 0) await yieldToUi();
 
       const known = existing.get(icon.name);
       const component = known ?? figma.createComponent();
