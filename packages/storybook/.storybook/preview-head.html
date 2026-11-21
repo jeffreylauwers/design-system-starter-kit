@@ -107,9 +107,7 @@
       if (!document.body) return;
 
       const densityClass =
-        { 'information-dense': 'dense', 'default-fixed-space': 'fixed-space' }[
-          projectType
-        ] || 'default';
+        projectType === 'information-dense' ? 'dense' : 'default';
       const existingClasses = document.body.className
         .split(' ')
         .filter(

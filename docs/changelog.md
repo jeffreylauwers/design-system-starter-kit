@@ -10,6 +10,14 @@ All notable changes to this project are documented in this file.
 
 Nog niet gepubliceerde wijzigingen. Schrijf nieuwe changelog-entries hieronder; bij de volgende release wordt deze kop gepromoveerd naar het definitieve versienummer.
 
+### design-tokens: project type `default-fixed-space` verwijderd
+
+Er zijn nog twee project types (density): `default` (fluid tekst en ruimte) en `information-dense` (vaste tekst en ruimte).
+
+- **Breaking:** de bestanden `{theme}-{mode}-default-fixed-space.css`, `css/scoped/density-default-fixed-space.css` (export `./css/scoped/density-default-fixed-space`) en de klasse `.dsn-density-fixed-space` bestaan niet meer. Gebruik `default` of `information-dense`.
+- **Storybook:** de Density-toolbar en de `TokenControls` tonen alleen nog Default en Information Dense.
+- **Figma:** `dsn/Density` heeft per theme drie modes in plaats van vijf (6 in totaal). De plugin verwijdert geen modes: in een bestaand Figma-bestand blijven de `*-default-fixed-space-*`-modes staan tot je ze daar handmatig weghaalt.
+
 ### figma-plugin en figma-sync: de code opnieuw ingedeeld
 
 Een interne herindeling van de Figma-plugin en de generator (#509 t/m #515). De uitkomst in Figma is gelijk gebleven: elke stap is vergeleken met een snapshot van de vorige, en in Figma getest. Bouw de plugin opnieuw (`pnpm build:figma`), verder hoeft er niets.
@@ -60,7 +68,7 @@ Een set die een andere als instance gebruikt, legt overrides op de lagen van die
 
 ### figma-sync: Spinner en Logo krijgen hun eigen kleuren in Figma
 
-De cirkels van Spinner en de vlakken van Logo zijn SVG's die hun stijl uit de CSS halen. Die stijl ging niet mee naar Figma: de plugin behandelde ze als icoon, zocht ze tevergeefs in de iconset (de melding "Icoon dsn-spinner__circle staat niet op de pagina dsn/Icons") en kleurde ze in één kleur, gebonden aan de documentkleur.
+De cirkels van Spinner en de vlakken van Logo zijn SVG's die hun stijl uit de CSS halen. Die stijl ging niet mee naar Figma: de plugin behandelde ze als icoon, zocht ze tevergeefs in de iconset (de melding "Icoon dsn-spinner\_\_circle staat niet op de pagina dsn/Icons") en kleurde ze in één kleur, gebonden aan de documentkleur.
 
 - De extractor schrijft per vorm de computed stijl (vulling, lijn, lijndikte, streepjes, lijneinden) in de SVG, en geeft per vorm de kleuren en lijndikte met hun tokens mee.
 - De plugin zoekt zo'n SVG niet meer op in de iconset, en bindt per laag: bij Spinner `spinner/track-color` en `spinner/color` op de lijnen, en `spinner/stroke-width` waar de spinner op ware grootte staat; bij Logo `logo/color/primary` en `logo/color/label`.

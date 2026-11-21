@@ -282,23 +282,19 @@ const themes = ['start', 'wireframe'];
 const modes = ['light', 'dark'];
 
 // Available project types (density: welke schalen meegroeien met de viewport)
-// - default:             fluid tekst + fluid ruimte
-// - default-fixed-space: fluid tekst, vaste ruimte (de min-waarden)
-// - information-dense:   vaste tekst en vaste ruimte (de min-waarden)
-const projectTypes = ['default', 'default-fixed-space', 'information-dense'];
+// - default:           fluid tekst + fluid ruimte
+// - information-dense: vaste tekst en vaste ruimte (de min-waarden)
+const projectTypes = ['default', 'information-dense'];
 
-// Bronbestanden per project type. default-fixed-space is default zonder
-// space.json, zodat de ruimte terugvalt op de vaste waarden uit het thema.
+// Bronbestanden per project type.
 const projectTypeSources = {
   default: ['src/tokens/project-types/default/*.json'],
-  'default-fixed-space': ['src/tokens/project-types/default/typography.json'],
   'information-dense': ['src/tokens/project-types/information-dense/*.json'],
 };
 
 // Klasse waarmee een density op runtime gekozen wordt (zie createProjectTypeScopedConfig).
 const densitySelectors = {
   default: ':root',
-  'default-fixed-space': '.dsn-density-fixed-space',
   'information-dense': '.dsn-density-dense',
 };
 

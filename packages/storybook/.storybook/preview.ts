@@ -70,11 +70,6 @@ const preview: Preview = {
         items: [
           { value: 'default', title: 'Default (Fluid)', icon: 'expand' },
           {
-            value: 'default-fixed-space',
-            title: 'Default (Fluid text, fixed space)',
-            icon: 'expandalt',
-          },
-          {
             value: 'information-dense',
             title: 'Information Dense (Fixed)',
             icon: 'collapse',

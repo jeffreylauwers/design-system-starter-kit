@@ -51,20 +51,18 @@ schaal (`dsn.viewport.min-inline-size` en `max-inline-size`). Fluid maten hangen
 daarnaast van het theme af, dus elke mode bestaat per theme (zie
 [DR-2026-14](../../docs/decisions/DR-2026-14-density-collection-draagt-de-theme-as.md)):
 
-| mode (Start)                         | viewport | `text/font-size/md` | `space/block/md` | `icon/size/md` |
-| ------------------------------------ | -------- | ------------------- | ---------------- | -------------- |
-| `start-default-vp-small`             | 360px    | 16px                | 8px              | 24px           |
-| `start-default-vp-large`             | 1440px   | 20px                | 10px             | 30px           |
-| `start-default-fixed-space-vp-small` | 360px    | 16px                | 8px              | 24px           |
-| `start-default-fixed-space-vp-large` | 1440px   | 20px                | 8px              | 30px           |
-| `start-information-dense`            | n.v.t.   | 16px                | 8px              | 24px           |
+| mode (Start)              | viewport | `text/font-size/md` | `space/block/md` | `icon/size/md` |
+| ------------------------- | -------- | ------------------- | ---------------- | -------------- |
+| `start-default-vp-small`  | 360px    | 16px                | 8px              | 24px           |
+| `start-default-vp-large`  | 1440px   | 20px                | 10px             | 30px           |
+| `start-information-dense` | n.v.t.   | 16px                | 8px              | 24px           |
 
-Wireframe heeft dezelfde vijf modes met `wireframe-` ervoor. Samen zijn dat 10
-modes, precies het maximum van Figma Professional. De build stopt met een
+Wireframe heeft dezelfde drie modes met `wireframe-` ervoor. Samen zijn dat 6
+modes; het maximum van Figma Professional is 10. De build stopt met een
 foutmelding zodra een collection er meer zou krijgen, of zodra een mode-naam
 langer wordt dan 40 tekens: dat weigert Figma. Daarom heten de viewports kort
 `vp-small` en `vp-large`; de langste naam,
-`wireframe-default-fixed-space-vp-large`, is 38 tekens.
+`wireframe-information-dense`, is 27 tekens.
 
 De twee viewports vallen precies op de grenzen van elke clamp, dus de modes
 bevatten exact de ontworpen min- en max-waarden. Een project-type dat niet
