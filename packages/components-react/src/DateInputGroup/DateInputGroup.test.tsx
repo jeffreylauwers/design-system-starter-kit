@@ -218,6 +218,51 @@ describe('DateInputGroup', () => {
     });
   });
 
+  describe('autoComplete', () => {
+    it('sets autocomplete="off" on all fields by default', () => {
+      render(<DateInputGroup id="datum" value={emptyValue} />);
+      for (const label of ['Dag', 'Maand', 'Jaar']) {
+        expect(screen.getByLabelText(label)).toHaveAttribute(
+          'autocomplete',
+          'off'
+        );
+      }
+    });
+
+    it('sets bday-day, bday-month and bday-year with autoComplete="bday"', () => {
+      render(
+        <DateInputGroup
+          id="geboortedatum"
+          value={emptyValue}
+          autoComplete="bday"
+        />
+      );
+      expect(screen.getByLabelText('Dag')).toHaveAttribute(
+        'autocomplete',
+        'bday-day'
+      );
+      expect(screen.getByLabelText('Maand')).toHaveAttribute(
+        'autocomplete',
+        'bday-month'
+      );
+      expect(screen.getByLabelText('Jaar')).toHaveAttribute(
+        'autocomplete',
+        'bday-year'
+      );
+    });
+
+    it('does not forward autoComplete to the wrapper', () => {
+      render(
+        <DateInputGroup
+          data-testid="group"
+          value={emptyValue}
+          autoComplete="bday"
+        />
+      );
+      expect(screen.getByTestId('group')).not.toHaveAttribute('autocomplete');
+    });
+  });
+
   describe('accessibility', () => {
     it('can have aria-describedby on the wrapper', () => {
       render(

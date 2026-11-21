@@ -218,6 +218,9 @@ function readOwnApi(name: string) {
       if (alias) return describeType(alias.node, alias.source);
       if (interfaces.has(ref)) return { type: 'object' };
     }
+    // Eén literal ('bday') is een lijst met één waarde.
+    const single = literal(node);
+    if (single !== undefined) return { values: [single] };
     if (ts.isUnionTypeNode(node)) {
       const values = node.types.map(literal);
       if (values.every((value) => value !== undefined)) {

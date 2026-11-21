@@ -28,6 +28,8 @@ Gebruik `FormFieldset` als wrapper voor een volledig formulierveld met legend, b
 - Gebruik altijd `<FormFieldset legend="...">` als wrapper: dit geeft de groep een naam voor screenreaders
 - Geef de `description` prop mee met een voorbeelddatum, bijv. `"Bijvoorbeeld: 15 3 1990"`
 - Geef de `id` prop mee zodat de labels correct gekoppeld zijn aan de inputs
+- Geef bij een geboortedatum van de gebruiker zelf `autoComplete="bday"` mee: de velden krijgen dan `autocomplete="bday-day"`, `"bday-month"` en `"bday-year"`, zodat de browser de datum kan invullen
+- Laat `autoComplete` weg bij elke andere datum (startdatum, datum van een gebeurtenis, geboortedatum van iemand anders): de velden krijgen dan `autocomplete="off"`
 - Geef bij een fout de `error` prop mee aan `FormFieldset`: de foutmelding verschijnt dan automatisch bóven de invoervelden
 
 ## Toegankelijkheid
@@ -36,6 +38,7 @@ Gebruik `FormFieldset` als wrapper voor een volledig formulierveld met legend, b
 - De `id` prop genereert automatisch `{id}-dag`, `{id}-maand` en `{id}-jaar` als input-id's
 - De `invalid` prop zet `aria-invalid="true"` op alle drie de inputs
 - `FormFieldset` genereert een ID voor de foutmelding en koppelt die via `aria-describedby` aan het `<fieldset>`, zodat een screenreader hem meeneemt bij de hele groep
+- Met `autoComplete="bday"` voldoet een geboortedatumveld aan WCAG 1.3.5 (Identify Input Purpose): de browser en hulpsoftware herkennen het doel van elk veld
 - De `legend` verbindt de drie velden semantisch voor screenreaders via het `<fieldset>` element
 
 ## Toestanden

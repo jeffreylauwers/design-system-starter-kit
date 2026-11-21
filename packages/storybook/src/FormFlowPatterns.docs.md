@@ -170,6 +170,68 @@ De breedte van een invulveld communiceert de verwachte invoerlengte. Beschikbare
 
 ---
 
+## Autocomplete
+
+Geef elk veld dat naar gegevens van de gebruiker zelf vraagt een `autocomplete`-attribuut. De browser of wachtwoordmanager kan het veld dan invullen, en hulpsoftware herkent het doel van het veld. Dit is een eis uit WCAG 1.3.5 (Identify Input Purpose, niveau AA).
+
+`EmailInput`, `TelephoneInput` en `PasswordInput` zetten zelf al een standaardwaarde (`email`, `tel`, `current-password`). Bij `TextInput` geef je de waarde altijd zelf mee: het component weet niet waar het veld voor is.
+
+### Waarden voor veelgebruikte velden
+
+| Veld                        | Waarde                                            |
+| --------------------------- | ------------------------------------------------- |
+| Naam (één veld)             | `name`                                            |
+| Voornaam                    | `given-name`                                      |
+| Achternaam                  | `family-name`                                     |
+| Straat                      | `address-line1`                                   |
+| Postcode                    | `postal-code`                                     |
+| Woonplaats                  | `address-level2`                                  |
+| Land                        | `country-name`                                    |
+| Geboortedatum (drie velden) | `DateInputGroup` met `autoComplete="bday"`        |
+| Geboortedatum (één veld)    | `bday`                                            |
+| E-mailadres                 | `email` (standaard in `EmailInput`)               |
+| Telefoonnummer              | `tel` (standaard in `TelephoneInput`)             |
+| Organisatie, bedrijfsnaam   | `organization`                                    |
+| Functie                     | `organization-title`                              |
+| Gebruikersnaam              | `username`                                        |
+| Wachtwoord bij inloggen     | `current-password` (standaard in `PasswordInput`) |
+| Nieuw wachtwoord            | `new-password` (via `passwordAutocomplete`)       |
+| Eenmalige code (sms, app)   | `one-time-code`                                   |
+
+### Velden zonder passende waarde
+
+Niet elk Nederlands veld heeft een eigen waarde in de HTML-standaard. Geef zo'n veld **geen** `autocomplete`, ook niet een waarde die er een beetje op lijkt. Een verkeerde hint is erger dan geen hint: de browser vult dan iets in wat er niet hoort.
+
+| Veld          | Waarom geen waarde                                                                                                        |
+| ------------- | ------------------------------------------------------------------------------------------------------------------------- |
+| Huisnummer    | Er is geen waarde voor alleen het huisnummer. `address-line2` is de tweede adresregel ("2e verdieping"), niet het nummer. |
+| Toevoeging    | Idem.                                                                                                                     |
+| Tussenvoegsel | `additional-name` is een tweede voornaam ("Anna **Maria** Jansen"), geen "van der".                                       |
+| BSN           | Er is geen waarde voor.                                                                                                   |
+| IBAN          | Er is geen waarde voor; de `cc-*` waarden zijn alleen voor creditcards.                                                   |
+
+Wil je dat de browser het hele adres in één keer invult, gebruik dan één veld "Straat en huisnummer" met `address-line1`. Houd je straat, huisnummer en toevoeging gescheiden, zoals in de templates, dan krijgen huisnummer en toevoeging geen `autocomplete`.
+
+### Gegevens over iemand anders
+
+WCAG 1.3.5 gaat over gegevens van de gebruiker zelf. Vraagt een stap naar gegevens van een ander (partner, kind, werkgever, contactpersoon), gebruik dan **niet** dezelfde persoonlijke waarden: de browser vult anders de gegevens van de gebruiker in. Laat `autocomplete` dan weg. Bij `DateInputGroup` betekent dat: geen `autoComplete="bday"`.
+
+### Wanneer `off`
+
+Zet `autocomplete="off"` alleen bij een goede reden, bijvoorbeeld een veld waar eerder ingevulde waarden niet relevant zijn (een bedrag, een aantal). `NumberInput` en `DateInputGroup` zonder `autoComplete` doen dit al standaard. Gebruik `off` nooit om autofill te blokkeren op velden met persoonsgegevens.
+
+```tsx
+{/* ✅ Gegevens van de gebruiker zelf */}
+<TextInput id="voornaam" autoComplete="given-name" />
+<NumberInput id="huisnummer" inlineSize="xs" />
+<DateInputGroup id="geboortedatum" autoComplete="bday" value={value} onChange={setValue} />
+
+{/* ❌ Verkeerde hint voor huisnummer */}
+<NumberInput id="huisnummer" inlineSize="xs" autoComplete="address-line2" />
+```
+
+---
+
 ## Bestanden uploaden
 
 Een uploadstap gebruikt altijd twee componenten. `FileInput` is het kiesmoment, `File` is de terugkoppeling daarna. `FileInput` alleen is niet genoeg: een native `<input type="file">` toont hooguit "3 bestanden gekozen" en zegt niets over wat er daarna met die bestanden gebeurt.

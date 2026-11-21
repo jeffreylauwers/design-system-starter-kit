@@ -30,15 +30,16 @@ const meta: Meta<typeof DateInputGroup> = {
           inlineSize: string,
           placeholder: string,
           min: number,
-          max: number
+          max: number,
+          part: string
         ) => `  <div class="dsn-date-input-group__field">
     <label class="dsn-date-input-group__label" for="${id}">${label}</label>
-    <input type="text" inputmode="numeric" pattern="[0-9]*" class="dsn-text-input dsn-text-input--inline-size-${inlineSize}" id="${id}" value="" placeholder="${placeholder}" min="${min}" max="${max}" autocomplete="off"${inputAttrs ? ' ' + inputAttrs : ''} />
+    <input type="text" inputmode="numeric" pattern="[0-9]*" class="dsn-text-input dsn-text-input--inline-size-${inlineSize}" id="${id}" value="" placeholder="${placeholder}" min="${min}" max="${max}" autocomplete="${args.autoComplete ? `${args.autoComplete}-${part}` : 'off'}"${inputAttrs ? ' ' + inputAttrs : ''} />
   </div>`;
         return `<div class="dsn-date-input-group">
-${field('datum-dag', 'Dag', 'xs', 'DD', 1, 31)}
-${field('datum-maand', 'Maand', 'xs', 'MM', 1, 12)}
-${field('datum-jaar', 'Jaar', 'sm', 'JJJJ', 1, 9999)}
+${field('datum-dag', 'Dag', 'xs', 'DD', 1, 31, 'day')}
+${field('datum-maand', 'Maand', 'xs', 'MM', 1, 12, 'month')}
+${field('datum-jaar', 'Jaar', 'sm', 'JJJJ', 1, 9999, 'year')}
 </div>`;
       },
     },
@@ -46,6 +47,12 @@ ${field('datum-jaar', 'Jaar', 'sm', 'JJJJ', 1, 9999)}
   argTypes: {
     invalid: { control: 'boolean' },
     disabled: { control: 'boolean' },
+    autoComplete: {
+      control: 'select',
+      options: [undefined, 'bday'],
+      description:
+        "'bday' voor een geboortedatum: de velden krijgen bday-day, bday-month en bday-year",
+    },
   },
   args: {
     invalid: false,
@@ -137,6 +144,7 @@ export const WithValue: Story = {
 
 export const WithFormFieldset: Story = {
   name: 'Within Form Fieldset',
+  args: { autoComplete: 'bday' },
   render: (args) => <WithFormFieldsetStory {...args} />,
 };
 
