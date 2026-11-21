@@ -205,26 +205,22 @@ Component CSS → Component Tokens → Semantic Tokens → Values
 
 Tokens are organized in a **three-axis configuration model** that enables flexible theming:
 
-| Axis             | Values                                                | Affects                                                  |
-| ---------------- | ----------------------------------------------------- | -------------------------------------------------------- |
-| **Theme**        | `start`, `wireframe`, ...                             | All tokens (typography, spacing, borders, focus, colors) |
-| **Mode**         | `light`, `dark`                                       | Only color tokens                                        |
-| **Project Type** | `default`, `default-fixed-space`, `information-dense` | Which scales are fluid: font sizes and spacing           |
+| Axis             | Values                         | Affects                                                  |
+| ---------------- | ------------------------------ | -------------------------------------------------------- |
+| **Theme**        | `start`, `wireframe`, ...      | All tokens (typography, spacing, borders, focus, colors) |
+| **Mode**         | `light`, `dark`                | Only color tokens                                        |
+| **Project Type** | `default`, `information-dense` | Which scales are fluid: font sizes and spacing           |
 
 This creates a matrix of configurations: **Theme × Mode × Project Type = 12 combinations**
 
 ```
 start-light-default
-start-light-default-fixed-space
 start-light-information-dense
 start-dark-default
-start-dark-default-fixed-space
 start-dark-information-dense
 wireframe-light-default
-wireframe-light-default-fixed-space
 wireframe-light-information-dense
 wireframe-dark-default
-wireframe-dark-default-fixed-space
 wireframe-dark-information-dense
 ```
 
@@ -232,7 +228,7 @@ wireframe-dark-information-dense
 
 - **Theme**: Defines the visual identity/branding. Different clients or products can have their own theme while sharing the same component library.
 - **Mode**: Light/dark color schemes. Users can switch modes without changing the theme.
-- **Project Type**: Density. `default` lets font sizes and spacing grow with the viewport (360px → 1440px), `default-fixed-space` only the font sizes, and `information-dense` (dashboards, data tables) keeps both fixed. The min and max values per size live in the theme; the project type only decides which sizes use them fluidly. See the fluid scale section in `02-design-tokens-reference.md`.
+- **Project Type**: Density. `default` lets font sizes and spacing grow with the viewport (360px → 1440px), and `information-dense` (dashboards, data tables) keeps both fixed. The min and max values per size live in the theme; the project type only decides which sizes use them fluidly. See the fluid scale section in `02-design-tokens-reference.md`.
 
 ### Token File Distribution
 
@@ -257,7 +253,7 @@ The build system generates all configurations automatically:
 // config.js
 const themes = ['start', 'wireframe'];
 const modes = ['light', 'dark'];
-const projectTypes = ['default', 'default-fixed-space', 'information-dense'];
+const projectTypes = ['default', 'information-dense'];
 
 // Generates 12 full configurations
 for (const theme of themes) {
@@ -386,12 +382,7 @@ A minimal theme for prototyping and development.
 3. Update `src/config/config.js`: add the name to `projectTypes`, its source files to `projectTypeSources` and a class to `densitySelectors`:
 
    ```js
-   const projectTypes = [
-     'default',
-     'default-fixed-space',
-     'information-dense',
-     'my-density',
-   ];
+   const projectTypes = ['default', 'information-dense', 'my-density'];
    ```
 
 4. Build.

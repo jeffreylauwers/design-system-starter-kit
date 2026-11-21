@@ -131,7 +131,7 @@ document.body.classList.toggle('dsn-mode-dark');
 
 The classes can be set on any container, not just `<body>`, which is what makes side-by-side theme previews possible. Import `css/scoped/start-light` as well if you nest a Start container inside a Wireframe one: without it, the Wireframe tokens are inherited and the nested container keeps the wrong colors.
 
-Density works the same way, with `dsn-density-default`, `dsn-density-fixed-space` and `dsn-density-dense`:
+Density works the same way, with `dsn-density-default` and `dsn-density-dense`:
 
 ```tsx
 import '@dsn-starter-kit/design-tokens/css/scoped/density-information-dense';

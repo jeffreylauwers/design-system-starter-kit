@@ -216,7 +216,7 @@ const variablesPayload = read(
 );
 
 // Een bestand van vóór #328: Density had modes zonder theme. Die moeten
-// hernoemd worden en niet blijven staan, anders telt de collection 15 modes
+// hernoemd worden en niet blijven staan, anders telt de collection 9 modes
 // en verliest elk frame waar een designer een mode op koos die keuze.
 const legacyDensity = figma.variables.createVariableCollection('dsn/Density');
 const legacyModeNames = Object.keys(
@@ -251,11 +251,11 @@ check(
 );
 
 const density = state.collections.find((c) => c.name === 'dsn/Density');
-// Per theme: default en default-fixed-space zijn fluid (een mode per
-// viewport), information-dense is vast (één mode). Twee themes maal vijf.
+// Per theme: default is fluid (een mode per viewport), information-dense is
+// vast (één mode). Twee themes maal drie.
 check(
-  'Density heeft 10 modes',
-  density && density.modes.length === 10,
+  'Density heeft 6 modes',
+  density && density.modes.length === 6,
   density ? density.modes.map((m) => m.name).join(', ') : 'ontbreekt'
 );
 
@@ -269,7 +269,7 @@ const keptIds = Object.entries(renamedModes).filter(
 );
 check(
   'oude Density-modes hernoemd met behoud van modeId',
-  legacyModeNames.length === 5 && keptIds.length === legacyModeNames.length,
+  legacyModeNames.length === 3 && keptIds.length === legacyModeNames.length,
   `${keptIds.length}/${legacyModeNames.length}`
 );
 

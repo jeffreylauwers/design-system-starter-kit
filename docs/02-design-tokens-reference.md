@@ -90,7 +90,6 @@ A project type decides per size whether it is fluid, with `fluid({min}, {max})`.
 | Density (project type) | Font sizes         | Spacing            |
 | ---------------------- | ------------------ | ------------------ |
 | `default`              | fluid              | fluid              |
-| `default-fixed-space`  | fluid              | fixed (min values) |
 | `information-dense`    | fixed (min values) | fixed (min values) |
 
 Not scaled on purpose: spacing sizes of 1px and 2px (min = max), the pointer target (3rem), borders and layout widths.
@@ -146,7 +145,7 @@ Not scaled on purpose: spacing sizes of 1px and 2px (min = max), the pointer tar
 
 ### Spacing Scale
 
-**Min values calculated from `space-base` (0.5rem = 8px); max = min × 1.25.** In the `default` density the value grows from min to max; in `default-fixed-space` and `information-dense` it stays at min. Tokens: `dsn.space.{block,inline,text,column,row}.{size}`, with `.min.{size}` and `.max.{size}` in the theme.
+**Min values calculated from `space-base` (0.5rem = 8px); max = min × 1.25.** In the `default` density the value grows from min to max; in `information-dense` it stays at min. Tokens: `dsn.space.{block,inline,text,column,row}.{size}`, with `.min.{size}` and `.max.{size}` in the theme.
 
 | Token | Multiplier | Min (360px) | Max (1440px) | Use Case            |
 | ----- | ---------- | ----------- | ------------ | ------------------- |

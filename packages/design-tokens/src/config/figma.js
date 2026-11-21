@@ -66,7 +66,6 @@ export const FIGMA_MODE_LIMIT = 10;
 /**
  * Maximale lengte van een mode-naam in Figma. Een langere naam weigert Figma
  * bij `addMode` en `renameMode`; de plugin meldt dat pas tijdens de import.
- * `wireframe-default-fixed-space-viewport-large` (44) liep hier tegenaan.
  */
 export const FIGMA_MODE_NAME_LIMIT = 40;
 
