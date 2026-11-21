@@ -40,6 +40,14 @@ export interface DateInputGroupProps extends Omit<
    * E.g. id="geboortedatum" → "geboortedatum-dag", "geboortedatum-maand", "geboortedatum-jaar"
    */
   id?: string;
+
+  /**
+   * Autocomplete hint for the three fields.
+   * - 'bday': for a birth date; the fields get autocomplete="bday-day", "bday-month" and "bday-year"
+   *   so the browser can fill in the user's own birth date (WCAG 1.3.5)
+   * - undefined: no autofill (autocomplete="off"), for any other date
+   */
+  autoComplete?: 'bday';
 }
 
 /**
@@ -66,6 +74,7 @@ export interface DateInputGroupProps extends Omit<
  *     id="geboortedatum"
  *     value={value}
  *     onChange={setValue}
+ *     autoComplete="bday"
  *   />
  * </FormFieldset>
  *
@@ -76,79 +85,99 @@ export interface DateInputGroupProps extends Omit<
 export const DateInputGroup = React.forwardRef<
   HTMLDivElement,
   DateInputGroupProps
->(({ className, value, onChange, invalid, disabled, id, ...props }, ref) => {
-  const classes = classNames('dsn-date-input-group', className);
+>(
+  (
+    {
+      className,
+      value,
+      onChange,
+      invalid,
+      disabled,
+      id,
+      autoComplete,
+      ...props
+    },
+    ref
+  ) => {
+    const classes = classNames('dsn-date-input-group', className);
 
-  const handleChange =
-    (field: keyof DateInputGroupValue) =>
-    (e: React.ChangeEvent<HTMLInputElement>) => {
-      onChange?.({
-        day: value?.day ?? '',
-        month: value?.month ?? '',
-        year: value?.year ?? '',
-        [field]: e.target.value,
-      });
-    };
+    const handleChange =
+      (field: keyof DateInputGroupValue) =>
+      (e: React.ChangeEvent<HTMLInputElement>) => {
+        onChange?.({
+          day: value?.day ?? '',
+          month: value?.month ?? '',
+          year: value?.year ?? '',
+          [field]: e.target.value,
+        });
+      };
 
-  const dayId = id ? `${id}-dag` : undefined;
-  const monthId = id ? `${id}-maand` : undefined;
-  const yearId = id ? `${id}-jaar` : undefined;
+    const dayId = id ? `${id}-dag` : undefined;
+    const monthId = id ? `${id}-maand` : undefined;
+    const yearId = id ? `${id}-jaar` : undefined;
 
-  return (
-    <div ref={ref} className={classes} {...props}>
-      <div className="dsn-date-input-group__field">
-        <label className="dsn-date-input-group__label" htmlFor={dayId}>
-          Dag
-        </label>
-        <NumberInput
-          id={dayId}
-          inlineSize="xs"
-          value={value?.day ?? ''}
-          onChange={handleChange('day')}
-          invalid={invalid}
-          aria-invalid={invalid || undefined}
-          disabled={disabled}
-          placeholder="DD"
-          min={1}
-          max={31}
-        />
+    const autoCompleteFor = (part: 'day' | 'month' | 'year') =>
+      autoComplete ? `${autoComplete}-${part}` : 'off';
+
+    return (
+      <div ref={ref} className={classes} {...props}>
+        <div className="dsn-date-input-group__field">
+          <label className="dsn-date-input-group__label" htmlFor={dayId}>
+            Dag
+          </label>
+          <NumberInput
+            id={dayId}
+            inlineSize="xs"
+            value={value?.day ?? ''}
+            onChange={handleChange('day')}
+            invalid={invalid}
+            aria-invalid={invalid || undefined}
+            disabled={disabled}
+            placeholder="DD"
+            autoComplete={autoCompleteFor('day')}
+            min={1}
+            max={31}
+          />
+        </div>
+        <div className="dsn-date-input-group__field">
+          <label className="dsn-date-input-group__label" htmlFor={monthId}>
+            Maand
+          </label>
+          <NumberInput
+            id={monthId}
+            inlineSize="xs"
+            value={value?.month ?? ''}
+            onChange={handleChange('month')}
+            invalid={invalid}
+            aria-invalid={invalid || undefined}
+            disabled={disabled}
+            placeholder="MM"
+            autoComplete={autoCompleteFor('month')}
+            min={1}
+            max={12}
+          />
+        </div>
+        <div className="dsn-date-input-group__field">
+          <label className="dsn-date-input-group__label" htmlFor={yearId}>
+            Jaar
+          </label>
+          <NumberInput
+            id={yearId}
+            inlineSize="sm"
+            value={value?.year ?? ''}
+            onChange={handleChange('year')}
+            invalid={invalid}
+            aria-invalid={invalid || undefined}
+            disabled={disabled}
+            placeholder="JJJJ"
+            autoComplete={autoCompleteFor('year')}
+            min={1}
+            max={9999}
+          />
+        </div>
       </div>
-      <div className="dsn-date-input-group__field">
-        <label className="dsn-date-input-group__label" htmlFor={monthId}>
-          Maand
-        </label>
-        <NumberInput
-          id={monthId}
-          inlineSize="xs"
-          value={value?.month ?? ''}
-          onChange={handleChange('month')}
-          invalid={invalid}
-          aria-invalid={invalid || undefined}
-          disabled={disabled}
-          placeholder="MM"
-          min={1}
-          max={12}
-        />
-      </div>
-      <div className="dsn-date-input-group__field">
-        <label className="dsn-date-input-group__label" htmlFor={yearId}>
-          Jaar
-        </label>
-        <NumberInput
-          id={yearId}
-          inlineSize="sm"
-          value={value?.year ?? ''}
-          onChange={handleChange('year')}
-          invalid={invalid}
-          aria-invalid={invalid || undefined}
-          disabled={disabled}
-          placeholder="JJJJ"
-          min={1}
-          max={9999}
-        />
-      </div>
-    </div>
-  );
-});
+    );
+  }
+);
 
 DateInputGroup.displayName = 'DateInputGroup';

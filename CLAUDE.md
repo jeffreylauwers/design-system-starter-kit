@@ -222,6 +222,22 @@ Content op een pagina zit altijd binnen `PageBody`, die automatisch `dsn-page-bo
 
 Content **binnen** een `BreakoutSection` of `Hero` (die uitbreken uit de inner wrapper) moet wél opnieuw geconstrained worden — gebruik dan `className="dsn-page-body__inner"`.
 
+### 10. Formuliervelden: `autocomplete` voor gegevens van de gebruiker zelf
+
+Elk veld dat naar gegevens van de gebruiker zelf vraagt (naam, adres, e-mail, telefoon, geboortedatum) krijgt een `autocomplete`-waarde (WCAG 1.3.5). Heeft een veld geen passende waarde in de HTML-standaard (huisnummer, toevoeging, tussenvoegsel, BSN, IBAN), laat het attribuut dan weg in plaats van een waarde te kiezen die er een beetje op lijkt.
+
+```tsx
+// ✅
+<TextInput id="postcode" inlineSize="xs" autoComplete="postal-code" />
+<NumberInput id="huisnummer" inlineSize="xs" />
+<DateInputGroup id="geboortedatum" autoComplete="bday" value={value} onChange={setValue} />
+
+// ❌ address-line2 is de tweede adresregel, niet het huisnummer
+<NumberInput id="huisnummer" inlineSize="xs" autoComplete="address-line2" />
+```
+
+Gaat een stap over iemand anders (partner, kind, contactpersoon), gebruik dan géén persoonlijke waarden. De volledige tabel staat in `docs/07-form-flow-patterns.md`, sectie "Autocomplete".
+
 ---
 
 ## Nieuw component bouwen: checklist

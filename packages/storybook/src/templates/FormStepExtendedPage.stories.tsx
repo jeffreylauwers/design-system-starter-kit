@@ -167,11 +167,7 @@ function ExtendedDetailsPage() {
                         htmlFor="tussenvoegsel"
                         labelSuffix="(niet verplicht)"
                       >
-                        <TextInput
-                          id="tussenvoegsel"
-                          inlineSize="sm"
-                          autoComplete="additional-name"
-                        />
+                        <TextInput id="tussenvoegsel" inlineSize="sm" />
                       </FormField>
 
                       <FormField label="Achternaam" htmlFor="achternaam">
@@ -187,11 +183,7 @@ function ExtendedDetailsPage() {
                       </FormField>
 
                       <FormField label="Huisnummer" htmlFor="huisnummer">
-                        <NumberInput
-                          id="huisnummer"
-                          inlineSize="xs"
-                          autoComplete="address-line2"
-                        />
+                        <NumberInput id="huisnummer" inlineSize="xs" />
                       </FormField>
 
                       <FormField
@@ -199,11 +191,7 @@ function ExtendedDetailsPage() {
                         htmlFor="toevoeging"
                         labelSuffix="(niet verplicht)"
                       >
-                        <TextInput
-                          id="toevoeging"
-                          inlineSize="xs"
-                          autoComplete="address-line2"
-                        />
+                        <TextInput id="toevoeging" inlineSize="xs" />
                       </FormField>
 
                       <FormField label="Postcode" htmlFor="postcode">
@@ -230,6 +218,7 @@ function ExtendedDetailsPage() {
                           id="geboortedatum"
                           value={geboortedatum}
                           onChange={setGeboortedatum}
+                          autoComplete="bday"
                         />
                       </FormFieldset>
 
@@ -372,7 +361,6 @@ function SingleErrorPage() {
                         <TextInput
                           id="single-error-tussenvoegsel"
                           inlineSize="sm"
-                          autoComplete="additional-name"
                         />
                       </FormField>
 
@@ -403,7 +391,6 @@ function SingleErrorPage() {
                         <NumberInput
                           id="single-error-huisnummer"
                           inlineSize="xs"
-                          autoComplete="address-line2"
                           defaultValue="99999"
                         />
                       </FormField>
@@ -416,7 +403,6 @@ function SingleErrorPage() {
                         <TextInput
                           id="single-error-toevoeging"
                           inlineSize="xs"
-                          autoComplete="address-line2"
                         />
                       </FormField>
 
@@ -452,6 +438,7 @@ function SingleErrorPage() {
                           id="single-error-geboortedatum"
                           value={geboortedatum}
                           onChange={setGeboortedatum}
+                          autoComplete="bday"
                         />
                       </FormFieldset>
 
@@ -610,7 +597,6 @@ function MultipleErrorsPage() {
                         <TextInput
                           id="multi-error-tussenvoegsel"
                           inlineSize="sm"
-                          autoComplete="additional-name"
                         />
                       </FormField>
 
@@ -641,7 +627,6 @@ function MultipleErrorsPage() {
                         <NumberInput
                           id="multi-error-huisnummer"
                           inlineSize="xs"
-                          autoComplete="address-line2"
                           defaultValue="99999"
                         />
                       </FormField>
@@ -654,7 +639,6 @@ function MultipleErrorsPage() {
                         <TextInput
                           id="multi-error-toevoeging"
                           inlineSize="xs"
-                          autoComplete="address-line2"
                         />
                       </FormField>
 
@@ -692,6 +676,7 @@ function MultipleErrorsPage() {
                           id="multi-error-geboortedatum"
                           value={geboortedatum}
                           onChange={setGeboortedatum}
+                          autoComplete="bday"
                         />
                       </FormFieldset>
 

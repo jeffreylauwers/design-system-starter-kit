@@ -224,6 +224,7 @@ function AllTypesPage() {
                           id="date-input-group"
                           value={geboortedatum}
                           onChange={setGeboortedatum}
+                          autoComplete="bday"
                         />
                       </FormFieldset>
 

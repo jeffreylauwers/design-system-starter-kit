@@ -10,6 +10,12 @@ All notable changes to this project are documented in this file.
 
 Nog niet gepubliceerde wijzigingen. Schrijf nieuwe changelog-entries hieronder; bij de volgende release wordt deze kop gepromoveerd naar het definitieve versienummer.
 
+### Formulieren: `autocomplete` vastgelegd en gecorrigeerd
+
+- **DateInputGroup:** nieuwe prop `autoComplete="bday"`. De drie velden krijgen dan `autocomplete="bday-day"`, `"bday-month"` en `"bday-year"`, zodat de browser een geboortedatum kan invullen (WCAG 1.3.5). Zonder de prop blijven de velden `autocomplete="off"`, zoals eerst.
+- **Templates:** de geboortedatum in `FormStepExtendedPage` en `FormStepAllTypesPage` gebruikt `autoComplete="bday"`. Huisnummer, Toevoeging en Tussenvoegsel hebben geen `autocomplete` meer: `address-line2` en `additional-name` betekenen iets anders (tweede adresregel, tweede voornaam).
+- **Docs:** nieuwe sectie "Autocomplete" in `docs/07-form-flow-patterns.md` met de waarden voor veelgebruikte Nederlandse velden, velden zonder passende waarde, gegevens over iemand anders en wanneer `off`.
+
 ### design-tokens: project type `default-fixed-space` verwijderd
 
 Er zijn nog twee project types (density): `default` (fluid tekst en ruimte) en `information-dense` (vaste tekst en ruimte).

@@ -4,7 +4,13 @@
   "category": "form-input",
   "purpose": "Three separate day/month/year NumberInput fields; more accessible than a native date picker.",
   "platforms": ["html-css", "react"],
-  "primaryProps": [],
+  "primaryProps": [
+    {
+      "name": "autoComplete",
+      "values": ["bday"],
+      "default": null
+    }
+  ],
   "api": {
     "props": [
       {
@@ -57,6 +63,17 @@
           {
             "kind": "none",
             "reason": "Koppelt de velden aan hun label in code, niet aan het uiterlijk."
+          }
+        ]
+      },
+      {
+        "name": "autoComplete",
+        "values": ["bday"],
+        "default": null,
+        "figma": [
+          {
+            "kind": "none",
+            "reason": "Hint voor browser-autofill, geen uiterlijk."
           }
         ]
       }
