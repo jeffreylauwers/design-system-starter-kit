@@ -10,8 +10,10 @@ interface Props {
   onIntensityChange: (value: number) => void;
   onFormatChange: (format: DisplayFormat) => void;
   onShowInverseChange: (show: boolean) => void;
-  onExportDtcg: () => void;
+  onExportColors: () => void;
+  onExportConfig: () => void;
   onExportGeneric: () => void;
+  onReset: () => void;
 }
 
 export function Toolbar({
@@ -23,8 +25,10 @@ export function Toolbar({
   onIntensityChange,
   onFormatChange,
   onShowInverseChange,
-  onExportDtcg,
+  onExportColors,
+  onExportConfig,
   onExportGeneric,
+  onReset,
 }: Props) {
   return (
     <div className="toolbar">
@@ -93,12 +97,11 @@ export function Toolbar({
       <div className="toolbar__group toolbar__group--export">
         <label className="toolbar__label">Exporteren</label>
         <div className="toolbar__export-btns">
-          <button
-            className="toolbar__export-btn"
-            onClick={onExportDtcg}
-            title="DTCG JSON formaat"
-          >
-            DTCG
+          <button className="toolbar__export-btn" onClick={onExportColors}>
+            colors-{mode}.json
+          </button>
+          <button className="toolbar__export-btn" onClick={onExportConfig}>
+            theme.config.json
           </button>
           <button
             className="toolbar__export-btn"
@@ -108,6 +111,13 @@ export function Toolbar({
             Generic
           </button>
         </div>
+      </div>
+
+      <div className="toolbar__group">
+        <label className="toolbar__label">Instellingen</label>
+        <button className="toolbar__toggle" onClick={onReset}>
+          Terug naar Start
+        </button>
       </div>
     </div>
   );

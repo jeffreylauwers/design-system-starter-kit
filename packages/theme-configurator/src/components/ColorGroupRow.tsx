@@ -1,18 +1,31 @@
 import { useState, useRef } from 'react';
 import { ColorSwatch } from './ColorSwatch';
-import { isValidColor } from '@dsn-starter-kit/theme-engine';
-import type { ColorGroup, DisplayFormat } from '../types';
+import {
+  isValidColor,
+  oklchToHex,
+  parseToOklch,
+} from '@dsn-starter-kit/theme-engine';
+import type { DisplayFormat } from '../types';
+import type { GroupView } from '../model/theme';
 import { TOKEN_STEPS, INVERSE_TOKEN_STEPS } from '../types';
 import './ColorGroupRow.css';
 
+/** The base color as #rrggbb, for the native color picker. */
+function pickerValue(color: string): string {
+  const oklch = parseToOklch(color);
+  return oklch ? oklchToHex(oklch) : '#000000';
+}
+
 interface Props {
-  group: ColorGroup;
+  group: GroupView;
   format: DisplayFormat;
   showInverse: boolean;
   onBaseColorChange: (id: string, color: string) => void;
-  onRename: (id: string, name: string) => void;
+  /** Returns why the name cannot be used, or null when it was renamed. */
+  onRename: (id: string, name: string) => string | null;
   onDelete: (id: string) => void;
-  canDelete: boolean;
+  /** A group of your own can be renamed and deleted; Start's groups not. */
+  canEdit: boolean;
 }
 
 export function ColorGroupRow({
@@ -22,13 +35,23 @@ export function ColorGroupRow({
   onBaseColorChange,
   onRename,
   onDelete,
-  canDelete,
+  canEdit,
 }: Props) {
   const [editing, setEditing] = useState(false);
   const [nameInput, setNameInput] = useState(group.name);
+  const [nameError, setNameError] = useState<string | null>(null);
   const [colorInput, setColorInput] = useState(group.baseColor);
   const [colorError, setColorError] = useState(false);
   const nameRef = useRef<HTMLInputElement>(null);
+
+  // Follow the base color when it changes elsewhere (back to Start, a
+  // reference that becomes its own color).
+  const [shownBase, setShownBase] = useState(group.baseColor);
+  if (group.baseColor !== shownBase) {
+    setShownBase(group.baseColor);
+    setColorInput(group.baseColor);
+    setColorError(false);
+  }
 
   function handleNameClick() {
     setEditing(true);
@@ -38,11 +61,9 @@ export function ColorGroupRow({
   function handleNameBlur() {
     setEditing(false);
     const trimmed = nameInput.trim();
-    if (trimmed) {
-      onRename(group.id, trimmed);
-    } else {
-      setNameInput(group.name);
-    }
+    const problem = trimmed ? onRename(group.id, trimmed) : null;
+    setNameError(problem);
+    if (!trimmed || problem) setNameInput(group.name);
   }
 
   function handleNameKeyDown(e: React.KeyboardEvent) {
@@ -84,7 +105,7 @@ export function ColorGroupRow({
               onBlur={handleNameBlur}
               onKeyDown={handleNameKeyDown}
             />
-          ) : (
+          ) : canEdit ? (
             <button
               className="color-group-row__name"
               onClick={handleNameClick}
@@ -92,6 +113,20 @@ export function ColorGroupRow({
             >
               {group.name}
             </button>
+          ) : (
+            <span className="color-group-row__name color-group-row__name--fixed">
+              {group.name}
+            </span>
+          )}
+          {group.aliasOf && (
+            <span className="color-group-row__alias">
+              Volgt {group.aliasOf}
+            </span>
+          )}
+          {nameError && (
+            <span className="color-group-row__name-error" role="alert">
+              {nameError}
+            </span>
           )}
         </div>
 
@@ -99,9 +134,7 @@ export function ColorGroupRow({
           <input
             type="color"
             className="color-group-row__color-picker"
-            value={
-              group.baseColor.startsWith('#') ? group.baseColor : '#000000'
-            }
+            value={pickerValue(group.baseColor)}
             onChange={handleColorPickerChange}
             title="Kies basiskleur"
           />
@@ -115,7 +148,7 @@ export function ColorGroupRow({
           />
         </div>
 
-        {canDelete && (
+        {canEdit && (
           <button
             className="color-group-row__delete"
             onClick={() => onDelete(group.id)}

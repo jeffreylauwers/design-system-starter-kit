@@ -1,5 +1,6 @@
 import { ColorGroupRow } from './ColorGroupRow';
-import type { ColorGroup, DisplayFormat } from '../types';
+import type { DisplayFormat } from '../types';
+import type { GroupView } from '../model/theme';
 import { TOKEN_STEPS, INVERSE_TOKEN_STEPS } from '../types';
 import './PaletteGrid.css';
 
@@ -37,11 +38,11 @@ const COLUMN_LABELS: Record<string, string> = {
 };
 
 interface Props {
-  groups: ColorGroup[];
+  groups: GroupView[];
   format: DisplayFormat;
   showInverse: boolean;
   onBaseColorChange: (id: string, color: string) => void;
-  onRename: (id: string, name: string) => void;
+  onRename: (id: string, name: string) => string | null;
   onDelete: (id: string) => void;
   onAddGroup: () => void;
 }
@@ -147,7 +148,7 @@ export function PaletteGrid({
             onBaseColorChange={onBaseColorChange}
             onRename={onRename}
             onDelete={onDelete}
-            canDelete={groups.length > 1}
+            canEdit={!group.standard}
           />
         ))}
 

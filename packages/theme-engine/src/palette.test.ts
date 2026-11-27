@@ -19,7 +19,7 @@ const MODES: ColorMode[] = ['light', 'dark'];
 const INTENSITIES = [0.3, 1, 2];
 
 /**
- * Basiskleuren: de standaardkleuren van de color palette generator, de basiskleuren
+ * Basiskleuren: de oude standaardkleuren van de theme configurator, de basiskleuren
  * waarmee Start benaderd wordt, en randgevallen (wit, zwart, heel licht,
  * heel donker, en verzadigde kleuren op allerlei tinten).
  */

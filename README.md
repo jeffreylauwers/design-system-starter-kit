@@ -20,7 +20,7 @@ Internal packages (not published to npm):
 - **[@dsn-starter-kit/figma-sync](./packages/figma-sync)** - Generates Figma node specs from the HTML/CSS layer
 - **[@dsn-starter-kit/figma-plugin](./packages/figma-plugin)** - Figma plugin that writes the generated variables and component specs into Figma
 - **[@dsn-starter-kit/theme-engine](./packages/theme-engine)** - The calculations behind the themes: OKLCH color groups with WCAG contrast rules, and generating a theme's color tokens from its `theme.config.json`
-- **[@dsn-starter-kit/color-palette-generator](./packages/color-palette-generator)** - Interactive OKLCH color palette generator for white-label themes
+- **[@dsn-starter-kit/theme-configurator](./packages/theme-configurator)** - Interactive theme configurator for white-label themes (formerly the color palette generator)
 
 ## Quick Start
 
@@ -456,7 +456,7 @@ Comprehensive documentation is available in the `/docs` folder:
 ## Tech Stack
 
 - **Library Bundler:** tsdown (rolldown + oxc) — ESM + CommonJS output for the published packages
-- **App Build Tool:** Vite (Storybook, color palette generator)
+- **App Build Tool:** Vite (Storybook, theme configurator)
 - **Token Processor:** Style Dictionary 4.4.0 (DTCG format)
 - **Web Components:** Vanilla TypeScript (Shadow DOM)
 - **React:** 18+

@@ -2,6 +2,11 @@ import StyleDictionary from 'style-dictionary';
 import fs from 'fs';
 import path from 'path';
 import { fileURLToPath } from 'url';
+import {
+  isFluidValue,
+  readFluidViewport as readFluidViewportFromBase,
+  resolveFluid,
+} from '@dsn-starter-kit/theme-engine';
 
 const packageRoot = path.join(
   path.dirname(fileURLToPath(import.meta.url)),
@@ -21,63 +26,13 @@ const packageRoot = path.join(
 // We rekenen dit tijdens de build uit en niet in de browser (zoals met de
 // tan(atan2())-truc kan): het resultaat is hetzelfde, maar een gewone clamp()
 // kan de Figma-export omrekenen naar vaste waarden per viewport.
-const FLUID_PATTERN = /^fluid\((.*)\)$/s;
-const ROOT_FONT_SIZE = 16;
+//
+// De berekening zelf staat in @dsn-starter-kit/theme-engine, zodat de theme
+// configurator in zijn preview precies dezelfde clamp() uitrekent.
 
 function isFluid(token) {
-  const original = token.original?.$value ?? token.original?.value;
-  return typeof original === 'string' && FLUID_PATTERN.test(original.trim());
+  return isFluidValue(token.original?.$value ?? token.original?.value);
 }
-
-// Splitst op komma's die niet binnen haakjes staan: `calc(a, b), c` -> 2 delen.
-function splitTopLevel(input) {
-  const parts = [];
-  let depth = 0;
-  let current = '';
-  for (const char of input) {
-    if (char === '(') depth++;
-    if (char === ')') depth--;
-    if (char === ',' && depth === 0) {
-      parts.push(current.trim());
-      current = '';
-    } else {
-      current += char;
-    }
-  }
-  parts.push(current.trim());
-  return parts;
-}
-
-// Rekent een waarde als `1rem`, `8px` of `calc(0.5rem * 1.5 * 1.25)` om naar
-// pixels. Meer dan vermenigvuldigen en delen is voor de schaal niet nodig.
-function toPx(value) {
-  const expression = String(value)
-    .trim()
-    .replace(/^calc\((.*)\)$/s, '$1');
-  const terms = expression.split(/\s*([*/])\s*/);
-  let result = null;
-  let unit = null;
-  for (let index = 0; index < terms.length; index += 2) {
-    const match = terms[index].match(/^(-?[\d.]+)(rem|px)?$/);
-    if (!match) {
-      throw new Error(`fluid(): kan "${value}" niet omrekenen naar px`);
-    }
-    let number = Number(match[1]);
-    if (match[2]) {
-      if (unit) throw new Error(`fluid(): "${value}" heeft twee eenheden`);
-      unit = match[2];
-      if (unit === 'rem') number *= ROOT_FONT_SIZE;
-    }
-    const operator = terms[index - 1];
-    if (result === null) result = number;
-    else if (operator === '*') result *= number;
-    else result /= number;
-  }
-  if (!unit) throw new Error(`fluid(): "${value}" heeft geen eenheid`);
-  return result;
-}
-
-const round = (number) => Number(number.toFixed(5));
 
 /**
  * Leest het viewport-bereik van de fluid schaal uit het thema.
@@ -85,15 +40,11 @@ const round = (number) => Number(number.toFixed(5));
  */
 function readFluidViewport(theme) {
   const file = path.join(packageRoot, `src/tokens/themes/${theme}/base.json`);
-  const viewport = JSON.parse(fs.readFileSync(file, 'utf8')).dsn.viewport;
-  const min = toPx(viewport['min-inline-size'].$value);
-  const max = toPx(viewport['max-inline-size'].$value);
-  if (!(max > min)) {
-    throw new Error(
-      `${theme}: dsn.viewport.max-inline-size moet groter zijn dan min-inline-size`
-    );
+  try {
+    return readFluidViewportFromBase(JSON.parse(fs.readFileSync(file, 'utf8')));
+  } catch (error) {
+    throw new Error(`${theme}: ${error.message}`);
   }
-  return { min, max };
 }
 
 StyleDictionary.registerTransform({
@@ -102,28 +53,15 @@ StyleDictionary.registerTransform({
   transitive: true,
   filter: isFluid,
   transform: (token, platform) => {
-    const value = String(token.$value ?? token.value).trim();
-    const [minValue, maxValue, ...rest] = splitTopLevel(
-      value.match(FLUID_PATTERN)[1]
-    );
-    if (!maxValue || rest.length) {
-      throw new Error(`${token.name}: fluid() verwacht precies twee waarden`);
-    }
     const viewport = platform.fluidViewport;
     if (!viewport) {
       throw new Error(`${token.name}: platform mist fluidViewport`);
     }
-
-    const min = toPx(minValue);
-    const max = toPx(maxValue);
-    // Gelijke min en max: niets om te schalen, de waarde blijft zoals hij is.
-    if (min === max) return minValue;
-
-    const slope = (max - min) / (viewport.max - viewport.min);
-    const intercept = min - slope * viewport.min;
-    const lower = Math.min(min, max) / ROOT_FONT_SIZE;
-    const upper = Math.max(min, max) / ROOT_FONT_SIZE;
-    return `clamp(${round(lower)}rem, ${round(intercept / ROOT_FONT_SIZE)}rem + ${round(slope * 100)}vw, ${round(upper)}rem)`;
+    try {
+      return resolveFluid(String(token.$value ?? token.value), viewport);
+    } catch (error) {
+      throw new Error(`${token.name}: ${error.message}`);
+    }
   },
 });
 

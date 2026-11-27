@@ -1,8 +1,8 @@
 {
-  "name": "@dsn-starter-kit/color-palette-generator",
+  "name": "@dsn-starter-kit/theme-configurator",
   "version": "6.0.0",
   "private": true,
-  "description": "Interactive OKLCH color palette generator for white-label themes",
+  "description": "Interactive theme configurator for white-label themes: set the semantic tokens and export a theme that fits the starter kit",
   "scripts": {
     "dev": "vite",
     "build": "tsc && vite build",
@@ -11,10 +11,10 @@
   },
   "keywords": [
     "design-system",
+    "theme",
+    "configurator",
     "color",
-    "oklch",
-    "palette",
-    "generator"
+    "oklch"
   ],
   "author": "Jeffrey Lauwers",
   "license": "MIT",
@@ -24,9 +24,11 @@
     "react-dom": "^19.3.1"
   },
   "devDependencies": {
+    "@types/node": "^24.19.2",
     "@types/react": "^19.3.0",
     "@types/react-dom": "^19.3.0",
     "@vitejs/plugin-react": "^6.2.1",
+    "style-dictionary": "^5.7.1",
     "typescript": "~6.0.3",
     "vite": "^8.3.5"
   }

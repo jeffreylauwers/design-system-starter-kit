@@ -5,7 +5,7 @@ export default defineConfig(({ mode }) => ({
   plugins: [react()],
   base:
     mode === 'production'
-      ? '/design-system-starter-kit/color-palette-generator/'
+      ? '/design-system-starter-kit/theme-configurator/'
       : '/',
   build: {
     outDir: 'dist',

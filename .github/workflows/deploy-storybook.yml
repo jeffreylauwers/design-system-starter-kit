@@ -1,4 +1,4 @@
-name: Deploy Storybook + Color Palette Generator to GitHub Pages
+name: Deploy Storybook + Theme Configurator to GitHub Pages
 
 on:
   push:
@@ -48,15 +48,18 @@ jobs:
       - name: Build Storybook for GitHub Pages
         run: pnpm --filter @dsn-starter-kit/storybook run build:gh-pages
 
-      - name: Build Color Palette Generator
-        run: pnpm --filter @dsn-starter-kit/color-palette-generator build
+      - name: Build Theme Configurator
+        run: pnpm --filter @dsn-starter-kit/theme-configurator build
 
       - name: Assemble Pages artifact
         run: |
           mkdir -p pages-artifact
           cp -r packages/storybook/dist/. pages-artifact/
+          mkdir -p pages-artifact/theme-configurator
+          cp -r packages/theme-configurator/dist/. pages-artifact/theme-configurator/
+          # De oude URL stuurt door naar de nieuwe.
           mkdir -p pages-artifact/color-palette-generator
-          cp -r packages/color-palette-generator/dist/. pages-artifact/color-palette-generator/
+          cp packages/theme-configurator/redirect/color-palette-generator.html pages-artifact/color-palette-generator/index.html
 
       - name: Setup Pages
         uses: actions/configure-pages@v6

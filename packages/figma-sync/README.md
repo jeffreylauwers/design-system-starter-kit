@@ -37,7 +37,7 @@ momenten gebruikt:
 
 Valt een kleur buiten sRGB, dan wordt de chroma teruggebracht tot hij past, bij
 gelijke lichtheid en tint. Dat is dezelfde keuze als de hex-voorvertoning in de
-color-palette-generator, dus Figma toont de kleur die de generator liet zien
+theme configurator, dus Figma toont de kleur die de configurator liet zien
 (bij kleuren op de rand van het gamut hooguit één stap van 1/255 verschil). Een
 browser op een scherm met een groter gamut (P3) kan zo'n kleur wél verzadigder
 tonen dan Figma.

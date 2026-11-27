@@ -125,7 +125,7 @@ Tokens zijn gelaagd: `base.json` (gedeelde primitieven) → component-token JSON
 Nieuwe code mag geen nieuwe fouten of warnings introduceren. Eén commando dekt alles:
 
 ```bash
-pnpm type-check    # core, components-react, components-web, theme-engine, color-palette-generator, storybook
+pnpm type-check    # core, components-react, components-web, theme-engine, theme-configurator, storybook
 ```
 
 Dit is `pnpm -r type-check`: elk package met een `type-check`-script draait zijn eigen `tsc --noEmit`. Draai altijd eerst `pnpm build`, zie "Kwaliteitscontrole voor PR".
