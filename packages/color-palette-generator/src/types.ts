@@ -1,85 +1,20 @@
-export type TokenStep =
-  | 'bg-document'
-  | 'bg-elevated'
-  | 'bg-subtle'
-  | 'bg-default'
-  | 'bg-hover'
-  | 'bg-active'
-  | 'border-subtle'
-  | 'border-default'
-  | 'border-hover'
-  | 'border-active'
-  | 'color-subtle'
-  | 'color-default'
-  | 'color-hover'
-  | 'color-active'
-  | 'color-document';
+import type { ColorGroup, ColorMode } from '@dsn-starter-kit/theme-engine';
 
-export type InverseTokenStep =
-  | 'inverse-bg-document'
-  | 'inverse-bg-elevated'
-  | 'inverse-bg-subtle'
-  | 'inverse-bg-default'
-  | 'inverse-bg-hover'
-  | 'inverse-bg-active'
-  | 'inverse-border-subtle'
-  | 'inverse-border-default'
-  | 'inverse-border-hover'
-  | 'inverse-border-active'
-  | 'inverse-color-subtle'
-  | 'inverse-color-default'
-  | 'inverse-color-hover'
-  | 'inverse-color-active'
-  | 'inverse-color-document';
-
-export const TOKEN_STEPS: TokenStep[] = [
-  'bg-document',
-  'bg-elevated',
-  'bg-subtle',
-  'bg-default',
-  'bg-hover',
-  'bg-active',
-  'border-subtle',
-  'border-default',
-  'border-hover',
-  'border-active',
-  'color-subtle',
-  'color-default',
-  'color-hover',
-  'color-active',
-  'color-document',
-];
-
-export const INVERSE_TOKEN_STEPS: InverseTokenStep[] = [
-  'inverse-bg-document',
-  'inverse-bg-elevated',
-  'inverse-bg-subtle',
-  'inverse-bg-default',
-  'inverse-bg-hover',
-  'inverse-bg-active',
-  'inverse-border-subtle',
-  'inverse-border-default',
-  'inverse-border-hover',
-  'inverse-border-active',
-  'inverse-color-subtle',
-  'inverse-color-default',
-  'inverse-color-hover',
-  'inverse-color-active',
-  'inverse-color-document',
-];
-
-export const DEFAULT_GROUP_NAMES = [
-  'neutral',
-  'accent-1',
-  'accent-2',
-  'accent-3',
-  'action-1',
-  'action-2',
-  'info',
-  'positive',
-  'negative',
-  'warning',
-] as const;
+export type {
+  TokenStep,
+  InverseTokenStep,
+  OklchColor,
+  SwatchData,
+  TokenMap,
+  InverseTokenMap,
+  ColorGroup,
+  ColorMode,
+} from '@dsn-starter-kit/theme-engine';
+export {
+  TOKEN_STEPS,
+  INVERSE_TOKEN_STEPS,
+  DEFAULT_GROUP_NAMES,
+} from '@dsn-starter-kit/theme-engine';
 
 export const DEFAULT_BASE_COLORS: Record<string, string> = {
   neutral: '#868686',
@@ -94,34 +29,6 @@ export const DEFAULT_BASE_COLORS: Record<string, string> = {
   warning: '#D97706',
 };
 
-export interface OklchColor {
-  mode: 'oklch';
-  l: number;
-  c: number;
-  h: number;
-}
-
-export interface SwatchData {
-  oklch: OklchColor;
-  hex: string;
-  contrastVsBgDefault?: number;
-  contrastRequired?: number;
-  contrastPass?: boolean;
-  isFallback?: boolean;
-}
-
-export type TokenMap = Record<TokenStep, SwatchData>;
-export type InverseTokenMap = Record<InverseTokenStep, SwatchData>;
-
-export interface ColorGroup {
-  id: string;
-  name: string;
-  baseColor: string;
-  tokens: TokenMap;
-  inverseTokens: InverseTokenMap;
-}
-
-export type ColorMode = 'light' | 'dark';
 export type DisplayFormat = 'oklch' | 'hex';
 
 export interface PaletteState {

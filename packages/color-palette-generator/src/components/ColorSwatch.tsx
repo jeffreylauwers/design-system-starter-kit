@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { formatColor } from '../engine/oklch';
+import { formatColor } from '@dsn-starter-kit/theme-engine';
 import type { SwatchData, DisplayFormat } from '../types';
 import './ColorSwatch.css';
 

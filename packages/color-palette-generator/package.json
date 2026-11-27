@@ -19,7 +19,7 @@
   "author": "Jeffrey Lauwers",
   "license": "MIT",
   "dependencies": {
-    "culori": "^4.0.2",
+    "@dsn-starter-kit/theme-engine": "workspace:*",
     "react": "^19.3.1",
     "react-dom": "^19.3.1"
   },

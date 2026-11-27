@@ -5,7 +5,7 @@ import {
   oklchToHex,
   contrastRatio,
   roundOklch,
-} from './oklch';
+} from './oklch.ts';
 import type {
   OklchColor,
   SwatchData,
@@ -14,7 +14,7 @@ import type {
   InverseTokenStep,
   ColorGroup,
   ColorMode,
-} from '../types';
+} from './types.ts';
 
 function swatch(
   oklch: OklchColor,

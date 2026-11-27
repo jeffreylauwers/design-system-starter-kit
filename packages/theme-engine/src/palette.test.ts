@@ -1,19 +1,10 @@
 import { describe, it, expect } from 'vitest';
-import { buildColorGroup } from '../packages/color-palette-generator/src/engine/palette';
-import {
-  parseToOklch,
-  oklchToHex,
-  oklchToCss,
-} from '../packages/color-palette-generator/src/engine/oklch';
-import { DEFAULT_BASE_COLORS } from '../packages/color-palette-generator/src/types';
-import type {
-  ColorGroup,
-  ColorMode,
-  OklchColor,
-} from '../packages/color-palette-generator/src/types';
+import { buildColorGroup } from './palette.ts';
+import { parseToOklch, oklchToHex, oklchToCss } from './oklch.ts';
+import type { ColorGroup, ColorMode, OklchColor } from './types.ts';
 
 /**
- * De contrastregels van de kleurengenerator. Elke regel wordt gecontroleerd
+ * De contrastregels van de kleurengroepen. Elke regel wordt gecontroleerd
  * op twee manieren: op de hex-waarde die de generator toont, en op de
  * `oklch()`-waarde zoals de export hem afrondt en in de token-JSON zet.
  */
@@ -22,12 +13,21 @@ const MODES: ColorMode[] = ['light', 'dark'];
 const INTENSITIES = [0.3, 1, 2];
 
 /**
- * Basiskleuren: de standaardkleuren van de generator, de basiskleuren
+ * Basiskleuren: de standaardkleuren van de color palette generator, de basiskleuren
  * waarmee Start benaderd wordt, en randgevallen (wit, zwart, heel licht,
  * heel donker, en verzadigde kleuren op allerlei tinten).
  */
 const BASE_COLORS = [
-  ...Object.values(DEFAULT_BASE_COLORS),
+  '#868686',
+  '#1B59A4',
+  '#7C3AED',
+  '#0891B2',
+  '#2563EB',
+  '#059669',
+  '#0284C7',
+  '#16A34A',
+  '#DC2626',
+  '#D97706',
   '#595959',
   '#0057b0',
   '#19923f',

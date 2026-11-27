@@ -6,11 +6,11 @@ import {
   clampChroma,
   wcagContrast,
 } from 'culori';
-import type { Color } from 'culori';
-import type { OklchColor } from '../types';
+import type { Oklch } from 'culori';
+import type { OklchColor } from './types.ts';
 
-function toColor(o: OklchColor): Color {
-  return o as unknown as Color;
+function toColor(o: OklchColor): Oklch {
+  return o;
 }
 
 const toOklch = converter('oklch');
@@ -63,9 +63,9 @@ export function clampToSRGB(color: OklchColor): OklchColor {
   const clamped = clampChroma(toColor(color), 'oklch');
   return {
     mode: 'oklch',
-    l: (clamped.l as number | undefined) ?? color.l,
-    c: (clamped.c as number | undefined) ?? color.c,
-    h: (clamped.h as number | undefined) ?? color.h,
+    l: clamped.l,
+    c: clamped.c,
+    h: clamped.h ?? color.h,
   };
 }
 
