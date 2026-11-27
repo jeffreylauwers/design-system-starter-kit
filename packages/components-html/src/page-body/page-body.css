@@ -56,7 +56,7 @@
   .dsn-sidebar-layout__sidebar {
     display: block;
     flex-shrink: 0;
-    inline-size: var(--dsn-sidebar-layout-sidebar-inline-size, 20rem);
+    inline-size: var(--dsn-sidebar-layout-sidebar-inline-size);
     padding-inline-end: var(--dsn-space-inline-2xl);
     padding-block: var(--dsn-space-block-3xl);
   }
@@ -91,7 +91,7 @@
   .dsn-sidebar-layout__toc {
     display: block;
     flex-shrink: 0;
-    inline-size: var(--dsn-sidebar-layout-toc-inline-size, 16rem);
+    inline-size: var(--dsn-sidebar-layout-toc-inline-size);
     padding-inline-start: var(--dsn-space-inline-2xl);
     padding-block: var(--dsn-space-block-3xl);
   }
