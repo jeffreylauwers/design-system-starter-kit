@@ -18,7 +18,7 @@ export interface FluidViewport {
   max: number;
 }
 
-export function isFluidValue(value: unknown): value is string {
+export function isFluidValue(value: unknown): boolean {
   return typeof value === 'string' && FLUID_PATTERN.test(value.trim());
 }
 
