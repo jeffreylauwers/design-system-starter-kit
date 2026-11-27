@@ -1,105 +1,111 @@
-import { useState, useCallback } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { PaletteGrid } from './components/PaletteGrid';
 import { Toolbar } from './components/Toolbar';
 import { DocumentationSection } from './components/DocumentationSection';
-import { parseToOklch, buildColorGroup } from '@dsn-starter-kit/theme-engine';
-import { exportDtcg, exportGeneric, downloadJson } from './engine/export';
-import type { ColorGroup, ColorMode, DisplayFormat } from './types';
-import { DEFAULT_GROUP_NAMES, DEFAULT_BASE_COLORS } from './types';
+import { isValidColor } from '@dsn-starter-kit/theme-engine';
+import { exportGeneric, downloadJson } from './engine/export';
+import {
+  defaultConfig,
+  exportTheme,
+  groupNameProblem,
+  groupViews,
+} from './model/theme';
+import type { ThemeConfig } from './model/theme';
+import { clearSession, loadSession, saveSession } from './model/storage';
+import type { ColorMode, DisplayFormat } from './types';
 import './App.css';
 
-let nextId = DEFAULT_GROUP_NAMES.length + 1;
+type Groups = ThemeConfig['colors']['groups'];
 
-function createDefaultGroups(mode: ColorMode, intensity: number): ColorGroup[] {
-  return DEFAULT_GROUP_NAMES.map((name) => {
-    const baseColor = DEFAULT_BASE_COLORS[name] ?? '#868686';
-    const oklch = parseToOklch(baseColor);
-    if (!oklch) throw new Error(`Invalid default color for ${name}`);
-    return buildColorGroup(name, name, baseColor, oklch, mode, intensity);
-  });
+function withGroups(config: ThemeConfig, groups: Groups): ThemeConfig {
+  return { ...config, colors: { ...config.colors, groups } };
+}
+
+/** A name for a new group that is not taken yet: color-1, color-2, … */
+function newGroupName(config: ThemeConfig): string {
+  for (let index = 1; ; index++) {
+    const name = `color-${index}`;
+    if (!(name in config.colors.groups)) return name;
+  }
 }
 
 export function App() {
-  const [mode, setMode] = useState<ColorMode>('light');
-  const [intensity, setIntensity] = useState(1);
-  const [format, setFormat] = useState<DisplayFormat>('hex');
-  const [showInverse, setShowInverse] = useState(false);
-  const [groups, setGroups] = useState<ColorGroup[]>(() =>
-    createDefaultGroups('light', 1)
+  // The last session, or Start. Read once, on the first render.
+  const [initial] = useState(loadSession);
+  const [config, setConfig] = useState<ThemeConfig>(
+    () => initial?.config ?? defaultConfig()
   );
+  const [mode, setMode] = useState<ColorMode>(initial?.mode ?? 'light');
+  const [format, setFormat] = useState<DisplayFormat>(initial?.format ?? 'hex');
+  const [showInverse, setShowInverse] = useState(initial?.showInverse ?? false);
 
-  function rebuildGroups(
-    current: ColorGroup[],
-    newMode: ColorMode,
-    newIntensity: number
-  ): ColorGroup[] {
-    return current.map((g) => {
-      const oklch = parseToOklch(g.baseColor);
-      if (!oklch) return g;
-      return buildColorGroup(
-        g.id,
-        g.name,
-        g.baseColor,
-        oklch,
-        newMode,
-        newIntensity
-      );
+  useEffect(() => {
+    saveSession({ version: 1, config, mode, format, showInverse });
+  }, [config, mode, format, showInverse]);
+
+  const groups = useMemo(() => groupViews(config, mode), [config, mode]);
+
+  function handleIntensityChange(intensity: number) {
+    setConfig((prev) => ({ ...prev, colors: { ...prev.colors, intensity } }));
+  }
+
+  // Changing the color of a group that refers to another one gives it its
+  // own base color: it no longer follows.
+  function handleBaseColorChange(name: string, color: string) {
+    if (!isValidColor(color)) return;
+    setConfig((prev) =>
+      withGroups(prev, { ...prev.colors.groups, [name]: { base: color } })
+    );
+  }
+
+  /** Renames a group of your own; returns why not, or null when it worked. */
+  function handleRename(name: string, newName: string): string | null {
+    if (newName === name) return null;
+    const problem = groupNameProblem(config, newName);
+    if (problem) return problem;
+    setConfig((prev) =>
+      withGroups(
+        prev,
+        Object.fromEntries(
+          Object.entries(prev.colors.groups).map(([key, group]) => [
+            key === name ? newName : key,
+            group,
+          ])
+        )
+      )
+    );
+    return null;
+  }
+
+  function handleDelete(name: string) {
+    setConfig((prev) => {
+      const groups = { ...prev.colors.groups };
+      delete groups[name];
+      return withGroups(prev, groups);
     });
   }
 
-  function handleModeChange(newMode: ColorMode) {
-    setMode(newMode);
-    setGroups((prev) => rebuildGroups(prev, newMode, intensity));
-  }
-
-  function handleIntensityChange(newIntensity: number) {
-    setIntensity(newIntensity);
-    setGroups((prev) => rebuildGroups(prev, mode, newIntensity));
-  }
-
-  const handleBaseColorChange = useCallback(
-    (id: string, color: string) => {
-      const oklch = parseToOklch(color);
-      if (!oklch) return;
-      setGroups((prev) =>
-        prev.map((g) =>
-          g.id === id
-            ? buildColorGroup(g.id, g.name, color, oklch, mode, intensity)
-            : g
-        )
-      );
-    },
-    [mode, intensity]
-  );
-
-  const handleRename = useCallback((id: string, name: string) => {
-    setGroups((prev) => prev.map((g) => (g.id === id ? { ...g, name } : g)));
-  }, []);
-
-  const handleDelete = useCallback((id: string) => {
-    setGroups((prev) => prev.filter((g) => g.id !== id));
-  }, []);
-
   function handleAddGroup() {
-    const id = `custom-${nextId++}`;
-    const baseColor = '#6366f1';
-    const oklch = parseToOklch(baseColor);
-    if (!oklch) return;
-    const group = buildColorGroup(
-      id,
-      `color-${nextId}`,
-      baseColor,
-      oklch,
-      mode,
-      intensity
+    setConfig((prev) =>
+      withGroups(prev, {
+        ...prev.colors.groups,
+        [newGroupName(prev)]: { base: '#6366f1' },
+      })
     );
-    setGroups((prev) => [...prev, group]);
   }
 
-  function handleExportDtcg() {
-    const filename =
-      mode === 'light' ? 'colors-light.json' : 'colors-dark.json';
-    downloadJson(exportDtcg(groups, format), filename);
+  function handleReset() {
+    clearSession();
+    setConfig(defaultConfig());
+  }
+
+  function handleExportColors() {
+    const file = mode === 'light' ? 'colors-light.json' : 'colors-dark.json';
+    downloadJson(exportTheme(config)[file], file);
+  }
+
+  function handleExportConfig() {
+    downloadJson(exportTheme(config)['theme.config.json'], 'theme.config.json');
   }
 
   function handleExportGeneric() {
@@ -114,7 +120,7 @@ export function App() {
           <p className="app__subtitle">
             Genereer een volledig semantisch OKLCH kleurenpalet op basis van een
             basiskleur per groep. Contrast wordt automatisch gecontroleerd
-            conform WCAG 2.x.
+            conform WCAG 2.x. Je begint bij het thema Start.
           </p>
         </div>
       </header>
@@ -122,15 +128,17 @@ export function App() {
       <main className="app__main">
         <Toolbar
           mode={mode}
-          intensity={intensity}
+          intensity={config.colors.intensity}
           format={format}
           showInverse={showInverse}
-          onModeChange={handleModeChange}
+          onModeChange={setMode}
           onIntensityChange={handleIntensityChange}
           onFormatChange={setFormat}
           onShowInverseChange={setShowInverse}
-          onExportDtcg={handleExportDtcg}
+          onExportColors={handleExportColors}
+          onExportConfig={handleExportConfig}
           onExportGeneric={handleExportGeneric}
+          onReset={handleReset}
         />
 
         <PaletteGrid

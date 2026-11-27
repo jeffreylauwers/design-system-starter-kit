@@ -38,6 +38,28 @@
   background: var(--bg-hover);
 }
 
+.color-group-row__name--fixed {
+  display: inline-block;
+  cursor: default;
+}
+
+.color-group-row__name--fixed:hover {
+  background: none;
+}
+
+.color-group-row__alias,
+.color-group-row__name-error {
+  display: block;
+  padding: 0 4px;
+  font-size: 11px;
+  color: var(--text-secondary);
+}
+
+.color-group-row__name-error {
+  color: var(--text-primary);
+  font-weight: 600;
+}
+
 .color-group-row__name-input {
   font-size: 13px;
   font-weight: 600;
