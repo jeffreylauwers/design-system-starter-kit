@@ -11,13 +11,12 @@
       "port": 6007
     },
     {
-      "name": "color-palette-generator",
+      "name": "theme-configurator",
       "runtimeExecutable": "pnpm",
       "runtimeArgs": [
         "--filter",
-        "@dsn-starter-kit/color-palette-generator",
+        "@dsn-starter-kit/theme-configurator",
         "dev",
-        "--",
         "--port",
         "5174"
       ],

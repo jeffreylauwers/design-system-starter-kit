@@ -29,8 +29,8 @@ describe('parseColor', () => {
   });
 
   // Verwachte waarden komen uit culori (`clampChroma` + `formatHex`), de
-  // bibliotheek waarmee de color-palette-generator zijn hex-waarden toont.
-  it('zet oklch om naar dezelfde sRGB-waarde als de palette generator', () => {
+  // bibliotheek waarmee de theme configurator zijn hex-waarden toont.
+  it('zet oklch om naar dezelfde sRGB-waarde als de theme configurator', () => {
     expect(toHex(parseColor('oklch(0.991 0 0)'))).toBe('#fcfcfc');
     expect(toHex(parseColor('oklch(0.463 0.132 255.3)'))).toBe('#1b58a0');
     expect(toHex(parseColor('oklch(0.62 0.19 28)'))).toBe('#e24a3f');

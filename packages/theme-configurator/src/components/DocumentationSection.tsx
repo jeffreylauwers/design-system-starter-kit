@@ -7,9 +7,9 @@ export function DocumentationSection() {
       <div className="doc-block">
         <h2 className="doc-block__title">Waarvoor dient deze tool?</h2>
         <p>
-          De DSN Color Palette Generator maakt een volledig semantisch
-          kleurenpalet op basis van één basiskleur per kleurgroep. Het resultaat
-          is direct bruikbaar als design-token JSON voor{' '}
+          De DSN Theme Configurator maakt een volledig semantisch kleurenpalet
+          op basis van één basiskleur per kleurgroep. Het resultaat is direct
+          bruikbaar als design-token JSON voor{' '}
           <a
             className="doc-link"
             href="https://styledictionary.com"
@@ -268,7 +268,7 @@ export function DocumentationSection() {
         </p>
         <a
           className="doc-feedback-btn"
-          href="https://github.com/jeffreylauwers/design-system-starter-kit/issues/new?labels=color-palette-generator&title=%5BColor+Palette+Generator%5D+"
+          href="https://github.com/jeffreylauwers/design-system-starter-kit/issues/new?labels=theme-configurator&title=%5BTheme+Configurator%5D+"
           target="_blank"
           rel="noopener noreferrer"
         >

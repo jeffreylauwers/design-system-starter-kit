@@ -110,7 +110,7 @@ export function App() {
     <div className={`app app--${mode}`}>
       <header className="app__header">
         <div className="app__header-inner">
-          <h1 className="app__title">DSN Color Palette Generator</h1>
+          <h1 className="app__title">DSN Theme Configurator</h1>
           <p className="app__subtitle">
             Genereer een volledig semantisch OKLCH kleurenpalet op basis van een
             basiskleur per groep. Contrast wordt automatisch gecontroleerd

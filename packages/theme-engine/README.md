@@ -5,7 +5,7 @@ The calculations behind the themes: color groups in OKLCH with WCAG 2 contrast r
 Private package. It is not published; it is used by:
 
 - `@dsn-starter-kit/design-tokens`: `generate:colors` writes `colors-light.json` and `colors-dark.json` of every theme that has a `theme.config.json`
-- `@dsn-starter-kit/color-palette-generator`: the interactive generator
+- `@dsn-starter-kit/theme-configurator`: the interactive configurator
 
 ## No build step
 

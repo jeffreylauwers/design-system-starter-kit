@@ -54,7 +54,7 @@ const inGamut = (channels) =>
  *
  * Valt de kleur buiten sRGB, dan wordt de chroma teruggebracht tot hij past,
  * bij gelijke lichtheid en tint. Dat is dezelfde keuze die de
- * color-palette-generator maakt voor zijn hex-voorvertoning (`clampChroma`),
+ * theme configurator maakt voor zijn hex-voorvertoning (`clampChroma`),
  * zodat Figma toont wat de generator liet zien. Kanalen los afkappen zou de
  * tint verschuiven.
  */

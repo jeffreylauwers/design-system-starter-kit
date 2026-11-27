@@ -1,6 +1,6 @@
-# Color Palette Generator
+# Theme Configurator
 
-Interactieve OKLCH kleurenpalet generator voor het Design System Starter Kit. Genereert een volledig semantisch kleurenpalet op basis van één basiskleur per kleurgroep.
+Interactieve theme configurator voor het Design System Starter Kit, de opvolger van de color palette generator. Nu stel je er de kleuren mee in: een volledig semantisch kleurenpalet op basis van één basiskleur per kleurgroep. Typografie, ruimte, hoekafronding en schaduw volgen (epic #520).
 
 ## Features
 
@@ -20,12 +20,14 @@ De rekenlogica (kleurgroepen en contrastregels) staat in [`@dsn-starter-kit/them
 ## Live
 
 De tool is beschikbaar op:
-**https://jeffreylauwers.github.io/design-system-starter-kit/color-palette-generator/**
+**https://jeffreylauwers.github.io/design-system-starter-kit/theme-configurator/**
+
+Het oude adres `/color-palette-generator/` stuurt door.
 
 ## Lokaal ontwikkelen
 
 ```bash
-pnpm --filter @dsn-starter-kit/color-palette-generator dev
+pnpm --filter @dsn-starter-kit/theme-configurator dev
 ```
 
 De tool is beschikbaar op `http://localhost:5173` (of `5174` als 5173 bezet is).
@@ -43,10 +45,10 @@ Na export doe je het volgende:
 ## Build
 
 ```bash
-pnpm --filter @dsn-starter-kit/color-palette-generator build
+pnpm --filter @dsn-starter-kit/theme-configurator build
 ```
 
-De output staat in `dist/` en wordt door de deploy-workflow meegenomen als `/color-palette-generator/` op GitHub Pages.
+De output staat in `dist/` en wordt door de deploy-workflow meegenomen als `/theme-configurator/` op GitHub Pages. Op `/color-palette-generator/` zet hij `redirect/color-palette-generator.html`, die doorstuurt naar het nieuwe adres.
 
 ## Token-structuur
 
