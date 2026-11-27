@@ -1745,6 +1745,13 @@
           "$description": "Kleur van de focusomtrek op een omgekeerd of sterk gekleurd vlak, tegenhanger van focus.outline-color. Moet een contrastverhouding van 3:1 of meer hebben met dat vlak."
         }
       }
+    },
+    "backdrop": {
+      "background-color": {
+        "$value": "{dsn.color.neutral-inverse.bg-document}",
+        "$type": "color",
+        "$description": "Achtergrondkleur van de laag die de pagina afdekt achter een modaal venster, ook in light mode donker."
+      }
     }
   }
 }
