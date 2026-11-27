@@ -292,6 +292,21 @@ This makes each token file readable top-to-bottom: first what a thing looks like
 
 ---
 
+### Changing Theme Colors
+
+The color groups of Start (`dsn.color.{group}` and `dsn.color.{group}-inverse` in `themes/start/colors-*.json`) are generated from `themes/start/theme.config.json` by `@dsn-starter-kit/theme-engine`. Do not edit their `$value` in the JSON: the next build overwrites it, and CI fails on a JSON that does not match the config.
+
+1. Change the base color or the reference of the group in `theme.config.json`
+2. Generate the JSON and commit both files:
+
+   ```bash
+   pnpm --filter @dsn-starter-kit/design-tokens generate:colors
+   ```
+
+3. Check the Chromatic diffs on the PR
+
+Descriptions and tokens outside the color groups (shadow, transparent, focus, form-control, heading, backdrop) you still edit in the JSON itself. How the engine derives a group is described under "Generated Color Groups" in the [design-tokens README](../packages/design-tokens/README.md).
+
 ### Adding New Semantic Tokens
 
 1. **Update appropriate JSON file** in `tokens/themes/{theme}/`

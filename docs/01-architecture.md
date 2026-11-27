@@ -55,13 +55,15 @@ design-system-starter-kit/
 │   │       │   ├── build.js     # Multi-config build script
 │   │       │   ├── build-figma.js # Schrijft dist/figma/variables.json
 │   │       │   ├── figma.js     # Token -> Figma variable conversie
+│   │       │   ├── generate-colors.js # Kleurgroepen uit theme.config.json
 │   │       │   └── config.js    # Configuration matrix
 │   │       └── tokens/
 │   │           ├── themes/
 │   │           │   ├── start/
 │   │           │   │   ├── base.json          # Typography, spacing, sizing, borders, focus
-│   │           │   │   ├── colors-light.json  # Light mode colors
-│   │           │   │   └── colors-dark.json   # Dark mode colors
+│   │           │   │   ├── theme.config.json  # Basiskleur per kleurgroep (bron)
+│   │           │   │   ├── colors-light.json  # Light mode colors (kleurgroepen gegenereerd)
+│   │           │   │   └── colors-dark.json   # Dark mode colors (kleurgroepen gegenereerd)
 │   │           │   └── wireframe/
 │   │           │       ├── base.json          # System fonts, minimal borders
 │   │           │       ├── colors-light.json  # Grayscale colors
@@ -128,6 +130,7 @@ design-system-starter-kit/
 │   │   └── src/                 # Volledige indeling: "Opbouw van de code" in de README
 │   │       ├── contract.js      # Wat de JSON betekent, gedeeld met de generators
 │   │       └── components.js    # Import van een component set (volgorde van de stappen)
+│   ├── theme-engine/            # Kleurgroepen in OKLCH + contrastregels (privé, geen build)
 │   └── storybook/               # Documentation site
 │       ├── .storybook/
 │       │   ├── main.ts          # Storybook config + multilevel-sort

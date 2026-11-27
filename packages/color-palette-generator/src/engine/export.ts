@@ -1,4 +1,4 @@
-import { oklchToCss } from './oklch';
+import { oklchToCss } from '@dsn-starter-kit/theme-engine';
 import type { ColorGroup } from '../types';
 import { TOKEN_STEPS, INVERSE_TOKEN_STEPS } from '../types';
 

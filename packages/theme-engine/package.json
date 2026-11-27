@@ -1,0 +1,28 @@
+{
+  "name": "@dsn-starter-kit/theme-engine",
+  "version": "6.0.0",
+  "private": true,
+  "description": "Rekenlogica achter de thema's: kleurgroepen in OKLCH met WCAG-contrastregels, en het genereren van token-JSON uit een themaconfig",
+  "type": "module",
+  "exports": {
+    ".": "./src/index.ts",
+    "./package.json": "./package.json"
+  },
+  "scripts": {
+    "type-check": "tsc --noEmit"
+  },
+  "keywords": [
+    "design-system",
+    "color",
+    "oklch",
+    "theme"
+  ],
+  "author": "Jeffrey Lauwers",
+  "license": "MIT",
+  "dependencies": {
+    "culori": "^4.0.2"
+  },
+  "devDependencies": {
+    "@types/culori": "^4.0.1"
+  }
+}

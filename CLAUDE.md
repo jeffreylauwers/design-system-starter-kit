@@ -112,6 +112,8 @@ Tokens zijn gelaagd: `base.json` (gedeelde primitieven) → component-token JSON
 // text-input.json blijft delegeren naar {dsn.form-control.padding-block-start}
 ```
 
+**Kleurgroepen van Start komen uit `themes/start/theme.config.json`.** De `$value` van `dsn.color.{groep}` en `dsn.color.{groep}-inverse` in `colors-light.json` en `colors-dark.json` wordt gegenereerd door `@dsn-starter-kit/theme-engine`. Pas de basiskleur of verwijzing in de config aan en draai `pnpm --filter @dsn-starter-kit/design-tokens generate:colors`; een handmatige wijziging in die groepen verdwijnt bij de volgende build, en CI faalt als de JSON achterloopt. `$description`, en tokens buiten de kleurgroepen (shadow, transparent, focus, form-control, heading, backdrop), bewerk je wel gewoon in de JSON.
+
 **Werkwijze bij een token-wijziging:**
 
 1. Zoek via `Grep` welk token de waarde _uiteindelijk_ definieert (vaak in `base.json` of een theme-bestand)
@@ -123,7 +125,7 @@ Tokens zijn gelaagd: `base.json` (gedeelde primitieven) → component-token JSON
 Nieuwe code mag geen nieuwe fouten of warnings introduceren. Eén commando dekt alles:
 
 ```bash
-pnpm type-check    # core, components-react, components-web, color-palette-generator, storybook
+pnpm type-check    # core, components-react, components-web, theme-engine, color-palette-generator, storybook
 ```
 
 Dit is `pnpm -r type-check`: elk package met een `type-check`-script draait zijn eigen `tsc --noEmit`. Draai altijd eerst `pnpm build`, zie "Kwaliteitscontrole voor PR".
@@ -274,7 +276,7 @@ packages/storybook/src/
 
 ```
 packages/design-tokens/src/tokens/components/{component-name}.json
-packages/design-tokens/src/tokens/themes/start/colors-light.json  (indien kleur-tokens)
+packages/design-tokens/src/tokens/themes/start/colors-light.json  (indien kleur-tokens buiten de kleurgroepen)
 packages/design-tokens/src/tokens/themes/start/colors-dark.json   (altijd simultaan)
 packages/design-tokens/src/tokens/themes/start/base.json          (indien structurele tokens)
 ```

@@ -1,6 +1,6 @@
 import { useState, useRef } from 'react';
 import { ColorSwatch } from './ColorSwatch';
-import { isValidColor } from '../engine/oklch';
+import { isValidColor } from '@dsn-starter-kit/theme-engine';
 import type { ColorGroup, DisplayFormat } from '../types';
 import { TOKEN_STEPS, INVERSE_TOKEN_STEPS } from '../types';
 import './ColorGroupRow.css';

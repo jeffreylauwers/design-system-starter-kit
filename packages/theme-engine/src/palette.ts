@@ -4,8 +4,8 @@ import {
   clampToSRGB,
   oklchToHex,
   contrastRatio,
-  roundOklch,
-} from './oklch';
+  meetsContrast,
+} from './oklch.ts';
 import type {
   OklchColor,
   SwatchData,
@@ -14,7 +14,7 @@ import type {
   InverseTokenStep,
   ColorGroup,
   ColorMode,
-} from '../types';
+} from './types.ts';
 
 function swatch(
   oklch: OklchColor,
@@ -71,11 +71,7 @@ export function inverseTextIsReadable(inverse: InverseTokenMap): boolean {
     INVERSE_BG_STEPS.every((bgStep) => {
       const text = inverse[textStep].oklch;
       const bg = inverse[bgStep].oklch;
-      return (
-        contrastRatio(text, bg) >= INVERSE_TEXT_MIN_CONTRAST &&
-        contrastRatio(roundOklch(text), roundOklch(bg)) >=
-          INVERSE_TEXT_MIN_CONTRAST
-      );
+      return meetsContrast(text, bg, INVERSE_TEXT_MIN_CONTRAST);
     })
   );
 }
@@ -99,6 +95,20 @@ function settleInverse(
     inverse = buildInverse(i * INVERSE_SHIFT_STEP);
   }
   return inverse;
+}
+
+/**
+ * color-subtle is a softer version of color-default. When the softer color
+ * does not reach 4.5:1 on bg-subtle, color-subtle falls back to color-default.
+ */
+export function subtleOrFallback(
+  candidate: OklchColor,
+  fallback: OklchColor,
+  bgSubtle: OklchColor
+): { color: OklchColor; isFallback: boolean } {
+  return meetsContrast(candidate, bgSubtle, 4.5)
+    ? { color: candidate, isFallback: false }
+    : { color: fallback, isFallback: true };
 }
 
 export function generatePalette(
@@ -153,16 +163,12 @@ function generateLightPalette(
   colorActive = adjustLForContrast(colorActive, bgActive, 4.5, 'darken');
 
   // color-subtle: try lightening color-default, fall back if fails
-  let colorSubtle = makeOklch(
-    colorDefault.l + 0.05,
-    C(colorDefault.c * 0.9),
-    H
-  );
-  let colorSubtleFallback = false;
-  if (contrastRatio(colorSubtle, bgSubtle) < 4.5) {
-    colorSubtle = colorDefault;
-    colorSubtleFallback = true;
-  }
+  const { color: colorSubtle, isFallback: colorSubtleFallback } =
+    subtleOrFallback(
+      makeOklch(colorDefault.l + 0.05, C(colorDefault.c * 0.9), H),
+      colorDefault,
+      bgSubtle
+    );
 
   // color-document: very dark tint
   let colorDocument = makeOklch(0.18, C(baseC * 0.6), H);
@@ -231,33 +237,33 @@ function generateLightPalette(
     // Inverse text: try bg-document value; fall back to white
     const bgDocumentAsText = clampToSRGB(bgDocument);
     let invColorDefault: OklchColor;
-    if (contrastRatio(bgDocumentAsText, invBgDefault) >= 4.5) {
+    if (meetsContrast(bgDocumentAsText, invBgDefault, 4.5)) {
       invColorDefault = bgDocumentAsText;
     } else {
       invColorDefault = makeOklch(0.99, 0, H);
     }
 
     let invColorHover: OklchColor;
-    if (contrastRatio(bgDocumentAsText, invBgHover) >= 4.5) {
+    if (meetsContrast(bgDocumentAsText, invBgHover, 4.5)) {
       invColorHover = bgDocumentAsText;
     } else {
       invColorHover = makeOklch(0.99, 0, H);
     }
 
     let invColorActive: OklchColor;
-    if (contrastRatio(bgDocumentAsText, invBgActive) >= 4.5) {
+    if (meetsContrast(bgDocumentAsText, invBgActive, 4.5)) {
       invColorActive = bgDocumentAsText;
     } else {
       invColorActive = makeOklch(0.99, 0, H);
     }
 
     let invColorSubtle = makeOklch(invColorDefault.l - 0.05, C(baseC * 0.4), H);
-    if (contrastRatio(invColorSubtle, invBgDocument) < 4.5) {
+    if (!meetsContrast(invColorSubtle, invBgDocument, 4.5)) {
       invColorSubtle = invColorDefault;
     }
 
     let invColorDocument: OklchColor;
-    if (contrastRatio(bgDocumentAsText, invBgDefault) >= 4.5) {
+    if (meetsContrast(bgDocumentAsText, invBgDefault, 4.5)) {
       invColorDocument = bgDocumentAsText;
     } else {
       invColorDocument = makeOklch(0.99, 0, H);
@@ -339,16 +345,12 @@ function generateDarkPalette(
   let colorActive = makeOklch(colorHover.l + 0.04, C(colorHover.c * 0.9), H);
   colorActive = adjustLForContrast(colorActive, bgActive, 4.5, 'lighten');
 
-  let colorSubtle = makeOklch(
-    colorDefault.l - 0.04,
-    C(colorDefault.c * 0.85),
-    H
-  );
-  let colorSubtleFallback = false;
-  if (contrastRatio(colorSubtle, bgSubtle) < 4.5) {
-    colorSubtle = colorDefault;
-    colorSubtleFallback = true;
-  }
+  const { color: colorSubtle, isFallback: colorSubtleFallback } =
+    subtleOrFallback(
+      makeOklch(colorDefault.l - 0.04, C(colorDefault.c * 0.85), H),
+      colorDefault,
+      bgSubtle
+    );
 
   let colorDocument = makeOklch(0.93, C(baseC * 0.15), H);
   colorDocument = adjustLForContrast(colorDocument, bgSubtle, 4.5, 'lighten');
@@ -405,7 +407,7 @@ function generateDarkPalette(
 
     // Inverse text on light inverse backgrounds: dark text
     let invColorDefault = makeOklch(bgDocument.l, bgDocument.c, H);
-    if (contrastRatio(invColorDefault, invBgDefault) < 4.5) {
+    if (!meetsContrast(invColorDefault, invBgDefault, 4.5)) {
       invColorDefault = makeOklch(0.15, C(baseC * 0.3), H);
       invColorDefault = adjustLForContrast(
         invColorDefault,
@@ -420,7 +422,7 @@ function generateDarkPalette(
       invColorDefault.c,
       H
     );
-    if (contrastRatio(invColorHover, invBgHover) < 4.5)
+    if (!meetsContrast(invColorHover, invBgHover, 4.5))
       invColorHover = invColorDefault;
 
     let invColorActive = makeOklch(
@@ -428,11 +430,11 @@ function generateDarkPalette(
       invColorDefault.c,
       H
     );
-    if (contrastRatio(invColorActive, invBgActive) < 4.5)
+    if (!meetsContrast(invColorActive, invBgActive, 4.5))
       invColorActive = invColorDefault;
 
     let invColorSubtle = makeOklch(invColorDefault.l + 0.05, C(baseC * 0.4), H);
-    if (contrastRatio(invColorSubtle, invBgDocument) < 4.5)
+    if (!meetsContrast(invColorSubtle, invBgDocument, 4.5))
       invColorSubtle = invColorDefault;
 
     const invColorDocument = invColorDefault;
