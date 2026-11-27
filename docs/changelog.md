@@ -10,6 +10,38 @@ All notable changes to this project are documented in this file.
 
 Nog niet gepubliceerde wijzigingen. Schrijf nieuwe changelog-entries hieronder; bij de volgende release wordt deze kop gepromoveerd naar het definitieve versienummer.
 
+### design-tokens: Start-kleuren komen uit de theme engine
+
+De kleurgroepen van Start worden niet meer met de hand bijgehouden. `themes/start/theme.config.json` legt per groep een basiskleur vast, of een verwijzing naar een andere groep, en `pnpm --filter @dsn-starter-kit/design-tokens generate:colors` schrijft daaruit `colors-light.json` en `colors-dark.json` (#521).
+
+- **Nieuw privé package `@dsn-starter-kit/theme-engine`:** de rekenlogica van de color palette generator (kleurgroepen in OKLCH met de WCAG-contrastregels), nu gedeeld door de generator en de token-build. Het package heeft geen build: Node, Vite en Vitest lezen de TypeScript-bron direct.
+- **Kleuren licht verschoven:** 126 van de 600 kleurwaarden veranderen, met een maximale afwijking van ΔEOK 0,043. Lichtheid en tint blijven vrijwel gelijk; vooral de chroma (verzadiging) verschuift, vooral in hover, active en subtle in dark mode. Volgens CSS Color 4 zie je een verschil pas vanaf ongeveer 0,02. Deze tokens gaan daaroverheen:
+
+| Mode  | Token                            | Was                        | Wordt                      | ΔEOK  |
+| ----- | -------------------------------- | -------------------------- | -------------------------- | ----- |
+| dark  | `accent-1-inverse.bg-active`     | `oklch(0.665 0.18 255.8)`  | `oklch(0.665 0.148 255.8)` | 0,032 |
+| dark  | `accent-1-inverse.bg-hover`      | `oklch(0.625 0.176 255.8)` | `oklch(0.625 0.148 255.8)` | 0,028 |
+| dark  | `accent-1.border-active`         | `oklch(0.6 0.203 255.8)`   | `oklch(0.6 0.164 255.8)`   | 0,039 |
+| dark  | `accent-1.border-hover`          | `oklch(0.56 0.19 255.8)`   | `oklch(0.56 0.164 255.8)`  | 0,026 |
+| dark  | `accent-1.color-subtle`          | `oklch(0.68 0.133 255.8)`  | `oklch(0.68 0.112 255.8)`  | 0,021 |
+| dark  | `negative-inverse.bg-hover`      | `oklch(0.645 0.241 29.2)`  | `oklch(0.645 0.217 29.2)`  | 0,024 |
+| dark  | `negative.color-subtle`          | `oklch(0.68 0.197 29.2)`   | `oklch(0.68 0.164 29.2)`   | 0,033 |
+| dark  | `positive-inverse.bg-active`     | `oklch(0.66 0.19 148.2)`   | `oklch(0.66 0.158 148.2)`  | 0,032 |
+| dark  | `positive.color-active`          | `oklch(0.8 0.145 148.2)`   | `oklch(0.8 0.102 148.2)`   | 0,043 |
+| dark  | `positive.color-hover`           | `oklch(0.76 0.135 148.2)`  | `oklch(0.76 0.114 148.2)`  | 0,021 |
+| dark  | `positive.color-subtle`          | `oklch(0.68 0.127 148.2)`  | `oklch(0.68 0.107 148.2)`  | 0,020 |
+| dark  | `warning.color-hover`            | `oklch(0.76 0.163 58.3)`   | `oklch(0.76 0.137 58.3)`   | 0,026 |
+| dark  | `warning.color-subtle`           | `oklch(0.68 0.154 58.3)`   | `oklch(0.68 0.129 58.3)`   | 0,025 |
+| light | `negative-inverse.border-subtle` | `oklch(0.674 0.159 29.2)`  | `oklch(0.675 0.133 29.2)`  | 0,026 |
+| light | `positive-inverse.border-active` | `oklch(0.831 0.123 148.2)` | `oklch(0.83 0.087 148.2)`  | 0,036 |
+| light | `warning-inverse.border-hover`   | `oklch(0.77 0.125 58.3)`   | `oklch(0.77 0.105 58.3)`   | 0,020 |
+| light | `warning-inverse.border-subtle`  | `oklch(0.64 0.125 58.3)`   | `oklch(0.64 0.105 58.3)`   | 0,020 |
+
+- **Info verwijst als hele groep naar accent-1:** ook `dsn.color.info-inverse.*` is nu een verwijzing naar `dsn.color.accent-1-inverse.*`. De oude eigen waarden lagen er al dicht bij; in dark mode verschuiven `info-inverse.bg-hover` en `bg-active` daardoor net als die van accent-1.
+- **Contrast ook na afronden:** de engine controleert elke contrastregel nu ook op de afgeronde `oklch()`-waarde die in de JSON terechtkomt. Eerst zakte `inverse-border-default` in een paar randgevallen naar 2,99:1. Voor Start verandert dit niets.
+- **CI:** de build faalt als `colors-*.json` niet overeenkomt met `theme.config.json`. Wijzig een kleur dus in de config, niet in de JSON; beschrijvingen en tokens buiten de kleurgroepen bewerk je wel in de JSON. Zie "Changing Theme Colors" in `docs/04-development-workflow.md`.
+- **Figma:** draai `pnpm build:figma` en importeer de variables opnieuw om de verschoven waarden over te nemen.
+
 ### Formulieren: `autocomplete` vastgelegd en gecorrigeerd
 
 - **DateInputGroup:** nieuwe prop `autoComplete="bday"`. De drie velden krijgen dan `autocomplete="bday-day"`, `"bday-month"` en `"bday-year"`, zodat de browser een geboortedatum kan invullen (WCAG 1.3.5). Zonder de prop blijven de velden `autocomplete="off"`, zoals eerst.

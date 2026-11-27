@@ -38,8 +38,9 @@ src/tokens/
 ├── themes/
 │   ├── start/                    # Default theme
 │   │   ├── base.json             # Typography, min/max font sizes and spacing, sizing, borders, focus
-│   │   ├── colors-light.json     # Light mode colors
-│   │   └── colors-dark.json      # Dark mode colors
+│   │   ├── theme.config.json     # Base color per color group, source of the color groups
+│   │   ├── colors-light.json     # Light mode colors (color groups generated)
+│   │   └── colors-dark.json      # Dark mode colors (color groups generated)
 │   └── wireframe/                # Wireframe/prototype theme
 │       ├── base.json             # System fonts, minimal borders
 │       ├── colors-light.json     # Grayscale palette
@@ -73,6 +74,38 @@ src/tokens/
   - Neutral, Accent 1-3, Action 1-2, Positive, Negative, Warning, Info
   - Each with: bg, border, color × document, subtle, default, hover, active
   - Plus inverse variants for dark backgrounds
+
+### Generated Color Groups (`themes/*/theme.config.json`)
+
+The color groups of Start are not written by hand. `theme.config.json` sets one base color per group, or a reference to another group, and [`@dsn-starter-kit/theme-engine`](../theme-engine) derives all 30 tokens per group and mode from it, with the WCAG contrast rules (text 4.5:1, borders 3:1, inverse text 4.5:1 on all six inverse backgrounds):
+
+```json
+{
+  "colors": {
+    "intensity": 1,
+    "groups": {
+      "neutral": { "base": "#595959" },
+      "accent-1": { "base": "oklch(0.468 0.164 255.8)" },
+      "accent-2": { "alias": "accent-1" },
+      "info": { "alias": "accent-1" }
+    }
+  }
+}
+```
+
+- `base` is any CSS color. Start uses `oklch()` for the colored groups: in hex the hue of the reds and oranges shifts noticeably
+- `alias` makes the group refer to another group token for token, inverse group included. In Start, accent-2, accent-3, action-1, action-2 and info refer to accent-1
+- `intensity` scales the chroma of every group
+
+To change a color, edit `theme.config.json` and run:
+
+```bash
+pnpm --filter @dsn-starter-kit/design-tokens generate:colors
+```
+
+The script only writes `$value` in `dsn.color.{group}` and `dsn.color.{group}-inverse`. `$type`, `$description`, the key order and every other token in `colors-*.json` (shadow, transparent, focus, form-control, heading, backdrop) stay as they are, so those you edit in the JSON itself. The build runs the script too; in CI it only checks (`validate:colors`) and fails when the JSON does not match the config. The generated JSON is checked in, so the published package does not depend on the engine.
+
+A theme without `theme.config.json`, such as Wireframe, keeps hand-written colors.
 
 ### In Project Type (`project-types/*/`)
 
@@ -208,7 +241,7 @@ For existing consumers, these aliases are maintained:
    const themes = ['start', 'wireframe', 'my-theme'];
    ```
 
-4. Customize the token values in your new theme files.
+4. Customize the token values in your new theme files. Keep `theme.config.json` to generate the color groups from base colors (see "Generated Color Groups"), or delete it to write them by hand.
 
 5. Build:
    ```bash

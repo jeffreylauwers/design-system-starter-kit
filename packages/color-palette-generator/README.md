@@ -15,6 +15,8 @@ Interactieve OKLCH kleurenpalet generator voor het Design System Starter Kit. Ge
 - **Custom kleurgroepen** — toevoegen, hernoemen, verwijderen
 - **Exporteren** in drie formaten: DTCG JSON, Tokens Studio JSON, Generieke JSON
 
+De rekenlogica (kleurgroepen en contrastregels) staat in [`@dsn-starter-kit/theme-engine`](../theme-engine). Daar komen ook de Start-kleuren vandaan.
+
 ## Live
 
 De tool is beschikbaar op:
