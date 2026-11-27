@@ -10,6 +10,11 @@ All notable changes to this project are documented in this file.
 
 Nog niet gepubliceerde wijzigingen. Schrijf nieuwe changelog-entries hieronder; bij de volgende release wordt deze kop gepromoveerd naar het definitieve versienummer.
 
+### design-tokens: Wireframe krijgt de kleur van de Backdrop
+
+- **Backdrop dimt nu ook in Wireframe:** `dsn.backdrop.background-color` stond alleen in Start. In de configs van Wireframe bestond `--dsn-backdrop-background-color` daardoor niet, en de Backdrop (`.dsn-backdrop`) was er transparant: hij vervaagde de pagina alleen. De token staat nu in `themes/wireframe/colors-light.json` en `colors-dark.json`, met dezelfde verwijzingen als Start: `neutral-inverse.bg-document` in light en `neutral.bg-document` in dark. In Wireframe is dat in beide modes zwart, op de dekking van `dsn.backdrop.opacity`.
+- **Nieuwe test `tests/theme-token-parity.test.ts`:** elk thema definieert in `colors-light.json`, `colors-dark.json` en `base.json` dezelfde tokens als Start, en light en dark van een thema hebben dezelfde tokens. Een token die in één thema ontbreekt, laat nu de tests falen in plaats van stil een lege custom property op te leveren.
+
 ### theme-configurator: de color palette generator heet nu theme configurator
 
 Het fundament voor de theme configurator (#522, onderdeel van #520).
