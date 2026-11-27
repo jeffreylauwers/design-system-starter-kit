@@ -177,6 +177,9 @@ importers:
 
   packages/design-tokens:
     devDependencies:
+      '@dsn-starter-kit/theme-engine':
+        specifier: workspace:*
+        version: link:../theme-engine
       style-dictionary:
         specifier: ^5.7.1
         version: 5.7.1

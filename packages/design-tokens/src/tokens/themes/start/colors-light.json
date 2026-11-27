@@ -100,7 +100,7 @@
           "$description": "Standaard achtergrondkleur in de primaire merkkleur voor getinte componenten die merkuitstraling geven zonder een actie of status aan te duiden, in standaardstatus."
         },
         "bg-hover": {
-          "$value": "oklch(0.895 0.029 255.8)",
+          "$value": "oklch(0.895 0.03 255.8)",
           "$type": "color",
           "$description": "Achtergrondkleur in de primaire merkkleur bij ‘hover’ status van getinte of transparante componenten die merkuitstraling geven zonder een actie of status aan te duiden."
         },
@@ -110,17 +110,17 @@
           "$description": "Achtergrondkleur in de primaire merkkleur bij ‘active’ of ‘selected’ status van getinte of transparante componenten die merkuitstraling geven zonder een actie of status aan te duiden."
         },
         "border-subtle": {
-          "$value": "oklch(0.77 0.073 255.8)",
+          "$value": "oklch(0.77 0.074 255.8)",
           "$type": "color",
           "$description": "Subtiele lijnkleur in de primaire merkkleur, niet voor acties of statussen, inzetbaar als er geen contrastverhouding van 3:1 vereist is."
         },
         "border-default": {
-          "$value": "oklch(0.52 0.163 255.8)",
+          "$value": "oklch(0.52 0.164 255.8)",
           "$type": "color",
           "$description": "Standaard lijnkleur in de primaire merkkleur, niet voor acties of statussen. Moet een contrastverhouding van 3:1 of meer hebben met accent-1.bg-default."
         },
         "border-hover": {
-          "$value": "oklch(0.48 0.162 255.8)",
+          "$value": "oklch(0.48 0.163 255.8)",
           "$type": "color",
           "$description": "Lijnkleur in de primaire merkkleur bij ‘hover’ status. Moet een contrastverhouding van 3:1 of meer hebben met accent-1.bg-hover."
         },
@@ -130,7 +130,7 @@
           "$description": "Lijnkleur in de primaire merkkleur bij ‘active’ of ‘selected’ status. Moet een contrastverhouding van 3:1 of meer hebben met accent-1.bg-active."
         },
         "color-default": {
-          "$value": "oklch(0.4 0.135 255.8)",
+          "$value": "oklch(0.4 0.136 255.8)",
           "$type": "color",
           "$description": "Standaard voorgrondkleur in de primaire merkkleur, niet voor acties of statussen. Moet een contrastverhouding van 4.5:1 of meer hebben met accent-1.bg-default."
         },
@@ -145,7 +145,7 @@
           "$description": "Voorgrondkleur in de primaire merkkleur bij ‘active’ of ‘selected’ status. Moet een contrastverhouding van 4.5:1 of meer hebben met accent-1.bg-active."
         },
         "color-subtle": {
-          "$value": "oklch(0.45 0.152 255.8)",
+          "$value": "oklch(0.45 0.148 255.8)",
           "$type": "color",
           "$description": "Alternatieve, subtielere voorgrondkleur in de primaire merkkleur ten opzichte van accent-1.color-document, voor secundaire tekst. Moet een contrastverhouding van 4.5:1 of meer hebben met accent-1.bg-subtle."
         },
@@ -644,12 +644,12 @@
           "$description": "Achtergrondkleur met succes-tint bij ‘hover’ status van getinte of transparante componenten die succes of een bevestiging aangeven."
         },
         "bg-active": {
-          "$value": "oklch(0.875 0.034 148.2)",
+          "$value": "oklch(0.875 0.035 148.2)",
           "$type": "color",
           "$description": "Achtergrondkleur met succes-tint bij ‘active’ of ‘selected’ status van getinte of transparante componenten die succes of een bevestiging aangeven."
         },
         "border-subtle": {
-          "$value": "oklch(0.77 0.07 148.2)",
+          "$value": "oklch(0.77 0.071 148.2)",
           "$type": "color",
           "$description": "Subtiele lijnkleur voor succes of een bevestiging, inzetbaar als er geen contrastverhouding van 3:1 vereist is."
         },
@@ -711,7 +711,7 @@
           "$description": "Alternatieve achtergrondkleur met waarschuwings-tint ten opzichte van warning.bg-document, die zich daar licht van onderscheidt."
         },
         "bg-default": {
-          "$value": "oklch(0.915 0.026 58.3)",
+          "$value": "oklch(0.915 0.027 58.3)",
           "$type": "color",
           "$description": "Standaard achtergrondkleur met waarschuwings-tint voor getinte componenten die een waarschuwing aangeven, in standaardstatus."
         },
@@ -726,7 +726,7 @@
           "$description": "Achtergrondkleur met waarschuwings-tint bij ‘active’ of ‘selected’ status van getinte of transparante componenten die een waarschuwing aangeven."
         },
         "border-subtle": {
-          "$value": "oklch(0.77 0.085 58.3)",
+          "$value": "oklch(0.77 0.086 58.3)",
           "$type": "color",
           "$description": "Subtiele lijnkleur voor een waarschuwing, inzetbaar als er geen contrastverhouding van 3:1 vereist is."
         },
@@ -850,52 +850,52 @@
       },
       "accent-1-inverse": {
         "bg-document": {
-          "$value": "oklch(0.427 0.098 255.8)",
+          "$value": "oklch(0.428 0.098 255.8)",
           "$type": "color",
           "$description": "Pagina-achtergrond in de sterke primaire merkkleur (donker in light mode, licht in dark mode), voor een sectie die sterk afsteekt."
         },
         "bg-elevated": {
-          "$value": "oklch(0.427 0.098 255.8)",
+          "$value": "oklch(0.428 0.098 255.8)",
           "$type": "color",
           "$description": "Achtergrondkleur voor zwevende lagen boven een vlak in de sterke primaire merkkleur."
         },
         "bg-subtle": {
-          "$value": "oklch(0.387 0.114 255.8)",
+          "$value": "oklch(0.388 0.115 255.8)",
           "$type": "color",
           "$description": "Alternatieve achtergrondkleur in de sterke primaire merkkleur ten opzichte van accent-1-inverse.bg-document, die zich daar licht van onderscheidt."
         },
         "bg-default": {
-          "$value": "oklch(0.467 0.158 255.8)",
+          "$value": "oklch(0.468 0.159 255.8)",
           "$type": "color",
           "$description": "Standaard achtergrondkleur in de sterke primaire merkkleur (donker in light mode, licht in dark mode) voor getinte componenten die merkuitstraling benadrukken zonder een actie of status aan te duiden, in standaardstatus."
         },
         "bg-hover": {
-          "$value": "oklch(0.427 0.145 255.8)",
+          "$value": "oklch(0.428 0.145 255.8)",
           "$type": "color",
           "$description": "Achtergrondkleur in de sterke primaire merkkleur bij ‘hover’ status van getinte of transparante componenten die merkuitstraling benadrukken zonder een actie of status aan te duiden."
         },
         "bg-active": {
-          "$value": "oklch(0.387 0.131 255.8)",
+          "$value": "oklch(0.388 0.131 255.8)",
           "$type": "color",
           "$description": "Achtergrondkleur in de sterke primaire merkkleur bij ‘active’ of ‘selected’ status van getinte of transparante componenten die merkuitstraling benadrukken zonder een actie of status aan te duiden."
         },
         "border-subtle": {
-          "$value": "oklch(0.657 0.108 255.8)",
+          "$value": "oklch(0.658 0.09 255.8)",
           "$type": "color",
           "$description": "Subtiele lijnkleur op een vlak in de sterke primaire merkkleur, inzetbaar als er geen contrastverhouding van 3:1 vereist is."
         },
         "border-default": {
-          "$value": "oklch(0.737 0.09 255.8)",
+          "$value": "oklch(0.738 0.09 255.8)",
           "$type": "color",
           "$description": "Standaard lijnkleur op een vlak in de sterke primaire merkkleur. Moet een contrastverhouding van 3:1 of meer hebben met accent-1-inverse.bg-default."
         },
         "border-hover": {
-          "$value": "oklch(0.787 0.108 255.8)",
+          "$value": "oklch(0.788 0.09 255.8)",
           "$type": "color",
           "$description": "Lijnkleur op een vlak in de sterke primaire merkkleur bij ‘hover’ status. Moet een contrastverhouding van 3:1 of meer hebben met accent-1-inverse.bg-hover."
         },
         "border-active": {
-          "$value": "oklch(0.837 0.082 255.8)",
+          "$value": "oklch(0.838 0.082 255.8)",
           "$type": "color",
           "$description": "Lijnkleur op een vlak in de sterke primaire merkkleur bij ‘active’ of ‘selected’ status. Moet een contrastverhouding van 3:1 of meer hebben met accent-1-inverse.bg-active."
         },
@@ -1235,129 +1235,129 @@
       },
       "info-inverse": {
         "bg-document": {
-          "$value": "oklch(0.427 0.098 255.8)",
+          "$value": "{dsn.color.accent-1-inverse.bg-document}",
           "$type": "color",
           "$description": "Pagina-achtergrond met sterke info-tint (donker in light mode, licht in dark mode), voor een sectie die sterk afsteekt."
         },
         "bg-elevated": {
-          "$value": "oklch(0.427 0.098 255.8)",
+          "$value": "{dsn.color.accent-1-inverse.bg-elevated}",
           "$type": "color",
           "$description": "Achtergrondkleur voor zwevende lagen boven een vlak met sterke info-tint."
         },
         "bg-subtle": {
-          "$value": "oklch(0.387 0.114 255.8)",
+          "$value": "{dsn.color.accent-1-inverse.bg-subtle}",
           "$type": "color",
           "$description": "Alternatieve achtergrondkleur met sterke info-tint ten opzichte van info-inverse.bg-document, die zich daar licht van onderscheidt."
         },
         "bg-default": {
-          "$value": "oklch(0.467 0.158 255.8)",
+          "$value": "{dsn.color.accent-1-inverse.bg-default}",
           "$type": "color",
           "$description": "Standaard achtergrondkleur met sterke info-tint (donker in light mode, licht in dark mode) voor getinte componenten die informatie benadrukken, in standaardstatus."
         },
         "bg-hover": {
-          "$value": "oklch(0.427 0.145 255.8)",
+          "$value": "{dsn.color.accent-1-inverse.bg-hover}",
           "$type": "color",
           "$description": "Achtergrondkleur met sterke info-tint bij ‘hover’ status van getinte of transparante componenten die informatie benadrukken."
         },
         "bg-active": {
-          "$value": "oklch(0.387 0.131 255.8)",
+          "$value": "{dsn.color.accent-1-inverse.bg-active}",
           "$type": "color",
           "$description": "Achtergrondkleur met sterke info-tint bij ‘active’ of ‘selected’ status van getinte of transparante componenten die informatie benadrukken."
         },
         "border-subtle": {
-          "$value": "oklch(0.657 0.108 255.8)",
+          "$value": "{dsn.color.accent-1-inverse.border-subtle}",
           "$type": "color",
           "$description": "Subtiele lijnkleur op een vlak met sterke info-tint, inzetbaar als er geen contrastverhouding van 3:1 vereist is."
         },
         "border-default": {
-          "$value": "oklch(0.737 0.09 255.8)",
+          "$value": "{dsn.color.accent-1-inverse.border-default}",
           "$type": "color",
           "$description": "Standaard lijnkleur op een vlak met sterke info-tint. Moet een contrastverhouding van 3:1 of meer hebben met info-inverse.bg-default."
         },
         "border-hover": {
-          "$value": "oklch(0.787 0.108 255.8)",
+          "$value": "{dsn.color.accent-1-inverse.border-hover}",
           "$type": "color",
           "$description": "Lijnkleur op een vlak met sterke info-tint bij ‘hover’ status. Moet een contrastverhouding van 3:1 of meer hebben met info-inverse.bg-hover."
         },
         "border-active": {
-          "$value": "oklch(0.837 0.082 255.8)",
+          "$value": "{dsn.color.accent-1-inverse.border-active}",
           "$type": "color",
           "$description": "Lijnkleur op een vlak met sterke info-tint bij ‘active’ of ‘selected’ status. Moet een contrastverhouding van 3:1 of meer hebben met info-inverse.bg-active."
         },
         "color-default": {
-          "$value": "oklch(0.99 0.005 255.8)",
+          "$value": "{dsn.color.accent-1-inverse.color-default}",
           "$type": "color",
           "$description": "Standaard voorgrondkleur op een vlak met sterke info-tint. Moet een contrastverhouding van 4.5:1 of meer hebben met info-inverse.bg-default."
         },
         "color-hover": {
-          "$value": "oklch(0.99 0.005 255.8)",
+          "$value": "{dsn.color.accent-1-inverse.color-hover}",
           "$type": "color",
           "$description": "Voorgrondkleur op een vlak met sterke info-tint bij ‘hover’ status. Moet een contrastverhouding van 4.5:1 of meer hebben met info-inverse.bg-hover."
         },
         "color-active": {
-          "$value": "oklch(0.99 0.005 255.8)",
+          "$value": "{dsn.color.accent-1-inverse.color-active}",
           "$type": "color",
           "$description": "Voorgrondkleur op een vlak met sterke info-tint bij ‘active’ of ‘selected’ status. Moet een contrastverhouding van 4.5:1 of meer hebben met info-inverse.bg-active."
         },
         "color-subtle": {
-          "$value": "oklch(0.94 0.029 255.8)",
+          "$value": "{dsn.color.accent-1-inverse.color-subtle}",
           "$type": "color",
           "$description": "Alternatieve, subtielere voorgrondkleur op een vlak met sterke info-tint ten opzichte van info-inverse.color-document, voor secundaire tekst. Moet een contrastverhouding van 4.5:1 of meer hebben met info-inverse.bg-document."
         },
         "color-document": {
-          "$value": "oklch(0.99 0.005 255.8)",
+          "$value": "{dsn.color.accent-1-inverse.color-document}",
           "$type": "color",
           "$description": "Algemene voorgrondkleur op een vlak met sterke info-tint, de standaardkeuze voor lopende tekst. Moet een contrastverhouding van 4.5:1 of meer hebben met info-inverse.bg-default."
         }
       },
       "negative-inverse": {
         "bg-document": {
-          "$value": "oklch(0.449 0.145 29.2)",
+          "$value": "oklch(0.45 0.145 29.2)",
           "$type": "color",
           "$description": "Pagina-achtergrond met sterke fout-tint (donker in light mode, licht in dark mode), voor een sectie die een fout nadrukkelijk toont."
         },
         "bg-elevated": {
-          "$value": "oklch(0.449 0.145 29.2)",
+          "$value": "oklch(0.45 0.145 29.2)",
           "$type": "color",
           "$description": "Achtergrondkleur voor zwevende lagen boven een vlak met sterke fout-tint."
         },
         "bg-subtle": {
-          "$value": "oklch(0.409 0.168 29.2)",
+          "$value": "oklch(0.41 0.168 29.2)",
           "$type": "color",
           "$description": "Alternatieve achtergrondkleur met sterke fout-tint ten opzichte van negative-inverse.bg-document, die zich daar licht van onderscheidt."
         },
         "bg-default": {
-          "$value": "oklch(0.489 0.201 29.2)",
+          "$value": "oklch(0.49 0.201 29.2)",
           "$type": "color",
           "$description": "Standaard achtergrondkleur met sterke fout-tint (donker in light mode, licht in dark mode) voor getinte componenten die een fout of destructieve actie benadrukken, in standaardstatus."
         },
         "bg-hover": {
-          "$value": "oklch(0.449 0.184 29.2)",
+          "$value": "oklch(0.45 0.185 29.2)",
           "$type": "color",
           "$description": "Achtergrondkleur met sterke fout-tint bij ‘hover’ status van getinte of transparante componenten die een fout of destructieve actie benadrukken."
         },
         "bg-active": {
-          "$value": "oklch(0.409 0.168 29.2)",
+          "$value": "oklch(0.41 0.168 29.2)",
           "$type": "color",
           "$description": "Achtergrondkleur met sterke fout-tint bij ‘active’ of ‘selected’ status van getinte of transparante componenten die een fout of destructieve actie benadrukken."
         },
         "border-subtle": {
-          "$value": "oklch(0.674 0.159 29.2)",
+          "$value": "oklch(0.675 0.133 29.2)",
           "$type": "color",
           "$description": "Subtiele lijnkleur op een vlak met sterke fout-tint, inzetbaar als er geen contrastverhouding van 3:1 vereist is."
         },
         "border-default": {
-          "$value": "oklch(0.754 0.133 29.2)",
+          "$value": "oklch(0.755 0.133 29.2)",
           "$type": "color",
           "$description": "Standaard lijnkleur op een vlak met sterke fout-tint. Moet een contrastverhouding van 3:1 of meer hebben met negative-inverse.bg-default."
         },
         "border-hover": {
-          "$value": "oklch(0.804 0.112 29.2)",
+          "$value": "oklch(0.805 0.111 29.2)",
           "$type": "color",
           "$description": "Lijnkleur op een vlak met sterke fout-tint bij ‘hover’ status. Moet een contrastverhouding van 3:1 of meer hebben met negative-inverse.bg-hover."
         },
         "border-active": {
-          "$value": "oklch(0.854 0.079 29.2)",
+          "$value": "oklch(0.855 0.079 29.2)",
           "$type": "color",
           "$description": "Lijnkleur op een vlak met sterke fout-tint bij ‘active’ of ‘selected’ status. Moet een contrastverhouding van 3:1 of meer hebben met negative-inverse.bg-active."
         },
@@ -1389,52 +1389,52 @@
       },
       "positive-inverse": {
         "bg-document": {
-          "$value": "oklch(0.411 0.094 148.2)",
+          "$value": "oklch(0.41 0.095 148.2)",
           "$type": "color",
           "$description": "Pagina-achtergrond met sterke succes-tint (donker in light mode, licht in dark mode), voor een sectie die sterk afsteekt."
         },
         "bg-elevated": {
-          "$value": "oklch(0.411 0.094 148.2)",
+          "$value": "oklch(0.41 0.095 148.2)",
           "$type": "color",
           "$description": "Achtergrondkleur voor zwevende lagen boven een vlak met sterke succes-tint."
         },
         "bg-subtle": {
-          "$value": "oklch(0.371 0.107 148.2)",
+          "$value": "oklch(0.37 0.107 148.2)",
           "$type": "color",
           "$description": "Alternatieve achtergrondkleur met sterke succes-tint ten opzichte van positive-inverse.bg-document, die zich daar licht van onderscheidt."
         },
         "bg-default": {
-          "$value": "oklch(0.451 0.13 148.2)",
+          "$value": "oklch(0.45 0.13 148.2)",
           "$type": "color",
           "$description": "Standaard achtergrondkleur met sterke succes-tint (donker in light mode, licht in dark mode) voor getinte componenten die succes of een bevestiging benadrukken, in standaardstatus."
         },
         "bg-hover": {
-          "$value": "oklch(0.411 0.118 148.2)",
+          "$value": "oklch(0.41 0.118 148.2)",
           "$type": "color",
           "$description": "Achtergrondkleur met sterke succes-tint bij ‘hover’ status van getinte of transparante componenten die succes of een bevestiging benadrukken."
         },
         "bg-active": {
-          "$value": "oklch(0.371 0.107 148.2)",
+          "$value": "oklch(0.37 0.107 148.2)",
           "$type": "color",
           "$description": "Achtergrondkleur met sterke succes-tint bij ‘active’ of ‘selected’ status van getinte of transparante componenten die succes of een bevestiging benadrukken."
         },
         "border-subtle": {
-          "$value": "oklch(0.651 0.103 148.2)",
+          "$value": "oklch(0.65 0.087 148.2)",
           "$type": "color",
           "$description": "Subtiele lijnkleur op een vlak met sterke succes-tint, inzetbaar als er geen contrastverhouding van 3:1 vereist is."
         },
         "border-default": {
-          "$value": "oklch(0.731 0.086 148.2)",
+          "$value": "oklch(0.73 0.087 148.2)",
           "$type": "color",
           "$description": "Standaard lijnkleur op een vlak met sterke succes-tint. Moet een contrastverhouding van 3:1 of meer hebben met positive-inverse.bg-default."
         },
         "border-hover": {
-          "$value": "oklch(0.781 0.103 148.2)",
+          "$value": "oklch(0.78 0.087 148.2)",
           "$type": "color",
           "$description": "Lijnkleur op een vlak met sterke succes-tint bij ‘hover’ status. Moet een contrastverhouding van 3:1 of meer hebben met positive-inverse.bg-hover."
         },
         "border-active": {
-          "$value": "oklch(0.831 0.123 148.2)",
+          "$value": "oklch(0.83 0.087 148.2)",
           "$type": "color",
           "$description": "Lijnkleur op een vlak met sterke succes-tint bij ‘active’ of ‘selected’ status. Moet een contrastverhouding van 3:1 of meer hebben met positive-inverse.bg-active."
         },
@@ -1454,7 +1454,7 @@
           "$description": "Voorgrondkleur op een vlak met sterke succes-tint bij ‘active’ of ‘selected’ status. Moet een contrastverhouding van 4.5:1 of meer hebben met positive-inverse.bg-active."
         },
         "color-subtle": {
-          "$value": "oklch(0.94 0.062 148.2)",
+          "$value": "oklch(0.94 0.063 148.2)",
           "$type": "color",
           "$description": "Alternatieve, subtielere voorgrondkleur op een vlak met sterke succes-tint ten opzichte van positive-inverse.color-document, voor secundaire tekst. Moet een contrastverhouding van 4.5:1 of meer hebben met positive-inverse.bg-document."
         },
@@ -1496,22 +1496,22 @@
           "$description": "Achtergrondkleur met sterke waarschuwings-tint bij ‘active’ of ‘selected’ status van getinte of transparante componenten die een waarschuwing benadrukken."
         },
         "border-subtle": {
-          "$value": "oklch(0.64 0.125 58.3)",
+          "$value": "oklch(0.64 0.105 58.3)",
           "$type": "color",
           "$description": "Subtiele lijnkleur op een vlak met sterke waarschuwings-tint, inzetbaar als er geen contrastverhouding van 3:1 vereist is."
         },
         "border-default": {
-          "$value": "oklch(0.72 0.104 58.3)",
+          "$value": "oklch(0.72 0.105 58.3)",
           "$type": "color",
           "$description": "Standaard lijnkleur op een vlak met sterke waarschuwings-tint. Moet een contrastverhouding van 3:1 of meer hebben met warning-inverse.bg-default."
         },
         "border-hover": {
-          "$value": "oklch(0.77 0.125 58.3)",
+          "$value": "oklch(0.77 0.105 58.3)",
           "$type": "color",
           "$description": "Lijnkleur op een vlak met sterke waarschuwings-tint bij ‘hover’ status. Moet een contrastverhouding van 3:1 of meer hebben met warning-inverse.bg-hover."
         },
         "border-active": {
-          "$value": "oklch(0.82 0.122 58.3)",
+          "$value": "oklch(0.82 0.105 58.3)",
           "$type": "color",
           "$description": "Lijnkleur op een vlak met sterke waarschuwings-tint bij ‘active’ of ‘selected’ status. Moet een contrastverhouding van 3:1 of meer hebben met warning-inverse.bg-active."
         },

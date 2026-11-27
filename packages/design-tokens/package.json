@@ -91,9 +91,11 @@
     "css.d.ts"
   ],
   "scripts": {
-    "build": "node src/config/build.js && tsdown",
+    "build": "node src/config/generate-colors.js && node src/config/build.js && tsdown",
     "build:figma": "node src/config/build-figma.js",
     "clean": "rm -rf dist",
+    "generate:colors": "node src/config/generate-colors.js",
+    "validate:colors": "node src/config/generate-colors.js --check",
     "watch": "node --watch-path=src src/config/build.js"
   },
   "keywords": [
@@ -107,6 +109,7 @@
     "access": "public"
   },
   "devDependencies": {
+    "@dsn-starter-kit/theme-engine": "workspace:*",
     "style-dictionary": "^5.7.1",
     "tsdown": "^0.23.5"
   }
