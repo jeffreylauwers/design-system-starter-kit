@@ -15,9 +15,14 @@ Nog niet gepubliceerde wijzigingen. Schrijf nieuwe changelog-entries hieronder; 
 Het `::backdrop` van ModalDialog en Drawer las `var(--dsn-backdrop-background, rgba(0, 0, 0, 0.5))` en `var(--dsn-backdrop-blur, blur(2px))`. De eerste token bestaat niet (hij heet `--dsn-backdrop-background-color`), dus in elk thema en elke mode gold de hardgecodeerde fallback van 50% zwart. De tweede gaf `backdrop-filter: 4px`, een ongeldige waarde: er werd niets vervaagd.
 
 - **Zelfde opbouw als Backdrop:** `background-color` met `color-mix()` op `--dsn-backdrop-background-color` en `--dsn-backdrop-opacity`, en `backdrop-filter: blur(var(--dsn-backdrop-blur))`. Geen hardgecodeerde fallbacks meer.
-- **Zichtbaar anders:** in Start light is de verduistering nu `oklch(0.424 0 0)` op 50% in plaats van zwart op 50%, in Start dark `oklch(0.12 0 0)` op 50%, en de pagina erachter vervaagt 4px. Wireframe blijft zwart op 50%, nu ook met vervaging, zodra de token daar bestaat (#534).
+- **Zichtbaar anders:** in Start light is de verduistering nu `oklch(0.424 0 0)` op 50% in plaats van zwart op 50%, in Start dark `oklch(0.12 0 0)` op 50%, en de pagina erachter vervaagt 4px. In Wireframe blijft het zwart op 50%, nu ook met vervaging.
 - **Nieuwe test `tests/css-token-references.test.ts`:** elke `var(--dsn-...)` in components-html en in de shadow-CSS van components-web wijst naar een token, naar een custom property die de CSS zelf zet, of naar een benoemde uitzondering. Een custom property die de CSS zet en die geen token is, moet ook gelezen worden, zodat een tikfout in een override-lijst opvalt.
 - **Docs:** de token-tabellen van ModalDialog en Drawer tonen de drie Backdrop-tokens; Backdrop en `docs/03-components.md` noemen dat de `::backdrop` dezelfde tokens gebruikt.
+
+### design-tokens: Wireframe krijgt de kleur van de Backdrop
+
+- **Backdrop dimt nu ook in Wireframe:** `dsn.backdrop.background-color` stond alleen in Start. In de configs van Wireframe bestond `--dsn-backdrop-background-color` daardoor niet, en de Backdrop (`.dsn-backdrop`) was er transparant: hij vervaagde de pagina alleen. De token staat nu in `themes/wireframe/colors-light.json` en `colors-dark.json`, met dezelfde verwijzingen als Start: `neutral-inverse.bg-document` in light en `neutral.bg-document` in dark. In Wireframe is dat in beide modes zwart, op de dekking van `dsn.backdrop.opacity`.
+- **Nieuwe test `tests/theme-token-parity.test.ts`:** elk thema definieert in `colors-light.json`, `colors-dark.json` en `base.json` dezelfde tokens als Start, en light en dark van een thema hebben dezelfde tokens. Een token die in één thema ontbreekt, laat nu de tests falen in plaats van stil een lege custom property op te leveren.
 
 ### theme-configurator: de color palette generator heet nu theme configurator
 
