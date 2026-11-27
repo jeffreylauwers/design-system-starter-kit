@@ -1,0 +1,143 @@
+/**
+ * SegmentedControl: één keuze uit een paar opties, als aaneengesloten knoppen.
+ * Kandidaat-component (zie README.md): nog geen component-tokens in
+ * design-tokens, daarom staan de lokale tokens hier op het block en verwijzen
+ * ze naar semantische tokens.
+ *
+ * Opbouw: native radioknoppen in een fieldset. Pijltjestoetsen, de naam van
+ * de groep en de status "geselecteerd" komen zo van de browser.
+ */
+
+/* ===========================
+   Local tokens
+   =========================== */
+
+.dsn-segmented-control {
+  --dsn-segmented-control-background-color: var(--dsn-color-neutral-bg-subtle);
+  --dsn-segmented-control-border-color: var(--dsn-color-neutral-border-default);
+  --dsn-segmented-control-border-radius: var(--dsn-border-radius-md);
+  --dsn-segmented-control-border-width: var(--dsn-border-width-thin);
+  --dsn-segmented-control-color: var(--dsn-color-neutral-color-default);
+  --dsn-segmented-control-gap: var(--dsn-space-inline-2xs);
+  --dsn-segmented-control-padding: var(--dsn-space-inline-2xs);
+  --dsn-segmented-control-option-padding-inline: var(--dsn-space-inline-md);
+  --dsn-segmented-control-checked-background-color: var(
+    --dsn-color-accent-1-inverse-bg-default
+  );
+  --dsn-segmented-control-checked-color: var(
+    --dsn-color-accent-1-inverse-color-default
+  );
+  --dsn-segmented-control-disabled-color: var(--dsn-color-neutral-color-subtle);
+}
+
+/* ===========================
+   Base layout
+   =========================== */
+
+.dsn-segmented-control {
+  margin: 0;
+  padding: 0;
+  border: 0;
+  min-inline-size: 0;
+  max-inline-size: 100%;
+  font-family: var(--dsn-text-font-family-default);
+  font-size: var(--dsn-text-font-size-md);
+  line-height: var(--dsn-text-line-height-md);
+}
+
+/* ===========================
+   Legend
+   =========================== */
+
+.dsn-segmented-control__legend {
+  padding: 0;
+  margin-block-end: var(--dsn-space-text-sm);
+  color: var(--dsn-color-neutral-color-document);
+  font-weight: var(--dsn-text-font-weight-bold);
+}
+
+/* ===========================
+   Options
+   =========================== */
+
+/* Too narrow for all segments on one line: they wrap instead of making the
+   page scroll sideways. */
+.dsn-segmented-control__options {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--dsn-segmented-control-gap);
+  padding: var(--dsn-segmented-control-padding);
+  border: var(--dsn-segmented-control-border-width) solid
+    var(--dsn-segmented-control-border-color);
+  border-radius: var(--dsn-segmented-control-border-radius);
+  background-color: var(--dsn-segmented-control-background-color);
+}
+
+/* Segments share the width but never get narrower than their label. */
+.dsn-segmented-control__option {
+  position: relative;
+  display: flex;
+  flex: 1 0 auto;
+}
+
+/* De radioknop ligt onzichtbaar over het label: hij blijft klik- en focusbaar
+   en houdt zijn semantiek. */
+.dsn-segmented-control__input {
+  position: absolute;
+  inset: 0;
+  margin: 0;
+  opacity: 0;
+  cursor: pointer;
+}
+
+.dsn-segmented-control__label {
+  display: flex;
+  flex: 1 1 auto;
+  align-items: center;
+  justify-content: center;
+  min-block-size: var(--dsn-pointer-target-min-block-size);
+  min-inline-size: var(--dsn-pointer-target-min-inline-size);
+  padding-inline: var(--dsn-segmented-control-option-padding-inline);
+  border-radius: calc(
+    var(--dsn-segmented-control-border-radius) -
+      var(--dsn-segmented-control-padding)
+  );
+  color: var(--dsn-segmented-control-color);
+  text-align: center;
+}
+
+.dsn-segmented-control__input:checked + .dsn-segmented-control__label {
+  background-color: var(--dsn-segmented-control-checked-background-color);
+  color: var(--dsn-segmented-control-checked-color);
+  font-weight: var(--dsn-text-font-weight-bold);
+}
+
+.dsn-segmented-control__input:focus-visible + .dsn-segmented-control__label {
+  background-color: var(--dsn-focus-background-color);
+  color: var(--dsn-focus-color);
+  outline: var(--dsn-focus-outline-width) var(--dsn-focus-outline-style)
+    var(--dsn-focus-outline-color);
+  outline-offset: var(--dsn-focus-outline-offset);
+  box-shadow: 0 0 0
+    calc(var(--dsn-focus-outline-offset) + var(--dsn-focus-outline-width))
+    var(--dsn-focus-inverse-outline-color);
+}
+
+.dsn-segmented-control__input:disabled {
+  cursor: not-allowed;
+}
+
+.dsn-segmented-control__input:disabled + .dsn-segmented-control__label {
+  color: var(--dsn-segmented-control-disabled-color);
+}
+
+/* ===========================
+   Forced colors
+   =========================== */
+
+@media (forced-colors: active) {
+  .dsn-segmented-control__input:checked + .dsn-segmented-control__label {
+    outline: var(--dsn-border-width-medium) solid Highlight;
+    outline-offset: calc(var(--dsn-border-width-medium) * -1);
+  }
+}
