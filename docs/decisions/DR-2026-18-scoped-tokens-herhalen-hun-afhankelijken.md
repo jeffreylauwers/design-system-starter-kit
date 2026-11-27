@@ -89,7 +89,6 @@ Vijf regels die hieruit volgen:
 - **Bekende grenzen:**
   - Light binnen dark kan niet: `.dsn-mode-dark .dsn-theme-start` geldt voor elke Start-container onder een dark ouder, en er is geen `dsn-mode-light`-selector die dat terugzet. Dat was al zo.
   - Staan er twee verschillende thema's genest boven een dichtheidsklasse op een dieper element, dan volgt de padding van formuliervelden het Wireframe-thema, ook als het binnenste thema Start is. Zet de dichtheidsklasse op hetzelfde element als de themaklasse, of erboven.
-  - `--dsn-backdrop-background-color` bestaat in Wireframe niet. De build meldt dat en slaat hem over in de Wireframe-bestanden; binnen een Wireframe-container onder Start blijft de backdrop van Start staan.
 
 ---
 

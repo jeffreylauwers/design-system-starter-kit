@@ -19,6 +19,30 @@ Wie thema, mode of dichtheid met klassen koos (`css` plus `css/scoped/*`, de rou
 - **Nieuwe browsertest:** `tests/scoped-tokens.test.ts` vergelijkt in Chromium (Playwright) veertien scenario's met de volledige config, `tests/scoped-tokens-build.test.ts` legt de afleidingsregels vast. `playwright` is een devDependency van de root, en de CI-job die `pnpm test` draait installeert Chromium. Lokaal: `pnpm exec playwright install chromium`.
 - **Ongewijzigd:** de volledige configs (`css`, `css/dark`, SCSS, JS, JSON), de hero-image-bestanden en Storybook, die de volledige config op `:root` laadt. De exports blijven gelijk; `variables-dark-scoped.css` volgt `scoped/start-dark.css`.
 
+### Geen hardgecodeerde fallbacks meer in de component-CSS
+
+Na de vorige wijziging stonden er nog een paar hardgecodeerde waarden in een `var()`-fallback, in strijd met regel 2 in `CLAUDE.md`.
+
+- **Breedtes van zijbalk en inhoudsopgave zijn tokens:** `--dsn-sidebar-layout-sidebar-inline-size` (`20rem`) en `--dsn-sidebar-layout-toc-inline-size` (`16rem`) staan nu in `tokens/components/sidebar-layout.json`. Namen en waarden blijven gelijk, en overschrijven per pagina met een `style` op de `dsn-sidebar-layout` werkt nog steeds. De docs van With Sidebar Page noemden `16rem` als breedte van de zijbalk; dat is altijd `20rem` geweest. PageBody en With Sidebar Page hebben nu een token-tabel, en de verouderde sectie "Toekomstige uitbreiding: side navigation" bij PageBody beschrijft nu `dsn-sidebar-layout`.
+- **Scroll-schaduw van ModalDialog en Drawer:** `var(--dsn-color-shadow-scroll, rgba(0, 0, 0, 0.12))` is `var(--dsn-color-shadow-scroll)`. De token bestaat in elk thema en elke mode, dus de fallback gold nooit.
+- **Geen schijn-fallback meer voor `color-mix()`:** Backdrop en het `::backdrop` van ModalDialog en Drawer hadden vóór de `color-mix()`-regel een losse regel `background-color: var(--dsn-backdrop-background-color)`. Die werkte niet als fallback: een declaratie met `var()` is bij het parsen altijd geldig, dus de `color-mix()`-regel wint ook in een browser zonder `color-mix()`, blijkt pas bij de berekende waarde ongeldig, en de achtergrond wordt transparant. De regel is weg, en er komt geen `@supports`-tak voor in de plaats: de kleurtokens zelf zijn al `oklch()` en `color-mix()`, en die vragen dezelfde browserversies. Bij `::backdrop` was de regel sowieso dode code, want custom properties erven pas naar `::backdrop` vanaf Chrome 122, Firefox 120 en Safari 17.4. Niets verandert zichtbaar.
+- **Backdrop-docs:** "Wel gebruiken als" raadde Backdrop aan achter een Modal Dialog of Drawer, terwijl die een eigen `::backdrop` hebben. Backdrop is nu bedoeld voor een eigen modaal patroon zonder `<dialog>`. De sectie over de z-index klopt weer: ModalDialog en Drawer staan in de top layer en hebben geen `z-index` nodig.
+- **`tests/css-token-references.test.ts`:** de twee breedtes staan niet meer in `NOT_A_TOKEN`.
+
+### ModalDialog en Drawer: de verduistering komt uit de Backdrop-tokens
+
+Het `::backdrop` van ModalDialog en Drawer las `var(--dsn-backdrop-background, rgba(0, 0, 0, 0.5))` en `var(--dsn-backdrop-blur, blur(2px))`. De eerste token bestaat niet (hij heet `--dsn-backdrop-background-color`), dus in elk thema en elke mode gold de hardgecodeerde fallback van 50% zwart. De tweede gaf `backdrop-filter: 4px`, een ongeldige waarde: er werd niets vervaagd.
+
+- **Zelfde opbouw als Backdrop:** `background-color` met `color-mix()` op `--dsn-backdrop-background-color` en `--dsn-backdrop-opacity`, en `backdrop-filter: blur(var(--dsn-backdrop-blur))`. Geen hardgecodeerde fallbacks meer.
+- **Zichtbaar anders:** in Start light is de verduistering nu `oklch(0.424 0 0)` op 50% in plaats van zwart op 50%, in Start dark `oklch(0.12 0 0)` op 50%, en de pagina erachter vervaagt 4px. In Wireframe blijft het zwart op 50%, nu ook met vervaging.
+- **Nieuwe test `tests/css-token-references.test.ts`:** elke `var(--dsn-...)` in components-html en in de shadow-CSS van components-web wijst naar een token, naar een custom property die de CSS zelf zet, of naar een benoemde uitzondering. Een custom property die de CSS zet en die geen token is, moet ook gelezen worden, zodat een tikfout in een override-lijst opvalt.
+- **Docs:** de token-tabellen van ModalDialog en Drawer tonen de drie Backdrop-tokens; Backdrop en `docs/03-components.md` noemen dat de `::backdrop` dezelfde tokens gebruikt.
+
+### design-tokens: Wireframe krijgt de kleur van de Backdrop
+
+- **Backdrop dimt nu ook in Wireframe:** `dsn.backdrop.background-color` stond alleen in Start. In de configs van Wireframe bestond `--dsn-backdrop-background-color` daardoor niet, en de Backdrop (`.dsn-backdrop`) was er transparant: hij vervaagde de pagina alleen. De token staat nu in `themes/wireframe/colors-light.json` en `colors-dark.json`, met dezelfde verwijzingen als Start: `neutral-inverse.bg-document` in light en `neutral.bg-document` in dark. In Wireframe is dat in beide modes zwart, op de dekking van `dsn.backdrop.opacity`.
+- **Nieuwe test `tests/theme-token-parity.test.ts`:** elk thema definieert in `colors-light.json`, `colors-dark.json` en `base.json` dezelfde tokens als Start, en light en dark van een thema hebben dezelfde tokens. Een token die in één thema ontbreekt, laat nu de tests falen in plaats van stil een lege custom property op te leveren.
+
 ### theme-configurator: de color palette generator heet nu theme configurator
 
 Het fundament voor de theme configurator (#522, onderdeel van #520).
