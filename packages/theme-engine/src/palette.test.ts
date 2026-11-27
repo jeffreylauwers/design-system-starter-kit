@@ -1,6 +1,12 @@
 import { describe, it, expect } from 'vitest';
-import { buildColorGroup } from './palette.ts';
-import { parseToOklch, oklchToHex, oklchToCss } from './oklch.ts';
+import { buildColorGroup, subtleOrFallback } from './palette.ts';
+import {
+  parseToOklch,
+  oklchToHex,
+  oklchToCss,
+  makeOklch,
+  meetsContrast,
+} from './oklch.ts';
 import type { ColorGroup, ColorMode, OklchColor } from './types.ts';
 
 /**
@@ -137,17 +143,14 @@ function expectContrast(
   { label, group }: Case,
   fg: AnyStep,
   bg: AnyStep,
-  min: number,
-  { exported = true }: { exported?: boolean } = {}
+  min: number
 ) {
-  const { shown, exported: afterExport } = contrasts(group, fg, bg);
+  const { shown, exported } = contrasts(group, fg, bg);
   expect(shown, `${label}: ${fg} op ${bg}`).toBeGreaterThanOrEqual(min);
-  if (exported) {
-    expect(
-      afterExport,
-      `${label}: ${fg} op ${bg} (na afronden)`
-    ).toBeGreaterThanOrEqual(min);
-  }
+  expect(
+    exported,
+    `${label}: ${fg} op ${bg} (na afronden)`
+  ).toBeGreaterThanOrEqual(min);
 }
 
 function lightness(group: ColorGroup, step: AnyStep): number {
@@ -238,30 +241,14 @@ describe('kleurengenerator: inverse', () => {
   it.each(CASES)(
     '$label: inverse borders halen 3:1 op de inverse achtergrond van dezelfde status',
     (testCase) => {
-      // Alleen op de getoonde waarde: na afronden zakken een paar
-      // randgevallen nog naar 2,99:1.
-      const options = { exported: false };
       expectContrast(
         testCase,
         'inverse-border-default',
         'inverse-bg-default',
-        3,
-        options
+        3
       );
-      expectContrast(
-        testCase,
-        'inverse-border-hover',
-        'inverse-bg-hover',
-        3,
-        options
-      );
-      expectContrast(
-        testCase,
-        'inverse-border-active',
-        'inverse-bg-active',
-        3,
-        options
-      );
+      expectContrast(testCase, 'inverse-border-hover', 'inverse-bg-hover', 3);
+      expectContrast(testCase, 'inverse-border-active', 'inverse-bg-active', 3);
     }
   );
 
@@ -293,3 +280,43 @@ describe('kleurengenerator: inverse', () => {
     }
   );
 });
+
+describe('kleurengenerator: fallback van color-subtle', () => {
+  const bgSubtle = makeOklch(0.955, 0.01, 255);
+  const colorDefault = makeOklch(0.4, 0.15, 255);
+
+  it('houdt de zachtere kleur als die 4,5:1 haalt op bg-subtle', () => {
+    const candidate = makeOklch(0.45, 0.13, 255);
+    expect(subtleOrFallback(candidate, colorDefault, bgSubtle)).toEqual({
+      color: candidate,
+      isFallback: false,
+    });
+  });
+
+  it('valt terug op color-default als de zachtere kleur 4,5:1 niet haalt', () => {
+    const candidate = makeOklch(0.7, 0.13, 255);
+    expect(subtleOrFallback(candidate, colorDefault, bgSubtle)).toEqual({
+      color: colorDefault,
+      isFallback: true,
+    });
+  });
+});
+
+describe('meetsContrast', () => {
+  it('telt een paar dat pas na afronden onder de grens zakt als onvoldoende', () => {
+    const bg = makeOklch(0.99, 0, 0);
+    // Zoek de lichtste grijswaarde die ongerond nog 4,5:1 haalt.
+    let l = 0.3;
+    while (meetsContrastRaw(makeOklch(l + 0.0001, 0, 0), bg)) l += 0.0001;
+    const atThreshold = makeOklch(l, 0, 0);
+    expect(meetsContrastRaw(atThreshold, bg)).toBe(true);
+    expect(contrast(exportedHex(atThreshold), exportedHex(bg))).toBeLessThan(
+      4.5
+    );
+    expect(meetsContrast(atThreshold, bg, 4.5)).toBe(false);
+  });
+});
+
+function meetsContrastRaw(fg: OklchColor, bg: OklchColor): boolean {
+  return contrast(oklchToHex(fg), oklchToHex(bg)) >= 4.5;
+}

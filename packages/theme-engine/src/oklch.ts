@@ -91,6 +91,27 @@ function clamp(v: number, min: number, max: number): number {
   return Math.min(max, Math.max(min, v));
 }
 
+/** The value as the oklch() export writes it: gamut-mapped, then rounded. */
+export function exportedOklch(color: OklchColor): OklchColor {
+  return roundOklch(clampToSRGB(color));
+}
+
+/**
+ * True when `fg` reaches `minRatio` on `bg`, both as generated and as the
+ * oklch() export rounds them. A pair right at the threshold can otherwise
+ * drop below it once the token JSON is written.
+ */
+export function meetsContrast(
+  fg: OklchColor,
+  bg: OklchColor,
+  minRatio: number
+): boolean {
+  return (
+    contrastRatio(fg, bg) >= minRatio &&
+    contrastRatio(exportedOklch(fg), exportedOklch(bg)) >= minRatio
+  );
+}
+
 export function adjustLForContrast(
   color: OklchColor,
   bg: OklchColor,
@@ -101,7 +122,7 @@ export function adjustLForContrast(
   let current = { ...color };
 
   for (let i = 0; i < 200; i++) {
-    if (contrastRatio(current, bg) >= minRatio) return current;
+    if (meetsContrast(current, bg, minRatio)) return current;
     current = { ...current, l: clamp(current.l + step, 0, 1) };
     if (current.l <= 0.001 || current.l >= 0.999) break;
   }
