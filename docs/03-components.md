@@ -1074,6 +1074,7 @@ Brengt consistente verticale ruimte aan tussen directe child-elementen via `flex
 - Altijd `aria-hidden="true"`: puur decoratief, geen ARIA-rol
 - `background-color` per thema apart gedefinieerd zodat overlay altijd donker is, ongeacht light/dark mode (patroon identiek aan box-shadow kleurtokens)
 - `blur` prop (boolean, default `true`): togglet `dsn-backdrop--no-blur` modifier
+- Dezelfde tokens gelden voor het native `::backdrop` van ModalDialog en Drawer, met dezelfde opbouw (`color-mix()` en `blur()`)
 
 **CSS klassen:**
 
@@ -1907,7 +1908,7 @@ Brengt consistente verticale ruimte aan tussen directe child-elementen via `flex
 
 **Location:** `packages/components-{html|react}/src/modal-dialog/` / `packages/components-react/src/ModalDialog/`
 
-**Tokens:** `tokens/components/modal-dialog.json`
+**Tokens:** `tokens/components/modal-dialog.json` + de Backdrop-tokens voor de `::backdrop`
 
 **Sub-components:** `ModalDialog`, `ModalDialogHeader`, `ModalDialogHeading`, `ModalDialogBody`, `ModalDialogFooter`
 
@@ -1924,6 +1925,7 @@ Brengt consistente verticale ruimte aan tussen directe child-elementen via `flex
 - Escape sluit via native `cancel`-event (`handleCancel` roept `onClose` aan)
 - Scroll-affordance schaduw in body (Lea Verou verticale techniek)
 - Open/sluitanimatie via `@starting-style`, `opacity`, `transform` en `allow-discrete`
+- `::backdrop` met kleur, dekking en vervaging uit de Backdrop-tokens (`--dsn-backdrop-background-color`, `--dsn-backdrop-opacity`, `--dsn-backdrop-blur`), met opacity-transitie
 - `display: flex` alleen op `[open]` staat: UA `display: none` blijft van kracht wanneer gesloten
 - `flex-direction: column` op de basis-selector: voorkomt layout-glitch tijdens sluitanimatie
 - Reduceer-motie-ondersteuning via `prefers-reduced-motion: reduce`
@@ -2048,7 +2050,7 @@ const [isOpen, setIsOpen] = React.useState(false);
 
 **Location:** `packages/components-{html|react}/src/drawer/` / `packages/components-react/src/Drawer/`
 
-**Tokens:** `tokens/components/drawer.json`
+**Tokens:** `tokens/components/drawer.json` + de Backdrop-tokens voor de `::backdrop`
 
 **Sub-components:** `Drawer`, `DrawerHeader`, `DrawerHeading`, `DrawerBody`, `DrawerFooter`
 
@@ -2066,7 +2068,7 @@ const [isOpen, setIsOpen] = React.useState(false);
 - Sluitknop (`dsn-button--icon-only`) altijd aanwezig in de header: nooit `aria-label`; tekst via `dsn-button__label`
 - Modal variant: Escape sluit via native `cancel`-event; niet-modaal variant: handmatige `keydown`-listener op Escape
 - Slide-in animatie via `@starting-style` en `translateX` (rechts: van `100%`; links: van `-100%`)
-- `::backdrop` met opacity-transitie voor de modal variant
+- `::backdrop` voor de modal variant, met kleur, dekking en vervaging uit de Backdrop-tokens (`--dsn-backdrop-background-color`, `--dsn-backdrop-opacity`, `--dsn-backdrop-blur`) en opacity-transitie
 - Scroll-affordance schaduw in body (Lea Verou verticale techniek)
 - Border alleen aan de binnenzijde: `border-inline-start` voor rechts, `border-inline-end` voor links; geen border-radius
 - `max-width` begrensd via token; `min-gap` garandeert dat de achtergrondpagina zichtbaar blijft

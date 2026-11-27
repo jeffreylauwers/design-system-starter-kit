@@ -51,6 +51,10 @@ Render de Backdrop conditioneel vanuit de parent op basis van de open-staat van 
 
 De Backdrop zelf heeft geen `onClick` handler. Sluitgedrag bij klikken buiten een modaal element wordt afgehandeld door de parent (Modal/Drawer), die een transparante kliklaag of de backdrop zelf als trigger kan gebruiken.
 
+### ModalDialog en Drawer
+
+ModalDialog en Drawer renderen deze component niet: ze gebruiken het native `::backdrop` van `<dialog>`. Dat pseudo-element leest dezelfde tokens als Backdrop. Een andere kleur, dekking of vervaging geldt dus voor alle drie.
+
 ### Blur-effect
 
 Het blur-effect gebruikt `backdrop-filter: blur()` en valt gracefully weg in omgevingen zonder support (~6% van browsers). De overlay blijft volledig functioneel als semi-transparante laag zonder blur.

@@ -10,6 +10,15 @@ All notable changes to this project are documented in this file.
 
 Nog niet gepubliceerde wijzigingen. Schrijf nieuwe changelog-entries hieronder; bij de volgende release wordt deze kop gepromoveerd naar het definitieve versienummer.
 
+### ModalDialog en Drawer: de verduistering komt uit de Backdrop-tokens
+
+Het `::backdrop` van ModalDialog en Drawer las `var(--dsn-backdrop-background, rgba(0, 0, 0, 0.5))` en `var(--dsn-backdrop-blur, blur(2px))`. De eerste token bestaat niet (hij heet `--dsn-backdrop-background-color`), dus in elk thema en elke mode gold de hardgecodeerde fallback van 50% zwart. De tweede gaf `backdrop-filter: 4px`, een ongeldige waarde: er werd niets vervaagd.
+
+- **Zelfde opbouw als Backdrop:** `background-color` met `color-mix()` op `--dsn-backdrop-background-color` en `--dsn-backdrop-opacity`, en `backdrop-filter: blur(var(--dsn-backdrop-blur))`. Geen hardgecodeerde fallbacks meer.
+- **Zichtbaar anders:** in Start light is de verduistering nu `oklch(0.424 0 0)` op 50% in plaats van zwart op 50%, in Start dark `oklch(0.12 0 0)` op 50%, en de pagina erachter vervaagt 4px. Wireframe blijft zwart op 50%, nu ook met vervaging, zodra de token daar bestaat (#534).
+- **Nieuwe test `tests/css-token-references.test.ts`:** elke `var(--dsn-...)` in components-html en in de shadow-CSS van components-web wijst naar een token, naar een custom property die de CSS zelf zet, of naar een benoemde uitzondering. Een custom property die de CSS zet en die geen token is, moet ook gelezen worden, zodat een tikfout in een override-lijst opvalt.
+- **Docs:** de token-tabellen van ModalDialog en Drawer tonen de drie Backdrop-tokens; Backdrop en `docs/03-components.md` noemen dat de `::backdrop` dezelfde tokens gebruikt.
+
 ### theme-configurator: de color palette generator heet nu theme configurator
 
 Het fundament voor de theme configurator (#522, onderdeel van #520).

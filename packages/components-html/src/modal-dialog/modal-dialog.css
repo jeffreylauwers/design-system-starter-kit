@@ -134,10 +134,19 @@
   }
 }
 
-/* Native backdrop van het dialog element */
+/*
+ * Native backdrop van het dialog element, met de tokens en opbouw van de
+ * Backdrop-component (backdrop.css)
+ */
 .dsn-modal-dialog::backdrop {
-  background: var(--dsn-backdrop-background, rgba(0, 0, 0, 0.5));
-  backdrop-filter: var(--dsn-backdrop-blur, blur(2px));
+  /* Fallback voor omgevingen zonder color-mix() support (~6%) */
+  background-color: var(--dsn-backdrop-background-color);
+  background-color: color-mix(
+    in srgb,
+    var(--dsn-backdrop-background-color) var(--dsn-backdrop-opacity),
+    transparent
+  );
+  backdrop-filter: blur(var(--dsn-backdrop-blur));
 
   /* Gesloten waarde: de backdrop fade't ook weer uit bij sluiten */
   opacity: 0;

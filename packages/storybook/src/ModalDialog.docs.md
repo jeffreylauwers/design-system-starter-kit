@@ -160,6 +160,10 @@ Escape en het terugzetten van de focus bij sluiten doet de browser zelf. De focu
 
 <!-- tokens: modal-dialog -->
 
+De verduistering achter het venster (`::backdrop`) gebruikt dezelfde tokens als [Backdrop](?path=/docs/components-backdrop--docs): kleur, dekking en vervaging.
+
+<!-- tokens: --dsn-backdrop-background-color --dsn-backdrop-opacity --dsn-backdrop-blur -->
+
 ## Toegankelijkheid
 
 - Het dialoogvenster gebruikt het native `<dialog>` element met impliciete `role="dialog"` semantiek. Met `alert` wordt dat `role="alertdialog"`, met `aria-describedby` naar de `ModalDialogBody`.
