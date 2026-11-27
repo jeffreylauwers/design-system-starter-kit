@@ -7,9 +7,11 @@ import {
   modes,
   projectTypes,
   fullConfigs,
-  scopedConfigs,
+  densitySelectors,
+  themeModeSelector,
   createHeroImageForceLightConfigs,
 } from './config.js';
+import { buildScopedFiles } from './scoped.js';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
@@ -97,30 +99,32 @@ async function appendReducedMotion() {
   console.log('\n✅ prefers-reduced-motion media query appended\n');
 }
 
-async function buildScopedConfigs() {
+// De scoped bestanden komen uit de volledige configs hierboven: zelfde
+// declaraties, alleen de tokens die per thema, mode of density verschillen plus
+// alles wat ernaar verwijst. Zie scoped.js en DR-2026-18.
+function buildScoped() {
   console.log(
-    '🔨 Building scoped configurations (for runtime theme/mode/density switching)...\n'
+    '🔨 Building scoped files (for runtime theme/mode/density switching)...\n'
   );
 
-  const scopedConfigNames = Object.keys(scopedConfigs);
-  for (let index = 0; index < scopedConfigNames.length; index++) {
-    const name = scopedConfigNames[index];
-    const config = scopedConfigs[name];
-    console.log(
-      `   [${index + 1}/${scopedConfigNames.length}] Building ${name}...`
-    );
+  const results = buildScopedFiles({
+    distDir: path.join(__dirname, '..', '..', 'dist/css'),
+    themes,
+    modes,
+    projectTypes,
+    themeModeSelector,
+    densitySelectors,
+  });
 
-    try {
-      const sd = new StyleDictionary(config);
-      await sd.buildAllPlatforms();
-    } catch (error) {
-      console.error(`   ❌ Error building ${name}:`, error.message);
-      // Don't exit - scoped configs are optional, continue with build
-      console.log(`   ⚠️  Skipping ${name} due to error`);
+  for (const { file, count, missing } of results) {
+    console.log(`   ✅ dist/css/scoped/${file} (${count} tokens)`);
+    if (missing.length) {
+      console.log(
+        `      ⚠️  Ontbreekt in deze config, dus niet gescoopt: ${missing.join(', ')}`
+      );
     }
   }
-
-  console.log(`\n✅ Built ${scopedConfigNames.length} scoped configurations\n`);
+  console.log();
 }
 
 function createBackwardCompatibilityAliases() {
@@ -182,9 +186,13 @@ function printSummary() {
   });
 
   console.log('\n   Scoped configurations (CSS only, for runtime switching):');
-  console.log('   - dist/css/scoped/theme-*.css (theme base tokens)');
-  console.log('   - dist/css/scoped/*-light.css, *-dark.css (color tokens)');
-  console.log('   - dist/css/scoped/density-*.css (typography tokens)');
+  console.log(
+    '   - dist/css/scoped/{theme}-{mode}.css (theme and mode tokens + dependents)'
+  );
+  console.log(
+    '   - dist/css/scoped/density-*.css (font-size and space tokens + dependents)'
+  );
+  console.log('   - dist/css/scoped/*-hero-image.css (light colors in a hero)');
 
   console.log('\n   Backward compatibility aliases:');
   console.log('   - dist/css/variables.css');
@@ -219,7 +227,7 @@ async function buildHeroImageForceLightConfigs() {
 async function main() {
   await buildFullConfigs();
   await appendReducedMotion();
-  await buildScopedConfigs();
+  buildScoped();
   await buildHeroImageForceLightConfigs();
   createBackwardCompatibilityAliases();
   printSummary();
