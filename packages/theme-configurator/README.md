@@ -1,6 +1,8 @@
 # Theme Configurator
 
-Interactieve theme configurator voor het Design System Starter Kit, de opvolger van de color palette generator. Nu stel je er de kleuren mee in: een volledig semantisch kleurenpalet op basis van één basiskleur per kleurgroep. Typografie, ruimte, hoekafronding en schaduw volgen (epic #520).
+Interactieve theme configurator voor het Design System Starter Kit, de opvolger van de color palette generator. Links stel je het thema in, rechts zie je het direct in een voorbeeld met echte componenten. Nu stel je de kleuren in: een volledig semantisch kleurenpalet op basis van één basiskleur per kleurgroep. Typografie, ruimte, hoekafronding en schaduw volgen (epic #520).
+
+De configurator is zelf gebouwd met de componenten van de starter kit, in Start dark. Alleen het voorbeeld toont het thema dat je instelt.
 
 ## Features
 
@@ -9,10 +11,11 @@ Interactieve theme configurator voor het Design System Starter Kit, de opvolger 
 - **OKLCH-gebaseerde kleurafleiding** over drie tracks: backgrounds, borders, tekst/iconen
 - **WCAG 2.x contrast enforcement**: L wordt automatisch bijgesteld als een contrasteis niet gehaald wordt
 - **Inverse-sectie** voor emphasis-blokken en primaire knoppen
-- **Light/dark toggle**: herberekent het volledige palet
-- **Intensiteitsslider**: schaalt de chroma-curve op of af voor alle groepen tegelijk
+- **Live voorbeeld** in vier scènes (Componenten, Pagina, Formulier, Artikel), in light of dark, op 360, 768 of 1280 pixels breed of passend, en in de dichtheid standaard of compact
+- **Light/dark**: in het voorbeeld; het palet in het paneel volgt mee
+- **Intensiteit**: schaalt de chroma-curve op of af voor alle groepen tegelijk
 - **HEX / OKLCH weergave toggle**
-- **Klikken op swatch kopieert kleurwaarde** naar klembord
+- **Een swatch activeren kopieert de kleurwaarde**; een live region meldt het
 - **Eigen kleurgroepen**: toevoegen, hernoemen, verwijderen (de groepen van Start blijven staan)
 - **Sessie bewaard** in localStorage; "Terug naar Start" begint opnieuw
 - **Exporteren**: `theme.config.json`, `colors-light.json` / `colors-dark.json` op het sjabloon van Start, en Generieke JSON
@@ -32,7 +35,7 @@ Het oude adres `/color-palette-generator/` stuurt door.
 pnpm --filter @dsn-starter-kit/theme-configurator dev
 ```
 
-De tool is beschikbaar op `http://localhost:5173` (of `5174` als 5173 bezet is).
+De tool is beschikbaar op `http://localhost:5173`. De configurator gebruikt de gebouwde `dist` van `design-tokens`, `core` en `components-react`: draai eerst `pnpm build`, en opnieuw na een wijziging in die packages.
 
 ## Thema integreren
 
@@ -46,13 +49,28 @@ Een eigen groep krijgt geen `$description`; vul die aan in de JSON. Een thema na
 
 ## Opbouw
 
-| Bestand                | Wat                                                                                                                                                                                 |
-| ---------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `src/model/start.ts`   | Het thema Start uit `design-tokens`: de config, de token-JSON en het project type `default`                                                                                         |
-| `src/model/theme.ts`   | `resolveTheme(config, mode)`: alle semantische tokens als CSS custom properties, gelijk aan wat de build schrijft. `exportTheme(config)`: de themabestanden, met Start als sjabloon |
-| `src/model/storage.ts` | De sessie in localStorage; elke toegang staat in een try/catch                                                                                                                      |
+| Map of bestand    | Wat                                                                                                                                                                                                                       |
+| ----------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `src/App.tsx`     | De layout: tot `lg` (64em) één kolom met een keuze tussen Instellen en Voorbeeld, vanaf `lg` het paneel links (25rem, scrolt los) en het voorbeeld rechts                                                                 |
+| `src/main.tsx`    | Laadt Start dark voor de configurator zelf, en de CSS van core en componenten                                                                                                                                             |
+| `src/panel/`      | Het instelpaneel: kleurgroepen, export en uitleg                                                                                                                                                                          |
+| `src/preview/`    | Het voorbeeld: de toolbar, de iframe (`PreviewFrame`) en de vier scènes                                                                                                                                                   |
+| `src/candidates/` | Kandidaat-componenten (SegmentedControl, Tabs, ColorInput, ColorSwatch): definitieve `dsn-`-namen, beide lagen, nog geen systeemcomponent. Zie [het overzicht](src/candidates/README.md)                                  |
+| `src/model/`      | `start.ts`: het thema Start uit `design-tokens`. `theme.ts`: `resolveTheme(config, mode)` en `changedTokens` (alle semantische tokens, of alleen wat afwijkt van Start) en `exportTheme(config)`. `storage.ts`: de sessie |
 
-`src/model/theme.test.ts` controleert dat `resolveTheme` met de Start-config dezelfde waarden geeft als `dist/css/start-*-default.css`, en dat de export dan byte voor byte gelijk is aan de bestanden van Start. `export-build.test.ts` bouwt de export met de Style Dictionary-config van `design-tokens`.
+### Waarom het voorbeeld een iframe is
+
+Het voorbeeld rendert met React via een portal in een iframe met een eigen document. Daardoor:
+
+- **Eigen `:root`:** de iframe laadt de volledige Start-configuratie voor de gekozen modus en dichtheid (`start-{mode}-{density}.css`), met daarna de afwijkingen uit `changedTokens`. Componenttokens zijn `var()`-verwijzingen naar semantische tokens, dus de componenten volgen vanzelf.
+- **Eigen viewport:** de media queries van de componenten reageren op de breedte van de iframe. Een viewport breder dan de beschikbare ruimte wordt verkleind getoond.
+- **Niets lekt:** de configurator zelf blijft Start dark. `App.test.tsx` bewijst dat een wijziging alleen de iframe raakt.
+
+De configurator gebruikt bewust de volledige dark-configuratie (`design-tokens/css/dark`) en niet de klassen `dsn-theme-start dsn-mode-dark` met `css/scoped/start-dark`. Die scoped bestanden bevatten alleen kleurtokens, en componenttokens lossen hun `var()` op `:root` op: met de klassen blijven de componenten Start light.
+
+### Tests
+
+`src/model/theme.test.ts` controleert dat `resolveTheme` met de Start-config dezelfde waarden geeft als `dist/css/start-*-default.css`, en dat de export dan byte voor byte gelijk is aan de bestanden van Start. `export-build.test.ts` bouwt de export met de Style Dictionary-config van `design-tokens`. `App.test.tsx` controleert de layout, de landmarks en dat een wijziging alleen het voorbeeld raakt. Elke kandidaat heeft eigen tests.
 
 ## Build
 

@@ -10,6 +10,16 @@ All notable changes to this project are documented in this file.
 
 Nog niet gepubliceerde wijzigingen. Schrijf nieuwe changelog-entries hieronder; bij de volgende release wordt deze kop gepromoveerd naar het definitieve versienummer.
 
+### theme-configurator: nieuwe opzet met live voorbeeld
+
+De configurator is opnieuw opgezet, met de componenten van de starter kit en een live voorbeeld (#524, onderdeel van #520).
+
+- **Instellen en voorbeeld naast elkaar:** vanaf `lg` het instelpaneel links en het voorbeeld rechts; op een kleiner scherm kies je bovenin tussen Instellen en Voorbeeld. Werkt vanaf 320px breed, zonder horizontale scroll.
+- **Voorbeeld:** vier scènes (Componenten, Pagina met inverse Hero en PageFooter, Formulier volgens `docs/07-form-flow-patterns.md`, Artikel), in light of dark, op 360, 768 of 1280 pixels of passend, en in de dichtheid standaard of compact. Een viewport breder dan de ruimte wordt verkleind getoond.
+- **Dogfooding:** de configurator zelf is Start dark en gebouwd met `components-react`. Het voorbeeld staat in een iframe met een eigen document, zodat een wijziging alleen het voorbeeld raakt; een test bewijst dat.
+- **Kandidaat-componenten:** SegmentedControl, Tabs, ColorInput en ColorSwatch, in `packages/theme-configurator/src/candidates/`. Ze hebben definitieve `dsn-`-namen, een HTML/CSS-laag, een React-wrapper, tests en een README met de status "kandidaat". Systeemcomponent worden ze via #529.
+- **Alle functies van de generator zijn er weer:** kleurgroepen, eigen groepen, intensiteit, HEX en OKLCH, inverse, contrastbadges, kopiëren (gemeld via een live region) en de export.
+
 ### theme-configurator: de color palette generator heet nu theme configurator
 
 Het fundament voor de theme configurator (#522, onderdeel van #520).
