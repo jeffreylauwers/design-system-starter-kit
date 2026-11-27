@@ -67,26 +67,28 @@ Templates zijn Storybook-only composities van bestaande componenten. De `dsn-sid
 </PageBody>;
 ```
 
-| Viewport | Sidebar                                                                     | Hoofdinhoud   |
-| -------- | --------------------------------------------------------------------------- | ------------- |
-| < 64em   | verborgen                                                                   | volle breedte |
-| >= 64em  | vaste breedte (`--dsn-sidebar-layout-sidebar-inline-size`, default `16rem`) | `flex: 1`     |
+| Viewport | Sidebar                                                    | Hoofdinhoud   |
+| -------- | ---------------------------------------------------------- | ------------- |
+| < 64em   | verborgen                                                  | volle breedte |
+| >= 64em  | vaste breedte (`--dsn-sidebar-layout-sidebar-inline-size`) | `flex: 1`     |
+
+De inhoudsopgave staat tot 80em onder de H1 (`dsn-sidebar-layout__toc-inline`) en daarna als rechterkolom met een vaste breedte (`dsn-sidebar-layout__toc`, `--dsn-sidebar-layout-toc-inline-size`).
 
 ## Sidebar breedte aanpassen
 
-De sidebar breedte is instelbaar via een CSS custom property:
+De breedtes van zijbalk en inhoudsopgave zijn design tokens. Pas ze aan in het thema, of overschrijf ze per pagina op de `dsn-sidebar-layout`:
 
 ```html
 <div
   class="dsn-sidebar-layout"
-  style="--dsn-sidebar-layout-sidebar-inline-size: 20rem;"
+  style="--dsn-sidebar-layout-sidebar-inline-size: 24rem;"
 ></div>
 ```
 
 ```tsx
 <div
   className="dsn-sidebar-layout"
-  style={{ '--dsn-sidebar-layout-sidebar-inline-size': '20rem' } as React.CSSProperties}
+  style={{ '--dsn-sidebar-layout-sidebar-inline-size': '24rem' } as React.CSSProperties}
 >
 ```
 
@@ -99,6 +101,10 @@ De sidebar breedte is instelbaar via een CSS custom property:
 
 - De pagina geen Level 2 sub-items heeft: gebruik dan Base Page rechtstreeks.
 - Je sidebar-content wilt tonen op alle viewports: dit patroon verbergt de sidebar op small en medium viewports.
+
+## Design tokens
+
+<!-- tokens: sidebar-layout -->
 
 ## Toegankelijkheid
 

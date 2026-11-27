@@ -10,6 +10,16 @@ All notable changes to this project are documented in this file.
 
 Nog niet gepubliceerde wijzigingen. Schrijf nieuwe changelog-entries hieronder; bij de volgende release wordt deze kop gepromoveerd naar het definitieve versienummer.
 
+### Geen hardgecodeerde fallbacks meer in de component-CSS
+
+Na de vorige wijziging stonden er nog een paar hardgecodeerde waarden in een `var()`-fallback, in strijd met regel 2 in `CLAUDE.md`.
+
+- **Breedtes van zijbalk en inhoudsopgave zijn tokens:** `--dsn-sidebar-layout-sidebar-inline-size` (`20rem`) en `--dsn-sidebar-layout-toc-inline-size` (`16rem`) staan nu in `tokens/components/sidebar-layout.json`. Namen en waarden blijven gelijk, en overschrijven per pagina met een `style` op de `dsn-sidebar-layout` werkt nog steeds. De docs van With Sidebar Page noemden `16rem` als breedte van de zijbalk; dat is altijd `20rem` geweest. PageBody en With Sidebar Page hebben nu een token-tabel, en de verouderde sectie "Toekomstige uitbreiding: side navigation" bij PageBody beschrijft nu `dsn-sidebar-layout`.
+- **Scroll-schaduw van ModalDialog en Drawer:** `var(--dsn-color-shadow-scroll, rgba(0, 0, 0, 0.12))` is `var(--dsn-color-shadow-scroll)`. De token bestaat in elk thema en elke mode, dus de fallback gold nooit.
+- **Geen schijn-fallback meer voor `color-mix()`:** Backdrop en het `::backdrop` van ModalDialog en Drawer hadden vóór de `color-mix()`-regel een losse regel `background-color: var(--dsn-backdrop-background-color)`. Die werkte niet als fallback: een declaratie met `var()` is bij het parsen altijd geldig, dus de `color-mix()`-regel wint ook in een browser zonder `color-mix()`, blijkt pas bij de berekende waarde ongeldig, en de achtergrond wordt transparant. De regel is weg, en er komt geen `@supports`-tak voor in de plaats: de kleurtokens zelf zijn al `oklch()` en `color-mix()`, en die vragen dezelfde browserversies. Bij `::backdrop` was de regel sowieso dode code, want custom properties erven pas naar `::backdrop` vanaf Chrome 122, Firefox 120 en Safari 17.4. Niets verandert zichtbaar.
+- **Backdrop-docs:** "Wel gebruiken als" raadde Backdrop aan achter een Modal Dialog of Drawer, terwijl die een eigen `::backdrop` hebben. Backdrop is nu bedoeld voor een eigen modaal patroon zonder `<dialog>`. De sectie over de z-index klopt weer: ModalDialog en Drawer staan in de top layer en hebben geen `z-index` nodig.
+- **`tests/css-token-references.test.ts`:** de twee breedtes staan niet meer in `NOT_A_TOKEN`.
+
 ### ModalDialog en Drawer: de verduistering komt uit de Backdrop-tokens
 
 Het `::backdrop` van ModalDialog en Drawer las `var(--dsn-backdrop-background, rgba(0, 0, 0, 0.5))` en `var(--dsn-backdrop-blur, blur(2px))`. De eerste token bestaat niet (hij heet `--dsn-backdrop-background-color`), dus in elk thema en elke mode gold de hardgecodeerde fallback van 50% zwart. De tweede gaf `backdrop-filter: 4px`, een ongeldige waarde: er werd niets vervaagd.

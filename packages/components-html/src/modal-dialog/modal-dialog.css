@@ -139,8 +139,6 @@
  * Backdrop-component (backdrop.css)
  */
 .dsn-modal-dialog::backdrop {
-  /* Fallback voor omgevingen zonder color-mix() support (~6%) */
-  background-color: var(--dsn-backdrop-background-color);
   background-color: color-mix(
     in srgb,
     var(--dsn-backdrop-background-color) var(--dsn-backdrop-opacity),
@@ -233,7 +231,7 @@
 
 .dsn-modal-dialog__body {
   --_bg: var(--dsn-modal-dialog-background-color);
-  --_shadow: var(--dsn-color-shadow-scroll, rgba(0, 0, 0, 0.12));
+  --_shadow: var(--dsn-color-shadow-scroll);
 
   /*
    * `flex: 1 1 auto`, niet `flex: 1`.

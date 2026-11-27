@@ -1,0 +1,16 @@
+{
+  "dsn": {
+    "sidebar-layout": {
+      "sidebar-inline-size": {
+        "$value": "20rem",
+        "$type": "dimension",
+        "$description": "Breedte van de zijbalk met subnavigatie naast de inhoud."
+      },
+      "toc-inline-size": {
+        "$value": "16rem",
+        "$type": "dimension",
+        "$description": "Breedte van de kolom met de inhoudsopgave naast de inhoud."
+      }
+    }
+  }
+}

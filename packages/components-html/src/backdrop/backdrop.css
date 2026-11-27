@@ -13,8 +13,15 @@
 .dsn-backdrop {
   position: fixed;
   inset: 0;
-  /* Fallback voor omgevingen zonder color-mix() support (~6%) */
-  background-color: var(--dsn-backdrop-background-color);
+  /*
+   * Geen terugval voor browsers zonder color-mix(). Een losse regel
+   * `background-color: var(...)` hiervoor zou niet werken: deze declaratie
+   * bevat var() en is bij het parsen dus altijd geldig, ook zonder
+   * color-mix(). Hij wint dan, blijkt pas bij de berekende waarde ongeldig,
+   * en de achtergrond wordt transparant. Een terugval via @supports is ook
+   * niet nodig: de kleurtokens zelf zijn oklch() en color-mix(), en die
+   * vragen dezelfde browserversies.
+   */
   background-color: color-mix(
     in srgb,
     var(--dsn-backdrop-background-color) var(--dsn-backdrop-opacity),

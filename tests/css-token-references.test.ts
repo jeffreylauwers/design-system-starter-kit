@@ -43,10 +43,6 @@ const CSS_DIRS = [
 const NOT_A_TOKEN: Record<string, string> = {
   '--dsn-hero-bg-image':
     'achtergrondafbeelding per Hero, via style of de backgroundImage-prop',
-  '--dsn-sidebar-layout-sidebar-inline-size':
-    'breedte van de zijbalk in PageBody, per pagina te overschrijven',
-  '--dsn-sidebar-layout-toc-inline-size':
-    'breedte van de inhoudsopgave in PageBody, per pagina te overschrijven',
 };
 
 type TokenTree = { [key: string]: TokenTree | string };
