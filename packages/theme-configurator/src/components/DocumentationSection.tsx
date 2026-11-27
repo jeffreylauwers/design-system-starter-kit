@@ -59,14 +59,16 @@ export function DocumentationSection() {
           <li>
             <strong>Kies een basiskleur</strong> per kleurgroep via het kleurvak
             links in elke rij. De basiskleur bepaalt de tint (hue) van het
-            volledige palet. Je kunt meerdere groepen tegelijk beheren voor
-            bijvoorbeeld <em>accent</em>, <em>neutral</em> en <em>negative</em>.
+            volledige palet. Je begint bij de kleuren van het thema Start. Een
+            groep met &ldquo;Volgt accent-1&rdquo; verwijst naar accent-1; kies
+            je er een eigen kleur voor, dan volgt hij niet meer.
           </li>
           <li>
-            <strong>Hernoem een groep</strong> door op de groepsnaam te klikken.
-            De naam wordt gebruikt als tokennaam bij export (bijv.{' '}
-            <code className="doc-code">accent-1</code> wordt{' '}
-            <code className="doc-code">dsn.color.accent-1.*</code>).
+            <strong>Voeg een eigen groep toe</strong> onder de tabel, en hernoem
+            hem door op de groepsnaam te klikken. De naam wordt de tokennaam bij
+            export (bijv. <code className="doc-code">brand</code> wordt{' '}
+            <code className="doc-code">dsn.color.brand.*</code>). De tien
+            groepen van Start horen bij de tokenstructuur en blijven staan.
           </li>
           <li>
             <strong>Pas de intensiteit aan</strong> via de schuifregelaar (0,3×
@@ -75,9 +77,7 @@ export function DocumentationSection() {
           </li>
           <li>
             <strong>Wissel tussen light en dark modus</strong> om te zien hoe
-            het palet eruitziet op donkere achtergronden. Exporteer elke modus
-            apart als <code className="doc-code">colors-light.json</code> en{' '}
-            <code className="doc-code">colors-dark.json</code>.
+            het palet eruitziet op donkere achtergronden.
           </li>
           <li>
             <strong>Toon de inverse tokens</strong> via de
@@ -95,11 +95,22 @@ export function DocumentationSection() {
             toolbar:
             <ul className="doc-list doc-list--nested">
               <li>
-                <strong>DTCG</strong> — JSON in het W3C Design Token Community
-                Group-formaat, klaar voor Style Dictionary v4.
+                <strong>theme.config.json</strong>: de basiskleuren en
+                verwijzingen. Zet hem in{' '}
+                <code className="doc-code">
+                  packages/design-tokens/src/tokens/themes/start/
+                </code>{' '}
+                en draai <code className="doc-code">pnpm build:tokens</code>: de
+                build schrijft de kleuren zelf.
               </li>
               <li>
-                <strong>Generic</strong> — een platte JSON met alle hex-waarden
+                <strong>colors-light.json / colors-dark.json</strong>: het
+                volledige kleurbestand van de gekozen modus, met de kleuren van
+                Start als basis. Alles wat de configurator niet instelt
+                (schaduw, focus, beschrijvingen) gaat ongewijzigd mee.
+              </li>
+              <li>
+                <strong>Generic</strong>: een platte JSON met alle hex-waarden
                 voor gebruik in tools die DTCG niet ondersteunen.
               </li>
             </ul>

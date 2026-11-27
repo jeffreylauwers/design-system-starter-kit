@@ -27,6 +27,14 @@ The package ships its TypeScript source (`exports` points at `src/index.ts`). Vi
 
 Lightness is adjusted until a rule is met, on the value as generated and on the value rounded to the precision of the `oklch()` export. `src/palette.test.ts` checks every rule on 30 base colors, both modes and three intensities.
 
+## Fluid scale
+
+`fluid.ts` holds the calculation behind `fluid({min}, {max})` (DR-2026-13): `toPx`, `splitTopLevel`, `fluidClamp` and `readFluidViewport`. The `dsn/fluid` transform in design-tokens' `config.js` and the theme configurator both use it, so a preview shows exactly the clamp() the build writes.
+
+## Token trees to CSS
+
+`mergeTokenTrees()` merges token JSON the way Style Dictionary merges source files: a later tree wins per token. `flattenTokens()` turns the result into CSS custom properties as the build writes them with `outputReferences`: a reference stays a `var()`, a fluid token becomes a clamp(), and `transparent` becomes `rgba(0, 0, 0, 0)` like Style Dictionary's color transform. For Start, all 600 semantic tokens per mode match `dist/css` (tested in the theme configurator).
+
 ## Theme config
 
 ```json

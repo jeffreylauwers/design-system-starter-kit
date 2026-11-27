@@ -130,7 +130,8 @@ design-system-starter-kit/
 │   │   └── src/                 # Volledige indeling: "Opbouw van de code" in de README
 │   │       ├── contract.js      # Wat de JSON betekent, gedeeld met de generators
 │   │       └── components.js    # Import van een component set (volgorde van de stappen)
-│   ├── theme-engine/            # Kleurgroepen in OKLCH + contrastregels (privé, geen build)
+│   ├── theme-engine/            # Kleurgroepen in OKLCH, contrastregels, fluid-schaal (privé, geen build)
+│   ├── theme-configurator/      # Theme configurator (Vite + React), op GitHub Pages
 │   └── storybook/               # Documentation site
 │       ├── .storybook/
 │       │   ├── main.ts          # Storybook config + multilevel-sort

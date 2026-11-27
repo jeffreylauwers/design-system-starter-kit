@@ -10,6 +10,17 @@ All notable changes to this project are documented in this file.
 
 Nog niet gepubliceerde wijzigingen. Schrijf nieuwe changelog-entries hieronder; bij de volgende release wordt deze kop gepromoveerd naar het definitieve versienummer.
 
+### theme-configurator: de color palette generator heet nu theme configurator
+
+Het fundament voor de theme configurator (#522, onderdeel van #520).
+
+- **Nieuwe naam en URL:** het package heet `@dsn-starter-kit/theme-configurator` (`packages/theme-configurator/`) en staat op `/theme-configurator/`. Het oude adres `/color-palette-generator/` stuurt door.
+- **Begint bij Start:** de configurator start met de basiskleuren en verwijzingen uit `themes/start/theme.config.json`, niet meer met eigen standaardkleuren. De tien groepen van Start blijven staan; eigen groepen kun je toevoegen, hernoemen en verwijderen.
+- **Export op het sjabloon van Start:** `colors-light.json` en `colors-dark.json` zijn het volledige bestand van Start met de ingestelde kleuren; schaduw, focus, beschrijvingen en de rest gaan ongewijzigd mee. Nieuw is de export van `theme.config.json`: zet die in `themes/start/` en `pnpm build:tokens` schrijft de kleuren. Met de standaardinstellingen is de export byte voor byte gelijk aan Start, en een test bouwt hem met de Style Dictionary-config.
+- **Sessie bewaard:** de laatste instellingen blijven in localStorage. "Terug naar Start" begint opnieuw.
+- **theme-engine:** de fluid-berekening (`toPx`, `splitTopLevel`, de clamp-formule) verhuist uit `config.js` naar `@dsn-starter-kit/theme-engine`, zodat de configurator dezelfde `clamp()` uitrekent als de build. De build-output is ongewijzigd. Nieuw zijn ook `mergeTokenTrees` en `flattenTokens`, waarmee de configurator alle semantische tokens uitrekent zoals de build ze in CSS schrijft (`resolveTheme`).
+- **`.claude/launch.json`:** de configurator start op poort 5174; de poort ging eerst niet door.
+
 ### design-tokens: Start-kleuren komen uit de theme engine
 
 De kleurgroepen van Start worden niet meer met de hand bijgehouden. `themes/start/theme.config.json` legt per groep een basiskleur vast, of een verwijzing naar een andere groep, en `pnpm --filter @dsn-starter-kit/design-tokens generate:colors` schrijft daaruit `colors-light.json` en `colors-dark.json` (#521).
