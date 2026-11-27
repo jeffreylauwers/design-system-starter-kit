@@ -230,11 +230,20 @@ const projectTypeSources = {
   'information-dense': ['src/tokens/project-types/information-dense/*.json'],
 };
 
-// Klasse waarmee een density op runtime gekozen wordt (zie createProjectTypeScopedConfig).
+// Klassen waarmee thema, mode en density op runtime gekozen worden. De scoped
+// bestanden in dist/css/scoped/ gebruiken ze als selector (zie scoped.js).
+// De eerste waarde van elke as staat al op :root.
 const densitySelectors = {
-  default: ':root',
+  default: ':root, .dsn-density-default',
   'information-dense': '.dsn-density-dense',
 };
+
+// Dark geldt ook voor een thema-container binnen een dsn-mode-dark ouder.
+function themeModeSelector(theme, mode) {
+  return mode === 'light'
+    ? `.dsn-theme-${theme}`
+    : `.dsn-theme-${theme}.dsn-mode-${mode}, .dsn-mode-${mode} .dsn-theme-${theme}`;
+}
 
 // =============================================================================
 // CONFIGURATION GENERATORS
@@ -327,121 +336,6 @@ function createFullConfig(theme, mode, projectType) {
 }
 
 /**
- * Creates a scoped CSS configuration for mode switching
- * These files contain ONLY color overrides for class-based mode switching.
- * They use outputReferences to keep CSS custom property references intact,
- * allowing them to work as overlays on top of a full config.
- */
-function createModeScopedConfig(theme, mode) {
-  const selector =
-    mode === 'light'
-      ? `.dsn-theme-${theme}`
-      : `.dsn-theme-${theme}.dsn-mode-dark, .dsn-mode-dark .dsn-theme-${theme}`;
-
-  return {
-    source: [
-      // Only color tokens for this theme/mode
-      `src/tokens/themes/${theme}/colors-${mode}.json`,
-    ],
-    platforms: {
-      css: {
-        transformGroup: 'css',
-        buildPath: 'dist/css/scoped/',
-        files: [
-          {
-            destination: `${theme}-${mode}.css`,
-            format: 'css/variables-scoped',
-            options: { selector, outputReferences: true },
-          },
-        ],
-      },
-    },
-  };
-}
-
-/**
- * Creates a scoped CSS configuration for project type switching
- * Deze bestanden bevatten alleen de schalen die per density verschillen: de
- * font-sizes, de spacing-maten en de overrides uit de project-type map.
- *
- * Het start-thema zit in de source zodat de referenties naar min/max-tokens
- * oplossen (de kleuren alleen omdat base.json ernaar verwijst), maar alleen
- * bovenstaande tokens komen in de output. Het viewport-bereik komt ook uit
- * het start-thema.
- */
-function isScaleToken(token) {
-  const [, group, category, size] = token.path;
-  if (group === 'text')
-    return (
-      category === 'font-size' &&
-      token.path.length === 4 &&
-      size !== 'min' &&
-      size !== 'max'
-    );
-  return (
-    group === 'space' &&
-    token.path.length === 4 &&
-    size !== 'min' &&
-    size !== 'max'
-  );
-}
-
-function createProjectTypeScopedConfig(projectType) {
-  const selector = densitySelectors[projectType];
-
-  return {
-    source: [
-      'src/tokens/themes/start/base.json',
-      'src/tokens/themes/start/colors-light.json',
-      ...projectTypeSources[projectType],
-    ],
-    platforms: {
-      css: {
-        transformGroup: 'dsn/css',
-        fluidViewport: readFluidViewport('start'),
-        buildPath: 'dist/css/scoped/',
-        files: [
-          {
-            destination: `density-${projectType}.css`,
-            format: 'css/variables-scoped',
-            filter: (token) =>
-              isScaleToken(token) || token.filePath.includes('/project-types/'),
-            options: { selector, outputReferences },
-          },
-        ],
-      },
-    },
-  };
-}
-
-/**
- * Creates a scoped CSS configuration for theme base tokens (non-color, non-font-size)
- * Used for theme switching without rebuilding everything.
- * Uses outputReferences to keep CSS custom property references intact.
- */
-function createThemeBaseScopedConfig(theme) {
-  return {
-    source: [`src/tokens/themes/${theme}/base.json`],
-    platforms: {
-      css: {
-        transformGroup: 'css',
-        buildPath: 'dist/css/scoped/',
-        files: [
-          {
-            destination: `theme-${theme}-base.css`,
-            format: 'css/variables-scoped',
-            options: {
-              selector: `.dsn-theme-${theme}`,
-              outputReferences: true,
-            },
-          },
-        ],
-      },
-    },
-  };
-}
-
-/**
  * Creates a scoped CSS file per thema met light-mode kleurwaarden gescoopt op .dsn-hero--image.
  * Dit zorgt dat de image/image-blend Hero altijd in light-mode kleuren rendert,
  * ongeacht of de pagina in dark mode staat. De :root dark-mode waarden worden
@@ -520,29 +414,6 @@ themes.forEach((theme) => {
   });
 });
 
-// Generate scoped configurations for runtime switching
-// Note: Some scoped configs have cross-file token references that prevent standalone building.
-// Currently working scoped configs:
-// - density configs (font-sizes + spacing, referenties naar het start-thema)
-// - wireframe color configs (simple aliases)
-// Non-working due to cross-references:
-// - theme-base configs (icon.size references font-size from typography)
-// - start color configs (form-control.read-only.border-color references dsn.color.transparent from base)
-const scopedConfigs = {
-  // Density configs: font-sizes en spacing per project type
-  ...Object.fromEntries(
-    projectTypes.map((pt) => [
-      `density-${pt}`,
-      createProjectTypeScopedConfig(pt),
-    ])
-  ),
-  // Kleurconfigs per thema en mode, voor runtime omschakelen zonder herbouw.
-  'start-light-scoped': createModeScopedConfig('start', 'light'),
-  'start-dark-scoped': createModeScopedConfig('start', 'dark'),
-  'wireframe-light-scoped': createModeScopedConfig('wireframe', 'light'),
-  'wireframe-dark-scoped': createModeScopedConfig('wireframe', 'dark'),
-};
-
 // Legacy aliases for backward compatibility
 const legacyConfigs = createLegacyConfig();
 
@@ -553,16 +424,14 @@ export {
   projectTypes,
   projectTypeSources,
   readFluidViewport,
+  densitySelectors,
+  themeModeSelector,
 
   // All configurations
   fullConfigs,
-  scopedConfigs,
 
   // Legacy aliases (backward compatibility)
   createFullConfig,
-  createModeScopedConfig,
-  createProjectTypeScopedConfig,
-  createThemeBaseScopedConfig,
 };
 
 export const light = legacyConfigs.light;

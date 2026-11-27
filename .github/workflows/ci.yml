@@ -43,6 +43,10 @@ jobs:
       - name: Type check
         run: pnpm type-check
 
+      # tests/scoped-tokens.test.ts meet de scoped tokens in een echte browser.
+      - name: Install Playwright Chromium
+        run: pnpm exec playwright install --with-deps chromium
+
       - name: Test
         run: pnpm test
 
