@@ -10,6 +10,15 @@ All notable changes to this project are documented in this file.
 
 Nog niet gepubliceerde wijzigingen. Schrijf nieuwe changelog-entries hieronder; bij de volgende release wordt deze kop gepromoveerd naar het definitieve versienummer.
 
+### design-tokens: omschakelen met klassen geldt nu ook voor componenten
+
+Wie thema, mode of dichtheid met klassen koos (`css` plus `css/scoped/*`, de route uit `docs/00-getting-started.md`), kreeg alleen andere primitieven. Componenttokens zoals `--dsn-button-default-color` staan op `:root` als `var()` en worden daar opgelost, dus een knop in een container met `dsn-theme-start dsn-mode-dark` hield de tekstkleur van light: donkere tekst op een donkere achtergrond. In Chromium gemeten weken in Start dark 324 van de 1485 tokens af van `css/dark`. Met `dsn-theme-wireframe` veranderden lettertype, radii en lijnen helemaal niet mee, en `dsn-density-dense` liet koppen, marges en paddings fluid.
+
+- **Scoped bestanden herhalen hun afhankelijken:** `css/scoped/{start,wireframe}-{light,dark}` bevatten nu elke token die per thema of mode verschilt plus alles wat ernaar verwijst (906 tokens, was 337), `css/scoped/density-*` hetzelfde voor dichtheid (340, was 60 en 62). De declaraties komen letterlijk uit de volledige configs. De klassenroute geeft zo exact dezelfde waarden als de volledige config van die combinatie, ook gecombineerd en genest, in elke importvolgorde (DR-2026-18).
+- **`dsn-density-default` bestaat nu:** `css/scoped/density-default` stond alleen op `:root`, waardoor de klasse uit de documentatie niets deed. Hij zet binnen een dense container de default-maten terug.
+- **Nieuwe browsertest:** `tests/scoped-tokens.test.ts` vergelijkt in Chromium (Playwright) veertien scenario's met de volledige config, `tests/scoped-tokens-build.test.ts` legt de afleidingsregels vast. `playwright` is een devDependency van de root, en de CI-job die `pnpm test` draait installeert Chromium. Lokaal: `pnpm exec playwright install chromium`.
+- **Ongewijzigd:** de volledige configs (`css`, `css/dark`, SCSS, JS, JSON), de hero-image-bestanden en Storybook, die de volledige config op `:root` laadt. De exports blijven gelijk; `variables-dark-scoped.css` volgt `scoped/start-dark.css`.
+
 ### theme-configurator: de color palette generator heet nu theme configurator
 
 Het fundament voor de theme configurator (#522, onderdeel van #520).

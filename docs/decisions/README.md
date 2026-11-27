@@ -25,6 +25,7 @@ Een decision record documenteert **waarom** iets is zoals het is — niet alleen
 | [DR-2026-15](DR-2026-15-schaduwen-als-effect-styles-met-gebonden-kleur.md) | Schaduwen worden effect styles met een kleur-variable                    | Accepted |
 | [DR-2026-16](DR-2026-16-manifest-als-gecontroleerde-api-beschrijving.md)   | De manifest wordt een gecontroleerde API-beschrijving, geen contract     | Accepted |
 | [DR-2026-17](DR-2026-17-figma-contract-in-de-plugin.md)                    | Het contract tussen de Figma-generators en de plugin staat in de plugin  | Accepted |
+| [DR-2026-18](DR-2026-18-scoped-tokens-herhalen-hun-afhankelijken.md)       | Scoped token-bestanden herhalen elke token die van hun as afhangt        | Accepted |
 
 ## Een nieuw record toevoegen
 
