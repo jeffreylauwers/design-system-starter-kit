@@ -1,8 +1,8 @@
 import { useEffect, useMemo, useState } from 'react';
-import { PaletteGrid } from './components/PaletteGrid';
-import { Toolbar } from './components/Toolbar';
-import { DocumentationSection } from './components/DocumentationSection';
+import { Heading, Note, Paragraph } from '@dsn-starter-kit/components-react';
 import { isValidColor } from '@dsn-starter-kit/theme-engine';
+import { SegmentedControl } from './candidates/SegmentedControl/SegmentedControl';
+import { Tabs } from './candidates/Tabs/Tabs';
 import { exportGeneric, downloadJson } from './engine/export';
 import {
   defaultConfig,
@@ -12,10 +12,17 @@ import {
 } from './model/theme';
 import type { ThemeConfig } from './model/theme';
 import { clearSession, loadSession, saveSession } from './model/storage';
-import type { ColorMode, DisplayFormat } from './types';
+import { AboutSection } from './panel/AboutSection';
+import { ColorPanel } from './panel/ColorPanel';
+import type { DisplayFormat } from './panel/GroupEditor';
+import { ExportSection } from './panel/ExportSection';
+import { copyText } from './panel/copy';
+import { Preview } from './preview/Preview';
+import type { ColorMode } from './types';
 import './App.css';
 
 type Groups = ThemeConfig['colors']['groups'];
+type View = 'settings' | 'preview';
 
 function withGroups(config: ThemeConfig, groups: Groups): ThemeConfig {
   return { ...config, colors: { ...config.colors, groups } };
@@ -29,6 +36,20 @@ function newGroupName(config: ThemeConfig): string {
   }
 }
 
+function Upcoming({ children }: { children: string }) {
+  return (
+    <Note variant="info" heading="Komt binnenkort" headingLevel={3}>
+      <Paragraph>{children}</Paragraph>
+    </Note>
+  );
+}
+
+/**
+ * The theme configurator: settings on the left, the preview on the right;
+ * on a small screen one of the two, with a switch at the top. The
+ * configurator itself is always Start dark (see main.tsx); only the preview
+ * shows the theme being configured.
+ */
 export function App() {
   // The last session, or Start. Read once, on the first render.
   const [initial] = useState(loadSession);
@@ -38,12 +59,20 @@ export function App() {
   const [mode, setMode] = useState<ColorMode>(initial?.mode ?? 'light');
   const [format, setFormat] = useState<DisplayFormat>(initial?.format ?? 'hex');
   const [showInverse, setShowInverse] = useState(initial?.showInverse ?? false);
+  const [view, setView] = useState<View>('settings');
+  const [announcement, setAnnouncement] = useState('');
 
   useEffect(() => {
     saveSession({ version: 1, config, mode, format, showInverse });
   }, [config, mode, format, showInverse]);
 
   const groups = useMemo(() => groupViews(config, mode), [config, mode]);
+
+  /** Says something through the live region, also when it is the same. */
+  function announce(message: string) {
+    setAnnouncement('');
+    window.setTimeout(() => setAnnouncement(message), 50);
+  }
 
   function handleIntensityChange(intensity: number) {
     setConfig((prev) => ({ ...prev, colors: { ...prev.colors, intensity } }));
@@ -74,6 +103,7 @@ export function App() {
         )
       )
     );
+    announce(`Groep ${name} heet nu ${newName}`);
     return null;
   }
 
@@ -83,92 +113,140 @@ export function App() {
       delete groups[name];
       return withGroups(prev, groups);
     });
+    announce(`Groep ${name} verwijderd`);
   }
 
   function handleAddGroup() {
+    const name = newGroupName(config);
     setConfig((prev) =>
-      withGroups(prev, {
-        ...prev.colors.groups,
-        [newGroupName(prev)]: { base: '#6366f1' },
-      })
+      withGroups(prev, { ...prev.colors.groups, [name]: { base: '#6366f1' } })
     );
+    announce(`Groep ${name} toegevoegd onderaan de kleurgroepen`);
+  }
+
+  function handleCopy(value: string) {
+    copyText(value)
+      .then(() => announce(`Gekopieerd: ${value}`))
+      .catch(() => announce('Kopiëren is niet gelukt'));
   }
 
   function handleReset() {
     clearSession();
     setConfig(defaultConfig());
+    announce('Alle instellingen staan weer op Start');
   }
 
-  function handleExportColors() {
-    const file = mode === 'light' ? 'colors-light.json' : 'colors-dark.json';
-    downloadJson(exportTheme(config)[file], file);
-  }
-
-  function handleExportConfig() {
-    downloadJson(exportTheme(config)['theme.config.json'], 'theme.config.json');
-  }
-
-  function handleExportGeneric() {
-    downloadJson(exportGeneric(groups), 'colors.json');
-  }
+  const files = () => exportTheme(config);
 
   return (
-    <div className={`app app--${mode}`}>
-      <header className="app__header">
-        <div className="app__header-inner">
-          <h1 className="app__title">DSN Theme Configurator</h1>
-          <p className="app__subtitle">
-            Genereer een volledig semantisch OKLCH kleurenpalet op basis van een
-            basiskleur per groep. Contrast wordt automatisch gecontroleerd
-            conform WCAG 2.x. Je begint bij het thema Start.
-          </p>
-        </div>
+    <div className="tc-app" data-view={view}>
+      <header className="tc-header">
+        <Heading level={1} appearance="heading-4">
+          Theme configurator
+        </Heading>
+        <SegmentedControl<View>
+          className="tc-view-switch"
+          legend="Weergave"
+          hideLegend
+          options={[
+            { value: 'settings', label: 'Instellen' },
+            { value: 'preview', label: 'Voorbeeld' },
+          ]}
+          value={view}
+          onChange={setView}
+        />
       </header>
 
-      <main className="app__main">
-        <Toolbar
-          mode={mode}
-          intensity={config.colors.intensity}
-          format={format}
-          showInverse={showInverse}
-          onModeChange={setMode}
-          onIntensityChange={handleIntensityChange}
-          onFormatChange={setFormat}
-          onShowInverseChange={setShowInverse}
-          onExportColors={handleExportColors}
-          onExportConfig={handleExportConfig}
-          onExportGeneric={handleExportGeneric}
-          onReset={handleReset}
-        />
-
-        <PaletteGrid
-          groups={groups}
-          format={format}
-          showInverse={showInverse}
-          onBaseColorChange={handleBaseColorChange}
-          onRename={handleRename}
-          onDelete={handleDelete}
-          onAddGroup={handleAddGroup}
-        />
-
-        <div className="app__legend">
-          <div className="app__legend-item">
-            <span className="app__legend-badge app__legend-badge--pass">✓</span>
-            <span>
-              Contrast voldoet aan WCAG-eis (4.5:1 tekst / 3:1 border)
-            </span>
+      <main className="tc-main">
+        <section className="tc-panel" aria-labelledby="panel-heading">
+          <Heading level={2} id="panel-heading" className="dsn-visually-hidden">
+            Instellen
+          </Heading>
+          <div className="tc-panel__content">
+            <Tabs
+              label="Onderdelen van het thema"
+              tabs={[
+                {
+                  id: 'color',
+                  label: 'Kleur',
+                  content: (
+                    <ColorPanel
+                      groups={groups}
+                      mode={mode}
+                      intensity={config.colors.intensity}
+                      format={format}
+                      showInverse={showInverse}
+                      onIntensityChange={handleIntensityChange}
+                      onFormatChange={setFormat}
+                      onShowInverseChange={setShowInverse}
+                      onBaseColorChange={handleBaseColorChange}
+                      onRename={handleRename}
+                      onDelete={handleDelete}
+                      onAddGroup={handleAddGroup}
+                      onCopy={handleCopy}
+                    />
+                  ),
+                },
+                {
+                  id: 'typography',
+                  label: 'Typografie',
+                  content: (
+                    <Upcoming>
+                      Lettertypen en lettergroottes instellen.
+                    </Upcoming>
+                  ),
+                },
+                {
+                  id: 'space',
+                  label: 'Ruimte',
+                  content: <Upcoming>De ruimteschaal instellen.</Upcoming>,
+                },
+                {
+                  id: 'shape',
+                  label: 'Vorm',
+                  content: (
+                    <Upcoming>Hoekafronding en lijndiktes instellen.</Upcoming>
+                  ),
+                },
+                {
+                  id: 'shadow',
+                  label: 'Schaduw',
+                  content: <Upcoming>Schaduwen instellen.</Upcoming>,
+                },
+              ]}
+            />
+            <ExportSection
+              onExportConfig={() =>
+                downloadJson(files()['theme.config.json'], 'theme.config.json')
+              }
+              onExportColors={(exportMode) => {
+                const file = `colors-${exportMode}.json` as const;
+                downloadJson(files()[file], file);
+              }}
+              onExportGeneric={() =>
+                downloadJson(exportGeneric(groups), 'colors.json')
+              }
+              onReset={handleReset}
+            />
+            <AboutSection />
           </div>
-          <div className="app__legend-item">
-            <span className="app__legend-badge app__legend-badge--fail">✗</span>
-            <span>Contrast voldoet niet — L wordt automatisch bijgesteld</span>
-          </div>
-          <div className="app__legend-item">
-            <span>Klik op een swatch om de kleurwaarde te kopiëren</span>
-          </div>
-        </div>
+        </section>
 
-        <DocumentationSection />
+        <section className="tc-preview" aria-labelledby="preview-heading">
+          <Heading
+            level={2}
+            id="preview-heading"
+            className="dsn-visually-hidden"
+          >
+            Voorbeeld
+          </Heading>
+          <Preview config={config} mode={mode} onModeChange={setMode} />
+        </section>
       </main>
+
+      <div role="status" className="dsn-visually-hidden">
+        {announcement}
+      </div>
     </div>
   );
 }

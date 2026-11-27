@@ -1,123 +1,198 @@
-:root {
-  --bg-page: #f8f9fa;
-  --bg-surface: #ffffff;
-  --bg-surface-raised: #f1f3f5;
-  --bg-hover: #e9ecef;
-  --bg-input: #ffffff;
-  --border-subtle: #dee2e6;
-  --border-default: #ced4da;
-  --text-primary: #1a1a2e;
-  --text-secondary: #495057;
-  --text-muted: #868e96;
-  --accent: #2563eb;
-  --accent-hover: #1d4ed8;
-}
+/**
+ * Layout of the theme configurator.
+ *
+ * The configurator's own classes start with tc-; dsn- is for design system
+ * components. Values come from tokens. The exceptions are the breakpoint
+ * (custom properties do not work in a media query; 64em is the lg breakpoint
+ * of the starter kit) and two layout sizes below.
+ */
 
-.app--dark {
-  --bg-page: #0f1117;
-  --bg-surface: #1a1d27;
-  --bg-surface-raised: #22263a;
-  --bg-hover: #2a2f44;
-  --bg-input: #1a1d27;
-  --border-subtle: #2d3348;
-  --border-default: #3d4460;
-  --text-primary: #e8eaf0;
-  --text-secondary: #a0a8c0;
-  --text-muted: #6b7497;
-  --accent: #60a5fa;
-  --accent-hover: #93c5fd;
-}
+.tc-app {
+  /* Width of the settings panel next to the preview. */
+  --tc-panel-inline-size: 25rem;
+  /* Smallest width of a color swatch in the grid. */
+  --tc-swatch-min-inline-size: 6.5rem;
 
-*,
-*::before,
-*::after {
-  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  block-size: 100dvh;
+  background-color: var(--dsn-color-neutral-bg-document);
+  color: var(--dsn-color-neutral-color-document);
+  font-family: var(--dsn-text-font-family-default);
+  font-size: var(--dsn-text-font-size-md);
+  line-height: var(--dsn-text-line-height-md);
 }
 
 body {
   margin: 0;
-  font-family:
-    -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-  line-height: 1.5;
+  background-color: var(--dsn-color-neutral-bg-document);
 }
 
-.app {
-  min-height: 100vh;
-  background: var(--bg-page);
-  color: var(--text-primary);
-  transition:
-    background 0.2s,
-    color 0.2s;
+code {
+  font-family: var(--dsn-text-font-family-monospace);
+  overflow-wrap: anywhere;
 }
 
-.app__header {
-  background: var(--bg-surface);
-  border-bottom: 1px solid var(--border-default);
-  padding: 20px 24px 16px;
-}
+/* ===========================
+   Header
+   =========================== */
 
-.app__header-inner {
-  max-width: 1800px;
-  margin: 0 auto;
-}
-
-.app__title {
-  margin: 0 0 6px;
-  font-size: 22px;
-  font-weight: 700;
-  color: var(--text-primary);
-  letter-spacing: -0.02em;
-}
-
-.app__subtitle {
-  margin: 0;
-  font-size: 14px;
-  color: var(--text-muted);
-  max-width: 680px;
-}
-
-.app__main {
-  max-width: 1800px;
-  margin: 0 auto;
-  padding: 20px 24px 40px;
-}
-
-.app__legend {
+.tc-header {
   display: flex;
   flex-wrap: wrap;
-  gap: 16px;
-  margin-top: 16px;
-  padding: 12px 16px;
-  background: var(--bg-surface);
-  border: 1px solid var(--border-subtle);
-  border-radius: 8px;
-  font-size: 13px;
-  color: var(--text-secondary);
-}
-
-.app__legend-item {
-  display: flex;
   align-items: center;
-  gap: 6px;
+  justify-content: space-between;
+  gap: var(--dsn-space-row-sm) var(--dsn-space-column-md);
+  padding-block: var(--dsn-space-block-sm);
+  padding-inline: var(--dsn-space-inline-lg);
+  border-block-end: var(--dsn-border-width-thin) solid
+    var(--dsn-color-neutral-border-subtle);
 }
 
-.app__legend-badge {
-  width: 18px;
-  height: 18px;
-  border-radius: 50%;
+.tc-view-switch {
+  flex: 1 1 auto;
+  max-inline-size: var(--dsn-form-control-inline-size-lg);
+}
+
+/* ===========================
+   Main: panel and preview
+   =========================== */
+
+.tc-main {
+  display: grid;
+  flex: 1 1 auto;
+  /* minmax(0, …): the available space sets the width, never the content.
+     Otherwise a 1280px preview frame widens the column it is measured in. */
+  grid-template-columns: minmax(0, 1fr);
+  grid-template-rows: minmax(0, 1fr);
+  min-block-size: 0;
+}
+
+.tc-panel {
+  min-block-size: 0;
+  overflow-y: auto;
+}
+
+.tc-panel__content {
+  display: grid;
+  /* minmax(0, …): a wide child (the tab list) scrolls itself instead of
+     widening the panel. */
+  grid-template-columns: minmax(0, 1fr);
+  gap: var(--dsn-space-block-4xl);
+  padding-block: var(--dsn-space-block-lg) var(--dsn-space-block-4xl);
+  padding-inline: var(--dsn-space-inline-lg);
+}
+
+.tc-preview {
   display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 10px;
-  font-weight: 700;
-  color: white;
-  flex-shrink: 0;
+  flex-direction: column;
+  min-block-size: 0;
 }
 
-.app__legend-badge--pass {
-  background: #16a34a;
+/* Small screen: one of the two, chosen with the switch in the header. */
+@media not (min-width: 64em) {
+  .tc-app[data-view='preview'] .tc-panel,
+  .tc-app[data-view='settings'] .tc-preview {
+    display: none;
+  }
 }
 
-.app__legend-badge--fail {
-  background: #dc2626;
+/* From lg: the panel on the left, scrolling on its own; the preview right. */
+@media (min-width: 64em) {
+  .tc-view-switch {
+    display: none;
+  }
+
+  .tc-main {
+    grid-template-columns:
+      minmax(0, var(--tc-panel-inline-size))
+      minmax(0, 1fr);
+  }
+
+  .tc-panel {
+    border-inline-end: var(--dsn-border-width-thin) solid
+      var(--dsn-color-neutral-border-subtle);
+  }
+}
+
+/* ===========================
+   Color groups
+   =========================== */
+
+.tc-groups {
+  display: grid;
+  gap: var(--dsn-space-block-sm);
+}
+
+.tc-track {
+  display: grid;
+  gap: var(--dsn-space-text-xs);
+}
+
+.tc-track__label {
+  margin: 0;
+  font-size: var(--dsn-text-font-size-sm);
+  font-weight: var(--dsn-text-font-weight-bold);
+}
+
+.tc-swatches {
+  display: grid;
+  grid-template-columns: repeat(
+    auto-fill,
+    minmax(min(100%, var(--tc-swatch-min-inline-size)), 1fr)
+  );
+  gap: var(--dsn-space-inline-xs);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.tc-swatches > li {
+  display: grid;
+}
+
+.tc-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--dsn-space-inline-sm);
+}
+
+/* ===========================
+   Preview
+   =========================== */
+
+.tc-preview__inner {
+  display: flex;
+  flex: 1 1 auto;
+  flex-direction: column;
+  min-block-size: 0;
+}
+
+.tc-preview__toolbar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  gap: var(--dsn-space-row-md) var(--dsn-space-column-lg);
+  padding-block: var(--dsn-space-block-md);
+  padding-inline: var(--dsn-space-inline-lg);
+  border-block-end: var(--dsn-border-width-thin) solid
+    var(--dsn-color-neutral-border-subtle);
+}
+
+.tc-preview__stage {
+  flex: 1 1 auto;
+  min-block-size: 0;
+  overflow: hidden;
+  background-color: var(--dsn-color-neutral-bg-subtle);
+}
+
+.tc-preview__viewport {
+  margin-inline: auto;
+  overflow: hidden;
+}
+
+.tc-preview__frame {
+  display: block;
+  border: 0;
+  transform-origin: 0 0;
 }
