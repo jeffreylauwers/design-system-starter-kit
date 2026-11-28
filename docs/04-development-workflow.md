@@ -47,6 +47,7 @@ pnpm --filter @dsn-starter-kit/design-tokens watch
 pnpm dev
 
 # Run tests (2121 tests across 85 test suites)
+# tests/scoped-tokens.test.ts draait in Chromium: eenmalig `pnpm exec playwright install chromium`
 pnpm test
 
 # Run tests in watch mode
@@ -780,7 +781,7 @@ GitHub Actions workflow (`.github/workflows/ci.yml`):
 
 1. **Lint** - ESLint check
 2. **Type-check** - TypeScript compilation
-3. **Test** - Run all tests
+3. **Test** - Run all tests. De job installeert eerst Playwright Chromium, omdat `tests/scoped-tokens.test.ts` de scoped tokens in een echte browser meet.
 4. **Build** - Build all packages
 5. **Figma** - Bouwt de Figma-keten (`pnpm build:figma`, met Playwright Chromium) en draait `pnpm test:figma-plugin`. Een aparte job na de rest, omdat hij een browser nodig heeft.
 

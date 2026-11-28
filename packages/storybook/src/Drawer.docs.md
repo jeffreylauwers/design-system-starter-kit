@@ -124,6 +124,10 @@ De non-modale variant (`popover="manual"`) opent met `popovertarget="drawer-id"`
 
 <!-- tokens: drawer -->
 
+De verduistering achter het modale zijpaneel (`::backdrop`) gebruikt dezelfde tokens als [Backdrop](?path=/docs/components-backdrop--docs): kleur, dekking en vervaging. De non-modale variant heeft geen verduistering.
+
+<!-- tokens: --dsn-backdrop-background-color --dsn-backdrop-opacity --dsn-backdrop-blur -->
+
 ## Toegankelijkheid
 
 - Het zijpaneel gebruikt het native `<dialog>` element met impliciete `role="dialog"` semantiek.

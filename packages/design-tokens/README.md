@@ -172,7 +172,11 @@ import tokens from '@dsn-starter-kit/design-tokens';
 
 ### Runtime Theme Switching
 
-For applications that need to switch themes at runtime, import the full configuration CSS files dynamically:
+The simplest way is with classes: import `css` plus the files from `css/scoped/` and set `dsn-theme-{start|wireframe}`, `dsn-mode-dark` and `dsn-density-dense` on a container. See "Theming" in [`docs/00-getting-started.md`](../../docs/00-getting-started.md).
+
+Each scoped file holds the tokens that differ on its axis plus every token that refers to them, component tokens included, copied from the full configurations. The build derives them in `src/config/scoped.js`, and `tests/scoped-tokens.test.ts` checks in Chromium that the classes give the same values as the full configuration (see DR-2026-18).
+
+Alternatively, swap the full configuration CSS file dynamically:
 
 ```ts
 function loadTheme(theme: string, mode: string, projectType: string) {

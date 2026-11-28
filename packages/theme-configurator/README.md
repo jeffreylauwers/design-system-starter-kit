@@ -66,7 +66,7 @@ Het voorbeeld rendert met React via een portal in een iframe met een eigen docum
 - **Eigen viewport:** de media queries van de componenten reageren op de breedte van de iframe. Een viewport breder dan de beschikbare ruimte wordt verkleind getoond.
 - **Niets lekt:** de configurator zelf blijft Start dark. `App.test.tsx` bewijst dat een wijziging alleen de iframe raakt.
 
-De configurator gebruikt bewust de volledige dark-configuratie (`design-tokens/css/dark`) en niet de klassen `dsn-theme-start dsn-mode-dark` met `css/scoped/start-dark`. Die scoped bestanden bevatten alleen kleurtokens, en componenttokens lossen hun `var()` op `:root` op: met de klassen blijven de componenten Start light.
+De configurator zelf wisselt nooit van thema of mode, dus hij laadt gewoon de volledige dark-configuratie (`design-tokens/css/dark`) op `:root`, zonder klassen. Ook het voorbeeld heeft met zijn eigen document geen klassen nodig: het laadt per modus en dichtheid de volledige configuratie.
 
 ### Tests
 

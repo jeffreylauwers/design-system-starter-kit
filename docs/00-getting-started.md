@@ -129,13 +129,21 @@ document.body.classList.add('dsn-theme-start');
 document.body.classList.toggle('dsn-mode-dark');
 ```
 
-The classes can be set on any container, not just `<body>`, which is what makes side-by-side theme previews possible. Import `css/scoped/start-light` as well if you nest a Start container inside a Wireframe one: without it, the Wireframe tokens are inherited and the nested container keeps the wrong colors.
+The classes can be set on any container, not just `<body>`, which is what makes side-by-side theme previews possible. Import `css/scoped/start-light` as well if you nest a Start container inside a Wireframe one: without it, the Wireframe tokens are inherited and the nested container keeps the Wireframe look.
 
-Density works the same way, with `dsn-density-default` and `dsn-density-dense`:
+Density works the same way, with `dsn-density-dense`, and `dsn-density-default` to switch back inside a dense container:
 
 ```tsx
 import '@dsn-starter-kit/design-tokens/css/scoped/density-information-dense';
+import '@dsn-starter-kit/design-tokens/css/scoped/density-default'; // only for dsn-density-default
 ```
+
+Classes from both axes combine, on one element or nested, in any import order: `<body class="dsn-theme-wireframe dsn-mode-dark dsn-density-dense">` gives exactly the values of the Wireframe dark dense configuration. Each scoped file repeats every token that depends on its classes, component tokens included, so a button inside a dark container really is a dark-mode button.
+
+Two limits:
+
+- Mode is inherited. Every theme container below a `dsn-mode-dark` element is dark; light inside dark is not possible.
+- Prefer the density class on the same element as the theme class, or above it. Deeper down works too, unless two different themes are nested above it: form-field padding then follows the Wireframe theme.
 
 ### Switching at build time
 

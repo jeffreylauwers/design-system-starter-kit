@@ -11,10 +11,10 @@ type CssModule = { default: string };
 
 /**
  * Start's complete token CSS per mode and density, as the token build writes
- * it. The preview loads one of these on its own `:root`; they are the full
- * configurations, not the class-scoped files, so component tokens resolve
- * against the right values too. Each is about 200 kB, so each is its own
- * chunk, loaded when it is first chosen.
+ * it. The preview has a document of its own, so it simply loads the full
+ * configuration of one combination on its own `:root`, without classes.
+ * Each is about 200 kB, so each is its own chunk, loaded when it is first
+ * chosen.
  */
 const TOKEN_LOADERS: Record<
   ColorMode,

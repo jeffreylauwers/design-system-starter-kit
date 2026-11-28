@@ -43,23 +43,28 @@ De `<main>` met `id="main-content"` is een verantwoordelijkheid van de **templat
 </PageBody>
 ```
 
-### Toekomstige uitbreiding: side navigation
+### Zijbalk en inhoudsopgave
 
-`dsn-page-body__content` (nog niet geïmplementeerd) biedt straks een inner wrapper voor side nav + main naast elkaar:
+Voor subnavigatie naast de inhoud staat in `page-body.css` ook `dsn-sidebar-layout`. Vanaf 64em staat de zijbalk (`dsn-sidebar-layout__sidebar`) links van de inhoud, vanaf 80em kan rechts een kolom met de inhoudsopgave (`dsn-sidebar-layout__toc`) staan. Zie het template With Sidebar Page voor de volledige structuur.
 
 ```html
 <div class="dsn-page-body">
-  <nav class="dsn-breadcrumbs" aria-label="Kruimelpad">...</nav>
-  <div class="dsn-page-body__content">
-    <nav class="dsn-side-nav" aria-label="Sectienavigatie">...</nav>
-    <main id="main-content" tabindex="-1">...</main>
+  <div class="dsn-page-body__inner">
+    <div class="dsn-sidebar-layout">
+      <aside class="dsn-sidebar-layout__sidebar">...</aside>
+      <main id="main-content" tabindex="-1" class="dsn-sidebar-layout__main">
+        ...
+      </main>
+    </div>
   </div>
 </div>
 ```
 
 ## Design tokens
 
-`PageBody` heeft geen component-specifieke tokens. `flex: 1` is een layout-constante.
+`flex: 1` is een layout-constante. De ruimte aan de zijkanten komt uit de `page-body`-tokens, de breedtes van zijbalk en inhoudsopgave uit de `sidebar-layout`-tokens.
+
+<!-- tokens: page-body sidebar-layout -->
 
 ## Toegankelijkheid
 
