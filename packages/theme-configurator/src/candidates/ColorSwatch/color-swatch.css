@@ -1,0 +1,118 @@
+/**
+ * ColorSwatch: één kleur met naam, waarde en eventueel contrast. Het is een
+ * knop: activeren kopieert de waarde.
+ * Kandidaat-component (zie README.md): de lokale tokens staan hier op het
+ * block en verwijzen naar semantische tokens.
+ *
+ * De kleur zelf komt binnen via de custom property --dsn-color-swatch-color
+ * op het element: dat is data, geen stijlkeuze.
+ */
+
+/* ===========================
+   Local tokens
+   =========================== */
+
+.dsn-color-swatch {
+  --dsn-color-swatch-background-color: var(--dsn-color-neutral-bg-document);
+  --dsn-color-swatch-border-color: var(--dsn-color-neutral-border-subtle);
+  --dsn-color-swatch-border-radius: var(--dsn-border-radius-md);
+  --dsn-color-swatch-border-width: var(--dsn-border-width-thin);
+  --dsn-color-swatch-chip-block-size: var(--dsn-pointer-target-min-block-size);
+  --dsn-color-swatch-chip-border-color: var(--dsn-color-neutral-border-default);
+  --dsn-color-swatch-color: transparent;
+  --dsn-color-swatch-gap: var(--dsn-space-text-3xs);
+  --dsn-color-swatch-padding: var(--dsn-space-inline-xs);
+  --dsn-color-swatch-text-color: var(--dsn-color-neutral-color-default);
+  --dsn-color-swatch-value-color: var(--dsn-color-neutral-color-subtle);
+  --dsn-color-swatch-fail-color: var(--dsn-color-negative-color-default);
+  --dsn-color-swatch-pass-color: var(--dsn-color-positive-color-default);
+}
+
+/* ===========================
+   Base layout
+   =========================== */
+
+.dsn-color-swatch {
+  display: grid;
+  gap: var(--dsn-color-swatch-gap);
+  align-content: start;
+  min-inline-size: var(--dsn-pointer-target-min-inline-size);
+  margin: 0;
+  padding: var(--dsn-color-swatch-padding);
+  border: var(--dsn-color-swatch-border-width) solid
+    var(--dsn-color-swatch-border-color);
+  border-radius: var(--dsn-color-swatch-border-radius);
+  background-color: var(--dsn-color-swatch-background-color);
+  color: var(--dsn-color-swatch-text-color);
+  font-family: var(--dsn-text-font-family-default);
+  font-size: var(--dsn-text-font-size-sm);
+  line-height: var(--dsn-text-line-height-sm);
+  text-align: start;
+  cursor: pointer;
+}
+
+.dsn-color-swatch:focus-visible {
+  outline: var(--dsn-focus-outline-width) var(--dsn-focus-outline-style)
+    var(--dsn-focus-outline-color);
+  outline-offset: var(--dsn-focus-outline-offset);
+  box-shadow: 0 0 0
+    calc(var(--dsn-focus-outline-offset) + var(--dsn-focus-outline-width))
+    var(--dsn-focus-inverse-outline-color);
+}
+
+/* ===========================
+   Chip
+   =========================== */
+
+.dsn-color-swatch__chip {
+  display: block;
+  min-block-size: var(--dsn-color-swatch-chip-block-size);
+  border: var(--dsn-color-swatch-border-width) solid
+    var(--dsn-color-swatch-chip-border-color);
+  border-radius: calc(
+    var(--dsn-color-swatch-border-radius) - var(--dsn-color-swatch-padding)
+  );
+  background-color: var(--dsn-color-swatch-color);
+  /* Houdt de kleur zichtbaar in forced colors. */
+  forced-color-adjust: none;
+}
+
+/* ===========================
+   Name and value
+   =========================== */
+
+.dsn-color-swatch__name {
+  font-weight: var(--dsn-text-font-weight-bold);
+  overflow-wrap: anywhere;
+}
+
+.dsn-color-swatch__value {
+  color: var(--dsn-color-swatch-value-color);
+  font-family: var(--dsn-text-font-family-monospace);
+  overflow-wrap: anywhere;
+}
+
+/* ===========================
+   Note
+   =========================== */
+
+.dsn-color-swatch__note {
+  color: var(--dsn-color-swatch-value-color);
+  font-style: italic;
+}
+
+/* ===========================
+   Contrast
+   =========================== */
+
+.dsn-color-swatch__contrast {
+  display: flex;
+  align-items: center;
+  gap: var(--dsn-space-inline-2xs);
+  color: var(--dsn-color-swatch-pass-color);
+}
+
+.dsn-color-swatch__contrast--fail {
+  color: var(--dsn-color-swatch-fail-color);
+  font-weight: var(--dsn-text-font-weight-bold);
+}

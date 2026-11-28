@@ -1,0 +1,98 @@
+/**
+ * ColorInput: een kleur intypen in elk CSS-formaat, of kiezen met de
+ * kleurkiezer van de browser.
+ * Kandidaat-component (zie README.md): de lokale tokens staan hier op het
+ * block en verwijzen naar bestaande tokens.
+ *
+ * Het tekstveld is een gewone dsn-text-input; deze CSS zet alleen de
+ * kleurkiezer ernaast.
+ */
+/* @dsn-depends-on: text-input */
+
+/* ===========================
+   Local tokens
+   =========================== */
+
+.dsn-color-input {
+  --dsn-color-input-gap: var(--dsn-space-inline-xs);
+  --dsn-color-input-picker-background-color: var(
+    --dsn-form-control-background-color
+  );
+  --dsn-color-input-picker-border-color: var(--dsn-form-control-border-color);
+  --dsn-color-input-picker-border-radius: var(--dsn-form-control-border-radius);
+  --dsn-color-input-picker-border-width: var(--dsn-form-control-border-width);
+  --dsn-color-input-picker-padding: var(--dsn-space-inline-2xs);
+  --dsn-color-input-picker-size: var(--dsn-pointer-target-min-block-size);
+}
+
+/* ===========================
+   Base layout
+   =========================== */
+
+.dsn-color-input {
+  display: flex;
+  align-items: stretch;
+  gap: var(--dsn-color-input-gap);
+  max-inline-size: var(--dsn-form-control-max-inline-size);
+}
+
+/* ===========================
+   Text
+   =========================== */
+
+.dsn-text-input.dsn-color-input__text {
+  flex: 1 1 auto;
+  min-inline-size: 0;
+  font-family: var(--dsn-text-font-family-monospace);
+}
+
+/* ===========================
+   Picker
+   =========================== */
+
+.dsn-color-input__picker {
+  flex: 0 0 auto;
+  inline-size: var(--dsn-color-input-picker-size);
+  block-size: auto;
+  min-block-size: var(--dsn-color-input-picker-size);
+  margin: 0;
+  padding: var(--dsn-color-input-picker-padding);
+  border: var(--dsn-color-input-picker-border-width) solid
+    var(--dsn-color-input-picker-border-color);
+  border-radius: var(--dsn-color-input-picker-border-radius);
+  background-color: var(--dsn-color-input-picker-background-color);
+  cursor: pointer;
+}
+
+.dsn-color-input__picker::-webkit-color-swatch-wrapper {
+  padding: 0;
+}
+
+.dsn-color-input__picker::-webkit-color-swatch {
+  border: 0;
+  border-radius: calc(
+    var(--dsn-color-input-picker-border-radius) -
+      var(--dsn-color-input-picker-padding)
+  );
+}
+
+.dsn-color-input__picker::-moz-color-swatch {
+  border: 0;
+  border-radius: calc(
+    var(--dsn-color-input-picker-border-radius) -
+      var(--dsn-color-input-picker-padding)
+  );
+}
+
+.dsn-color-input__picker:focus-visible {
+  outline: var(--dsn-focus-outline-width) var(--dsn-focus-outline-style)
+    var(--dsn-focus-outline-color);
+  outline-offset: var(--dsn-focus-outline-offset);
+  box-shadow: 0 0 0
+    calc(var(--dsn-focus-outline-offset) + var(--dsn-focus-outline-width))
+    var(--dsn-focus-inverse-outline-color);
+}
+
+.dsn-color-input__picker:disabled {
+  cursor: not-allowed;
+}

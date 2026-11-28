@@ -238,6 +238,15 @@ importers:
 
   packages/theme-configurator:
     dependencies:
+      '@dsn-starter-kit/components-react':
+        specifier: workspace:*
+        version: link:../components-react
+      '@dsn-starter-kit/core':
+        specifier: workspace:*
+        version: link:../core
+      '@dsn-starter-kit/design-tokens':
+        specifier: workspace:*
+        version: link:../design-tokens
       '@dsn-starter-kit/theme-engine':
         specifier: workspace:*
         version: link:../theme-engine

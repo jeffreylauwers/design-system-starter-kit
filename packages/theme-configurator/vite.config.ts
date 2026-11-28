@@ -9,5 +9,9 @@ export default defineConfig(({ mode }) => ({
       : '/',
   build: {
     outDir: 'dist',
+    // One page with React, the components and the color engine: about 570 kB
+    // before gzip, 130 kB after. Start's token CSS per mode and density is
+    // split off and loaded when chosen (src/preview/previewStyles.ts).
+    chunkSizeWarningLimit: 700,
   },
 }));

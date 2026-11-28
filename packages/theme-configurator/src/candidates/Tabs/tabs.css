@@ -1,0 +1,103 @@
+/**
+ * Tabs: wisselen tussen panelen die dezelfde plek delen.
+ * Kandidaat-component (zie README.md): de lokale tokens staan hier op het
+ * block en verwijzen naar semantische tokens.
+ *
+ * Opbouw volgens het WAI-ARIA-patroon: role="tablist", "tab" en "tabpanel".
+ * Het gedrag (pijltjestoetsen, Home, End) zit in de React-laag.
+ */
+
+/* ===========================
+   Local tokens
+   =========================== */
+
+.dsn-tabs {
+  --dsn-tabs-border-color: var(--dsn-color-neutral-border-subtle);
+  --dsn-tabs-border-width: var(--dsn-border-width-thin);
+  --dsn-tabs-color: var(--dsn-color-neutral-color-default);
+  --dsn-tabs-indicator-width: var(--dsn-border-width-thick);
+  --dsn-tabs-tab-padding-inline: var(--dsn-space-inline-md);
+  --dsn-tabs-panel-padding-block-start: var(--dsn-space-block-xl);
+  --dsn-tabs-selected-color: var(--dsn-color-accent-1-color-default);
+  --dsn-tabs-selected-indicator-color: var(--dsn-color-accent-1-border-default);
+}
+
+/* ===========================
+   Base layout
+   =========================== */
+
+.dsn-tabs {
+  font-family: var(--dsn-text-font-family-default);
+  font-size: var(--dsn-text-font-size-md);
+  line-height: var(--dsn-text-line-height-md);
+}
+
+/* ===========================
+   List
+   =========================== */
+
+/* Past de rij niet, dan scrolt alleen de rij, niet de pagina. */
+.dsn-tabs__list {
+  display: flex;
+  overflow-x: auto;
+  border-block-end: var(--dsn-tabs-border-width) solid
+    var(--dsn-tabs-border-color);
+  scrollbar-width: thin;
+}
+
+/* ===========================
+   Tab
+   =========================== */
+
+.dsn-tabs__tab {
+  flex: 0 0 auto;
+  min-block-size: var(--dsn-pointer-target-min-block-size);
+  min-inline-size: var(--dsn-pointer-target-min-inline-size);
+  margin: 0;
+  padding-block: 0;
+  padding-inline: var(--dsn-tabs-tab-padding-inline);
+  border: 0;
+  border-block-end: var(--dsn-tabs-indicator-width) solid transparent;
+  background: none;
+  color: var(--dsn-tabs-color);
+  font: inherit;
+  cursor: pointer;
+}
+
+.dsn-tabs__tab[aria-selected='true'] {
+  border-block-end-color: var(--dsn-tabs-selected-indicator-color);
+  color: var(--dsn-tabs-selected-color);
+  font-weight: var(--dsn-text-font-weight-bold);
+}
+
+.dsn-tabs__tab:focus-visible {
+  background-color: var(--dsn-focus-background-color);
+  color: var(--dsn-focus-color);
+  outline: var(--dsn-focus-outline-width) var(--dsn-focus-outline-style)
+    var(--dsn-focus-outline-color);
+  outline-offset: calc(var(--dsn-focus-outline-width) * -1);
+}
+
+/* ===========================
+   Panel
+   =========================== */
+
+.dsn-tabs__panel {
+  padding-block-start: var(--dsn-tabs-panel-padding-block-start);
+}
+
+.dsn-tabs__panel:focus-visible {
+  outline: var(--dsn-focus-outline-width) var(--dsn-focus-outline-style)
+    var(--dsn-focus-outline-color);
+  outline-offset: var(--dsn-focus-outline-offset);
+}
+
+/* ===========================
+   Forced colors
+   =========================== */
+
+@media (forced-colors: active) {
+  .dsn-tabs__tab[aria-selected='true'] {
+    border-block-end-color: Highlight;
+  }
+}
